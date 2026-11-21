@@ -57,10 +57,6 @@ void func_001064E8(void) {
     D_0048E508 = 0;
 }
 
-#ifdef VERSION_FM
-s32 func_001064F8(XFlapjack* arg0);
-INCLUDE_ASM("asm/nonmatchings/xpancake", func_001064F8);
-#else
 s32 func_001064F8(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
@@ -70,7 +66,6 @@ s32 func_001064F8(XFlapjack* arg0) {
     D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
-#endif
 
 #ifdef VERSION_FM
 void func_00106578(s32 arg0);
