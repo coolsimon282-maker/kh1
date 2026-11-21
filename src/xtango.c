@@ -172,7 +172,12 @@ s32 func_001EF960(s32 arg0) {
     return func_001F0EF0(D_003DE5F0[D_003010F8->unk_48E[arg0]]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF998);
+s32 func_001EF998(s32 arg0) {
+    if (arg0 > 16) {
+        arg0 = 0;
+    }
+    return func_001F0EF0(D_003E3CD0[arg0]);
+}
 
 XScotch* func_001EF9C8(s32 arg0) {
     return (XScotch*)func_00147A88(arg0);
