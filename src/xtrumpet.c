@@ -289,7 +289,21 @@ void func_00111910(void) {
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111920);
 void func_00111920();
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111A00);
+extern volatile s32 D_002BBDF0;
+extern s32 D_004D9250;
+extern s32 D_004D9254;
+
+void func_00111A00(s32 arg0) {
+    D_004D29AC = 0;
+    D_004D9250 = D_002BBDF0;
+    D_002B916C = 0;
+    if (arg0 == 0) {
+        D_004D9254 = 0x34B84;
+    } else {
+        D_004D9254 = 0x14996C4;
+    }
+    func_0011ED30(0x2C04C, func_00111920);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111A70);
 
