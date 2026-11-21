@@ -7,7 +7,20 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", KeBornRnd2);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A75B0);
+typedef struct {
+    /* 0x0 */ u16 unk_0;
+    /* 0x2 */ u8 unk_2;
+} XBerryUnk75B0;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x12];
+    /* 0x12 */ u16 unk_12;
+} XBerryUnk75B0Src;
+
+void func_001A75B0(XBerryUnk75B0* arg0, XBerryUnk75B0Src** arg1) {
+    arg0->unk_0 = (*arg1)->unk_12;
+    arg0->unk_2 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A75C8);
 
