@@ -80,6 +80,7 @@ extern s32 D_002A61F0;
 extern s32 D_00388CC4[];
 void func_00242BD0(void);
 void func_001ED878(s32);
+void func_00177908(s32);
 extern s32 (*D_003773C4)(void);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C8470);
@@ -2592,12 +2593,10 @@ s32 func_001DD5F8(void) {
     return ((s32)(*(u64*)&D_0038CD00[2] >> 8) & 1) ? 4 : 2;
 }
 
-// Nonmatch: Regswap
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD620);
-// void func_001DD620(UNK_TYPE arg0, UNK_TYPE arg1, s32 arg2) {
-//     func_00177908(arg2);
-//     D_003854E0.unk_3078 &= ~0x200;
-// }
+void func_001DD620(s32 arg0, s32 arg1, s32 arg2) {
+    func_00177908(arg2);
+    D_003854E0.unk_3078 &= ~0x200;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD658);
 
