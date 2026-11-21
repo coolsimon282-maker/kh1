@@ -33,6 +33,8 @@ extern s32 D_002B8678;
 
 XTrumpet* D_002B90B0;
 
+extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of XTrumpet.unk_6C
+
 extern s32 D_002B916C;
 extern s32 D_002B9170;
 extern s32 D_002B9174;
@@ -98,7 +100,15 @@ void func_001113E8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111408);
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111468);
+s8 func_00111468(s32 arg0, s32 arg1) {
+    s32 i;
+    s32 ofs = 0;
+
+    for (i = 0; i < arg0; i++) {
+        ofs += D_002BCB68[i];
+    }
+    return D_002B90B0->unk_6C[ofs + arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_001114B8);
 
