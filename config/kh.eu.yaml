@@ -323,6 +323,8 @@ segments:
   - [ 0xf1128, asm ]
   - [ 0x1135d8, c, xpotato ]
   - [ 0x117340, asm ]
+  - [ 0x12d630, c, xcursed ]
+  - [ 0x12d8c0, asm ]
   - [ 0x145918, c, xpackage ]
   - [ 0x1466e8, asm ]
   # --- end of generated text ---
@@ -367,4 +369,6 @@ segments:
   - [ 0x389f40, rodata ]
   - [ 0x38a3e0, .rodata, xbiscuit ]
   - [ 0x38a4c0, rodata ]
+  - [ 0x38ad30, .rodata, xcursed ]
+  - [ 0x38ad70, rodata ]
 - [ 0x38da30 ]
