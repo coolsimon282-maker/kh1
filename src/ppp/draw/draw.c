@@ -171,7 +171,16 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC0A8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC120);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC148);
+s32 func_001AC148(s32 n) {
+    s32 i = 1;
+    s32 bits = 0;
+
+    while (i < n) {
+        i <<= 1;
+        bits++;
+    }
+    return bits;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC180);
 
