@@ -591,7 +591,15 @@ s32 func_001F0938(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0960);
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0A00);
+s32 func_001F0A00(s32 arg0) {
+    XTangoUnkE4b* entry = &D_003E3D70[arg0];
+    s32 diff = entry->unk_E0 - func_001F0960(arg0);
+
+    if (diff < 0) {
+        diff = 0;
+    }
+    return diff;
+}
 
 void func_001F0A58(u32 arg0) {
     D_003ED718->munny = arg0 <= 99999 ? arg0 : 99999;
