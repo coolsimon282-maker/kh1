@@ -384,7 +384,10 @@ void func_001CEBF8(Script* arg0) {
     arg0->unk_174[arg0->unk_174[3] + 4] >>= arg0->unk_174[arg0->unk_174[3] + 5];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CEC30);
+void func_001CEC30(Script* arg0) {
+    arg0->unk_174[3]--;
+    arg0->unk_174[arg0->unk_174[3] + 4] <<= arg0->unk_174[arg0->unk_174[3] + 5];
+}
 
 s32 func_001CEC68(UNK_PTR arg0, s32 arg1) {
     D_003C10D8[arg1](arg0);
