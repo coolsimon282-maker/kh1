@@ -2862,7 +2862,17 @@ s32 func_001DC3B0(void) {
     return ((s32)(*(u64*)&D_0038CD00[2] >> 4) & 1) ? 4 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3D8);
+void func_00157818(void*, s32);
+
+s32 func_001DC3D8(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        func_00157818(p, arg0->unk_174[arg0->unk_174[3] + 4]);
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 #ifdef VERSION_FM
 s32 func_001DC428(Script* arg0);
