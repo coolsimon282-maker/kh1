@@ -535,7 +535,12 @@ void func_00129B88(XAudArg* arg0) {
     obj->unk_3AC |= arg0[3].s;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129BC0);
+void func_00129BC0(XAudArg* arg0) {
+    XAudObj* obj = arg0[0].obj;
+    obj->unk_3A4 &= ~arg0[1].s;
+    obj->unk_3A8 &= ~arg0[2].s;
+    obj->unk_3AC &= ~arg0[3].s;
+}
 
 void func_00129C08(XAudArg* arg0) {
     sceVu0SubVector(arg0[1].p, arg0[0].obj->unk_010, arg0[0].obj->unk_490);
