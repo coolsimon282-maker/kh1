@@ -1,0 +1,1145 @@
+disk	func_0024A010	3		
+disk	disk_Timeout	13	00248128	-2018
+disk	disk_GetTimer	3		
+disk	func_0024A188	60	00248170	-2018
+disk	func_0024A278	22	00248260	-2018
+disk	disk_StartThread	37	002482B8	-2018
+disk	func_0024A368	3		
+disk	disk_GetGamecode	3		
+disk	func_0024A388	3		
+disk	func_0024A398	3		
+disk	disk_GetImgName	3		
+disk	disk_Mount	39	002483A0	-2018
+disk	disk_Unmount	19	00248440	-2018
+disk	func_0024A4A8	43	00248490	-2018
+disk	disk_GetStatus	12	00248540	-2018
+disk	disk_IsSpaceAvailable	37	00248570	-2018
+disk	func_0024A620	3		
+disk	func_0024A630	83	00248618	-2018
+disk	disk_Seek	52	00248768	-2018
+disk	disk_SetBlock	23	00248838	-2018
+disk	func_0024A8B0	117	00248898	-2018
+disk	func_0024AA88	3		
+disk	func_0024AA98	3		
+gumi	func_001BBCD8	14	001B8950	-3388
+gumi	func_001BBD10	17	001B8988	-3388
+gumi	func_001BBD58	5	001B89D0	-3388
+gumi	func_001BBD70	24		
+gumi	func_001BBE38	80		
+gumi	func_001BBF78	19	001B8BC8	-33b0
+gumi	func_001BBFC8	18	001B8C18	-33b0
+gumi	func_001BC010	14	001B8C60	-33b0
+gumi	func_001BC048	46	001B8C98	-33b0
+gumi	func_001BC368	2	001B8FB8	-33b0
+gumi	func_001BC370	8	001B8FC0	-33b0
+gumi	func_001BC390	8	001B8FE0	-33b0
+gumi	func_001BC3B0	16	001B9000	-33b0
+gumi	func_001BC3F0	16	001B9040	-33b0
+gumi	func_001BC578	5	001B91B0	-33c8
+gumi	func_001BC590	11	001B91C8	-33c8
+gumi	func_001BC5C0	14	001B91F8	-33c8
+gumi	func_001BC5F8	8	001B9230	-33c8
+gumi	func_001BC888	3		
+gumi	func_001BC898	23	001B94D0	-33c8
+gumi	func_001BC8F8	3		
+gumi	func_001BC908	8	001B9540	-33c8
+gumi	func_001BC928	8	001B9560	-33c8
+gumi	func_001BC948	5	001B9580	-33c8
+gumi	func_001BC960	3		
+gumi	func_001BC970	25	001B95A8	-33c8
+gumi	func_001BC9D8	2	001B9610	-33c8
+gumi	func_001BC9E0	2	001B9618	-33c8
+gumi	func_001BC9F0	2	001B9628	-33c8
+gumi	func_001BCAA0	3		
+gumi	func_001BCAB0	3		
+gumi	func_001BCAE8	18	001B9720	-33c8
+gumi	func_001BCB30	10	001B9768	-33c8
+gumi	func_001BCB58	11	001B9790	-33c8
+gumi	func_001BCCA0	36		
+gumi	func_001BCD98	99	001B99D0	-33c8
+gumi	func_001BCF28	28	001B9B60	-33c8
+memcard	memcard_Initialize	18	0022E5C8	-1f10
+memcard	memcard_SetDefaults	143	0022E610	-1f10
+memcard	func_00230948	3		
+memcard	func_00230958	8	0022EA40	-1f18
+memcard	func_00230978	3		
+memcard	func_00230988	5		
+memcard	func_002309A0	9	0022EA88	-1f18
+memcard	func_002309C8	7	0022EAB0	-1f18
+memcard	func_002309E8	9	0022EAD0	-1f18
+memcard	func_00230A10	7	0022EAF8	-1f18
+memcard	func_00230A30	9	0022EB18	-1f18
+memcard	func_00230A58	7	0022EB40	-1f18
+memcard	func_002312A0	3		
+memcard	memcard_GetAllStatus	3		
+memcard	memcard_GetDirStatus	3		
+memcard	memcard_GetFormatStatus	3		
+memcard	memcard_GetUnformatStatus	3		
+memcard	memcard_GetChdirStatus	3		
+memcard	memcard_GetMkdirStatus	3		
+memcard	memcard_GetCreateStatus	3		
+memcard	memcard_GetDeleteStatus	3		
+memcard	memcard_GetReadStatus	3		
+memcard	memcard_GetWriteStatus	3		
+memcard	memcard_GetRenameStatus	3		
+memcard	func_00231360	3		
+memcard	memcard_GetInfo	169	0022FAC8	-1f18
+memcard	memcard_GetAllFiles	95	0022FD70	-1f18
+memcard	memcard_GetDirFiles	93	0022FEF0	-1f18
+memcard	memcard_Format	89	00230068	-1f18
+memcard	memcard_Unformat	89	002301D0	-1f18
+memcard	memcard_Chdir	88	00230338	-1f18
+memcard	memcard_Mkdir	88	00230498	-1f18
+memcard	memcard_Delete	93	002308B8	-1f18
+memcard	memcard_Write	175	00230CD8	-1f18
+memcard	memcard_Rename	82	00230F98	-1f18
+memcard	func_00232FF8	18	002310E0	-1f18
+memcard	memcard_RunCommand	13	00231128	-1f18
+ppp__draw__draw	func_001AB408	12	001A81D0	-3238
+ppp__draw__draw	op_init_draw	7	001A8C90	-3280
+ppp__draw__draw	ops_init_draw_work	9	001A8CB0	-3280
+ppp__draw__global	opc	1		
+ppp__draw__global	opc2	1		
+ppp__draw__global	opc3	1		
+ppp__draw__global	op_init_global	1		
+ppp__draw__global	ops_init_spr	12	001A9738	-3288
+ppp__draw__global	op_num_info	1		
+ppp__draw__global	op_spr_rev_check	13	001A9820	-3288
+ppp__draw__global	op_spr_check	13	001A9858	-3288
+ppp__draw__md	set_ztest_off	12	001A9CF0,001A9D20	
+ppp__draw__md	set_invisible	12	001A9CF0,001A9D20	
+ppp__eiProg__pppAccele	pppAcceleCalc	50	00182BB0,00182CA8,001830E8,001831E0	
+ppp__eiProg__pppAccele	pppAcceleCon	9	00182C80,00182D78,001831B8,001832B0,00189600,00189830	
+ppp__eiProg__pppAngAccele	pppAngAcceleCalc	50	00182E50,00182F40	
+ppp__eiProg__pppAngAccele	pppAngAcceleCon	8	00182F20,00183010,00189718	
+ppp__eiProg__pppAngMove	pppAngMoveCalc	50	00182E50,00182F40	
+ppp__eiProg__pppAngMove	pppAngMoveCon	8	00182F20,00183010,00189718	
+ppp__eiProg__pppAngMoveLoop	pppAngMoveLoopCon	8	00189718	-29c8
+ppp__eiProg__pppAngMoveLoop	pppAngMoveLoopCon2	5	00189738	-29c8
+ppp__eiProg__pppAngMoveLoop	pppAngMoveLoopCalc	54	00189750	-29c8
+ppp__eiProg__pppAngle	pppAngleCalc	35	00182DA0	-27e8
+ppp__eiProg__pppAngle	pppAngleCon	8	00182E30	-27e8
+ppp__eiProg__pppAngleLoop	func_0018C558	5	00189B90	-29c8
+ppp__eiProg__pppAngleLoop	pppAngleLoopCon	5	00189BA8	-29c8
+ppp__eiProg__pppAngleLoop	pppAngleLoopCon2	18	00189BC0	-29c8
+ppp__eiProg__pppAngleLoop	pppAngleLoopCalc	51	00189C08	-29c8
+ppp__eiProg__pppChrSclXYZMatrix	pppChrSclXYZMatrixCalc	38		
+ppp__eiProg__pppChrSclXZMatrix	pppChrSclXZMatrixCalc	30		
+ppp__eiProg__pppChrSclYMatrix	pppChrSclYMatrixCalc	28		
+ppp__eiProg__pppChrXSclXYZMatrix	pppChrXSclXYZMatrixCalc	31		
+ppp__eiProg__pppChrYSclXYZMatrix	pppChrYSclXYZMatrixCalc	31		
+ppp__eiProg__pppColAccele	pppColAcceleCalc	58	001833E8,00183500	
+ppp__eiProg__pppColAccele	pppColAcceleCon	9	001834D8,001835F0	
+ppp__eiProg__pppColMove	pppColMoveCalc	58	001833E8,00183500	
+ppp__eiProg__pppColMove	pppColMoveCon	9	001834D8,001835F0	
+ppp__eiProg__pppColor	pppColorCon	9	001833C0	-27e8
+ppp__eiProg__pppDrawHook	pppDrawHookDraw	25	00182A90	-27e8
+ppp__eiProg__pppDrawMatrix	pppDrawMatrixCalc	11	00184D08,00189E20	
+ppp__eiProg__pppDrawMatrixFront	pppDrawMatrixFrontCalc	39	00184D38	-2858
+ppp__eiProg__pppDrawMatrixLoop	pppDrawMatrixLoopCalc	11	00184D08,00189E20	
+ppp__eiProg__pppDrawMatrixWood	pppDrawMatrixWoodSta	1		
+ppp__eiProg__pppDrawMdlLoop	pppDrawMdlLoopCon	5	00189E80,0018A2C0,001A0D48	
+ppp__eiProg__pppDrawMdlLoop	pppDrawMdlLoopCon2	10	00189E98,0018A2D8	
+ppp__eiProg__pppDrawMdlLoop	pppDrawMdlLoopDes	1		
+ppp__eiProg__pppDrawMdlLoop	pppDrawMdlLoopCalc	85	00189EC8,0018A308	
+ppp__eiProg__pppDrawMdlLoopZ	pppDrawMdlLoopZCon	5	00189E80,0018A2C0,001A0D48	
+ppp__eiProg__pppDrawMdlLoopZ	pppDrawMdlLoopZCon2	10	00189E98,0018A2D8	
+ppp__eiProg__pppDrawMdlLoopZ	pppDrawMdlLoopZDes	1		
+ppp__eiProg__pppDrawMdlLoopZ	pppDrawMdlLoopZCalc	85	00189EC8,0018A308	
+ppp__eiProg__pppDrawMdlSea	pppDrawMdlSeaDraw	1		
+ppp__eiProg__pppDrawMdlSea	pppDrawMdlSeaCon	1		
+ppp__eiProg__pppDrawMdlSea	pppDrawMdlSeaDes	1		
+ppp__eiProg__pppDrawMdlTs	pppDrawMdlTsCon	12	00185238,00193E18,001949D0	
+ppp__eiProg__pppDrawShape	pppDrawShapeCon	8	001854D0,001952B0	
+ppp__eiProg__pppDrawShapeField	pppDrawShapeFieldDraw	1		
+ppp__eiProg__pppDrawShapeField	pppDrawShapeFieldCon	1		
+ppp__eiProg__pppDrawShapeField	pppDrawShapeFieldDes	1		
+ppp__eiProg__pppEiWindFun	pppEiWindFunCon	11	00189258	-29c0
+ppp__eiProg__pppFaceAp	pppFaceApCalc	1		
+ppp__eiProg__pppMove	pppMove	50	00182BB0,00182CA8,001830E8,001831E0	
+ppp__eiProg__pppMove	pppMoveCon	9	00182C80,00182D78,001831B8,001832B0,00189600,00189830	
+ppp__eiProg__pppPoint	pppPoint	35	00182AF8,00183030	
+ppp__eiProg__pppPoint	pppPointCon	9	00182B88,001830C0,001842E8	
+ppp__eiProg__pppPointAp	pppPointApCon	5	001857A0,001858B8	
+ppp__eiProg__pppPointLoop	func_0018C410	6	00189A48,00189CD8	
+ppp__eiProg__pppPointLoop	pppPointLoopCon	5	00189A60,00189BA8,00189CF0	
+ppp__eiProg__pppPointLoop	pppPointLoopCon2	18	00189A78,00189D08	
+ppp__eiProg__pppPointLoop	pppPointLoopCalc	51	00189AC0,00189D50	
+ppp__eiProg__pppPointRAp	pppPointRApCon	5	001857A0,001858B8	
+ppp__eiProg__pppSMatrix	pppSMatrixCalc	7	00184F78	-2858
+ppp__eiProg__pppScale	pppScaleCalc	35	00182AF8,00183030	
+ppp__eiProg__pppScale	pppScaleCon	9	00182B88,001830C0,001842E8	
+ppp__eiProg__pppScaleLoop	func_0018C6A0	6	00189A48,00189CD8	
+ppp__eiProg__pppScaleLoop	pppScaleLoopCon	5	00189A60,00189BA8,00189CF0	
+ppp__eiProg__pppScaleLoop	pppScaleLoopCon2	18	00189A78,00189D08	
+ppp__eiProg__pppScaleLoop	pppScaleLoopCalc	51	00189AC0,00189D50	
+ppp__eiProg__pppSegmentAp	pppSegmentApCalc	1		
+ppp__eiProg__pppVertexAp	pppVertexApCon	7	00183718,00183AB8,00183E00	
+ppp__eiProg__pppVtMime	pppVtMimeCon	10	001842C0	-2840
+ppp__eiProg__pppVtMime	pppVtMimeCon2	9	001842E8	-2840
+ppp__eiProg__pppVtMime	pppVtMimeDes	18	00184310	-2840
+ppp__keProg__pppDrawShapeX	pppDrawShapeXCon	8	001854D0,001952B0	
+ppp__keProg__pppKeAcmSolid	pppKeAcmSolidEnd	1		
+ppp__keProg__pppKeDMat	pppKeDMatCalc	30	001936A8	-2cf0
+ppp__keProg__pppKeDMatFr	pppKeDMatFrCalc	49	00193720	-2cf0
+ppp__keProg__pppKeDMatPht	pppKeDMatPhtCalc	48	00193918	-2cf0
+ppp__keProg__pppKeDMatPhtFr	pppKeDMatPhtFrCalc	64	001939D8	-2cf0
+ppp__keProg__pppKeDrct	pppKeDrctCalc	15	00193048	-2ca0
+ppp__keProg__pppKeDrct	pppKeDrctCon	7	00193088	-2ca0
+ppp__keProg__pppKeGrvEff	pppKeGrvEffCon	1		
+ppp__keProg__pppKeHitBall	pppKeHitBallCon	1		
+ppp__keProg__pppKeHitBorn	pppKeHitBornCon	5	00192DE8	-2c98
+ppp__keProg__pppKeHmgEff	pppKeHmgEffCon	1		
+ppp__keProg__pppKeLnsArnd	pppKeLnsArndCon	9	00191000,00191500,00191750,00191F98,001924B0,00192730	
+ppp__keProg__pppKeLnsArndT	pppKeLnsArndTDes	1		
+ppp__keProg__pppKeLnsClm	pppKeLnsClmCon	15	00191288,001921E0	
+ppp__keProg__pppKeLnsClmT	pppKeLnsClmTDes	1		
+ppp__keProg__pppKeLnsCrn	pppKeLnsCrnCon	9	00191000,00191500,00191750,00191F98,001924B0,00192730	
+ppp__keProg__pppKeLnsCrnT	pppKeLnsCrnTDes	1		
+ppp__keProg__pppKeLnsFls	pppKeLnsFlsCon	9	00191000,00191500,00191750,00191F98,001924B0,00192730	
+ppp__keProg__pppKeLnsFlsT	pppKeLnsFlsTDes	1		
+ppp__keProg__pppKeLnsLp	pppKeLnsLpCon	15	00190D88	-2b90
+ppp__keProg__pppKeLnsLp	pppKeLnsLpCon2	7	00190DC8	-2b90
+ppp__keProg__pppKeLnsLpT	pppKeLnsLpTDes	1		
+ppp__keProg__pppKeMdlBmp	pppKeMdlBmpDraw	1		
+ppp__keProg__pppKeMdlBmp	pppKeMdlBmpCon	1		
+ppp__keProg__pppKeMdlBmp	pppKeMdlBmpCon2	1		
+ppp__keProg__pppKeShpDtt	pppKeShpDttCalc	1		
+ppp__keProg__pppKeShpTailLc	pppKeShpTailLcCalc	1		
+ppp__keProg__pppKeShpTailLc	pppKeShpTailLcDraw	1		
+ppp__keProg__pppKeShpTailPht	pppKeShpTailPhtCalc	1		
+ppp__keProg__pppKeShpTailPht	pppKeShpTailPhtDraw	1		
+ppp__keProg__pppKeShpTailPht	pppKeShpTailPhtCon	1		
+ppp__keProg__pppKeShpTailPht	pppKeShpTailPhtCon2	1		
+ppp__keProg__pppKeTh	pppKeThDes	1		
+ppp__keProg__pppKeThRes	pppKeThResCon	11	0018B478	-29d0
+ppp__keProg__pppKeThRes128	pppKeThRes128Con	11	0018B808	-29d0
+ppp__keProg__pppKeThRes128x4	pppKeThRes128x4Con	11	0018B838	-29d0
+ppp__keProg__pppKeThRes128x8	pppKeThRes128x8Con	11	0018B868	-29d0
+ppp__keProg__pppKeThRes16	pppKeThRes16Con	11	0018B538	-29d0
+ppp__keProg__pppKeThRes16x4	pppKeThRes16x4Con	11	0018B568	-29d0
+ppp__keProg__pppKeThRes16x64	pppKeThRes16x64Con	11	0018B598	-29d0
+ppp__keProg__pppKeThRes24	pppKeThRes24Con	11	0018B5C8	-29d0
+ppp__keProg__pppKeThRes24x4	pppKeThRes24x4Con	11	0018B5F8	-29d0
+ppp__keProg__pppKeThRes255	pppKeThRes255Con	11	0018B898	-29d0
+ppp__keProg__pppKeThRes255x4	pppKeThRes255x4Con	11	0018B8C8	-29d0
+ppp__keProg__pppKeThRes32	pppKeThRes32Con	11	0018B628	-29d0
+ppp__keProg__pppKeThRes32x32	pppKeThRes32x32Con	11	0018B688	-29d0
+ppp__keProg__pppKeThRes32x4	pppKeThRes32x4Con	11	0018B658	-29d0
+ppp__keProg__pppKeThRes40	pppKeThRes40Con	11	0018B6B8	-29d0
+ppp__keProg__pppKeThRes40x4	pppKeThRes40x4Con	11	0018B6E8	-29d0
+ppp__keProg__pppKeThRes48	pppKeThRes48Con	11	0018B718	-29d0
+ppp__keProg__pppKeThRes48x4	pppKeThRes48x4Con	11	0018B748	-29d0
+ppp__keProg__pppKeThRes64	pppKeThRes64Con	11	0018B778	-29d0
+ppp__keProg__pppKeThRes64x16	pppKeThRes64x16Con	11	0018B7D8	-29d0
+ppp__keProg__pppKeThRes64x4	pppKeThRes64x4Con	11	0018B7A8	-29d0
+ppp__keProg__pppKeThRes8	pppKeThRes8Con	11	0018B4A8	-29d0
+ppp__keProg__pppKeThRes8x128	pppKeThRes8x128Con	11	0018B508	-29d0
+ppp__keProg__pppKeThRes8x4	pppKeThRes8x4Con	11	0018B4D8	-29d0
+ppp__pppDummy	pppKeThLzCalc	1		
+ppp__pppDummy	pppKeThLzCon	1		
+ppp__pppDummy	pppKeThLzDes	1		
+ppp__pppDummy	pppKeThCpCalc	1		
+ppp__pppDummy	pppKeThCpCon	1		
+ppp__pppDummy	pppKeThCpDes	1		
+ppp__pppDummy	pppKeThCpSftCalc	1		
+ppp__pppDummy	pppKeAccSpdSvCalc	1		
+ppp__pppDummy	pppKeAccSpdSvCon	1		
+ppp__pppMngr	pppSetPrimPacket	14	0017E730	-2848
+ppp__pppMngr	drawStart	3		
+ppp__pppMngr	pppDbgAlloc	5	0017E778	-2848
+ppp__pppMngr	drawEnd	13	0017E790	-2848
+ppp__pppMngr	initGraphicSystem	11	0017E7C8	-2848
+ppp__pppMngr	dpd_set_object_data	24	0017F868	-2848
+ppp__pppMngr	func_00182110	3		
+ppp__pppMngr	vramcache_clear	7	0017FCA0	-2848
+ppp__pppMngr	vramcachemng_clear	29	0017FCC0	-2848
+ppp__pppMngr	vramcache_texture	18	00180058	-2848
+ppp__pppMngr	vramcache_clut	20	001800A0	-2848
+ppp__pppMngr	init_part_mng	35	00180D70	-2858
+ppp__pppMngr	func_00184E48	14	00182660	-27e8
+ppp__pppMngr	func_00185000	1		
+ppp__ryjProg__pppRyjDrawShipoly	pppRyjDrawShipolyCon	10	001995D8	-2e18
+ppp__ryjProg__pppRyjDrawShipoly	pppRyjDrawShipolyDes	18	00199600	-2e18
+ppp__ryjProg__pppRyjDrawShipolyBone	pppRyjDrawShipolyBoneCalc	1		
+ppp__ryjProg__pppRyjDrawShipolyBone	pppRyjDrawShipolyBoneCon	13	0019A898	-2e80
+ppp__ryjProg__pppRyjDrawShipolyBone	pppRyjDrawShipolyBoneDes	18	0019A8D0	-2e80
+ppp__ryjProg__pppRyjLight	pppRyjLightCon	5	001A0D48	-3000
+ppp__ryjProg__pppRyjLight	pppRyjLightDes	17	001A0D60	-3000
+ppp__ryjProg__pppRyjMegaBirth	pppRyjMegaBirthCon	23	0019C668	-2f10
+ppp__ryjProg__pppRyjMegaBirth	pppRyjMegaBirthDes	30	0019C6C8	-2f10
+ppp__ryjProg__pppRyjMegaBirthFilter	func_001A4F70	1		
+ppp__ryjProg__pppRyjMegaBirthFilter	pppRyjMegaBirthFilterSta	21	001A2370,001A3DF0	
+ppp__ryjProg__pppRyjMegaBirthFilter	pppRyjMegaBirthFilterCon	17	001A23C8,001A3E48	
+ppp__ryjProg__pppRyjMegaBirthFilter	pppRyjMegaBirthFilterDes	24	001A2410,001A3E90	
+ppp__ryjProg__pppRyjMegaBirthModel	pppRyjMegaBirthModelDes	30	0019FF00	-2fa8
+ppp__ryjProg__pppRyjMegaBirthModelFilter	func_001A69A8	1		
+ppp__ryjProg__pppRyjMegaBirthModelFilter	pppRyjMegaBirthModelFilterSta	21	001A2370,001A3DF0	
+ppp__ryjProg__pppRyjMegaBirthModelFilter	pppRyjMegaBirthModelFilterCon	17	001A23C8,001A3E48	
+ppp__ryjProg__pppRyjMegaBirthModelFilter	pppRyjMegaBirthModelFilterDes	24	001A2410,001A3E90	
+ppp__ryjProg__pppRyjMegaPlace	pppRyjMegaPlaceDes	30	0019DD10	-2f40
+ppp__ryjProg__pppRyjMngFlag	pppRyjMngFlagCalc	16	0019C740	-2f10
+ppp__stdProg__pppGetRotMatrixX	pppGetRotMatrixX	31	001A3EF0	-3108
+ppp__stdProg__pppGetRotMatrixXYZ	pppGetRotMatrixXYZ	35	00182A00	-27e8
+ppp__stdProg__pppGetRotMatrixXZY	pppGetRotMatrixXZY	35	001A4070	-3108
+ppp__stdProg__pppGetRotMatrixY	pppGetRotMatrixY	31	001A3F70	-3108
+ppp__stdProg__pppGetRotMatrixYXZ	pppGetRotMatrixYXZ	35	001A4190	-3108
+ppp__stdProg__pppGetRotMatrixYZX	pppGetRotMatrixYZX	35	001A4100	-3108
+ppp__stdProg__pppGetRotMatrixZ	pppGetRotMatrixZ	32		
+ppp__stdProg__pppGetRotMatrixZXY	pppGetRotMatrixZXY	35	001A4220	-3108
+ppp__stdProg__pppGetRotMatrixZYX	pppGetRotMatrixZYX	35	001A42B0	-3108
+ppp__xberry	KeLnsLp_Init	17	001A4AC0	-3138
+ppp__xberry	KeLnsClm_Init	6	001A4EF0	-3158
+ppp__xberry	KeLnsArnd_Init	5	001A50C8	-3168
+ppp__xberry	KeLnsCrn_Init	5	001A5358	-3180
+ppp__xberry	KeLnsFls_Init	5	001A55C0	-3198
+worldfile	worldfile_getAbbr	10	001121B8	+278
+worldfile	worldfile_getNameNoSet	33	001121E0	+278
+worldfile	worldfile_getNames	56	00112268	+278
+worldfile	worldfile_getBinImgName	38	00112348	+278
+xapple	func_0013AB68	287		
+xapple	func_0013B138	38	0013A740	-9f8
+xapple	func_0013B368	70	0013A970	-9f8
+xapple	func_0013B890	26	0013AE90	-a00
+xapple	func_0013B8F8	27	0013AEF8	-a00
+xapple	func_0013B968	15	0013AF68	-a00
+xapple	func_0013B9A8	4	0013AFA8	-a00
+xapple	func_0013BAC0	15		
+xapple	func_0013BB00	105	0013B100	-a00
+xapple	func_0013BCA8	55	0013B2A8	-a00
+xarcade	func_001090D8	53		
+xarcade	func_001091B0	10	001092A8	+f8
+xarcade	func_00109340	25	00109438	+f8
+xarcade	func_001093D8	25		
+xarcade	func_00109440	9	00109578	+138
+xarcade	func_001099D8	50	00109B28	+150
+xarcade	func_00109AA0	24	00109BF0	+150
+xarcade	func_00109B00	9	00109C50	+150
+xarcade	func_00109C50	17		
+xarcade	func_00109D68	31	00109EB0	+148
+xarcade	func_00109DE8	18	00109F30	+148
+xarcade	func_0010A040	21	0010A178	+138
+xarcade	func_0010A098	18	0010A1D0	+138
+xarcade	func_0010A0E0	9	0010A218	+138
+xarcade	func_0010A108	34	0010A240	+138
+xarcade	func_0010A190	26	0010A2C8	+138
+xaudacity	func_00128ED8	10	00128670	-868
+xaudacity	func_00128F00	4	00128698	-868
+xaudacity	func_00128F10	11	001286A8	-868
+xaudacity	func_00128F40	1		
+xaudacity	func_00128F48	1		
+xaudacity	func_00128F50	1		
+xaudacity	func_00128FA8	4	00128740	-868
+xaudacity	func_00128FE8	9	001287C0	-828
+xaudacity	func_00129010	9	001287E8	-828
+xaudacity	func_00129038	7	00128810	-828
+xaudacity	func_00129320	1		
+xaudacity	func_001296A8	1		
+xaudacity	func_00129840	1		
+xaudacity	func_0012AE00	9	0012A648	-7b8
+xaudacity	func_0012B0A8	11	0012A8F0	-7b8
+xaudacity	func_0012B0D8	4	0012A960	-778
+xaudacity	func_0012B0E8	4	0012A970	-778
+xaudacity	func_0012B120	11	0012A9A8	-778
+xaudacity	func_0012B150	8	0012A9D8	-778
+xaudacity	func_0012B170	12	0012A9F8	-778
+xaudacity	func_0012B1A0	4	0012AA28	-778
+xball	func_00120A38	8	00120898	-1a0
+xball	func_00120A58	7	001208B8	-1a0
+xball	func_00120A78	20	001208D8	-1a0
+xball	func_00120F48	11	00120D90	-1b8
+xball	func_00120F78	19		
+xball	func_00120FC8	141	00120E08	-1c0
+xball	func_00121480	17	001212C0	-1c0
+xball	func_001214C8	28	00121308	-1c0
+xball	func_001216A8	8	001214E0	-1c8
+xball	func_00121878	26		
+xball	func_00121970	14		
+xball	func_001219A8	23	001217D8	-1d0
+xbeginning	func_001000C8	8	001001D8	+110
+xbeginning	func_001000E8	11	001001F8	+110
+xbeginning	func_00100118	20	00100228	+110
+xbeginning	func_00100168	54		
+xbeginning	func_00100328	68	00100438	+110
+xbeginning	main	9	00100548	+110
+xbeginning	func_00100460	34	00100570	+110
+xbeginning	func_001004F0	24	00100600	+110
+xbeginning	func_00100648	17	00100758	+110
+xbeginning	func_00100690	13	001007A0	+110
+xbeginning	func_001006C8	12	001007D8	+110
+xbeginning	func_001007D0	3		
+xbeginning	func_001007E0	39	001008D8	+f8
+xbeginning	func_00100880	74	00100978	+f8
+xbeginning	func_001009A8	11	00100AA0	+f8
+xbeginning	func_001009D8	14	00100AD0	+f8
+xbeginning	func_00100C18	29	00100D08	+f0
+xbeginning	func_00100C90	29	00100D80	+f0
+xbeginning	func_00100D08	29	00100DF8	+f0
+xbeginning	func_00100D80	29	00100E70	+f0
+xbeginning	func_00100DF8	29	00100EE8	+f0
+xbeginning	func_001011B8	9	001012A8	+f0
+xbiscuit	func_001F0C30	86	001EDA20	-3210
+xbiscuit	func_001F0DD0	9	001EDBC0	-3210
+xbiscuit	func_001F0DF8	5		
+xbiscuit	func_001F0E38	4	001EDC28	-3210
+xbiscuit	func_001F0E48	4	001EDC38	-3210
+xbiscuit	func_001F0E68	3		
+xbiscuit	func_001F0E78	3		
+xbiscuit	func_001F0E88	3		
+xbiscuit	func_001F0EC0	11	001EDCB0	-3210
+xbiscuit	func_001F0F10	11	001EDD00	-3210
+xbiscuit	func_001F0F58	11	001EDD48	-3210
+xbiscuit	func_001F1070	8	001EDE60	-3210
+xbiscuit	func_001F1140	8	001EDF30	-3210
+xbiscuit	func_001F1160	8	001EDF50	-3210
+xbiscuit	func_001F1180	8	001EDF70	-3210
+xbiscuit	func_001F11A0	8	001EDF90	-3210
+xbiscuit	func_001F1278	6		
+xbiscuit	func_001F1290	6		
+xbiscuit	func_001F12A8	6		
+xbiscuit	func_001F12C0	11	001EE0B0	-3210
+xbiscuit	func_001F17C0	14		
+xbiscuit	func_001F17F8	14		
+xbiscuit	func_001F1830	14		
+xbiscuit	func_001F1868	14		
+xbiscuit	func_001F18A0	15	001EE6E0	-31c0
+xbiscuit	func_001F18E0	15	001EE720	-31c0
+xbiscuit	func_001F1920	15	001EE760	-31c0
+xbiscuit	func_001F1960	36	001EE7A0	-31c0
+xbiscuit	func_001F2888	32	001EF860	-3028
+xbiscuit	func_001F2DD8	17		
+xbiscuit	func_001F2E20	17		
+xbiscuit	func_001F2E68	17		
+xbiscuit	func_001F2EB0	18		
+xbiscuit	func_001F2EF8	18		
+xbiscuit	func_001F2F40	18		
+xbiscuit	func_001F3718	7	001F0EB0	-2868
+xblade	func_00112190	6	00112408	+278
+xblade	func_001121A8	7	00112420	+278
+xblade	func_001124E8	8	00112768	+280
+xblade	func_00112508	58	00112788	+280
+xblade	func_001125F0	16	00112870	+280
+xblade	func_00112630	23	001128B0	+280
+xblade	func_00112690	67	00112910	+280
+xblade	func_001127A0	16	00112A20	+280
+xblade	func_001127E0	11	00112A60	+280
+xblade	func_00112848	13	00112AC8	+280
+xblade	func_001128D8	6	00112B50	+278
+xblade	func_001129C8	11	00112C40	+278
+xblade	func_001129F8	22	00112C70	+278
+xblade	func_00112A50	34	00112CC8	+278
+xblade	func_00112AD8	33	00112D50	+278
+xblade	func_00112B60	1		
+xblade	func_00112B68	66	00112DE0	+278
+xblade	func_00112C70	8	00112EE8	+278
+xblade	func_00112C90	8	00112F08	+278
+xblade	func_00112CB0	7	00112F28	+278
+xblade	func_00112CD0	7	00112F48	+278
+xblade	func_001130F0	15	001133F8	+308
+xblade	func_00113130	15	00113438	+308
+xblade	func_001132A0	8	001135A8	+308
+xblade	func_001132C0	11	001135C8	+308
+xblade	func_001132F0	35	001135F8	+308
+xblade	func_00113380	24	00113688	+308
+xblade	func_001133E0	12	001136E8	+308
+xblade	func_00113618	18	00113920	+308
+xblade	func_001139F8	5		
+xblade	func_00113A10	11	00113D18	+308
+xblade	func_00113A40	45	00113D48	+308
+xblade	func_00113AF8	13	00113E00	+308
+xblade	func_00113B30	18	00113E38	+308
+xblade	func_00113B78	17	00113E80	+308
+xblade	func_00113BC0	31	00113EC8	+308
+xblade	func_00113C40	16	00113F48	+308
+xblade	func_00113C80	9	00113F88	+308
+xblade	func_00113CA8	4	00113FB0	+308
+xblade	func_00113E18	4	00114120	+308
+xblade	func_00113E28	3		
+xblade	func_00113E38	12	00114140	+308
+xblade	func_00114400	4	00114708	+308
+xblade	func_00114410	3		
+xblade	func_00114420	4	00114728	+308
+xblade	func_00114430	3		
+xblade	func_00114800	5		
+xblade	func_00114B18	13	00114E20	+308
+xblade	func_00114C18	15	00114F20	+308
+xblade	func_00114C58	15	00114F60	+308
+xblade	func_00114C98	15	00114FA0	+308
+xbuffalo	func_001C1838	3		
+xbuffalo	func_001C1848	3		
+xbuffalo	func_001C1858	3		
+xbuffalo	func_001C19E8	3	001BE550	-3498
+xbuffalo	func_001C2150	10	001BECD0	-3480
+xbuffalo	func_001C2178	15	001BECF8	-3480
+xcapy	func_00244490	136		
+xcapy	func_002446B0	32	00242818	-1e98
+xcapy	func_00244730	32	00242898	-1e98
+xcapy	func_002447B0	30	00242918	-1e98
+xcapy	func_00244828	11	00242990	-1e98
+xcapy	func_00244858	197		
+xcapy	func_00244B70	50		
+xcream	func_001274C0	14	00126CA8	-818
+xcream	func_00128D40	6	001284D8	-868
+xcream	func_00128DA0	7	00128538	-868
+xcream	func_00128E18	1		
+xcream	func_00128E20	1		
+xcursed	func_0022F578	124	0022D630	-1f48
+xcursed	func_0022F768	40	0022D820	-1f48
+xflamingo	func_001C36A8	54	001C0228	-3480
+xflamingo	func_001C38C0	8	001C0430	-3490
+xgoblin	func_0011EBC8	8	0011EC48	+80
+xgoblin	func_0011EBE8	58	0011EC68	+80
+xgoblin	func_0011ECD0	24	0011ED50	+80
+xgoblin	func_0011ED60	8	0011EDD8	+78
+xgoblin	func_0011ED80	20	0011EDF8	+78
+xgoblin	func_0011EE80	12	0011EEF8	+78
+xgoblin	func_0011EF58	62		
+xgoblin	func_0011F050	41	0011F0C8	+78
+xgoblin	func_0011F0F8	3	0011F170	+78
+xgoblin	func_0011F478	15	0011F4C8	+50
+xgoblin	func_0011F908	11	0011F970	+68
+xgoblin	func_0011F938	13	0011F9A0	+68
+xhumungus	func_001CC2C8	13	001C8B80	-3748
+xhumungus	func_001CC300	13	001C8BB8	-3748
+xhumungus	func_001CC520	3		
+xhumungus	func_001CC798	14	001C9050	-3748
+xhumungus	func_001CE188	5	001CAA28	-3760
+xhumungus	func_001CE738	8	001CAFD8	-3760
+xhumungus	func_001CE858	16	001CB0F0	-3768
+xhumungus	func_001CE898	13	001CB238	-3660
+xhumungus	func_001CE8D0	13	001CB270	-3660
+xhumungus	func_001CE908	8	001CB2A8	-3660
+xhumungus	func_001CE928	13	001CB2C8	-3660
+xhumungus	func_001CE9E0	14	001CB380	-3660
+xhumungus	func_001CEA18	13	001CB3B8	-3660
+xhumungus	func_001CEA50	14	001CB3F0	-3660
+xhumungus	func_001CEA88	13	001CB428	-3660
+xhumungus	func_001CEAC0	14	001CB460	-3660
+xhumungus	func_001CEAF8	14	001CB498	-3660
+xhumungus	func_001CEB30	13	001CB4D0	-3660
+xhumungus	func_001CEB68	13	001CB508	-3660
+xhumungus	func_001CEBA0	13	001CB540	-3660
+xhumungus	func_001CEBD8	8	001CB578	-3660
+xhumungus	func_001CEC68	12	001CB608	-3660
+xhumungus	func_001CED20	5	001CB6C0	-3660
+xhumungus	func_001CF1B0	2	001CBB40	-3670
+xhumungus	func_001CF1B8	12	001CBB48	-3670
+xhumungus	func_001CF250	2	001CBBE0	-3670
+xhumungus	func_001CF918	10	001CC2A8	-3670
+xhumungus	func_001D0970	14	001CD2E8	-3688
+xhumungus	func_001D0A08	14	001CD380	-3688
+xhumungus	func_001D14F0	8	001CDE58	-3698
+xhumungus	func_001D1938	8	001CE298	-36a0
+xhumungus	func_001D1958	7	001CE2B8	-36a0
+xhumungus	func_001D19A8	7	001CE308	-36a0
+xhumungus	func_001D1EE0	10		
+xhumungus	func_001D1F08	10		
+xhumungus	func_001D1F30	10		
+xhumungus	func_001D1F58	18	001CE8B8	-36a0
+xhumungus	func_001D1FA0	18	001CE900	-36a0
+xhumungus	func_001D1FE8	22	001CE948	-36a0
+xhumungus	func_001D2040	24	001CE9A0	-36a0
+xhumungus	func_001D20A0	24	001CEA00	-36a0
+xhumungus	func_001D2100	8	001CEA60	-36a0
+xhumungus	func_001D2120	14	001CEA80	-36a0
+xhumungus	func_001D2158	14	001CEAB8	-36a0
+xhumungus	func_001D2248	14	001CEBA8	-36a0
+xhumungus	func_001D2280	14	001CEBE0	-36a0
+xhumungus	func_001D2440	7	001CEDA0	-36a0
+xhumungus	func_001D2460	14	001CEDC0	-36a0
+xhumungus	func_001D2498	4	001CEDF8	-36a0
+xhumungus	func_001D24A8	18	001CEE08	-36a0
+xhumungus	func_001D24F0	18	001CEE50	-36a0
+xhumungus	func_001D2538	18	001CEE98	-36a0
+xhumungus	func_001D25D8	9	001CEF38	-36a0
+xhumungus	func_001D2DB8	14	001CF718	-36a0
+xhumungus	func_001D2DF0	15	001CF750	-36a0
+xhumungus	func_001D2E30	7	001CF790	-36a0
+xhumungus	func_001D2E50	8	001CF7B0	-36a0
+xhumungus	func_001D2E70	5	001CF7D0	-36a0
+xhumungus	func_001D2E88	4	001CF7E8	-36a0
+xhumungus	func_001D2E98	10	001CF7F8	-36a0
+xhumungus	func_001D2EC0	10	001CF820	-36a0
+xhumungus	func_001D2EE8	10	001CF848	-36a0
+xhumungus	func_001D2F10	10	001CF870	-36a0
+xhumungus	func_001D2F38	10	001CF898	-36a0
+xhumungus	func_001D3080	11	001CF9E0	-36a0
+xhumungus	func_001D3AF0	2	001D0450	-36a0
+xhumungus	func_001D3AF8	2	001D0458	-36a0
+xhumungus	func_001D3EF0	17	001D0880	-3670
+xhumungus	func_001D3F38	17	001D08C8	-3670
+xhumungus	func_001D3F80	17	001D0910	-3670
+xhumungus	func_001D3FC8	17	001D0910	-36b8
+xhumungus	func_001D4190	5	001D0AD8	-36b8
+xhumungus	func_001D4A98	13	001D1410	-3688
+xhumungus	func_001D4B38	13	001D14B0	-3688
+xhumungus	func_001D4B70	17	001D14E8	-3688
+xhumungus	func_001D4C30	19	001D15A8	-3688
+xhumungus	func_001D4C80	8	001D15F8	-3688
+xhumungus	func_001D4CA0	8	001D1618	-3688
+xhumungus	func_001D4CC0	16	001D1638	-3688
+xhumungus	func_001D4D00	17	001D1678	-3688
+xhumungus	func_001D4D48	17	001D16C0	-3688
+xhumungus	func_001D4D90	17	001D1708	-3688
+xhumungus	func_001D4DD8	17	001D1750	-3688
+xhumungus	func_001D4E88	13	001D1800	-3688
+xhumungus	func_001D4EE8	8	001D1860	-3688
+xhumungus	func_001D4FB0	17	001D1928	-3688
+xhumungus	func_001D4FF8	27	001D1970	-3688
+xhumungus	func_001D5128	12	001D1BF8	-3530
+xhumungus	func_001D5328	8	001D1DF8	-3530
+xhumungus	func_001D5528	17	001D1FF8	-3530
+xhumungus	func_001D5570	17	001D2040	-3530
+xhumungus	func_001D56A8	15	001D2178	-3530
+xhumungus	func_001D56E8	8	001D21B8	-3530
+xhumungus	func_001D5708	10	001D21D8	-3530
+xhumungus	func_001D59B8	15	001D2480	-3538
+xhumungus	func_001D6450	10	001D2F08	-3548
+xhumungus	func_001D66F8	11		
+xhumungus	func_001D68D8	17	001CC118,001CC160,001CC1A8,001CC1F0,001D0838,001D0880,001D08C8,001D0910,001D14E8,001D1678,001D16C0,001D1708,001D1750,001D1928,001D1FF8,001D2040,001D4358,001D43A0,001D4920,001D4A80,001D5318,001D5360,001D6910,001D6958,001D6C30,001D6C78,001D6CC0,001D6E28,001D6F00,001D6FE8,001D70D8,001D8318,001D83A8,001DA328,001E72E0	
+xhumungus	func_001D6920	17	001CC118,001CC160,001CC1A8,001CC1F0,001D0838,001D0880,001D08C8,001D0910,001D14E8,001D1678,001D16C0,001D1708,001D1750,001D1928,001D1FF8,001D2040,001D4358,001D43A0,001D4920,001D4A80,001D5318,001D5360,001D6910,001D6958,001D6C30,001D6C78,001D6CC0,001D6E28,001D6F00,001D6FE8,001D70D8,001D8318,001D83A8,001DA328,001E72E0	
+xhumungus	func_001D6CD8	9	001D3840	-3498
+xhumungus	func_001D6D00	9	001D3868	-3498
+xhumungus	func_001D6D28	9	001D3890	-3498
+xhumungus	func_001D6D50	9	001D38B8	-3498
+xhumungus	func_001D6D78	9	001D38E0	-3498
+xhumungus	func_001D6DA0	9	001D3908	-3498
+xhumungus	func_001D6DC8	9	001D3930	-3498
+xhumungus	func_001D6DF0	9	001D3958	-3498
+xhumungus	func_001D6EA8	17		
+xhumungus	func_001D7028	10	001D3B90	-3498
+xhumungus	func_001D7050	10	001D3BB8	-3498
+xhumungus	func_001D7078	10	001D3BE0	-3498
+xhumungus	func_001D70A0	10	001D3C08	-3498
+xhumungus	func_001D7770	10	001D42C0	-34b0
+xhumungus	func_001D7798	10	001D42E8	-34b0
+xhumungus	func_001D77C0	18	001D4310	-34b0
+xhumungus	func_001D7808	17	001D4358	-34b0
+xhumungus	func_001D7850	17	001D43A0	-34b0
+xhumungus	func_001D7898	16	001D43E8	-34b0
+xhumungus	func_001D78D8	16	001D4428	-34b0
+xhumungus	func_001D7918	10	001D4468	-34b0
+xhumungus	func_001D7998	18	001D44E8	-34b0
+xhumungus	func_001D79E0	18	001D4530	-34b0
+xhumungus	func_001D7A28	8	001D4578	-34b0
+xhumungus	func_001D7A48	8	001D4598	-34b0
+xhumungus	func_001D7DD0	17	001D4920	-34b0
+xhumungus	func_001D7E18	8	001D4A20	-33f8
+xhumungus	func_001D7E38	11	001D4990	-34a8
+xhumungus	func_001D7EC8	8	001D4A20	-34a8
+xhumungus	func_001D7EE8	8	001D4A40	-34a8
+xhumungus	func_001D7F08	8	001D4A60	-34a8
+xhumungus	func_001D7F28	17	001D4A80	-34a8
+xhumungus	func_001D7F70	8	001D4AC8	-34a8
+xhumungus	func_001D8020	18	001D4B78	-34a8
+xhumungus	func_001D8068	18	001D4BC0	-34a8
+xhumungus	func_001D80B0	18	001D4C08	-34a8
+xhumungus	func_001D80F8	18	001D4C50	-34a8
+xhumungus	func_001D8140	9	001D4C98	-34a8
+xhumungus	func_001D8168	8	001D4CC0	-34a8
+xhumungus	func_001D8188	21	001D4CE0	-34a8
+xhumungus	func_001D81E0	20	001D4D38	-34a8
+xhumungus	func_001D8230	8	001D4D88	-34a8
+xhumungus	func_001D8250	8	001D4DA8	-34a8
+xhumungus	func_001D8408	4	001D4F60	-34a8
+xhumungus	func_001D8418	5	001D4F70	-34a8
+xhumungus	func_001D8430	9	001D4F88	-34a8
+xhumungus	func_001D8458	13	001D4FB0	-34a8
+xhumungus	func_001D85C0	8	001D5118	-34a8
+xhumungus	func_001D85E0	7	001D5138	-34a8
+xhumungus	func_001D8600	8	001D5158	-34a8
+xhumungus	func_001D8620	7	001D5178	-34a8
+xhumungus	func_001D8640	8	001D5198	-34a8
+xhumungus	func_001D8660	7	001D51B8	-34a8
+xhumungus	func_001D8700	18	001D5258	-34a8
+xhumungus	func_001D8748	10	001D52A0	-34a8
+xhumungus	func_001D8770	4	001D52C8	-34a8
+xhumungus	func_001D8780	7	001D52D8	-34a8
+xhumungus	func_001D87A0	8	001D52F8	-34a8
+xhumungus	func_001D87C0	17	001D5318	-34a8
+xhumungus	func_001D8808	17	001D5360	-34a8
+xhumungus	func_001D8A30	5	001D5588	-34a8
+xhumungus	func_001D8DB8	12	001D5908	-34b0
+xhumungus	func_001D8F80	12	001D5AD0	-34b0
+xhumungus	func_001D9DD0	17	001D6910	-34c0
+xhumungus	func_001D9E18	17	001D6958	-34c0
+xhumungus	func_001D9E60	9	001D69A0	-34c0
+xhumungus	func_001D9E88	7	001D69C8	-34c0
+xhumungus	func_001D9F88	21	001D6AC8	-34c0
+xhumungus	func_001D9FE0	8	001D6B20	-34c0
+xhumungus	func_001DA000	24	001D6B40	-34c0
+xhumungus	func_001DA0F0	17	001D6C30	-34c0
+xhumungus	func_001DA138	17	001D6C78	-34c0
+xhumungus	func_001DA180	17	001D6CC0	-34c0
+xhumungus	func_001DA1C8	24	001D6D08	-34c0
+xhumungus	func_001DA228	24	001D6D68	-34c0
+xhumungus	func_001DA288	24	001D6DC8	-34c0
+xhumungus	func_001DA2E8	17	001D6E28	-34c0
+xhumungus	func_001DA330	8	001D6E70	-34c0
+xhumungus	func_001DA350	8	001D6E90	-34c0
+xhumungus	func_001DA370	8	001D6EB0	-34c0
+xhumungus	func_001DA390	11	001D6ED0	-34c0
+xhumungus	func_001DA3C0	17	001D6F00	-34c0
+xhumungus	func_001DA408	8	001D6F48	-34c0
+xhumungus	func_001DA428	11	001D6F68	-34c0
+xhumungus	func_001DA458	20	001D6F98	-34c0
+xhumungus	func_001DA4A8	17	001D6FE8	-34c0
+xhumungus	func_001DA4F0	20	001D7030	-34c0
+xhumungus	func_001DA540	21	001D7080	-34c0
+xhumungus	func_001DA598	17	001D70D8	-34c0
+xhumungus	func_001DA638	20	001D7178	-34c0
+xhumungus	func_001DA688	20	001D71C8	-34c0
+xhumungus	func_001DA6D8	17	001D7218	-34c0
+xhumungus	func_001DA720	8	001D7260	-34c0
+xhumungus	func_001DA740	8	001D7280	-34c0
+xhumungus	func_001DAF70	10	001D7A90	-34e0
+xhumungus	func_001DB078	8	001D7B98	-34e0
+xhumungus	func_001DB0C8	20	001D7BE8	-34e0
+xhumungus	func_001DB118	20	001D7C38	-34e0
+xhumungus	func_001DB168	11	001D7C88	-34e0
+xhumungus	func_001DB238	1		
+xhumungus	func_001DB618	16	001D80F8	-3520
+xhumungus	func_001DB658	8	001D8138	-3520
+xhumungus	func_001DB6C8	20	001D81A8	-3520
+xhumungus	func_001DB718	10	001D81F8	-3520
+xhumungus	func_001DB740	10	001D8220	-3520
+xhumungus	func_001DB810	10	001D82F0	-3520
+xhumungus	func_001DB838	17	001D8318	-3520
+xhumungus	func_001DB880	18	001D8360	-3520
+xhumungus	func_001DB8C8	17	001D83A8	-3520
+xhumungus	func_001DB970	7	001D8450	-3520
+xhumungus	func_001DB990	7	001D8470	-3520
+xhumungus	func_001DBA00	11	001D84E0	-3520
+xhumungus	func_001DBA30	10		
+xhumungus	func_001DC040	20	001D8B20	-3520
+xhumungus	func_001DC278	4	001D8D58	-3520
+xhumungus	func_001DC288	5	001D8D68	-3520
+xhumungus	func_001DC368	17	001D8E48	-3520
+xhumungus	func_001DC428	10		
+xhumungus	func_001DC450	10		
+xhumungus	func_001DC538	7	001D9018	-3520
+xhumungus	func_001DC558	26	001D9038	-3520
+xhumungus	func_001DC8A8	18	001D9388	-3520
+xhumungus	func_001DC8F0	8	001D93D0	-3520
+xhumungus	func_001DCE30	7	001D9910	-3520
+xhumungus	func_001DCE50	8	001D9930	-3520
+xhumungus	func_001DCE70	8	001D9950	-3520
+xhumungus	func_001DD370	7	001D9E50	-3520
+xhumungus	func_001DD390	8	001D9E70	-3520
+xhumungus	func_001DD3B0	8	001D9E90	-3520
+xhumungus	func_001DD3D0	8	001D9EB0	-3520
+xhumungus	func_001DD480	8	001D9F60	-3520
+xhumungus	func_001DD4A0	9	001D9F80	-3520
+xhumungus	func_001DD520	10	001DA000	-3520
+xhumungus	func_001DD548	7	001DA028	-3520
+xhumungus	func_001DD568	17	001DA048	-3520
+xhumungus	func_001DD5B0	17	001DA090	-3520
+xhumungus	func_001DD848	17	001DA328	-3520
+xhumungus	func_001DD990	8	001DA470	-3520
+xhumungus	func_001DD9B0	8	001DA490	-3520
+xhumungus	func_001DD9D0	17	001DA4B0	-3520
+xhumungus	func_001DDA78	10		
+xhumungus	func_001DDCB8	11	001DAAE0	-31d8
+xhumungus	func_001DE098	6	001DAEA0	-31f8
+xhumungus	func_001DE338	10	001DB158	-31e0
+xhumungus	func_001DE360	31	001DB180	-31e0
+xhumungus	func_001DE3E0	5		
+xhumungus	func_001DEDF8	19	001DBC08	-31f0
+xhumungus	func_001DEE48	12	001DBC58	-31f0
+xjockey	func_00248548	5	002466E8	-1e60
+xjockey	func_00248560	3		
+xjockey	func_00248570	3		
+xjockey	func_00248580	3		
+xjockey	func_00248590	3		
+xjockey	func_002485A0	10	00246740	-1e60
+xjockey	func_00248728	16	002468C8	-1e60
+xjockey	func_00248768	16	00246908	-1e60
+xjockey	func_002487A8	24	00246948	-1e60
+xjockey	func_00249AF0	3		
+xjockey	func_00249B00	3		
+xjockey	func_00249F78	3		
+xjockey	func_0024A000	3		
+xkinetic	func_001C2270	2	001BEDF0	-3480
+xkinetic	func_001C2278	8	001BEDF8	-3480
+xkinetic	func_001C22E8	2	001BEE68	-3480
+xkinetic	func_001C24B0	5	001BF030	-3480
+xkinetic	func_001C2578	74	001BF0F8	-3480
+xkinetic	func_001C26A8	20	001BF228	-3480
+xkinetic	func_001C27D8	11	001BF358	-3480
+xkinetic	func_001C2CA0	2	001BF820	-3480
+xkinetic	func_001C2CA8	2	001BF828	-3480
+xkinetic	func_001C2CB0	2	001BF830	-3480
+xkingdom	cdvd_GetFileDescriptor	3		
+xkingdom	func_0011FB78	7	0011FBE0	+68
+xkingdom	func_0011FB98	47	0011FC00	+68
+xkingdom	func_0011FD08	68	0011FD60	+58
+xkingdom	cdvd_FindFreeTask	25	0011FE70	+58
+xkingdom	cdvd_FreeTask	2	0011FED8	+58
+xkingdom	cdvd_Decompress	46	0011FEE0	+58
+xkingdom	cdvd_Hash	29	0011FF98	+58
+xkingdom	cdvd_Compare	7	00120010	+58
+xkingdom	cdvd_FindFile	15	00120030	+58
+xkingdom	func_00120018	60	00120070	+58
+xkingdom	cdvd_ReadImgFile	94		
+xkingdom	cdvd_TryLoadFile	26	00120160	-120
+xkingdom	func_001202E8	55		
+xkingdom	func_001203C8	27	00120270	-158
+xkingdom	func_00120590	43	00120438	-158
+xkingdom	func_00120640	35	001204E8	-158
+xkingdom	cdvd_Seek	22	00120578	-158
+xkingdom	func_00120728	9	001205D0	-158
+xkingdom	func_00120750	10	001205F8	-158
+xkingdom	cdvd_GetFileName	42	00120620	-158
+xkingdom	cdvd_TryLoadModule	17	001206C8	-158
+xkingdom	cdvd_StartModule	19		
+xkingdom	func_001208B8	12	00120718	-1a0
+xkingdom	func_001208E8	28	00120748	-1a0
+xkingdom	cdvd_Initialize	34	001207B8	-1a0
+xkingdom	func_001209E0	22	00120840	-1a0
+xlamp	func_00121DE0	9	0015E090,0015E188,00250B30,00252208	
+xlamp	func_00121FB8	29		
+xlamp	func_00122228	9	0015E090	+3be68
+xlamp	func_001222B0	25	0015E0B8	+3be08
+xlamp	func_00122318	16		
+xlamp	func_001224A0	6	00121D58	-748
+xlamp	func_001224B8	5	00121D70	-748
+xlamp	func_001224D0	17	00121D88	-748
+xlamp	func_00122518	28		
+xlamp	func_00122720	36		
+xlamp	func_001227B0	29	00122058	-758
+xmeowp	func_001F3A08	6	001F11A8	-2860
+xmeowp	func_001F3D50	13	001F14E8	-2868
+xmeowp	func_001F3D88	6	001F1520	-2868
+xmeowp	func_001F3DF0	13	001F1588	-2868
+xmeowp	func_001F3E28	11	001F15C0	-2868
+xmeowp	func_001F3E58	11	001F15F0	-2868
+xmeowp	func_001F3E88	16	001F1620	-2868
+xmeowp	func_001F3EC8	12		
+xmeowp	func_001F3F00	6		
+xmeowp	func_001F3F18	7		
+xmeowp	func_001F45D8	2	001F2578	-2060
+xmeowp	func_001F45E0	3		
+xmeowp	func_001F45F0	18	001F1D88	-2868
+xmeowp	func_001F4640	8		
+xmeowp	func_001F4668	2	001F1E38	-2830
+xmeowp	func_001F4670	6	001F1E40	-2830
+xmeowp	func_001F4690	17	001F1E60	-2830
+xmeowp	func_001F46D8	2	001F1EA8	-2830
+xmeowp	func_001F46E0	6	001F1EB0	-2830
+xmeowp	func_001F4700	17	001F1ED0	-2830
+xmeowp	func_001F47F0	7	001F1FC0	-2830
+xmeowp	func_001F4810	17	001F1FE0	-2830
+xmeowp	func_001F4858	6		
+xmeowp	func_001F4878	2		
+xmeowp	func_001F4880	2		
+xmeowp	func_001F4888	2	001F20A8	-27e0
+xnoodle	func_0010AE98	7	0010AFC8	+130
+xnoodle	func_0010AF38	26	0010B060	+128
+xnoodle	func_0010AFA0	23	0010B0C8	+128
+xnoodle	func_0010B000	51		
+xnoodle	func_0010BB10	15	0010BBE8	+d8
+xnoodle	func_0010BDA8	12	0010BE68	+c0
+xnoodle	func_0010BDD8	13	0010BE98	+c0
+xnoodle	func_0010BE10	19	0010BED0	+c0
+xnoodle	func_0010BEE8	7	0010BFA8	+c0
+xnoodle	func_0010C158	19	0010C218	+c0
+xnoodle	func_0010C1D0	29	0010C290	+c0
+xnoodle	func_0010C248	35	0010C308	+c0
+xowl	func_00122828	39		
+xowl	func_00122B70	2	00122408	-768
+xowl	func_00122FF0	11	00122878	-778
+xpackage	func_00247778	10	00245918	-1e60
+xpackage	func_00247AA0	15	00245C40	-1e60
+xpackage	func_00247D88	1		
+xpackage	func_00247E68	11	00246008	-1e60
+xpackage	func_00247E98	11	00246038	-1e60
+xpackage	func_00247EC8	11	00246068	-1e60
+xpackage	func_00247EF8	11	00246098	-1e60
+xpackage	func_00247F28	11	002460C8	-1e60
+xpackage	func_00247F58	11	002460F8	-1e60
+xpackage	func_00247F88	11	00246128	-1e60
+xpackage	func_00247FB8	11	00246158	-1e60
+xpackage	func_002480A8	6	00246248	-1e60
+xpackage	func_002480C0	6	00246260	-1e60
+xpackage	func_002480D8	6	00246278	-1e60
+xpackage	func_002480F0	6	00246290	-1e60
+xpackage	func_00248108	6	002462A8	-1e60
+xpackage	func_00248120	6	002462C0	-1e60
+xpackage	func_00248138	6	002462D8	-1e60
+xpackage	func_00248150	6	002462F0	-1e60
+xpackage	func_002481B0	6	00246350	-1e60
+xpackage	func_002481C8	6	00246368	-1e60
+xpackage	func_002481E0	6	00246380	-1e60
+xpackage	func_002481F8	6	00246398	-1e60
+xpackage	func_00248210	6	002463B0	-1e60
+xpackage	func_00248228	6	002463C8	-1e60
+xpackage	func_00248240	6	002463E0	-1e60
+xpackage	func_00248258	6	002463F8	-1e60
+xpackage	func_00248300	5	002464A0	-1e60
+xpackage	func_002484F8	14	00246698	-1e60
+xpackage	func_00248530	5	002466D0	-1e60
+xpancake	func_001061D8	12	00106348	+170
+xpancake	func_001064E8	3		
+xpancake	func_001064F8	31		
+xpancake	func_00106578	37		
+xpancake	func_00106610	31		
+xpancake	func_00106690	33		
+xpancake	func_00106718	3		
+xpancake	func_00106728	3		
+xpancake	func_00106738	21		
+xpancake	func_00106790	37		
+xpancake	func_00106828	21		
+xpancake	func_00106880	49		
+xpaste	func_0011C440	27		
+xpaste	func_0011C4B0	36		
+xpaste	func_0011C540	22	0011C5C0	+80
+xpaste	func_0011C598	3		
+xpaste	func_0011C5A8	3		
+xpaste	func_0011C5B8	4	0011C638	+80
+xpaste	func_0011C5C8	3		
+xpeanut	func_00125010	30	00124908	-708
+xpeanut	func_00125088	9	00124980	-708
+xpeanut	func_001250B0	7	001249A8	-708
+xpeanut	func_001250D0	11	001249C8	-708
+xpeanut	func_00125100	44	001249F8	-708
+xpeanut	func_00125558	39	00124E40	-718
+xporcupine	func_001014A8	31	00101598	+f0
+xporcupine	func_00101528	14	00101618	+f0
+xporcupine	func_00101560	8	00101650	+f0
+xporcupine	func_00101580	42	00101670	+f0
+xporcupine	func_00101628	36	00101718	+f0
+xpotato	func_00215A88	25	002135D8	-24b0
+xpotato	func_00215C48	39		
+xpotato	func_00216758	18		
+xpotato	func_00217038	29		
+xpotato	func_00217810	11		
+xpotato	func_00217840	21	002153B0	-2490
+xpotato	func_00217898	14	00215408	-2490
+xpotato	func_002178D0	13		
+xpotato	func_00218648	27		
+xpotato	func_00218840	11		
+xpotato	func_002189D0	10	00216540	-2490
+xpotato	func_00218A00	3		
+xpotato	func_00218A10	10	00216580	-2490
+xpotato	func_00218B48	4	002166B8	-2490
+xpotato	func_00218B58	5	002166C8	-2490
+xpotato	func_00218B70	4	002166E0	-2490
+xpotato	func_00218B80	4	002166F0	-2490
+xpotato	func_00218B90	5	00216700	-2490
+xpotato	func_00218BA8	4	00216718	-2490
+xpotato	func_00218BB8	4	00216728	-2490
+xpotato	func_00218BC8	5	00216738	-2490
+xpotato	func_00218BE0	4	00216750	-2490
+xpotato	func_00218BF0	2	00216760	-2490
+xpotato	func_00218BF8	2	00216768	-2490
+xpotato	func_00218C00	1		
+xpotato	func_00218C08	4	00216778	-2490
+xpotato	func_00218C18	5	00216788	-2490
+xpotato	func_00218C30	4	002167A0	-2490
+xpotato	func_00218C40	4	002167B0	-2490
+xpotato	func_00218C50	5	002167C0	-2490
+xpotato	func_00218C68	4	002167D8	-2490
+xpotato	func_00218C78	4	002167E8	-2490
+xpotato	func_00218C88	5	002167F8	-2490
+xpotato	func_00218CA0	4	00216810	-2490
+xpotato	func_00218D08	11	00216878	-2490
+xpotato	func_00218D38	38	002168A8	-2490
+xquack	func_001ED878	3		
+xquack	func_001EDA60	21	001EAA90	-2fd0
+xquack	func_001EDAB8	21	001EAAE8	-2fd0
+xquack	func_001EDB10	21	001EAB40	-2fd0
+xquack	func_001EDB68	21	001EAB98	-2fd0
+xquack	func_001EDF28	23	001EAF58	-2fd0
+xquack	func_001EDF88	28	001EAFB8	-2fd0
+xquack	func_001EE068	9	001EB098	-2fd0
+xquack	func_001EE090	9	001EB0C0	-2fd0
+xquack	func_001EE188	22	001EB1B8	-2fd0
+xquack	func_001EE1E0	17	001EB210	-2fd0
+xquack	func_001EE228	22	001EB258	-2fd0
+xquack	func_001EE280	22	001EB2B0	-2fd0
+xquack	func_001EE2D8	22	001EB308	-2fd0
+xquack	func_001EE330	24	001EB360	-2fd0
+xquack	func_001EE390	18	001EB3C0	-2fd0
+xquack	func_001EE3D8	19	001EB408	-2fd0
+xquack	func_001EE428	20	001EB458	-2fd0
+xquack	func_001EE478	20	001EB4A8	-2fd0
+xquack	func_001EE4C8	19	001EB4F8	-2fd0
+xquack	func_001EE518	22	001EB548	-2fd0
+xquack	func_001EE570	25	001EB5A0	-2fd0
+xquack	func_001EE5D8	16	001EB608	-2fd0
+xquack	func_001EE618	18	001EB648	-2fd0
+xquack	func_001EE660	22	001EB690	-2fd0
+xquack	func_001EE6B8	22	001EB6E8	-2fd0
+xquack	func_001EE710	22	001EB740	-2fd0
+xquack	func_001EE768	16	001EB798	-2fd0
+xquack	func_001EE7A8	18	001EB7D8	-2fd0
+xquack	func_001EE7F0	18	001EB820	-2fd0
+xquack	func_001EE838	22	001EB868	-2fd0
+xquack	func_001EE890	19	001EB8C0	-2fd0
+xquack	func_001EE8E0	17	001EB910	-2fd0
+xquack	func_001EE928	21	001EB958	-2fd0
+xquack	func_001EE980	22	001EB9B0	-2fd0
+xquack	func_001EE9D8	21	001EBA08	-2fd0
+xquack	func_001EEA98	21	001EBAC8	-2fd0
+xquack	func_001EEAF0	22	001EBB20	-2fd0
+xquack	func_001EEBA8	22	001EBBD8	-2fd0
+xquack	func_001EEC00	22	001EBC30	-2fd0
+xsauce	func_0010E580	96	0010E6F0	+170
+xsauce	func_0010E700	75	0010E870	+170
+xsauce	func_0010E830	14	0010E9A0	+170
+xsauce	func_0010E868	14	0010E9D8	+170
+xsauce	func_0010EEC8	13	0010F068	+1a0
+xsauce	func_0010F380	13	0010F4F0	+170
+xsauce	func_0010F3B8	6		
+xtailor	func_0010F3D0	10	0010F550	+180
+xtailor	func_0010F3F8	10	0010F578	+180
+xtailor	func_0010F420	10	0010F5A0	+180
+xtailor	func_0010F448	24		
+xtailor	func_0010F4A8	145		
+xtailor	func_0010F6F0	6	0010F870	+180
+xtailor	func_0010F708	6	0010F888	+180
+xtailor	func_0010F720	18	0010F8A0	+180
+xtailor	func_0010FA88	24	0010FC08	+180
+xtailor	func_0010FAE8	19	0010FC68	+180
+xtailor	func_0010FB68	9	0010FCE8	+180
+xtailor	func_0010FCD0	3		
+xtailor	func_0010FCE0	4	0010FE60	+180
+xtailor	func_0010FD40	30		
+xtailor	func_0010FE10	10	0010FF88	+178
+xtailor	func_0010FE38	15		
+xtailor	func_00110150	8	00110300	+1b0
+xtailor	func_00110170	7	00110320	+1b0
+xtailor	func_001102A0	7	00110460	+1c0
+xtailor	func_001109A8	33	00110B48	+1a0
+xtailor	func_00110A30	43	00110BD0	+1a0
+xtailor	func_00110C40	12	00110DD8	+198
+xtailor	func_00110DE0	13	00110F68	+188
+xtailor	func_00110E18	7		
+xtailor	func_00110E38	16	00110FC0	+188
+xtailor	func_00110EE8	7	00111070	+188
+xtailor	func_00110F08	7	00111090	+188
+xtailor	func_00110F28	7	001110B0	+188
+xtailor	func_00110F48	7	001110D0	+188
+xtailor	func_00110F68	7	001110F0	+188
+xtailor	func_00110F88	7	00111110	+188
+xtailor	func_00110FA8	7	00111130	+188
+xtailor	func_00111050	20	001111D8	+188
+xtango	func_001EF298	13	001EC280	-3018
+xtango	func_001EF2D0	12	001EC2B8	-3018
+xtango	func_001EF300	12	001EC2E8	-3018
+xtango	func_001EF3D0	13	001EC3B8	-3018
+xtango	func_001EF408	15	001EC3F0	-3018
+xtango	func_001EF448	15	001EC430	-3018
+xtango	func_001EF810	12	001EC598	-3278
+xtango	func_001EF840	13	001EC5C8	-3278
+xtango	func_001EF878	33	001EC600	-3278
+xtango	func_001EF938	9	001EC6C0	-3278
+xtango	func_001EF960	13	001EC6E8	-3278
+xtango	func_001EF9C8	5	001EC750	-3278
+xtango	func_001EF9E0	14		
+xtango	func_001EFA18	12		
+xtango	func_001EFA48	8	001EC7D8	-3270
+xtango	func_001EFA68	8	001EC7F8	-3270
+xtango	func_001EFA88	8	001EC818	-3270
+xtango	func_001EFAA8	8	001EC838	-3270
+xtango	func_001EFAC8	8	001EC858	-3270
+xtango	func_001EFAE8	8	001EC878	-3270
+xtango	func_001EFB08	9	001EC898	-3270
+xtango	func_001EFBB0	35	001EC940	-3270
+xtango	func_001EFC98	9	001ECA88	-3210
+xtango	func_001EFCC0	8	001ECAB0	-3210
+xtango	func_001EFDA0	12	001ECB90	-3210
+xtango	func_001EFDD0	5	001ECBC0	-3210
+xtango	func_001EFDE8	5	001ECBD8	-3210
+xtango	func_001EFE00	25	001ECBF0	-3210
+xtango	func_001EFE68	10		
+xtango	func_001EFE90	10		
+xtango	func_001EFEB8	10		
+xtango	func_001EFEE0	10		
+xtango	func_001F0530	8	001ED320	-3210
+xtango	func_001F0550	19	001ED340	-3210
+xtango	func_001F0600	19	001ED3F0	-3210
+xtango	func_001F0650	12	001ED440	-3210
+xtango	func_001F0808	5	001ED5F8	-3210
+xtango	func_001F0820	15		
+xtango	func_001F0860	15		
+xtango	func_001F08A0	14	001ED690	-3210
+xtango	func_001F08D8	14	001ED6C8	-3210
+xtango	func_001F0A58	9	001ED848	-3210
+xtango	func_001F0A80	4	001ED870	-3210
+xtango	func_001F0A90	14	001ED880	-3210
+xtango	func_001F0AD0	14	001ED8C0	-3210
+xtango	func_001F0BD8	20	001ED9C8	-3210
+xtango	func_001F0C28	1		
+xtoaster	func_00123340	3	00122BE8	-758
+xtrumpet	func_001110A0	12	00111228	+188
+xtrumpet	func_001110D0	34	00111258	+188
+xtrumpet	func_001113E8	8	00111580	+198
+xtrumpet	func_00111580	8	00111718	+198
+xtrumpet	func_001115A0	6	00111738	+198
+xtrumpet	func_001115C0	8	00111758	+198
+xtrumpet	func_001115E8	19	00111780	+198
+xtrumpet	func_001116A8	3		
+xtrumpet	func_001116B8	4	00111850	+198
+xtrumpet	func_001116C8	11	00111860	+198
+xtrumpet	func_001116F8	56	00111890	+198
+xtrumpet	func_001117D8	77	00111970	+198
+xtrumpet	func_00111910	3		
+xtrumpet	func_00111BD8	6	00111E98	+2c0
+xtrumpet	func_00111BF0	5		
+xtrumpet	func_00111C08	6	00111EC8	+2c0
+xtrumpet	func_00111C20	6		
+xtrumpet	func_00111C38	5		
+xtrumpet	func_00111C50	3		
+xtrumpet	func_00111C60	13	00111F28	+2c8
+xtrumpet	func_00111F00	9	00112178	+278
+xtrumpet	func_00111F28	1		
+xtrumpet	func_00111F30	1		
+xtrumpet	func_00111F38	1		
+xturtle	func_0011C5D8	5	0011C658	+80
+xturtle	func_0011C5F0	5	0011C670	+80
+xturtle	func_0011C608	5	0011C688	+80
+xturtle	func_0011C620	5	0011C6A0	+80
+xturtle	func_0011C638	5	0011C6B8	+80
+xturtle	func_0011C650	5	0011C6D0	+80
+xturtle	func_0011C668	5	0011C6E8	+80
+xturtle	func_0011C680	5	0011C700	+80
+xturtle	func_0011C698	5	0011C718	+80
+xturtle	func_0011C6B0	5	0011C730	+80
+xturtle	func_0011C6C8	66	0011C748	+80
+xturtle	func_0011C7D0	3		
+xturtle	func_0011C7E0	4	0011C860	+80
+xturtle	func_0011C7F0	41	0011C870	+80
+xturtle	func_0011C9B0	8	0011CA30	+80
+xturtle	func_0011C9D0	16	0011CA50	+80
+xturtle	func_0011CDB8	8	0011CE38	+80
+xturtle	func_0011CDD8	31	0011CE58	+80
+xturtle	func_0011CEB0	22	0011CF30	+80
+xturtle	func_0011CF08	12	0011CF88	+80
+xturtle	func_0011CF38	14	0011CFB8	+80
+xturtle	func_0011CF70	14	0011CFF0	+80
+xturtle	func_0011CFA8	12	0011D028	+80
+xturtle	func_0011CFD8	14	0011D058	+80
+xturtle	func_0011D010	11	0011D090	+80
+xturtle	func_0011D040	11	0011D0C0	+80
+xturtle	func_0011D070	11	0011D0F0	+80
+xturtle	func_0011D0A0	11	0011D120	+80
+xturtle	func_0011D0D0	11	0011D150	+80
+xturtle	func_0011D598	10	0011D618	+80
+xturtle	func_0011D5C0	12	0011D640	+80
+xturtle	func_0011D5F0	8	0011D670	+80
+xturtle	func_0011D978	18	0011D9F0	+78
+xturtle	func_0011D9C8	33	0011DA40	+78
+xturtle	func_0011E048	10	0011E0C0	+78
+xturtle	func_0011E168	9	0011E1E0	+78
+xturtle	func_0011E2A8	19	0011E320	+78
+xturtle	func_0011E2F8	18	0011E370	+78
+xturtle	func_0011E340	4	0011E3B8	+78
+xturtle	func_0011E350	3		
+xturtle	func_0011E418	5	0011C658,0011C670,0011C688,0011C6A0,0011C6B8,0011C6D0,0011C6E8,0011C700,0011C718,0011C730,00121D70,0014F978,001517C8,00161358,001614E0,00167800,00167818,00174970,00175278,00175290,001752A8,001752C0,001752D8,001752F0,00175308,00175320,00175338,00175350,001755C0,00175608,00175800,0017E778,00189628,00189738,00189858,001B89D0,001B91B0,001B9580,001BCD00,001E1B18,001E2230,001EC508,001EC520,001EC538,001EC550,001EC750,001ECBC0,001ECBD8,001ED5F8,001F60D8,00209940,002166C8,00216700,00216738,00216788,002167C0,002167F8,00218020,0021AB30,002278E8,0022C598,0022C5B0,00231A38,00238B10,002445B0,00244988,002464A0,002466D0,002522D0,002662F0,00266308,00266320,00266338,00266350,00266368,00266380,00266398,002663B0	
+xturtle	func_0011E5E8	11	0011E668	+80
+xturtle	func_0011E6C0	11	0011E740	+80
+xturtle	func_0011E7C8	11	0011E848	+80
+xturtle	func_0011E7F8	14	0011E878	+80
+xturtle	func_0011E830	11	0011E8B0	+80
+xturtle	func_0011E9A8	31	0011EA28	+80
