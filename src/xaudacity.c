@@ -306,8 +306,11 @@ void fm_func_00129330(void) {
 #endif
 
 #ifdef VERSION_FM
-void func_00129320(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129320);
+void func_00121878(void*, s32);
+
+void func_00129320(XAudArg* arg0) {
+    func_00121878(arg0[0].p, arg0[1].s);
+}
 #else
 void func_00129320(void) {
 }
