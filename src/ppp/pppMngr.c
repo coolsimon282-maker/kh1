@@ -2,6 +2,8 @@
 #include "ppp.h"
 #include "ppp/draw.h"
 
+extern s32 D_00370200;
+
 extern void func_0011D1F8(s32, s32, s32);
 
 typedef struct {
@@ -215,7 +217,18 @@ s32* func_00181B38(s32* arg0, s32 arg1) {
     return p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181BA8);
+void func_00181BA8(s32* arg0) {
+    s32* p;
+    s32 n;
+    s32 i;
+
+    func_00181B38(arg0, (s32)arg0);
+    p = dpd_h_skip_version(arg0);
+    n = *p++;
+    for (i = 0; i < n; i++) {
+        func_001843E0(*p++, &D_00370200);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181C20);
 
