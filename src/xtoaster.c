@@ -123,7 +123,19 @@ s32 func_001233F8(XToaster* arg0) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123430);
+void func_00123430(XToaster* arg0, XToaster* arg1, s32 arg2) {
+    XToaster* p = NULL;
+    arg0->unk_074 = arg1;
+    arg0->unk_078 = arg2;
+    while ((p = func_001234A0(p)) != NULL) {
+        p->unk_080 = 0;
+    }
+    while ((p = func_001234A0(p)) != NULL) {
+        if (p->unk_074 != NULL) {
+            p->unk_074->unk_080++;
+        }
+    }
+}
 
 XToaster* func_001234A0(XToaster* p) {
     if (p == NULL) {
