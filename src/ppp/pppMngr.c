@@ -85,7 +85,9 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001817E8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetUp);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_h_skip_version);
+s32* dpd_h_skip_version(s32* p) {
+    return p + 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_h_skip_datainfo);
 
