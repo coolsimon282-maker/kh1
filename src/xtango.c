@@ -59,6 +59,22 @@ typedef struct {
 } XTangoUnkE4b; // size = 0xE4
 
 extern XTangoUnkE4b D_003E3D70[];
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x19];
+    /* 0x19 */ u8 unk_19[0x19];
+    /* 0x32 */ u8 unk_32;
+    /* 0x33 */ char unk_33[0xD];
+    /* 0x40 */ u8 unk_40[48];
+    /* 0x70 */ char unk_70[4];
+} XTangoChar; // size = 0x74
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ XTangoChar chars[1];
+} XTangoParty;
+
+void func_00141B10(s32, s32*);
 s32 func_001F0960(s32);
 extern s32 D_003E3D20[];
 extern u32 D_003E3D48[];
@@ -446,7 +462,16 @@ s32 func_001EFF08(void) {
     return func_001496C8()->unk_30;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFF28);
+s32 func_001EFF28(s32 arg0, u8 arg1) {
+    s32 buf[60];
+    XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
+    u8 save = chr->unk_32;
+
+    chr->unk_32 = arg1;
+    func_00141B10(arg0, buf);
+    chr->unk_32 = save;
+    return buf[19];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFF90);
 
