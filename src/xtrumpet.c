@@ -451,7 +451,35 @@ typedef struct {
 
 extern XTrumpetUnk9288 D_004D9288;
 
+#ifdef VERSION_FM
+u32 fm_func_00111BE8(u32);
+
+// splits a frame count into hours/minutes/seconds/hundredths (the fm_func_00111B08 helpers take it in a0)
+void func_00111C98(s32 which, s32 t) {
+    u32 hours, minutes, seconds, fraction;
+
+    if (t < 0) {
+        t = 0;
+    }
+    hours = ((u32 (*)(s32))fm_func_00111B10)(t);
+    minutes = ((u32 (*)(s32))fm_func_00111B48)(t);
+    seconds = ((u32 (*)(s32))fm_func_00111B90)(t);
+    fraction = fm_func_00111BE8(t);
+    if (which == 0) {
+        D_004D9288.time[0][0] = fraction;
+        D_004D9288.time[0][1] = seconds;
+        D_004D9288.time[0][2] = minutes;
+        D_004D9288.time[0][3] = hours;
+    } else {
+        D_004D9288.time[1][0] = fraction;
+        D_004D9288.time[1][1] = seconds;
+        D_004D9288.time[1][2] = minutes;
+        D_004D9288.time[1][3] = hours;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C98);
+#endif
 
 
 extern s32 D_004D9260;
