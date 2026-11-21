@@ -222,7 +222,15 @@ u32 fm_func_00111B48(void) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B90);
+u32 fm_func_00111B90(void) {
+    u32 t = fm_func_00111B08();
+    u32 hours = t / 216000;
+    u32 rest = t % 216000;
+    u32 minutes = rest / 3600;
+
+    rest = rest % 3600;
+    return rest / 60;
+}
 #endif
 
 #ifdef VERSION_FM
