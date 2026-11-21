@@ -38,7 +38,15 @@ void func_001C36A8(Script* arg0, s32 arg1) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xflamingo", fm_func_001C1DF8);
+extern s32 D_003F34A4;
+
+s32 fm_func_001C1DF8(void) {
+    if (D_003F34A4 == 1) {
+        return 0;
+    }
+    D_003854E0.unk_3078 &= ~0x1000;
+    return 4;
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xflamingo", func_001C3780);
