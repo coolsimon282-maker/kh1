@@ -1016,7 +1016,13 @@ INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_001144C8);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001145B0);
+s32 func_001145B0(XBladeHdr* arg0) {
+    s32* offset = &arg0->unk_18;
+
+    if (arg0->unk_00 >= 2) {
+        func_001089D0((u8*)arg0 + *offset);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_001145E8);
 
