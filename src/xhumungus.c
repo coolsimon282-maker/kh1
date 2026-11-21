@@ -830,7 +830,10 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23D8);
 
 #ifdef VERSION_FM
 void func_001D2440(void);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2440);
+void func_001D2440(void) {
+    D_003854E0.unk_3078 &= ~0x2000;
+    func_F20000(0, 0);
+}
 #else
 void func_001D2440(void) {
     func_F20000(0, 0);
