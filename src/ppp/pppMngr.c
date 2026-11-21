@@ -356,7 +356,15 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAllFreePObject);
 //     }
 // }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183E78);
+void func_00183E78(PppMngU* arg0) {
+    if (arg0->unk_94 != 0) {
+        *(s32*)(arg0->unk_94 + 0x14) &= ~1;
+        *(s32*)(arg0->unk_94 + 0x14) |= 2;
+    }
+    if (arg0->usef & 1) {
+        arg0->usef = (arg0->usef & ~1) | 2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EC8);
 
