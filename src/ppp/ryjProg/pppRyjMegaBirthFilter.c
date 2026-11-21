@@ -55,7 +55,17 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A5500)
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A5548);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A55A8);
+s32 func_001A55A8(VRyjMegaBirthFilter* v, u8* arg1) {
+    if (v->pvParticleData == NULL) {
+        return FALSE;
+    }
+    if (arg1[0xF2] != 0) {
+        if (v->pvParticleColor == NULL) {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A55D8);
 

@@ -32,6 +32,7 @@ options:
   - config/fm/symbol_addrs.txt
   - config/fm/lib_symbol_addrs.txt
   - config/fm/jp_names.txt
+  - config/fm/fm_names.txt
 
   create_undefined_funcs_auto: True
   undefined_funcs_auto_path: config/fm/undefined_funcs_auto.txt

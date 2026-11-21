@@ -7,6 +7,14 @@
 #include "libvu0.h"
 #include "sdk/libcdvd.h"
 
+extern u64 D_002BC918;
+extern s32 D_002BC980;
+
+extern s32 D_002BBD48[];
+extern s32 D_002BBD90[];
+
+extern s32 D_004D6B20[];
+
 extern s32 D_002A30D0;
 extern s32 D_002B8170;
 extern s32 D_002B8240;
@@ -153,7 +161,16 @@ void func_0010F720(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F768);
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FA30);
+void func_0010FA30(s32* arg0) {
+    s32* p = arg0 + 4;
+    s32 i;
+
+    for (i = 0; i < 17; i++) {
+        D_002BBD48[i] = (s32)arg0 + p[0];
+        D_002BBD90[i] = p[1];
+        p += 2;
+    }
+}
 
 void func_0010FA88(void) {
     void* src = func_00155ED8(0x34, 0xC);
@@ -168,7 +185,12 @@ void func_0010FAE8(void) {
     memcpy(&D_004D0590, src, size);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB38);
+void* func_0010FB38(s32 arg0, s32 arg1) {
+    u8* p = (u8*)&D_004D0590 + D_004D6B20[arg0 * 2];
+    s32* q = (s32*)(p + 0x10);
+
+    return p + q[arg1 * 2];
+}
 
 void* func_0010FB68(void) {
     return func_0010FB38(D_002B8678, D_002B8680);
@@ -195,7 +217,11 @@ void func_0010FD40(s16 w, s16 h) {
     sceGsPutDispEnv(&D_004D2610);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FDB8);
+void func_0010FDB8(s32 arg0) {
+    D_002BC918 = SCE_GS_SET_RGBAQ(arg0, arg0, arg0, 0x80, 1);
+    func_00106948(&D_002BC980);
+    func_0010FD40(0x200, 0x1BF);
+}
 
 void func_0010FE10(u32* x, u32* y) {
     *x = D_004D2610.display.DX;
@@ -208,7 +234,11 @@ void func_0010FE38(void) {
     sceGsPutDispEnv(&D_004D2610);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FE78);
+void func_0010FE78(s32 x, s32 y) {
+    D_004D2610.display.DX = x;
+    D_004D2610.display.DY = y;
+    D_004D284C = 1;
+}
 
 #ifdef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_00110068);
@@ -217,7 +247,11 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_00110068);
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_001101E8);
+void fm_func_001101E8(void) {
+    sceGsResetGraph(0, 1, 2, 0);
+    func_001102A0();
+    func_0010FEC0();
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110038);
@@ -302,9 +336,18 @@ s32 func_00110E38(s32 arg0) {
     return func_00120590("dkmovie.x", &func_F20000, func_00110DE0, NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110E78);
+void func_00110E78(void) {
+    func_00113A40(2);
+    func_001EEC00(0x7B);
+    func_F20000(1, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110EA8);
+s32 func_00110EA8(void) {
+    if (D_002B9030 == 0) {
+        return 0;
+    }
+    return func_F20000(2, 0);
+}
 
 #ifndef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);

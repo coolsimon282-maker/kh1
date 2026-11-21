@@ -33,6 +33,8 @@ extern s32 D_002B8678;
 
 XTrumpet* D_002B90B0;
 
+extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of XTrumpet.unk_6C
+
 extern s32 D_002B916C;
 extern s32 D_002B9170;
 extern s32 D_002B9174;
@@ -80,15 +82,45 @@ INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111298);
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111328);
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_001113A8);
+// XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
+typedef struct {
+    f32 x, y, z, w;
+} XTrumpetVec;
+
+void func_001113A8(s32 index, f32* out) {
+    out[0] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->x;
+    out[1] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->y;
+    out[2] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->z;
+    out[3] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->w;
+}
 
 void func_001113E8(void) {
     func_001809C8(&D_002B90B0->unk_4C);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111408);
+void func_00111408(s32 arg0, s32 arg1, s32 arg2) {
+    s32 i;
+    s32 ofs;
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111468);
+    if (arg0 == 20) {
+        return;
+    }
+    ofs = 0;
+    for (i = 0; i < arg0; i++) {
+        ofs += D_002BCB68[i];
+    }
+    D_002B90B0->unk_6C[ofs + arg1] = arg2;
+}
+
+s8 func_00111468(s32 arg0, s32 arg1) {
+    s32 i;
+    s32 ofs = 0;
+
+    for (i = 0; i < arg0; i++) {
+        ofs += D_002BCB68[i];
+    }
+    return D_002B90B0->unk_6C[ofs + arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_001114B8);
 
@@ -198,19 +230,39 @@ void func_001117D8(void) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B08);
+u32 fm_func_00111B08(arg0)
+u32 arg0;
+{
+    return arg0;
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B10);
+u32 fm_func_00111B10(void) {
+    return fm_func_00111B08() / 216000;
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B48);
+u32 fm_func_00111B48(void) {
+    u32 t = fm_func_00111B08();
+    u32 hours = t / 216000;
+    u32 rest = t % 216000;
+
+    return rest / 3600;
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B90);
+u32 fm_func_00111B90(void) {
+    u32 t = fm_func_00111B08();
+    u32 hours = t / 216000;
+    u32 rest = t % 216000;
+    u32 minutes = rest / 3600;
+
+    rest = rest % 3600;
+    return rest / 60;
+}
 #endif
 
 #ifdef VERSION_FM

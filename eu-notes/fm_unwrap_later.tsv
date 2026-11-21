@@ -1,0 +1,12 @@
+xarcade	func_00109C50
+xpancake	func_001064F8
+xpancake	func_00106578
+xpancake	func_00106610
+xpancake	func_00106690
+xpancake	func_00106738
+xpancake	func_00106790
+xpancake	func_00106828
+xpancake	func_00106880
+ppp/eiProg/pppChrSclXZMatrix	pppChrSclXZMatrixCalc
+ppp/eiProg/pppChrYSclXYZMatrix	pppChrYSclXYZMatrixCalc
+ppp/stdProg/pppGetRotMatrixZ	pppGetRotMatrixZ

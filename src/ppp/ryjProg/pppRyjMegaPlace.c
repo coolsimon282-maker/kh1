@@ -17,9 +17,26 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", func_001A0460);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", func_001A07A8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", pppRyjMegaPlaceDraw);
+void pppRyjMegaPlaceDraw(pppPObject* pobj, s32 param, pppCtrlTable* ctbl) {
+    VRyjMegaPlace* v = (VRyjMegaPlace*)&pobj->val[ctbl->useVal[0]];
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", pppRyjMegaPlaceCon);
+    func_001A0140(v);
+    func_001A0460(v);
+    func_001A07A8(v);
+}
+
+void pppRyjMegaPlaceCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    void** v = (void**)&pobj->val[ctbl->useVal[0]];
+
+    v[2] = NULL;
+    v[1] = NULL;
+    v[0] = NULL;
+    v[5] = NULL;
+    v[4] = NULL;
+    v[3] = NULL;
+    ppvMng->unk_B3 = 1;
+    ppvMng->drawPriority = 1;
+}
 
 void pppRyjMegaPlaceDes(pppPObject* pobj, pppCtrlTable* ctbl) {
     VRyjMegaPlace* v = (VRyjMegaPlace*)&pobj->val[ctbl->useVal[0]];

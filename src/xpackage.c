@@ -14,7 +14,24 @@ void func_00247778(s32 arg0, XWhiskey* arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_002477A8);
+typedef struct {
+    /* 0x00 */ s32 unk_00[4];
+    /* 0x10 */ u8 unk_10[0x50];
+    /* 0x60 */ u64 unk_60;
+} XPackageUnk77A8;
+
+void func_00247128(XPackageUnk77A8* arg0, s32* arg1);
+
+void func_002477A8(XPackageUnk77A8* arg0, s32* arg1) {
+    if ((arg0->unk_60 & 0x14) == 0x14) {
+        func_00247128(arg0, arg1);
+        return;
+    }
+    arg1[0] = arg0->unk_00[0];
+    arg1[1] = arg0->unk_00[1];
+    arg1[2] = arg0->unk_00[2];
+    arg1[3] = arg0->unk_00[3];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247808);
 
@@ -30,17 +47,74 @@ void func_00247AA0(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247AE0);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247B60);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xC0];
+} XPackageUnk7B60Entry; // size = 0xC0
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BA8);
+typedef struct {
+    /* 0x0 */ s32 unk_0;
+    /* 0x4 */ s32 unk_4;
+    /* 0x8 */ s32 unk_8; // offset of the entries from the start of this header
+} XPackageUnk7B60Hdr;
+
+// arg0: list of entry indices ended by -1; arg1 gets each entry's address
+void func_00247B60(s32* arg0, s32* arg1, XPackageUnk7B60Hdr* arg2) {
+    XPackageUnk7B60Entry* base = (XPackageUnk7B60Entry*)((u8*)arg2 + arg2->unk_8);
+
+    while (*arg0 != -1) {
+        *arg1 = (s32)&base[*arg0];
+        arg0++;
+        arg1++;
+    }
+}
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x20];
+    /* 0x20 */ s32 unk_20[4][4];
+} XPackageUnk7BA8;
+
+void func_00247BA8(XPackageUnk7BA8* arg0, s32* arg1) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            arg0->unk_20[i][j] = arg1[j];
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BF8);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247C68);
+// arg0: a type byte, a 32-bit little-endian size, then the data
+s32 func_00247C68(u8* arg0, void* arg1, s32* arg2) {
+    s32 size = arg0[1] + (arg0[2] << 8) + (arg0[3] << 16) + (arg0[4] << 24);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247CD8);
+    memcpy(arg1, arg0 + 5, size);
+    *arg2 = size;
+    return size;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D18);
+extern void (*D_00469FC8[])(u8* arg0, s32 arg1, s32* arg2);
+
+s32 func_00247CD8(s32 arg0, u8* arg1) {
+    s32 ret;
+
+    D_00469FC8[*arg1](arg1, arg0, &ret);
+    return ret;
+}
+
+extern char D_00491878[]; // FM address names; probably the file name and message of an assert
+extern char D_00491880[];
+
+void func_00247D88();
+
+s32 func_00247D18(u8* arg0) {
+    if (arg0[0] != 1) {
+        func_00247D88(D_00491878, D_00491880, 0x3F);
+    }
+    return arg0[1] + (arg0[2] << 8) + (arg0[3] << 16) + (arg0[4] << 24);
+}
 
 void func_00247D88(void) {
 }
@@ -161,7 +235,9 @@ void func_00248300() {
     func_0024AB00();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248318);
+s32 func_00248318(s32 arg0) {
+    return ((arg0 << 5) + arg0 * 0x10320 + 0x5E7) & ~0x3F;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248340);
 

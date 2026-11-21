@@ -30,6 +30,14 @@ s32 D_0048ECDC;
 s32 D_0048ECE0;
 u_long128* D_0048ED00;
 
+extern volatile s32 D_00495258;
+
+typedef struct {
+    /* 0x0 */ void (*unk_0)(IOReadTask*);
+    /* 0x4 */ IOReadTask* unk_4;
+    /* 0x8 */ s32 unk_8;
+} XNoodleSlot; // size = 0xC
+
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A1F8);
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A270);
@@ -67,10 +75,6 @@ void func_0010AFA0(sceVu0FMATRIX arg0, XNoodle* arg1) {
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
 
-#ifdef VERSION_FM
-void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2);
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B000);
-#else
 void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0FMATRIX m;
 
@@ -86,7 +90,6 @@ void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0MulMatrix(m, D_0048EC10, m);
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B0D0);
 
@@ -127,9 +130,33 @@ void func_0010BEE8(void) {
     WaitSema(D_0048ECE0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BF08);
+void func_0010BF08(void (*arg0)(IOReadTask*), IOReadTask* arg1) {
+    XNoodleSlot* slot = (XNoodleSlot*)D_002B3AF0;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BF50);
+    for (i = 0; i < 2; i++, slot++) {
+        if (slot->unk_0 == 0) {
+            slot->unk_0 = arg0;
+            slot->unk_4 = arg1;
+            slot->unk_8 = 0;
+            return;
+        }
+    }
+}
+
+void func_0010BF50(void (*arg0)(IOReadTask*)) {
+    XNoodleSlot* slot = (XNoodleSlot*)D_002B3AF0;
+    s32 i;
+
+    for (i = 0; i < 2; i++, slot++) {
+        if (arg0 == slot->unk_0) {
+            slot->unk_0 = 0;
+            slot->unk_4 = 0;
+            slot->unk_8 = 0;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BF98);
 
@@ -137,7 +164,10 @@ INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BFD8);
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C010);
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C0E0);
+void func_0010C0E0(void) {
+    SignalSema(D_0048ECE0);
+    WaitSema(D_00495258);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C110);
 

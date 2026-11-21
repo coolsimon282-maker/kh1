@@ -1,5 +1,15 @@
 #include "common.h"
 
+extern sceVu0FVECTOR D_002C5C60;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[0x38];
+} XOwlEnt;
+
+extern XOwlEnt D_002C5C80[];
+
 typedef struct {
     /* 0x00 */ char unk_0x00[0x10];
     /* 0x10 */ sceVu0FVECTOR* unk_10;
@@ -15,10 +25,6 @@ extern f32 D_002B8340[];
 s32 D_004FA670;
 s32 D_004FA680;
 
-#ifdef VERSION_FM
-s32 func_00122828(XHoot* arg0);
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122828);
-#else
 s32 func_00122828(XHoot* arg0) {
     s32 uVar1;
     f32 fVar2;
@@ -39,7 +45,6 @@ s32 func_00122828(XHoot* arg0) {
     sceVu0InterVector(arg0->unk_10[3], &arg0->unk_20, &arg0->unk_30, r);
     return uVar1;
 }
-#endif
 
 // Nonmatch: Preprocessor is adding nops unintentionally
 INCLUDE_ASM("asm/nonmatchings/xowl", func_001228C8);
@@ -61,7 +66,21 @@ INCLUDE_ASM("asm/nonmatchings/xowl", func_001228C8);
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122988);
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122AF8);
+XOwlEnt* func_00122AF8(s32 arg0, s32 arg1, s32 arg2) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
+
+    for (i = 0; i < 31; i++, p++) {
+        if (p->unk_00 == 0) {
+            p->unk_00 = arg0;
+            p->unk_04 = arg1;
+            *(s32*)((u8*)p + 8) = arg2;
+            sceVu0CopyVector((f32*)((u8*)p + 0x30), D_002C5C60);
+            return p;
+        }
+    }
+    return NULL;
+}
 
 void func_00122B70(s32* arg0) {
     *arg0 = 0;
@@ -77,10 +96,38 @@ void func_00122FF0(void) {
     func_0011EDD0(&D_004FA670, &D_004FA680, 0x50, 8);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00123020);
+void func_00123020(void) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00123088);
+    for (i = 30; i >= 0; i--) {
+        if (p->unk_00 != 0 && (p->unk_04 & 8)) {
+            func_00122B70((s32*)p);
+        }
+        p++;
+    }
+    func_00122FF0();
+}
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_001230D0);
+void func_00123088(void) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
+
+    for (i = 30; i >= 0; i--) {
+        if (p->unk_00 != 0 && (p->unk_04 & 8)) {
+            p->unk_04 |= 0x10;
+        }
+        p++;
+    }
+}
+
+void func_001230D0(void) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
+
+    for (i = 0; i < 31; i++, p++) {
+        p->unk_04 &= ~0x10;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00123108);
