@@ -234,7 +234,18 @@ s32 func_00123A80(s32 arg0, s32 arg1) {
     return func_00123880(arg0)->unk_000 & (1 << arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123AB8);
+void func_00123AB8(XToaster* arg0) {
+    if (!((XT_FLAGS(arg0) >> 39) & 1)) {
+        if (arg0->unk_154 != 0) {
+            func_00162110(arg0->unk_154, &arg0->unk_158[4]);
+            if (arg0->unk_14C != 0) {
+                func_00149860(arg0);
+            }
+            arg0->unk_154 = 0;
+            arg0->unk_134 = NULL;
+        }
+    }
+}
 
 void func_00123B20(XToaster* arg0) {
     func_00123AB8(arg0);
