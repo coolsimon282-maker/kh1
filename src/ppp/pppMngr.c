@@ -394,7 +394,25 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDeletePObject);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAllFreePObject);
+void pppAllFreePObject(ppvmng* pMng) {
+    pppPObject* pObj = pMng->unk_74;
+    pppPObject* next;
+
+    if (pObj != NULL) {
+        do {
+            next = pObj->next;
+            pppDeletePObject(pObj);
+            pObj = next;
+        } while (pObj != NULL);
+    }
+
+    pMng->unk_74 = NULL;
+
+    if (pMng->unk_80 != 0) {
+        pppFree(ppvEnv, pMng->unk_80);
+        pMng->unk_80 = 0;
+    }
+}
 // void pppAllFreePObject(ppvmng* pMng) {
 //     pppPObject* pObj = pMng->unk_74;
 
