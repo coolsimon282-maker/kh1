@@ -63,7 +63,11 @@ void func_0011ECD0(void) {
     D_002C1EA0 ^= 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011ED30);
+void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void));
+
+void* func_0011ED30(s32 arg0, s32 (*func)(void)) {
+    return func_0011EEB8(&D_004DD188, arg0, func);
+}
 
 void func_0011ED60(s32 arg0) {
     func_0011F108(&D_004DD188, arg0);
