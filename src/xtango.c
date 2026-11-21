@@ -5,6 +5,8 @@
 #include "xpotato.h"
 #include "xcursed.h"
 
+#include "string.h"
+
 typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u8 unk_02;
@@ -50,6 +52,11 @@ void fm_func_00111B10(void);
 void fm_func_00111B48(void);
 void fm_func_00111B90(void);
 void fm_func_00111BE8(void);
+extern u16 D_003E3CD0[];
+void func_001EDC50(void*);
+void func_001EDCD8(f32);
+u32 func_00147808(u16);
+
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF210);
 u32 func_001EF210(); // temporary for following functions, changes signature to unsigned
@@ -149,7 +156,13 @@ void func_001EF878(void) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF900);
+void func_001EF900(void) {
+    u8 buf[16];
+
+    memset(buf, 0, sizeof(buf));
+    func_001EDC50(buf);
+    func_001EDCD8(0.0f);
+}
 
 s32 func_001EF938(s32 arg0) {
     return func_001F0EF0(D_003DE5F0[arg0]);
@@ -166,7 +179,6 @@ XScotch* func_001EF9C8(s32 arg0) {
 }
 
 #ifdef VERSION_FM
-u32 func_001EF9E0(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF9E0);
 #else
 u32 func_001EF9E0(s32 arg0) {
@@ -179,7 +191,6 @@ u32 func_001EF9E0(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-u32 func_001EFA18(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFA18);
 #else
 u32 func_001EFA18(s32 arg0) {
