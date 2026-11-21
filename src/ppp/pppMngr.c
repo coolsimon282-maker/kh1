@@ -267,7 +267,18 @@ void func_00182938(ppvmng* arg0) {
     func_0024EDF0(m, arg0->pEtc);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182980);
+s32 func_00182980(void) {
+    PppMngU* p = D_00364130;
+    s32 i;
+    s32 sum = 0;
+
+    for (i = 0; i < 0x100; i++, p++) {
+        if ((p->usef & 1) && !(p->usef & 4)) {
+            sum += *(s32*)((u8*)p->pEtc + 0xF0);
+        }
+    }
+    return sum;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001829D0);
 
