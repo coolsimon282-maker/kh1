@@ -18,7 +18,16 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA7C0);
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA868);
 
 typedef struct DrawNode {
-    /* 0x0 */ struct DrawNode* next;
+    /* 0x00 */ struct DrawNode* next;
+    /* 0x04 */ struct DrawNode* prev;
+    /* 0x08 */ u8 pad8[0x28];
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ u8 pad34[0xA];
+    /* 0x3E */ u16 flags;
+    /* 0x40 */ f32 unk_40[4];
+    /* 0x50 */ u8 pad50[0xC];
+    /* 0x5C */ s32 unk_5C;
+    /* 0x60 */ f32 unk_60[4];
 } DrawNode;
 
 typedef struct {
@@ -77,7 +86,58 @@ void func_001AA9C8(DrawNodeList* list, DrawNodeList* freeList) {
     list->unk_0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAA30);
+typedef struct {
+    /* 0x0 */ DrawNode* first;
+    /* 0x4 */ u8 flags;
+} DrawNodeHead;
+
+typedef struct {
+    /* 0x0 */ DrawNode* node;
+    /* 0x4 */ u8 count;
+} DrawNodeInit;
+
+void func_001AA7C0(DrawNodeInit*);
+void func_001AB0F0(f32*, f32*);
+
+// pool is a DrawNodeList*; the variable is reused for the flags (that's what gives the register use)
+void func_001AAA30(DrawNodeHead* head, s32 pool, f32* arg2, f32* arg3) {
+    DrawNodeInit init;
+    DrawNode* node;
+    u8 bits;
+
+    node = func_001AA940((DrawNodeList*)pool);
+    if (node == NULL) {
+        return;
+    }
+    init.count = ((u8*)pool)[1];
+    init.node = node;
+    func_001AA7C0(&init);
+    node->unk_5C = 0;
+    node->unk_30 = 0;
+    bits = head->flags;
+    pool = 0x100;
+    if (bits & 4) {
+        pool = 0x180;
+    }
+    if (bits & 0x10) {
+        pool |= 0x200;
+    }
+    if (bits & 8) {
+        pool |= 0x400;
+    }
+    if (bits & 0x20) {
+        pool |= 0x1000;
+    }
+    node->flags |= pool;
+    func_001AB0F0(node->unk_40, arg2);
+    func_001AB0F0(node->unk_60, arg3);
+    if (head->first != NULL) {
+        head->first->prev = node;
+    }
+    node->next = head->first;
+    node->prev = (DrawNode*)head;
+    head->first = node;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAB28);
 
