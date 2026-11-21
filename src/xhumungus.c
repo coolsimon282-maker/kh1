@@ -2389,7 +2389,9 @@ s32 func_001DD5B0(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD5F8);
+s32 func_001DD5F8(void) {
+    return ((s32)(*(u64*)&D_0038CD00[2] >> 8) & 1) ? 4 : 2;
+}
 
 // Nonmatch: Regswap
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD620);
