@@ -2680,7 +2680,13 @@ s32 func_001DB218(void) {
 void func_001DB238(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB240);
+extern void (*D_0037733C)(s32, void (*)(void));
+
+s32 func_001DB240(Script* arg0) {
+    D_0037733C(arg0->unk_174[arg0->unk_174[3] + 4], func_001DB238);
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 extern void (*D_00377340)(s32);
 
