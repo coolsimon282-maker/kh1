@@ -88,8 +88,10 @@ INCLUDE_ASM("...", fm_func_X);
 * **xhumungus Script stack** (see notes/a1.md): `unk_174[3]` is the top index, `unk_174[top + 4]` the value.
 * **Fast experiments**: compile a test file straight in your WSL mirror with the FM flags (piped through
   masps2.py) to try many variants in seconds; the command is in notes/a4.md.
-* **Skip for now**: float functions where the target has no `nop` after `mfc1`, `c.le.s`/`c.lt.s` or an
-  `mtc1` before a float op (masps2.py always adds one); see eu-notes/fm_followups.md.
+* **Float functions are matchable now**: FM was assembled without the `nop`s masps2.py used to add after
+  `mfc1`, `c.le.s`/`c.lt.s` and `mtc1`; the FM build no longer adds them (since 21 Nov 23:40). Functions given
+  up earlier for that reason are worth a retry. Run `wsl -e bash ./agent-tools.sh configure` once in a
+  checkout that was set up before then.
 * **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
   FM-address name (`D_00xxxxxx`) for globals it doesn't list.
 * **Scratch files**: the scratchpad folder is shared between agents; use your own subfolder in it.

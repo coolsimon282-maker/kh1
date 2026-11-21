@@ -37,7 +37,8 @@ GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_IN
 
 GAME_AS_CMD = f"{GAME_CC_DIR}/ee/bin/as {COMMON_COMPILE_FLAGS} -EL -mabi=eabi"
 # pipefail: without it a C compile error is hidden by the pipe and a half-written .s gets assembled
-GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
+# $maspsenv: MASPS2_NO_NOPS=1 for Final Mix, which was assembled without masps2's hazard nops
+GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | $maspsenv {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
 
 PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_AS_CMD}"
 
@@ -170,6 +171,7 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
     ninja.variable("verdef", f"-DVERSION_{paths.version.upper()}")
+    ninja.variable("maspsenv", "MASPS2_NO_NOPS=1" if paths.version == "fm" else "")
 
     # Rules
     ld_args = " ".join(

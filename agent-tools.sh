@@ -2,6 +2,7 @@
 # Helpers for agents matching functions (Final Mix). Run from the checkout's root folder, from Windows:
 #   wsl -e bash ./agent-tools.sh <command> ...
 #
+#   configure                re-split and build from scratch (once per checkout after tool changes)
 #   build                    build FM; the last line must be "build/fm/SLPS_251.98.rom: OK"
 #   list <file>              assembly functions left in src/<file>.c, smallest first (size in bytes, name)
 #   asm <file> <func>        the function's assembly
@@ -9,6 +10,8 @@
 #   diff <func> [lines]      build, then compare the function with the original (default 120 lines)
 cd "$(dirname "$0")"
 case "$1" in
+  configure)
+    bash wsl-build.sh python3 configure.py -c -v fm 2>&1 | grep -iE 'error|duplicate' ; bash wsl-build.sh ninja 2>&1 | tail -1 ;;
   build)
     bash wsl-build.sh ninja 2>&1 | grep -vE '^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX' | tail -25 ;;
   list)

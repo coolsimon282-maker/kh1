@@ -503,14 +503,9 @@ s32 func_0013B9B8();
 //     D_0053260C = (s32*)(arg2 + arg0 + 0x7fU & 0xffffff80);
 // }
 
-#ifdef VERSION_FM
-f32 func_0013BAC0(void);
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013BAC0);
-#else
 f32 func_0013BAC0(void) {
     return (D_002DEC00->unk_6C->unk_48 + ((s32)(D_002DED20 >> 0xA) & 7)) * 3000;
 }
-#endif
 
 void* func_0013BB00(s32 arg0, s32 arg1) {
     char something[0x20];
