@@ -217,7 +217,11 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_00110068);
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_001101E8);
+void fm_func_001101E8(void) {
+    sceGsResetGraph(0, 1, 2, 0);
+    func_001102A0();
+    func_0010FEC0();
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110038);
