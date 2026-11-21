@@ -160,7 +160,20 @@ s32* dpd_h_skip_datainfo(s32* p, s32 n) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181A58);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181B38);
+s32* func_00181B38(s32* arg0, s32 arg1) {
+    s32* p = dpd_h_skip_version(arg0);
+    s32 i;
+    s32 j;
+    s32 n;
+
+    for (i = 0; i < 5; i++) {
+        n = *p++;
+        for (j = 0; j < n; j++) {
+            *p++ += arg1;
+        }
+    }
+    return p;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181BA8);
 
