@@ -33,6 +33,11 @@ extern s32 D_002B8678;
 
 XTrumpet* D_002B90B0;
 
+// XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
+typedef struct {
+    f32 x, y, z, w;
+} XTrumpetVec;
+
 extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of XTrumpet.unk_6C
 
 extern s32 D_002B916C;
@@ -43,6 +48,18 @@ extern s32 D_004D29D0;
 extern s32 D_004D2998;
 extern s32 D_004D29AC;
 extern s32 D_004D29C4;
+
+extern s32 D_002B8680;
+extern s32 D_002B8684;
+extern s32 D_002B92F8;
+
+extern void* D_002E26A0[];
+
+void func_00111158(void*, s32);
+void func_00111198(void);
+void func_00111210(s32);
+void func_00111298(void);
+void func_00111C98(s32, s32);
 
 void func_001110A0(void) {
     D_002B90B0 = func_0022F768(3);
@@ -76,16 +93,36 @@ INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111158);
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111198);
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111210);
+// 64-byte entries (four vectors); entry vectors 2 and 3 go to XTrumpet vectors 1 and 2
+typedef struct {
+    /* 0x00 */ XTrumpetVec v[4];
+} XTrumpetVecSet;
+
+extern XTrumpetVecSet* D_002BCDA0;
+
+// XTrumpet seen with its four vectors as an array
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ XTrumpetVec vec[4];
+} XTrumpetVecs;
+
+void func_00111210(s32 index) {
+    s32 i;
+
+    if (D_002E26A0[0] != NULL) {
+        func_00111158(D_002E26A0[0], 0);
+    }
+    for (i = 0; i < 2; i++) {
+        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].x = D_002BCDA0[index].v[i + 2].x;
+        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].y = D_002BCDA0[index].v[i + 2].y;
+        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].z = D_002BCDA0[index].v[i + 2].z;
+        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].w = D_002BCDA0[index].v[i + 2].w;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111298);
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111328);
-
-// XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
-typedef struct {
-    f32 x, y, z, w;
-} XTrumpetVec;
 
 void func_001113A8(s32 index, f32* out) {
     out[0] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->x;
@@ -151,10 +188,6 @@ void func_001115E8(void) {
     func_001BC048();
     func_001110D0();
 }
-
-extern s32 D_002B8680;
-extern s32 D_002B8684;
-extern s32 D_002B92F8;
 
 void func_00111638(void) {
     s32 value;
