@@ -55,6 +55,7 @@ extern UNK_PTR D_00624970;
 extern void func_F20000();
 
 extern u32 D_0038CD00[];
+extern u32* D_002C6440;
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C8470);
 
@@ -598,7 +599,10 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1BD8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C10);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C48);
+s32 func_001D1C48(void) {
+    D_002C6440[1] |= 4;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C68);
 
