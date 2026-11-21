@@ -308,7 +308,12 @@ void func_00110E78(void) {
     func_F20000(1, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110EA8);
+s32 func_00110EA8(void) {
+    if (D_002B9030 == 0) {
+        return 0;
+    }
+    return func_F20000(2, 0);
+}
 
 #ifndef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);
