@@ -80,7 +80,17 @@ INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111298);
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111328);
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_001113A8);
+// XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
+typedef struct {
+    f32 x, y, z, w;
+} XTrumpetVec;
+
+void func_001113A8(s32 index, f32* out) {
+    out[0] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->x;
+    out[1] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->y;
+    out[2] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->z;
+    out[3] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->w;
+}
 
 void func_001113E8(void) {
     func_001809C8(&D_002B90B0->unk_4C);
