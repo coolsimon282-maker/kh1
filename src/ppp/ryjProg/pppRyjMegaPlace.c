@@ -17,7 +17,13 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", func_001A0460);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", func_001A07A8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", pppRyjMegaPlaceDraw);
+void pppRyjMegaPlaceDraw(pppPObject* pobj, s32 param, pppCtrlTable* ctbl) {
+    VRyjMegaPlace* v = (VRyjMegaPlace*)&pobj->val[ctbl->useVal[0]];
+
+    func_001A0140(v);
+    func_001A0460(v);
+    func_001A07A8(v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", pppRyjMegaPlaceCon);
 
