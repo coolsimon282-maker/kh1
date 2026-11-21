@@ -421,7 +421,12 @@ void func_00112CF0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D48);
+void func_00112D48(s32 i, sceVu0FVECTOR dst) {
+    dst[0] = D_004D92F0[i][0];
+    dst[1] = D_004D92F0[i][1];
+    dst[2] = D_004D92F0[i][2];
+    dst[3] = D_004D92F0[i][3];
+}
 
 s32 func_00112D88(void) {
     s32 i;
