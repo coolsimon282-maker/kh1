@@ -2,4 +2,6 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandDownInt", pppRandDownIntCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandDownInt", func_00189500);
+f32 func_00189500(f32 a, f32 b) {
+    return a * b - a;
+}
