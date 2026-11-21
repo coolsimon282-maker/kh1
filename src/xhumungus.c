@@ -96,6 +96,8 @@ extern f32 D_0038CDDC;
 extern f32 D_002A6200;
 extern f32* D_002E26A0[];
 extern u32 D_002BCA00[];
+extern f32* D_002E26A0[];
+extern u32 D_002BCA00[];
 extern s32 D_002BC090;
 extern s32 D_002BC094;
 extern s32 D_003F76B8;
@@ -1381,7 +1383,14 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5CE8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5D58);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5DC8);
+s32 func_001D5DC8(Script* arg0) {
+    f32* q = D_002E26A0[arg0->unk_174[arg0->unk_174[3] + 4]];
+
+    if (q != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = q[4];
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5E08);
 
