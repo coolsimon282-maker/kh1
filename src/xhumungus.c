@@ -500,7 +500,28 @@ void func_001CEC98(void) {
     D_003DABD0[1] = func_00155ED8(0x38, 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CECE0);
+typedef struct {
+    /* 0x000 */ u8 unk_000[0x180];
+    /* 0x180 */ s32 top;
+    /* 0x184 */ s32 stack[92];
+    /* 0x2F4 */ f32 unk_2F4;
+    /* 0x2F8 */ u8 unk_2F8[0x30];
+    /* 0x328 */ u64 unk_328_0 : 2;
+    u64 unk_328_2 : 1;
+    u64 unk_328_3 : 11;
+    u64 unk_328_14 : 1;
+    u64 unk_328_15 : 49;
+    /* 0x330 */ f32 unk_330;
+} ScriptX;
+
+s32 func_001CECE0(Script* arg0) {
+    ScriptX* x = (ScriptX*)arg0;
+
+    x->unk_328_2 = 1;
+    x->unk_2F4 = x->stack[x->top] * 2.0f;
+    x->top--;
+    return 6;
+}
 
 s32 func_001CED20(Script* arg0) {
     arg0->unk_174[3]--;
