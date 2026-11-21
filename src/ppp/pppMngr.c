@@ -393,7 +393,16 @@ void func_001839F0(PppFuncList* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183A60);
+void func_00183A60(PppFuncList* arg0) {
+    s32 i;
+
+    for (i = 0; i < arg0->num; i++) {
+        void (*f)(void*) = *(void (**)(void*))((u8*)arg0->ents[i] + 0x18);
+        if (f != NULL) {
+            f(arg0);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183AD0);
 
