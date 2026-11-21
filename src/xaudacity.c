@@ -15,6 +15,8 @@ extern s32 func_00147A10(s32);
 typedef struct XAud6C {
     /* 0x00 */ char unk_00[0xBD];
     /* 0xBD */ u8 unk_BD;
+    /* 0xBE */ char unk_BE[0xE];
+    /* 0xCC */ f32 unk_CC;
 } XAud6C;
 
 typedef struct XAud130 {
@@ -44,29 +46,91 @@ typedef struct XAud398 {
     /* 0x04 */ s32 unk_04;
 } XAud398;
 
+typedef struct XAud370Bits {
+    u64 unk_00 : 35;
+    u64 unk_35 : 1;
+    u64 unk_36 : 1;
+    u64 unk_37 : 2;
+    u64 unk_39 : 12;
+    u64 unk_51 : 1;
+    u64 unk_52 : 1;
+    u64 unk_53 : 1;
+    u64 unk_54 : 1;
+    u64 unk_55 : 9;
+} XAud370Bits;
+
+typedef union XAud370 {
+    u64 raw;
+    XAud370Bits b;
+} XAud370;
+
 typedef struct XAudObj {
-    /* 0x000 */ char unk_000[0x2C];
+    /* 0x000 */ char unk_000[0x10];
+    /* 0x010 */ f32 unk_010[4];
+    /* 0x020 */ char unk_020[0xC];
     /* 0x02C */ struct XAudObj* unk_02C;
     /* 0x030 */ char unk_030[0x3C];
     /* 0x06C */ XAud6C* unk_06C;
-    /* 0x070 */ char unk_070[0xC0];
+    /* 0x070 */ char unk_070[0x18];
+    /* 0x088 */ s32 unk_088;
+    /* 0x08C */ char unk_08C[0x94];
+    /* 0x120 */ f32 unk_120[4];
     /* 0x130 */ XAud130* unk_130;
     /* 0x134 */ char unk_134[0x18];
     /* 0x14C */ XAud14C* unk_14C;
-    /* 0x150 */ char unk_150[0x7C];
+    /* 0x150 */ f32 unk_150;
+    /* 0x154 */ char unk_154[0x10];
+    /* 0x164 */ s32 unk_164;
+    /* 0x168 */ char unk_168[0x10];
+    /* 0x178 */ s32 unk_178;
+    /* 0x17C */ char unk_17C[0x50];
     /* 0x1CC */ s32 unk_1CC;
-    /* 0x1D0 */ char unk_1D0[0xB4];
+    /* 0x1D0 */ char unk_1D0[0xC];
+    /* 0x1DC */ s32* unk_1DC;
+    /* 0x1E0 */ char unk_1E0[0xA4];
     /* 0x284 */ f32 unk_284;
     /* 0x288 */ char unk_288[0xE8];
-    /* 0x370 */ u64 unk_370;
+    /* 0x370 */ XAud370 unk_370;
     /* 0x378 */ char unk_378[0x20];
     /* 0x398 */ XAud398* unk_398;
     /* 0x39C */ char unk_39C[0x2];
     /* 0x39E */ u8 unk_39E;
-    /* 0x39F */ char unk_39F[0x31];
+    /* 0x39F */ char unk_39F[0x5];
+    /* 0x3A4 */ s32 unk_3A4;
+    /* 0x3A8 */ s32 unk_3A8;
+    /* 0x3AC */ s32 unk_3AC;
+    /* 0x3B0 */ char unk_3B0[0x10];
+    /* 0x3C0 */ f32 unk_3C0[4];
     /* 0x3D0 */ s32 unk_3D0;
     /* 0x3D4 */ f32 unk_3D4;
+    /* 0x3D8 */ char unk_3D8[0xC];
+    /* 0x3E4 */ s32 unk_3E4;
+    /* 0x3E8 */ char unk_3E8[0xA8];
+    /* 0x490 */ f32 unk_490[4];
 } XAudObj;
+
+// arg0[0] seen as a block of pointers
+typedef struct XAudPtrs {
+    /* 0x00 */ void* unk_00;
+    /* 0x04 */ void* unk_04;
+    /* 0x08 */ void* unk_08;
+} XAudPtrs;
+
+// arg0[0] seen as a u64 of flags
+typedef struct XAudFlags0 {
+    u64 unk_00 : 2;
+    u64 unk_02 : 2;
+    u64 unk_04 : 7;
+    u64 unk_0B : 1;
+    u64 unk_0C : 2;
+} XAudFlags0;
+
+// arg0[1] with a u64 of flags at 0x8
+typedef struct XAudB8 {
+    /* 0x00 */ u64 unk_00;
+    /* 0x08 */ u64 unk_08 : 43;
+    u64 unk_43 : 1;
+} XAudB8;
 
 typedef union XAudArg {
     s32 s;
@@ -74,6 +138,9 @@ typedef union XAudArg {
     f32 f;
     void* p;
     XAudObj* obj;
+    XAudPtrs* ptrs;
+    XAudFlags0* flags;
+    XAudB8* b8;
 } XAudArg;
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E28);
@@ -477,7 +544,7 @@ void func_00129D18(XAudArg* arg0) {
 }
 
 void func_00129D38(XAudArg* arg0) {
-    arg0[0].obj->unk_370 |= 0x8000000000000;
+    arg0[0].obj->unk_370.raw |= 0x8000000000000;
 }
 
 void func_00129D58(XAudArg* arg0) {
@@ -549,7 +616,9 @@ void func_00129FD0(XAudArg* arg0) {
     arg0[0].s = func_001477E0(arg0[1].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A000);
+void func_0012A000(XAudArg* arg0) {
+    arg0[0].s = (s32)(arg0[0].obj->unk_370.raw >> 35) & 1;
+}
 
 void func_00157818(void*, s32);
 
@@ -618,7 +687,7 @@ void func_0012A270(XAudArg* arg0) {
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A280);
 
 void func_0012A308(XAudArg* arg0) {
-    arg0[0].obj->unk_370 |= 0x10000000000000;
+    arg0[0].obj->unk_370.raw |= 0x10000000000000;
 }
 
 s32 func_00148968(s32, s32, s32);
