@@ -1032,7 +1032,15 @@ void func_0012B0A8(s32* arg0) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_0012B1A8);
+extern s32 D_002E31A8[];
+
+void fm_func_0012B1A8(XAudArg* arg0) {
+    if (arg0[0].s != 0) {
+        D_002E31A8[0] |= 4;
+    } else {
+        D_002E31A8[0] &= ~4;
+    }
+}
 #endif
 
 void func_0012B0D8(s32* arg0) {
