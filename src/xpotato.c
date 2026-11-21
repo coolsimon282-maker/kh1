@@ -1,6 +1,9 @@
 #include "xtango.h"
 #include "xpotato.h"
 
+extern s32 func_001EF960(u32);
+extern s32 D_003E8E08;
+
 extern s32 D_003F4BD0[];
 extern s32 D_00642D24;
 
@@ -164,7 +167,16 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
 #ifdef VERSION_FM
 s32 func_00218648(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218648);
+s32 func_00218648(s32 arg0) {
+    s32 v = 0x110;
+
+    func_001F9010(23);
+    if (D_0063CF88 != 0) {
+        D_003E8E08 = func_001EF960(D_0063CF88);
+        v++;
+    }
+    return func_001F9438((void*)arg0, 0, 174, 12, v, 17, 0x80C87850);
+}
 #else
 s32 func_00218648(s32 arg0) {
     s32 val = 277;
