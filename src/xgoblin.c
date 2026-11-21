@@ -192,7 +192,24 @@ s32 func_0011F108(XGoblin* arg0, s32 arg1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F148);
+s32 func_0011F148(XGoblin* arg0, s32 arg1) {
+    XGoblin* prev = NULL;
+    XGoblin* p;
+
+    for (p = arg0->unk_08; p != NULL; p = p->unk_08) {
+        if ((s32)p == arg1) {
+            if (prev != NULL) {
+                prev->unk_08 = p->unk_08;
+            } else {
+                arg0->unk_08 = p->unk_08;
+            }
+            p->unk_08 = NULL;
+            return 1;
+        }
+        prev = p;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F1A0);
 
