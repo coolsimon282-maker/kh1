@@ -58,7 +58,26 @@ void func_00215A88(void) {
     }
 }
 
+#ifdef VERSION_FM
+extern s32* D_003F41E8[];
+extern s32 D_003F4200[][9];
+extern void func_00170D60(s32, s32, s32);
+
+void func_00215AF0(s32 arg0, s32 arg1) {
+    s32* p;
+    s32 i;
+    if (arg1 != 4) {
+        p = D_003F41E8[arg1];
+    } else {
+        p = D_003F4200[arg0];
+    }
+    for (i = 0; i < 9; i++) {
+        func_00170D60(arg0, i, p[i]);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215AF0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215B88);
 
