@@ -751,7 +751,15 @@ void func_0012A4C8(XAudArg* arg0) {
     func_00147F88(arg0[0].p, arg0[1].f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A4E8);
+extern f32 D_002DEC60[4][4];
+void sceVu0InversMatrix(f32 (*)[4], f32 (*)[4]);
+void func_00120D38(s32, f32 (*)[4], s32);
+
+void func_0012A4E8(XAudArg* arg0) {
+    f32 m[4][4] __attribute__((aligned(16)));
+    sceVu0InversMatrix(m, D_002DEC60);
+    func_00120D38(arg0[0].s, m, arg0[1].s);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A528);
 
