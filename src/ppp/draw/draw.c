@@ -117,7 +117,22 @@ void func_001AB408(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     func_001AB3A8(stack);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB438);
+typedef struct {
+    /* 0x0 */ u16* next;
+    /* 0x4 */ u16 count;
+    /* 0x6 */ u16 head;
+} DrawFreeList;
+
+s32 func_001AB438(DrawFreeList* list) {
+    u16 idx;
+
+    if (list->head == 0xFFFF) {
+        return 0xFFFF;
+    }
+    idx = list->head;
+    list->head = list->next[idx];
+    return idx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB470);
 
