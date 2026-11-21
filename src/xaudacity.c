@@ -343,7 +343,11 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129D70);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129D98);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129DD8);
+void func_00135A10(void*, s32);
+
+void func_00129DD8(XAudArg* arg0) {
+    func_00135A10(arg0[0].p, arg0[1].s);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129DF8);
 
