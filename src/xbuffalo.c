@@ -67,7 +67,14 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C20B8);
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C2110);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", fm_func_001C07A8);
+extern s32 D_0037A178[4];
+
+void fm_func_001C07A8(void) {
+    D_0037A178[0] = 0;
+    D_0037A178[1] = 0;
+    D_0037A178[2] = 0;
+    D_0037A178[3] = 0;
+}
 #endif
 
 s32 func_001C2150(void) {
