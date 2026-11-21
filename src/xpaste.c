@@ -57,8 +57,25 @@ s32 func_0011C440(void) {
 #endif
 
 #ifdef VERSION_FM
-s32 func_0011C4B0(void);
-INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C4B0);
+extern s32 D_003F7774;
+extern s32 D_003F7778;
+
+void func_0022BCB8(s32);
+
+s32 func_0011C4B0(void) {
+    if (D_003F7774 == 0) {
+        switch (D_003F7778) {
+            case FALSE:
+                func_001093A8(10);
+                return 4;
+            case TRUE:
+                func_0022BCB8(0xffff);
+                func_0011ED30(30000, func_0011C440);
+                return 4;
+        }
+    }
+    return 0;
+}
 #else
 s32 func_0011C4B0(void) {
     if (D_003F1514 == 0) {
