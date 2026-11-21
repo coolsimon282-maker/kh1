@@ -61,7 +61,21 @@ void KeThResHd_Init(KeThResHd* hd, u8 count, u8 size) {
     *p = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA9C8);
+void func_001AA868(DrawNode*);
+
+void func_001AA9C8(DrawNodeList* list, DrawNodeList* freeList) {
+    DrawNode* node = (DrawNode*)list->unk_0;
+    DrawNode* cur;
+
+    while (node != NULL) {
+        cur = node;
+        node = node->next;
+        func_001AA868(cur);
+        cur->next = freeList->free;
+        freeList->free = cur;
+    }
+    list->unk_0 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAA30);
 
