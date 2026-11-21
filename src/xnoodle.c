@@ -169,7 +169,10 @@ INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BFD8);
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C010);
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C0E0);
+void func_0010C0E0(void) {
+    SignalSema(D_0048ECE0);
+    WaitSema(D_00495258);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C110);
 
