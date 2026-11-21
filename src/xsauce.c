@@ -68,7 +68,14 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CF18);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D010);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D130);
+s32 func_0010D130(char* s) {
+    s32 n = 0;
+    while (*s != 0) {
+        s++;
+        n++;
+    }
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D168);
 
