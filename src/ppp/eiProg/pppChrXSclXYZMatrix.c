@@ -6,7 +6,7 @@ typedef struct {
     /* 0x8 */ f32 maxscl;
 } PChrXSclXYZMatrix;
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void pppChrXSclXYZMatrixCalc(pppPObject* pobj, PChrXSclXYZMatrix* p);
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppChrXSclXYZMatrix", pppChrXSclXYZMatrixCalc);
 #else

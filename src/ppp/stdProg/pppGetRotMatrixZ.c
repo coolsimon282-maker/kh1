@@ -1,6 +1,6 @@
 #include "ppp/pppUtil.h"
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void pppGetRotMatrixZ(sceVu0FMATRIX mp, u32 angle);
 INCLUDE_ASM("asm/nonmatchings/ppp/stdProg/pppGetRotMatrixZ", pppGetRotMatrixZ);
 #else

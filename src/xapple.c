@@ -170,7 +170,7 @@ extern XApple4* D_00532608;
 extern s32* D_0053260C;
 extern s32 D_00532610;
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_0013AB68(u16* arg0);
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013AB68);
 #else
@@ -503,7 +503,7 @@ s32 func_0013B9B8();
 //     D_0053260C = (s32*)(arg2 + arg0 + 0x7fU & 0xffffff80);
 // }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 f32 func_0013BAC0(void);
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013BAC0);
 #else

@@ -15,7 +15,7 @@ extern f32 D_002B8340[];
 s32 D_004FA670;
 s32 D_004FA680;
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00122828(XHoot* arg0);
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122828);
 #else

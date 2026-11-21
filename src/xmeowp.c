@@ -74,10 +74,6 @@ XKitten* func_001F3E88(s32 arg0, s32 arg1) {
     return func_001F3A20(&D_003E3890, func_00233138(4, 54) + 1);
 }
 
-#ifdef VERSION_EU
-void func_001F3EC8(XKitten* arg0);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F3EC8);
-#else
 void func_001F3EC8(XKitten* arg0) {
     arg0->unk_84 = 4;
     if (arg0->prev) {
@@ -87,26 +83,15 @@ void func_001F3EC8(XKitten* arg0) {
         arg0->next->prev = arg0->prev;
     }
 }
-#endif
 
-#ifdef VERSION_EU
-void func_001F3F00(XKitten* arg0);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F3F00);
-#else
 void func_001F3F00(XKitten* arg0) {
     arg0->unk_38 |= 0x100000000;
 }
-#endif
 
-#ifdef VERSION_EU
-void func_001F3F18(XKitten* arg0, s32 arg1);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F3F18);
-#else
 void func_001F3F18(XKitten* arg0, s32 arg1) {
     arg0->unk_7C = arg1;
     arg0->unk_38 |= 0x100000000;
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F3F38);
 
@@ -134,23 +119,13 @@ INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F4510);
 
 INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F4590);
 
-#ifdef VERSION_EU
-void func_001F45D8(XKitten* arg0, s32 arg1);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F45D8);
-#else
 void func_001F45D8(XKitten* arg0, s32 arg1) {
     arg0->unk_7C = arg1;
 }
-#endif
 
-#ifdef VERSION_EU
-void func_001F45E0(XKitten* arg0);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F45E0);
-#else
 void func_001F45E0(XKitten* arg0) {
     arg0->unk_7C = arg0->unk_78;
 }
-#endif
 
 void func_001F45F0(XKitten* arg0) {
     if (arg0->prev_kit) {
@@ -167,16 +142,11 @@ void func_001F45F0(XKitten* arg0) {
     }
 }
 
-#ifdef VERSION_EU
-void func_001F4640(XKitten* arg0);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F4640);
-#else
 void func_001F4640(XKitten* arg0) {
     if (arg0) {
         arg0->unk_38 |= 0x200000000;
     }
 }
-#endif
 
 void func_001F4668(XKitten* arg0, XKitten* prev) {
     arg0->prev = prev;
@@ -283,47 +253,20 @@ void func_001F4810(XKitten* arg0, XKitten* arg1) {
     arg1->next = kit1_next;
 }
 
-#ifdef VERSION_EU
-u8* func_001F4858(XKitten* arg0);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F4858);
-#else
 u8* func_001F4858(XKitten* arg0) {
     if (arg0->unk_5C == NULL) {
         return &D_0048A670;
     }
     return arg0->unk_5C;
 }
-#endif
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xmeowp", eu_func_001F2048);
-#endif
-
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xmeowp", eu_func_001F2050);
-#endif
-
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xmeowp", eu_func_001F2058);
-#endif
-
-#ifdef VERSION_EU
-void func_001F4878(XKitten* arg0, u8* arg1);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F4878);
-#else
 void func_001F4878(XKitten* arg0, u8* arg1) {
     arg0->unk_5C = arg1;
 }
-#endif
 
-#ifdef VERSION_EU
-s32 func_001F4880(XKitten* arg0);
-INCLUDE_ASM("asm/nonmatchings/xmeowp", func_001F4880);
-#else
 s32 func_001F4880(XKitten* arg0) {
     return arg0->unk_68;
 }
-#endif
 
 void func_001F4888(XKitten* arg0, s32 arg1) {
     arg0->unk_68 = arg1;

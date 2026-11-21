@@ -54,12 +54,16 @@ void func_00128FA8(f32* arg0) {
     D_002B8348 = *arg0;
 }
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00128750);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00128F70);
 #endif
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00128778);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00128F98);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00128FB0);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128FB8);
@@ -92,8 +96,17 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129230);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129260);
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00129330);
+#endif
+
+#ifdef VERSION_FM
+void func_00129320(void);
+INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129320);
+#else
 void func_00129320(void) {
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129328);
 
@@ -283,14 +296,18 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A328);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A360);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00129BA8);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_0012A400);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A3D0);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00129C40);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_0012A498);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_0012A4C8);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A418);
@@ -421,8 +438,8 @@ void func_0012B0A8(s32* arg0) {
     *arg0 = func_0012CBC0(*arg0);
 }
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_0012A920);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_0012B1A8);
 #endif
 
 void func_0012B0D8(s32* arg0) {

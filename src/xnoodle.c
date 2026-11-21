@@ -67,7 +67,7 @@ void func_0010AFA0(sceVu0FMATRIX arg0, XNoodle* arg1) {
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2);
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B000);
 #else

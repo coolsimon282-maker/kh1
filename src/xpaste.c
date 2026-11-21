@@ -20,7 +20,7 @@ void func_0011C540();
 extern void func_00180CE0();
 extern void func_0022BA18(u16);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_0011C440(void);
 INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C440);
 #else
@@ -39,7 +39,7 @@ s32 func_0011C440(void) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_0011C4B0(void);
 INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C4B0);
 #else

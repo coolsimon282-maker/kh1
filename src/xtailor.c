@@ -71,19 +71,14 @@ void func_0010F420(void) {
 
 #define DISPWIDTH 640
 
-#ifdef VERSION_EU
-void func_0010F448(void);
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F448);
-#else
 void func_0010F448(void) {
     sceGsSyncPath(0, 0);
     DPUT_GS_PMODE(SCE_GS_SET_PMODE(1, 1, 0, 0, 0, 0, 0xFF));
     DPUT_GS_DISPFB1(SCE_GS_SET_DISPFB1(0xD8000 / 2048, 512 / 64, SCE_GS_PSMCT32, 0, 0));
     DPUT_GS_DISPLAY1(SCE_GS_SET_DISPLAY1(0, 160, 4, 0, (DISPWIDTH * 4) - 1, 128 - 1));
 }
-#endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_0010F4A8(u32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F4A8);
 #else
@@ -191,10 +186,6 @@ void func_0010FCE0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FCF0);
 
-#ifdef VERSION_EU
-void func_0010FD40(s16 w, s16 h);
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FD40);
-#else
 void func_0010FD40(s16 w, s16 h) {
     D_004D284C = 0;
     sceGsSetDefDispEnv(&D_004D2610, 1, w, h, 0, 0);
@@ -203,7 +194,6 @@ void func_0010FD40(s16 w, s16 h) {
     sceGsSyncPath(0, 0);
     sceGsPutDispEnv(&D_004D2610);
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FDB8);
 
@@ -212,20 +202,23 @@ void func_0010FE10(u32* x, u32* y) {
     *y = D_004D2610.display.DY;
 }
 
-#ifdef VERSION_EU
-void func_0010FE38(void);
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FE38);
-#else
 void func_0010FE38(void) {
     sceGsResetGraph(1, 1, 2, 0);
     DPUT_GS_EXTWRITE(0);
     sceGsPutDispEnv(&D_004D2610);
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FE78);
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_00110068);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_001101E8);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110038);
 s32 func_00110038(s32);
@@ -313,7 +306,7 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110E78);
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110EA8);
 
-#ifndef VERSION_EU
+#ifndef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);
 #endif
 

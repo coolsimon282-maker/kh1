@@ -38,7 +38,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215AF0);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215B88);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00215C48(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215C48);
 #else
@@ -63,7 +63,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215F48);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00216758(XWhiskey* arg0);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216758);
 #else
@@ -79,7 +79,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_002168F8);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216D88);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00217038(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217038);
 #else
@@ -98,7 +98,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_002170B0);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217420);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00217810(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217810);
 #else
@@ -137,7 +137,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217908);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00218648(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218648);
 #else
@@ -155,7 +155,7 @@ s32 func_00218648(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002186B8);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00218840(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218840);
 #else
@@ -176,6 +176,10 @@ void func_00218A00(void) {
     D_0063CF88 = 0;
 }
 
+#ifdef VERSION_FM
+void func_00218A10(void);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A10);
+#else
 void func_00218A10(void) {
     D_003ED718->unk_00 = 0;
     D_003ED718->unk_08 = 0;
@@ -185,6 +189,7 @@ void func_00218A10(void) {
     D_003ED718->unk_14 = 0;
     D_003ED718->unk_18 = 0;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A38);
 
@@ -272,6 +277,30 @@ s32 func_00218C88(void) {
 void func_00218CA0(s32 arg0) {
     D_003ED718->unk_18 = arg0;
 }
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_002193F0);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219400);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219418);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219428);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219440);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219458);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218CB0);
 

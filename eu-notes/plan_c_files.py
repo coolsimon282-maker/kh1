@@ -2,6 +2,8 @@
 and no .data/.rodata/.bss of their own in the JP layout. Writes eu-notes/c_plan.tsv:
 file, JP start, JP end, shift, number of C functions, status."""
 import re, collections, os
+VER = os.environ.get('VER', 'eu')
+def NOTE(x): return os.path.join(os.path.dirname(os.path.abspath(__file__)), x if VER == 'eu' else '%s_%s' % (VER, x.replace('eu_', '')))
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 yaml = open(os.path.join(R, 'config/kh.jp.yaml'), encoding='utf-8').read()
 segs = [(int(o, 16), t, (n or '').strip()) for o, t, n in
@@ -15,7 +17,7 @@ for i, (o, t, n) in enumerate(segs):
         break
 has_data = {n for o, t, n in segs if t in ('.data', '.rodata', '.bss', 'data', 'rodata', 'bss') and n}
 rows = collections.defaultdict(list)
-for line in open(os.path.join(R, 'eu-notes/eu_matches.tsv'), encoding='utf-8'):
+for line in open(NOTE('eu_matches.tsv'), encoding='utf-8'):
     f, name, ln, hits, shift = (line.rstrip('\n').split('\t') + [''] * 5)[:5]
     rows[f.replace('__', '/')].append((name, int(ln), hits, shift))
 out = []
@@ -34,7 +36,7 @@ for o, t, n, nxt in text:
     else: status = 'ok'
     sh = shifts.pop() if len(shifts) == 1 else ''
     out.append((n, o, nxt, sh, len(fn), status))
-with open(os.path.join(R, 'eu-notes/c_plan.tsv'), 'w', encoding='utf-8', newline='\n') as f:
+with open(NOTE('c_plan.tsv'), 'w', encoding='utf-8', newline='\n') as f:
     for r in out:
         f.write('%s\t%#x\t%#x\t%s\t%d\t%s\n' % r)
 c = collections.Counter(r[5].split(':')[0] for r in out)

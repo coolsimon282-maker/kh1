@@ -116,8 +116,8 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124CA0);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124CD8);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xtoaster", eu_func_00124678);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xtoaster", fm_func_001249D8);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124DD0);

@@ -37,6 +37,10 @@ void func_001C36A8(Script* arg0, s32 arg1) {
     arg0->unk_174[2] = initialPos;
 }
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xflamingo", fm_func_001C1DF8);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xflamingo", func_001C3780);
 
 void func_001C38C0(void) {

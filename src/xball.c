@@ -60,7 +60,7 @@ void func_00120F48(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[3] = arg2[3];
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00120F78(sceVu0FMATRIX arg0);
 INCLUDE_ASM("asm/nonmatchings/xball", func_00120F78);
 #else
@@ -154,7 +154,7 @@ INCLUDE_ASM("asm/nonmatchings/xball", func_001217C0);
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_00121830);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2);
 INCLUDE_ASM("asm/nonmatchings/xball", func_00121878);
 #else
@@ -168,7 +168,7 @@ void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_001218E0);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 f32 func_00121970(f32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xball", func_00121970);
 #else

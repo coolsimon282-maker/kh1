@@ -17,11 +17,39 @@ import bisect, collections, os, re, struct, subprocess, sys
 
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OBJ = os.path.expanduser('~/kh1-test/obj')
-TEXT_END, DATA0, RODATA0, END0 = 0x16d630, 0x16d630, 0x3867d0, 0x38da30
-d = open(os.path.join(R, 'SCES_509.67'), 'rb').read()
+VER = os.environ.get('VER', 'eu')          # eu or fm
+V = {
+    'eu': dict(elf='SCES_509.67', text_end=0x16d630, rodata0=0x3867d0, end0=0x38da30, prog_end=0x66D5D8),
+    'fm': dict(elf='SLPS_251.98', text_end=0x172c70, rodata0=0x38cc10, end0=0x394050, prog_end=0x675000),
+}[VER]
+TEXT_END, DATA0, RODATA0, END0 = V['text_end'], V['text_end'], V['rodata0'], V['end0']
+def NOTE(x):     # eu keeps the original file names in eu-notes/, other versions get a prefix
+    return os.path.join(R, 'eu-notes', x if VER == 'eu' else '%s_%s' % (VER, x.replace('eu_', '')))
+PFX = VER + '_'  # prefix for names only this version has (eu_func_..., fm_func_...)
+MACRO = 'VERSION_' + VER.upper()
+d = open(os.path.join(R, V['elf']), 'rb').read()
+# names the version's own symbol files already give (upstream's FM library list etc.): leave them alone
+OWN_SYMS = {}
+for sf in ('symbol_addrs.txt', 'lib_symbol_addrs.txt'):
+    pth = os.path.join(R, 'config', VER, sf)
+    if os.path.exists(pth):
+        for m in re.finditer(r'^(\w+)\s*=\s*0x([0-9A-Fa-f]+);', open(pth).read(), re.M):
+            OWN_SYMS[m.group(1)] = int(m.group(2), 16)
+# upstream's named library pieces in this version's config (FM has them): kept as they are
+FIXED = []
+_up = subprocess.run(['git', 'show', '0df3b65:config/kh.%s.yaml' % VER], cwd=R, capture_output=True, text=True).stdout
+if _up:
+    _us = [(int(o, 16), t, (nm or '').strip()) for o, t, nm in
+           re.findall(r'^\s*-\s*\[\s*0x([0-9a-fA-F]+)\s*(?:,\s*([.\w]+)\s*)?(?:,\s*([^\],#]+))?\]', _up, re.M)]
+    for i, (o, t, nm) in enumerate(_us):
+        if nm.startswith('lib/') and i + 1 < len(_us):
+            FIXED.append((o, t, nm, _us[i + 1][0] - o))
 def eu_word(va): return struct.unpack_from('<I', d, 0x80 + va - 0x100000)[0]
 def s16(x): return x - 0x10000 if x & 0x8000 else x
 only = set(sys.argv[sys.argv.index('--only') + 1].split(',')) if '--only' in sys.argv else None
+# files left out on purpose: eu-notes/<ver>_skip.txt (skip.txt for eu), one file per line
+_sk = NOTE('skip.txt')
+SKIP = set(l.strip() for l in open(_sk) if l.strip() and not l.startswith('#')) if os.path.exists(_sk) else set()
 
 JPSYM = {}
 for sf in ('config/jp/symbol_addrs.txt', 'config/jp/lib_symbol_addrs.txt'):
@@ -31,20 +59,20 @@ def jp_addr(name):
     m = re.match(r'(?:func|D|jtbl)_([0-9A-F]{8})$', name)
     return int(m.group(1), 16) if m else JPSYM.get(name)
 
-EUF = [int(l.split()[0], 16) for l in open(os.path.join(R, 'eu-notes/eu_funcs.tsv'))]
+EUF = [int(l.split()[0], 16) for l in open(NOTE('eu_funcs.tsv'))]
 def eu_next_start(a):
     i = bisect.bisect_right(EUF, a); return EUF[i] if i < len(EUF) else 0x100000 + TEXT_END
 
 hits = {}
-for line in open(os.path.join(R, 'eu-notes/eu_matches.tsv')):
+for line in open(NOTE('eu_matches.tsv')):
     f, name, ln, h, shift = (line.rstrip('\n').split('\t') + [''] * 5)[:5]
     hits[(f.replace('__', '/'), name)] = [int(x, 16) for x in h.split(',')] if h else []
 
 plan, JPEND = [], {}
-for line in open(os.path.join(R, 'eu-notes/c_plan.tsv')):
+for line in open(NOTE('c_plan.tsv')):
     n, jps, jpe, sh, nf, status = line.rstrip('\n').split('\t')
     JPEND[n] = int(jpe, 16) + 0x100000
-    if status != 'no C functions' and (only is None or n in only):
+    if status != 'no C functions' and n not in SKIP and (only is None or n in only):
         plan.append(n)
 
 _jy = open(os.path.join(R, 'config/kh.jp.yaml'), encoding='utf-8').read()
@@ -147,14 +175,14 @@ def place_file(n, forced=None):
             symsec[m.group(4)] = (m.group(2), int(m.group(1), 16)); SIZES[m.group(4)] = int(m.group(3), 16)
 
     cfuncs = parse_functions(o)
-    asm_funcs = [f for f in re.findall(r'INCLUDE_ASM\(\s*"[^"]+"\s*,\s*(\w+)\s*\)', src) if not f.startswith('eu_')]
+    asm_funcs = [f for f in re.findall(r'INCLUDE_ASM\(\s*"[^"]+"\s*,\s*(\w+)\s*\)', src) if not f.startswith(PFX)]
     allnames = [f[0] for f in cfuncs] + asm_funcs
     if any(jp_addr(f) is None for f in allnames): return None, None, None, None, 'unknown JP address: ' + next(f for f in allnames if jp_addr(f) is None)
     order = sorted(set(allnames), key=jp_addr)
     pos = {f: i for i, f in enumerate(order)}
     if forced is not None:
         # window pass: names missing from forced are functions EU dropped; eu_func_* ones are EU's additions
-        placed = {f: a for f, a in forced.items() if f in pos or f.startswith('eu_func_')}
+        placed = {f: a for f, a in forced.items() if f in pos or f.startswith(PFX + 'func_')}
         for f in order:
             if f not in placed: PEND_JPONLY.append((n, f))
         PEND_EUONLY.extend((n, prev, nm) for prev, nm in FORCED_EUONLY.get(n, []))
@@ -199,7 +227,7 @@ def place_file(n, forced=None):
                 if lo is not None and hi is not None:
                     for a in EUF:
                         if placed[order[lo]] < a < placed[order[hi]]:
-                            nm = 'eu_func_%08X' % a; placed[nm] = a; PEND_EUONLY.append((n, order[lo], nm))
+                            nm = PFX + 'func_%08X' % a; placed[nm] = a; PEND_EUONLY.append((n, order[lo], nm))
                 continue
             full = order + [None]
             jsz = [(jp_addr(full[pos[f] + 1]) if full[pos[f] + 1] else JPEND[n]) - jp_addr(f) for f in gap]
@@ -237,7 +265,7 @@ def place_file(n, forced=None):
                     placed[gap[ji]] = starts[ej]; prev = gap[ji]
                 elif ej is not None:
                     if prev is None: continue                  # EU-only before the file's first function: outside
-                    nm = 'eu_func_%08X' % starts[ej]; placed[nm] = starts[ej]; PEND_EUONLY.append((n, prev, nm))
+                    nm = PFX + 'func_%08X' % starts[ej]; placed[nm] = starts[ej]; PEND_EUONLY.append((n, prev, nm))
                 else:
                     PEND_JPONLY.append((n, gap[ji])); prev = gap[ji]
         jponly = {f for _, f in PEND_JPONLY}
@@ -288,8 +316,9 @@ def place_file(n, forced=None):
         if c1: S = c1.pop()
         elif len(sec_start.get(s_, ())) == 1 and not rodsyms and secsize.get(s_, 0) and Z - secsize[s_] < 16:
             S = next(iter(sec_start[s_]))          # the C defines all of it
-        elif scan: S = scan[0]
+        elif scan: S = scan[0] - ((scan[0] - Sjp) % 8)   # a piece starts on the same 8-byte alignment as JP's
         else: return None, None, None, None, s_ + ' start unknown'
+        if (S - Sjp) % 8: return None, None, None, None, s_ + ' start %#x not aligned like JP\'s' % S
         inside = [x for x in scan if S <= x < S + Z]
         if any(not (S <= x < S + Z) for x in own_refs.get(s_, ())): return None, None, None, None, s_ + ': a C reference falls outside the piece'
         if secsize.get(s_, 0):
@@ -337,7 +366,7 @@ def file_funcs(n):
     srcp = os.path.join(R, 'src', n + '.c')
     if not os.path.exists(o) or not os.path.exists(srcp): return None
     fl = [f[0] for f in parse_functions(o)] + re.findall(r'INCLUDE_ASM\(\s*"[^"]+"\s*,\s*(\w+)\s*\)', open(srcp, encoding='utf-8', errors='replace').read())
-    fl = [f for f in fl if not f.startswith('eu_')]
+    fl = [f for f in fl if not f.startswith(PFX)]
     if not fl or any(jp_addr(f) is None for f in fl): return None
     return sorted(set(fl), key=jp_addr)
 def jp_sizes(n, fl):
@@ -375,7 +404,7 @@ def try_run(run, starts, mode):
             n, f = owner[a]; forced[n][f] = starts[b]; prev = (n, f)
         elif b is not None:
             if prev is None: continue                       # before the run's first function: outside
-            nm = 'eu_func_%08X' % starts[b]; forced[prev[0]][nm] = starts[b]; euonly[prev[0]].append((prev[1], nm))
+            nm = PFX + 'func_%08X' % starts[b]; forced[prev[0]][nm] = starts[b]; euonly[prev[0]].append((prev[1], nm))
         else:
             prev = owner[a]                                  # JP-only: left out of forced
     msgs = []
@@ -399,7 +428,7 @@ while progress:
     progress = False
     where = {n: (a, b) for a, b, n in segs}
     def unplaced_c(k):
-        return jptext[k][0] == 'c' and jptext[k][1] not in where and not jptext[k][1].startswith('lib/')
+        return jptext[k][0] == 'c' and jptext[k][1] not in where and not jptext[k][1].startswith('lib/') and jptext[k][1] not in SKIP
     i = 0
     while i < len(jptext):
         if not unplaced_c(i): i += 1; continue
@@ -429,6 +458,7 @@ while progress:
 placed_now = {n for _, _, n in segs}
 problems[:] = [p for p in problems if p[0] not in placed_now]
 
+segs = [x for x in segs if not any(fo <= x[0] < fo + fz for fo, ft, fn, fz in FIXED)]
 segs.sort(); dsegs.sort()
 for (a, b, n), (c, _, m) in zip(segs, segs[1:]):
     if b > c: problems.append((n, 'overlaps ' + m))
@@ -444,57 +474,58 @@ for nm in list(names):
     # never inside a C file's own data piece: a new symbol there splits off bytes the C file doesn't include
     in_piece = any(o + 0x100000 < a < o + 0x100000 + z for o, _, _, z in dsegs)
     if a != names[nm] and a not in used and not in_piece and (m.group(1) != 'func' or a in euset):
-        names['eu_%s_%08X' % (m.group(1), a)] = a; used.add(a)
+        names[PFX + '%s_%08X' % (m.group(1), a)] = a; used.add(a)
+for nm in list(names):
+    if nm in OWN_SYMS: del names[nm]
+for nm, a in list(names.items()):
+    if a in OWN_SYMS.values() and nm not in OWN_SYMS: del names[nm]
 byaddr = collections.defaultdict(list)
 for nm, a in names.items(): byaddr[a].append(nm)
 for a, nms in byaddr.items():
     if len(nms) > 1: problems.append(('names', 'same EU address %#x: %s' % (a, ', '.join(nms))))
 
-# config/kh.eu.yaml
-lines, p = ['  - [ 0x0, asm, crt0 ]'], 0x1d8
-for a, b, n in segs:
-    if a > p: lines.append('  - [ %#x, asm ]' % p)
-    lines.append('  - [ %#x, c, %s ]' % (a, n)); p = b
-if p < TEXT_END: lines.append('  - [ %#x, asm ]' % p)
-def area(lo, hi, filler):
+# config/kh.<ver>.yaml: the whole subsegment list
+def merged(items, lo, hi, filler):
+    """items: (offset, type, name, size) in [lo, hi); fillers in the gaps"""
     out, q = [], lo
-    for a, s, n, z in dsegs:
-        if not lo <= a < hi: continue
-        if a > q: out.append('  - [ %#x, %s ]' % (q, filler))
-        out.append('  - [ %#x, %s, %s ]' % (a, s, n)); q = a + z
+    for o, t, nm, z in sorted(items):
+        if not lo <= o < hi: continue
+        if o > q: out.append('  - [ %#x, %s ]' % (q, filler))
+        out.append('  - [ %#x, %s, %s ]' % (o, t, nm)); q = max(q, o + z)
     if q < hi: out.append('  - [ %#x, %s ]' % (q, filler))
     return out
-dl = (['  ## .data section ##', '  # Code ends with a tail call at 0x26d61c and nop padding; VU microcode / DMA data follows.']
-      + area(DATA0, RODATA0, 'data') + ['', '  ## .rodata section ##',
-      '  # Starts like JP\'s: xbeginning\'s jump table (0x20), then xporcupine\'s ".img"/".bin" (0x10). JP: 0x386950.']
-      + area(RODATA0, END0, 'rodata'))
-y = open(os.path.join(R, 'config/kh.eu.yaml'), encoding='utf-8').read()
-ts, te = '  # --- text: generated by eu-notes/gen_eu_c.py ---\n', '  # --- end of generated text ---\n'
-y = y[:y.index(ts) + len(ts)] + '\n'.join(lines) + '\n' + y[y.index(te):]
-ds, de = '  ## .data section ##', '- [ 0x38da30 ]'
-y = y[:y.index(ds)] + '\n'.join(dl) + '\n' + y[y.index(de):]
-if 'config/eu/jp_names.txt' not in y:
-    y = y.replace('  - config/eu/lib_symbol_addrs.txt\n', '  - config/eu/lib_symbol_addrs.txt\n  - config/eu/jp_names.txt\n')
-open(os.path.join(R, 'config/kh.eu.yaml'), 'w', encoding='utf-8', newline='\n').write(y)
+text_items = [(a_, 'c', n_, b_ - a_) for a_, b_, n_ in segs] + [x for x in FIXED if x[0] < TEXT_END]
+data_items = list(dsegs) + [x for x in FIXED if x[0] >= TEXT_END]
+lines = ['  - [ 0x0, asm, crt0 ]'] + merged(text_items, 0x1d8, TEXT_END, 'asm')
+dl = (['', '  ## .data section ##'] + merged(data_items, DATA0, RODATA0, 'data')
+      + ['', '  ## .rodata section ##'] + merged(data_items, RODATA0, END0, 'rodata'))
+ypath = os.path.join(R, 'config', 'kh.%s.yaml' % VER)
+y = open(ypath, encoding='utf-8').read()
+hs, he = '  subsegments:\n', '- [ %#x ]' % END0
+y = y[:y.index(hs) + len(hs)] + '\n'.join(lines + dl) + '\n' + y[y.index(he):]
+names_file = 'config/%s/jp_names.txt' % VER
+if names_file not in y:
+    y = y.replace('  - config/%s/lib_symbol_addrs.txt\n' % VER, '  - config/%s/lib_symbol_addrs.txt\n  - %s\n' % (VER, names_file))
+open(ypath, 'w', encoding='utf-8', newline='\n').write(y)
 
 # names outside the program and its bss (hardware/scratch addresses) are absolute: undefined_syms.txt
-PROG_END = 0x66D5D8
+PROG_END = V['prog_end']
 absolute = {nm: a for nm, a in names.items() if not 0x100000 <= a < PROG_END}
 for nm in absolute: del names[nm]
-with open(os.path.join(R, 'config/eu/undefined_syms.txt'), 'w', newline='\n') as f:
+with open(os.path.join(R, 'config', VER, 'undefined_syms.txt'), 'w', newline='\n') as f:
     for nm, a in sorted(absolute.items(), key=lambda t: t[1]): f.write('%s = 0x%08X;\n' % (nm, a))
-with open(os.path.join(R, 'config/eu/jp_names.txt'), 'w', newline='\n') as f:
+with open(os.path.join(R, 'config', VER, 'jp_names.txt'), 'w', newline='\n') as f:
     f.write('// JP names at their EU addresses, for the C files that build for EU. Generated by eu-notes/gen_eu_c.py.\n')
     for nm, a in sorted(names.items(), key=lambda t: t[1]):
         kind = ' // type:func' if a < 0x100000 + TEXT_END and not nm.startswith(('D_', 'jtbl_')) else ''
         if not kind and SIZES.get(nm): kind = ' // size:0x%X' % SIZES[nm]
         if nm in NOMIGRATE: kind = (kind or ' //') + ' force_not_migration:True'
         f.write('%-32s = 0x%08X;%s\n' % (nm, a, kind))
-with open(os.path.join(R, 'eu-notes/eu_wrap.tsv'), 'w', newline='\n') as f:
+with open(NOTE('eu_wrap.tsv'), 'w', newline='\n') as f:
     for n, fn in wraps: f.write('%s\t%s\n' % (n, fn))
-with open(os.path.join(R, 'eu-notes/eu_only.tsv'), 'w', newline='\n') as f:
+with open(NOTE('eu_only.tsv'), 'w', newline='\n') as f:
     for n, prev, nm in EUONLY: f.write('%s\t%s\t%s\n' % (n, prev, nm))
-with open(os.path.join(R, 'eu-notes/jp_only.tsv'), 'w', newline='\n') as f:
+with open(NOTE('jp_only.tsv'), 'w', newline='\n') as f:
     for n, fn in JPONLY: f.write('%s\t%s\n' % (n, fn))
 print('EU-only functions: %d   JP-only functions: %d' % (len(EUONLY), len(JPONLY)))
 print('C files placed: %d   names mapped: %d   C functions EU takes from assembly: %d' % (len(segs), len(names), len(wraps)))

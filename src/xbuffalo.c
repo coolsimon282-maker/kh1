@@ -27,9 +27,14 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1970);
 
+#ifdef VERSION_FM
+s32 func_001C19E8(void);
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C19E8);
+#else
 s32 func_001C19E8(void) {
     return 0x16FA88; // possibly some macro value?
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C19F8);
 
@@ -38,6 +43,10 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1A90);
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AB8);
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AE0);
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", fm_func_001C0078);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);
 
@@ -49,9 +58,17 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1E78);
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C2080);
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", fm_func_001C06C0);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C20B8);
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C2110);
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", fm_func_001C07A8);
+#endif
 
 s32 func_001C2150(void) {
     func_0011EF58(&D_00623B38, 0);

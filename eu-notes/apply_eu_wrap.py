@@ -16,9 +16,11 @@ is safe to run again.
 """
 import os, re
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VER = os.environ.get('VER', 'eu')
+M = 'VERSION_' + VER.upper()
 
 def read_tsv(name):
-    p = os.path.join(R, 'eu-notes', name)
+    p = os.path.join(R, 'eu-notes', name if VER == 'eu' else '%s_%s' % (VER, name.replace('eu_', '')))
     return [l.rstrip('\n').split('\t') for l in open(p)] if os.path.exists(p) else []
 
 def c_def(s, fn):
@@ -44,7 +46,7 @@ def func_span(s, fn):
     a, b = sp
     if s.startswith('\n#endif', b):
         b += len('\n#endif')
-        w = s.rfind('#ifdef VERSION_EU\n', 0, a)
+        w = s.rfind('#ifdef ' + M + '\n', 0, a)
         if w != -1 and s.count('#endif', w, a) == 0: a = w
     return a, b
 
@@ -56,12 +58,12 @@ def src(n):
 wrapped = jponly = euonly = 0
 for n, fn in read_tsv('eu_wrap.tsv'):
     s = src(n)
-    if re.search(r'#ifdef VERSION_EU\n(?:[^\n]*;\n)?INCLUDE_ASM\("[^"]+", %s\);' % fn, s): continue
+    if re.search(r'#ifdef ' + M + r'\n(?:[^\n]*;\n)?INCLUDE_ASM\("[^"]+", %s\);' % fn, s): continue
     sp = c_def(s, fn)
     if not sp: print('  not found in source:', n, fn); continue
     a, b = sp
     proto = re.sub(r'\s+', ' ', s[a:s.index('{', a)]).strip() + ';'
-    files[n] = s[:a] + ('#ifdef VERSION_EU\n%s\nINCLUDE_ASM("asm/nonmatchings/%s", %s);\n#else\n%s\n#endif'
+    files[n] = s[:a] + ('#ifdef ' + M + '\n%s\nINCLUDE_ASM("asm/nonmatchings/%s", %s);\n#else\n%s\n#endif'
                         % (proto, n, fn, s[a:b])) + s[b:]
     wrapped += 1
 
@@ -70,8 +72,8 @@ for n, fn in read_tsv('jp_only.tsv'):
     sp = func_span(s, fn)
     if not sp: print('  not found in source:', n, fn); continue
     a, b = sp
-    if s[max(0, a - 19):a] == '#ifndef VERSION_EU\n': continue
-    files[n] = s[:a] + '#ifndef VERSION_EU\n' + s[a:b] + '\n#endif' + s[b:]
+    if s[max(0, a - 19):a] == '#ifndef ' + M + '\n': continue
+    files[n] = s[:a] + '#ifndef ' + M + '\n' + s[a:b] + '\n#endif' + s[b:]
     jponly += 1
 
 last = {}
@@ -83,9 +85,9 @@ for n, prev, nm in read_tsv('eu_only.tsv'):
     sp = func_span(s, after)
     if not sp: print('  not found in source:', n, prev); continue
     b = sp[1]
-    if s[b:b + 20].startswith('\n#endif') and s[max(0, sp[0] - 19):sp[0]] == '#ifndef VERSION_EU\n':
+    if s[b:b + 20].startswith('\n#endif') and s[max(0, sp[0] - 19):sp[0]] == '#ifndef ' + M + '\n':
         b += len('\n#endif')
-    files[n] = s[:b] + '\n\n#ifdef VERSION_EU\nINCLUDE_ASM("asm/nonmatchings/%s", %s);\n#endif' % (n, nm) + s[b:]
+    files[n] = s[:b] + '\n\n#ifdef ' + M + '\nINCLUDE_ASM("asm/nonmatchings/%s", %s);\n#endif' % (n, nm) + s[b:]
     euonly += 1
 
 for n, s in files.items():

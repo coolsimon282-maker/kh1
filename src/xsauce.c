@@ -181,7 +181,7 @@ void func_0010F380(void) {
     }
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_0010F3B8(s32 arg0, s32 arg1);
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F3B8);
 #else

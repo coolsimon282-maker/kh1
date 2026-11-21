@@ -15,3 +15,7 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001B8AA0);
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001BA340);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001BBB60);
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", fm_func_001B9B30);
+#endif

@@ -402,14 +402,9 @@ void func_0011E350(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E360);
 
-#ifdef VERSION_EU
-void func_0011E418(void);
-INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E418);
-#else
 void func_0011E418(void) {
     func_00101528();
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E430);
 

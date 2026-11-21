@@ -1,0 +1,275 @@
+xbeginning	0xc8	0x11e0		22	has own data
+xporcupine	0x11e0	0x1870	+100	5	has own data
+xpancake	0x61d8	0x6948	+1f0	12	differs: func_001064E8,func_001064F8,func_00106578
+xarcade	0x90d8	0xa1f8		16	has own data
+xnoodle	0xa1f8	0xc2d8		12	has own data
+xsauce	0xc2d8	0xf3d0		7	has own data
+xtailor	0xf3d0	0x110a0		33	has own data
+xtrumpet	0x110a0	0x11f40		24	has own data
+worldfile	0x11f40	0x12168	+330	4	has own data
+xblade	0x12168	0x14cd8		51	has own data
+xpaste	0x1c440	0x1c5d8	+1d0	7	differs: func_0011C440,func_0011C4B0,func_0011C598
+xturtle	0x1c5d8	0x1eaf8		47	has own data
+xgoblin	0x1eaf8	0x1fb68		12	has own data
+xkingdom	0x1fb68	0x20a38		27	has own data
+xball	0x20a38	0x21a08		12	differs: func_00120F78,func_00121878,func_00121970
+xlamp	0x21de0	0x22828		11	differs: func_00121DE0,func_00121FB8,func_00122318
+xowl	0x22828	0x231e0		3	has own data
+xtoaster	0x231e0	0x25010	-3f8	1	has own data
+xpeanut	0x25010	0x256b0		6	has own data
+xpillow	0x256b0	0x274c0		0	has own data
+xcream	0x274c0	0x28e28		5	differs: func_00128E18,func_00128E20
+xaudacity	0x28e28	0x2b1b0		21	differs: func_00128F40,func_00128F48,func_00128F50
+xapple	0x3ab68	0x3bd88		10	has own data
+xsquash	0x49ce8	0x4a018		0	has own data
+ppp/pppMngr	0x80f78	0x851a0		14	has own data
+ppp/pppDummy	0x851a0	0x851e8		9	differs: pppKeThLzCalc,pppKeThLzCon,pppKeThLzDes
+ppp/stdProg/pppGetRotMatrixXYZ	0x851e8	0x85278	-1608	1	ok
+ppp/eiProg/pppDrawHook	0x85278	0x852e0	-1608	1	ok
+ppp/eiProg/pppPoint	0x852e0	0x85398		2	differs: pppPoint,pppPointCon
+ppp/eiProg/pppMove	0x85398	0x85490		2	differs: pppMove,pppMoveCon
+ppp/eiProg/pppAccele	0x85490	0x85588		2	differs: pppAcceleCalc,pppAcceleCon
+ppp/eiProg/pppAngle	0x85588	0x85638	-1608	2	ok
+ppp/eiProg/pppAngMove	0x85638	0x85728		2	differs: pppAngMoveCalc,pppAngMoveCon
+ppp/eiProg/pppAngAccele	0x85728	0x85818		2	differs: pppAngAcceleCalc,pppAngAcceleCon
+ppp/eiProg/pppScale	0x85818	0x858d0		2	differs: pppScaleCalc,pppScaleCon
+ppp/eiProg/pppSclMove	0x858d0	0x859c8		0	no C functions
+ppp/eiProg/pppSclAccele	0x859c8	0x85ac0		0	no C functions
+ppp/eiProg/pppColor	0x85ac0	0x85bd0	-1608	1	ok
+ppp/eiProg/pppColMove	0x85bd0	0x85ce8		2	differs: pppColMoveCalc,pppColMoveCon
+ppp/eiProg/pppColAccele	0x85ce8	0x85e00		2	differs: pppColAcceleCalc,pppColAcceleCon
+ppp/eiProg/pppVertexAttend	0x85e00	0x85f10		0	no C functions
+ppp/eiProg/pppVertexAp	0x85f10	0x862b0		1	differs: pppVertexApCon
+ppp/eiProg/pppSegmentAp	0x862b0	0x862b8		1	differs: pppSegmentApCalc
+ppp/eiProg/pppFaceAp	0x862b8	0x862c0		1	differs: pppFaceApCalc
+ppp/eiProg/pppVertexApLc	0x862c0	0x86620		0	no C functions
+ppp/eiProg/pppVertexApAt	0x86620	0x86898		0	no C functions
+ppp/eiProg/pppVtMime	0x86898	0x86b98	-1660	3	ok
+ppp/eiProg/pppMatrixXYZ	0x86b98	0x86c98		0	no C functions
+ppp/eiProg/pppMatrixXZY	0x86c98	0x86d98		0	no C functions
+ppp/eiProg/pppMatrixYZX	0x86d98	0x86e98		0	no C functions
+ppp/eiProg/pppMatrixYXZ	0x86e98	0x86f98		0	no C functions
+ppp/eiProg/pppMatrixZXY	0x86f98	0x87098		0	no C functions
+ppp/eiProg/pppMatrixZYX	0x87098	0x87198		0	no C functions
+ppp/eiProg/pppMatrixLoc	0x87198	0x87208		0	no C functions
+ppp/eiProg/pppMatrixScl	0x87208	0x872b0		0	no C functions
+ppp/eiProg/pppParMatrix	0x872b0	0x872e0		0	no C functions
+ppp/eiProg/pppChrSclXYZMatrix	0x872e0	0x87378		1	differs: pppChrSclXYZMatrixCalc
+ppp/eiProg/pppChrSclXZMatrix	0x87378	0x873f0		1	differs: pppChrSclXZMatrixCalc
+ppp/eiProg/pppChrSclYMatrix	0x873f0	0x87460		1	differs: pppChrSclYMatrixCalc
+ppp/eiProg/pppChrYSclXYZMatrix	0x87460	0x874e0		1	differs: pppChrYSclXYZMatrixCalc
+ppp/eiProg/pppChrXSclXYZMatrix	0x874e0	0x87560		1	differs: pppChrXSclXYZMatrixCalc
+ppp/eiProg/pppDrawMatrix	0x87560	0x87590		1	differs: pppDrawMatrixCalc
+ppp/eiProg/pppDrawMatrixFront	0x87590	0x87630	-1678	1	ok
+ppp/eiProg/pppDrawMatrixNoRot	0x87630	0x87720		0	no C functions
+ppp/eiProg/pppDrawMatrixWood	0x87720	0x877d0		1	differs: pppDrawMatrixWoodSta
+ppp/eiProg/pppSMatrix	0x877d0	0x877f0	-1678	1	ok
+ppp/eiProg/pppDrawMdl	0x877f0	0x87948		0	no C functions
+ppp/eiProg/pppDrawMdlSemi	0x87948	0x87a90		0	no C functions
+ppp/eiProg/pppDrawMdlTs	0x87a90	0x87d28		1	differs: pppDrawMdlTsCon
+ppp/eiProg/pppDrawShape	0x87d28	0x87f48		1	differs: pppDrawShapeCon
+ppp/eiProg/pppPObjPoint	0x87f48	0x87ff8		0	no C functions
+ppp/eiProg/pppPointAp	0x87ff8	0x88110		1	differs: pppPointApCon
+ppp/eiProg/pppPointRAp	0x88110	0x88380		1	differs: pppPointRApCon
+ppp/eiProg/pppRandFloat	0x88380	0x884d0		0	no C functions
+ppp/eiProg/pppRandUpFloat	0x884d0	0x88628		0	no C functions
+ppp/eiProg/pppRandDownFloat	0x88628	0x88780		0	no C functions
+ppp/eiProg/pppRandChar	0x88780	0x888e8		0	no C functions
+ppp/eiProg/pppRandUpChar	0x888e8	0x88a58		0	no C functions
+ppp/eiProg/pppRandDownChar	0x88a58	0x88bc8		0	no C functions
+ppp/eiProg/pppRandShort	0x88bc8	0x88d30		0	no C functions
+ppp/eiProg/pppRandUpShort	0x88d30	0x88ea0		0	no C functions
+ppp/eiProg/pppRandDownShort	0x88ea0	0x89010		0	no C functions
+ppp/eiProg/pppRandInt	0x89010	0x891d0		0	no C functions
+ppp/eiProg/pppRandUpInt	0x891d0	0x89368		0	no C functions
+ppp/eiProg/pppRandDownInt	0x89368	0x89510		0	no C functions
+ppp/eiProg/pppRandFV	0x89510	0x896b8		0	no C functions
+ppp/eiProg/pppRandUpFV	0x896b8	0x89868		0	no C functions
+ppp/eiProg/pppRandDownFV	0x89868	0x89a38		0	no C functions
+ppp/eiProg/pppRandIV	0x89a38	0x89be0		0	no C functions
+ppp/eiProg/pppRandUpIV	0x89be0	0x89d90		0	no C functions
+ppp/eiProg/pppRandDownIV	0x89d90	0x89f58		0	no C functions
+ppp/eiProg/pppRandCV	0x89f58	0x8a128		0	no C functions
+ppp/eiProg/pppRandUpCV	0x8a128	0x8a300		0	no C functions
+ppp/eiProg/pppRandDownCV	0x8a300	0x8a4e0		0	no C functions
+ppp/eiProg/pppRandHCV	0x8a4e0	0x8a6b0		0	no C functions
+ppp/eiProg/pppRandUpHCV	0x8a6b0	0x8a888		0	no C functions
+ppp/eiProg/pppRandDownHCV	0x8a888	0x8aae0		0	no C functions
+ppp/eiProg/pppSRandFV	0x8aae0	0x8acb8		0	no C functions
+ppp/eiProg/pppSRandUpFV	0x8acb8	0x8ae90		0	no C functions
+ppp/eiProg/pppSRandDownFV	0x8ae90	0x8b090		0	no C functions
+ppp/eiProg/pppSRandCV	0x8b090	0x8b2a0		0	no C functions
+ppp/eiProg/pppSRandUpCV	0x8b2a0	0x8b4b0		0	no C functions
+ppp/eiProg/pppSRandDownCV	0x8b4b0	0x8b6c0		0	no C functions
+ppp/eiProg/pppSRandHCV	0x8b6c0	0x8b8d0		0	no C functions
+ppp/eiProg/pppSRandUpHCV	0x8b8d0	0x8bae0		0	no C functions
+ppp/eiProg/pppSRandDownHCV	0x8bae0	0x8bc18		0	no C functions
+ppp/eiProg/pppEiWindFun	0x8bc18	0x8bd80	-17e0	1	ok
+ppp/eiProg/pppEiWfacc	0x8bd80	0x8bf98		0	no C functions
+ppp/eiProg/pppDrawShapeField	0x8bf98	0x8bfb0		3	differs: pppDrawShapeFieldDraw,pppDrawShapeFieldCon,pppDrawShapeFieldDes
+ppp/eiProg/pppDrawMdlSea	0x8bfb0	0x8bfc8		3	differs: pppDrawMdlSeaDraw,pppDrawMdlSeaCon,pppDrawMdlSeaDes
+ppp/eiProg/pppMoveLoop	0x8bfc8	0x8c0e0		0	no C functions
+ppp/eiProg/pppAngMoveLoop	0x8c0e0	0x8c1f8	-17e8	3	ok
+ppp/eiProg/pppSclMoveLoop	0x8c1f8	0x8c310		0	no C functions
+ppp/eiProg/pppMatrixLoop	0x8c310	0x8c410		0	no C functions
+ppp/eiProg/pppPointLoop	0x8c410	0x8c558		4	differs: func_0018C410,pppPointLoopCon,pppPointLoopCon2
+ppp/eiProg/pppAngleLoop	0x8c558	0x8c6a0	-17e8	4	ok
+ppp/eiProg/pppScaleLoop	0x8c6a0	0x8c7e8		4	differs: func_0018C6A0,pppScaleLoopCon,pppScaleLoopCon2
+ppp/eiProg/pppDrawMatrixLoop	0x8c7e8	0x8c818		1	differs: pppDrawMatrixLoopCalc
+ppp/eiProg/pppDrawMdlLoop	0x8c818	0x8cc58		4	differs: pppDrawMdlLoopCon,pppDrawMdlLoopCon2,pppDrawMdlLoopDes
+ppp/eiProg/pppDrawMdlLoopZ	0x8cc58	0x8d0c8		4	differs: pppDrawMdlLoopZCon,pppDrawMdlLoopZCon2,pppDrawMdlLoopZDes
+ppp/eiProg/pppMatrixLoopXYZ	0x8d0c8	0x8d1c8		0	no C functions
+ppp/eiProg/pppMatrixLoopXZY	0x8d1c8	0x8d2c8		0	no C functions
+ppp/eiProg/pppMatrixLoopYXZ	0x8d2c8	0x8d3c8		0	no C functions
+ppp/eiProg/pppMatrixLoopYZX	0x8d3c8	0x8d4c8		0	no C functions
+ppp/eiProg/pppMatrixLoopZXY	0x8d4c8	0x8d5c8		0	no C functions
+ppp/eiProg/pppMatrixLoopZYX	0x8d5c8	0x8d6c8		0	no C functions
+ppp/keProg/pppKeTh	0x8d6c8	0x8dd18		1	has own data
+ppp/keProg/pppKeThTp	0x8dd18	0x8de48		0	no C functions
+ppp/keProg/pppKeThRes	0x8de48	0x8de78	-17f0	1	ok
+ppp/keProg/pppKeThRes8	0x8de78	0x8dea8	-17f0	1	ok
+ppp/keProg/pppKeThRes8x4	0x8dea8	0x8ded8	-17f0	1	ok
+ppp/keProg/pppKeThRes8x128	0x8ded8	0x8df08	-17f0	1	ok
+ppp/keProg/pppKeThRes16	0x8df08	0x8df38	-17f0	1	ok
+ppp/keProg/pppKeThRes16x4	0x8df38	0x8df68	-17f0	1	ok
+ppp/keProg/pppKeThRes16x64	0x8df68	0x8df98	-17f0	1	ok
+ppp/keProg/pppKeThRes24	0x8df98	0x8dfc8	-17f0	1	ok
+ppp/keProg/pppKeThRes24x4	0x8dfc8	0x8dff8	-17f0	1	ok
+ppp/keProg/pppKeThRes32	0x8dff8	0x8e028	-17f0	1	ok
+ppp/keProg/pppKeThRes32x4	0x8e028	0x8e058	-17f0	1	ok
+ppp/keProg/pppKeThRes32x32	0x8e058	0x8e088	-17f0	1	ok
+ppp/keProg/pppKeThRes40	0x8e088	0x8e0b8	-17f0	1	ok
+ppp/keProg/pppKeThRes40x4	0x8e0b8	0x8e0e8	-17f0	1	ok
+ppp/keProg/pppKeThRes48	0x8e0e8	0x8e118	-17f0	1	ok
+ppp/keProg/pppKeThRes48x4	0x8e118	0x8e148	-17f0	1	ok
+ppp/keProg/pppKeThRes64	0x8e148	0x8e178	-17f0	1	ok
+ppp/keProg/pppKeThRes64x4	0x8e178	0x8e1a8	-17f0	1	ok
+ppp/keProg/pppKeThRes64x16	0x8e1a8	0x8e1d8	-17f0	1	ok
+ppp/keProg/pppKeThRes128	0x8e1d8	0x8e208	-17f0	1	ok
+ppp/keProg/pppKeThRes128x4	0x8e208	0x8e238	-17f0	1	ok
+ppp/keProg/pppKeThRes128x8	0x8e238	0x8e268	-17f0	1	ok
+ppp/keProg/pppKeThRes255	0x8e268	0x8e298	-17f0	1	ok
+ppp/keProg/pppKeThRes255x4	0x8e298	0x8e2c8	-17f0	1	ok
+ppp/keProg/pppKeThHitBorn	0x8e2c8	0x8e4e0		0	no C functions
+ppp/keProg/pppKeThSft	0x8e4e0	0x8e828		0	no C functions
+ppp/keProg/pppKeBornRnd	0x8e828	0x8ecd8		0	no C functions
+ppp/keProg/pppKeBornRnd2	0x8ecd8	0x8ef00		0	no C functions
+ppp/keProg/pppKeBornRnd3	0x8ef00	0x8f160		0	no C functions
+ppp/keProg/pppKeBornRnd4	0x8f160	0x8f688		0	no C functions
+ppp/keProg/pppKeBornRnd5	0x8f688	0x8fab8		0	has own data
+ppp/keProg/pppKeBornRnd6	0x8fab8	0x8fda0		0	no C functions
+ppp/keProg/pppKeBornPtCmpl	0x8fda0	0x8ffb8		0	no C functions
+ppp/keProg/pppKeMvYpEff	0x8ffb8	0x90128		0	has own data
+ppp/keProg/pppKeMdlTfd	0x90128	0x90348		0	no C functions
+ppp/keProg/pppKeMdlTfdUv	0x90348	0x90618		0	no C functions
+ppp/keProg/pppKeMdlTfd2	0x90618	0x90838		0	no C functions
+ppp/keProg/pppKeMdlTfdUv2	0x90838	0x90b08		0	no C functions
+ppp/keProg/pppKeMdlDtt	0x90b08	0x91578		0	no C functions
+ppp/keProg/pppKeMdlBmp	0x91578	0x91590		3	differs: pppKeMdlBmpDraw,pppKeMdlBmpCon,pppKeMdlBmpCon2
+ppp/keProg/pppKeAcmSolid	0x91590	0x91598		1	differs: pppKeAcmSolidEnd
+ppp/keProg/pppKeShpTail	0x91598	0x91ee8		0	no C functions
+ppp/keProg/pppKeShpTail2	0x91ee8	0x927b0		0	no C functions
+ppp/keProg/pppKeShpTail3	0x927b0	0x93450		0	no C functions
+ppp/keProg/pppKeShpTailPht	0x93450	0x93470		4	differs: pppKeShpTailPhtCalc,pppKeShpTailPhtDraw,pppKeShpTailPhtCon
+ppp/keProg/pppKeShpTailLc	0x93470	0x934b0		2	differs: pppKeShpTailLcCalc,pppKeShpTailLcDraw
+ppp/keProg/pppKeShpDtt	0x934b0	0x937f0		1	differs: pppKeShpDttCalc
+ppp/keProg/pppKeLnsLp	0x937f0	0x939f8	-19b0	2	ok
+ppp/keProg/pppKeLnsArnd	0x939f8	0x93c80		1	differs: pppKeLnsArndCon
+ppp/keProg/pppKeLnsClm	0x93c80	0x93f10		1	differs: pppKeLnsClmCon
+ppp/keProg/pppKeLnsCrn	0x93f10	0x94170		1	differs: pppKeLnsCrnCon
+ppp/keProg/pppKeLnsFls	0x94170	0x94810		1	differs: pppKeLnsFlsCon
+ppp/keProg/pppKeLnsLpT	0x94810	0x949d0		1	differs: pppKeLnsLpTDes
+ppp/keProg/pppKeLnsArndT	0x949d0	0x94c28		1	differs: pppKeLnsArndTDes
+ppp/keProg/pppKeLnsClmT	0x94c28	0x94f20		1	differs: pppKeLnsClmTDes
+ppp/keProg/pppKeLnsCrnT	0x94f20	0x951d8		1	differs: pppKeLnsCrnTDes
+ppp/keProg/pppKeLnsFlsT	0x951d8	0x953f8		1	differs: pppKeLnsFlsTDes
+ppp/keProg/pppKeLnsLpSft	0x953f8	0x954d8		0	no C functions
+ppp/keProg/pppKeHmgEff	0x954d8	0x956e0		1	differs: pppKeHmgEffCon
+ppp/keProg/pppKeGrvTgt	0x956e0	0x95748		0	no C functions
+ppp/keProg/pppKeGrvEff	0x95748	0x958d0		1	differs: pppKeGrvEffCon
+ppp/keProg/pppKeHitBall	0x958d0	0x95920		1	differs: pppKeHitBallCon
+ppp/keProg/pppKeHitBorn	0x95920	0x95a98	-1ab8	1	ok
+ppp/keProg/pppKeHitChkPxB	0x95a98	0x95ce8		0	no C functions
+ppp/keProg/pppKeDrct	0x95ce8	0x95d48	-1ac0	2	ok
+ppp/keProg/pppKeMatSN	0x95d48	0x95e20		0	no C functions
+ppp/keProg/pppKeParMatR	0x95e20	0x95ec0		0	no C functions
+ppp/keProg/pppKeTkFade	0x95ec0	0x96398		0	no C functions
+ppp/keProg/pppKeDMat	0x96398	0x96410	-1b10	1	ok
+ppp/keProg/pppKeDMatFr	0x96410	0x964d8	-1b10	1	ok
+ppp/keProg/pppKeMatPht	0x964d8	0x96608		0	no C functions
+ppp/keProg/pppKeDMatPht	0x96608	0x966c8	-1b10	1	ok
+ppp/keProg/pppKeDMatPhtFr	0x966c8	0x967c8	-1b10	1	ok
+ppp/keProg/pppDrawMdl2	0x967c8	0x96970		0	no C functions
+ppp/keProg/pppDrawMdlSemi2	0x96970	0x96b08		0	no C functions
+ppp/keProg/pppDrawMdlTs2	0x96b08	0x96de8		0	no C functions
+ppp/keProg/pppKeZCrct	0x96de8	0x96ff8		0	no C functions
+ppp/keProg/pppKeZCrctShp	0x96ff8	0x97220		0	no C functions
+ppp/keProg/pppDrawMdl3	0x97220	0x97478		0	no C functions
+ppp/keProg/pppDrawMdlSemi3	0x97478	0x976c0		0	no C functions
+ppp/keProg/pppDrawMdlTs3	0x976c0	0x97a60		0	no C functions
+ppp/keProg/pppKeMdlTfd3	0x97a60	0x97ca8		0	no C functions
+ppp/keProg/pppKeMdlTfdUv3	0x97ca8	0x97fa0		0	no C functions
+ppp/keProg/pppDrawShapeX	0x97fa0	0x98208		1	differs: pppDrawShapeXCon
+ppp/keProg/pppKeShpTailX	0x98208	0x98b88		0	no C functions
+ppp/keProg/pppKeShpTail2X	0x98b88	0x99498		0	no C functions
+ppp/keProg/pppKeShpTail3X	0x99498	0x9a178		0	no C functions
+ppp/ryjProg/pppRyjDrawMatrixWorld	0x9a178	0x9a218		0	no C functions
+ppp/ryjProg/pppRyjDrawMatrixWorldFront	0x9a218	0x9a338		0	no C functions
+ppp/ryjProg/pppRyjDrawMatrixWorldNoRot	0x9a338	0x9a4a0		0	no C functions
+ppp/ryjProg/pppRyjDrawMatrixWorldWood	0x9a4a0	0x9a6c0		0	no C functions
+ppp/ryjProg/pppRyjMatrixWorldXYZ	0x9a6c0	0x9a890		0	no C functions
+ppp/ryjProg/pppRyjMatrixWorldXZY	0x9a890	0x9aa60		0	no C functions
+ppp/ryjProg/pppRyjMatrixWorldYXZ	0x9aa60	0x9ac30		0	no C functions
+ppp/ryjProg/pppRyjMatrixWorldYZX	0x9ac30	0x9ae00		0	no C functions
+ppp/ryjProg/pppRyjMatrixWorldZXY	0x9ae00	0x9afd0		0	no C functions
+ppp/ryjProg/pppRyjMatrixWorldZYX	0x9afd0	0x9b1a0		0	no C functions
+ppp/ryjProg/pppRyjMatrixNoRot	0x9b1a0	0x9bec8		0	has own data
+ppp/ryjProg/pppRyjDrawShipoly	0x9bec8	0x9d0f8	-1c38	2	has own data
+ppp/ryjProg/pppRyjDrawShipolyBone	0x9d0f8	0x9eab8	-1ca0	3	has own data
+ppp/ryjProg/pppRyjMegaBirth	0x9eab8	0x9f650	-1d30	2	has own data
+ppp/ryjProg/pppRyjMngFlag	0x9f650	0x9f950	-1d30	1	ok
+ppp/ryjProg/pppRyjMegaBirthPrize	0x9f950	0xa0040		0	no C functions
+ppp/ryjProg/pppRyjMegaPlace	0xa0040	0xa0cc8	-1d60	1	ok
+ppp/ryjProg/pppRyjMegaPlaceShape	0xa0cc8	0xa0d50		0	no C functions
+ppp/ryjProg/pppRyjMegaPlaceModel	0xa0d50	0xa0dd8		0	no C functions
+ppp/ryjProg/pppRyjMegaPlaceLamp	0xa0dd8	0xa2540		0	has own data
+ppp/ryjProg/pppRyjMegaBirthModel	0xa2540	0xa3070	-1dc8	1	has own data
+ppp/ryjProg/pppRyjDrawKekoto	0xa3070	0xa3bc0		0	no C functions
+ppp/ryjProg/pppRyjLight	0xa3bc0	0xa3da8	-1e20	2	ok
+ppp/ryjProg/pppRyjDrawMatrixWorldDtt	0xa3da8	0xa3e68		0	no C functions
+ppp/ryjProg/pppRyjDrawMatrixWorldDttFr	0xa3e68	0xa4db8		0	no C functions
+ppp/ryjProg/pppRyjMegaBirthFilter	0xa4db8	0xa67f0		4	differs: func_001A4F70,pppRyjMegaBirthFilterSta,pppRyjMegaBirthFilterCon
+ppp/ryjProg/pppRyjMegaBirthModelFilter	0xa67f0	0xa6ff8		4	differs: func_001A69A8,pppRyjMegaBirthModelFilterSta,pppRyjMegaBirthModelFilterCon
+ppp/stdProg/pppGetRotMatrixX	0xa6ff8	0xa7078	-1f28	1	ok
+ppp/stdProg/pppGetRotMatrixY	0xa7078	0xa70f8	-1f28	1	ok
+ppp/stdProg/pppGetRotMatrixZ	0xa70f8	0xa7178		1	differs: pppGetRotMatrixZ
+ppp/stdProg/pppGetRotMatrixXZY	0xa7178	0xa7208	-1f28	1	ok
+ppp/stdProg/pppGetRotMatrixYZX	0xa7208	0xa7298	-1f28	1	ok
+ppp/stdProg/pppGetRotMatrixYXZ	0xa7298	0xa7328	-1f28	1	ok
+ppp/stdProg/pppGetRotMatrixZXY	0xa7328	0xa73b8	-1f28	1	ok
+ppp/stdProg/pppGetRotMatrixZYX	0xa73b8	0xa7448	-1f28	1	ok
+ppp/xberry	0xa7448	0xa87a8		5	several shifts
+ppp/xpear	0xa87a8	0xa9280		0	has own data
+ppp/draw/draw	0xa9280	0xac9a0		3	has own data
+ppp/draw/global	0xac9a0	0xacf78	-20a8	8	has own data
+ppp/draw/md	0xacf78	0xad188		2	differs: set_ztest_off,set_invisible
+ppp/draw/md0	0xad188	0xbbcd8		0	has own data
+gumi	0xbbcd8	0xbd0b8		37	has own data
+xbuffalo	0xc1680	0xc21b8	-1988	6	has own data
+xkinetic	0xc21b8	0xc36a8	-1988	10	has own data
+xflamingo	0xc36a8	0xc5d88		2	several shifts
+xhumungus	0xc8470	0xdee78		247	differs: func_001CC520,func_001D1EE0,func_001D1F08
+xstuck	0xdee78	0xdf198		0	has own data
+xquack	0xed878	0xeed08	-10b8	40	has own data
+xtango	0xef210	0xf0c30		47	differs: func_001EF878,func_001EF9E0,func_001EFA18
+xbiscuit	0xf0c30	0xf3990		36	has own data
+xmeowp	0xf3990	0xf4890		26	has own data
+xpotato	0x115a88	0x1197e8		36	has own data
+xrodent	0x1197e8	0x11a3d0		0	has own data
+xcursed	0x12f578	0x12f808	+3558	2	has own data
+memcard	0x1304d8	0x133078		37	has own data
+xcapy	0x144490	0x144c38	+34a0	7	has own data
+xmonitor	0x146b50	0x147778		0	has own data
+xpackage	0x147778	0x148548	+3460	30	has own data
+xjockey	0x148548	0x14a010	+3460	13	has own data
+disk	0x14a010	0x14aaa8		23	has own data

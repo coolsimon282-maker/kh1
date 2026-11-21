@@ -259,16 +259,16 @@ s32 func_001CE858(Script* arg0) {
     return 2;
 }
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001CB130);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001CCD30);
 #endif
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001CB1A8);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001CCDA8);
 #endif
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001CB1F0);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001CCDF0);
 #endif
 
 void func_001CE898(Script* arg0) {
@@ -600,7 +600,7 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1D70);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1E20);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D1EE0(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1EE0);
 #else
@@ -612,7 +612,7 @@ s32 func_001D1EE0(Script* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D1F08(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1F08);
 #else
@@ -624,7 +624,7 @@ s32 func_001D1F08(Script* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D1F30(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1F30);
 #else
@@ -713,14 +713,24 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23A8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23D8);
 
+#ifdef VERSION_FM
+void func_001D2440(void);
+INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2440);
+#else
 void func_001D2440(void) {
     func_F20000(0, 0);
 }
+#endif
 
+#ifdef VERSION_FM
+s32 func_001D2460(void);
+INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2460);
+#else
 s32 func_001D2460(void) {
     func_00120590(D_0048A3A0, func_F20000, func_001D2440, NULL);
     return 2;
 }
+#endif
 
 s32 func_001D2498(void) {
     D_0041F8BC = 0;
@@ -879,8 +889,8 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3B00);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3CF0);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001D0838);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D2468);
 #endif
 
 s32 func_001D3EF0(Script* arg0) {
@@ -901,7 +911,7 @@ s32 func_001D3F80(Script* arg0) {
     return 2;
 }
 
-#ifndef VERSION_EU
+#ifndef VERSION_FM
 s32 func_001D3FC8(Script* arg0) {
     func_001E2628(arg0->unk_174[arg0->unk_174[3] + 4]);
     arg0->unk_174[3]--;
@@ -1037,8 +1047,8 @@ s32 func_001D4FF8(Script* arg0) {
     return 2;
 }
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001D19E0);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D3610);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5068);
@@ -1170,7 +1180,7 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D65D0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6680);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D66F8(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D66F8);
 #else
@@ -1191,15 +1201,19 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6778);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6828);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001D3390);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D4FC0);
 #endif
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001D33E0);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D5010);
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D5060);
+#endif
+
+#ifdef VERSION_FM
 s32 func_001D68D8(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D68D8);
 #else
@@ -1210,7 +1224,7 @@ s32 func_001D68D8(Script* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D6920(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6920);
 #else
@@ -1283,7 +1297,7 @@ s32 func_001D6DF0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6E18);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D6EA8(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6EA8);
 #else
@@ -1449,7 +1463,7 @@ s32 func_001D7DD0(Script* arg0) {
     return 2;
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001D7E18(void);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7E18);
 #else
@@ -2073,7 +2087,7 @@ s32 func_001DBA00(void) {
     return 2;
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001DBA30(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DBA30);
 #else
@@ -2145,7 +2159,7 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3B0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3D8);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001DC428(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC428);
 #else
@@ -2157,7 +2171,7 @@ s32 func_001DC428(Script* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001DC450(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC450);
 #else
@@ -2360,6 +2374,10 @@ s32 func_001DD9B0(void) {
     return 2;
 }
 
+#ifdef VERSION_FM
+s32 func_001DD9D0(void);
+INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD9D0);
+#else
 s32 func_001DD9D0(void) {
     s32 i, j = 0;
 
@@ -2370,14 +2388,19 @@ s32 func_001DD9D0(void) {
     } while (i < 0x47);
     return 2;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDA18);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001DA558);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC2E0);
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC308);
+#endif
+
+#ifdef VERSION_FM
 s32 func_001DDA78(Script* arg0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDA78);
 #else
@@ -2394,20 +2417,40 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDAA0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDAF0);
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC520);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDB58);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001DA798);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC7C0);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC800);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC868);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDC08);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001DAA38);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC9A0);
 #endif
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xhumungus", eu_func_001DAA78);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DCA00);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DCA48);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DCA88);
 #endif
 
 s32 func_001DDCB8(UNK_PTR arg0, s32 idx) {

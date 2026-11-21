@@ -47,7 +47,7 @@ extern void func_001C20B8();
 extern void func_00233968();
 extern void func_00248530();
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_001090D8(void);
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_001090D8);
 #else
@@ -94,11 +94,11 @@ void* func_00109340(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093A8);
 
-#ifdef VERSION_EU
-INCLUDE_ASM("asm/nonmatchings/xarcade", eu_func_001094D0);
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xarcade", fm_func_00109588);
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_001093D8(void);
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093D8);
 #else
@@ -151,7 +151,7 @@ void* func_00109B00(void) {
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109B28);
 s32 func_00109B28();
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void* func_00109C50(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C50);
 #else

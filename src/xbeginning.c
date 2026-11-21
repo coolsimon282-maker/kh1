@@ -111,7 +111,7 @@ void func_00100118(void) {
     *(u16*)(func_0011ED30(184990, func_001000E8) + 2) = -1;
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_00100168(void);
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100168);
 #else

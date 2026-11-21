@@ -324,10 +324,23 @@ void* func_00112C70(void) {
     return func_001093A8(9);
 }
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xblade", fm_func_00112FC0);
+#endif
+
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xblade", fm_func_00112FD0);
+#endif
+
+#ifdef VERSION_FM
+void* func_00112C90(void);
+INCLUDE_ASM("asm/nonmatchings/xblade", func_00112C90);
+#else
 void* func_00112C90(void) {
     func_00114420();
     return func_001093A8(8);
 }
+#endif
 
 s32 func_00112CB0(void) {
     return func_00155ED8(61, 3);

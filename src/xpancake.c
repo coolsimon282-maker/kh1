@@ -29,6 +29,10 @@ s32 func_001061D8(void) {
     return 0;
 }
 
+#ifdef VERSION_FM
+INCLUDE_ASM("asm/nonmatchings/xpancake", fm_func_001063F8);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106208);
 
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106230);
@@ -41,7 +45,7 @@ void func_001064E8(void) {
     D_0048E508 = 0;
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_001064F8(XFlapjack* arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_001064F8);
 #else
@@ -56,7 +60,7 @@ s32 func_001064F8(XFlapjack* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_00106578(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106578);
 #else
@@ -79,7 +83,7 @@ void func_00106578(s32 arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00106610(XFlapjack* arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106610);
 #else
@@ -94,7 +98,7 @@ s32 func_00106610(XFlapjack* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_00106690(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106690);
 #else
@@ -119,7 +123,7 @@ void func_00106728(void) {
     D_002B29D0 = 0;
 }
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00106738(XFlapjack* arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106738);
 #else
@@ -134,7 +138,7 @@ s32 func_00106738(XFlapjack* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_00106790(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106790);
 #else
@@ -157,7 +161,7 @@ void func_00106790(s32 arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_00106828(XFlapjack* arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106828);
 #else
@@ -172,7 +176,7 @@ s32 func_00106828(XFlapjack* arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 void func_00106880(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106880);
 #else

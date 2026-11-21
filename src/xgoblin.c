@@ -93,7 +93,7 @@ XGoblin* func_0011EE80(XGoblin* arg0, XGoblin* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EEB8);
 
-#ifdef VERSION_EU
+#ifdef VERSION_FM
 s32 func_0011EF58(XGoblin* arg0, s32 arg1);
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EF58);
 #else
