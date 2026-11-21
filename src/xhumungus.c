@@ -3273,7 +3273,14 @@ s32 func_001DD7B0(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD7F8);
+s32 func_001DD7F8(Script* arg0) {
+    ScriptX* x = (ScriptX*)arg0;
+
+    x->unk_328_2 = 1;
+    x->unk_2F4 = x->stack[x->top] * 2.0f / 100.0f;
+    x->top--;
+    return 6;
+}
 
 s32 func_001DD848(Script* arg0) {
     func_0013BF20(arg0->unk_174[arg0->unk_174[3] + 4]);
