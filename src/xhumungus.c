@@ -185,7 +185,9 @@ void func_001CC530(void) {
     func_0010BB10(&D_0062A130, (s32)func_001CC520);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC558);
+void func_001CC558(void) {
+    func_0010EDA0(&D_0062A130, D_003C5808, func_001CC530);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC588);
 
