@@ -244,6 +244,13 @@ void func_0011F980(u_long128* arg0, s32 arg1, u_long128* arg2) {
     ((u64*)arg0)[1] = 0xE;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F9B0);
+void func_0011F9B0(u_long128* arg0, s32 arg1, u_long128* arg2) {
+    u64 tag = (u64)(arg2 - arg0 - 1) | ((u64)arg1 << 28);
+
+    if ((u32)arg2 >= 0x70000000) {
+        tag |= (u64)1 << 63;
+    }
+    *(u64*)arg0 = tag;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F9E8);
