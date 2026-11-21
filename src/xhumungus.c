@@ -1226,7 +1226,15 @@ s32 func_001D5480(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D54B0);
+s32 func_001D54B0(Script* arg0) {
+    u8* p = *(u8**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        *(f32*)(*(u8**)(p + 0x130) + 0x18) = arg0->unk_174[arg0->unk_174[3] + 4];
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D54E8);
 
