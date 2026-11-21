@@ -349,7 +349,10 @@ void func_001CE928(Script* arg0) {
     arg0->unk_174[arg0->unk_174[3] + 4] *= arg0->unk_174[arg0->unk_174[3] + 5];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE960);
+void func_001CE960(Script* arg0) {
+    arg0->unk_174[3]--;
+    arg0->unk_174[arg0->unk_174[3] + 4] /= arg0->unk_174[arg0->unk_174[3] + 5];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE9A0);
 
