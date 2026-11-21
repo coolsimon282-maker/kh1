@@ -216,6 +216,13 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC848);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_init_fog_work);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC978);
+extern f32 D_002BC120;
+extern f32 D_002BC124;
+extern f32 D_00372800[2];
+
+void func_001AC978(void) {
+    D_00372800[0] = D_002BC120;
+    D_00372800[1] = D_002BC124;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/ppp/draw/draw", D_00489A60);
