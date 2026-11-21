@@ -80,7 +80,10 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
 #ifdef VERSION_FM
 s32 func_00216758(XWhiskey* arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216758);
+s32 func_00216758(XWhiskey* arg0) {
+    func_001F9010(23);
+    return func_001F9438(arg0, 0, 174, 12, *(s32*)((u8*)arg0 + 0x24), 17, 0x80C87850);
+}
 #else
 s32 func_00216758(XWhiskey* arg0) {
     func_001F9B50(23);
