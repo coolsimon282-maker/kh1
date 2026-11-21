@@ -406,7 +406,11 @@ void func_00129F40(XAudArg* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129F60);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129F88);
+s32 func_00137618(s32);
+
+void func_00129F88(XAudArg* arg0) {
+    arg0[0].s = func_00137618(arg0[0].s);
+}
 
 void func_00137448(void*);
 
