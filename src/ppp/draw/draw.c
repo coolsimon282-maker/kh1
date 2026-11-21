@@ -1,5 +1,7 @@
 #include "common.h"
 #include "ppp/draw.h"
+#include "libgraph.h"
+#include "eekernel.h"
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9280);
 
@@ -34,7 +36,30 @@ DrawNode* func_001AA940(DrawNodeList* list) {
     return node;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", KeThResHd_Init);
+typedef struct {
+    /* 0x0 */ u8 count;
+    /* 0x1 */ u8 size;
+    /* 0x2 */ u16 stride;
+    /* 0x4 */ u32* first;
+    /* 0x8 */ u32 pad[2];
+} KeThResHd;
+
+void KeThResHd_Init(KeThResHd* hd, u8 count, u8 size) {
+    u32* p;
+    s32 stride;
+    s32 i;
+
+    hd->count = count;
+    hd->size = size;
+    hd->stride = stride = (u8)(size - 1) * 48 + 0x80;
+    hd->first = p = (u32*)(hd + 1);
+    for (i = count - 1; i > 0; i--) {
+        u32* q = p;
+        p = (u32*)((u8*)p + stride);
+        *q = (u32)p;
+    }
+    *p = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA9C8);
 
