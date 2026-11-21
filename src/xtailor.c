@@ -7,6 +7,9 @@
 #include "libvu0.h"
 #include "sdk/libcdvd.h"
 
+extern s32 D_002BBD48[];
+extern s32 D_002BBD90[];
+
 extern s32 D_004D6B20[];
 
 extern s32 D_002A30D0;
@@ -155,7 +158,16 @@ void func_0010F720(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F768);
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FA30);
+void func_0010FA30(s32* arg0) {
+    s32* p = arg0 + 4;
+    s32 i;
+
+    for (i = 0; i < 17; i++) {
+        D_002BBD48[i] = (s32)arg0 + p[0];
+        D_002BBD90[i] = p[1];
+        p += 2;
+    }
+}
 
 void func_0010FA88(void) {
     void* src = func_00155ED8(0x34, 0xC);
