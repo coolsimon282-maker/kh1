@@ -2425,8 +2425,15 @@ s32 func_001DB578(Script* arg0) {
     return 2;
 }
 
-void func_001DB5D0(); // temp for next function
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB5D0);
+void func_00245280(s32, void*);
+
+s32 func_001DB5D0(void) {
+    if (!((s32)(*(u64*)&D_0038CD00[2] >> 2) & 1)) {
+        return 4;
+    }
+    func_00245280(1, D_002E26A0[0]);
+    return 0;
+}
 
 s32 func_001DB618(void) {
     func_0011ED30(50002, func_001DB5D0);
