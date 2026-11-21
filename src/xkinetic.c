@@ -33,7 +33,14 @@ s32 func_001C22E8(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C22F0);
+s32 func_001C22F0(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->unk_270[arg1] = vm->stack[vm->sp];
+    vm->unk_2F0 = arg1;
+    vm->sp--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2328);
 
