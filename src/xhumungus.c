@@ -767,7 +767,15 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0B98);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0C98);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0D98);
+s32 func_001D0D98(Script* arg0) {
+    ScriptMsg msg;
+
+    msg.unk_00 = 24;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    func_001C4640(&msg);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0DE0);
 
