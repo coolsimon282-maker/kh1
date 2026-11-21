@@ -79,7 +79,13 @@ s32 func_0010D130(char* s) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D168);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D218);
+s16 func_0010D218(s32* pos, u8* buf) {
+    s32 i = *pos;
+    s32 lo = buf[++i];
+    s32 hi = buf[++i];
+    *pos = i;
+    return lo + (hi << 8);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D250);
 
