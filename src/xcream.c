@@ -52,7 +52,17 @@ void func_00128D40(s32* arg0) {
     func_0012B850(*arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00128D58);
+typedef struct {
+    /* 0x0 */ s32 unk_0;
+    /* 0x4 */ XCreamUnk8CA8 unk_4;
+} XCreamUnk8D58;
+
+void func_00128D58(XCreamUnk8D58* arg0) {
+    if (arg0->unk_0 != 0) {
+        func_0012B850(arg0->unk_0);
+    }
+    arg0->unk_0 = func_00128CA8(&arg0->unk_4, arg0->unk_4.unk_4);
+}
 
 void func_00128DA0(void) {
     func_0012B850(D_0051C6C4);
