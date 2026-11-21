@@ -34,6 +34,23 @@ void func_001F0C28(void);
 extern void func_0021D2B0();
 extern void func_0022F888();
 
+typedef struct {
+    /* 0x00 */ char unk_00[0x30];
+    /* 0x30 */ s8 unk_30;
+} XTangoUnk30;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ char unk_04[0xE0];
+} XTangoUnkE4; // size = 0xE4
+
+extern XTangoUnkE4 D_003E3E50[];
+extern XTangoUnk30* func_001496C8(void);
+void fm_func_00111B10(void);
+void fm_func_00111B48(void);
+void fm_func_00111B90(void);
+void fm_func_00111BE8(void);
+
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF210);
 u32 func_001EF210(); // temporary for following functions, changes signature to unsigned
 
@@ -66,14 +83,28 @@ u32 func_001EF448(void) {
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF488);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtango", fm_func_001EE428);
+void fm_func_001EE428(void) {
+    fm_func_00111B10();
+}
 #endif
 
+#ifdef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF530);
+#else
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF530);
+#endif
 
+#ifdef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
+#else
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
+#endif
 
+#ifdef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
+#else
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF708);
 
