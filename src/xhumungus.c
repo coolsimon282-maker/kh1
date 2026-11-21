@@ -2002,7 +2002,9 @@ void func_001DB168(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB198);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB218);
+s32 func_001DB218(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 45) & 1) ? 4 : 2;
+}
 
 void func_001DB238(void) {
 }
