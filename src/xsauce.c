@@ -166,7 +166,21 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EBE0);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010ED10);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EDA0);
+typedef struct {
+    /* 0x00 */ char unk_00[0x80];
+    /* 0x80 */ s32 unk_80;
+    /* 0x84 */ s32 unk_84;
+    /* 0x88 */ char unk_88[0xA];
+    /* 0x92 */ u8 unk_92;
+    /* 0x93 */ u8 unk_93;
+} XSauceUnk;
+
+void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
+    arg0->unk_80 = arg2;
+    arg0->unk_84 = arg1;
+    arg0->unk_93 &= ~1;
+    arg0->unk_92 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EDC0);
 
