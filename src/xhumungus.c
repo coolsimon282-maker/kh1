@@ -2517,7 +2517,9 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD170);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD1E0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD250);
+s32 func_001DD250(void) {
+    return D_003773C4() ? 2 : 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD288);
 
