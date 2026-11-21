@@ -180,10 +180,9 @@ void func_00128F48(void) {
 void func_00128F50(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128F58);
-// void func_00128F58(f32* arg0) {
-//     *arg0 = func_00120AC8((*arg0 / 180.0f) * PI);
-// }
+void func_00128F58(f32* arg0) {
+    *arg0 = func_00120AC8((*arg0 / 180.0f) * PI);
+}
 
 void func_00128FA8(f32* arg0) {
     D_002B8348 = *arg0;
