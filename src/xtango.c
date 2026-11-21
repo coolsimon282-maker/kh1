@@ -374,7 +374,9 @@ s32 func_001EFEE0(s32 arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFF08);
+s32 func_001EFF08(void) {
+    return func_001496C8()->unk_30;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFF28);
 
