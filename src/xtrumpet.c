@@ -98,7 +98,19 @@ void func_001113E8(void) {
     func_001809C8(&D_002B90B0->unk_4C);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111408);
+void func_00111408(s32 arg0, s32 arg1, s32 arg2) {
+    s32 i;
+    s32 ofs;
+
+    if (arg0 == 20) {
+        return;
+    }
+    ofs = 0;
+    for (i = 0; i < arg0; i++) {
+        ofs += D_002BCB68[i];
+    }
+    D_002B90B0->unk_6C[ofs + arg1] = arg2;
+}
 
 s8 func_00111468(s32 arg0, s32 arg1) {
     s32 i;
