@@ -84,7 +84,35 @@ void func_00247BA8(XPackageUnk7BA8* arg0, s32* arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BF8);
+// four GS XYZ vertices (x, y, z, 0) of a rectangle, offset by (0x700, 0x740) pixels
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xA0];
+    /* 0xA0 */ s32 vtx[4][4];
+} XPackageQuad;
+
+void func_00247BF8(XPackageQuad* q, s32 x, s32 y, s32 w, s32 h) {
+    s32 x0 = (x << 4) + 0x7000;
+    s32 y0 = (y << 4) + 0x7400;
+    s32 y1 = ((y + h) << 4) + 0x7400;
+    s32 x1 = ((x + w) << 4) + 0x7000;
+
+    q->vtx[0][0] = x0;
+    q->vtx[0][1] = y0;
+    q->vtx[0][2] = -0x100;
+    q->vtx[0][3] = 0;
+    q->vtx[1][0] = x0;
+    q->vtx[1][1] = y1;
+    q->vtx[1][2] = -0x100;
+    q->vtx[1][3] = 0;
+    q->vtx[2][0] = x1;
+    q->vtx[2][1] = y0;
+    q->vtx[2][2] = -0x100;
+    q->vtx[2][3] = 0;
+    q->vtx[3][0] = x1;
+    q->vtx[3][1] = y1;
+    q->vtx[3][2] = -0x100;
+    q->vtx[3][3] = 0;
+}
 
 // arg0: a type byte, a 32-bit little-endian size, then the data
 s32 func_00247C68(u8* arg0, void* arg1, s32* arg2) {
