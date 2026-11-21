@@ -56,7 +56,11 @@ void func_001AADB8(DrawUnkAADB8* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AADC8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAF58);
+extern s32 D_00372760;
+
+void func_001AAF58(void) {
+    D_00372760 = (D_00372760 * 0x80D + 7) & 0xFFFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAF80);
 
