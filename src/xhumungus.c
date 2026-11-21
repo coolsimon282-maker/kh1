@@ -57,6 +57,7 @@ extern void func_F20000();
 extern u32 D_0038CD00[];
 extern u32* D_002C6440;
 extern s32 D_0038CDE4;
+extern s32 D_0038CDE8;
 
 struct XNoodle;
 void func_0010BB10(struct XNoodle*, s32);
@@ -1395,7 +1396,11 @@ s32 func_001D70A0(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D70C8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7178);
+s32 func_001D7178(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_0038CDE8;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D71A0);
 
