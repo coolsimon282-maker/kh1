@@ -14,4 +14,9 @@ void pppKeMdlDttCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     v->unk_8 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeMdlDtt", pppKeMdlDttCon2);
+void pppKeMdlDttCon2(pppPObject* pobj, pppCtrlTable* ctbl) {
+    VKeMdlDtt* v = (VKeMdlDtt*)&pobj->val[ctbl->useVal[0]];
+
+    v->unk_0 = 0;
+    v->unk_8 = 0;
+}
