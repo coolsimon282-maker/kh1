@@ -76,7 +76,15 @@ void func_001C1AB8(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AE0);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", fm_func_001C0078);
+void fm_func_001C0078(s32 arg0) {
+    if (arg0 >= 0) {
+        if (D_0037A16C[arg0].unk_00 != 0) {
+            D_0037A16C[arg0].unk_04 |= 1;
+        }
+    } else if (D_0037A168 != 0) {
+        D_0037A16C[D_0037A168].unk_04 |= 1;
+    }
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);
