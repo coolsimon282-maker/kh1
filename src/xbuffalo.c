@@ -97,11 +97,27 @@ void fm_func_001C06C0(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C20B8);
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C2110);
-
-#ifdef VERSION_FM
 extern s32 D_0037A178[4];
 
+void func_001C21B8(void);
+void func_001CEC98(void);
+void func_001E01B8(void);
+void func_001EA430(void);
+void func_001E4918(void);
+
+void func_001C2110(void) {
+    func_001C21B8();
+    func_001CEC98();
+    func_001E01B8();
+    func_001EA430();
+    func_001E4918();
+    D_0037A178[0] = 0;
+    D_0037A178[1] = 0;
+    D_0037A178[2] = 0;
+    D_0037A178[3] = 0;
+}
+
+#ifdef VERSION_FM
 void fm_func_001C07A8(void) {
     D_0037A178[0] = 0;
     D_0037A178[1] = 0;
