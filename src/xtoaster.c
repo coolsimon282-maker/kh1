@@ -239,7 +239,13 @@ void func_00124CA0(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124CD8);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtoaster", fm_func_001249D8);
+void fm_func_001249D8(void) {
+    XToaster* p = NULL;
+    func_00124CD8();
+    while ((p = func_001234A0(p)) != NULL) {
+        func_00124BC8(p);
+    }
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124DD0);
