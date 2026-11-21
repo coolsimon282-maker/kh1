@@ -2002,7 +2002,10 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB4A8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB4F8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB578);
+s32 func_001DB578(Script* arg0) {
+    arg0->unk_174[3]++;
+    return 2;
+}
 
 void func_001DB5D0(); // temp for next function
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB5D0);
