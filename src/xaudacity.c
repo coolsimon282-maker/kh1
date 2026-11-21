@@ -237,7 +237,11 @@ void func_00129138(XAudArg* arg0) {
     sceVu0AddVector(arg0[0].p, arg0[0].p, v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129188);
+void func_001216C8(s32, s32, s32, f32);
+
+void func_00129188(XAudArg* arg0) {
+    func_001216C8(arg0[0].s, arg0[1].s, arg0[0].s, (arg0[2].f / 180.0f) * PI);
+}
 
 void sceVu0ScaleVectorXYZ(f32*, f32*, f32);
 
