@@ -2659,7 +2659,13 @@ s32 func_001DD3D0(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD3F0);
+s32 func_001DD3F0(Script* arg0) {
+    if (D_002BCA00[1] & arg0->unk_174[arg0->unk_174[3] + 4]) {
+        arg0->unk_174[3]--;
+        return 2;
+    }
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD430);
 
