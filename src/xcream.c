@@ -27,7 +27,17 @@ INCLUDE_ASM("asm/nonmatchings/xcream", func_00127C20);
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00128250);
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00128488);
+extern s32 D_004F82C0;
+extern u8 D_004F8270[];
+
+XCream* func_0015ED80(s32 arg0, s32 (*arg1)(XCream*));
+
+s32 func_00128488(void) {
+    D_004F82C0 = 0;
+    func_0015ED80(0xEC53, func_001274C0)->unk_10 = D_004F8270;
+    func_0015ED80(0xB1BB, func_001274C0)->unk_10 = D_004F8270;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_001284E8);
 
