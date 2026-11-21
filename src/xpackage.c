@@ -161,7 +161,9 @@ void func_00248300() {
     func_0024AB00();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248318);
+s32 func_00248318(s32 arg0) {
+    return ((arg0 << 5) + arg0 * 0x10320 + 0x5E7) & ~0x3F;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248340);
 
