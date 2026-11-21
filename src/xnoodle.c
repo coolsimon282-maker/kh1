@@ -178,7 +178,14 @@ void func_0010C0E0(void) {
     WaitSema(D_00495258);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C110);
+void func_0010C110(void) {
+    struct SemaParam param;
+
+    iReferSemaStatus(D_00495258, &param);
+    if (param.numWaitThreads != 0) {
+        iSignalSema(D_00495258);
+    }
+}
 
 void func_0010C158(void) {
     void* p0 = func_00155ED8(0x34, 0xC);
