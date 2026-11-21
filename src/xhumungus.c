@@ -465,7 +465,15 @@ s32 func_001CF250(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF258);
+s32 fm_func_0011E340(s32);
+
+s32 func_001CF258(void) {
+    if (fm_func_0011E340(0) == 0) {
+        D_00375BC0 &= ~2;
+        return 2;
+    }
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF2A0);
 
