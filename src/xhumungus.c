@@ -612,7 +612,11 @@ s32 func_001D1958(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1978);
+s32 func_001D1978(void) {
+    D_002C1EA8 &= ~4;
+    D_002C1EA8 &= ~0x8000000;
+    return 2;
+}
 
 s32 func_001D19A8(void) {
     D_002C1EA8 |= 4;
