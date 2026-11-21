@@ -38,7 +38,14 @@ INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BF8);
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247C68);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247CD8);
+extern void (*D_00469FC8[])(u8* arg0, s32 arg1, s32* arg2);
+
+s32 func_00247CD8(s32 arg0, u8* arg1) {
+    s32 ret;
+
+    D_00469FC8[*arg1](arg1, arg0, &ret);
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D18);
 
