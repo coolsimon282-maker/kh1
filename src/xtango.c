@@ -483,7 +483,9 @@ u16 func_001F08D8(s32 arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0910);
+s32 func_001F0910(s32 arg0, s32 arg1) {
+    return func_001F0EF0(arg0 * 3 + arg1 + 0xD4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0938);
 
