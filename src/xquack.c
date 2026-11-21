@@ -268,7 +268,14 @@ void* func_001EEAF0(void* arg0) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EEB48);
+void* func_001EEB48(s32 arg0, s32 arg1) {
+    s32* buf = (s32*)&D_0062D980;
+
+    buf[0] = arg0;
+    buf[1] = arg1;
+    sceSifCallRpc(&D_003DE5C0, 50, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
+    return D_0062D980;
+}
 
 void* func_001EEBA8(void* arg0) {
     D_0062D980 = arg0;
