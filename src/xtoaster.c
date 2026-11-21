@@ -93,7 +93,10 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123768);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001237E8);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123830);
+void func_00123830(XToaster* arg0, s32 arg1) {
+    arg0->unk_37C[arg0->unk_388++] = arg0->unk_000;
+    arg0->unk_000 = arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123858);
 
