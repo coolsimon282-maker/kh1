@@ -85,7 +85,18 @@ void func_00122FF0(void) {
     func_0011EDD0(&D_004FA670, &D_004FA680, 0x50, 8);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00123020);
+void func_00123020(void) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
+
+    for (i = 30; i >= 0; i--) {
+        if (p->unk_00 != 0 && (p->unk_04 & 8)) {
+            func_00122B70((s32*)p);
+        }
+        p++;
+    }
+    func_00122FF0();
+}
 
 void func_00123088(void) {
     XOwlEnt* p = D_002C5C80;
