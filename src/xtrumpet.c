@@ -136,7 +136,29 @@ void func_00111298(void) {
     *(XTrumpetUnk4C*)&t->unk_4C = *func_0017F1C8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111328);
+typedef struct {
+    /* 0x0 */ s8 unk_0; // compared with D_002B8678
+    /* 0x1 */ s8 unk_1; // compared with D_002B8680
+    /* 0x2 */ s8 index; // for func_00111210
+    /* 0x3 */ s8 pad;
+} XTrumpetSel;
+
+extern XTrumpetSel D_002BCB80[39];
+
+void func_00111328(void) {
+    s32 i;
+    XTrumpetSel* p;
+
+    func_00111298();
+    for (i = 0; i < 39; i++) {
+        p = &D_002BCB80[i];
+        if (D_002B8678 == p->unk_0 && D_002B8680 == p->unk_1) {
+            func_00111210(p->index);
+            return;
+        }
+    }
+    func_00111198();
+}
 
 void func_001113A8(s32 index, f32* out) {
     out[0] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->x;
