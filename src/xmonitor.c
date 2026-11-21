@@ -1,8 +1,25 @@
 #include "common.h"
 
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+} MonitorSub;
+
+typedef struct {
+    u8 pad0[0x60];
+    s32 unk60;
+    MonitorSub sub[3];
+} Monitor;
+
 INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00246B50);
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00246C28);
+void func_00246C28(Monitor* m) {
+    m->unk60 |= 8;
+    m->sub[0].unk10 |= 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00246C48);
 
