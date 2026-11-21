@@ -143,7 +143,20 @@ void func_001811A8(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181200);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001812B0);
+void func_001812B0(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            pppPEtcData* e = D_00364130[i].pEtc;
+            if (e != NULL && *(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            func_00183EC8((ppvmng*)&D_00364130[i]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181340);
 
