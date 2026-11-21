@@ -667,7 +667,18 @@ void func_00129E78(XAudArg* arg0) {
     arg0[0].s = func_001237E8(arg0[0].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129EA8);
+void sceVu0ApplyMatrix(f32*, f32 (*)[4], f32*);
+
+void func_00129EA8(XAudArg* arg0) {
+    XAudObj* obj = arg0[0].obj;
+    if (obj->unk_1CC & 8) {
+        sceVu0CopyVector(arg0[1].p, obj->unk_450);
+        ((f32*)arg0[1].p)[3] = 0.0f;
+        sceVu0ApplyMatrix(arg0[1].p, obj->unk_0D0, arg0[1].p);
+    } else {
+        sceVu0CopyVector(arg0[1].p, obj->unk_030);
+    }
+}
 
 void func_00137440(void*, s32);
 
