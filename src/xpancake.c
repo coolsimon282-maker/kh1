@@ -67,10 +67,6 @@ s32 func_001064F8(XFlapjack* arg0) {
     return 0;
 }
 
-#ifdef VERSION_FM
-void func_00106578(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106578);
-#else
 void func_00106578(s32 arg0) {
     XFlapjack* p0;
     s32 val;
@@ -88,7 +84,6 @@ void func_00106578(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
-#endif
 
 #ifdef VERSION_FM
 s32 func_00106610(XFlapjack* arg0);
