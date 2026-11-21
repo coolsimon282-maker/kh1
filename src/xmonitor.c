@@ -85,7 +85,9 @@ void func_00247238(Monitor* m) {
     m->unk60 &= ~0x10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247250);
+s32 func_00247250(Monitor* m) {
+    return m->sub[2].unk10;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247258);
 
