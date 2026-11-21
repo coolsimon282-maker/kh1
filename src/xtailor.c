@@ -7,6 +7,8 @@
 #include "libvu0.h"
 #include "sdk/libcdvd.h"
 
+extern s32 D_004D6B20[];
+
 extern s32 D_002A30D0;
 extern s32 D_002B8170;
 extern s32 D_002B8240;
@@ -168,7 +170,12 @@ void func_0010FAE8(void) {
     memcpy(&D_004D0590, src, size);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB38);
+void* func_0010FB38(s32 arg0, s32 arg1) {
+    u8* p = (u8*)&D_004D0590 + D_004D6B20[arg0 * 2];
+    s32* q = (s32*)(p + 0x10);
+
+    return p + q[arg1 * 2];
+}
 
 void* func_0010FB68(void) {
     return func_0010FB38(D_002B8678, D_002B8680);
