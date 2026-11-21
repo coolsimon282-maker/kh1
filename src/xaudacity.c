@@ -804,7 +804,22 @@ void func_0012A270(XAudArg* arg0) {
     arg0[0].f = arg0[0].obj->unk_284;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A280);
+extern f32 D_002C58B0[4];
+s32 func_0013C2A8(s32);
+void func_0023E0B0(s32, s32);
+void func_00153D88(XAudObj*);
+
+void func_0012A280(XAudArg* arg0) {
+    XAudObj* obj = arg0[0].obj;
+    obj->unk_000 |= 0x240;
+    func_001358B8(obj, 10);
+    func_0014F658(obj, 8);
+    sceVu0CopyVector(obj->unk_3C0, D_002C58B0);
+    obj->unk_3B0 = 0;
+    obj->unk_370.raw |= 0x1000000000000000;
+    func_0023E0B0(func_0013C2A8(obj->unk_130->unk_4C), 3);
+    func_00153D88(obj);
+}
 
 void func_0012A308(XAudArg* arg0) {
     arg0[0].obj->unk_370.raw |= 0x10000000000000;
