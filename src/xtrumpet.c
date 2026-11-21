@@ -195,7 +195,28 @@ s8 func_00111468(s32 arg0, s32 arg1) {
     return D_002B90B0->unk_6C[ofs + arg1];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_001114B8);
+extern s32 D_002BBD90[];
+extern u8* D_002BBD48[];
+
+// D_002BBD48[group]: u8 count, count keys, then rows of count chars ('#' = skip, 'a'.. = value)
+void func_001114B8(s32 group, s32 row) {
+    u8* tbl;
+    u8* keys;
+    u8* vals;
+    s32 i;
+
+    if (D_002BBD90[group] == 0) {
+        return;
+    }
+    tbl = D_002BBD48[group];
+    keys = tbl + 2;
+    vals = keys + tbl[1] * (row + 1);
+    for (i = 0; i < tbl[1]; i++) {
+        if (vals[i] != '#') {
+            func_00111408(group, keys[i] - 1, (u8)(vals[i] - 'a'));
+        }
+    }
+}
 
 void func_00111580(s32 param1) {
     func_001114B8(D_002B8678, param1);
@@ -418,17 +439,21 @@ s32 func_00111C60(s32 param1) {
     return result;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C98);
-
 typedef struct {
     /* 0x00 */ u8 unk_00[0x10];
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ u8 unk_20[0x14];
+    /* 0x34 */ s32 time[2][4]; // fm_func_00111BE8, seconds, minutes, hours
 } XTrumpetUnk9288;
 
 extern XTrumpetUnk9288 D_004D9288;
+
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C98);
+
+
 extern s32 D_004D9260;
 
 s32 func_00111D98(void) {
