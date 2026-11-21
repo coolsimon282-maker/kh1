@@ -432,7 +432,11 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A038);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A078);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A098);
+s32 func_00131B08(s32);
+
+void func_0012A098(XAudArg* arg0) {
+    arg0[0].s = func_00131B08(arg0[0].s);
+}
 
 void func_0012A0C8(XAudArg* arg0) {
     arg0[0].s = arg0[0].obj->unk_130->unk_4E;
