@@ -285,7 +285,9 @@ s32 fm_func_002193F0(void) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219400);
+s32 fm_func_00219400(void) {
+    return fm_func_002193F0();
+}
 #endif
 
 #ifdef VERSION_FM
