@@ -221,7 +221,57 @@ s32 func_001AC148(s32 n) {
     return bits;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC180);
+typedef struct {
+    /* 0x00 */ u32 totalSize;
+    /* 0x04 */ u32 clutSize;
+    /* 0x08 */ u32 imageSize;
+    /* 0x0C */ u16 headerSize;
+    /* 0x0E */ u16 clutColors;
+    /* 0x10 */ u8 pictFormat;
+    /* 0x11 */ u8 mipMapTextures;
+    /* 0x12 */ u8 clutType;
+    /* 0x13 */ u8 imageType;
+    /* 0x14 */ s16 imageWidth;
+    /* 0x16 */ s16 imageHeight;
+    /* 0x18 */ u16 tex0Lo;
+    /* 0x1A */ u16 pad1A;
+    /* 0x1C */ u32 tex0Hi;
+    /* 0x20 */ u32 tex1[2];
+    /* 0x28 */ u8 regs[4];
+    /* 0x2C */ u32 texClut;
+} DrawTim2Picture;
+typedef struct {
+    /* 0x00 */ u8 pad[0xF];
+    /* 0x0F */ u8 unk_F;
+    /* 0x10 */ DrawTim2Picture pict;
+    /* 0x40 */ u8 data[0];
+} DrawTim2;
+extern u8 D_003727F0[];
+void func_001AC180(DrawTim2* tm) {
+    sceGsLoadImage li;
+    sceGsLoadImage clut;
+    DrawTim2Picture* pict = &tm->pict;
+    u8* data;
+
+    if (pict->imageSize != 0) {
+        s32 psm = D_003727F0[pict->imageType];
+        s32 dbp = pict->tex0Lo;
+        data = tm->data;
+        tm->unk_F = 0x6F;
+        sceGsSetDefLoadImage(&li, dbp & 0x3FFF, pict->regs[0] >> 2, psm,
+                             pict->regs[2] << 4, pict->regs[3] << 4, pict->imageWidth, pict->imageHeight);
+        sceGsSyncPath(0, 0);
+        FlushCache(0);
+        sceGsExecLoadImage(&li, (u_long128*)data);
+    }
+    if (pict->clutSize != 0) {
+        sceGsSetDefLoadImage(&clut, (pict->tex0Hi >> 5) & 0x3FFF, 1, D_003727F0[pict->clutType], 0, 0, 16,
+                             pict->clutSize / 64);
+        sceGsSyncPath(0, 0);
+        FlushCache(0);
+        sceGsExecLoadImage(&clut, (u_long128*)(data + pict->imageSize));
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC298);
 
