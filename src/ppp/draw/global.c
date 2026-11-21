@@ -2,6 +2,8 @@
 #include "sifdev.h"
 #include "ppp/draw.h"
 
+void op_oef2_set(void*, void*);
+
 void opc(void) {
 }
 
@@ -59,7 +61,9 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_file_size);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_oef2_set);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_oef2_set2);
+void op_oef2_set2(u8* p) {
+    op_oef2_set(p, p + *(s32*)(p + 0x3C));
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_oef2_set2_16);
 
