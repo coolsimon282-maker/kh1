@@ -2,6 +2,8 @@
 #include "ppp.h"
 #include "ppp/draw.h"
 
+extern void func_0011D1F8(s32, s32, s32);
+
 typedef struct {
     /* 0x00 */ char unk_00[0x10];
     /* 0x10 */ void (*func)(void*);
@@ -82,7 +84,20 @@ void initGraphicSystem(void) {
     op_init_fog_work();
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181040);
+void func_00181040(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            pppPEtcData* e = D_00364130[i].pEtc;
+            if (e != NULL && *(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            func_00183E78(&D_00364130[i]);
+        }
+    }
+}
 
 void func_001810D0(void) {
     s32 i;
