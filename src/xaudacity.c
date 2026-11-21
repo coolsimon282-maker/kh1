@@ -663,7 +663,10 @@ void func_0012A018(XAudArg* arg0) {
     func_00157818(arg0[0].p, arg0[1].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A038);
+void func_0012A038(XAudArg* arg0) {
+    func_0014F658(arg0[0].p, 7);
+    sceVu0ScaleVectorXYZ(arg0[0].obj->unk_3C0, arg0[1].p, ((f32*)arg0[1].p)[3]);
+}
 
 void func_0012A078(XAudArg* arg0) {
     XAudObj* obj = arg0[0].obj;
