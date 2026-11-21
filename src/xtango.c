@@ -516,7 +516,16 @@ s32 func_001F0650(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0680);
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F06E8);
+s32 func_001F06E8(void) {
+    s32 i;
+
+    for (i = 0; i < 48; i++) {
+        if (((XTangoUnk3010F8*)D_003010F8)->unk_599[i] == 0) {
+            break;
+        }
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0730);
 
