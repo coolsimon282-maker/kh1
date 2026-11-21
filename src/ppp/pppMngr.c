@@ -366,7 +366,14 @@ void func_00183E78(PppMngU* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EC8);
+void func_00183EC8(ppvmng* arg0) {
+    u8* p = *(u8**)((u8*)arg0 + 0x94);
+
+    if (p != NULL) {
+        *(s32*)(p + 0x14) = 0;
+        memset(arg0, 0, 0xC0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EF8);
 
