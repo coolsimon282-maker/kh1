@@ -181,7 +181,16 @@ b32 func_0011F0F8(XOtherCrown* arg0) {
     return arg0->unk_00 & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F108);
+s32 func_0011F108(XGoblin* arg0, s32 arg1) {
+    XGoblin* p;
+
+    for (p = arg0->unk_08; p != NULL; p = p->unk_08) {
+        if ((s32)p->unk_0C == arg1) {
+            return (s32)p;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F148);
 
