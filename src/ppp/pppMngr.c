@@ -237,7 +237,20 @@ void func_00182348(s32* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001823B8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182478);
+void func_00182478(s32* arg0) {
+    s32* p;
+    s32 n;
+    s32 i;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    n = *p++;
+    for (i = 0; i < n; i++) {
+        func_001821A8(*p++, 0);
+    }
+}
 
 void vramcache_clear(_VRAMCACHE* cache) {
     cache->dpd = NULL;
