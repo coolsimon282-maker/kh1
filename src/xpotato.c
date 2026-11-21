@@ -121,7 +121,15 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216D88);
 
 #ifdef VERSION_FM
 s32 func_00217038(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217038);
+s32 func_00217038(s32 arg0) {
+    s32 val = 204;
+    if (D_0063CF3C != 0) {
+        val = 205;
+        D_003E8E08 = func_001EF960(D_0063CF3C);
+    }
+    func_001F9010(23);
+    return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
+}
 #else
 s32 func_00217038(s32 arg0) {
     s32 val = 213;
