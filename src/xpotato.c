@@ -1,6 +1,8 @@
 #include "xtango.h"
 #include "xpotato.h"
 
+extern s32 D_002B6478;
+
 extern u32 D_003DE6A0;
 extern s32 D_003E3088;
 extern s32 D_003ED728;
@@ -297,7 +299,9 @@ void fm_func_00219418(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219428);
+s32 fm_func_00219428(void) {
+    return D_002B6478 == 2;
+}
 #endif
 
 #ifdef VERSION_FM
