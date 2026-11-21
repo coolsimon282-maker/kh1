@@ -747,7 +747,13 @@ void func_0012A328(XAudArg* arg0) {
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A360);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_0012A400);
+void func_F20000(s32, s32);
+
+void fm_func_0012A400(XAudArg* arg0) {
+    if ((D_002C1EA8 >> 13) & 1) {
+        func_F20000(6, arg0[0].s);
+    }
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A3D0);
