@@ -127,7 +127,10 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00128F98);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00128FB0);
+extern s32 D_00301088;
+void fm_func_00128FB0(XAudArg* arg0) {
+    arg0[0].s = D_00301088 & 7;
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128FB8);
