@@ -7,19 +7,10 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", KeBornRnd2);
 
-typedef struct {
-    /* 0x0 */ u16 unk_0;
-    /* 0x2 */ u8 unk_2;
-} XBerryUnk75B0;
-
-typedef struct {
-    /* 0x00 */ u8 unk_00[0x12];
-    /* 0x12 */ u16 unk_12;
-} XBerryUnk75B0Src;
-
-void func_001A75B0(XBerryUnk75B0* arg0, XBerryUnk75B0Src** arg1) {
-    arg0->unk_0 = (*arg1)->unk_12;
-    arg0->unk_2 = 0;
+// reads the u16 at 0x12 of the shape data (a count; maybe its number of frames)
+void func_001A75B0(KeLnsFlr* flr, pppShapeSt* shp) {
+    flr->cnt = ((u16*)shp->shape)[9];
+    flr->seqIdx = 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A75C8);
@@ -53,15 +44,9 @@ void KeLnsArnd_Init(KeLnsArnd* p) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A8248);
 
-typedef struct {
-    /* 0x0 */ s32 unk_0;
-    /* 0x4 */ XBerryUnk75B0Src** unk_4;
-    /* 0x8 */ XBerryUnk75B0 unk_8;
-} XBerryUnk84B8;
-
-void func_001A84B8(XBerryUnk84B8* arg0, XBerryUnk75B0Src** arg1) {
-    arg0->unk_4 = arg1;
-    func_001A75B0(&arg0->unk_8, arg1);
+void func_001A84B8(KeLnsCrn* p, pppShapeSt* shp) {
+    p->shp = shp;
+    func_001A75B0(&p->flr, shp);
 }
 
 void KeLnsCrn_Init(KeLnsCrn* p) {
