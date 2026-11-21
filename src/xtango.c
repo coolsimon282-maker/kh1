@@ -332,7 +332,19 @@ s32 fm_func_001EE900(s32 arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFC40);
+s32 func_001EFC40(s32 arg0, s32 arg1) {
+    s32 flags = func_001495C8(arg0, arg1);
+    s32 i;
+
+    if (flags & 1) {
+        for (i = 1; i < 7; i++) {
+            if ((flags >> i) & 1) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
 
 s32 func_001EFC98(s32 arg0) {
     return func_001EFAA8(arg0) != 13;
