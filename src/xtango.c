@@ -37,6 +37,11 @@ extern void func_0021D2B0();
 extern void func_0022F888();
 
 typedef struct {
+    /* 0x000 */ char unk_000[0x599];
+    /* 0x599 */ u8 unk_599[48];
+} XTangoUnk3010F8;
+
+typedef struct {
     /* 0x00 */ char unk_00[0x30];
     /* 0x30 */ s8 unk_30;
 } XTangoUnk30;
@@ -47,6 +52,16 @@ typedef struct {
 } XTangoUnkE4; // size = 0xE4
 
 extern XTangoUnkE4 D_003E3E50[];
+
+typedef struct {
+    /* 0x00 */ char unk_00[0xE0];
+    /* 0xE0 */ s32 unk_E0;
+} XTangoUnkE4b; // size = 0xE4
+
+extern XTangoUnkE4b D_003E3D70[];
+s32 func_001F0960(s32);
+extern s32 D_003E3D20[];
+extern u32 D_003E3D48[];
 extern XTangoUnk30* func_001496C8(void);
 void fm_func_00111B10(void);
 void fm_func_00111B48(void);
@@ -291,7 +306,19 @@ s32 func_001EFCC0(s32 arg0) {
     return func_001EFAA8(arg0) == 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFCE0);
+s32 func_001EFCE0(s32 arg0, s32 arg1) {
+    s32 type;
+
+    if (arg0 != 0) {
+        type = func_001EFAA8(arg0);
+        if (type >= 2 && type <= 11) {
+            if (type != D_003E3D20[arg1]) {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFD40);
 
@@ -474,7 +501,6 @@ XBravo* func_001F0808(s32 arg0) {
 }
 
 #ifdef VERSION_FM
-u32 func_001F0820(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0820);
 #else
 u32 func_001F0820(s32 arg0) {
@@ -486,7 +512,6 @@ u32 func_001F0820(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-u32 func_001F0860(s32 arg0);
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0860);
 #else
 u32 func_001F0860(s32 arg0) {
