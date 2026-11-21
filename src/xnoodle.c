@@ -186,7 +186,14 @@ void func_0010C158(void) {
     memcpy(&D_0048ED00, p0, val);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C1A8);
+void func_00109230(u8*, u8*);
+
+void func_0010C1A8(u8* p) {
+    u8* q = p + 0x10;
+    u8* data = q + *(u16*)(q + 0xC);
+
+    func_00109230(data, data + *(s32*)(q + 8));
+}
 
 s32 func_0010C1D0(s16 dest, u_long128* src) {
     sceGsSetDefLoadImage(&D_002B8700, dest, 1, SCE_GS_PSMCT32, 0, 0, 8, 2);
