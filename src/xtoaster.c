@@ -182,7 +182,12 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001245F0);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124BC8);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124CA0);
+void func_00124CA0(s32 arg0) {
+    XToaster* p = func_00123880(arg0);
+    if (p != NULL) {
+        func_00124BC8(p);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124CD8);
 
