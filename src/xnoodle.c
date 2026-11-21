@@ -160,7 +160,16 @@ void func_0010BF50(void (*arg0)(IOReadTask*)) {
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BF98);
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BFD8);
+void func_0010BFD8(void) {
+    XNoodleSlot* slot = (XNoodleSlot*)D_002B3AF0;
+    s32 i;
+
+    for (i = 0; i < 2; i++, slot++) {
+        slot->unk_0 = 0;
+        slot->unk_4 = 0;
+        slot->unk_8 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C010);
 
