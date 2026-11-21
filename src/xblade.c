@@ -1024,7 +1024,10 @@ s32 func_001145B0(XBladeHdr* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001145E8);
+s32 func_001145E8(s32 arg0, XBladeHdr* arg1, s32 arg2, s32 arg3) {
+    func_00108FD0(D_004D2AB0++, arg2, arg0, (u8*)arg1 + arg1->unk_20, arg3);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114638);
 // s32 func_00114638(sceVu0FMATRIX arg0, f32 arg1, s32 arg2, s32 arg3) {
