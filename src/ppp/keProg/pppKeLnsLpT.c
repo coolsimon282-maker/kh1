@@ -1,10 +1,15 @@
-#include "ppp.h"
+#include "ppp/pppKeLns.h"
 
 INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLpT", pppKeLnsLpTDraw);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLpT", pppKeLnsLpTCon);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLpT", pppKeLnsLpTCon2);
+void pppKeLnsLpTCon2(pppPObject* pobj, pppCtrlTable* ctbl) {
+    KeLnsLp* lp = (KeLnsLp*)&pobj->val[ctbl->useVal[0]];
+
+    lp->lVec[3] = 0;
+    lp->pow = 0;
+}
 
 void pppKeLnsLpTDes(void) {
 }
