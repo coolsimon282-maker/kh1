@@ -263,9 +263,33 @@ void func_00218A10(void) {
 }
 #endif
 
+#ifdef VERSION_FM
+u32 func_00218A38(s32 arg0) {
+    switch (arg0) {
+        case 0:
+            return D_003ED718->unk_00;
+        case 1:
+            return D_003ED718->unk_04;
+        case 2:
+            return D_003ED718->unk_08;
+        case 3:
+            return D_003ED718->unk_10;
+        case 4:
+            return D_003ED718->unk_14;
+        case 5:
+            return D_003ED718->unk_18;
+        case 6:
+        default:
+            return *(u32*)((u8*)D_003ED718 + 0x2C);
+    }
+}
+
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218AC0);
+#else
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A38);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218AC0);
+#endif
 
 u32 func_00218B48(void) {
     return D_003ED718->unk_00;
