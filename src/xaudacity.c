@@ -154,11 +154,10 @@ void func_00128E28(f32* arg0) {
     *arg0 = sinf(x);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E80);
-// void func_00128E80(f32* arg0) {
-//     f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
-//     *arg0 = cosf(x);
-// }
+void func_00128E80(f32* arg0) {
+    f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
+    *arg0 = cosf(x);
+}
 
 void func_00128ED8(f32* arg0) {
     *arg0 = func_00177D68();
