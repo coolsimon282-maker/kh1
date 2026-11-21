@@ -1087,7 +1087,14 @@ void func_0012AAE0(XAudArg* arg0) {
     arg0[0].s = func_001389E8(arg0[0].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012AB10);
+void func_00139170(s32, void*);
+
+void func_0012AB10(XAudArg* arg0) {
+    if ((s32)(arg0[1].b8->unk_08 >> 43) & 1) {
+        func_00138A78(arg0[0].s, arg0[1].p);
+    }
+    func_00139170(arg0[0].s, arg0[1].p);
+}
 
 s32 func_001235B8(s32, s32);
 
