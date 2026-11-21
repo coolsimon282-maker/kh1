@@ -15,14 +15,18 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9C50);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA7C0);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA868);
-
 typedef struct DrawNode {
     /* 0x00 */ struct DrawNode* next;
     /* 0x04 */ struct DrawNode* prev;
-    /* 0x08 */ u8 pad8[0x28];
+    /* 0x08 */ struct DrawNode* link;
+    /* 0x0C */ struct DrawNode* linkPrev;
+    /* 0x10 */ u8 pad10[0x20];
     /* 0x30 */ s32 unk_30;
-    /* 0x34 */ u8 pad34[0xA];
+    /* 0x34 */ u16 unk_34;
+    /* 0x36 */ u8 pad36[2];
+    /* 0x38 */ u16 unk_38;
+    /* 0x3A */ u8 pad3A[2];
+    /* 0x3C */ u16 unk_3C;
     /* 0x3E */ u16 flags;
     /* 0x40 */ f32 unk_40[4];
     /* 0x50 */ u8 pad50[0xC];
@@ -34,6 +38,33 @@ typedef struct {
     /* 0x0 */ s32 unk_0;
     /* 0x4 */ DrawNode* free;
 } DrawNodeList;
+
+// 0x30-byte entries from 0x40 of a DrawNode (func_001A8770 is in xberry)
+typedef struct {
+    /* 0x00 */ u8 data[0x30];
+} DrawNodeEntry;
+
+void func_001A8770(DrawNodeEntry*, s32);
+
+void func_001AA868(DrawNode* node) {
+    DrawNodeEntry* e = (DrawNodeEntry*)node->unk_40;
+    s32 flags = node->flags & 0x20;
+    s32 i;
+
+    for (i = node->unk_3C; i > 0; i--) {
+        func_001A8770(e++, flags);
+    }
+    e = (DrawNodeEntry*)node->unk_40 + node->unk_34;
+    for (i = node->unk_38; i > 0; i--) {
+        func_001A8770(e++, flags);
+    }
+    if (node->linkPrev != NULL) {
+        if (node->link != NULL) {
+            node->link->linkPrev = node->linkPrev;
+        }
+        node->linkPrev->next = node->link;
+    }
+}
 
 DrawNode* func_001AA940(DrawNodeList* list) {
     DrawNode* node = list->free;
