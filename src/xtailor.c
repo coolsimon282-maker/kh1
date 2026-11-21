@@ -7,6 +7,9 @@
 #include "libvu0.h"
 #include "sdk/libcdvd.h"
 
+extern u64 D_002BC918;
+extern s32 D_002BC980;
+
 extern s32 D_002BBD48[];
 extern s32 D_002BBD90[];
 
@@ -214,7 +217,11 @@ void func_0010FD40(s16 w, s16 h) {
     sceGsPutDispEnv(&D_004D2610);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FDB8);
+void func_0010FDB8(s32 arg0) {
+    D_002BC918 = SCE_GS_SET_RGBAQ(arg0, arg0, arg0, 0x80, 1);
+    func_00106948(&D_002BC980);
+    func_0010FD40(0x200, 0x1BF);
+}
 
 void func_0010FE10(u32* x, u32* y) {
     *x = D_004D2610.display.DX;
