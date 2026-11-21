@@ -14,7 +14,24 @@ void func_00247778(s32 arg0, XWhiskey* arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_002477A8);
+typedef struct {
+    /* 0x00 */ s32 unk_00[4];
+    /* 0x10 */ u8 unk_10[0x50];
+    /* 0x60 */ u64 unk_60;
+} XPackageUnk77A8;
+
+void func_00247128(XPackageUnk77A8* arg0, s32* arg1);
+
+void func_002477A8(XPackageUnk77A8* arg0, s32* arg1) {
+    if ((arg0->unk_60 & 0x14) == 0x14) {
+        func_00247128(arg0, arg1);
+        return;
+    }
+    arg1[0] = arg0->unk_00[0];
+    arg1[1] = arg0->unk_00[1];
+    arg1[2] = arg0->unk_00[2];
+    arg1[3] = arg0->unk_00[3];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247808);
 
