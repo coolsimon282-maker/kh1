@@ -250,6 +250,7 @@ def place_file(n, forced=None):
     for name, fstart, objw, relocs in cfuncs:
         if name in wraps or name not in placed: continue
         base, pend = placed[name], {}
+        frefs, differs = {}, False
         for off, typ, sym in relocs:
             if sym == '.text': continue
             if sym.startswith('.') and sym not in ('.data', '.rodata'): return None, None, None, None, 'reloc against ' + sym
@@ -267,7 +268,13 @@ def place_file(n, forced=None):
                 sec_start[sec].add(addr - soff); own_refs[sec].add(addr)
                 if not sym.startswith('.'): refs[sym] = addr
                 continue
-            if refs.setdefault(sym, addr) != addr: return None, None, None, None, 'two EU addresses for ' + sym
+            # the same instruction pointing at something else than other code says (or than this file's other
+            # functions say): the C function differs in EU after all (call/variable targets are masked when the
+            # code is compared). EU takes it from its own assembly.
+            if names.get(sym, addr) != addr or refs.get(sym, addr) != addr or frefs.setdefault(sym, addr) != addr:
+                differs = True; break
+        if differs: wraps.append(name); continue
+        refs.update(frefs)
     dsegs = []
     lo, hi = min(placed.values()), eu_next_start(max(placed.values()))
     for s_ in own:
