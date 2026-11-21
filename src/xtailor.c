@@ -302,7 +302,11 @@ s32 func_00110E38(s32 arg0) {
     return func_00120590("dkmovie.x", &func_F20000, func_00110DE0, NULL);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110E78);
+void func_00110E78(void) {
+    func_00113A40(2);
+    func_001EEC00(0x7B);
+    func_F20000(1, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110EA8);
 
