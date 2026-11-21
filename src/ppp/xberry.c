@@ -53,7 +53,16 @@ void KeLnsArnd_Init(KeLnsArnd* p) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A8248);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A84B8);
+typedef struct {
+    /* 0x0 */ s32 unk_0;
+    /* 0x4 */ XBerryUnk75B0Src** unk_4;
+    /* 0x8 */ XBerryUnk75B0 unk_8;
+} XBerryUnk84B8;
+
+void func_001A84B8(XBerryUnk84B8* arg0, XBerryUnk75B0Src** arg1) {
+    arg0->unk_4 = arg1;
+    func_001A75B0(&arg0->unk_8, arg1);
+}
 
 void KeLnsCrn_Init(KeLnsCrn* p) {
     p->shp = NULL;
