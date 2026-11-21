@@ -148,7 +148,12 @@ s32 func_001C2CB0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2CB8);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2D40);
+s32 func_001C2D40(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->var[arg1] = vm->stack[vm->sp--];
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2D70);
 
