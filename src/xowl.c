@@ -99,6 +99,13 @@ void func_00123088(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_001230D0);
+void func_001230D0(void) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
+
+    for (i = 0; i < 31; i++, p++) {
+        p->unk_04 &= ~0x10;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00123108);
