@@ -760,7 +760,14 @@ void func_0012A1F8(XAudArg* arg0) {
     arg0[0].s = arg0[0].obj->unk_130->unk_58;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A210);
+s32 func_001425D0(XAudObj*);
+
+void func_0012A210(XAudArg* arg0) {
+    XAudObj* obj = arg0[0].obj;
+    if (func_001425D0(obj) == 0) {
+        sceVu0AddVector(obj->unk_120, obj->unk_120, arg0[1].p);
+    }
+}
 
 void func_0012A270(XAudArg* arg0) {
     arg0[0].f = arg0[0].obj->unk_284;
