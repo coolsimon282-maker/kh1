@@ -2,6 +2,18 @@
 #include "ppp.h"
 #include "ppp/draw.h"
 
+typedef struct {
+    /* 0x00 */ char unk_00[0x86];
+    /* 0x86 */ u16 usef;
+    /* 0x88 */ char unk_88[0x4];
+    /* 0x8C */ pppPEtcData* pEtc;
+    /* 0x90 */ char unk_90[0x4];
+    /* 0x94 */ s32 unk_94;
+    /* 0x98 */ char unk_98[0x28];
+} PppMngU;
+
+extern PppMngU D_00364130[];
+
 extern sceVu0FMATRIX D_00615E70;
 extern void func_0024EDF0(sceVu0FMATRIX, pppPEtcData*);
 
@@ -60,7 +72,15 @@ void initGraphicSystem(void) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181040);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001810D0);
+void func_001810D0(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            D_00364130[i].usef |= 0x20;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181110);
 
