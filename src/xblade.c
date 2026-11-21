@@ -615,7 +615,15 @@ void func_00113618(void) {
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00113660);
 
 void func_001136C8(s32);
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001136C8);
+void func_001136C8(s32 arg0) {
+    if (arg0 == 0) {
+        func_001102C0();
+        DPUT_GS_PMODE(0x22);
+    } else {
+        func_00113618();
+        func_00113410();
+    }
+}
 
 extern s32 D_004D2A80;
 extern s32 D_004D2A84;
