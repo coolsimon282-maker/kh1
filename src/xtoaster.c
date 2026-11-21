@@ -1,4 +1,5 @@
 #include "common.h"
+#include "libvu0.h"
 
 typedef struct {
     /* 0x00*/ char unk_04[0x44];
@@ -9,7 +10,9 @@ typedef struct {
 
 typedef struct {
     /* 0x000 */ s32 unk_000;
-    /* 0x004 */ char unk_004[0x12C];
+    /* 0x004 */ char unk_004[0x3C];
+    /* 0x040 */ sceVu0FVECTOR unk_040;
+    /* 0x050 */ char unk_050[0xE0];
     /* 0x130 */ XToast* unk_130;
     /* 0x134 */ char unk_134[0x18];
     /* 0x14C */ s32 unk_14C;
@@ -143,7 +146,9 @@ void func_00123E48(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123E78);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123ED0);
+void func_00123ED0(s32 arg0, sceVu0FVECTOR arg1) {
+    sceVu0CopyVector(func_00123880(arg0)->unk_040, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123F00);
 
