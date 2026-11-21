@@ -156,6 +156,8 @@ INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3430);
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C34E0);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3670);
+s32 func_001C3670(s32 arg0, s32 arg1) {
+    return ((s8*)(arg0 + arg1 * 4))[3];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3680);
