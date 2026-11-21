@@ -2205,7 +2205,9 @@ s32 func_001DC368(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3B0);
+s32 func_001DC3B0(void) {
+    return ((s32)(*(u64*)&D_0038CD00[2] >> 4) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3D8);
 
