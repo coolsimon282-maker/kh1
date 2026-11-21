@@ -86,6 +86,12 @@ INCLUDE_ASM("...", fm_func_X);
 * **Scalar vs array globals**: if the original re-loads a struct field after storing to a global, declare the
   global as an array and store to `X[0]` (GCC assumes a plain scalar can't alias the struct).
 * **xhumungus Script stack** (see notes/a1.md): `unk_174[3]` is the top index, `unk_174[top + 4]` the value.
+* **Fast experiments**: compile a test file straight in your WSL mirror with the FM flags (piped through
+  masps2.py) to try many variants in seconds; the command is in notes/a4.md.
+* **Skip for now**: float functions where the target has no `nop` after `mfc1`, `c.le.s`/`c.lt.s` or an
+  `mtc1` before a float op (masps2.py always adds one); see eu-notes/fm_followups.md.
+* **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
+  FM-address name (`D_00xxxxxx`) for globals it doesn't list.
 * **Scratch files**: the scratchpad folder is shared between agents; use your own subfolder in it.
 
 ## Your notes file
