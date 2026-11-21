@@ -2888,7 +2888,15 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC9A0);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DCA00);
+void func_0022DEE0(s32);
+s32 fm_func_001C1DF8(void);
+
+s32 fm_func_001DCA00(void) {
+    func_0022DEE0(0xFFFF);
+    func_0011ED30(50001, fm_func_001C1DF8);
+    D_003854E0.unk_3078 |= 0x1000;
+    return 6;
+}
 #endif
 
 #ifdef VERSION_FM
