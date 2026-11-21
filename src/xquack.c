@@ -24,6 +24,8 @@ XDuck D_00639180[3];
 s32 D_00639588;
 s32 D_00639880;
 
+extern s8 D_0063F640[256];
+
 void func_001ED878(s32 arg0) {
     D_003DE5B8 = arg0;
 }
@@ -79,7 +81,23 @@ s32 func_001EDF88(s32 arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDFF8);
+s32 func_001EDFF8(s8* arg0) {
+    s32 i;
+    s8* p;
+
+    for (i = 0; i < 255; i++) {
+        *arg0++ = D_0063F640[i];
+    }
+    D_0063F640[255] = 0;
+    if (D_0063F640[0] == 0) {
+        return 0;
+    }
+    p = &D_0063F640[255];
+    for (i = 255; i >= 0; i--) {
+        *p-- = 0;
+    }
+    return 1;
+}
 
 s32 func_001EE068(void) {
     FlushCache(WRITEBACK_DCACHE);
