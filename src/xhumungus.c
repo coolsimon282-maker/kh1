@@ -1726,7 +1726,9 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8DE8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8E90);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8EE0);
+s32 func_001D8EE0(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 61) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8F00);
 
