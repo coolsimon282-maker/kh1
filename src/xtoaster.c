@@ -138,7 +138,18 @@ XToaster* func_00123558(XToaster* arg0, XToaster* p) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001235B8);
+static inline u64 xtoaster_inl_team(XToaster* p) {
+    return (XT_FLAGS(p) >> 37) & 3;
+}
+
+XToaster* func_001235B8(XToaster* arg0, XToaster* p) {
+    while ((p = func_001234A0(p)) != NULL) {
+        if (arg0 != p && xtoaster_inl_team(arg0) == xtoaster_inl_team(p)) {
+            return p;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123620);
 
