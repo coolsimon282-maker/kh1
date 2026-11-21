@@ -66,7 +66,9 @@ void func_00128DC0(s32* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00128DF8);
+void func_00128DF8(XCreamUnk8DF8* arg0) {
+    *(u16*)(D_00514F10 + arg0->unk_0 * 2 + 0x724) = arg0->unk_4;
+}
 
 void func_00128E18(void) {
 }
