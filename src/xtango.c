@@ -320,7 +320,20 @@ s32 func_001EFCE0(s32 arg0, s32 arg1) {
     return TRUE;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFD40);
+s32 func_001EFD40(s32 arg0) {
+    XScotch* obj;
+    u32 i;
+
+    if (arg0 != 0) {
+        obj = (XScotch*)func_00147A88(arg0);
+        for (i = 0; i < 3; i++) {
+            if (obj->unk_02 == D_003E3D48[i]) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
 
 s32 func_001EFDA0(s32 arg0) {
     XScotch* obj;
