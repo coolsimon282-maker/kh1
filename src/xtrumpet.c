@@ -206,7 +206,9 @@ u32 arg0;
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B10);
+u32 fm_func_00111B10(void) {
+    return fm_func_00111B08() / 216000;
+}
 #endif
 
 #ifdef VERSION_FM
