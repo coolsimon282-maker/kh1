@@ -136,7 +136,11 @@ void fm_func_00128FB0(XAudArg* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128FB8);
+f32 func_00120A38(s32);
+
+void func_00128FB8(XAudArg* arg0) {
+    arg0[0].f = func_00120A38(arg0[0].s);
+}
 
 void func_00128FE8(f32** arg0) {
     sceVu0AddVector(arg0[0], arg0[0], arg0[1]);
