@@ -198,7 +198,11 @@ void func_001117D8(void) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", fm_func_00111B08);
+u32 fm_func_00111B08(arg0)
+u32 arg0;
+{
+    return arg0;
+}
 #endif
 
 #ifdef VERSION_FM
