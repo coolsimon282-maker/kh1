@@ -152,7 +152,20 @@ void func_001115E8(void) {
     func_001110D0();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111638);
+extern s32 D_002B8680;
+extern s32 D_002B8684;
+extern s32 D_002B92F8;
+
+void func_00111638(void) {
+    s32 value;
+
+    D_002B8364 = 1;
+    D_002B8678 = D_002B90B0->unk_40;
+    D_002B8680 = D_002B90B0->unk_44;
+    value = func_00111468(D_002B8678, D_002B8680);
+    D_002B8684 = value;
+    D_002B92F8 = D_002B90B0->unk_48;
+}
 
 void func_001116A8(void) {
     D_004D2998 = 0;
