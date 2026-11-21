@@ -6,6 +6,8 @@ void pppSclMoveLoopCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     v[0] = v[1] = v[2] = 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSclMoveLoop", pppSclMoveLoopCon2);
+void pppSclMoveLoopCon2(pppPObject* pobj, pppCtrlTable* ctbl) {
+    pppSclMoveLoopCon(pobj, ctbl);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSclMoveLoop", pppSclMoveLoopCalc);
