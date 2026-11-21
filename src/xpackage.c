@@ -45,7 +45,26 @@ void func_00247AA0(s32 arg0) {
     func_00246D68(arg0, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247AE0);
+typedef struct {
+    /* 0x00 */ u64 unk_00[0x18];
+} XPackageUnk7AE0Entry; // size = 0xC0, the same entries as XPackageUnk7B60Entry
+
+typedef struct {
+    /* 0x0 */ s32 unk_0;
+    /* 0x4 */ s32 unk_4;
+    /* 0x8 */ s32 unk_8; // offset of the entries from the start of this header
+} XPackageUnk7AE0Hdr;
+
+// arg0: list of entry indices ended by -1; each entry is copied to arg1[]
+void func_00247AE0(s32* arg0, XPackageUnk7AE0Entry* arg1, XPackageUnk7AE0Hdr* arg2) {
+    XPackageUnk7AE0Entry* base = (XPackageUnk7AE0Entry*)((u8*)arg2 + arg2->unk_8);
+
+    while (*arg0 != -1) {
+        *arg1 = base[*arg0];
+        arg0++;
+        arg1++;
+    }
+}
 
 typedef struct {
     /* 0x00 */ u8 unk_00[0xC0];
