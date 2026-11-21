@@ -104,7 +104,17 @@ s32 func_00247CD8(s32 arg0, u8* arg1) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D18);
+extern char D_00491878[]; // FM address names; probably the file name and message of an assert
+extern char D_00491880[];
+
+void func_00247D88();
+
+s32 func_00247D18(u8* arg0) {
+    if (arg0[0] != 1) {
+        func_00247D88(D_00491878, D_00491880, 0x3F);
+    }
+    return arg0[1] + (arg0[2] << 8) + (arg0[3] << 16) + (arg0[4] << 24);
+}
 
 void func_00247D88(void) {
 }
