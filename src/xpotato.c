@@ -1,6 +1,30 @@
 #include "xtango.h"
 #include "xpotato.h"
 
+extern s32 D_00642CC8;
+extern s32 D_00642CA8[];
+extern s32 func_00132FE0(s32);
+
+extern s32 func_001EF960(u32);
+extern s32 D_003E8E08;
+
+extern s32 D_003F4BD0[];
+extern s32 D_00642D24;
+
+extern s32 D_003F47B8[];
+
+extern void func_001F9010(s32);
+extern s32 func_001F9438(void*, s32, s32, s32, s32, s32, u32);
+extern s32 D_003F4488[];
+
+extern s32 func_00207830(s32, s32, s32, s32, s32, s32, s32);
+
+extern void func_001EFBB8(s32);
+
+extern s32 D_003F47A8[];
+
+extern s32 D_002B6478;
+
 extern u32 D_003DE6A0;
 extern s32 D_003E3088;
 extern s32 D_003ED728;
@@ -40,7 +64,17 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215B88);
 
 #ifdef VERSION_FM
 s32 func_00215C48(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215C48);
+s32 func_00215C48(s32 arg0) {
+    s32 val;
+
+    func_001F9010(23);
+    val = 234;
+    if (D_0063CF44 != D_00642CC8 - 1) {
+        val = func_00132FE0(D_0063CF44);
+        val = D_00642CA8[D_0063CF44] * 3 + val + 212;
+    }
+    return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
+}
 #else
 s32 func_00215C48(s32 arg0) {
     s32 val;
@@ -57,7 +91,10 @@ s32 func_00215C48(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215CE8);
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215EE8);
+s32 func_00215EE8(void* arg0) {
+    func_001F9010(23);
+    return func_001F9438(arg0, 0, 174, 12, D_003F4488[D_0063CF40], 17, 0x80C87850);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215F48);
 
@@ -65,7 +102,10 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
 #ifdef VERSION_FM
 s32 func_00216758(XWhiskey* arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216758);
+s32 func_00216758(XWhiskey* arg0) {
+    func_001F9010(23);
+    return func_001F9438(arg0, 0, 174, 12, *(s32*)((u8*)arg0 + 0x24), 17, 0x80C87850);
+}
 #else
 s32 func_00216758(XWhiskey* arg0) {
     func_001F9B50(23);
@@ -81,7 +121,15 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216D88);
 
 #ifdef VERSION_FM
 s32 func_00217038(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217038);
+s32 func_00217038(s32 arg0) {
+    s32 val = 204;
+    if (D_0063CF3C != 0) {
+        val = 205;
+        D_003E8E08 = func_001EF960(D_0063CF3C);
+    }
+    func_001F9010(23);
+    return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
+}
 #else
 s32 func_00217038(s32 arg0) {
     s32 val = 213;
@@ -100,7 +148,9 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217420);
 
 #ifdef VERSION_FM
 s32 func_00217810(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217810);
+s32 func_00217810(s32 arg0) {
+    return func_00207830(arg0, 4, 2, 0, 0, 122, 108);
+}
 #else
 s32 func_00217810(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 117);
@@ -139,7 +189,16 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
 #ifdef VERSION_FM
 s32 func_00218648(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218648);
+s32 func_00218648(s32 arg0) {
+    s32 v = 0x110;
+
+    func_001F9010(23);
+    if (D_0063CF88 != 0) {
+        D_003E8E08 = func_001EF960(D_0063CF88);
+        v++;
+    }
+    return func_001F9438((void*)arg0, 0, 174, 12, v, 17, 0x80C87850);
+}
 #else
 s32 func_00218648(s32 arg0) {
     s32 val = 277;
@@ -157,7 +216,9 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_002186B8);
 
 #ifdef VERSION_FM
 s32 func_00218840(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218840);
+s32 func_00218840(s32 arg0) {
+    return func_00207830(arg0, 4, 2, 0, 0, 122, 109);
+}
 #else
 s32 func_00218840(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 118);
@@ -178,7 +239,18 @@ void func_00218A00(void) {
 
 #ifdef VERSION_FM
 void func_00218A10(void);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A10);
+void func_00218A10(void) {
+    XWhiskey* p = D_003ED718;
+
+    *(s32*)((u8*)p + 0x2C) = 1;
+    p->unk_08 = 0;
+    p->unk_04 = 0;
+    p->unk_0C = 0;
+    p->unk_10 = 0;
+    p->unk_14 = 0;
+    p->unk_18 = 0;
+    p->unk_00 = 0;
+}
 #else
 void func_00218A10(void) {
     D_003ED718->unk_00 = 0;
@@ -279,30 +351,45 @@ void func_00218CA0(s32 arg0) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_002193F0);
+s32 fm_func_002193F0(void) {
+    return *(s32*)((u8*)D_003ED718 + 0x2C);
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219400);
+s32 fm_func_00219400(void) {
+    return fm_func_002193F0();
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219418);
+void fm_func_00219418(s32 arg0) {
+    *(s32*)((u8*)D_003ED718 + 0x2C) = arg0;
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219428);
+s32 fm_func_00219428(void) {
+    return D_002B6478 == 2;
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219440);
+s32 fm_func_00219440(s32 arg0) {
+    return D_003F47A8[arg0];
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpotato", fm_func_00219458);
+void fm_func_00219458(s32 arg0) {
+    func_001EFBB8(fm_func_00219440(arg0));
+}
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218CB0);
+s32 func_00218CB0(XWhiskey* arg0) {
+    func_001F9010(23);
+    return func_001F9438(arg0, 0, 174, 12, D_003F47B8[*(s32*)((u8*)arg0 + 0x24)], 17, 0x80C87850);
+}
 
 void func_00218D08(void) {
     D_003ED72C++;
@@ -324,4 +411,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00219468);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002195F8);
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00219788);
+s32 func_00219788(void* arg0) {
+    func_001F9010(23);
+    return func_001F9438(arg0, 0, 174, 12, D_003F4BD0[D_00642D24], 17, 0x80C87850);
+}

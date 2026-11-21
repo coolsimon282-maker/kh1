@@ -1,7 +1,13 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSclMoveLoop", pppSclMoveLoopCon);
+void pppSclMoveLoopCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    f32* v = (f32*)&pobj->val[ctbl->useVal[1]];
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSclMoveLoop", pppSclMoveLoopCon2);
+    v[0] = v[1] = v[2] = 0.0f;
+}
+
+void pppSclMoveLoopCon2(pppPObject* pobj, pppCtrlTable* ctbl) {
+    pppSclMoveLoopCon(pobj, ctbl);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSclMoveLoop", pppSclMoveLoopCalc);
