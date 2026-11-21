@@ -18,7 +18,14 @@ extern u16 D_002B8C70;
 
 f32 D_0048E508;
 
+typedef struct {
+    /* 0x00 */ char unk_00[0x8];
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ u16 unk_0C;
+} XPancakeHeader;
+
 void func_00106718(void);
+void func_001091F8(u8*, u8*);
 void func_00106728(void);
 XFlapjack* func_0011EEB8(u16*, s32, s32 (*)(XFlapjack*));
 
@@ -33,7 +40,12 @@ s32 func_001061D8(void) {
 INCLUDE_ASM("asm/nonmatchings/xpancake", fm_func_001063F8);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106208);
+void func_00106208(u8* arg0) {
+    XPancakeHeader* hdr = (XPancakeHeader*)(arg0 + 0x10);
+    u8* data = (u8*)hdr + hdr->unk_0C;
+
+    func_001091F8(data, data + hdr->unk_08);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106230);
 
