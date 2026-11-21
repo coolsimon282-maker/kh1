@@ -15,7 +15,24 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA7C0);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA868);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA940);
+typedef struct DrawNode {
+    /* 0x0 */ struct DrawNode* next;
+} DrawNode;
+
+typedef struct {
+    /* 0x0 */ s32 unk_0;
+    /* 0x4 */ DrawNode* free;
+} DrawNodeList;
+
+DrawNode* func_001AA940(DrawNodeList* list) {
+    DrawNode* node = list->free;
+
+    if (node == NULL) {
+        return NULL;
+    }
+    list->free = node->next;
+    return node;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", KeThResHd_Init);
 
