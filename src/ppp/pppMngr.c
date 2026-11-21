@@ -82,7 +82,15 @@ void func_001810D0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181110);
+void func_00181110(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            D_00364130[i].usef &= ~0x20;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181150);
 
