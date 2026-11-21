@@ -774,7 +774,9 @@ void func_0012A4E8(XAudArg* arg0) {
     func_00120D38(arg0[0].s, m, arg0[1].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A528);
+void func_0012A528(XAudArg* arg0) {
+    sceVu0CopyVector(arg0[0].ptrs->unk_08, arg0[1].p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A548);
 
