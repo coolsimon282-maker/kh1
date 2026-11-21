@@ -420,7 +420,14 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF380);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF3B0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF458);
+s32 func_001CF458(Script* arg0) {
+    u64 flags = *(u64*)&arg0->unk_00[0x328];
+
+    if (!(flags & 0xA41) || ((s32)(flags >> 4) & 1)) {
+        return 2;
+    }
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF488);
 
