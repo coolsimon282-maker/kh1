@@ -1612,7 +1612,14 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6778);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6828);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D4FC0);
+s32 func_00103988(s32);
+
+s32 fm_func_001D4FC0(Script* arg0) {
+    D_002A61F0 = 0;
+    func_00103988(arg0->unk_174[arg0->unk_174[3] + 4]);
+    arg0->unk_174[3]--;
+    return 2;
+}
 #endif
 
 #ifdef VERSION_FM
