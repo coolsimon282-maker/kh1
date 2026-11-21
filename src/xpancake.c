@@ -37,14 +37,9 @@ INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106380);
 
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106428);
 
-#ifdef VERSION_EU
-void func_001064E8(void);
-INCLUDE_ASM("asm/nonmatchings/xpancake", func_001064E8);
-#else
 void func_001064E8(void) {
     D_0048E508 = 0;
 }
-#endif
 
 #ifdef VERSION_EU
 s32 func_001064F8(XFlapjack* arg0);
@@ -116,23 +111,13 @@ void func_00106690(s32 arg0) {
 }
 #endif
 
-#ifdef VERSION_EU
-void func_00106718(void);
-INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106718);
-#else
 void func_00106718(void) {
     D_002B29CC = 0;
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00106728(void);
-INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106728);
-#else
 void func_00106728(void) {
     D_002B29D0 = 0;
 }
-#endif
 
 #ifdef VERSION_EU
 s32 func_00106738(XFlapjack* arg0);

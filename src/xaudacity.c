@@ -36,29 +36,14 @@ void func_00128F10(s32* arg0) {
     *arg0 = func_00147A10(*arg0);
 }
 
-#ifdef VERSION_EU
-void func_00128F40(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128F40);
-#else
 void func_00128F40(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00128F48(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128F48);
-#else
 void func_00128F48(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00128F50(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128F50);
-#else
 void func_00128F50(void) {
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128F58);
 // void func_00128F58(f32* arg0) {
@@ -107,13 +92,8 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129230);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129260);
 
-#ifdef VERSION_EU
-void func_00129320(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129320);
-#else
 void func_00129320(void) {
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129328);
 
@@ -151,13 +131,8 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129638);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129660);
 
-#ifdef VERSION_EU
-void func_001296A8(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_001296A8);
-#else
 void func_001296A8(void) {
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_001296B0);
 
@@ -179,13 +154,8 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_001297F0);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129820);
 
-#ifdef VERSION_EU
-void func_00129840(void);
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129840);
-#else
 void func_00129840(void) {
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129848);
 

@@ -53,18 +53,8 @@ INCLUDE_ASM("asm/nonmatchings/xcream", func_00128DC0);
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00128DF8);
 
-#ifdef VERSION_EU
-void func_00128E18(void);
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00128E18);
-#else
 void func_00128E18(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00128E20(void);
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00128E20);
-#else
 void func_00128E20(void) {
 }
-#endif

@@ -24,14 +24,9 @@ XDuck D_00639180[3];
 s32 D_00639588;
 s32 D_00639880;
 
-#ifdef VERSION_EU
-void func_001ED878(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001ED878);
-#else
 void func_001ED878(s32 arg0) {
     D_003DE5B8 = arg0;
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xquack", func_001ED888);
 

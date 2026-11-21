@@ -33,14 +33,9 @@ void pppSetPrimPacket(u_long128* primPacketArea, s32 len) {
     }
 }
 
-#ifdef VERSION_EU
-void drawStart(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", drawStart);
-#else
 void drawStart(void) {
     ppvVertex = NULL;
 }
-#endif
 
 s32 pppDbgAlloc(s32 arg0, s32 arg1) {
     return pppAlloc(arg0, arg1);
@@ -138,14 +133,9 @@ s32 dpd_set_object_data(ppvmng* pMng) {
     return dpd_set_vsf_data(ppsVar2, pMng->pEtc->abUseVsf);
 }
 
-#ifdef VERSION_EU
-void func_00182110(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182110);
-#else
 void func_00182110(s32 arg0) {
     D_0036C600 = arg0;
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182120);
 
@@ -310,13 +300,8 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184E80);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184F60);
 
-#ifdef VERSION_EU
-void func_00185000(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00185000);
-#else
 void func_00185000(void) {
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00185008);
 

@@ -260,14 +260,9 @@ void func_001006C8(void) {
 void func_001006F8(void);
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_001006F8);
 
-#ifdef VERSION_EU
-void func_001007D0(f32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xbeginning", func_001007D0);
-#else
 void func_001007D0(f32 arg0) {
     D_0048DDA0[1].unk_44 = arg0;
 }
-#endif
 
 void func_001007E0(void) {
     func_00106A08(&D_00297740, 10010);

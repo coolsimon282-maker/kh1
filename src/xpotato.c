@@ -124,10 +124,6 @@ void func_00217898(void) {
     func_00215B88();
 }
 
-#ifdef VERSION_EU
-void func_002178D0(void);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002178D0);
-#else
 void func_002178D0(void) {
     D_0063CF3C = 0;
     D_0063CF40 = 0;
@@ -136,7 +132,6 @@ void func_002178D0(void) {
     D_0063CF4C = 0;
     D_0063CF50 = 0;
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217908);
 
@@ -177,14 +172,9 @@ void func_002189D0(void) {
     }
 }
 
-#ifdef VERSION_EU
-void func_00218A00(void);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A00);
-#else
 void func_00218A00(void) {
     D_0063CF88 = 0;
 }
-#endif
 
 void func_00218A10(void) {
     D_003ED718->unk_00 = 0;
@@ -244,13 +234,8 @@ u32 func_00218BF8(void) {
     return 0;
 }
 
-#ifdef VERSION_EU
-void func_00218C00(void);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218C00);
-#else
 void func_00218C00(void) {
 }
-#endif
 
 u32 func_00218C08(void) {
     return D_003ED718->unk_10;

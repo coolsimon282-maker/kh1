@@ -181,14 +181,9 @@ void* func_0010FB68(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
 
-#ifdef VERSION_EU
-void func_0010FCD0(void);
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FCD0);
-#else
 void func_0010FCD0(void) {
     D_004D2990 = 0;
 }
-#endif
 
 void func_0010FCE0(void) {
     D_004D2990 = 1;
@@ -302,16 +297,11 @@ void func_00110DE0() {
     func_F20000(0, D_004D2994);
 }
 
-#ifdef VERSION_EU
-void func_00110E18(void);
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110E18);
-#else
 void func_00110E18(void) {
     D_002A30D0 = 0;
     D_002B9030 = 0;
     D_002B9084 = 0;
 }
-#endif
 
 s32 func_00110E38(s32 arg0) {
     D_002B9030 = 0;

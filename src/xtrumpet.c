@@ -122,14 +122,9 @@ void func_001115E8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111638);
 
-#ifdef VERSION_EU
-void func_001116A8(void);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_001116A8);
-#else
 void func_001116A8(void) {
     D_004D2998 = 0;
 }
-#endif
 
 void func_001116B8(void) {
     D_004D2998 = 1;
@@ -245,15 +240,10 @@ void func_00111BD8(void) {
     D_002B9174 = 1;
 }
 
-#ifdef VERSION_EU
-void func_00111BF0(void);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111BF0);
-#else
 void func_00111BF0(void) {
     D_004D29AC = 0;
     D_002B9174 = 0;
 }
-#endif
 
 s32 func_00111C08(void) {
     D_004D29AC = 2;
@@ -269,24 +259,14 @@ void func_00111C20(s32 param1) {
 }
 #endif
 
-#ifdef VERSION_EU
-void func_00111C38(s32 param1);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C38);
-#else
 void func_00111C38(s32 param1) {
     D_004D29C4 = param1;
     D_002B9170 = 0;
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00111C50(s32 param1);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C50);
-#else
 void func_00111C50(s32 param1) {
     D_002B9170 = param1;
 }
-#endif
 
 s32 func_00111C60(s32 param1) {
     s32 result;
@@ -314,26 +294,11 @@ void func_00111F00(void) {
 
 // The following unused functions might be part of worldfile.c?
 
-#ifdef VERSION_EU
-void func_00111F28(void);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111F28);
-#else
 void func_00111F28(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00111F30(void);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111F30);
-#else
 void func_00111F30(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void func_00111F38(void);
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111F38);
-#else
 void func_00111F38(void) {
 }
-#endif

@@ -2,37 +2,17 @@
 #include "sifdev.h"
 #include "ppp/draw.h"
 
-#ifdef VERSION_EU
-void opc(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", opc);
-#else
 void opc(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void opc2(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", opc2);
-#else
 void opc2(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void opc3(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", opc3);
-#else
 void opc3(void) {
 }
-#endif
 
-#ifdef VERSION_EU
-void op_init_global(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_init_global);
-#else
 void op_init_global(void) {
 }
-#endif
 
 void ops_init_spr(void) {
     spr_a[0] = 0x70000000;
@@ -41,13 +21,8 @@ void ops_init_spr(void) {
     spr_rev_index = 0;
 }
 
-#ifdef VERSION_EU
-void op_num_info(void);
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_num_info);
-#else
 void op_num_info(void) {
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_alloc);
 

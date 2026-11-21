@@ -471,10 +471,5 @@ s32 func_001F0BD8(s32 arg0) {
     return val;
 }
 
-#ifdef VERSION_EU
-void func_001F0C28(void);
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0C28);
-#else
 void func_001F0C28(void) {
 }
-#endif
