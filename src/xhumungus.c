@@ -1738,7 +1738,12 @@ s32 func_001D68D8(Script* arg0) {
 
 #ifdef VERSION_FM
 s32 func_001D6920(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6920);
+s32 func_001D6920(Script* arg0) {
+    D_002A61F0 = 1;
+    func_001037C8(arg0->unk_174[arg0->unk_174[3] + 4]);
+    arg0->unk_174[3]--;
+    return 2;
+}
 #else
 s32 func_001D6920(Script* arg0) {
     func_001037C8(arg0->unk_174[arg0->unk_174[3] + 4]);
