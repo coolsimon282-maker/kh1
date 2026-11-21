@@ -21,6 +21,7 @@ TOOLS_DIR = ROOT / "tools"
 VERSIONS = {
     "jp": ("SLPS_251.05", "Original Japanese"),
     "fm": ("SLPS_251.98", "Final Mix"),
+    "eu": ("SCES_509.67", "European"),
 }
 
 CROSS = "mips-linux-gnu-"

@@ -1,0 +1,66 @@
+name: Kingdom Hearts (Europe)
+sha1: 97f8c2fbc22267efb213a0ccddfce3dd8dc9c4c0
+options:
+  basename: SCES_509.67
+  target_path: SCES_509.67.rom
+  elf_path: build/eu/SCES_509.67.elf
+  base_path: ..
+
+  platform: ps2
+  compiler: EEGCC
+
+  asm_path: asm
+  src_path: src
+  build_path: build/eu
+
+  ld_script_path: SCES_509.67.ld
+  ld_dependencies: True
+  ld_wildcard_sections: True
+  ld_bss_contains_common: True
+
+  create_asm_dependencies: True
+  generate_asm_macros_files: False
+  find_file_boundaries: False
+  disasm_unknown: True
+  named_regs_for_c_funcs: False
+  mips_abi_gpr: numeric
+  hasm_in_src_path: True
+  subalign: 8
+  gp_value: 0x48da30
+
+  symbol_addrs_path:
+  - config/eu/symbol_addrs.txt
+  - config/eu/lib_symbol_addrs.txt
+
+  create_undefined_funcs_auto: True
+  undefined_funcs_auto_path: config/eu/undefined_funcs_auto.txt
+  create_undefined_syms_auto: True
+  undefined_syms_auto_path: config/eu/undefined_syms_auto.txt
+
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+
+  section_order: [ ".text", ".data", ".rodata", ".bss" ]
+  auto_link_sections: [ ".data", ".rodata", ".bss" ]
+
+segments:
+- name: main
+  type: code
+  start: 0x0
+  vram: 0x100000
+  # crt0 clears 0x48da30..0x66d5d8; the ELF's .bss section is 0x48da80..0x66d5c0 (aligned to 128)
+  bss_size: 0x1dfba8
+  subsegments:
+  - [ 0x0, asm, crt0 ]
+  - [ 0x1d8, asm ]
+
+  ## .data section ##
+  # Code ends with a tail call at 0x26d61c and nop padding; VU microcode / DMA data follows.
+  - [ 0x16d630, data ]
+
+  ## .rodata section ##
+  # Starts like JP's: xbeginning's jump table (0x20), then xporcupine's ".img"/".bin" (0x10). JP: 0x386950.
+  - [ 0x3867d0, rodata ]
+- [ 0x38da30 ]
