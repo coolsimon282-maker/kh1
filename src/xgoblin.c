@@ -238,7 +238,11 @@ u64* func_0011F970(u64 arg0, u64 arg1, u64* arg2) {
     return arg2 + 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F980);
+void func_0011F980(u_long128* arg0, s32 arg1, u_long128* arg2) {
+    ((u64*)arg0)[0] = (u64)(arg2 - arg0 - 1) | ((u64)arg1 << 15) | ((u64)0 << 46) | ((u64)0 << 47) |
+                      ((u64)0 << 58) | ((u64)1 << 60);
+    ((u64*)arg0)[1] = 0xE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F9B0);
 
