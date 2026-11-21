@@ -243,7 +243,17 @@ void func_001AC4C8(DrawUnkAC4C8* arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC4F0);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_ot_draw);
+extern u8 D_0061EEA0[];
+
+void op_ot_draw(void) {
+    u8* ot = D_0061EEA0;
+
+    sceGsSyncPath(0, 0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceDmaSend(oa_dmagif, ot);
+    sceGsSyncPath(0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC758);
 
