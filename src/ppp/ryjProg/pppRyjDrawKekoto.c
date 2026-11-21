@@ -12,4 +12,11 @@ void pppRyjDrawKekotoCalc(pppPObject* pobj, pppCDT* p, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawKekoto", pppRyjDrawKekotoDraw);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawKekoto", pppRyjDrawKekotoCon);
+void pppRyjDrawKekotoCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    u_long128* v = (u_long128*)&pobj->val[ctbl->useVal[2]];
+    s32 i;
+
+    for (i = 7; i >= 0; i--) {
+        v[i] = 0;
+    }
+}
