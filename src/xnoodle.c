@@ -67,6 +67,10 @@ void func_0010AFA0(sceVu0FMATRIX arg0, XNoodle* arg1) {
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
 
+#ifdef VERSION_EU
+void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2);
+INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B000);
+#else
 void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0FMATRIX m;
 
@@ -82,6 +86,7 @@ void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0MulMatrix(m, D_0048EC10, m);
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B0D0);
 

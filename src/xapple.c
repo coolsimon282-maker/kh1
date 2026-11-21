@@ -170,6 +170,10 @@ extern XApple4* D_00532608;
 extern s32* D_0053260C;
 extern s32 D_00532610;
 
+#ifdef VERSION_EU
+s32 func_0013AB68(u16* arg0);
+INCLUDE_ASM("asm/nonmatchings/xapple", func_0013AB68);
+#else
 s32 func_0013AB68(u16* arg0) {
     sceVu0FVECTOR sp0;
     sceVu0FVECTOR sp10;
@@ -246,6 +250,7 @@ s32 func_0013AB68(u16* arg0) {
     sceVu0ApplyMatrix(D_002DECF0, D_005325E8->unk_D0, sp10);
     return 0;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013AFE8);
 
@@ -498,9 +503,14 @@ s32 func_0013B9B8();
 //     D_0053260C = (s32*)(arg2 + arg0 + 0x7fU & 0xffffff80);
 // }
 
+#ifdef VERSION_EU
+f32 func_0013BAC0(void);
+INCLUDE_ASM("asm/nonmatchings/xapple", func_0013BAC0);
+#else
 f32 func_0013BAC0(void) {
     return (D_002DEC00->unk_6C->unk_48 + ((s32)(D_002DED20 >> 0xA) & 7)) * 3000;
 }
+#endif
 
 void* func_0013BB00(s32 arg0, s32 arg1) {
     char something[0x20];

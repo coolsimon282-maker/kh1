@@ -125,9 +125,14 @@ void func_0011C6C8(s32 arg0) {
     }
 }
 
+#ifdef VERSION_EU
+void func_0011C7D0(void);
+INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011C7D0);
+#else
 void func_0011C7D0(void) {
     D_004DD180 = 0;
 }
+#endif
 
 void func_0011C7E0(void) {
     D_004DD180 = 1;
@@ -396,15 +401,25 @@ void func_0011E340(void) {
     D_002BD8E0 = 1;
 }
 
+#ifdef VERSION_EU
+void func_0011E350(void);
+INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E350);
+#else
 void func_0011E350(void) {
     D_002BD8E0 = 0;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E360);
 
+#ifdef VERSION_EU
+void func_0011E418(void);
+INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E418);
+#else
 void func_0011E418(void) {
     func_00101528();
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E430);
 
