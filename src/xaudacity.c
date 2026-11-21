@@ -161,7 +161,8 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129230);
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129260);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00129330);
+void fm_func_00129330(void) {
+}
 #endif
 
 #ifdef VERSION_FM
