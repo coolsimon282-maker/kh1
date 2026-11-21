@@ -1430,7 +1430,13 @@ s32 func_001D6B30(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6B50);
+s32 func_001D6B50(Script* arg0) {
+    arg0->unk_174[3]++;
+    if (*(u8**)&arg0->unk_00[4] != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)(*(u8**)&arg0->unk_00[4] + 0x164);
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6B88);
 
