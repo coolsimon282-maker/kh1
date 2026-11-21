@@ -1,5 +1,7 @@
 #include "common.h"
 
+extern sceVu0FVECTOR D_002C5C60;
+
 typedef struct {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -69,7 +71,21 @@ INCLUDE_ASM("asm/nonmatchings/xowl", func_001228C8);
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122988);
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122AF8);
+XOwlEnt* func_00122AF8(s32 arg0, s32 arg1, s32 arg2) {
+    XOwlEnt* p = D_002C5C80;
+    s32 i;
+
+    for (i = 0; i < 31; i++, p++) {
+        if (p->unk_00 == 0) {
+            p->unk_00 = arg0;
+            p->unk_04 = arg1;
+            *(s32*)((u8*)p + 8) = arg2;
+            sceVu0CopyVector((f32*)((u8*)p + 0x30), D_002C5C60);
+            return p;
+        }
+    }
+    return NULL;
+}
 
 void func_00122B70(s32* arg0) {
     *arg0 = 0;
