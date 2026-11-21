@@ -142,7 +142,11 @@ INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C30A0);
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3208);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C32E8);
+s32 func_001C32E8(Script* arg0, s32 arg1) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = arg1;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3308);
 
