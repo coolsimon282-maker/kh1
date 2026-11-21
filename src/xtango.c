@@ -97,7 +97,9 @@ INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF530);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
+void func_001EF5C8(void) {
+    fm_func_00111B90();
+}
 #else
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
 #endif
