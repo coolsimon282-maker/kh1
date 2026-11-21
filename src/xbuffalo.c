@@ -21,7 +21,18 @@ void func_001C1858(s32 arg0) {
     D_003759C8 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1868);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ u8 unk_14[0x1C];
+} XBuffaloUnk1868; // size = 0x30
+
+extern s32 D_0037A168;
+extern XBuffaloUnk1868* D_0037A16C;
+
+s32* func_001C1868(void) {
+    return &D_0037A16C[D_0037A168].unk_10;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
 
