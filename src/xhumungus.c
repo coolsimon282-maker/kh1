@@ -54,6 +54,55 @@ extern UNK_PTR D_00624970;
 
 extern void func_F20000();
 
+extern u32 D_0038CD00[];
+extern u32* D_002C6440;
+extern s32 D_0038CDE4;
+extern s32 D_0038CDE8;
+
+struct XNoodle;
+void func_0010BB10(struct XNoodle*, s32);
+extern struct XNoodle D_0062A130;
+extern s32 D_0038D0D4;
+extern s32 D_003F6E24;
+extern u8 D_003C5808[];
+
+void func_0010EDA0(struct XNoodle*, void*, void (*)(void));
+s32 func_00131B08(s32);
+void func_001EAC68(void);
+void func_0024D418(void);
+void func_0013DFA0(void*);
+void func_00135848(void*);
+void func_00135870(void*);
+void func_0014F398(void*);
+extern s32 D_0038D0E0[];
+extern s32 D_0062A210;
+extern s32 D_002A61F0;
+extern s32 D_00388CC4[];
+void func_00242BD0(void);
+void func_001ED878(s32);
+void func_00177908(s32);
+void func_00108180(s32);
+void func_001081A0(s32);
+extern s32 D_002BC090;
+extern s32 D_002BC094;
+extern s32 D_003F76B8;
+extern s32 D_002BC0A0;
+extern s32 D_002BC0A4;
+extern s32 D_002BBABC;
+extern s32 D_002BBAC0;
+s32 func_0013BF68(void);
+s32 func_001DDB58(void);
+extern f32 D_0038CDDC;
+extern f32 D_002A6200;
+extern f32* D_002E26A0[];
+extern u32 D_002BCA00[];
+extern f32* D_002E26A0[];
+extern u32 D_002BCA00[];
+extern s32 D_002BC090;
+extern s32 D_002BC094;
+extern s32 D_003F76B8;
+extern s32 (*D_003773C4)(void);
+
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C8470);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C8950);
@@ -108,7 +157,9 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA908);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CACC0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CADC0);
+s32 func_001CADC0(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 37) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CADE0);
 
@@ -162,9 +213,13 @@ void func_001CC520(void) {
     D_003854E0.unk_00 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC530);
+void func_001CC530(void) {
+    func_0010BB10(&D_0062A130, (s32)func_001CC520);
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC558);
+void func_001CC558(void) {
+    func_0010EDA0(&D_0062A130, D_003C5808, func_001CC530);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC588);
 
@@ -180,7 +235,9 @@ void func_001CC798(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC7D0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC930);
+s32 func_001CC930(void) {
+    return (D_0038CD00[1] & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC950);
 
@@ -232,7 +289,15 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDF78);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDFC8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE060);
+s32 func_001CE060(Script* arg0) {
+    u8 val = D_003854E0.unk_01[arg0->unk_174[arg0->unk_174[3] + 4] + 3];
+
+    if (val != 0 && val != 4) {
+        return 4;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE0A0);
 
@@ -290,9 +355,15 @@ void func_001CE928(Script* arg0) {
     arg0->unk_174[arg0->unk_174[3] + 4] *= arg0->unk_174[arg0->unk_174[3] + 5];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE960);
+void func_001CE960(Script* arg0) {
+    arg0->unk_174[3]--;
+    arg0->unk_174[arg0->unk_174[3] + 4] /= arg0->unk_174[arg0->unk_174[3] + 5];
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE9A0);
+void func_001CE9A0(Script* arg0) {
+    arg0->unk_174[3]--;
+    arg0->unk_174[arg0->unk_174[3] + 4] %= arg0->unk_174[arg0->unk_174[3] + 5];
+}
 
 void func_001CE9E0(Script* arg0) {
     arg0->unk_174[3]--;
@@ -343,9 +414,15 @@ void func_001CEBD8(Script* arg0) {
     arg0->unk_174[arg0->unk_174[3] + 4] = ~arg0->unk_174[arg0->unk_174[3] + 4];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CEBF8);
+void func_001CEBF8(Script* arg0) {
+    arg0->unk_174[3]--;
+    arg0->unk_174[arg0->unk_174[3] + 4] >>= arg0->unk_174[arg0->unk_174[3] + 5];
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CEC30);
+void func_001CEC30(Script* arg0) {
+    arg0->unk_174[3]--;
+    arg0->unk_174[arg0->unk_174[3] + 4] <<= arg0->unk_174[arg0->unk_174[3] + 5];
+}
 
 s32 func_001CEC68(UNK_PTR arg0, s32 arg1) {
     D_003C10D8[arg1](arg0);
@@ -387,15 +464,34 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF258);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF2A0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF320);
+s32 func_001CF320(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = (*(f32**)&arg0->unk_00[4])[0x10 / 4];
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF350);
+s32 func_001CF350(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = (*(f32**)&arg0->unk_00[4])[0x14 / 4];
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF380);
+s32 func_001CF380(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = (*(f32**)&arg0->unk_00[4])[0x18 / 4];
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF3B0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF458);
+s32 func_001CF458(Script* arg0) {
+    u64 flags = *(u64*)&arg0->unk_00[0x328];
+
+    if (!(flags & 0xA41) || ((s32)(flags >> 4) & 1)) {
+        return 2;
+    }
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF488);
 
@@ -432,7 +528,12 @@ s32 func_001CF918(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF940);
+s32 func_001CF940(void) {
+    D_002B834C = 0;
+    func_001ED878(0);
+    func_00242BD0();
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF970);
 
@@ -450,17 +551,55 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFCB0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFD08);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFD58);
+s32 func_001CFD58(Script* arg0) {
+    func_00108180(arg0->unk_174[arg0->unk_174[3]-- + 4]);
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFD90);
+s32 func_001CFD90(Script* arg0) {
+    func_001081A0(arg0->unk_174[arg0->unk_174[3]-- + 4]);
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFDC8);
+s32 func_001CFDC8(Script* arg0) {
+    s32 idx = arg0->unk_174[36];
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFE00);
+    arg0->unk_174[3]--;
+    if (idx >= 0x800) {
+        D_00388CC4[idx] = 1;
+    }
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFE30);
+s32 func_001CFE00(Script* arg0) {
+    s32 idx = arg0->unk_174[36];
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFE70);
+    arg0->unk_174[3]--;
+    if (idx >= 0x800) {
+        D_00388CC4[idx] = 0;
+    }
+    return 2;
+}
+
+s32 func_001CFE30(Script* arg0) {
+    s32 idx = arg0->unk_174[36];
+
+    arg0->unk_174[3]--;
+    if (idx >= 0x800) {
+        D_00388CC4[idx]++;
+    }
+    return 2;
+}
+
+s32 func_001CFE70(Script* arg0) {
+    s32 idx = arg0->unk_174[36];
+
+    arg0->unk_174[3]--;
+    if (idx >= 0x800) {
+        D_00388CC4[idx]--;
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CFEB0);
 
@@ -536,7 +675,9 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1328);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1380);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D13D8);
+s32 func_001D13D8(Script* arg0) {
+    return ((s32)(*(u64*)((u8*)arg0 + 0x328) >> 1) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D13F8);
 
@@ -547,7 +688,9 @@ s32 func_001D14F0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1510);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1568);
+s32 func_001D1568(Script* arg0) {
+    return func_00131B08(*(s32*)&arg0->unk_00[4]) ? 2 : 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1598);
 
@@ -571,7 +714,11 @@ s32 func_001D1958(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1978);
+s32 func_001D1978(void) {
+    D_002C1EA8 &= ~4;
+    D_002C1EA8 &= ~0x8000000;
+    return 2;
+}
 
 s32 func_001D19A8(void) {
     D_002C1EA8 |= 4;
@@ -586,13 +733,27 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1A98);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1B10);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1BD8);
+s32 func_001D1BD8(Script* arg0) {
+    D_002BC090 = (arg0->unk_174[arg0->unk_174[3] + 4] + 0x200) / 2;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C10);
+s32 func_001D1C10(Script* arg0) {
+    D_002BC094 = (arg0->unk_174[arg0->unk_174[3] + 4] + 0x180) / 2;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C48);
+s32 func_001D1C48(void) {
+    D_002C6440[1] |= 4;
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C68);
+s32 func_001D1C68(void) {
+    D_002C6440[1] &= ~4;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C88);
 
@@ -602,7 +763,11 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1E20);
 
 #ifdef VERSION_FM
 s32 func_001D1EE0(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1EE0);
+s32 func_001D1EE0(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002B8678;
+    return 2;
+}
 #else
 s32 func_001D1EE0(Script* arg0) {
     s32 val = D_002B8678;
@@ -614,7 +779,11 @@ s32 func_001D1EE0(Script* arg0) {
 
 #ifdef VERSION_FM
 s32 func_001D1F08(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1F08);
+s32 func_001D1F08(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002B8680;
+    return 2;
+}
 #else
 s32 func_001D1F08(Script* arg0) {
     s32 val = D_002B8680;
@@ -626,7 +795,11 @@ s32 func_001D1F08(Script* arg0) {
 
 #ifdef VERSION_FM
 s32 func_001D1F30(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1F30);
+s32 func_001D1F30(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002B8684;
+    return 2;
+}
 #else
 s32 func_001D1F30(Script* arg0) {
     s32 val = D_002B8684;
@@ -709,13 +882,23 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D22B8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2308);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23A8);
+s32 func_001D23A8(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        func_0013DFA0(p);
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23D8);
 
 #ifdef VERSION_FM
 void func_001D2440(void);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2440);
+void func_001D2440(void) {
+    D_003854E0.unk_3078 &= ~0x2000;
+    func_F20000(0, 0);
+}
 #else
 void func_001D2440(void) {
     func_F20000(0, 0);
@@ -845,13 +1028,20 @@ void func_001D3080(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D30B0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3118);
+s32 func_001D3118(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 45) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3138);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3198);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3200);
+s32 func_001D3200(Script* arg0) {
+    D_002BC0A0 = arg0->unk_174[arg0->unk_174[3] + 3];
+    D_002BC0A4 = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3240);
 
@@ -923,7 +1113,13 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4010);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4060);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D40B0);
+s32 func_001D40B0(Script* arg0) {
+    f32 val = arg0->unk_174[arg0->unk_174[3] + 4];
+
+    arg0->unk_174[3]--;
+    D_0038CDDC = val / 100.0f;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D40F0);
 
@@ -1025,7 +1221,11 @@ s32 func_001D4E88(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4EC0);
+s32 func_001D4EC0(s32 arg0) {
+    D_0038CDE4 = arg0;
+    D_00375BC0 |= 8;
+    return 2;
+}
 
 s32 func_001D4EE8(void) {
     D_00375BC0 &= ~8;
@@ -1071,19 +1271,54 @@ s32 func_001D5328(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5348);
+s32 func_001D5348(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5378);
+    if (p != NULL) {
+        func_00135848(p);
+    }
+    return 2;
+}
+
+s32 func_001D5378(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        func_00135870(p);
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D53A8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5420);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5480);
+s32 func_001D5480(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D54B0);
+    if (p != NULL) {
+        func_0014F398(p);
+    }
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D54E8);
+s32 func_001D54B0(Script* arg0) {
+    u8* p = *(u8**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        *(f32*)(*(u8**)(p + 0x130) + 0x18) = arg0->unk_174[arg0->unk_174[3] + 4];
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
+
+s32 func_001D54E8(Script* arg0) {
+    arg0->unk_174[3]++;
+    if (*(u8**)&arg0->unk_00[4] != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(f32*)(*(u8**)(*(u8**)&arg0->unk_00[4] + 0x130) + 0x18);
+    }
+    return 2;
+}
 
 s32 func_001D5528(Script* arg0) {
     func_0013C768(arg0->unk_174[arg0->unk_174[3] + 4]);
@@ -1148,9 +1383,23 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5CE8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5D58);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5DC8);
+s32 func_001D5DC8(Script* arg0) {
+    f32* q = D_002E26A0[arg0->unk_174[arg0->unk_174[3] + 4]];
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5E08);
+    if (q != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = q[4];
+    }
+    return 2;
+}
+
+s32 func_001D5E08(Script* arg0) {
+    f32* q = D_002E26A0[arg0->unk_174[arg0->unk_174[3] + 4]];
+
+    if (q != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = q[5];
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5E48);
 
@@ -1182,7 +1431,11 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6680);
 
 #ifdef VERSION_FM
 s32 func_001D66F8(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D66F8);
+s32 func_001D66F8(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002C1EA8 & 1;
+    return 2;
+}
 #else
 s32 func_001D66F8(Script* arg0) {
     s32 val = D_002C1EA8 & 1;
@@ -1193,9 +1446,17 @@ s32 func_001D66F8(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6728);
+s32 func_001D6728(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)&arg0->unk_00[0x31C];
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6750);
+s32 func_001D6750(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)&arg0->unk_00[0x320];
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6778);
 
@@ -1210,7 +1471,13 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D5010);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D5060);
+s32 fm_func_001D5060(void) {
+    if (--D_0062A210 < 0) {
+        D_002A61F0 = 0;
+        return 4;
+    }
+    return 0;
+}
 #endif
 
 #ifdef VERSION_FM
@@ -1241,11 +1508,31 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6A78);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6AC0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6B08);
+s32 func_001D6B08(Script* arg0) {
+    u32* p = *(u32**)&arg0->unk_00[4];
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6B30);
+    if (p != NULL) {
+        *p &= ~0x2000000;
+    }
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6B50);
+s32 func_001D6B30(Script* arg0) {
+    u32* p = *(u32**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        *p |= 0x2000000;
+    }
+    return 2;
+}
+
+s32 func_001D6B50(Script* arg0) {
+    arg0->unk_174[3]++;
+    if (*(u8**)&arg0->unk_00[4] != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)(*(u8**)&arg0->unk_00[4] + 0x164);
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6B88);
 
@@ -1253,7 +1540,11 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6C08);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6C58);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6CA8);
+s32 func_00123698();
+
+s32 func_001D6CA8(void) {
+    return (func_00123698() <= 0) ? 2 : 4;
+}
 
 s32 func_001D6CD8(void) {
     func_0012C990(0, 0);
@@ -1348,7 +1639,11 @@ s32 func_001D70A0(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D70C8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7178);
+s32 func_001D7178(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_0038CDE8;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D71A0);
 
@@ -1358,9 +1653,17 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7300);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7358);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D76F0);
+s32 func_001D76F0(Script* arg0) {
+    D_002B8348 = arg0->unk_174[arg0->unk_174[3] + 4] / 100.0f;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7730);
+s32 func_001D7730(Script* arg0) {
+    D_002A6200 = arg0->unk_174[arg0->unk_174[3] + 4] / 100.0f;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001D7770(Script* arg0) {
     arg0->unk_174[3]++;
@@ -1465,7 +1768,11 @@ s32 func_001D7DD0(Script* arg0) {
 
 #ifdef VERSION_FM
 s32 func_001D7E18(void);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7E18);
+s32 func_001D7E18(void) {
+    func_001EAC68();
+    func_0024D418();
+    return 2;
+}
 #else
 s32 func_001D7E18(void) {
     func_00249F88();
@@ -1672,14 +1979,18 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8850);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8928);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8A00);
+void func_001D8A00(void) {
+    D_003854E0.unk_3070 &= ~0x1000000000000000;
+}
 
 s32 func_001D8A30(Script* arg0) {
     arg0->unk_174[3]--;
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8A48);
+s32 func_001D8A48(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 60) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8A68);
 
@@ -1691,7 +2002,11 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8C50);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8CD0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8D38);
+s32 func_001D8D38(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_0038D0D4;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8D60);
 
@@ -1703,7 +2018,9 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8DE8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8E90);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8EE0);
+s32 func_001D8EE0(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 61) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8F00);
 
@@ -1713,7 +2030,9 @@ void func_001D8F80(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8FB0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9038);
+s32 func_001D9038(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 62) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9058);
 
@@ -1751,7 +2070,11 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9EA8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9F08);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9F60);
+s32 func_001D9F60(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)&arg0->unk_00[0x324];
+    return 2;
+}
 
 s32 func_001D9F88(Script* arg0) {
     arg0->unk_174[arg0->unk_174[3] + 4] = func_00158C30(arg0->unk_174[arg0->unk_174[3] + 4]);
@@ -1946,7 +2269,11 @@ s32 func_001DAF70(void) {
     return 6;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAF98);
+s32 func_001DAF98(Script* arg0) {
+    D_0038D0E0[0] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAFC8);
 
@@ -1955,7 +2282,11 @@ s32 func_001DB078(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB098);
+s32 func_001DB098(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = (*(Script**)&arg0->unk_00[4])->unk_70;
+    return 2;
+}
 
 s32 func_001DB0C8(Script* arg0) {
     func_00108488(arg0->unk_174[arg0->unk_174[3] + 3], arg0->unk_174[arg0->unk_174[3] + 4]);
@@ -1975,7 +2306,9 @@ void func_001DB168(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB198);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB218);
+s32 func_001DB218(void) {
+    return ((s32)(*(u64*)D_0038CD00 >> 45) & 1) ? 4 : 2;
+}
 
 void func_001DB238(void) {
 }
@@ -1998,7 +2331,10 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB4A8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB4F8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB578);
+s32 func_001DB578(Script* arg0) {
+    arg0->unk_174[3]++;
+    return 2;
+}
 
 void func_001DB5D0(); // temp for next function
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB5D0);
@@ -2034,7 +2370,12 @@ s32 func_001DB740(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB768);
+s32 func_001DB768(Script* arg0) {
+    D_002BBABC = arg0->unk_174[arg0->unk_174[3] + 3];
+    D_002BBAC0 = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB7A8);
 
@@ -2089,7 +2430,11 @@ s32 func_001DBA00(void) {
 
 #ifdef VERSION_FM
 s32 func_001DBA30(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DBA30);
+s32 func_001DBA30(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_003F6E24;
+    return 2;
+}
 #else
 s32 func_001DBA30(Script* arg0) {
     s32 val = D_003F0DD4;
@@ -2155,13 +2500,19 @@ s32 func_001DC368(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3B0);
+s32 func_001DC3B0(void) {
+    return ((s32)(*(u64*)&D_0038CD00[2] >> 4) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC3D8);
 
 #ifdef VERSION_FM
 s32 func_001DC428(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC428);
+s32 func_001DC428(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002B9170;
+    return 2;
+}
 #else
 s32 func_001DC428(Script* arg0) {
     s32 val = D_002B9170;
@@ -2173,7 +2524,11 @@ s32 func_001DC428(Script* arg0) {
 
 #ifdef VERSION_FM
 s32 func_001DC450(Script* arg0);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC450);
+s32 func_001DC450(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002B916C;
+    return 2;
+}
 #else
 s32 func_001DC450(Script* arg0) {
     s32 val = D_002B916C;
@@ -2199,7 +2554,9 @@ s32 func_001DC558(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC5C0);
+s32 func_001DC5C0(void) {
+    return ((s32)(*(u64*)&D_0038CD00[2] >> 5) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DC5E8);
 
@@ -2269,9 +2626,14 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD170);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD1E0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD250);
+s32 func_001DD250(void) {
+    return D_003773C4() ? 2 : 4;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD288);
+s32 func_001DD288(Script* arg0) {
+    arg0->unk_174[arg0->unk_174[3] + 4] = ((u16*)((u8*)D_003010F8 + 0x580))[arg0->unk_174[arg0->unk_174[3] + 4]];
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD2C0);
 
@@ -2297,7 +2659,13 @@ s32 func_001DD3D0(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD3F0);
+s32 func_001DD3F0(Script* arg0) {
+    if (D_002BCA00[1] & arg0->unk_174[arg0->unk_174[3] + 4]) {
+        arg0->unk_174[3]--;
+        return 2;
+    }
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD430);
 
@@ -2335,18 +2703,20 @@ s32 func_001DD5B0(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD5F8);
+s32 func_001DD5F8(void) {
+    return ((s32)(*(u64*)&D_0038CD00[2] >> 8) & 1) ? 4 : 2;
+}
 
-// Nonmatch: Regswap
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD620);
-// void func_001DD620(UNK_TYPE arg0, UNK_TYPE arg1, s32 arg2) {
-//     func_00177908(arg2);
-//     D_003854E0.unk_3078 &= ~0x200;
-// }
+void func_001DD620(s32 arg0, s32 arg1, s32 arg2) {
+    func_00177908(arg2);
+    D_003854E0.unk_3078 &= ~0x200;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD658);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD6E0);
+s32 func_001DD6E0(void) {
+    return ((s32)(*(u64*)&D_0038CD00[2] >> 9) & 1) ? 4 : 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD708);
 
@@ -2393,7 +2763,11 @@ s32 func_001DD9D0(void) {
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDA18);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC2E0);
+s32 fm_func_001DC2E0(Script* arg0) {
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_002B29C4;
+    return 2;
+}
 #endif
 
 #ifdef VERSION_FM
@@ -2424,7 +2798,12 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC520);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDB58);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC7C0);
+s32 fm_func_001DC7C0(void) {
+    if (func_0013BF68() == 1) {
+        func_0011ED30(190001, func_001DDB58);
+    }
+    return 2;
+}
 #endif
 
 #ifdef VERSION_FM
@@ -2446,7 +2825,15 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DCA00);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DCA48);
+s32 fm_func_001DCA48(Script* arg0) {
+    arg0->unk_174[3]++;
+    if (D_003F76B8 == 0) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = 1;
+    } else {
+        arg0->unk_174[arg0->unk_174[3] + 4] = 0;
+    }
+    return 2;
+}
 #endif
 
 #ifdef VERSION_FM
