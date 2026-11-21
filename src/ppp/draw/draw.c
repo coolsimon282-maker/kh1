@@ -194,7 +194,37 @@ void func_001AAF58(void) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAF80);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAFC0);
+typedef struct {
+    /* 0x00 */ f32 org[4]; // ray origin, relative to the sphere's centre
+    /* 0x10 */ f32 dir[4];
+    /* 0x20 */ f32 radius;
+    /* 0x24 */ f32 t; // out: distance along dir to the first hit
+} DrawRaySphere;
+
+f32 func_001AB380(f32); // square root
+
+// ray/sphere intersection: solves a*t*t + b*t + c = 0, returns 0 if the ray misses
+s32 func_001AAFC0(DrawRaySphere* r) {
+    f32 a, b, c, d;
+
+    a = r->dir[0] * r->dir[0] + r->dir[1] * r->dir[1] + r->dir[2] * r->dir[2];
+    b = r->dir[0] * r->org[0];
+    b += r->dir[1] * r->org[1];
+    b += r->dir[2] * r->org[2];
+    b *= 2.0f;
+    c = r->org[0] * r->org[0];
+    c += r->org[1] * r->org[1];
+    c += r->org[2] * r->org[2];
+    c -= r->radius * r->radius;
+    d = b * b - a * 4.0f * c;
+    c = -b;
+    b = a * 2.0f;
+    if (d < 0.0f) {
+        return 0;
+    }
+    r->t = (c - func_001AB380(d)) / b;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0B0);
 
