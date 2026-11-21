@@ -225,7 +225,15 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001821A8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182288);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182348);
+void func_00182348(s32* arg0) {
+    s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    s32 n = *p++;
+    s32 i;
+
+    for (i = 0; i < n; i++) {
+        func_00182120(*p++, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001823B8);
 
