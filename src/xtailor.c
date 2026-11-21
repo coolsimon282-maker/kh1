@@ -234,7 +234,11 @@ void func_0010FE38(void) {
     sceGsPutDispEnv(&D_004D2610);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FE78);
+void func_0010FE78(s32 x, s32 y) {
+    D_004D2610.display.DX = x;
+    D_004D2610.display.DY = y;
+    D_004D284C = 1;
+}
 
 #ifdef VERSION_FM
 INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_00110068);
