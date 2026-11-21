@@ -28,8 +28,9 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1970);
 
 #ifdef VERSION_FM
-s32 func_001C19E8(void);
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C19E8);
+s32 func_001C19E8(void) {
+    return 0x171388;
+}
 #else
 s32 func_001C19E8(void) {
     return 0x16FA88; // possibly some macro value?
