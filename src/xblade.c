@@ -39,6 +39,46 @@ extern sceVu0FMATRIX D_002B84F0;
 extern u32 D_002B85F8;
 extern s32 D_002B8678;
 extern s32 D_002B8680;
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[0x38];
+} XWorldEntry; // size = 0x40
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ char unk_1C[0x20];
+    /* 0x3C */ f32 unk_3C;
+} XBladeObj;
+
+extern XWorldEntry* D_002BCDAC;
+extern XWorldEntry* D_002BCDA0;
+extern s32 D_002BCDA4;
+extern sceVu0FVECTOR D_004D92F0[3];
+extern XBladeObj* D_002E26A0[3];
+extern s32 D_002B91E8;
+extern s32 D_004D92E0;
+extern volatile s32 D_002BBDE0;
+extern s32 D_002B9660;
+void func_0011C5A8(void);
+void func_0011C5C8(void);
+s32 func_00113660(void);
+void func_0011D598(s32, s32);
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ char unk_04[0x14];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20;
+} XBladeHdr;
+
+void func_00111408(s32, s32, s32);
+void func_001089D0(void*);
+void func_00108FD0(s32, s32, s32, void*, s32);
 extern s32 D_002B8684;
 extern s32 D_002B8688;
 extern s32 D_002B8698[];
@@ -102,7 +142,9 @@ void func_001C4FF0();
 void* func_001EE280(s32);
 void func_001ED878();
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112168);
+void func_00112168(void) {
+    D_002B91E8 = D_002BCDAC[D_002B8680].unk_04;
+}
 
 void func_00112190(void) {
     D_002B85F8 |= 0x20;
@@ -200,7 +242,14 @@ void* func_001127E0(void) {
     return func_0011ED30(190000, func_001127A0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112810);
+void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    D_002B92F8 = arg3;
+    D_002B8678 = arg0;
+    D_002B8680 = arg1;
+    D_002B8684 = arg2;
+    func_00111408(arg0, arg1, arg2);
+    func_001127E0();
+}
 
 void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_002B92F8 = arg3;
@@ -325,16 +374,23 @@ void* func_00112C70(void) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xblade", fm_func_00112FC0);
+s32 fm_func_00112FC0(void) {
+    return D_004D92E0;
+}
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xblade", fm_func_00112FD0);
+void fm_func_00112FD0(s32 arg0) {
+    D_004D92E0 = arg0;
+}
 #endif
 
 #ifdef VERSION_FM
-void* func_00112C90(void);
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112C90);
+void* func_00112C90(void) {
+    func_00114420();
+    fm_func_00112FD0(1);
+    return func_001093A8(8);
+}
 #else
 void* func_00112C90(void) {
     func_00114420();
@@ -350,11 +406,33 @@ s32 func_00112CD0(void) {
     return func_00155ED8(0, 64);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112CF0);
+void func_00112CF0(void) {
+    s32 i;
+    XBladeObj* obj;
+
+    for (i = 0; i < 3; i++) {
+        obj = D_002E26A0[i];
+        if (obj != NULL) {
+            D_004D92F0[i][0] = obj->unk_10;
+            D_004D92F0[i][1] = obj->unk_14;
+            D_004D92F0[i][2] = obj->unk_18;
+            D_004D92F0[i][3] = obj->unk_3C;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D48);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D88);
+s32 func_00112D88(void) {
+    s32 i;
+
+    for (i = 0; i < D_002BCDA4; i++) {
+        if (D_002B8680 == D_002BCDA0[i].unk_00) {
+            return i;
+        }
+    }
+    return 1000;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112DE0);
 
@@ -572,7 +650,15 @@ void func_00113618(void) {
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00113660);
 
 void func_001136C8(s32);
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001136C8);
+void func_001136C8(s32 arg0) {
+    if (arg0 == 0) {
+        func_001102C0();
+        DPUT_GS_PMODE(0x22);
+    } else {
+        func_00113618();
+        func_00113410();
+    }
+}
 
 extern s32 D_004D2A80;
 extern s32 D_004D2A84;
@@ -951,15 +1037,32 @@ void func_00114430(void) {
     D_004D2A74 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114440);
+void func_00114440(void) {
+    D_004D2A60 = 0;
+    D_004D2A70 = 0;
+    func_00114420();
+    D_002B9664 = 0;
+    func_00114410();
+    func_0011C5A8();
+    func_0011C5C8();
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_001144C8);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001145B0);
+s32 func_001145B0(XBladeHdr* arg0) {
+    s32* offset = &arg0->unk_18;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001145E8);
+    if (arg0->unk_00 >= 2) {
+        func_001089D0((u8*)arg0 + *offset);
+    }
+}
+
+s32 func_001145E8(s32 arg0, XBladeHdr* arg1, s32 arg2, s32 arg3) {
+    func_00108FD0(D_004D2AB0++, arg2, arg0, (u8*)arg1 + arg1->unk_20, arg3);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114638);
 // s32 func_00114638(sceVu0FMATRIX arg0, f32 arg1, s32 arg2, s32 arg3) {

@@ -6,10 +6,6 @@ typedef struct {
     /* 0x8 */ f32 maxscl;
 } PChrXSclXYZMatrix;
 
-#ifdef VERSION_FM
-void pppChrXSclXYZMatrixCalc(pppPObject* pobj, PChrXSclXYZMatrix* p);
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppChrXSclXYZMatrix", pppChrXSclXYZMatrixCalc);
-#else
 void pppChrXSclXYZMatrixCalc(pppPObject* pobj, PChrXSclXYZMatrix* p) {
     sceVu0FMATRIX m;
 
@@ -25,4 +21,3 @@ void pppChrXSclXYZMatrixCalc(pppPObject* pobj, PChrXSclXYZMatrix* p) {
 
     sceVu0MulMatrix(ppvPObj.next->cmat, m, ppvPObj.next->cmat);
 }
-#endif

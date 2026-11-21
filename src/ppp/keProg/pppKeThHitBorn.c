@@ -2,4 +2,8 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeThHitBorn", pppKeThHitBornCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeThHitBorn", pppKeThHitBornCon);
+void pppKeThHitBornCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    u8* v = (u8*)&pobj->val[ctbl->useVal[1]];
+
+    *v = 0;
+}

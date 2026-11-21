@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import fileinput
+import os
 from typing import List
 
 NOP = "        nop # inserted by masps2.py\n"
@@ -84,6 +85,10 @@ def get_op_inputs(op: str) -> List[str]:
 
 def process(in_lines: List[str]) -> List[str]:
     out_lines = []
+    # Final Mix was assembled without these hazard nops (no FM mfc1 is ever followed by a nop):
+    # configure.py sets MASPS2_NO_NOPS=1 for the fm version.
+    if os.environ.get("MASPS2_NO_NOPS") == "1":
+        return list(in_lines)
     for i, line in enumerate(in_lines):
         out_lines.append(line)
 

@@ -2,6 +2,39 @@
 #include "ppp.h"
 #include "ppp/draw.h"
 
+#include "libgraph.h"
+
+extern s32 D_00370200;
+
+extern void func_0011D1F8(s32, s32, s32);
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ void (*func)(void*);
+} PppFuncEnt;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x64];
+    /* 0x64 */ s32 num;
+    /* 0x68 */ char unk_68[0x10];
+    /* 0x78 */ PppFuncEnt** ents;
+} PppFuncList;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x86];
+    /* 0x86 */ u16 usef;
+    /* 0x88 */ char unk_88[0x4];
+    /* 0x8C */ pppPEtcData* pEtc;
+    /* 0x90 */ char unk_90[0x4];
+    /* 0x94 */ s32 unk_94;
+    /* 0x98 */ char unk_98[0x28];
+} PppMngU;
+
+extern PppMngU D_00364130[];
+
+extern sceVu0FMATRIX D_00615E70;
+extern void func_0024EDF0(sceVu0FMATRIX, pppPEtcData*);
+
 extern sceVu0FMATRIX D_002B84F0;
 
 s32 D_0035FE00;
@@ -55,19 +88,79 @@ void initGraphicSystem(void) {
     op_init_fog_work();
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181040);
+void func_00181040(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001810D0);
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            pppPEtcData* e = D_00364130[i].pEtc;
+            if (e != NULL && *(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            func_00183E78(&D_00364130[i]);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181110);
+void func_001810D0(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181150);
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            D_00364130[i].usef |= 0x20;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001811A8);
+void func_00181110(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            D_00364130[i].usef &= ~0x20;
+        }
+    }
+}
+
+void func_00181150(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if ((D_00364130[i].usef & 1) && D_00364130[i].unk_94 == arg0) {
+            D_00364130[i].usef |= 0x20;
+            return;
+        }
+    }
+}
+
+void func_001811A8(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if ((D_00364130[i].usef & 1) && D_00364130[i].unk_94 == arg0) {
+            D_00364130[i].usef &= ~0x20;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181200);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001812B0);
+void func_001812B0(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].usef & 1) {
+            pppPEtcData* e = D_00364130[i].pEtc;
+            if (e != NULL && *(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            func_00183EC8((ppvmng*)&D_00364130[i]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181340);
 
@@ -77,7 +170,16 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001814C8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001815A0);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181600);
+s32 func_00181600(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130[i].unk_94 == arg0) {
+            return D_00364130[i].pEtc->boneNo;
+        }
+    }
+    return -2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181640);
 
@@ -85,15 +187,50 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001817E8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetUp);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_h_skip_version);
+s32* dpd_h_skip_version(s32* p) {
+    return p + 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_h_skip_datainfo);
+s32* dpd_h_skip_datainfo(s32* p, s32 n) {
+    s32 len;
+    s32 i;
+
+    for (i = 0; i < n; i++) {
+        len = *p++;
+        p += len;
+    }
+    return p;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181A58);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181B38);
+s32* func_00181B38(s32* arg0, s32 arg1) {
+    s32* p = dpd_h_skip_version(arg0);
+    s32 i;
+    s32 j;
+    s32 n;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181BA8);
+    for (i = 0; i < 5; i++) {
+        n = *p++;
+        for (j = 0; j < n; j++) {
+            *p++ += arg1;
+        }
+    }
+    return p;
+}
+
+void func_00181BA8(s32* arg0) {
+    s32* p;
+    s32 n;
+    s32 i;
+
+    func_00181B38(arg0, (s32)arg0);
+    p = dpd_h_skip_version(arg0);
+    n = *p++;
+    for (i = 0; i < n; i++) {
+        func_001843E0(*p++, &D_00370200);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181C20);
 
@@ -137,17 +274,49 @@ void func_00182110(s32 arg0) {
     D_0036C600 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182120);
+void func_00182120(s16* tim, s16 off) {
+    sceGsLoadImage li;
+    s16 dbp = tim[0];
+
+    if (dbp >= 0x3800) {
+        dbp = dbp + off - 0x3800;
+    }
+    sceGsSetDefLoadImage(&li, dbp, tim[2], tim[3], tim[4], tim[5], tim[6], tim[7]);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&li, (u_long128*)(tim + 0x10));
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001821A8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182288);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182348);
+void func_00182348(s32* arg0) {
+    s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    s32 n = *p++;
+    s32 i;
+
+    for (i = 0; i < n; i++) {
+        func_00182120(*p++, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001823B8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182478);
+void func_00182478(s32* arg0) {
+    s32* p;
+    s32 n;
+    s32 i;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    n = *p++;
+    for (i = 0; i < n; i++) {
+        func_001821A8(*p++, 0);
+    }
+}
 
 void vramcache_clear(_VRAMCACHE* cache) {
     cache->dpd = NULL;
@@ -191,9 +360,25 @@ void vramcache_clut(_VRAMCACHE_MNG* cacheMng, ppvmng* pMng) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182938);
+void func_00182938(ppvmng* arg0) {
+    sceVu0FMATRIX m;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182980);
+    sceVu0MulMatrix(m, D_002B84F0, D_00615E70);
+    func_0024EDF0(m, arg0->pEtc);
+}
+
+s32 func_00182980(void) {
+    PppMngU* p = D_00364130;
+    s32 i;
+    s32 sum = 0;
+
+    for (i = 0; i < 0x100; i++, p++) {
+        if ((p->usef & 1) && !(p->usef & 4)) {
+            sum += *(s32*)((u8*)p->pEtc + 0xF0);
+        }
+    }
+    return sum;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001829D0);
 
@@ -240,11 +425,38 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetPartMatrix);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001838E8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183980);
+void func_00183980(PppFuncList* arg0) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001839F0);
+    for (i = 0; i < arg0->num; i++) {
+        void (*f)(void*) = arg0->ents[i]->func;
+        if (f != NULL) {
+            f(arg0);
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183A60);
+void func_001839F0(PppFuncList* arg0) {
+    s32 i;
+
+    for (i = 0; i < arg0->num; i++) {
+        void (*f)(void*) = *(void (**)(void*))((u8*)arg0->ents[i] + 0x14);
+        if (f != NULL) {
+            f(arg0);
+        }
+    }
+}
+
+void func_00183A60(PppFuncList* arg0) {
+    s32 i;
+
+    for (i = 0; i < arg0->num; i++) {
+        void (*f)(void*) = *(void (**)(void*))((u8*)arg0->ents[i] + 0x18);
+        if (f != NULL) {
+            f(arg0);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183AD0);
 
@@ -254,7 +466,25 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDeletePObject);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAllFreePObject);
+void pppAllFreePObject(ppvmng* pMng) {
+    pppPObject* pObj = pMng->unk_74;
+    pppPObject* next;
+
+    if (pObj != NULL) {
+        do {
+            next = pObj->next;
+            pppDeletePObject(pObj);
+            pObj = next;
+        } while (pObj != NULL);
+    }
+
+    pMng->unk_74 = NULL;
+
+    if (pMng->unk_80 != 0) {
+        pppFree(ppvEnv, pMng->unk_80);
+        pMng->unk_80 = 0;
+    }
+}
 // void pppAllFreePObject(ppvmng* pMng) {
 //     pppPObject* pObj = pMng->unk_74;
 
@@ -271,9 +501,24 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAllFreePObject);
 //     }
 // }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183E78);
+void func_00183E78(PppMngU* arg0) {
+    if (arg0->unk_94 != 0) {
+        *(s32*)(arg0->unk_94 + 0x14) &= ~1;
+        *(s32*)(arg0->unk_94 + 0x14) |= 2;
+    }
+    if (arg0->usef & 1) {
+        arg0->usef = (arg0->usef & ~1) | 2;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EC8);
+void func_00183EC8(ppvmng* arg0) {
+    u8* p = *(u8**)((u8*)arg0 + 0x94);
+
+    if (p != NULL) {
+        *(s32*)(p + 0x14) = 0;
+        memset(arg0, 0, 0xC0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EF8);
 
@@ -281,7 +526,15 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184298);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001843E0);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184500);
+void func_00184500(pppEnvSt* env, s32* src, void* heap, s32 size) {
+    ppvEnv = env;
+    if (src != NULL) {
+        ((s32*)env)[4] = src[5];
+        ((s32*)env)[5] = src[6];
+        ((s32*)env)[6] = src[7];
+    }
+    func_00185008(env, heap, size);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184548);
 

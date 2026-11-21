@@ -79,6 +79,21 @@ INCLUDE_ASM("...", fm_func_X);
   those functions can't be matched with plain C. Skip them.
 * **Overlay structs**: when indexing through a field gets folded into the wrong base, declare a local struct
   that lays out the region directly (xkinetic's `ScriptVM`).
+* **Prototypes matter**: a call with no prototype schedules differently; adding `void f(s32);` fixed several.
+* **Ternaries**: if two `li` come out swapped, swap the ternary (`f() ? 2 : 4` instead of `== 0 ? 4 : 2`);
+  `movz` instead of `movn` means the condition needs flipping.
+* **u64 flag tests**: `((s32)(*(u64*)D_X >> N) & 1) ? 4 : 2`; the `(s32)` before `& 1` avoids a sign-extension.
+* **Scalar vs array globals**: if the original re-loads a struct field after storing to a global, declare the
+  global as an array and store to `X[0]` (GCC assumes a plain scalar can't alias the struct).
+* **xhumungus Script stack** (see notes/a1.md): `unk_174[3]` is the top index, `unk_174[top + 4]` the value.
+* **Fast experiments**: compile a test file straight in your WSL mirror with the FM flags (piped through
+  masps2.py) to try many variants in seconds; the command is in notes/a4.md.
+* **Float functions are matchable now**: FM was assembled without the `nop`s masps2.py used to add after
+  `mfc1`, `c.le.s`/`c.lt.s` and `mtc1`; the FM build no longer adds them (since 21 Nov 23:40). Functions given
+  up earlier for that reason are worth a retry. Run `wsl -e bash ./agent-tools.sh configure` once in a
+  checkout that was set up before then.
+* **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
+  FM-address name (`D_00xxxxxx`) for globals it doesn't list.
 * **Scratch files**: the scratchpad folder is shared between agents; use your own subfolder in it.
 
 ## Your notes file
