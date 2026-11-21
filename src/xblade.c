@@ -423,7 +423,16 @@ void func_00112CF0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D48);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D88);
+s32 func_00112D88(void) {
+    s32 i;
+
+    for (i = 0; i < D_002BCDA4; i++) {
+        if (D_002B8680 == D_002BCDA0[i].unk_00) {
+            return i;
+        }
+    }
+    return 1000;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112DE0);
 
