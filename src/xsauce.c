@@ -29,6 +29,8 @@ s32 D_002B7FF0;
 s32 D_004CF574;
 s32 D_004CF57C;
 
+extern s32 D_002C2108;
+
 extern u_long128* func_00121C98(s32 arg0, u_long128** arg1);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C2D8);
@@ -49,7 +51,12 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CBF8);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CC80);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CCD8);
+s32 func_0010CCD8(void) {
+    if (D_002C2108 & 1) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CCF0);
 
