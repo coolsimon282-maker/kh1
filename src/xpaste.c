@@ -21,8 +21,25 @@ extern void func_00180CE0();
 extern void func_0022BA18(u16);
 
 #ifdef VERSION_FM
-s32 func_0011C440(void);
-INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C440);
+extern s32 D_003F34A4;
+extern s32 D_003F720C;
+
+void func_0011C5E8();
+void fm_func_001C07A8(void);
+
+s32 func_0011C440(void) {
+    if (D_003F34A4 == 0) {
+        if (D_003F720C == 1) {
+            func_0011C5E8();
+            func_001093A8(15);
+            fm_func_001C07A8();
+        } else {
+            func_0011C540();
+        }
+        return 4;
+    }
+    return 0;
+}
 #else
 s32 func_0011C440(void) {
     if (D_003ED704 == 0) {
