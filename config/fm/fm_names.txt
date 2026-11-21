@@ -1,0 +1,2 @@
+// FM-address names used directly by C (agents matched against FM): declared so splat always creates them.
+D_002E26A0 = 0x002E26A0;

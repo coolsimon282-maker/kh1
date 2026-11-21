@@ -25,10 +25,6 @@ extern f32 D_002B8340[];
 s32 D_004FA670;
 s32 D_004FA680;
 
-#ifdef VERSION_FM
-s32 func_00122828(XHoot* arg0);
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122828);
-#else
 s32 func_00122828(XHoot* arg0) {
     s32 uVar1;
     f32 fVar2;
@@ -49,7 +45,6 @@ s32 func_00122828(XHoot* arg0) {
     sceVu0InterVector(arg0->unk_10[3], &arg0->unk_20, &arg0->unk_30, r);
     return uVar1;
 }
-#endif
 
 // Nonmatch: Preprocessor is adding nops unintentionally
 INCLUDE_ASM("asm/nonmatchings/xowl", func_001228C8);
