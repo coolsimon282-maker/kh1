@@ -1002,7 +1002,15 @@ void func_00114430(void) {
     D_004D2A74 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114440);
+void func_00114440(void) {
+    D_004D2A60 = 0;
+    D_004D2A70 = 0;
+    func_00114420();
+    D_002B9664 = 0;
+    func_00114410();
+    func_0011C5A8();
+    func_0011C5C8();
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
 
