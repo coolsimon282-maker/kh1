@@ -3,6 +3,16 @@
 #include "xhumungus.h"
 #include "xcursed.h"
 
+// Script seen as a stack machine: unk_174[3] is the stack pointer, unk_174[4..] the stack
+typedef struct {
+    /* 0x000 */ char unk_000[0x180];
+    /* 0x180 */ s32 sp;
+    /* 0x184 */ s32 stack[33];
+    /* 0x208 */ s32 var[26];
+    /* 0x270 */ s32 unk_270[32];
+    /* 0x2F0 */ s32 unk_2F0;
+} ScriptVM;
+
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C21B8);
 
 s32 func_001C2270(void) {
@@ -101,7 +111,13 @@ s32 func_001C26A8(Script* arg0, s64 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C26F8);
+s32 func_001C26F8(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->sp++;
+    vm->stack[vm->sp] = vm->var[arg1];
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2728);
 
