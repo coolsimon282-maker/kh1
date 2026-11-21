@@ -326,7 +326,14 @@ void func_001294C0(XAudArg* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_001294E0);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129500);
+void sceVu0CopyVector(f32*, f32*);
+
+void func_00129500(XAudArg* arg0) {
+    f32 v[4] __attribute__((aligned(16)));
+    XAudObj* obj = arg0[0].obj;
+    sceVu0CopyVector(v, arg0[1].p);
+    obj->unk_150 = atan2f(v[0], v[2]);
+}
 
 s32 func_001245F0(s32);
 
