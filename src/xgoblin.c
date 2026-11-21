@@ -232,7 +232,11 @@ void func_0011F938(void) {
     ((XGoblin*)func_0011ED30(10000, func_0011F908))->unk_02 = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F970);
+u64* func_0011F970(u64 arg0, u64 arg1, u64* arg2) {
+    arg2[0] = arg1;
+    arg2[1] = arg0;
+    return arg2 + 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F980);
 
