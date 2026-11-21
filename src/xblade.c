@@ -259,7 +259,15 @@ void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return func_001127E0();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112880);
+void func_00112880(s32 arg0) {
+    s32 val;
+
+    D_002B92F8 = arg0;
+    val = D_002BCDA0[arg0].unk_00;
+    D_002B8680 = val;
+    D_002B8684 = func_00111468(D_002B8678, val);
+    func_001127E0();
+}
 
 void func_001128D8(s32 arg0) {
     D_002A0510 = arg0;
