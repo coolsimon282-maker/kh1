@@ -103,7 +103,16 @@ void func_00181150(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001811A8);
+void func_001811A8(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if ((D_00364130[i].usef & 1) && D_00364130[i].unk_94 == arg0) {
+            D_00364130[i].usef &= ~0x20;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181200);
 
