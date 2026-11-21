@@ -61,4 +61,26 @@ void KeLnsFls_Init(KeLnsFls* p) {
     p->lp = &ppvDbgTemp;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A8770);
+typedef struct XBerryNode {
+    /* 0x00 */ u8 unk_00[0x8];
+    /* 0x08 */ struct XBerryNode* next;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ u8 unk_10[0x2E];
+    /* 0x3E */ u16 flags;
+} XBerryNode;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x18];
+    /* 0x18 */ XBerryNode* list;
+} XBerryNodeOwner;
+
+void func_001A8770(XBerryNodeOwner* arg0, s32 flags) {
+    XBerryNode* node = arg0->list;
+
+    flags |= 8;
+    while (node != NULL) {
+        node->unk_0C = 0;
+        node->flags |= flags;
+        node = node->next;
+    }
+}
