@@ -1111,7 +1111,13 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4010);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4060);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D40B0);
+s32 func_001D40B0(Script* arg0) {
+    f32 val = arg0->unk_174[arg0->unk_174[3] + 4];
+
+    arg0->unk_174[3]--;
+    D_0038CDDC = val / 100.0f;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D40F0);
 
