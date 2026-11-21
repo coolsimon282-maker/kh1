@@ -134,7 +134,17 @@ s32 func_001AB438(DrawFreeList* list) {
     return idx;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB470);
+void func_001AB470(DrawFreeList* list, u16* next, u16 count) {
+    u16 i;
+
+    list->next = next;
+    list->head = 0;
+    list->count = count;
+    for (i = 1; i < count; i++) {
+        *next++ = i;
+    }
+    *next = 0xFFFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB4B8);
 
