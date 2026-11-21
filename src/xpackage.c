@@ -42,8 +42,13 @@ INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247CD8);
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D18);
 
+#ifdef VERSION_EU
+void func_00247D88(void);
+INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D88);
+#else
 void func_00247D88(void) {
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D90);
 

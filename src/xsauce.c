@@ -181,8 +181,13 @@ void func_0010F380(void) {
     }
 }
 
+#ifdef VERSION_EU
+void func_0010F3B8(s32 arg0, s32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F3B8);
+#else
 void func_0010F3B8(s32 arg0, s32 arg1) {
     *(s32*)(arg1 + 0xA8) = arg0; // todo: figure out what struct this is
     D_004CF574 = 0;
     D_004CF57C = 0;
 }
+#endif

@@ -93,6 +93,10 @@ XGoblin* func_0011EE80(XGoblin* arg0, XGoblin* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EEB8);
 
+#ifdef VERSION_EU
+s32 func_0011EF58(XGoblin* arg0, s32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EF58);
+#else
 s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
     u32 uVar3;
 
@@ -132,6 +136,7 @@ s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
     arg0->unk_0C = NULL;
     return sVar5;
 }
+#endif
 
 s32 func_0011F050(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
     XGoblin* next;

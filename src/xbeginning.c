@@ -111,6 +111,10 @@ void func_00100118(void) {
     *(u16*)(func_0011ED30(184990, func_001000E8) + 2) = -1;
 }
 
+#ifdef VERSION_EU
+void func_00100168(void);
+INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100168);
+#else
 void func_00100168(void) {
     s32 new_var;
 
@@ -140,6 +144,7 @@ void func_00100168(void) {
     D_002B8690 = &D_002B9040;
     D_002B8694 = &D_002B9040;
 }
+#endif
 
 #ifdef NON_MATCHING
 extern s32 func_00103928;
@@ -255,9 +260,14 @@ void func_001006C8(void) {
 void func_001006F8(void);
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_001006F8);
 
+#ifdef VERSION_EU
+void func_001007D0(f32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xbeginning", func_001007D0);
+#else
 void func_001007D0(f32 arg0) {
     D_0048DDA0[1].unk_44 = arg0;
 }
+#endif
 
 void func_001007E0(void) {
     func_00106A08(&D_00297740, 10010);

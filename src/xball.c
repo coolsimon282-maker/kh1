@@ -60,9 +60,14 @@ void func_00120F48(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[3] = arg2[3];
 }
 
+#ifdef VERSION_EU
+s32 func_00120F78(sceVu0FMATRIX arg0);
+INCLUDE_ASM("asm/nonmatchings/xball", func_00120F78);
+#else
 s32 func_00120F78(sceVu0FMATRIX arg0) {
     return (arg0[0][2] < 0.0f || sceVu0ClipScreen(*arg0) != 0) ? TRUE : FALSE;
 }
+#endif
 
 s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRIX arg3) {
     sceVu0FVECTOR v0;
@@ -149,15 +154,24 @@ INCLUDE_ASM("asm/nonmatchings/xball", func_001217C0);
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_00121830);
 
+#ifdef VERSION_EU
+void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2);
+INCLUDE_ASM("asm/nonmatchings/xball", func_00121878);
+#else
 void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = atan2f(-arg0[1], func_00120A58(arg0));
     arg1[1] = atan2f(arg0[0], arg0[2]);
     arg1[2] = 0.0f;
     arg1[3] = 1.0f;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_001218E0);
 
+#ifdef VERSION_EU
+f32 func_00121970(f32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xball", func_00121970);
+#else
 f32 func_00121970(f32 arg0) {
     if (arg0 > 0.0f) {
         arg0 -= D_002B8340[1];
@@ -167,6 +181,7 @@ f32 func_00121970(f32 arg0) {
     }
     return arg0;
 }
+#endif
 
 void func_001219A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     sceVu0FVECTOR stack0;

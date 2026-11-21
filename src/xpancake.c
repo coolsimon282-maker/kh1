@@ -37,10 +37,19 @@ INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106380);
 
 INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106428);
 
+#ifdef VERSION_EU
+void func_001064E8(void);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_001064E8);
+#else
 void func_001064E8(void) {
     D_0048E508 = 0;
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_001064F8(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_001064F8);
+#else
 s32 func_001064F8(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
@@ -50,7 +59,12 @@ s32 func_001064F8(XFlapjack* arg0) {
     D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_00106578(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106578);
+#else
 void func_00106578(s32 arg0) {
     XFlapjack* p0;
     s32 val;
@@ -68,7 +82,12 @@ void func_00106578(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_00106610(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106610);
+#else
 s32 func_00106610(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0) {
@@ -78,7 +97,12 @@ s32 func_00106610(XFlapjack* arg0) {
     D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_00106690(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106690);
+#else
 void func_00106690(s32 arg0) {
     XFlapjack* p0 = func_0011EEB8(&D_002B8C70, 0, func_00106610);
     s32 val = arg0 << 1;
@@ -90,15 +114,30 @@ void func_00106690(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
+#endif
 
+#ifdef VERSION_EU
+void func_00106718(void);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106718);
+#else
 void func_00106718(void) {
     D_002B29CC = 0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_00106728(void);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106728);
+#else
 void func_00106728(void) {
     D_002B29D0 = 0;
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_00106738(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106738);
+#else
 s32 func_00106738(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
@@ -108,7 +147,12 @@ s32 func_00106738(XFlapjack* arg0) {
     D_002B860C = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_00106790(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106790);
+#else
 void func_00106790(s32 arg0) {
     XFlapjack* p0;
     s32 val;
@@ -126,7 +170,12 @@ void func_00106790(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_00106828(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106828);
+#else
 s32 func_00106828(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0.0f) {
@@ -136,7 +185,12 @@ s32 func_00106828(XFlapjack* arg0) {
     D_002B860C = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_00106880(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", func_00106880);
+#else
 void func_00106880(s32 arg0) {
     XFlapjack* p0;
     f32 f0;
@@ -160,3 +214,4 @@ void func_00106880(s32 arg0) {
         p0->unk_14 = f0 / ((f32)(arg0 << 1));
     }
 }
+#endif

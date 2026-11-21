@@ -38,6 +38,10 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215AF0);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215B88);
 
+#ifdef VERSION_EU
+s32 func_00215C48(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215C48);
+#else
 s32 func_00215C48(s32 arg0) {
     s32 val;
 
@@ -49,6 +53,7 @@ s32 func_00215C48(s32 arg0) {
     }
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215CE8);
 
@@ -58,10 +63,15 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215F48);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
+#ifdef VERSION_EU
+s32 func_00216758(XWhiskey* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216758);
+#else
 s32 func_00216758(XWhiskey* arg0) {
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, arg0->munny, 17, 0x80c87850);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002167A0);
 
@@ -69,6 +79,10 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_002168F8);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216D88);
 
+#ifdef VERSION_EU
+s32 func_00217038(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217038);
+#else
 s32 func_00217038(s32 arg0) {
     s32 val = 213;
     if (D_0063CF3C != 0) {
@@ -78,14 +92,20 @@ s32 func_00217038(s32 arg0) {
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002170B0);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217420);
 
+#ifdef VERSION_EU
+s32 func_00217810(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217810);
+#else
 s32 func_00217810(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 117);
 }
+#endif
 
 void func_00217840(void* arg0) {
     void* p0 = func_001F3A20(&D_003EE8B0, 0);
@@ -104,6 +124,10 @@ void func_00217898(void) {
     func_00215B88();
 }
 
+#ifdef VERSION_EU
+void func_002178D0(void);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_002178D0);
+#else
 void func_002178D0(void) {
     D_0063CF3C = 0;
     D_0063CF40 = 0;
@@ -112,11 +136,16 @@ void func_002178D0(void) {
     D_0063CF4C = 0;
     D_0063CF50 = 0;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217908);
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
+#ifdef VERSION_EU
+s32 func_00218648(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218648);
+#else
 s32 func_00218648(s32 arg0) {
     s32 val = 277;
 
@@ -127,12 +156,18 @@ s32 func_00218648(s32 arg0) {
     }
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002186B8);
 
+#ifdef VERSION_EU
+s32 func_00218840(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218840);
+#else
 s32 func_00218840(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 118);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218870);
 
@@ -142,9 +177,14 @@ void func_002189D0(void) {
     }
 }
 
+#ifdef VERSION_EU
+void func_00218A00(void);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A00);
+#else
 void func_00218A00(void) {
     D_0063CF88 = 0;
 }
+#endif
 
 void func_00218A10(void) {
     D_003ED718->unk_00 = 0;
@@ -204,8 +244,13 @@ u32 func_00218BF8(void) {
     return 0;
 }
 
+#ifdef VERSION_EU
+void func_00218C00(void);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218C00);
+#else
 void func_00218C00(void) {
 }
+#endif
 
 u32 func_00218C08(void) {
     return D_003ED718->unk_10;

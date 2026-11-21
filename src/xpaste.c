@@ -20,6 +20,10 @@ void func_0011C540();
 extern void func_00180CE0();
 extern void func_0022BA18(u16);
 
+#ifdef VERSION_EU
+s32 func_0011C440(void);
+INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C440);
+#else
 s32 func_0011C440(void) {
     if (D_003ED704 == 0) {
         if (D_003F117C == 1) {
@@ -33,7 +37,12 @@ s32 func_0011C440(void) {
     }
     return 0;
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_0011C4B0(void);
+INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C4B0);
+#else
 s32 func_0011C4B0(void) {
     if (D_003F1514 == 0) {
         switch (D_003F1518) {
@@ -51,6 +60,7 @@ s32 func_0011C4B0(void) {
     }
     return 0;
 }
+#endif
 
 void func_0011C540(void) {
     D_002BD854 = 1;
@@ -63,18 +73,33 @@ void func_0011C540(void) {
     func_0011D4B8(120);
 }
 
+#ifdef VERSION_EU
+void func_0011C598(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C598);
+#else
 void func_0011C598(s32 arg0) {
     D_002BD858 = arg0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_0011C5A8(void);
+INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C5A8);
+#else
 void func_0011C5A8(void) {
     D_002BD858 = 0;
 }
+#endif
 
 void func_0011C5B8(void) {
     D_002BD85C = 1;
 }
 
+#ifdef VERSION_EU
+void func_0011C5C8(void);
+INCLUDE_ASM("asm/nonmatchings/xpaste", func_0011C5C8);
+#else
 void func_0011C5C8(void) {
     D_002BD85C = 0;
 }
+#endif

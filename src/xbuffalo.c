@@ -9,17 +9,32 @@ s32 D_00623B48;
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1680);
 
+#ifdef VERSION_EU
+s32 func_001C1838(void);
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1838);
+#else
 s32 func_001C1838(void) {
     return D_003759DC;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_001C1848(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1848);
+#else
 void func_001C1848(s32 arg0) {
     D_003759C4 = arg0;
 }
+#endif
 
+#ifdef VERSION_EU
+void func_001C1858(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1858);
+#else
 void func_001C1858(s32 arg0) {
     D_003759C8 = arg0;
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1868);
 

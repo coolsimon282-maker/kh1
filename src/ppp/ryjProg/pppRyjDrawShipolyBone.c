@@ -12,8 +12,13 @@ typedef struct {
     /* 0x10 */ f32 avecBonePos[2][4];
 } VRyjDrawShipolyBone;
 
+#ifdef VERSION_EU
+void pppRyjDrawShipolyBoneCalc(void);
+INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", pppRyjDrawShipolyBoneCalc);
+#else
 void pppRyjDrawShipolyBoneCalc(void) {
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D100);
 

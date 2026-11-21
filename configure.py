@@ -32,10 +32,12 @@ GAME_CC_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.96"
 LIB_CC_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.9-991111/bin"
 COMMON_COMPILE_FLAGS = "-O2 -G0 $g"
 
-GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_INCLUDES} {COMMON_COMPILE_FLAGS} $in"
+# $verdef is -DVERSION_JP / -DVERSION_FM / -DVERSION_EU (set per configured version in build_stuff)
+GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS} $in"
 
 GAME_AS_CMD = f"{GAME_CC_DIR}/ee/bin/as {COMMON_COMPILE_FLAGS} -EL -mabi=eabi"
-GAME_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
+# pipefail: without it a C compile error is hidden by the pipe and a half-written .s gets assembled
+GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
 
 PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_AS_CMD}"
 
@@ -167,6 +169,7 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             )
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
+    ninja.variable("verdef", f"-DVERSION_{paths.version.upper()}")
 
     # Rules
     ld_args = " ".join(
