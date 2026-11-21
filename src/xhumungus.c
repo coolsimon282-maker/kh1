@@ -604,7 +604,10 @@ s32 func_001D1C48(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C68);
+s32 func_001D1C68(void) {
+    D_002C6440[1] &= ~4;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1C88);
 
