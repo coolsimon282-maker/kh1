@@ -342,7 +342,9 @@ s32 fm_func_00112FC0(void) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xblade", fm_func_00112FD0);
+void fm_func_00112FD0(s32 arg0) {
+    D_004D92E0 = arg0;
+}
 #endif
 
 #ifdef VERSION_FM
