@@ -348,7 +348,11 @@ void fm_func_00112FD0(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112C90);
+void* func_00112C90(void) {
+    func_00114420();
+    fm_func_00112FD0(1);
+    return func_001093A8(8);
+}
 #else
 void* func_00112C90(void) {
     func_00114420();
