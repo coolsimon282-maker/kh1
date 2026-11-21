@@ -325,7 +325,12 @@ s32 func_001EFE68(s32 arg0) {
 
 #ifdef VERSION_FM
 s32 func_001EFE90(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFE90);
+s32 func_001EFE90(s32 arg0) {
+    if (arg0 != 0) {
+        return func_001EF9E0(arg0);
+    }
+    return func_001F0EF0(167);
+}
 #else
 s32 func_001EFE90(s32 arg0) {
     if (arg0 != 0) {
