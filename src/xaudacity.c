@@ -283,7 +283,22 @@ void func_00129230(XAudArg* arg0) {
     func_0014E668(arg0[0].s, arg0[1].f, arg0[2].f, 0, arg0[3].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129260);
+extern f32 D_002C1E20[4][4];
+void sceVu0ApplyMatrix(f32*, f32 (*)[4], f32*);
+void sceVu0RotMatrix(f32 (*)[4], f32 (*)[4], f32*);
+
+void func_00129260(XAudArg* arg0) {
+    f32 rot[4] __attribute__((aligned(16)));
+    f32 m[4][4] __attribute__((aligned(16)));
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        rot[i] = func_00120AC8((((f32*)arg0[1].p)[i] / 180.0f) * PI);
+    }
+    rot[3] = 0.0f;
+    sceVu0RotMatrix(m, D_002C1E20, rot);
+    sceVu0ApplyMatrix(arg0[0].p, m, arg0[0].p);
+}
 
 #ifdef VERSION_FM
 void fm_func_00129330(void) {
