@@ -511,7 +511,9 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129B88);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129BC0);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129C08);
+void func_00129C08(XAudArg* arg0) {
+    sceVu0SubVector(arg0[1].p, arg0[0].obj->unk_010, arg0[0].obj->unk_490);
+}
 
 void func_0012EC60(s32, s32, s32);
 
