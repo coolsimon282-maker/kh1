@@ -1,3 +1,5 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppParMatrix", pppParMatrixCalc);
+void pppParMatrixCalc(pppPObject* pobj) {
+    sceVu0ApplyMatrix(ppvPObj.next->cmat[3], pobj->ppobj->cmat, ppvPObj.next->cmat[3]);
+}
