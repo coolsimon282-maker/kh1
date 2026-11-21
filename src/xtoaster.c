@@ -74,7 +74,20 @@ void func_00123340(f32 arg0, XToaster* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123350);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001233D0);
+static inline s32 xtoaster_inl_001233D0(XToaster* arg0) {
+    if (arg0->unk_000 & 0x2000000) {
+        return 0;
+    }
+    return 1;
+}
+
+s32 func_001233D0(XToaster* arg0) {
+    s32 ret = 0;
+    if (arg0->unk_130->unk_5F) {
+        ret = xtoaster_inl_001233D0(arg0);
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001233F8);
 
