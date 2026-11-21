@@ -283,7 +283,15 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDF78);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDFC8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE060);
+s32 func_001CE060(Script* arg0) {
+    u8 val = D_003854E0.unk_01[arg0->unk_174[arg0->unk_174[3] + 4] + 3];
+
+    if (val != 0 && val != 4) {
+        return 4;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE0A0);
 
