@@ -1291,7 +1291,12 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3750);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3860);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3960);
+s32 func_0012CBC0(s32);
+
+s32 func_001D3960(Script* arg0) {
+    arg0->unk_174[arg0->unk_174[3] + 4] = func_0012CBC0(arg0->unk_174[arg0->unk_174[3] + 4]);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D39B8);
 
