@@ -1,6 +1,8 @@
 #include "xtango.h"
 #include "xpotato.h"
 
+extern s32 D_003F47B8[];
+
 extern void func_001F9010(s32);
 extern s32 func_001F9438(void*, s32, s32, s32, s32, s32, u32);
 extern s32 D_003F4488[];
@@ -347,7 +349,10 @@ void fm_func_00219458(s32 arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218CB0);
+s32 func_00218CB0(XWhiskey* arg0) {
+    func_001F9010(23);
+    return func_001F9438(arg0, 0, 174, 12, D_003F47B8[*(s32*)((u8*)arg0 + 0x24)], 17, 0x80C87850);
+}
 
 void func_00218D08(void) {
     D_003ED72C++;
