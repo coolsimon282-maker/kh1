@@ -4,7 +4,9 @@
 typedef struct {
     /* 0x00*/ char unk_04[0x44];
     /* 0x44*/ f32 unk_44;
-    /* 0x48*/ char unk_48[0x17];
+    /* 0x48*/ char unk_48[0x4];
+    /* 0x4C*/ u16 unk_4C;
+    /* 0x4E*/ char unk_4E[0x11];
     /* 0x5F*/ u8 unk_5F;
 } XToast;
 
@@ -26,7 +28,9 @@ typedef struct {
     /* 0x378 */ s32 unk_378;
     /* 0x37C */ s32 unk_37C[3];
     /* 0x388 */ s32 unk_388;
-    /* 0x38C */ char unk_38C[0x84];
+    /* 0x38C */ char unk_38C[0x14];
+    /* 0x3A0 */ s32 unk_3A0;
+    /* 0x3A4 */ char unk_3A4[0x6C];
     /* 0x410 */ f32 unk_410;
     /* 0x414 */ f32 unk_414;
 } XToaster;
@@ -35,6 +39,9 @@ void func_00123AB8(XToaster* arg0);
 XToaster* func_00123880(s32 arg0);
 void func_00123C90(XToaster* arg0, s32 arg1);
 void func_00124BC8(XToaster* arg0);
+XToaster* func_001234A0(XToaster* arg0);
+s32 func_00123768(XToaster* arg0);
+void func_00124CD8(void);
 
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487018);
 
@@ -153,7 +160,13 @@ void func_00123858(XToaster* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123880);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001239D8);
+s32 func_001239D8(s32 arg0) {
+    XToaster* p = func_00123880(arg0);
+    if (p != NULL) {
+        return p->unk_130->unk_4C;
+    }
+    return 0xFF;
+}
 
 void func_00123A08(s32 arg0, s32 arg1) {
     func_00123880(arg0)->unk_000 |= 1 << arg1;
