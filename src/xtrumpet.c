@@ -420,7 +420,31 @@ s32 func_00111C60(s32 param1) {
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C98);
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111D98);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+} XTrumpetUnk9288;
+
+extern XTrumpetUnk9288 D_004D9288;
+extern s32 D_004D9260;
+
+s32 func_00111D98(void) {
+    func_00111C98(0, D_002B916C);
+    func_00111C98(1, D_004D9260);
+    if (D_002B9170 < 0) {
+        D_002B9170 = 0;
+    }
+    if (D_004D29C4 < 0) {
+        D_004D29C4 = 0;
+    }
+    D_004D9288.unk_10 = D_002B9170;
+    D_004D9288.unk_14 = D_004D29C4;
+    D_004D9288.unk_1C = D_002B9170;
+    return D_004D29D0 ? 4 : 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111E20);
 
