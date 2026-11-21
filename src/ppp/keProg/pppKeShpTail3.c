@@ -29,4 +29,13 @@ void pppKeShpTail3Con(pppPObject* pobj, pppCtrlTable* ctbl) {
     v->unk_000[5] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeShpTail3", pppKeShpTail3Con2);
+void pppKeShpTail3Con2(pppPObject* pobj, pppCtrlTable* ctbl) {
+    u64* v = (u64*)&pobj->val[ctbl->useVal[0]];
+
+    v[0] = 0;
+    v[1] = 0;
+    v[2] = 0;
+    v[3] = 0;
+    v[4] = 0;
+    v[5] = 0;
+}
