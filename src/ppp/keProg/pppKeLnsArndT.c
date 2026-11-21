@@ -1,8 +1,12 @@
-#include "ppp.h"
+#include "ppp/pppKeLns.h"
 
 INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsArndT", pppKeLnsArndTDraw);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsArndT", pppKeLnsArndTCon);
+void pppKeLnsArndTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    KeLnsArnd* arnd = (KeLnsArnd*)&pobj->val[ctbl->useVal[0]];
+
+    KeLnsArnd_Init(arnd);
+}
 
 void pppKeLnsArndTDes(void) {
 }
