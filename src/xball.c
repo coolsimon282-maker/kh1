@@ -152,7 +152,13 @@ INCLUDE_ASM("asm/nonmatchings/xball", func_001216C8);
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_001217C0);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121830);
+void func_00121830(f32* arg0, f32* arg1, f32* arg2) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        arg0[i] = arg1[i] / arg2[i];
+    }
+}
 
 #ifdef VERSION_FM
 void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2);
