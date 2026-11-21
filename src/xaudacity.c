@@ -340,7 +340,13 @@ void func_001294C0(XAudArg* arg0) {
     func_0012EC88(arg0[0].p, arg0[1].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_001294E0);
+void func_001294E0(XAudArg* arg0) {
+    if (arg0[0].obj->unk_178 == 0) {
+        arg0[0].s = 0;
+    } else {
+        arg0[0].s = 1;
+    }
+}
 
 void sceVu0CopyVector(f32*, f32*);
 
