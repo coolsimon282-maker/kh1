@@ -32,7 +32,21 @@ INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247AE0);
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247B60);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BA8);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x20];
+    /* 0x20 */ s32 unk_20[4][4];
+} XPackageUnk7BA8;
+
+void func_00247BA8(XPackageUnk7BA8* arg0, s32* arg1) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            arg0->unk_20[i][j] = arg1[j];
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BF8);
 
