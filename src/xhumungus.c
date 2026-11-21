@@ -1107,7 +1107,13 @@ void func_001D2440(void) {
 
 #ifdef VERSION_FM
 s32 func_001D2460(void);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2460);
+extern char D_00490620[];
+
+s32 func_001D2460(void) {
+    func_00120590(D_00490620, func_F20000, func_001D2440, NULL);
+    D_003854E0.unk_3078 |= 0x2000;
+    return 2;
+}
 #else
 s32 func_001D2460(void) {
     func_00120590(D_0048A3A0, func_F20000, func_001D2440, NULL);
