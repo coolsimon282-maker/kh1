@@ -1049,7 +1049,11 @@ s32 func_001D4E88(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4EC0);
+s32 func_001D4EC0(s32 arg0) {
+    D_0038CDE4 = arg0;
+    D_00375BC0 |= 8;
+    return 2;
+}
 
 s32 func_001D4EE8(void) {
     D_00375BC0 &= ~8;
