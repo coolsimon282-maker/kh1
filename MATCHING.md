@@ -64,6 +64,23 @@ INCLUDE_ASM("...", fm_func_X);
 #ifndef VERSION_FM                a function FM doesn't have. Leave it alone.
 ```
 
+## What made things match (learned by earlier agents; add to this in your notes)
+
+* **Bit tests**: `return (x & 1) != 0;` folds to a bare `andi`; the target's `andi + sltu` came from
+  `if (x & 1) return 1; return 0;`. Try that form for `lui/and/sltiu` patterns too.
+* **Store order**: several stores to one base usually come out last-statement-first, then the rest in source
+  order. A chain `x = y = z = 0` comes out as x, z, y.
+* **Strict aliasing is on**: if the target keeps a load after a store through `s32*`, type the field `s32` and
+  cast where it's used. If a byte store comes first, load every pointer you need at the top of the function.
+* **`volatile`**: a global accessed as `lui / addiu %lo / sw 0(reg)` even when used once is declared `volatile`.
+* **Small constant loops** get unrolled by the compiler.
+* **FM-only globals** (names like `D_004D5AF8`) are defined by the build; a plain `extern` is enough.
+* **`.word 0x46000064`** in the assembly is `cvt.w.s`; the compiler always emits `trunc.w.s` for C casts, so
+  those functions can't be matched with plain C. Skip them.
+* **Overlay structs**: when indexing through a field gets folded into the wrong base, declare a local struct
+  that lays out the region directly (xkinetic's `ScriptVM`).
+* **Scratch files**: the scratchpad folder is shared between agents; use your own subfolder in it.
+
 ## Your notes file
 
 `notes/<your agent name>.md`: functions you gave up on (with closest C), and anything you learned about the
