@@ -12,7 +12,8 @@
 # Edit files in the Windows copy only; the mirror is overwritten on every run.
 set -e
 SRC="$(cd "$(dirname "$0")" && pwd)"
-DST="$HOME/kh1-decomp-build"
+# one mirror per checkout (the main folder keeps ~/kh1-decomp-build; each git worktree gets its own)
+if [ "$(basename "$SRC")" = "kh1-decomp" ]; then DST="$HOME/kh1-decomp-build"; else DST="$HOME/kh1-build-$(basename "$SRC")"; fi
 mkdir -p "$DST"
 # Mirror the sources (not generated folders, not git). The game program file comes along; it stays local.
 rsync -a --delete \
