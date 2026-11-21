@@ -12,6 +12,19 @@ extern f32 func_00120AC8(f32);
 extern f32 func_00177D68(void);
 extern s32 func_00147A10(s32);
 
+typedef struct XAudObj {
+    /* 0x000 */ char unk_000[0x3D4];
+    /* 0x3D4 */ f32 unk_3D4;
+} XAudObj;
+
+typedef union XAudArg {
+    s32 s;
+    u32 u;
+    f32 f;
+    void* p;
+    XAudObj* obj;
+} XAudArg;
+
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E28);
 // void func_00128E28(f32* arg0) {
 //     f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
@@ -172,7 +185,9 @@ void func_00129840(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129848);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129868);
+void func_00129868(XAudArg* arg0) {
+    arg0[0].f = arg0[0].obj->unk_3D4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129878);
 
