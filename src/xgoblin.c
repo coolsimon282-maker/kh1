@@ -8,6 +8,7 @@
 #include "libvu0.h"
 
 void func_0011F938();
+void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void));
 void func_00121AE8();
 void func_0012FB18();
 void func_00147870();
@@ -63,8 +64,6 @@ void func_0011ECD0(void) {
     D_002C1EA0 ^= 1;
 }
 
-void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void));
-
 void* func_0011ED30(s32 arg0, s32 (*func)(void)) {
     return func_0011EEB8(&D_004DD188, arg0, func);
 }
@@ -80,7 +79,21 @@ s32 func_0011ED80(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EDD0);
+void func_0011EDD0(s32* arg0, s32* arg1, s32 arg2, s32 arg3) {
+    XGoblin* g = (XGoblin*)arg0;
+    s32 i;
+
+    g->unk_00 = arg2;
+    g->unk_02 = arg3;
+    g->unk_04 = (s32)arg1;
+    g->unk_08 = NULL;
+    g->unk_0C = NULL;
+    for (i = 0; i < arg3; i++) {
+        ((XGoblin*)arg1)->unk_00 = 0;
+        ((XGoblin*)arg1)->unk_02 = 0;
+        arg1 = (s32*)((u8*)arg1 + arg2);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EE10);
 
