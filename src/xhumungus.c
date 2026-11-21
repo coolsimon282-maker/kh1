@@ -1321,7 +1321,13 @@ s32 func_001D3FC8(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4010);
+void func_001E1418(s32, s32);
+
+s32 func_001D4010(Script* arg0) {
+    func_001E1418(arg0->unk_174[arg0->unk_174[3] + 3], arg0->unk_174[arg0->unk_174[3] + 4]);
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4060);
 
