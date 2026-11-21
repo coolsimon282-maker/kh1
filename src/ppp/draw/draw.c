@@ -275,7 +275,32 @@ void func_001AC180(DrawTim2* tm) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC298);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC430);
+typedef struct {
+    /* 0x00 */ u16 unk_0;
+    /* 0x02 */ u8 pad2[6];
+    /* 0x08 */ u8 unk_8;
+    /* 0x09 */ u8 unk_9;
+    /* 0x0A */ u8 unk_A;
+    /* 0x0B */ u8 padB;
+    /* 0x0C */ s16 unk_C;
+    /* 0x0E */ s16 unk_E;
+    /* 0x10 */ u32 pad10;
+    /* 0x14 */ u_long128* unk_14;
+    /* 0x18 */ u8 unk_18;
+} DrawImage;
+
+void func_001AC430(DrawImage* img, s32 wait) {
+    sceGsLoadImage li;
+
+    sceGsSetDefLoadImage(&li, img->unk_0 & 0x3FFF, img->unk_A >> 2, img->unk_18, img->unk_8 << 4, img->unk_9 << 4,
+                         img->unk_C, img->unk_E);
+    sceGsSyncPath(0, 0);
+    FlushCache(0);
+    sceGsExecLoadImage(&li, img->unk_14);
+    if (wait) {
+        sceGsSyncPath(0, 0);
+    }
+}
 
 typedef struct {
     /* 0x0 */ u16 unk_0;
