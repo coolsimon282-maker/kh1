@@ -200,7 +200,18 @@ void func_00218A00(void) {
 
 #ifdef VERSION_FM
 void func_00218A10(void);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A10);
+void func_00218A10(void) {
+    XWhiskey* p = D_003ED718;
+
+    *(s32*)((u8*)p + 0x2C) = 1;
+    p->unk_08 = 0;
+    p->unk_04 = 0;
+    p->unk_0C = 0;
+    p->unk_10 = 0;
+    p->unk_14 = 0;
+    p->unk_18 = 0;
+    p->unk_00 = 0;
+}
 #else
 void func_00218A10(void) {
     D_003ED718->unk_00 = 0;
