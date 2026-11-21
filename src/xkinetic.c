@@ -42,7 +42,17 @@ s32 func_001C22F0(Script* arg0, s32 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2328);
+s32 func_001C2328(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->sp++;
+    if (vm->unk_270[vm->unk_2F0] == arg1) {
+        vm->stack[vm->sp] = 1;
+    } else {
+        vm->stack[vm->sp] = 0;
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2370);
 
