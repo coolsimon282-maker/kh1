@@ -514,7 +514,13 @@ void func_00129AC8(XAudArg* arg0) {
     arg0[0].obj->unk_1CC &= ~arg0[1].s;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129AE8);
+void func_00131498(XAudObj*, void*);
+
+void func_00129AE8(XAudArg* arg0) {
+    s32* tbl = arg0[0].obj->unk_1DC;
+    XAudObj* obj = arg0[1].obj;
+    func_00131498(obj, (u8*)tbl + tbl[obj->unk_130->unk_4C + 1]);
+}
 
 void func_00129B28(XAudArg* arg0) {
     arg0[0].s = arg0[0].obj->unk_130->unk_4C;
