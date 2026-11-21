@@ -37,7 +37,14 @@ s32 func_001061D8(void) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xpancake", fm_func_001063F8);
+extern s32 D_002A6204;
+
+s32 fm_func_001063F8(void) {
+    if (D_002B85C0[0] != 128 || D_002B860C != 0 || D_002A6204 != 0) {
+        return 1;
+    }
+    return 0;
+}
 #endif
 
 void func_00106208(u8* arg0) {
