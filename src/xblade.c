@@ -39,6 +39,15 @@ extern sceVu0FMATRIX D_002B84F0;
 extern u32 D_002B85F8;
 extern s32 D_002B8678;
 extern s32 D_002B8680;
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[0x38];
+} XWorldEntry; // size = 0x40
+
+extern XWorldEntry* D_002BCDAC;
+extern s32 D_002B91E8;
+extern s32 D_004D92E0;
 extern s32 D_002B8684;
 extern s32 D_002B8688;
 extern s32 D_002B8698[];
@@ -102,7 +111,9 @@ void func_001C4FF0();
 void* func_001EE280(s32);
 void func_001ED878();
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112168);
+void func_00112168(void) {
+    D_002B91E8 = D_002BCDAC[D_002B8680].unk_04;
+}
 
 void func_00112190(void) {
     D_002B85F8 |= 0x20;
@@ -333,7 +344,6 @@ INCLUDE_ASM("asm/nonmatchings/xblade", fm_func_00112FD0);
 #endif
 
 #ifdef VERSION_FM
-void* func_00112C90(void);
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112C90);
 #else
 void* func_00112C90(void) {
