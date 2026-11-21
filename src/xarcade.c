@@ -34,12 +34,14 @@ extern s32 D_002B8C70;
 extern s32 D_002B8C8C;
 
 extern s32 D_00358BE0;
+extern s32 D_002B9328;
 
 extern XArcade D_0048EC00;
 extern s32 D_0048EC08;
 
 extern void func_F20000(s32, s32);
 extern void func_00100240(); // in xbeginning
+extern void func_00101560(void); // in xporcupine
 extern void func_00109C98();
 extern u_long128* func_00121C98(s32, u_long128**);
 extern void func_001600B8();
@@ -95,7 +97,11 @@ void* func_00109340(void) {
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093A8);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xarcade", fm_func_00109588);
+s32 fm_func_00109588(void) {
+    D_002B9328 = 0;
+    func_00101560();
+    return func_00155ED8(0, 0x40);
+}
 #endif
 
 #ifdef VERSION_FM
