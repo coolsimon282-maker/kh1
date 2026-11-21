@@ -436,7 +436,15 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184298);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001843E0);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184500);
+void func_00184500(pppEnvSt* env, s32* src, void* heap, s32 size) {
+    ppvEnv = env;
+    if (src != NULL) {
+        ((s32*)env)[4] = src[5];
+        ((s32*)env)[5] = src[6];
+        ((s32*)env)[6] = src[7];
+    }
+    func_00185008(env, heap, size);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184548);
 
