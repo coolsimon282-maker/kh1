@@ -3117,7 +3117,13 @@ s32 fm_func_001DC2E0(Script* arg0) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001DC308);
+s32 fm_func_001DC308(Script* arg0) {
+    u8* p = func_0022F768(1);
+
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = (*(u32*)(p + 0xDC4) >> 4) & 1;
+    return 2;
+}
 #endif
 
 #ifdef VERSION_FM
