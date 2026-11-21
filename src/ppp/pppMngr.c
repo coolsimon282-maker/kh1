@@ -3,6 +3,18 @@
 #include "ppp/draw.h"
 
 typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ void (*func)(void*);
+} PppFuncEnt;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x64];
+    /* 0x64 */ s32 num;
+    /* 0x68 */ char unk_68[0x10];
+    /* 0x78 */ PppFuncEnt** ents;
+} PppFuncList;
+
+typedef struct {
     /* 0x00 */ char unk_00[0x86];
     /* 0x86 */ u16 usef;
     /* 0x88 */ char unk_88[0x4];
@@ -359,7 +371,16 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetPartMatrix);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001838E8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183980);
+void func_00183980(PppFuncList* arg0) {
+    s32 i;
+
+    for (i = 0; i < arg0->num; i++) {
+        void (*f)(void*) = arg0->ents[i]->func;
+        if (f != NULL) {
+            f(arg0);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001839F0);
 
