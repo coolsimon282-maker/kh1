@@ -648,7 +648,9 @@ void func_00129CA8(XAudArg* arg0) {
     arg0[0].obj->unk_130->unk_18 = arg0[1].f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129CC0);
+void func_00129CC0(XAudArg* arg0) {
+    arg0[0].obj->unk_06C->unk_CC = (arg0[1].f / 180.0f) * PI;
+}
 
 void func_001358B8(void*, s32);
 
