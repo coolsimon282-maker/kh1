@@ -70,6 +70,11 @@ void func_0010EDA0(struct XNoodle*, void*, void (*)(void));
 s32 func_00131B08(s32);
 void func_001EAC68(void);
 void func_0024D418(void);
+void func_0013DFA0(void*);
+void func_00135848(void*);
+void func_00135870(void*);
+void func_0014F398(void*);
+extern s32 D_0038D0E0;
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C8470);
 
@@ -763,7 +768,14 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D22B8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2308);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23A8);
+s32 func_001D23A8(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        func_0013DFA0(p);
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D23D8);
 
