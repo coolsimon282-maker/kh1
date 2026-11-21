@@ -131,7 +131,15 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123620);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123698);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001236F0);
+s32 func_001236F0(XToaster* arg0) {
+    s32 ret = 0;
+    if (arg0->unk_134 != NULL && arg0->unk_134[4] != 0 && arg0->unk_3A0 == 0) {
+        if ((*(u64*)arg0 & 0x8010) == 0x8000) {
+            ret = 1;
+        }
+    }
+    return ret;
+}
 
 s32 func_00123730(XToaster* arg0) {
     s32 ret = 0;
