@@ -120,7 +120,21 @@ void func_00111210(s32 index) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111298);
+// XTrumpet's unk_4C..unk_6B, copied from what func_0017F1C8 returns
+typedef struct {
+    /* 0x00 */ s32 w[8];
+} XTrumpetUnk4C;
+
+XTrumpetUnk4C* func_0017F1C8(void);
+
+void func_00111298(void) {
+    XTrumpet* t = D_002B90B0;
+
+    t->unk_40 = D_002B8678;
+    t->unk_44 = D_002B8680;
+    t->unk_48 = D_002B92F8;
+    *(XTrumpetUnk4C*)&t->unk_4C = *func_0017F1C8();
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111328);
 
