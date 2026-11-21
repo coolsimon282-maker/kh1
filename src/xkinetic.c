@@ -160,4 +160,7 @@ s32 func_001C3670(s32 arg0, s32 arg1) {
     return ((s8*)(arg0 + arg1 * 4))[3];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3680);
+s32 func_001C3680(s32 arg0, s32 arg1) {
+    return ((u8*)(arg0 + arg1 * 4))[0] | (((u8*)(arg0 + arg1 * 4))[1] << 8) |
+           (((s8*)(arg0 + arg1 * 4))[2] << 16);
+}
