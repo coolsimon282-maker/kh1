@@ -119,7 +119,11 @@ void func_00128FA8(f32* arg0) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xaudacity", fm_func_00128F70);
+extern u32 D_002BBDE4;
+
+void fm_func_00128F70(XAudArg* arg0) {
+    arg0[0].s = D_002BBDE4 >= 2 && D_002BBDE4 != 7;
+}
 #endif
 
 #ifdef VERSION_FM
