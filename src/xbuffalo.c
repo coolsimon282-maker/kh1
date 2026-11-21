@@ -23,10 +23,12 @@ void func_001C1858(s32 arg0) {
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02[0xE];
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u8 unk_06[0xA];
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ u8 unk_14[0xC];
-    /* 0x20 */ s32 unk_20;
+    /* 0x20 */ void (*unk_20)(void);
     /* 0x24 */ u8 unk_24[0xC];
 } XBuffaloUnk1868; // size = 0x30
 
@@ -60,7 +62,16 @@ u16 func_001C1A90(s32 arg0) {
     return D_0037A16C[arg0].unk_00;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AB8);
+void func_001C1AB8(s32 arg0) {
+    if (arg0 >= 0) {
+        if (D_0037A16C[arg0].unk_20 != NULL) {
+            D_0037A16C[arg0].unk_20();
+        }
+        D_0037A16C[arg0].unk_00 = 0;
+        D_0037A16C[arg0].unk_02 = 0;
+        D_0037A16C[arg0].unk_04 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AE0);
 
@@ -87,7 +98,7 @@ void func_001C2080(s32 arg0) {
 }
 
 #ifdef VERSION_FM
-void fm_func_001C06C0(s32 arg0, s32 arg1) {
+void fm_func_001C06C0(s32 arg0, void (*arg1)(void)) {
     if (arg0 < 0) {
         arg0 = D_0037A168;
     }
