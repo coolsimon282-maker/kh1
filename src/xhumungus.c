@@ -1323,7 +1323,13 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D5010);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D5060);
+s32 fm_func_001D5060(void) {
+    if (--D_0062A210 < 0) {
+        D_002A61F0 = 0;
+        return 4;
+    }
+    return 0;
+}
 #endif
 
 #ifdef VERSION_FM
