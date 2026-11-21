@@ -12,7 +12,7 @@ typedef struct {
     /* 0x004 */ char unk_004[0x12C];
     /* 0x130 */ XToast* unk_130;
     /* 0x134 */ char unk_134[0x18];
-    /* 0x14C */ s32* unk_14C;
+    /* 0x14C */ s32 unk_14C;
     /* 0x150 */ s32 unk_150;
     /* 0x154 */ s32 unk_154;
     /* 0x158 */ char unk_158[0x78];
@@ -51,7 +51,15 @@ INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487068);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001231E0);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123318);
+void func_00123318(XToaster* arg0, s32* arg1) {
+    arg1[0] = arg0->unk_154;
+    if (arg0->unk_14C != 0) {
+        arg1[1] = *(s32*)arg0->unk_14C;
+    } else {
+        arg1[1] = 0;
+    }
+    arg1[2] = arg0->unk_1D0;
+}
 
 void func_00123340(f32 arg0, XToaster* arg1) {
     arg1->unk_130->unk_44 = arg0;
