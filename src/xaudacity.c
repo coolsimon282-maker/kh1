@@ -149,11 +149,10 @@ typedef union XAudArg {
     XAudB8* b8;
 } XAudArg;
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E28);
-// void func_00128E28(f32* arg0) {
-//     f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
-//     *arg0 = sinf(x);
-// }
+void func_00128E28(f32* arg0) {
+    f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
+    *arg0 = sinf(x);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E80);
 // void func_00128E80(f32* arg0) {
