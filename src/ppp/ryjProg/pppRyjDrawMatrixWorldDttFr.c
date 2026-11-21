@@ -1,6 +1,13 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", pppRyjDrawMatrixWorldDttFrCon);
+extern sceVu0FVECTOR D_003701D0;
+
+void pppRyjDrawMatrixWorldDttFrCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    u8* v = (u8*)&pobj->val[ctbl->useVal[1]];
+
+    sceVu0CopyVector((f32*)(v + 0x40), D_003701D0);
+    sceVu0CopyVector((f32*)(v + 0x50), ppvParScl);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", pppRyjDrawMatrixWorldDttFrCalc);
 
