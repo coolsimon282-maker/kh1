@@ -27,7 +27,15 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAB28);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAC80);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AADB8);
+typedef struct {
+    /* 0x0 */ s32 unk_0;
+    /* 0x4 */ u8 unk_4;
+} DrawUnkAADB8;
+
+void func_001AADB8(DrawUnkAADB8* arg0) {
+    arg0->unk_0 = 0;
+    arg0->unk_4 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AADC8);
 

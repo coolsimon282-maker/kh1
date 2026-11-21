@@ -2,4 +2,6 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandUpFV", pppRandUpFVCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandUpFV", func_00189860);
+f32 func_00189860(f32 arg0, f32 arg1) {
+    return arg0 * arg1;
+}
