@@ -1279,7 +1279,48 @@ void func_0012AE78(XAudArg* arg0) {
     arg0[0].s = func_00142480(arg0[0].s, arg0[1].s, 0, arg0[2].s) + 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012AEB8);
+typedef struct XAudRay {
+    /* 0x00 */ f32 pos[4];
+    /* 0x10 */ f32 step[4];
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ s32 unk_34[3];
+    /* 0x40 */ f32 out[4];
+    /* 0x50 */ s32 unk_50[12];
+} XAudRay __attribute__((aligned(16)));
+
+void func_00116660(XAudRay*);
+void func_001166E8(XAudRay*);
+
+void func_0012AEB8(XAudArg* arg0) {
+    XAudRay ray;
+    f32 dir[4] __attribute__((aligned(16)));
+
+    func_00116660(&ray);
+    ray.unk_24 = arg0[2].f;
+    ray.unk_20 = arg0[2].f;
+    sceVu0CopyVector(ray.pos, arg0[0].p);
+    ray.pos[3] = 1.0f;
+    func_001223B0(dir, arg0[1].p);
+    do {
+        if (arg0[2].f < dir[3]) {
+            sceVu0ScaleVector(ray.step, dir, arg0[2].f);
+            dir[3] -= arg0[2].f;
+        } else {
+            sceVu0ScaleVector(ray.step, dir, dir[3]);
+            dir[3] = 0.0f;
+        }
+        ray.step[3] = 1.0f;
+        ray.unk_28 = 1;
+        func_001166E8(&ray);
+        sceVu0CopyVector(ray.pos, ray.out);
+    } while (0.0f < dir[3]);
+    sceVu0CopyVector(arg0[3].p, ray.out);
+    arg0[0].s = ray.unk_30 & 1;
+}
 
 s32 func_00142480(s32, s32, s32, s32);
 
