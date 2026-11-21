@@ -239,7 +239,12 @@ void func_00123E48(s32 arg0, s32 arg1) {
     func_00123C90(func_00123880(arg0), arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123E78);
+void func_00123E78(s32 arg0, sceVu0FVECTOR arg1) {
+    XToaster* p = func_00123880(arg0);
+    XT_FLAGS(p) |= 0x100000000000;
+    sceVu0CopyVector(p->unk_030, arg1);
+    func_00136D38(p);
+}
 
 void func_00123ED0(s32 arg0, sceVu0FVECTOR arg1) {
     sceVu0CopyVector(func_00123880(arg0)->unk_040, arg1);
