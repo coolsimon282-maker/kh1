@@ -740,7 +740,11 @@ void func_0012A418(XAudArg* arg0) {
     arg0[0].s = func_00147C98(arg0[0].s, arg0[1].s, arg0[2].s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A450);
+void sceVu0CopyVector(f32*, f32*);
+
+void func_0012A450(XAudArg* arg0) {
+    sceVu0CopyVector(arg0[0].ptrs->unk_00, arg0[1].p);
+}
 
 void func_00176340(void*);
 
