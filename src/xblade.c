@@ -48,6 +48,24 @@ typedef struct {
 extern XWorldEntry* D_002BCDAC;
 extern s32 D_002B91E8;
 extern s32 D_004D92E0;
+extern volatile s32 D_002BBDE0;
+extern s32 D_002B9660;
+void func_0011C5A8(void);
+void func_0011C5C8(void);
+s32 func_00113660(void);
+void func_0011D598(s32, s32);
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ char unk_04[0x14];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20;
+} XBladeHdr;
+
+void func_00111408(s32, s32, s32);
+void func_001089D0(void*);
+void func_00108FD0(s32, s32, s32, void*, s32);
 extern s32 D_002B8684;
 extern s32 D_002B8688;
 extern s32 D_002B8698[];
@@ -211,7 +229,14 @@ void* func_001127E0(void) {
     return func_0011ED30(190000, func_001127A0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112810);
+void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    D_002B92F8 = arg3;
+    D_002B8678 = arg0;
+    D_002B8680 = arg1;
+    D_002B8684 = arg2;
+    func_00111408(arg0, arg1, arg2);
+    func_001127E0();
+}
 
 void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_002B92F8 = arg3;
