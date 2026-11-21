@@ -481,7 +481,20 @@ s32 func_001F0550(s32 arg0, s32 idx) {
     return FALSE;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F05A0);
+s32 func_001F05A0(s32 arg0) {
+    u32 type;
+    u32 i;
+
+    if (arg0 != 0) {
+        type = func_001EFAA8(arg0);
+        for (i = 0; i < 10; i++) {
+            if (type == D_003DE630[i]) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
 
 s32 func_001F0600(void) {
     s32 i;
