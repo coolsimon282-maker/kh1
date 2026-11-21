@@ -45,7 +45,20 @@ typedef struct {
     /* 0x08 */ char unk_08[0x38];
 } XWorldEntry; // size = 0x40
 
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ char unk_1C[0x20];
+    /* 0x3C */ f32 unk_3C;
+} XBladeObj;
+
 extern XWorldEntry* D_002BCDAC;
+extern XWorldEntry* D_002BCDA0;
+extern s32 D_002BCDA4;
+extern sceVu0FVECTOR D_004D92F0[3];
+extern XBladeObj* D_002E26A0[3];
 extern s32 D_002B91E8;
 extern s32 D_004D92E0;
 extern volatile s32 D_002BBDE0;
@@ -393,7 +406,20 @@ s32 func_00112CD0(void) {
     return func_00155ED8(0, 64);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112CF0);
+void func_00112CF0(void) {
+    s32 i;
+    XBladeObj* obj;
+
+    for (i = 0; i < 3; i++) {
+        obj = D_002E26A0[i];
+        if (obj != NULL) {
+            D_004D92F0[i][0] = obj->unk_10;
+            D_004D92F0[i][1] = obj->unk_14;
+            D_004D92F0[i][2] = obj->unk_18;
+            D_004D92F0[i][3] = obj->unk_3C;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D48);
 
