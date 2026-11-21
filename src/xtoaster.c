@@ -33,6 +33,7 @@ typedef struct {
 void func_00123AB8(XToaster* arg0);
 XToaster* func_00123880(s32 arg0);
 void func_00123C90(XToaster* arg0, s32 arg1);
+void func_00124BC8(XToaster* arg0);
 
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487018);
 
@@ -128,7 +129,9 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123880);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001239D8);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123A08);
+void func_00123A08(s32 arg0, s32 arg1) {
+    func_00123880(arg0)->unk_000 |= 1 << arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123A40);
 
