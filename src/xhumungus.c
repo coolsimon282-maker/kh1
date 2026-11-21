@@ -429,7 +429,12 @@ s32 func_001CEC68(UNK_PTR arg0, s32 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CEC98);
+extern s32 D_003DABD0[];
+
+void func_001CEC98(void) {
+    D_003DABD0[0] = func_00155ED8(0x34, 4);
+    D_003DABD0[1] = func_00155ED8(0x38, 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CECE0);
 
