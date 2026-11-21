@@ -150,7 +150,17 @@ void func_001EF668(void) {
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF708);
+s32 func_001EF708(u32 arg0) {
+    s32 ret = 0;
+    s32 mul = 1;
+
+    do {
+        ret += (arg0 & 0xF) * mul;
+        arg0 >>= 4;
+        mul *= 10;
+    } while (arg0 != 0);
+    return ret;
+}
 
 void func_001EF810(void) {
     D_003ED718 = func_0022F768(5);
