@@ -22,9 +22,12 @@ void func_001C1858(s32 arg0) {
 }
 
 typedef struct {
-    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u8 unk_02[0xE];
     /* 0x10 */ s32 unk_10;
-    /* 0x14 */ u8 unk_14[0x1C];
+    /* 0x14 */ u8 unk_14[0xC];
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ u8 unk_24[0xC];
 } XBuffaloUnk1868; // size = 0x30
 
 extern s32 D_0037A168;
@@ -50,7 +53,12 @@ s32 func_001C19E8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C19F8);
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1A90);
+u16 func_001C1A90(s32 arg0) {
+    if (arg0 < 0) {
+        return 0;
+    }
+    return D_0037A16C[arg0].unk_00;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AB8);
 
