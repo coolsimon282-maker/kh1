@@ -536,7 +536,12 @@ XBravo* func_001F0808(s32 arg0) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0820);
+u32 func_001F0820(s32 arg0) {
+    if (arg0 != 0) {
+        return func_00147AE8(arg0 & ~0x80)->unk_04;
+    }
+    return func_001F0EF0(180);
+}
 #else
 u32 func_001F0820(s32 arg0) {
     if (arg0 != 0) {
