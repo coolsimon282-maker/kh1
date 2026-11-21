@@ -129,7 +129,14 @@ s64 func_00123518(XToaster* arg0, XToaster* arg1) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123558);
+XToaster* func_00123558(XToaster* arg0, XToaster* p) {
+    while ((p = func_001234A0(p)) != NULL) {
+        if (func_00123518(arg0, p)) {
+            return p;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001235B8);
 
