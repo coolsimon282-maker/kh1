@@ -202,7 +202,13 @@ u32 func_001EF9E0(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFA18);
+u32 func_001EFA18(s32 arg0) {
+    if (arg0 > 0 && arg0 < 256) {
+        XScotch* obj = (XScotch*)func_00147A88(arg0);
+        return obj->unk_0C;
+    }
+    return 0;
+}
 #else
 u32 func_001EFA18(s32 arg0) {
     if (arg0 != 0) {
