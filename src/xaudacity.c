@@ -229,7 +229,13 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129058);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_001290C8);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129138);
+void sceVu0ScaleVectorXYZ(f32*, f32*, f32);
+
+void func_00129138(XAudArg* arg0) {
+    f32 v[4] __attribute__((aligned(16)));
+    sceVu0ScaleVectorXYZ(v, arg0[1].p, arg0[2].f * D_002B8344[0]);
+    sceVu0AddVector(arg0[0].p, arg0[0].p, v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129188);
 
