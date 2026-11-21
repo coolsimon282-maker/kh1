@@ -12,8 +12,59 @@ extern f32 func_00120AC8(f32);
 extern f32 func_00177D68(void);
 extern s32 func_00147A10(s32);
 
+typedef struct XAud6C {
+    /* 0x00 */ char unk_00[0xBD];
+    /* 0xBD */ u8 unk_BD;
+} XAud6C;
+
+typedef struct XAud130 {
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ char unk_1C[0x30];
+    /* 0x4C */ u16 unk_4C;
+    /* 0x4E */ u16 unk_4E;
+    /* 0x50 */ char unk_50[0x8];
+    /* 0x58 */ u8 unk_58;
+    /* 0x59 */ u8 unk_59;
+    /* 0x5A */ u8 unk_5A;
+} XAud130;
+
+typedef struct XAud14C_18 {
+    /* 0x00 */ char unk_00[0x24];
+    /* 0x24 */ f32 unk_24;
+} XAud14C_18;
+
+typedef struct XAud14C {
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ XAud14C_18* unk_18;
+} XAud14C;
+
+typedef struct XAud398 {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XAud398;
+
 typedef struct XAudObj {
-    /* 0x000 */ char unk_000[0x3D4];
+    /* 0x000 */ char unk_000[0x2C];
+    /* 0x02C */ struct XAudObj* unk_02C;
+    /* 0x030 */ char unk_030[0x3C];
+    /* 0x06C */ XAud6C* unk_06C;
+    /* 0x070 */ char unk_070[0xC0];
+    /* 0x130 */ XAud130* unk_130;
+    /* 0x134 */ char unk_134[0x18];
+    /* 0x14C */ XAud14C* unk_14C;
+    /* 0x150 */ char unk_150[0x7C];
+    /* 0x1CC */ s32 unk_1CC;
+    /* 0x1D0 */ char unk_1D0[0xB4];
+    /* 0x284 */ f32 unk_284;
+    /* 0x288 */ char unk_288[0xE8];
+    /* 0x370 */ u64 unk_370;
+    /* 0x378 */ char unk_378[0x20];
+    /* 0x398 */ XAud398* unk_398;
+    /* 0x39C */ char unk_39C[0x2];
+    /* 0x39E */ u8 unk_39E;
+    /* 0x39F */ char unk_39F[0x31];
+    /* 0x3D0 */ s32 unk_3D0;
     /* 0x3D4 */ f32 unk_3D4;
 } XAudObj;
 
@@ -301,7 +352,9 @@ INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A1F8);
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A210);
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A270);
+void func_0012A270(XAudArg* arg0) {
+    arg0[0].f = arg0[0].obj->unk_284;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A280);
 
