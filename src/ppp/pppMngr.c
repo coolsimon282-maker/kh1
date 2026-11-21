@@ -2,6 +2,8 @@
 #include "ppp.h"
 #include "ppp/draw.h"
 
+#include "libgraph.h"
+
 extern s32 D_00370200;
 
 extern void func_0011D1F8(s32, s32, s32);
@@ -272,7 +274,18 @@ void func_00182110(s32 arg0) {
     D_0036C600 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182120);
+void func_00182120(s16* tim, s16 off) {
+    sceGsLoadImage li;
+    s16 dbp = tim[0];
+
+    if (dbp >= 0x3800) {
+        dbp = dbp + off - 0x3800;
+    }
+    sceGsSetDefLoadImage(&li, dbp, tim[2], tim[3], tim[4], tim[5], tim[6], tim[7]);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&li, (u_long128*)(tim + 0x10));
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001821A8);
 
