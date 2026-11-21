@@ -189,8 +189,15 @@ void func_0010F380(void) {
 }
 
 #ifdef VERSION_FM
-void func_0010F3B8(s32 arg0, s32 arg1);
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F3B8);
+extern s32 D_004D5AF8;
+extern s32 D_004D5AFC;
+
+void func_0010F3B8(s32 arg0, s32 arg1, s32 arg2) {
+    D_004D5AF8 = arg2 - 1;
+    D_004CF574 = 0;
+    D_004D5AFC = 0;
+    *(s32*)(arg1 + 0xA8) = arg0;
+}
 #else
 void func_0010F3B8(s32 arg0, s32 arg1) {
     *(s32*)(arg1 + 0xA8) = arg0; // todo: figure out what struct this is
