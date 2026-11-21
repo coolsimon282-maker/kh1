@@ -660,7 +660,11 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0670);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D06F0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0828);
+s32 func_001D0828(Script* arg0) {
+    ((f32*)D_0038CD3C[arg0->unk_174[arg0->unk_174[3] + 3]])[3] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0870);
 
