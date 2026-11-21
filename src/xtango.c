@@ -65,6 +65,10 @@ u32 func_001EF448(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF488);
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtango", eu_func_001EC508);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF530);
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
@@ -119,6 +123,10 @@ XScotch* func_001EF9C8(s32 arg0) {
     return (XScotch*)func_00147A88(arg0);
 }
 
+#ifdef VERSION_EU
+u32 func_001EF9E0(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF9E0);
+#else
 u32 func_001EF9E0(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
@@ -126,7 +134,12 @@ u32 func_001EF9E0(s32 arg0) {
     }
     return func_001F0EF0(160);
 }
+#endif
 
+#ifdef VERSION_EU
+u32 func_001EFA18(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFA18);
+#else
 u32 func_001EFA18(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
@@ -134,6 +147,7 @@ u32 func_001EFA18(s32 arg0) {
     }
     return 0;
 }
+#endif
 
 u16 func_001EFA48(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
@@ -193,6 +207,10 @@ s8 func_001EFBB0(s32 arg0, s32 arg1) {
     return 0;
 }
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtango", eu_func_001EC9D0);
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFC40);
 
 s32 func_001EFC98(s32 arg0) {
@@ -246,33 +264,53 @@ s32 func_001EFE00(void) {
     return iVar4;
 }
 
+#ifdef VERSION_EU
+s32 func_001EFE68(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFE68);
+#else
 s32 func_001EFE68(s32 arg0) {
     if (arg0 != 0) {
         return func_001EF9E0(arg0);
     }
     return func_001F0EF0(176);
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_001EFE90(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFE90);
+#else
 s32 func_001EFE90(s32 arg0) {
     if (arg0 != 0) {
         return func_001EF9E0(arg0);
     }
     return func_001F0EF0(176);
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_001EFEB8(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFEB8);
+#else
 s32 func_001EFEB8(s32 arg0) {
     if (arg0 != 0) {
         return func_001EFA18(arg0);
     }
     return func_001F0EF0(177);
 }
+#endif
 
+#ifdef VERSION_EU
+s32 func_001EFEE0(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFEE0);
+#else
 s32 func_001EFEE0(s32 arg0) {
     if (arg0 != 0) {
         return func_001EFA18(arg0);
     }
     return func_001F0EF0(177);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFF08);
 
@@ -343,19 +381,29 @@ XBravo* func_001F0808(s32 arg0) {
     return func_00147AE8(arg0);
 }
 
+#ifdef VERSION_EU
+u32 func_001F0820(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0820);
+#else
 u32 func_001F0820(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_04;
     }
     return func_001F0EF0(189);
 }
+#endif
 
+#ifdef VERSION_EU
+u32 func_001F0860(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0860);
+#else
 u32 func_001F0860(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_08;
     }
     return func_001F0EF0(189);
 }
+#endif
 
 u8 func_001F08A0(s32 arg0) {
     if (arg0 != 0) {
@@ -423,5 +471,10 @@ s32 func_001F0BD8(s32 arg0) {
     return val;
 }
 
+#ifdef VERSION_EU
+void func_001F0C28(void);
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0C28);
+#else
 void func_001F0C28(void) {
 }
+#endif

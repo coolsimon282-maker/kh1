@@ -71,13 +71,22 @@ void func_0010F420(void) {
 
 #define DISPWIDTH 640
 
+#ifdef VERSION_EU
+void func_0010F448(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F448);
+#else
 void func_0010F448(void) {
     sceGsSyncPath(0, 0);
     DPUT_GS_PMODE(SCE_GS_SET_PMODE(1, 1, 0, 0, 0, 0, 0xFF));
     DPUT_GS_DISPFB1(SCE_GS_SET_DISPFB1(0xD8000 / 2048, 512 / 64, SCE_GS_PSMCT32, 0, 0));
     DPUT_GS_DISPLAY1(SCE_GS_SET_DISPLAY1(0, 160, 4, 0, (DISPWIDTH * 4) - 1, 128 - 1));
 }
+#endif
 
+#ifdef VERSION_EU
+void func_0010F4A8(u32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F4A8);
+#else
 void func_0010F4A8(u32 arg0) {
     if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
         if (arg0 == 0) {
@@ -130,6 +139,7 @@ void func_0010F4A8(u32 arg0) {
         }
     }
 }
+#endif
 
 void func_0010F6F0(void) {
     D_004CF580 = D_002C1EB8.s32;
@@ -171,9 +181,14 @@ void* func_0010FB68(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
 
+#ifdef VERSION_EU
+void func_0010FCD0(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FCD0);
+#else
 void func_0010FCD0(void) {
     D_004D2990 = 0;
 }
+#endif
 
 void func_0010FCE0(void) {
     D_004D2990 = 1;
@@ -181,6 +196,10 @@ void func_0010FCE0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FCF0);
 
+#ifdef VERSION_EU
+void func_0010FD40(s16 w, s16 h);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FD40);
+#else
 void func_0010FD40(s16 w, s16 h) {
     D_004D284C = 0;
     sceGsSetDefDispEnv(&D_004D2610, 1, w, h, 0, 0);
@@ -189,6 +208,7 @@ void func_0010FD40(s16 w, s16 h) {
     sceGsSyncPath(0, 0);
     sceGsPutDispEnv(&D_004D2610);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FDB8);
 
@@ -197,11 +217,16 @@ void func_0010FE10(u32* x, u32* y) {
     *y = D_004D2610.display.DY;
 }
 
+#ifdef VERSION_EU
+void func_0010FE38(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FE38);
+#else
 void func_0010FE38(void) {
     sceGsResetGraph(1, 1, 2, 0);
     DPUT_GS_EXTWRITE(0);
     sceGsPutDispEnv(&D_004D2610);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FE78);
 
@@ -277,11 +302,16 @@ void func_00110DE0() {
     func_F20000(0, D_004D2994);
 }
 
+#ifdef VERSION_EU
+void func_00110E18(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110E18);
+#else
 void func_00110E18(void) {
     D_002A30D0 = 0;
     D_002B9030 = 0;
     D_002B9084 = 0;
 }
+#endif
 
 s32 func_00110E38(s32 arg0) {
     D_002B9030 = 0;
@@ -293,7 +323,9 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110E78);
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110EA8);
 
+#ifndef VERSION_EU
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);
+#endif
 
 void func_00110EE8(void) {
     func_F20000(3, 0);

@@ -47,6 +47,10 @@ extern void func_001C20B8();
 extern void func_00233968();
 extern void func_00248530();
 
+#ifdef VERSION_EU
+void func_001090D8(void);
+INCLUDE_ASM("asm/nonmatchings/xarcade", func_001090D8);
+#else
 void func_001090D8(void) {
     KingdomFile* file;
 
@@ -69,6 +73,7 @@ void func_001090D8(void) {
     func_001ED888(NULL);
     func_0011F7C0();
 }
+#endif
 
 s32 func_001091B0(void) {
     func_0011EF58(&D_002B8C70, 0);
@@ -89,6 +94,14 @@ void* func_00109340(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093A8);
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xarcade", eu_func_001094D0);
+#endif
+
+#ifdef VERSION_EU
+void func_001093D8(void);
+INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093D8);
+#else
 void func_001093D8(void) {
     func_00122518();
     func_001600B8();
@@ -99,6 +112,7 @@ void func_001093D8(void) {
     D_002B8690 = D_002DEC60;
     D_002B8694 = D_002DECA0;
 }
+#endif
 
 void func_00109440(void) {
     FlushCache(INVALIDATE_ICACHE);
@@ -137,11 +151,16 @@ void* func_00109B00(void) {
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109B28);
 s32 func_00109B28();
 
+#ifdef VERSION_EU
+void* func_00109C50(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C50);
+#else
 void* func_00109C50(s32 arg0) {
     D_0048EC00.unk_04 = arg0 << 1;
     D_0048EC08 = 0;
     return func_0011ED30(190000, func_00109B28);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C98);
 
