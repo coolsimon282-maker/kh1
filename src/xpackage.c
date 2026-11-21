@@ -86,7 +86,14 @@ void func_00247BA8(XPackageUnk7BA8* arg0, s32* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247BF8);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247C68);
+// arg0: a type byte, a 32-bit little-endian size, then the data
+s32 func_00247C68(u8* arg0, void* arg1, s32* arg2) {
+    s32 size = arg0[1] + (arg0[2] << 8) + (arg0[3] << 16) + (arg0[4] << 24);
+
+    memcpy(arg1, arg0 + 5, size);
+    *arg2 = size;
+    return size;
+}
 
 extern void (*D_00469FC8[])(u8* arg0, s32 arg1, s32* arg2);
 
