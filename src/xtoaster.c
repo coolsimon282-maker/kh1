@@ -133,7 +133,9 @@ void func_00123A08(s32 arg0, s32 arg1) {
     func_00123880(arg0)->unk_000 |= 1 << arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123A40);
+void func_00123A40(s32 arg0, s32 arg1) {
+    func_00123880(arg0)->unk_000 &= ~(1 << arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123A80);
 
