@@ -2,6 +2,9 @@
 #include "ppp.h"
 #include "ppp/draw.h"
 
+extern sceVu0FMATRIX D_00615E70;
+extern void func_0024EDF0(sceVu0FMATRIX, pppPEtcData*);
+
 extern sceVu0FMATRIX D_002B84F0;
 
 s32 D_0035FE00;
@@ -202,7 +205,12 @@ void vramcache_clut(_VRAMCACHE_MNG* cacheMng, ppvmng* pMng) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182938);
+void func_00182938(ppvmng* arg0) {
+    sceVu0FMATRIX m;
+
+    sceVu0MulMatrix(m, D_002B84F0, D_00615E70);
+    func_0024EDF0(m, arg0->pEtc);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182980);
 
