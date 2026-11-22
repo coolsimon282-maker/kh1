@@ -986,7 +986,49 @@ s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 //     return ret;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipAll);
+s32 sceVu0ClipAll(sceVu0FVECTOR minv, sceVu0FVECTOR maxv, sceVu0FMATRIX ms, sceVu0FVECTOR *vm, s32 n) {
+    register s32 ret;
+    __asm__ __volatile__("
+	.set noreorder
+	lqc2		vf8,0x0(%4)
+	lqc2		vf4,0x0(%3)
+	lqc2		vf5,0x10(%3)
+	lqc2		vf6,0x20(%3)
+	lqc2		vf7,0x30(%3)
+	lqc2		vf9,0x0(%1)
+	lqc2		vf10,0x0(%2)
+	lqc2		vf11,0x0(%1)
+	lqc2		vf12,0x0(%2)
+loop_clip_all:
+	vmulax.xyzw		ACC,vf4,vf8
+	vmadday.xyzw	ACC,vf5,vf8
+	vmaddaz.xyzw	ACC,vf6,vf8
+	vmaddw.xyzw		vf8,vf7,vf8
+	vmulw.xyz		vf11,vf9,vf8
+	vmulw.xyz		vf12,vf10,vf8
+	vnop
+	vnop
+	ctc2.ni    	$0,$vi16
+	vsub.xyw	vf11,vf8,vf11
+	vsub.xyw	vf12,vf12,vf8
+	vmove.w		vf11,vf9
+	vmove.w		vf12,vf10
+	vnop
+	addi		%4,0x10
+	lqc2    	vf8,0x0(%4)
+	addi		%5,-1
+	cfc2.ni    	%0,$vi16
+	andi		%0,%0,0xc0
+	beqz		%0,end_clip_all
+	nop
+	bne			$0,%5,loop_clip_all
+	nop
+	addi		%0,$0,1
+end_clip_all:
+	.set reorder
+	":"=&r"(ret): "r" (minv),"r" (maxv),"r" (ms),"r" (vm),"r" (n));
+    return ret;
+}
 // s32 sceVu0ClipAll(sceVu0FVECTOR minv, sceVu0FVECTOR maxv, sceVu0FMATRIX ms, sceVu0FVECTOR *vm, s32 n) {
 //     register s32 ret;
 //     __asm__ __volatile__("			\n\
