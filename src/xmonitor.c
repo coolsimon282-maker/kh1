@@ -15,7 +15,38 @@ typedef struct {
     MonitorSub sub[3];
 } Monitor;
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00246B50);
+typedef struct {
+    /* 0x00 */ s32 time;
+    /* 0x04 */ u8 unk_04[0x1C];
+} MonitorKey; // size = 0x20
+
+extern char D_00491848[]; // "ttlib/ui.c"
+extern char D_00491858[];
+void __assert(const char* file, int line, const char* expr);
+
+void func_00246B50(Monitor* m, s32 dt) {
+    MonitorSub* s;
+
+    if ((*(u64*)&m->unk60 & 0xA) == 0xA) {
+        s = &m->sub[0];
+        if (s == NULL) {
+            __assert(D_00491848, 14, D_00491858);
+        }
+        if (s->unk4 < s->unk8 - 1) {
+            s->unk0 += dt;
+            do {
+                s32 t = ((MonitorKey*)s->unkC)[s->unk4].time;
+
+                if (s->unk0 < t) {
+                    return;
+                }
+                s->unk0 -= t;
+                s->unk4++;
+            } while (s->unk4 != s->unk8 - 1);
+            m->sub[0].unk10 |= 4;
+        }
+    }
+}
 
 void func_00246C28(Monitor* m) {
     m->unk60 |= 8;
