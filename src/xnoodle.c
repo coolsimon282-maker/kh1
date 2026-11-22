@@ -40,7 +40,19 @@ typedef struct {
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A1F8);
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A270);
+extern u64 D_002B70B0[];
+extern void* D_00495250;
+void func_0010A1F8(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void* arg5, void* arg6);
+
+s32 func_0010A270(u64* pkt, s32 arg1, void* arg2, void* arg3, void* arg4, s32 arg5, void* arg6) {
+    pkt[0] = D_002B70B0[arg5];
+    pkt[1] = 0;
+    pkt += 2;
+    func_0010A1F8(pkt, arg2, arg6, arg4, 4, arg3, D_00495250);
+    ((s32*)pkt)[0x1C / 4] = 0x8000;
+    ((s32*)pkt)[0x4C / 4] = 0x8000;
+    return arg1 + 0xD;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A2F0);
 
