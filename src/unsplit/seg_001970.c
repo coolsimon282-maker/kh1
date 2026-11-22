@@ -209,7 +209,16 @@ void func_00103730(void) {
     D_002B8C84 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103838);
+s32 func_00103838(void) {
+    s32 i = (f32)D_00494894 - D_002B8344;
+    D_00494894 = i;
+    if (i <= 0) {
+        D_002A6204 = 0xFF;
+        return 4;
+    }
+    D_002A6204 = 255.0f - D_00494898 * i;
+    return 0;
+}
 
 void func_001037C8(s32 a0) {
     func_0011ED30(0x280A2, func_00103838);
