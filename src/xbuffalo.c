@@ -41,7 +41,25 @@ s32* func_001C1868(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1970);
+extern s32 D_0037A170;
+extern s32 D_006257D4;
+
+void func_001C1888(void);
+
+s32 func_001C1970(s32 arg0) {
+    s32 p;
+
+    p = arg0 + 0x16BC00;
+    D_0037A16C = (XBuffaloUnk1868*)p;
+    p = arg0 + 0x170700;
+    D_0037A170 = p;
+    D_003759C4 = 0;
+    D_003759C8 = 15;
+    D_006257D4 = arg0;
+    p = arg0 + 0x171388;
+    func_001C1888();
+    return p;
+}
 
 #ifdef VERSION_FM
 s32 func_001C19E8(void) {
