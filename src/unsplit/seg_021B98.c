@@ -10,25 +10,59 @@ void func_00148E60(void);
 void func_0014F868(void);
 void func_00151B90(void);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121B98);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121AE8);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D00);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D60);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121DE0);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121C98);
-
-typedef struct {
+typedef struct Seg21B98Unk10 {
     s32 unk_00;
     s32 unk_04;
     s32 unk_08;
     s32* unk_0C;
+    struct Seg21B98Unk10 *unk_10;
 } Seg21B98Unk10;
+typedef struct {
+    Seg21B98Unk10 head;
+    Seg21B98Unk10 e[0x1FF];
+    Seg21B98Unk10 *cur;
+} A2NodePool;
+extern A2NodePool D_004F45B0;
 Seg21B98Unk10* func_00121DE0(s32, s32);
+
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121B98);
+
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121AE8);
+
+extern Seg21B98Unk10 *D_004F6DB0;
+
+Seg21B98Unk10 *func_00121D00(void) {
+    Seg21B98Unk10 *p = D_004F6DB0;
+    s32 i;
+
+    for (i = 1; i < 0x200; i++) {
+        p++;
+        if (p >= &D_004F45B0.e[0x1FF]) {
+            p = D_004F45B0.e;
+        }
+        if (p->unk_04 == 0) {
+            D_004F6DB0 = p;
+            return p;
+        }
+    }
+    return NULL;
+}
+
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D60);
+
+Seg21B98Unk10 *func_00121DE0(s32 id, s32 unused) {
+    Seg21B98Unk10 *n;
+
+    for (n = D_004F45B0.head.unk_10; n != NULL; n = n->unk_10) {
+        if (n->unk_04 == id) {
+            return n;
+        }
+    }
+    return NULL;
+}
+
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121C98);
+
 
 void func_00121EB0(s32 arg0, s32 arg1) {
     Seg21B98Unk10* p = func_00121DE0(arg0, arg1);
@@ -39,7 +73,22 @@ void func_00121EB0(s32 arg0, s32 arg1) {
     p->unk_0C = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D50);
+void func_00121D50(s32 id) {
+    Seg21B98Unk10 *prev;
+    Seg21B98Unk10 *n;
+
+    for (prev = &D_004F45B0.head; (n = prev->unk_10) != NULL; prev = n) {
+        if (n->unk_04 == id) {
+            break;
+        }
+    }
+    if (n->unk_0C != NULL) {
+        *n->unk_0C = 0;
+    }
+    n->unk_0C = NULL;
+    n->unk_04 = 0;
+    prev->unk_10 = n->unk_10;
+}
 
 void func_00121F30(s32 a0, s32 *a1) {
     Seg21B98Unk10 *p = func_00121DE0(a0, (s32)a1);
