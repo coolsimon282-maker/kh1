@@ -14,7 +14,22 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121DE0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121C98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121EB0);
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32* unk_0C;
+} Seg21B98Unk10;
+Seg21B98Unk10* func_00121DE0(s32, s32);
+
+void func_00121EB0(s32 arg0, s32 arg1) {
+    Seg21B98Unk10* p = func_00121DE0(arg0, arg1);
+
+    if (p->unk_0C != NULL) {
+        *p->unk_0C = 0;
+    }
+    p->unk_0C = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D50);
 
