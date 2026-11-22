@@ -1109,7 +1109,11 @@ s32 func_00249DA0(s32 arg0) {
     return arg0 + 0x10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249DA8);
+extern char D_00491840[];
+
+void func_00249DA8(const char *s1) {
+    strncmp(s1, D_00491840, 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249DC8);
 
