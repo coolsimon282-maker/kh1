@@ -323,7 +323,15 @@ s32 func_001CDD68(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDDB8);
+// 0xB0-byte records, accessed as f32 words
+extern f32 D_006298F0[][44];
+
+s32 func_001CDDB8(Script* arg0) {
+    D_006298F0[arg0->unk_174[arg0->unk_174[3] + 2]][12] = arg0->unk_174[arg0->unk_174[3] + 3];
+    D_006298F0[arg0->unk_174[arg0->unk_174[3] + 2]][13] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDE20);
 
