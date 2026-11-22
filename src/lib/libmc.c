@@ -357,7 +357,42 @@ s32 sceMcRead(s32 fd, void* buff, s32 size) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcWrite);
+s32 sceMcWrite(s32 fd, const void* buff, s32 size) {
+    s32 sifServerStat;
+    u32 i;
+
+    if (PollSema(semaidRegFunc) < 0) {
+        return sceMcErrSemapho;
+    } else if (mcClientID.serve == NULL) {
+        SignalSema(semaidRegFunc);
+        return sceMcErrUnbind;
+    } else {
+        mcSifParams.fd = fd;
+        if (size < 0x11) {
+            mcSifParams.mode = size;
+            mcSifParams.size = 0;
+            mcSifParams.buffer = NULL;
+        } else {
+            u32 t = (u32)buff - 0x10;
+            mcSifParams.mode = (((u32)buff - 1) & 0xFFFFFFF0) - t;
+            mcSifParams.size = size - mcSifParams.mode;
+            mcSifParams.buffer = (u8*)buff + mcSifParams.mode;
+        }
+        for (i = 0; i < mcSifParams.mode; i++) {
+            mcSifParams.unk_20[i] = ((u8*)buff)[i];
+        }
+        FlushCache(0);
+        sifServerStat = sceSifCallRpc(
+            &mcClientID, sceMcFuncNoWrite, 1, &mcSifParams, sizeof(mcSifParams), &mcRetVal, 4, NULL, NULL
+        );
+        if (sifServerStat == 0) {
+            mcRunCmdNo = sceMcFuncNoWrite;
+        } else {
+            SignalSema(semaidRegFunc);
+        }
+        return sifServerStat;
+    }
+}
 
 void mcHearAlarm(s32 arg0, u16 arg1, void* thread) {
     iWakeupThread((s32)thread);
