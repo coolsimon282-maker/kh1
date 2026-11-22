@@ -92,7 +92,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001081C8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001083D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001085E8);
+typedef struct {
+    u8 unk_00[0x10];
+    s32 unk_10;
+} Seg6B18Task;
+Seg6B18Task* func_0015ED80(s32, s32 (*)(Seg6B18Task*));
+s32 func_00106DB0(Seg6B18Task*);
+
+void func_001085E8(s32 arg0, s32 arg1) {
+    func_0015ED80(arg0, func_00106DB0)->unk_10 = arg1;
+}
 
 typedef struct {
     s32 unk_00;
