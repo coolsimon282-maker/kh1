@@ -1803,7 +1803,9 @@ s32 func_00153D08(s32 a) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153D28);
+void func_00153D28(void) {
+    func_0014F830(0x1C, 4, 0, 0, (s32)func_00153BB0, 0, (s32)func_00153C38, (s32)func_00153B68, (s32)func_00153D08);
+}
 
 s32 func_00153D78(u8* p) {
     return *(s32*)(p + 0x88) & 0x30;
@@ -1928,7 +1930,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001563E0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001564E0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00156628);
+u64* func_00156628(s32 a) {
+    u8* e = D_00551600;
+    s32 i = 1;
+    while (*e != 0) {
+        if (i == a) {
+            return (u64*)e;
+        }
+        e = e + e[1] * 0x60 + 0x30;
+        i++;
+    }
+    return NULL;
+}
 
 void func_00156B70(s32 a) {
     *func_00156628(a) |= 0x10000;
@@ -2380,7 +2393,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015DFF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E0A8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E128);
+void func_0015E128(void) {
+    func_0014F830(0xC, 0, 0, 0, (s32)func_0015DE88, (s32)func_0015DEF8, (s32)func_0015DFF8, 0, (s32)func_0015E0A8);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E178);
 
@@ -3186,7 +3201,15 @@ void func_00175A20(void) {
     memset(D_0035C710, 0, 0x2000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175A48);
+void func_00175A48(void) {
+    func_001838E8();
+    pppInitPartRender();
+    func_001759C0();
+    func_001759E8();
+    func_00175A20();
+    D_0035C6F8 = 1;
+    D_0035C6FC = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175A98);
 
@@ -3512,7 +3535,11 @@ void func_00176A80(f32** p) {
     sceVu0CopyVector(*p, D_002DECF0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176AA0);
+void func_00176AA0(f32* p) {
+    D_00362660[0] = p[0] * 3.1415925026f / 180.0f;
+    D_00362660[3] = p[1];
+    func_0017F178();
+}
 
 void func_00176AF0(f32* p) {
     func_0017F580(p[0], p[1], p[2], p[3], *(s32*)(p + 4));
