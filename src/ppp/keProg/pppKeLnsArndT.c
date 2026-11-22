@@ -1,6 +1,36 @@
 #include "ppp/pppKeLns.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsArndT", pppKeLnsArndTDraw);
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ u8 col[4];
+    /* 0x0C */ f32 unk_0C;
+} PKeLnsArndTDraw;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ sceVu0FVECTOR scl;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ u8 col[4];
+} KeLnsArndTWork;
+
+void func_00193978(pppPObject* pobj, PKeLnsArndTDraw* p, pppCtrlTable* ctbl);
+void func_00194980(KeLnsArndTWork* w, s32 arg1, s32 arg2);
+
+void pppKeLnsArndTDraw(pppPObject* pobj, PKeLnsArndTDraw* p, pppCtrlTable* ctbl) {
+    KeLnsArndTWork* w = (KeLnsArndTWork*)&pobj->val[ctbl->useVal[0]];
+
+    func_00193978(pobj, p, ctbl);
+    if (p->cdt.time == pobj->time) {
+        w->unk_20 = p->unk_0C;
+    }
+    w->col[0] = p->col[0] * ppvMng->colorR;
+    w->col[1] = p->col[1] * ppvMng->colorG;
+    w->col[2] = p->col[2] * ppvMng->colorB;
+    w->col[3] = p->col[3] * ppvMng->colorA;
+    sceVu0CopyVector(w->scl, ppvParScl);
+    func_00194980(w, 0, 0);
+}
 
 void pppKeLnsArndTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsArnd* arnd = (KeLnsArnd*)&pobj->val[ctbl->useVal[0]];

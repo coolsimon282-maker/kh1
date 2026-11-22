@@ -26,11 +26,70 @@ s32 D_00639880;
 
 extern s8 D_0063F640[256];
 
+typedef struct {
+    /* 0x00 */ s8 active;
+    /* 0x01 */ char unk_01[3];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[4];
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ char unk_14[0xA0];
+} XQuackVoice; // size = 0xB4
+
+extern u8 D_0063D640[0x2000];
+
 void func_001ED878(s32 arg0) {
     D_003DE5B8 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001ED888);
+extern s32 D_00635640[0x400][8];
+extern s32 D_003E3CB0;
+extern char D_00490910[];
+int printf(const char*, ...);
+
+s32 func_001ED888(s32 arg0) {
+    u32 i;
+    u32 j;
+    s32* buf;
+    u8* p;
+
+    func_001ED878(0);
+    for (i = 0; i < 0x800; i++) {
+        ((u32*)&D_0062D980)[i] = 0;
+    }
+    p = D_0063D640;
+    for (i = 0; i < 0x2000; i++) {
+        p[i] = 0;
+    }
+    p = (u8*)D_0063F640;
+    for (i = 0; i < 0x100; i++) {
+        p[i] = 0;
+    }
+    while (1) {
+        if (sceSifBindRpc(&D_003DE5C0, 0x11, 0) < 0) {
+            printf(D_00490910);
+            return -1;
+        }
+        if (D_003DE5C0.serve != NULL) {
+            break;
+        }
+        i = 0x10000;
+        while (i--) {
+        }
+    }
+    D_003E3CB0 = 0;
+    for (j = 0; j < 0x400; j++) {
+        for (i = 0; i < 8; i++) {
+            D_00635640[j][i] = -1;
+        }
+    }
+    buf = (s32*)&D_0062D980;
+    buf[0] = (s32)D_0063D640;
+    buf[1] = arg0;
+    buf[2] = (s32)D_0063F640;
+    sceSifCallRpc(&D_003DE5C0, 0, 0, buf, 0x2000, buf, 0x2000, NULL, NULL);
+    return 0;
+}
 
 void* func_001EDA60(void) {
     sceSifCallRpc(&D_003DE5C0, 31, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
@@ -52,7 +111,38 @@ void* func_001EDB68(void) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDBC0);
+s32 func_001EDBC0(s32 arg0, s32 arg1, s32 arg2) {
+    XQuackVoice* p;
+    s32 i;
+
+    FlushCache(0);
+    p = (XQuackVoice*)D_0063D640;
+    if (arg1 < 0 && arg2 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0) {
+                return 1;
+            }
+        }
+    } else if (arg1 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0 && p->unk_04 == arg2) {
+                return 1;
+            }
+        }
+    } else if (arg2 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0 && p->unk_10 == arg1) {
+                return 1;
+            }
+        }
+    }
+    for (i = 0; i < 24; i++, p++) {
+        if (p->active != 0 && p->unk_0C == arg0 && p->unk_10 == arg1 && p->unk_04 == arg2) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 typedef struct {
     /* 0x00 */ u8 unk_00[0x10];
@@ -83,7 +173,45 @@ void* func_001EDD20(XQuackVag* vag, s32 arg1, s32 arg2, s32 arg3) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDDC0);
+s32 func_001EDDC0(s32 arg0, s32 arg1, s32 arg2) {
+    XDuck* p;
+    s32 i;
+    s32 count;
+
+    FlushCache(0);
+    p = D_00639180;
+    if (arg0 < 0 && arg1 < 0 && arg2 == 0) {
+        count = 0;
+        for (i = 0; i < 4; i++, p++) {
+            if (p->unk_04 != 0) {
+                count++;
+            }
+        }
+        return count;
+    } else if (arg0 < 0) {
+        if (arg2 == 0) {
+            count = 0;
+            for (i = 0; i < 4; i++, p++) {
+                if (p->unk_04 != 0 && (p->unk_00 & 0x7F) == 1) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        for (i = 0; i < 4; i++, p++) {
+            if (p->unk_04 != 0 && (p->unk_00 & 0x7F) == 1 && p->unk_10 == arg2) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    for (i = 0; i < 4; i++, p++) {
+        if (p->unk_04 != 0 && p->unk_00 == 0 && p->unk_02 == arg0 && p->unk_03 == arg1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void* func_001EDF28(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (!(D_003DE5B8 & 8)) {

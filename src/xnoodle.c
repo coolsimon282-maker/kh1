@@ -96,7 +96,32 @@ INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A2F0);
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A4A0);
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010AD58);
+void func_0010AD58(u32 arg0) {
+    u8* pal = (u8*)(arg0 + 0x8000);
+    s32 i;
+
+    sceGsSetDefLoadImage(&D_002B8700, 0x1800, 4, 0x1B, 0, 0, 256, 128);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsExecLoadImage(&D_002B8700, (u_long128*)arg0);
+    sceGsSyncPath(0, 0);
+    sceGsSetDefLoadImage(&D_002B8700, 0x3FF4, 1, 0, 0, 0, 16, 16);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsExecLoadImage(&D_002B8700, (u_long128*)pal);
+    {
+        u8* p = pal;
+        for (i = 0; i < 256; i++) {
+            *p++ = 0;
+            *p++ = 0;
+            *p = 0;
+            p += 2;
+        }
+    }
+    sceGsSyncPath(0, 0);
+    sceGsSetDefLoadImage(&D_002B8700, 0x3FF8, 1, 0, 0, 0, 16, 16);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsExecLoadImage(&D_002B8700, (u_long128*)pal);
+    sceGsSyncPath(0, 0);
+}
 
 void func_0010AE98(XNoodle* arg0) {
     arg0->unk_38 = 0.0f;
