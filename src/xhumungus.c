@@ -230,7 +230,19 @@ typedef struct {
     /* 0x120 */ f32 unk_120[4];
 } Unk3C5510A;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA638);
+void func_001CA638(void) {
+    Unk3C5510A* p = (Unk3C5510A*)&D_003C5510;
+
+    p->unk_20[0] += D_002B8344;
+    if (p->unk_0C[0] < p->unk_20[0]) {
+        p->unk_00_2 = 0;
+        p->unk_20[0] = p->unk_0C[0];
+    }
+    p->unk_120[0] = p->unk_60[0] + (p->unk_90[0] - p->unk_60[0]) / p->unk_0C[0] * p->unk_20[0];
+    do {
+        func_001C6A20();
+    } while (0);
+}
 
 s32 func_001CA720(Script* arg0) {
     Unk3C5510A* p;
