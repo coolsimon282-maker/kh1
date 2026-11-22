@@ -2551,7 +2551,12 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154E38);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001550A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155630);
+void func_00155630(u8* a0, f32* a1) {
+    sceVu0ScaleVector(a1, (f32*)(a0 + 0x20), *(f32*)(a0 + 0x2C));
+    sceVu0InterVector((f32*)(a0 + 0x3C0), a1, (f32*)(a0 + 0x3C0), *(f32*)(*(u8**)(a0 + 0x6C) + 0x14));
+    *(f32*)(a0 + 0x3C4) = a1[1];
+    sceVu0ScaleVectorXYZ(a1, (f32*)(a0 + 0x3C0), D_002B8344);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001556A8);
 
