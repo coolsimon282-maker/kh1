@@ -1002,7 +1002,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002497B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249820);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249858);
+void func_00249858(f32 *arg0, f32 *arg1) {
+    sceVu0CopyVector(arg0, (f32 *)((u8 *)arg1 + 0x20));
+}
 
 void func_00249870(void) {
     ((void (*)(void))sceVu0CopyVector)();
