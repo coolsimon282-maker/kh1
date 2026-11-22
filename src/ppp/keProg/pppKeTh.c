@@ -53,7 +53,19 @@ void pppKeThCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     sub->s.unk_2C = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeTh", pppKeThCon2);
+void pppKeThCon2(pppPObject* pobj, pppCtrlTable* ctbl) {
+    KeThU* v = (KeThU*)&pobj->val[ctbl->useVal[0]];
+    KeThSubU* sub = (KeThSubU*)&v->v.sub;
+
+    v->v.unk_70 = 0;
+    v->v.unk_78 = 0;
+    v->v.unk_80 = 0;
+    v->v.unk_88 = 0;
+    v->v.unk_6C = 0;
+    sub->s.unk_0C = 0;
+    sub->s.unk_24 = 0;
+    sub->s.unk_2C = 0;
+}
 
 void pppKeThDes(void) {
 }
