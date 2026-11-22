@@ -56,7 +56,18 @@ void func_00103130(void) {
     func_0011ED30(0x280A2, func_00103058);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103280);
+extern f32 D_002A6210[];
+extern s32 D_002A6220[];
+
+void func_00103280(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    D_002A6210[0] = arg0;
+    D_002A6210[1] = arg1;
+    D_002A6210[2] = arg2;
+    D_002A6210[3] = arg3;
+    D_002A6220[0] = 0;
+    D_002A6220[1] = 0;
+    D_002A6220[2] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_001032B0);
 
