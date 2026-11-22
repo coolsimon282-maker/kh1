@@ -60,13 +60,11 @@ void func_002336C8(void) {
     D_00647798 = 0;
 }
 
-extern s32 D_006477A4;
+extern f32 D_006477A4;
 
 void func_002336D8(void) {
     D_006477A4 = 0;
 }
-
-extern f32 D_006477A4;
 
 f32 func_002336E8(void) {
     return D_006477A4;
