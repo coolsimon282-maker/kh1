@@ -91,7 +91,23 @@ void func_001110D0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111158);
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111198);
+void func_00111198(void) {
+    void* p;
+
+    func_00111298();
+    p = D_002E26A0[0];
+    if (p != NULL) {
+        func_00111158(p, 0);
+    }
+    p = D_002E26A0[1];
+    if (p != NULL) {
+        func_00111158(p, 1);
+    }
+    p = D_002E26A0[2];
+    if (p != NULL) {
+        func_00111158(p, 2);
+    }
+}
 
 // 64-byte entries (four vectors); entry vectors 2 and 3 go to XTrumpet vectors 1 and 2
 typedef struct {
