@@ -752,7 +752,16 @@ typedef struct {
 
 void func_001C4640(ScriptMsg*);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF128);
+s32 func_001CF128(Script* arg0) {
+    ScriptMsg msg;
+
+    msg.unk_00 = 5;
+    msg.unk_01 = (u32)arg0->unk_174[arg0->unk_174[3] + 4];
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    func_001C4640(&msg);
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001CF1B0(void) {
     return 2;
