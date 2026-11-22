@@ -40,7 +40,12 @@ void pppRyjDrawShipolyBoneDes(pppPObject* pobj, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D798);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D7E0);
+f32 func_0019D798(void); // VU0 random number in [0, 1)
+
+// a random value in about [-a / 2, a * 3 / 2)
+s8 func_0019D7E0(u8 a) {
+    return (a * 2) * func_0019D798() - (a / 2);
+}
 
 typedef struct {
     /* 0x00 */ u8 unk_00[0x50];
