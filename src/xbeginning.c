@@ -201,7 +201,40 @@ void func_00100240(void) {
     D_002A274C = 0.050000001f;
 }
 #else
+#ifdef VERSION_FM
+extern s32 D_002BBBA0;
+extern f32 D_002A6200;
+extern s32 func_0011A068;
+extern s32 func_001039F8;
+void func_0011E528();
+s32 func_0011E5F0();
+
+void func_00100240(void) {
+    D_002BD854 = 0;
+    /* called as if it returned int (implicit declaration in the original) */
+    ((s32 (*)(s32))func_0011C6C8)(0);
+    func_001116A8();
+    D_002BBBA0 = 0;
+    func_0011ED30(10499, &func_0011A068);
+    func_0011ED30(164003, &func_001039F8);
+    func_00100118();
+    func_0011E528();
+    D_002B9314 = 0;
+    D_002B85F8 &= ~2;
+    func_0011E5F0();
+    D_002B9310 = 0;
+    func_0010E700();
+    func_0010BE10();
+    func_0011ED30(50000, &func_00112690);
+    func_001004F0();
+    func_00114A50();
+    func_0011ED30(120000, &func_00100328);
+    D_002A6200 = 0.049999998f;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100240);
+#endif
 #endif
 
 s32 func_00100328(void) {
