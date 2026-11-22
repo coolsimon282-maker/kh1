@@ -15,7 +15,9 @@ case "$1" in
   build)
     # The last line is always the verdict: the image's own checksum (OK/FAILED), or BUILD FAILED if ninja failed
     # (then the image on disk is stale and must not be trusted).
-    bash wsl-build.sh bash -c 'ninja > /tmp/agent_build.log 2>&1; s=$?; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" /tmp/agent_build.log | tail -25; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1; else echo "BUILD FAILED"; fi' ;;
+    # The log lives in this checkout's own WSL mirror (one per worktree), so parallel agents don't overwrite it;
+    # the dashboard (kh1-study\dashboard) shows it.
+    bash wsl-build.sh bash -c 'ninja > .agent_build.log 2>&1; s=$?; date "+%H:%M:%S" > .agent_build.time; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" .agent_build.log | tail -25; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1 | tee -a .agent_build.log; else echo "BUILD FAILED" | tee -a .agent_build.log; fi' ;;
   list)
     for f in $(grep -oP '^INCLUDE_ASM\("asm/nonmatchings/[^"]+",\s*\K\w+' "src/$2.c"); do
       p="asm/nonmatchings/$2/$f.s"
