@@ -236,22 +236,22 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181C20);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181D30);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_object_tex);
-// void dpd_set_object_tex(ppvmng* pMng) {
-//     int* piVar1;
-//     short clutpStart;
-//     short texpStart;
+s32* func_00181C20(s32*, u8*, s16, s16);
+s32* func_00181D30(s32*, u8*, s16, s16);
 
-//     texpStart = pMng->texpStart;
-//     clutpStart = pMng->clutpStart;
-//     if ((texpStart == 0) && (clutpStart == 0)) {
-//         return;
-//     }
-//     piVar1 = dpd_h_skip_version(pMng->pchDpd);
-//     piVar1 = dpd_h_skip_datainfo(piVar1, 2);
-//     piVar1 = func_00181C20(piVar1, pMng->pEtc->abUseShape, texpStart, clutpStart);
-//     func_00181D30(piVar1, pMng->pEtc->abUseRsd, texpStart, clutpStart);
-// }
+void dpd_set_object_tex(ppvmng* pMng) {
+    s32* p = (s32*)pMng->pchDpd;
+    s16 texpStart = pMng->texpStart;
+    s16 clutpStart = pMng->clutpStart;
+
+    if (texpStart == 0 && clutpStart == 0) {
+        return;
+    }
+    p = dpd_h_skip_version(p);
+    p = dpd_h_skip_datainfo(p, 2);
+    p = func_00181C20(p, pMng->pEtc->abUseShape, texpStart, clutpStart);
+    func_00181D30(p, pMng->pEtc->abUseRsd, texpStart, clutpStart);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_shape_data);
 
