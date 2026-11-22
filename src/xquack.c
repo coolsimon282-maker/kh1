@@ -136,7 +136,28 @@ s32 func_001EE090(void) {
     return D_00639880;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EE0B8);
+extern s32 D_00635640[0x400][8];
+extern s32 D_003E3CB0;
+extern char D_00490928[];
+int printf(const char*, ...);
+
+void func_001EE0B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+    s32 n = D_003E3CB0;
+
+    D_00635640[n][0] = arg0;
+    D_00635640[n][1] = arg1;
+    D_00635640[n][2] = arg2;
+    D_00635640[n][3] = arg3;
+    D_00635640[n][4] = arg4;
+    D_00635640[n][5] = arg5;
+    D_00635640[n][6] = arg6;
+    D_00635640[n][7] = arg7;
+    D_003E3CB0 = n + 1;
+    if (n + 1 >= 0x400) {
+        D_003E3CB0 = 0;
+        printf(D_00490928);
+    }
+}
 
 void* func_001EE188(void* arg0) {
     D_0062D980 = arg0;
@@ -333,9 +354,6 @@ void* func_001EEC00(void* arg0) {
     sceSifCallRpc(&D_003DE5C0, 36, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
     return D_0062D980;
 }
-
-extern s32 D_00635640[0x400][8];
-extern s32 D_003E3CB0;
 
 void* func_001EEC58(void) {
     s32 i, j;
