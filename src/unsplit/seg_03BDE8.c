@@ -2126,21 +2126,45 @@ void func_001762B0(u_long128* primPacketArea, s32 len) {
     pppSetPrimPacket(primPacketArea, len);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001762C8);
+void func_00181040(void);
+void func_001762C8(void) {
+    func_00181040();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001762E0);
+void func_001810D0(void);
+void func_001762E0(void) {
+    func_001810D0();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001762F8);
+void func_00181110(void);
+void func_001762F8(void) {
+    func_00181110();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176310);
+void func_00181200(void);
+void func_00176310(void) {
+    func_00181200();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176328);
+void func_001812B0(void);
+void func_00176328(void) {
+    func_001812B0();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176340);
+void func_00181340(void);
+void func_00176340(void) {
+    func_00181340();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176358);
+void func_001813F0(void);
+void func_00176358(void) {
+    func_001813F0();
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176370);
+void func_001814C8(void);
+void func_00176370(void) {
+    func_001814C8();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001778A0);
 
@@ -2158,7 +2182,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176530);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176578);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001765F8);
+s32 func_00181600(s32 arg0);
+s32 func_001765F8(s32 arg0) {
+    return func_00181600(arg0);
+}
 
 u16 func_00176610(u8* p) {
     return *(u16*)(*(u8**)(*(u8**)(p + 0x2C) + 0x8C) + 0xFC);
@@ -2172,7 +2199,10 @@ s32 func_00176630(u8* p) {
     return *(s32*)(*(u8**)(p + 0x2C) + 0x8C);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176640);
+void func_00181BA8(s32* arg0);
+void func_00176640(s32* arg0) {
+    func_00181BA8(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176658);
 
