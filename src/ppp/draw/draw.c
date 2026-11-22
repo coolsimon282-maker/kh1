@@ -288,7 +288,11 @@ f32 func_001AB3A8(f32* a) {
     return v[0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB3E0);
+f32 func_001AB3E0(f32* a) {
+    f32 r;
+    __asm__ volatile("lqc2 $vf10,0(%1)\n\tvmul.xy $vf10,$vf10,$vf10\n\tvaddx.y $vf10,$vf10,$vf10x\n\tvsqrt Q,$vf10y\n\tvwaitq\n\tcfc2.ni $2,$vi22\n\tmtc1 $2,%0" : "=f"(r) : "r"(a) : "$2");
+    return r;
+}
 
 void func_001AB408(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     sceVu0FVECTOR stack;
