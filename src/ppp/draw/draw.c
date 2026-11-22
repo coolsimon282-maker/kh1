@@ -275,7 +275,47 @@ void func_001AAB28(DrawNodeUpd* u) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAC80);
+// draws every node of a list: func_001A96D0 builds each one's packet after a 16-byte DMA tag, sent on path 2
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ DrawNode* node;
+    /* 0x08 */ u32 pkt;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ u64* unk_14;
+    /* 0x18 */ u64 unk_18;
+    /* 0x20 */ u64 unk_20;
+} DrawPktCtx;
+
+s32 func_001A96D0(DrawPktCtx*);
+
+void func_001AAC80(DrawNode** list, s32 arg1, s32 arg2, s32 arg3, u32* buf, u64 arg5, u64 arg6) {
+    DrawPktCtx ctx;
+    sceDmaChan* ch = sceDmaGetChan(2);
+    DrawNode* node = *list;
+    u8* p;
+
+    ctx.unk_0C = arg3;
+    ctx.unk_00 = arg1;
+    ctx.unk_10 = arg2;
+    ctx.unk_18 = arg5;
+    ctx.unk_20 = arg6;
+    sceGsSyncPath(0, 0);
+    for (; node != NULL; node = node->next) {
+        ctx.node = node;
+        ctx.pkt = *buf + 0x10;
+        if (func_001A96D0(&ctx)) {
+            p = (u8*)*buf;
+            *(u_long128*)p = 0;
+            p[3] = 0x70;
+            *ctx.unk_14 |= 0x8000;
+            *(u16*)p = ((ctx.pkt - *buf) >> 4) + 0xFFFF;
+            FlushCache(0);
+            sceDmaSend(ch, p);
+            sceGsSyncPath(0, 0);
+        }
+    }
+}
 
 typedef struct {
     /* 0x0 */ s32 unk_0;
