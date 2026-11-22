@@ -454,7 +454,53 @@ INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceGetInfoApdx);
 #endif
 void mceGetInfoApdx();
 
+#ifdef VERSION_FM
+s32 sceMcGetInfo(s32 port, s32 slot, s32* type, s32* free, s32* format) {
+    s32 sifServerStat;
+
+    if (PollSema(semaidRegFunc) < 0) {
+        return sceMcErrSemapho;
+    } else if (mcClientID.serve == NULL) {
+        SignalSema(semaidRegFunc);
+        return sceMcErrUnbind;
+    } else {
+        mcSifParams.port = port;
+        mcSifParams.slot = slot;
+        mcSifParams.unk_1C = &D_0066DB00;
+        if (type != NULL) {
+            mcSifParams.mode = 1;
+        } else {
+            mcSifParams.mode = 0;
+        }
+        if (free != NULL) {
+            mcSifParams.offset = 1;
+        } else {
+            mcSifParams.offset = 0;
+        }
+        if (format != NULL) {
+            mcSifParams.size = 1;
+        } else {
+            mcSifParams.size = 0;
+        }
+        D_00673628 = type;
+        D_0067362C = free;
+        D_00673630 = format;
+        sceSifWriteBackDCache(&D_0066DB00, 0xC0);
+        sifServerStat = sceSifCallRpc(
+            &mcClientID, sceMcFuncNoCardInfo, 1, &mcSifParams, sizeof(mcSifParams), &mcRetVal, 4, mceGetInfoApdx,
+            &D_0066DB00
+        );
+        if (sifServerStat == 0) {
+            mcRunCmdNo = sceMcFuncNoCardInfo;
+        } else {
+            SignalSema(semaidRegFunc);
+        }
+        return sifServerStat;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcGetInfo);
+#endif
 
 s32 sceMcUdCheckNewCard(void) {
     if (sceSifCallRpc(&mcClientID, 0x35, 0, &mcSifParams, sizeof(mcSifParams), &mcRetVal, 4, NULL, NULL) != 0) {
