@@ -241,7 +241,17 @@ void func_0010FE78(s32 x, s32 y) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xtailor", fm_func_00110068);
+extern f32 D_002BBDEC;
+int sceDmaReset(int mode);
+void func_0010FCF0(void);
+
+void fm_func_00110068(void) {
+    sceGsResetPath();
+    sceDmaReset(1);
+    sceVpu0Reset();
+    D_002BBDEC = 1.0f;
+    func_0010FCF0();
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);

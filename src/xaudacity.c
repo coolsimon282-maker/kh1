@@ -149,17 +149,15 @@ typedef union XAudArg {
     XAudB8* b8;
 } XAudArg;
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E28);
-// void func_00128E28(f32* arg0) {
-//     f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
-//     *arg0 = sinf(x);
-// }
+void func_00128E28(f32* arg0) {
+    f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
+    *arg0 = sinf(x);
+}
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128E80);
-// void func_00128E80(f32* arg0) {
-//     f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
-//     *arg0 = cosf(x);
-// }
+void func_00128E80(f32* arg0) {
+    f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
+    *arg0 = cosf(x);
+}
 
 void func_00128ED8(f32* arg0) {
     *arg0 = func_00177D68();
@@ -182,10 +180,9 @@ void func_00128F48(void) {
 void func_00128F50(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00128F58);
-// void func_00128F58(f32* arg0) {
-//     *arg0 = func_00120AC8((*arg0 / 180.0f) * PI);
-// }
+void func_00128F58(f32* arg0) {
+    *arg0 = func_00120AC8((*arg0 / 180.0f) * PI);
+}
 
 void func_00128FA8(f32* arg0) {
     D_002B8348 = *arg0;
@@ -648,7 +645,9 @@ void func_00129CA8(XAudArg* arg0) {
     arg0[0].obj->unk_130->unk_18 = arg0[1].f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_00129CC0);
+void func_00129CC0(XAudArg* arg0) {
+    arg0[0].obj->unk_06C->unk_CC = (arg0[1].f / 180.0f) * PI;
+}
 
 void func_001358B8(void*, s32);
 
@@ -1280,7 +1279,48 @@ void func_0012AE78(XAudArg* arg0) {
     arg0[0].s = func_00142480(arg0[0].s, arg0[1].s, 0, arg0[2].s) + 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012AEB8);
+typedef struct XAudRay {
+    /* 0x00 */ f32 pos[4];
+    /* 0x10 */ f32 step[4];
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ s32 unk_34[3];
+    /* 0x40 */ f32 out[4];
+    /* 0x50 */ s32 unk_50[12];
+} XAudRay __attribute__((aligned(16)));
+
+void func_00116660(XAudRay*);
+void func_001166E8(XAudRay*);
+
+void func_0012AEB8(XAudArg* arg0) {
+    XAudRay ray;
+    f32 dir[4] __attribute__((aligned(16)));
+
+    func_00116660(&ray);
+    ray.unk_24 = arg0[2].f;
+    ray.unk_20 = arg0[2].f;
+    sceVu0CopyVector(ray.pos, arg0[0].p);
+    ray.pos[3] = 1.0f;
+    func_001223B0(dir, arg0[1].p);
+    do {
+        if (arg0[2].f < dir[3]) {
+            sceVu0ScaleVector(ray.step, dir, arg0[2].f);
+            dir[3] -= arg0[2].f;
+        } else {
+            sceVu0ScaleVector(ray.step, dir, dir[3]);
+            dir[3] = 0.0f;
+        }
+        ray.step[3] = 1.0f;
+        ray.unk_28 = 1;
+        func_001166E8(&ray);
+        sceVu0CopyVector(ray.pos, ray.out);
+    } while (0.0f < dir[3]);
+    sceVu0CopyVector(arg0[3].p, ray.out);
+    arg0[0].s = ray.unk_30 & 1;
+}
 
 s32 func_00142480(s32, s32, s32, s32);
 

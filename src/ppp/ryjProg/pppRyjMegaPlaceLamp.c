@@ -19,7 +19,32 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0E60);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0EA8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0F10);
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+} RyjLampTex;
+
+typedef struct {
+    /* 0x000 */ char unk_000[0x101];
+    /* 0x101 */ u8 unk_101;
+    /* 0x102 */ char unk_102[0x4];
+    /* 0x106 */ u8 unk_106;
+} RyjLampData;
+
+s32 func_001A0F10(RyjLampTex* tex, RyjLampData* data) {
+    if (tex->unk_10 == 0) {
+        return 0;
+    }
+    if (data->unk_106 != 0 && tex->unk_14 == 0) {
+        return 0;
+    }
+    if (data->unk_101 != 0 && tex->unk_18 == 0) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0F58);
 

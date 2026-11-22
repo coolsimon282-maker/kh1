@@ -164,16 +164,11 @@ void* func_00109B00(void) {
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109B28);
 s32 func_00109B28();
 
-#ifdef VERSION_FM
-void* func_00109C50(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C50);
-#else
 void* func_00109C50(s32 arg0) {
     D_0048EC00.unk_04 = arg0 << 1;
     D_0048EC08 = 0;
     return func_0011ED30(190000, func_00109B28);
 }
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C98);
 

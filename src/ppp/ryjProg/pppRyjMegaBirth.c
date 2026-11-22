@@ -13,7 +13,19 @@ typedef struct {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirth", pppRyjMegaBirthCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirth", func_0019ECE8);
+typedef struct {
+    /* 0x00 */ char unk_00[0xCC];
+    /* 0xCC */ u8 unk_CC;
+} PRyjMegaBirthCC;
+
+extern sceVu0FMATRIX D_00615EB0;
+
+void func_0019ECE8(sceVu0FMATRIX out, PRyjMegaBirthCC* p, sceVu0FMATRIX m) {
+    if (p->unk_CC == 0) {
+        sceVu0MulMatrix(out, m, ppvPObj.next->cmat);
+        sceVu0MulMatrix(out, D_00615EB0, out);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirth", func_0019ED48);
 

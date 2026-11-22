@@ -560,7 +560,34 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00185008);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAlloc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppFree);
+typedef struct {
+    s32 next;
+    s32 prev;
+    s32 owner;
+    s32 wdummy;
+} pppEMCBi;
+
+void pppFree(pppEnvSt* env, void* ptr) {
+    pppEMCBi* blk = (pppEMCBi*)ptr - 1;
+    pppEMCBi* prev;
+    pppEMCBi* next;
+    s32* mng = (s32*)&env->heapMng;
+
+    blk->owner = 0;
+    mng[0] = (s32)blk;
+    mng[3] -= blk->next - (s32)blk;
+    prev = (pppEMCBi*)blk->prev;
+    if (prev != NULL && prev->owner == 0) {
+        prev->next = blk->next;
+        ((pppEMCBi*)blk->next)->prev = (s32)prev;
+        blk = prev;
+    }
+    next = (pppEMCBi*)blk->next;
+    if (next->owner == 0) {
+        blk->next = next->next;
+        ((pppEMCBi*)next->next)->prev = (s32)blk;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004887D0);
 

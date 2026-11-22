@@ -27,7 +27,18 @@ s32 func_001C2278(Script* arg0, s32 arg1) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2298);
+s32 func_001C2298(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    if (vm->stack[vm->sp--] == 0) {
+        arg0->unk_174[2] += arg1;
+        if (arg1 < 0) {
+            return 4;
+        }
+        return 1;
+    }
+    return 2;
+}
 
 s32 func_001C22E8(void) {
     return 2;
@@ -42,15 +53,65 @@ s32 func_001C22F0(Script* arg0, s32 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2328);
+s32 func_001C2328(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2370);
+    vm->sp++;
+    if (vm->unk_270[vm->unk_2F0] == arg1) {
+        vm->stack[vm->sp] = 1;
+    } else {
+        vm->stack[vm->sp] = 0;
+    }
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C23C0);
+s32 func_001C2370(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2410);
+    vm->sp++;
+    if (vm->unk_270[vm->unk_2F0] < arg1) {
+        vm->stack[vm->sp] = 1;
+    } else {
+        vm->stack[vm->sp] = 0;
+    }
+    return 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2460);
+s32 func_001C23C0(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->sp++;
+    if (vm->unk_270[vm->unk_2F0] <= arg1) {
+        vm->stack[vm->sp] = 1;
+    } else {
+        vm->stack[vm->sp] = 0;
+    }
+    return 2;
+}
+
+s32 func_001C2410(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->sp++;
+    if (vm->unk_270[vm->unk_2F0] > arg1) {
+        vm->stack[vm->sp] = 1;
+    } else {
+        vm->stack[vm->sp] = 0;
+    }
+    return 2;
+}
+
+s32 func_001C2460(Script* arg0, s32 arg1) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+
+    vm->sp++;
+    if (vm->unk_270[vm->unk_2F0] >= arg1) {
+        vm->stack[vm->sp] = 1;
+    } else {
+        vm->stack[vm->sp] = 0;
+    }
+    return 2;
+}
 
 s32 func_001C24B0(Script* arg0) {
     arg0->unk_2F0--;

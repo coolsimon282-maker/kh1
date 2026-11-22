@@ -65,7 +65,7 @@ extern volatile s32 D_002BBDE0;
 extern s32 D_002B9660;
 void func_0011C5A8(void);
 void func_0011C5C8(void);
-s32 func_00113660(void);
+void func_00113660(void);
 void func_0011D598(s32, s32);
 
 typedef struct {
@@ -259,7 +259,15 @@ void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return func_001127E0();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112880);
+void func_00112880(s32 arg0) {
+    s32 val;
+
+    D_002B92F8 = arg0;
+    val = D_002BCDA0[arg0].unk_00;
+    D_002B8680 = val;
+    D_002B8684 = func_00111468(D_002B8678, val);
+    func_001127E0();
+}
 
 void func_001128D8(s32 arg0) {
     D_002A0510 = arg0;
@@ -421,7 +429,12 @@ void func_00112CF0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D48);
+void func_00112D48(s32 i, sceVu0FVECTOR dst) {
+    dst[0] = D_004D92F0[i][0];
+    dst[1] = D_004D92F0[i][1];
+    dst[2] = D_004D92F0[i][2];
+    dst[3] = D_004D92F0[i][3];
+}
 
 s32 func_00112D88(void) {
     s32 i;
@@ -647,7 +660,46 @@ void func_00113618(void) {
     D_004D2AA0 = 128;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113660);
+typedef struct {
+    /* 0x0 */ s32 unk_00;
+    /* 0x4 */ s32 unk_04;
+    /* 0x8 */ s32 unk_08;
+} XBlade5AD0;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C[9];
+    /* 0x30 */ s32 unk_30[15];
+    /* 0x6C */ s32 unk_6C;
+} XBlade5BB0;
+
+extern volatile XBlade5AD0 D_002C5AD0;
+extern volatile XBlade5BB0 D_002C5BB0;
+
+void func_00113660(void) {
+    D_002C5AD0.unk_08 = 0;
+    D_002C5AD0.unk_04 = 0;
+    D_002C5BB0.unk_6C = 0;
+    D_002C5BB0.unk_04 = 0;
+    D_002C5BB0.unk_08 = 0;
+    D_002C5BB0.unk_30[0] = 0;
+    D_002C5BB0.unk_30[1] = 0;
+    D_002C5BB0.unk_30[2] = 0;
+    D_002C5BB0.unk_30[3] = 0;
+    D_002C5BB0.unk_30[4] = 0;
+    D_002C5BB0.unk_30[5] = 0;
+    D_002C5BB0.unk_30[6] = 0;
+    D_002C5BB0.unk_30[7] = 0;
+    D_002C5BB0.unk_30[8] = 0;
+    D_002C5BB0.unk_30[9] = 0;
+    D_002C5BB0.unk_30[10] = 0;
+    D_002C5BB0.unk_30[11] = 0;
+    D_002C5BB0.unk_30[12] = 0;
+    D_002C5BB0.unk_30[13] = 0;
+    D_002C5BB0.unk_30[14] = 0;
+}
 
 void func_001136C8(s32);
 void func_001136C8(s32 arg0) {
