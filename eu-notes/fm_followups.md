@@ -45,3 +45,10 @@ a1 (run 3): func_001DB7A8 and fm_func_001DC9A0 occasionally fail to fold an arra
 edits elsewhere in xhumungus.c (looks like the compiler reading uninitialised memory). The merged fm built OK at
 01:02. If a later merge suddenly fails with a clean diff in the edited function, compare function sizes in the
 object against a good build (a1's szcmp.sh in scratchpad\a1) and check these two first.
+
+## -g per file
+Files with soft-float calls may need building without -g (the assembler leaves call delay slots empty with -g;
+the original has them filled): pppKeMvYpEff.c and draw.c so far (NO_G_FILES). a4's survey said matched code is
+identical either way except xapple/xball/xblade/xhumungus/xjockey, but making no -g the default broke the
+build from xbeginning on (0x10 bytes short, 22 Nov 01:40). Before flipping the default again: find which files
+really change (build each file both ways and compare the whole object including INCLUDE_ASM parts).
