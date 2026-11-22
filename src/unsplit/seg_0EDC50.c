@@ -2,7 +2,9 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EDC50", func_001EDC50);
+f32 func_001EDC50(sceVu0FVECTOR arg0) {
+    return _sqrtf(arg0[0] * arg0[0] + arg0[1] * arg0[1] + arg0[2] * arg0[2]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EDC50", func_001EDC80);
 
