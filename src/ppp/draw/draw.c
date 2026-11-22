@@ -243,7 +243,35 @@ void func_001AADB8(DrawUnkAADB8* arg0) {
     arg0->unk_4 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AADC8);
+double atan(double);
+#define DRAW_PI 3.1415926f
+#define DRAW_HPI 1.5707963f
+
+s32 func_001AADC8(f32* v, f32* out) {
+    f32 x = v[0];
+    f32 y = v[1];
+    f32 r = x * y;
+
+    if (r > 0.0f) {
+        r = (x > 0.0f) ? 0.0f : -DRAW_PI;
+        r += atan(y / x);
+    } else if (r < 0.0f) {
+        r = (y > 0.0f) ? DRAW_HPI : -DRAW_HPI;
+        r -= atan(x / y);
+    } else if (x != 0.0f) {
+        r = (x > 0.0f) ? 0.0f : DRAW_PI;
+    } else {
+        if (y == 0.0f) {
+            return 0;
+        }
+        r = -DRAW_HPI;
+        if (y > 0.0f) {
+            r = DRAW_HPI;
+        }
+    }
+    *out = r;
+    return 1;
+}
 
 extern s32 D_00372760;
 
