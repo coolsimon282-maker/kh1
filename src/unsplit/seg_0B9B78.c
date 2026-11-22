@@ -148,7 +148,15 @@ u8 func_001BA458(s32 x);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BC480);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BA358);
+void func_001BA358(s32 i, s32 add) {
+    u8 *p = (u8 *)func_001BA9A8() + i;
+
+    if (*p + add > func_001BA458(i)) {
+        *p = func_001BA458(i);
+    } else {
+        *p += add;
+    }
+}
 
 void func_001BC578(void) {
     func_001BB740();
@@ -928,7 +936,27 @@ void func_001BEF98(char *d, char *s) {
     *d = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEFC8);
+typedef struct {
+    s32 key;
+    f32 val;
+} A2Key;
+
+f32 func_001BEFC8(s32 x, A2Key *t) {
+    f32 pv = 0.0f;
+    s32 pk = 0;
+
+    for (; t->key >= 0; t++) {
+        if (x == t->key) {
+            return t->val;
+        }
+        if (x < t->key) {
+            return (t->val - pv) * ((f32)(x - pk) / (f32)(t->key - pk)) + pv;
+        }
+        pv = t->val;
+        pk = t->key;
+    }
+    return 0.0f;
+}
 
 void func_001BF048(sceVu0FMATRIX dst, sceVu0FMATRIX src) {
     if (dst != src) {
