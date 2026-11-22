@@ -1241,7 +1241,14 @@ void func_00114440(void) {
     func_0011C5C8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
+// include/xblade.h declares this `void func_00114480();`; it is built as returning a value (no tail call).
+s32 func_00114480_s32(void) __asm__("func_00114480");
+
+s32 func_00114480_s32(void) {
+    if (D_002BBDE0 == 3 && D_002B9660 != 0) {
+        func_00113660();
+    }
+}
 
 typedef struct {
     /* 0x00 */ u8 unk_00[0xD0];
