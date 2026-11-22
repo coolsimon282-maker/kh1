@@ -551,7 +551,29 @@ void func_0010EF00(s32 x, s32 y, XSauceScroll* c) {
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EF00);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F0A0);
+typedef struct { s32 unk_00; s32 unk_04; } XSauceLimits;
+typedef struct { char unk_00[0x88]; u16 unk_88; char unk_8A[0x16]; XSauceKeys* unk_A0; } XSauceWin;
+typedef struct { s32 unk_00; s32 unk_04; } XSaucePos2;
+void func_0010F0A0(XSauceLimits* m, XSauceWin* w) {
+    s32 lines[32]; s32 i; s32 n; XSauceKeys* k; u16 id; XSaucePos2* out;
+    n = 0;
+    k = w->unk_A0;
+    m->unk_00--;
+    m->unk_04--;
+    id = w->unk_88;
+    for (i = 0; i < k->unk_00 - 1; i++) {
+        if (k->unk_10[i].unk_06 != k->unk_10[i + 1].unk_06) {
+            lines[n++] = i;
+        }
+    }
+    lines[n++] = k->unk_00 - 1;
+    out = (XSaucePos2*)func_00121C98(n * 8, (u_long128**)&D_004CF574);
+    D_004CF574 = (s32)out;
+    for (i = 0; i < n; i++) {
+        out[i].unk_04 = ((XSauceKey*)k)[lines[i] + 1].unk_06;
+        out[i].unk_00 = id;
+    }
+}
 
 #ifdef VERSION_FM
 typedef struct {
