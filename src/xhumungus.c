@@ -1170,7 +1170,22 @@ void func_001D19C8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1A20);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1A98);
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3130];
+    /* 0x3130 */ s32 unk_3130;
+    /* 0x3134 */ s32 unk_3134;
+    /* 0x3138 */ s32 unk_3138;
+    /* 0x313C */ s32 unk_313C;
+} XGiantMountainC;
+
+void func_001D1A98(void) {
+    if (--((XGiantMountainC*)&D_003854E0)->unk_3130 <= 0) {
+        D_003854E0.unk_3070 &= ~0x8000000000;
+    }
+    D_002BC080[0] += ((XGiantMountainC*)&D_003854E0)->unk_3134;
+    D_002BC080[1] += ((XGiantMountainC*)&D_003854E0)->unk_3138;
+    D_002BC080[2] += ((XGiantMountainC*)&D_003854E0)->unk_313C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1B10);
 
