@@ -3357,7 +3357,14 @@ void func_001DB168(void) {
     D_003854E0.unk_3070 &= ~0x200000000000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DB198);
+extern void (*D_00377344)(s32, s32, void (*)(void));
+
+s32 func_001DB198(Script* arg0) {
+    D_00377344(arg0->unk_174[arg0->unk_174[3] + 3], arg0->unk_174[arg0->unk_174[3] + 4], func_001DB168);
+    ((XGiantMountainY*)&D_003854E0)->unk_3070_45 = 1;
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001DB218(void) {
     return ((s32)(*(u64*)D_0038CD00 >> 45) & 1) ? 4 : 2;
