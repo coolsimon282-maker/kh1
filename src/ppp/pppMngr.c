@@ -1034,7 +1034,88 @@ void func_00183EC8(ppvmng* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EF8);
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ char unk_00[0x54];
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 unk_58;
+    /* 0x5C */ char unk_5C[0x8];
+    /* 0x64 */ s32 num;
+    /* 0x68 */ s32 npd;
+    /* 0x6C */ char unk_6C[0x4];
+    /* 0x70 */ pppPData* unk_70;
+    /* 0x74 */ void* unk_74;
+    /* 0x78 */ s32* ents;
+    /* 0x7C */ s32* pds;
+    /* 0x80 */ pppPDataVal* pdv;
+    /* 0x84 */ u8 unk_84;
+    /* 0x85 */ u8 unk_85;
+    /* 0x86 */ char unk_86[0x6];
+    /* 0x8C */ pppPEtcData* pEtc;
+    /* 0x90 */ char unk_90[0xC];
+    /* 0x9C */ s32 unk_9C;
+    /* 0xA0 */ char unk_A0[0xC];
+    /* 0xAC */ f32 unk_AC;
+} PppMngS;
+
+void func_00184298(PppMngS* m, s32* data, s32 arg2) {
+    s32* d;
+    s32 flag;
+    s32* p1;
+    s32* p2;
+    pppPData* pd;
+    pppPDataVal* v;
+    u8 i;
+
+    ppvMng = (ppvmng*)m;
+    d = data;
+    m->unk_54 = *d++;
+    flag = *d++;
+    p1 = (s32*)((u8*)data + *d++);
+    p2 = (s32*)((u8*)data + *d++);
+    if (flag & 1) {
+        m->unk_84 = 1;
+    } else {
+        m->unk_84 = 0;
+    }
+    m->num = *p1++;
+    m->ents = p1;
+    m->npd = *p2++;
+    m->pds = p2;
+    if (m->npd != 0) {
+        m->pdv = (pppPDataVal*)pppDbgAlloc((s32)ppvEnv, m->npd * 16);
+    } else {
+        m->pdv = NULL;
+    }
+    pd = (pppPData*)d;
+    if (pd->next != NULL) {
+        m->unk_70 = NULL;
+    }
+    m->unk_58 = 0;
+    m->unk_85 = 0;
+    m->unk_70 = (m->npd != 0) ? pd : NULL;
+    m->unk_74 = NULL;
+    v = m->pdv;
+    i = 0;
+    do {
+        v->pdt = pd;
+        v->startFrame = pd->startFrameInit;
+        v->pobj = NULL;
+        v->pobjn = 0;
+        v->pdtno = i++;
+        pd = pd->next;
+        v++;
+    } while (pd != NULL);
+    if (arg2 != 0) {
+        func_00183980((PppFuncList*)m);
+    }
+    m->unk_9C = 0;
+    m->unk_AC = *(f32*)&m->pEtc->wait;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184298);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001843E0);
 
