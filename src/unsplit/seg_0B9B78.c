@@ -462,7 +462,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB260);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB2E0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB370);
+typedef struct {
+    u8 b[11];
+} A2Bytes11;
+extern A2Bytes11 D_004900A8;
+s32 func_001BB2E0(u8);
+
+s32 func_001BB370(void) {
+    A2Bytes11 buf = D_004900A8;
+    u8 *p = buf.b;
+
+    while (*p != 0) {
+        if (func_001BB2E0(*p++) < 4) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 void *func_001BB260();
 
@@ -865,7 +881,25 @@ u32 func_001BE800(u32 a, u32 b) {
     return a + (b - a % b);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE820);
+void func_001BE820(void *dst, s32 n) {
+    u8 *p = dst;
+    u32 k = (u32)p & 7;
+
+    while (k != 0) {
+        k--;
+        *p++ = 0;
+        n--;
+    }
+    while ((u32)n >= 8) {
+        n -= 8;
+        *(u64 *)p = 0;
+        p += 8;
+    }
+    while (n != 0) {
+        n--;
+        *p++ = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE8A8);
 
