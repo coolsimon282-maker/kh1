@@ -28,5 +28,5 @@ set +e
 status=$?
 # Bring the generated assembly back for reading from Windows (only when it changed).
 # (-rt only: the Windows drive refuses owner/group changes and rsync's temporary files)
-[ -d asm ] && rsync -r --inplace --delete asm/ "$SRC/asm/"
+[ -d asm ] && { rsync -r --inplace --delete asm/ "$SRC/asm/" 2>/dev/null || true; }
 exit $status
