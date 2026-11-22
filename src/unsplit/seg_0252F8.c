@@ -6,7 +6,20 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_001252F8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125B40);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125B90);
+typedef struct {
+    u8 unk_00[0x70];
+    s32 unk_70;
+} Seg252F8Unk74;
+extern Seg252F8Unk74* D_002E26A0;
+
+s32 func_00125B90(s32 arg0) {
+    Seg252F8Unk74* p = D_002E26A0;
+
+    if ((arg0 & 1) && p->unk_70 != 0) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125BB8);
 

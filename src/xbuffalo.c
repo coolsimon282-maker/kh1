@@ -327,7 +327,25 @@ void fm_func_001C06C0(s32 arg0, void (*arg1)(void)) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C20B8);
+typedef struct {
+    u8 unk_00[0x3034];
+    s32 unk_3034;
+    s32 unk_3038;
+    u8 unk_303C[0x34];
+    u64 unk_3070;
+} XBuffaloGM;
+extern XBuffaloGM D_003854E0;
+void* func_001C2178(void);
+void func_001DE360(void);
+
+void func_001C20B8(void) {
+    D_003854E0.unk_3034 = 0;
+    D_003854E0.unk_3038 = 0;
+    D_003854E0.unk_3070 &= ~0x0400000000000000;
+    func_001C2178();
+    func_001DE360();
+    return; // the explicit return stops gcc from making the last call a tail call
+}
 
 extern s32 D_0037A178[4];
 
