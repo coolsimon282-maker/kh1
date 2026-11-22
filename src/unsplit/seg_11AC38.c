@@ -1,6 +1,9 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x11AC38).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_003F5E58[];
+extern s32 D_003F59C0[];
+extern s32 D_003F5980[];
 extern s32 D_003F6FF8[];
 extern u8 D_003F6FD0[];
 extern s32 D_003F6BC8[];
@@ -247,13 +250,29 @@ s32 func_0021ADD8(void) {
     return *(s32 *)(*(u8 **)&D_003ED718 + 0x74);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021ADE8);
+s32 func_0021ADE8(s32 a0) {
+    u32 i;
+    for (i = 0; i < 0x2; i++) {
+        if (D_003F5980[i] == a0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AE28);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AF38);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021B170);
+s32 func_0021B170(s32 a0) {
+    u32 i;
+    for (i = 0; i < 0x2; i++) {
+        if (D_003F59C0[i] == a0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021B1B0);
 
@@ -465,7 +484,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021E670);
 void func_0021E890(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021E898);
+s32 func_0021E898(s32 a0) {
+    u32 i;
+    for (i = 0; i < 0x2; i++) {
+        if (D_003F5E58[i] == a0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021E8D8);
 
