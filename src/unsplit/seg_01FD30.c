@@ -40,7 +40,14 @@ s32 func_00120170(u32 arg0, u32* arg1) {
     return arg0 > b;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120190);
+extern s32 D_002C5C30;
+extern u8 D_004E4A00[];
+s32 func_001200F8();
+void *bsearch(const void *, const void *, u32, u32, s32 (*)(const void *, const void *));
+
+void *func_00120190(void) {
+    return bsearch((void *)func_001200F8(), D_004E4A00, D_002C5C30, 0x10, (void *)func_00120170);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001201D0);
 
