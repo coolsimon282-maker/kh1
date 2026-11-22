@@ -148,7 +148,43 @@ s32 func_00216758(XWhiskey* arg0) {
 }
 #endif
 
+#ifdef VERSION_FM
+typedef struct {
+    s32* list;
+    s32 count;
+} XPotatoTbl;
+extern XPotatoTbl D_003F40F8[];
+
+void func_002167A0(void) {
+    u8 idx = D_003010F8->unk_48E[D_0063CF3C];
+    s32* list = D_003F40F8[idx].list;
+    s32 count = D_003F40F8[idx].count;
+    s32 i;
+
+    D_003ED718->unk_20[idx] = D_0063CF48;
+    switch ((s32)D_0063CF48) {
+        case 5:
+            break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        default:
+            for (i = 0; i < count; i++) {
+                func_00170D60(idx, list[i], D_003F41E8[D_0063CF48][list[i]]);
+            }
+            break;
+        case 4:
+            for (i = 0; i < count; i++) {
+                func_00170D60(idx, list[i], D_003F4200[idx][list[i]]);
+            }
+            break;
+
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002167A0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002168F8);
 
