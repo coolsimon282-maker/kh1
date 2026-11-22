@@ -8,7 +8,8 @@ typedef struct {
     /* 0x44*/ f32 unk_44;
     /* 0x48*/ char unk_48[0x4];
     /* 0x4C*/ u16 unk_4C;
-    /* 0x4E*/ char unk_4E[0x6];
+    /* 0x4E*/ u16 unk_4E;
+    /* 0x50*/ char unk_50[0x4];
     /* 0x54*/ s8 unk_54;
     /* 0x55*/ char unk_55[0x4];
     /* 0x59*/ u8 unk_59;
@@ -72,6 +73,8 @@ void func_00149860(XToaster* arg0);
 void func_00123B20(XToaster* arg0);
 
 #define XT_FLAGS(p) (*(u64*)&(p)->unk_1D4[0x19C])
+/* 3 XToaster* slots at 0x2E26A0 (right after the XToaster array) */
+#define XT_SLOTS ((XToaster**)D_002E26A0)
 
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487018);
 
@@ -332,7 +335,54 @@ void func_00123858(XToaster* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123880);
+XToaster* func_00123880(s32 id) {
+    XToaster* p;
+    s32 i;
+    s32 t = (u32)id >> 16 & 0xFF;
+
+    switch (t) {
+    case 1:
+        for (i = 0; i < 3; i++) {
+            p = XT_SLOTS[i];
+            if (p != NULL && p->unk_130->unk_4C == (id & 0xFFFF)) {
+                return p;
+            }
+        }
+        p = NULL;
+        while ((p = func_001234A0(p)) != NULL) {
+            if (p->unk_130->unk_4C == (id & 0xFFFF)) {
+                return p;
+            }
+        }
+        break;
+    case 0:
+        switch (id & 0xFFFF) {
+        case 0:
+            return XT_SLOTS[0];
+        case 1:
+            return XT_SLOTS[1];
+        case 2:
+            return XT_SLOTS[2];
+        }
+        break;
+    case 11:
+        p = NULL;
+        while ((p = func_001234A0(p)) != NULL) {
+            if (p->unk_130->unk_4E == (id & 0xFFFF)) {
+                return p;
+            }
+        }
+        break;
+    default:
+        for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+            if (*(s32*)p->unk_004 == id) {
+                return p;
+            }
+        }
+        break;
+    }
+    return NULL;
+}
 
 s32 func_001239D8(s32 arg0) {
     XToaster* p = func_00123880(arg0);
@@ -512,8 +562,6 @@ typedef struct {
     /* 0x0C */ char unk_0C[0x68];
 } XTPartyChar; /* size = 0x74, at D_003010F8 + 0x30 */
 
-/* 3 XToaster* slots at 0x2E26A0 (right after the XToaster array) */
-#define XT_SLOTS ((XToaster**)D_002E26A0)
 #define XT_PARTY_CHAR(o) ((XTPartyChar*)(*(s32*)&D_003010F8 + (o)))
 
 void func_00124CD8(void) {
