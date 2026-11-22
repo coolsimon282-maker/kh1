@@ -6,18 +6,42 @@ extern u8 D_002B8760[];
 void FlushCache(s32);
 void sceGsExecLoadImage(u8 *, s32);
 void sceGsSetDefLoadImage(u8 *, s32, s32, s32, s32, s32, s32, s32);
-void sceGsSyncPath(s32, s32);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106948);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106B58);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106B98);
-
+s32 sceGsSyncPath(s32, s32);
 typedef struct {
     u8 unk_00[0x10];
     s32 unk_10;
 } Seg6B18Task;
+extern s32 D_002A6B84;
+extern u8 D_002B8700[];
+void iFlushCache(s32);
+void sceDmaSend(s32, s32);
+extern s32 D_00494A90;
+extern sceVu0FVECTOR* D_00494A94;
+extern s32 D_00494A98;
+extern s32 D_00494A9C;
+extern u8 D_0048BFD0[];
+extern u8 D_0048C630[];
+extern u8 D_0048C690[];
+u8* func_00121C98(s32, u8*);
+
+void func_00106948(s32 a0) {
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceDmaSend(D_002A6B84, a0);
+}
+
+void func_00106B58(s32 a0) {
+    a0 |= 0x80000000;
+    sceGsSyncPath(0, 0);
+    sceDmaSend(D_002A6B84, a0);
+}
+
+s32 func_00106B98(Seg6B18Task* t) {
+    iFlushCache(0);
+    sceDmaSend(D_002A6B84, t->unk_10);
+    return 2;
+}
+
 Seg6B18Task* func_0015ED80(s32, s32 (*)(Seg6B18Task*));
 s32 func_00106B98(Seg6B18Task*);
 s32 func_00106E18(Seg6B18Task*);
@@ -27,7 +51,12 @@ void func_00106A08(s32 arg0, s32 arg1) {
     func_0015ED80(arg1, func_00106B98)->unk_10 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106A40);
+void func_00106A40(void) {
+    D_00494A98 = 0;
+    D_00494A9C = 0;
+    D_00494A90 = (s32)func_00121C98(0x2000, (u8*)&D_00494A90);
+    D_00494A94 = (sceVu0FVECTOR*)func_00121C98(0x8000, (u8*)&D_00494A94);
+}
 
 void func_00121D50(s32);
 extern sceVu0FVECTOR* D_00494A94;
@@ -140,7 +169,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001084F0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108548);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108900);
+void func_00108900(s32 *a0, s32 a1, s32 *a2, s32 *a3) {
+    s32* p = (s32*)D_0048BFD0;
+    s32* q = (s32*)D_0048C630;
+    s32* r = (s32*)D_0048C690;
+    a2[0] = a3[0] = p[0];
+    a2[1] = a3[1] = p[1];
+    a0[4] = q[4];
+    a0[5] = (s32)a2;
+    a0[6] = q[6];
+    a0[7] = q[7];
+    a0[28] = r[4];
+    a0[29] = (s32)a3;
+    a0[30] = r[6];
+    a0[31] = r[7];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108970);
 
