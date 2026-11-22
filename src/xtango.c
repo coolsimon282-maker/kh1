@@ -957,7 +957,25 @@ void func_001F0AD0(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0B10);
+extern s32 D_003E3D6C;
+
+void func_001F0B10(void) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (D_003010F8->unk_48E[i] == 0xFF) {
+            break;
+        }
+    }
+    D_003E3D6C = i;
+    D_003DE6A0 = i;
+    if (D_003010F8->unk_48E[3] != 0xFF) {
+        D_003DE6A0 = i + 1;
+    }
+    for (i = 0; i < 10; i++) {
+        func_00141B10(i, (s32*)&D_003E3D70[i]);
+    }
+}
 
 s32 func_001F0BD8(s32 arg0) {
     s32 val = func_0013DA88(D_003010F8->unk_48E[arg0]);
