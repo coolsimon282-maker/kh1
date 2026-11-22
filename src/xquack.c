@@ -126,7 +126,45 @@ void* func_001EDD20(XQuackVag* vag, s32 arg1, s32 arg2, s32 arg3) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDDC0);
+s32 func_001EDDC0(s32 arg0, s32 arg1, s32 arg2) {
+    XDuck* p;
+    s32 i;
+    s32 count;
+
+    FlushCache(0);
+    p = D_00639180;
+    if (arg0 < 0 && arg1 < 0 && arg2 == 0) {
+        count = 0;
+        for (i = 0; i < 4; i++, p++) {
+            if (p->unk_04 != 0) {
+                count++;
+            }
+        }
+        return count;
+    } else if (arg0 < 0) {
+        if (arg2 == 0) {
+            count = 0;
+            for (i = 0; i < 4; i++, p++) {
+                if (p->unk_04 != 0 && (p->unk_00 & 0x7F) == 1) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        for (i = 0; i < 4; i++, p++) {
+            if (p->unk_04 != 0 && (p->unk_00 & 0x7F) == 1 && p->unk_10 == arg2) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    for (i = 0; i < 4; i++, p++) {
+        if (p->unk_04 != 0 && p->unk_00 == 0 && p->unk_02 == arg0 && p->unk_03 == arg1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void* func_001EDF28(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (!(D_003DE5B8 & 8)) {
