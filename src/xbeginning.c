@@ -258,7 +258,41 @@ void func_001006C8(void) {
 }
 
 void func_001006F8(void);
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ char unk_00[0x54];
+    /* 0x54 */ f32 unk_54;
+    /* 0x58 */ char unk_58[0x8];
+    /* 0x60 */ f32 unk_60;
+    /* 0x64 */ f32 unk_64;
+    /* 0x68 */ f32 unk_68;
+    /* 0x6C */ char unk_6C[0x14];
+} XInchWormF;
+extern XInchWormF D_00494310[];
+extern f32 D_0029B270;
+extern f32 D_002B8344;
+extern sceVu0FVECTOR D_002DECE0;
+
+void func_001006F8(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        D_00494310[i].unk_60 = D_002DECE0[0];
+        D_00494310[i].unk_64 = 0.0f;
+        D_00494310[i].unk_68 = D_002DECE0[2];
+    }
+    D_00494310[1].unk_54 += D_0029B270 * D_002B8344;
+    if (D_00494310[1].unk_54 > PI) {
+        D_00494310[1].unk_54 -= 2 * PI;
+    }
+    if (D_00494310[1].unk_54 < -PI) {
+        D_00494310[1].unk_54 += 2 * PI;
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_001006F8);
+#endif
 
 void func_001007D0(f32 arg0) {
     D_0048DDA0[1].unk_44 = arg0;
