@@ -134,9 +134,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013BEF0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", fm_func_0013BF20);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013BF68);
+s32 func_0013BF68(void) {
+    return fm_func_002193F0() == 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013BF20);
+void func_0013BF20(s32 a) {
+    if (a != 0) {
+        ((Seg3010F8*)D_003010F8)->unk_880 = 1;
+    } else {
+        ((Seg3010F8*)D_003010F8)->unk_880 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013BFB8);
 
@@ -212,7 +220,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CF28);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CF78);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CFC0);
+u32 func_0013CFC0(u8* p) {
+    u32 n;
+    *(u32**)(p + 8) -= 1;
+    n = **(u32**)(p + 8);
+    *(u32**)(p + 8) -= n >> 2;
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CFE8);
 
@@ -264,11 +278,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F198);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F2C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F330);
+s32 func_0013F330(u8* p, s32 a) {
+    if (*(f32*)(*(u8**)(p + 0x148) + 0x50) > 25.0f) {
+        a += 9;
+    }
+    return a;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F358);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F450);
+void func_0013F450(s32* p) {
+    p[0] &= ~0x200000;
+    p[0x1CC / 4] |= 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F478);
 
@@ -310,9 +332,15 @@ void func_0013FD20(s32* p) {
     *p &= ~0x30;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013FD38);
+void func_0013FD38(s32* p) {
+    p[0] |= 0x200000;
+    p[0x1CC / 4] &= ~1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013FD60);
+void func_0013FD60(s32* p) {
+    p[0] &= ~0x200000;
+    p[0x1CC / 4] |= 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013FD88);
 
@@ -2321,14 +2349,20 @@ void func_00176150(s32 a) {
     func_00175DA8(D_00360F30, a);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177688);
+void func_00177688(void) {
+    func_00175E38(D_0035E710);
+    func_001759C0();
+}
 
 void func_00176190(void) {
     func_00175E38(D_0035FB20);
     func_001759E8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001776C8);
+void func_001776C8(void) {
+    func_00175E38(D_00360F30);
+    func_001759E8();
+}
 
 void func_001761D0(void) {
     func_00175E80(D_0035FB20);
@@ -2485,7 +2519,9 @@ void func_00176A60(f32** p) {
     sceVu0CopyVector(*p, D_002DECE0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176A80);
+void func_00176A80(f32** p) {
+    sceVu0CopyVector(*p, D_002DECF0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176AA0);
 
