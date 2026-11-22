@@ -277,7 +277,28 @@ void func_0010E868(XSauce* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E8A0);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E9A8);
+s32 func_0010E9A8(u8* s) {
+    s32 n = 0;
+    s32 go = 1;
+    s32 i = 0;
+    do {
+        u8 c = s[i];
+        if (c < 0x20) {
+            if (c < 9) {
+                if (c == 0) { go = 0; } else if (c == 4) { go = 0; }
+            } else if (c == 15) {
+                i++;
+                if (s[i] == 1) {
+                    n++;
+                }
+            } else {
+                i++;
+            }
+        }
+        i++;
+    } while (go);
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EA38);
 
