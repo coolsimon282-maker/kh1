@@ -254,7 +254,62 @@ void func_002178D0(void) {
     D_0063CF50 = 0;
 }
 
+extern s32 D_00642CF0[];
+extern s32 D_00642D10;
+extern s32 D_00642D14;
+s32 func_0013C360(s32);
+
+typedef struct {
+    char pad[0x44];
+    u8 name[0x30];
+} XPotChr;
+
+#ifdef VERSION_FM
+void func_00217908(s32 arg0) {
+    XPotChr* c;
+    s32 i;
+
+    c = &((XPotChr*)D_003010F8)[arg0];
+    D_00642CF0[0] = 0;
+    D_00642CF0[1] = 1;
+    D_00642CF0[2] = 2;
+    D_00642D10 = 3;
+    D_00642D14 = 0;
+    while (c->name[D_00642D14] != 0) {
+        D_00642D14++;
+    }
+    if (D_00642D14 >= 0x25) {
+        D_00642CF0[3] = 3;
+        D_00642CF0[4] = 4;
+        D_00642CF0[5] = 5;
+        D_00642CF0[6] = 6;
+        D_00642D10 += 4;
+    } else if (D_00642D14 >= 0x19) {
+        D_00642D10 += 3;
+        D_00642CF0[3] = 3;
+        D_00642CF0[4] = 4;
+        D_00642CF0[5] = 5;
+    } else if (D_00642D14 >= 0xD) {
+        D_00642D10 += 2;
+        D_00642CF0[3] = 3;
+        D_00642CF0[4] = 4;
+    } else if (D_00642D14 > 0) {
+        D_00642D10 += 1;
+        D_00642CF0[3] = 3;
+    }
+    if (arg0 == 0) {
+        for (i = 0; i < 7; i++) {
+            if (func_0013C360(i) == 1) {
+                D_00642CF0[D_00642D10++] = 7;
+                break;
+            }
+        }
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217908);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
