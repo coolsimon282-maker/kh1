@@ -412,25 +412,37 @@ s32 func_0013B368(void) {
     return 1;
 }
 
+#ifdef VERSION_FM
+typedef union {
+    LargeApple* p;
+    f32 f;
+} XAppleLU;
+extern XAppleLU D_0052AD54;
+extern f32 D_002B8344;
+
+s32 func_0013B480(OtherApple* arg0) {
+    f32 temp_f2;
+
+    if (arg0->unk_00 & 0x10) {
+        D_0052AD54.p = func_00122AF8(1, 9, 0);
+        D_0052AD54.p->unk_30[0] = D_0052AD54.p->unk_30[1] = D_0052AD54.p->unk_30[2] = 0.0f;
+        D_0052AD54.p->unk_3C = 1.0f;
+        func_001009A8();
+        arg0->unk_10 = 60.0f;
+    }
+    arg0->unk_10 -= D_002B8344;
+    temp_f2 = arg0->unk_10 / 60.0f;
+    if (temp_f2 <= 0.0f) {
+        func_00122B70(D_0052AD54.p);
+        return 4;
+    }
+    D_0052AD54.p->unk_30[0] = D_0052AD54.p->unk_30[1] = D_0052AD54.p->unk_30[2] = 1.0f - temp_f2;
+    return 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B480);
-// s32 func_0013B480(OtherApple* arg0) {
-//     f32 temp_f2;
-//     if (arg0->unk_00 & 0x10) {
-//         D_00532504 = func_00122AF8(1, 9, 0);
-//         D_00532504->unk_30[0] = D_00532504->unk_30[1] = D_00532504->unk_30[2] = 0.0f;
-//         D_00532504->unk_3C = 1.0f;
-//         func_001009A8();
-//         arg0->unk_10 = 60.0f;
-//     }
-//     arg0->unk_10 -= D_002B8340[1];
-//     temp_f2 = arg0->unk_10 / 60.0f;
-//     if (arg0->unk_10 / 60.0f <= 0.0f) {
-//         func_00122B70(D_00532504);
-//         return 4;
-//     }
-//     D_00532504->unk_30[0] = D_00532504->unk_30[1] = D_00532504->unk_30[2] = 1.0f - temp_f2;
-//     return 0;
-// }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 // int func_0011EEB8(int*, int, int*);
