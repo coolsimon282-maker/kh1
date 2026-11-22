@@ -37,7 +37,47 @@ f32 func_00120AC8(f32 x) {
 }
 f32 func_00120AC8(f32);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120B40);
+void func_00120B40(sceVu0FVECTOR axis, sceVu0FMATRIX m, f32 ang) {
+    sceVu0FVECTOR tmp[3];
+    sceVu0FVECTOR v;
+    f32 c;
+    f32 f;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 3; i++) {
+        m[i][3] = m[3][i] = 0.0f;
+    }
+    m[3][3] = 1.0f;
+    sceVu0ScaleVector(v, axis, sinf(ang));
+    c = cosf(ang);
+    for (i = 0; i < 3; i++) {
+        sceVu0ScaleVector(tmp[i], axis, axis[i]);
+    }
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            if (i == j) {
+                m[i][j] = c;
+            } else {
+                if ((i + 3 - j) % 3 == 1) {
+                    m[i][j] = -v[3 - (i + j)];
+                } else {
+                    m[i][j] = v[3 - (i + j)];
+                }
+            }
+        }
+    }
+    c = 1.0f - c;
+    for (i = 0; i < 3; i++) {
+        sceVu0ScaleVector(tmp[i], tmp[i], c);
+    }
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            m[i][j] += tmp[i][j];
+        }
+    }
+}
+
 
 f32 func_00120D38(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     f32 f;
