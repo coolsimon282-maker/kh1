@@ -3,8 +3,11 @@
 #include "common.h"
 
 extern s32 D_003E8E00;
+extern s32 D_003E8E04;
 extern u8 D_003E9660[];
 extern u8 D_003F1660[];
+extern s32 D_003F1A60;
+extern s32 D_003F1A68;
 extern s32 D_0063F740;
 extern s32 D_0063F744;
 extern s32 D_0063F748;
@@ -85,11 +88,17 @@ void func_001EFB78(s32 a0) {
     D_003E8E00 = a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFB88);
+s32 func_001EFB88(void) {
+    return D_003E8E00;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFB98);
+void func_001EFB98(s32 a0) {
+    D_003E8E04 = a0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFBA8);
+s32 func_001EFBA8(void) {
+    return D_003E8E04;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFBB8);
 
@@ -326,7 +335,9 @@ void func_001F4040(u8 *a0, s32 a1) {
     *(s32 *)(a0 + 0x70) = a1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F4048);
+void func_001F4048(s32 a0) {
+    D_003F1A68 = a0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F4058);
 
@@ -524,9 +535,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8EE0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8F30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8FF0);
+void func_001F8FF0(s32 a0) {
+    D_003F1A60 = a0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F9000);
+s32 func_001F9000(void) {
+    return D_003F1A60;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F9010);
 
@@ -672,19 +687,27 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD278);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD288);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD298);
+void func_001FD298(u8 *a0, s32 a1) {
+    *(s16 *)(a0 + 0xB8) = (a1 << 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2A8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2B8);
+void func_001FD2B8(u8 *a0, s32 a1) {
+    *(s16 *)(a0 + 0xBA) = (a1 << 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2D8);
+void func_001FD2D8(u8 *a0, s32 a1) {
+    *(s16 *)(a0 + 0xBE) = (a1 << 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2F8);
+void func_001FD2F8(u8 *a0, s32 a1) {
+    *(s16 *)(a0 + 0xC0) = (a1 << 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD308);
 
