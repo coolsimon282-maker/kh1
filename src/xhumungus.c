@@ -958,7 +958,14 @@ s32 func_001D0A08(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0A40);
+s32 func_00104310(s32);
+
+s32 func_001D0A40(Script* arg0) {
+    func_00104310(arg0->unk_174[arg0->unk_174[3] + 4]);
+    ((XGiantMountainB*)&D_003854E0)->unk_3078_0 = 0;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0AA0);
 
