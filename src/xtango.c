@@ -37,7 +37,8 @@ extern void func_0021D2B0();
 extern void func_0022F888();
 
 typedef struct {
-    /* 0x000 */ char unk_000[0x599];
+    /* 0x000 */ char unk_000[0x499];
+    /* 0x499 */ u8 unk_499[0x100];
     /* 0x599 */ u8 unk_599[48];
 } XTangoUnk3010F8;
 
@@ -520,7 +521,26 @@ INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0198);
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0218);
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F02B8);
+s32 func_001F02B8(s32 arg0, s32 arg1) {
+    s32 count = 0;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 10; i++) {
+        XTangoChar* chr;
+
+        if (i == arg1) {
+            continue;
+        }
+        chr = &((XTangoParty*)D_003010F8)->chars[i];
+        for (j = 0; j < chr->unk_18; j++) {
+            if (chr->unk_19[j] == arg0) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
 
 s32 func_001F0330(s32 arg0) {
     s32 count = 0;
