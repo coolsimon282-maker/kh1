@@ -2238,7 +2238,13 @@ s32 func_001D7E38(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7E68);
+void func_00104268(f32, f32);
+
+s32 func_001D7E68(Script* arg0) {
+    func_00104268(arg0->unk_174[arg0->unk_174[3] + 3], arg0->unk_174[arg0->unk_174[3] + 4]);
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001D7EC8(void) {
     func_00104178();
