@@ -1158,15 +1158,20 @@ void func_00114800(void) {
     D_004D2AB0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114818);
-
 typedef struct {
     /* 0x00 */ char unk_00[0x10];
     /* 0x10 */ void* unk_10;
 } XBladeTask;
 
 typedef struct {
-    /* 0x00 */ u8 unk_00[0x50];
+    /* 0x00 */ s32 unk_00[4];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ void* unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20[4];
+    /* 0x30 */ s32 unk_30[4];
+    /* 0x40 */ s32 unk_40[4];
 } XBladePkt; // size = 0x50
 
 typedef struct {
@@ -1176,7 +1181,65 @@ typedef struct {
 
 extern XBladePkt D_004D9380[2];
 extern XBladePkt D_004D9420[][2];
-void func_00114818(XBladePkt* pkt, s32 idx, s32 n);
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XBladeMatTag;
+
+typedef struct {
+    /* 0x00 */ XBladeMatTag tag;
+    /* 0x08 */ s32 m[2][4][4];
+    /* 0x88 */ s32 unk_88[2];
+} XBladeMatEnt; // size = 0x90
+
+extern XBladeMatEnt D_004DBC20[2][64];
+extern XBladeMatTag D_0048BFD0;
+
+extern XBladePkt D_0048C630;
+extern XBladePkt D_0048C690;
+extern s32 D_00486430[][4];
+extern s32 D_0046BE90[4];
+extern s32 D_00486300[4];
+
+void func_00114818(XBladePkt* pkt, s32 idx, s32 n) {
+    s32 k;
+
+    if (idx == -1) {
+        pkt[0].unk_14 = D_0048C630.unk_14;
+        pkt[1].unk_14 = D_0048C690.unk_14;
+    } else {
+        pkt[0].unk_14 = &D_004DBC20[0][idx];
+        pkt[1].unk_14 = &D_004DBC20[1][idx];
+    }
+    pkt[0].unk_10 = D_0048C630.unk_10;
+    pkt[0].unk_18 = D_0048C630.unk_18;
+    pkt[0].unk_1C = D_0048C630.unk_1C;
+    pkt[1].unk_10 = D_0048C690.unk_10;
+    pkt[1].unk_18 = D_0048C690.unk_18;
+    pkt[1].unk_1C = D_0048C690.unk_1C;
+    pkt[0].unk_20[0] = D_0048C630.unk_20[0];
+    pkt[0].unk_20[1] = D_0048C630.unk_20[1];
+    pkt[0].unk_20[2] = D_0048C630.unk_20[2];
+    pkt[0].unk_20[3] = D_0048C630.unk_20[3];
+    pkt[1].unk_20[0] = D_0048C690.unk_20[0];
+    pkt[1].unk_20[1] = D_0048C690.unk_20[1];
+    pkt[1].unk_20[2] = D_0048C690.unk_20[2];
+    pkt[1].unk_20[3] = D_0048C690.unk_20[3];
+    for (k = 0; k < 2; k++) {
+        pkt[k].unk_00[0] = D_00486430[n][0];
+        pkt[k].unk_00[1] = D_00486430[n][1];
+        pkt[k].unk_00[2] = D_00486430[n][2];
+        pkt[k].unk_00[3] = D_00486430[n][3];
+        pkt[k].unk_40[0] = D_0046BE90[0];
+        pkt[k].unk_40[1] = D_0046BE90[1];
+        pkt[k].unk_40[2] = D_0046BE90[2];
+        pkt[k].unk_40[3] = D_0046BE90[3];
+        pkt[k].unk_30[0] = D_00486300[0];
+        pkt[k].unk_30[1] = D_00486300[1];
+        pkt[k].unk_30[2] = D_00486300[2];
+        pkt[k].unk_30[3] = D_00486300[3];
+    }
+}
 
 // Two 4x4 matrices per entry (copied as words), [2 buffers][64 entries]; D_004DBC20 holds a header 8 bytes before.
 extern s32 D_00351BD0;
@@ -1194,20 +1257,6 @@ void func_001149B0(s32 idx, s32 src[4][4]) {
         }
     }
 }
-
-typedef struct {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-} XBladeMatTag;
-
-typedef struct {
-    /* 0x00 */ XBladeMatTag tag;
-    /* 0x08 */ s32 m[2][4][4];
-    /* 0x88 */ s32 unk_88[2];
-} XBladeMatEnt; // size = 0x90
-
-extern XBladeMatEnt D_004DBC20[2][64];
-extern XBladeMatTag D_0048BFD0;
 
 void func_00114A50(void) {
     s32 i, j;
