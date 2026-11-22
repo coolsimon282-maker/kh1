@@ -192,7 +192,11 @@ void func_001AAF58(void) {
     D_00372760 = (D_00372760 * 0x80D + 7) & 0xFFFF;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAF80);
+s32 func_001AAF80(void) {
+    f32 r;
+    __asm__ volatile("addi $8,$0,-1\n\tqmtc2.ni $8,$vf2\n\tvrxor R,$vf2x\n\tvitof0.x $vf2,$vf2\n\tvrnext.x $vf1,R\n\tvadd.x $vf1,$vf1,$vf2\n\tqmfc2.ni %0,$vf1" : "=r"(r) : : "$8");
+    return r * 32768.0f;
+}
 
 typedef struct {
     /* 0x00 */ f32 org[4]; // ray origin, relative to the sphere's centre
