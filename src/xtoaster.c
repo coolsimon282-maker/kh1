@@ -244,7 +244,20 @@ s32 func_00123730(XToaster* arg0) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123768);
+s32 func_00123768(XToaster* p) {
+    s32 i;
+    s32 m;
+    if (p->unk_134 == NULL || p->unk_134[6] == 0 || p->unk_006 == 2 || (*(u64*)p & 0x8048) != 0x8000) {
+        return 0;
+    }
+    for (i = 0; i < p->unk_134[6]; i++) {
+        m = 1 << i;
+        if (!(p->unk_3A8 & m)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 static inline s32 xtoaster_inl_001237E8(XToaster* arg0) {
     if (arg0->unk_000 & 0x1000080) {
