@@ -87,7 +87,33 @@ void func_00122B70(s32* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122B78);
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122DD8);
+extern sceVu0FMATRIX D_002C1E60;
+
+void func_00122DD8(u8* obj, sceVu0FMATRIX m) {
+    s32 k;
+    XOwlEnt* e;
+    s32 i;
+    s32 j;
+
+    sceVu0CopyMatrix(m, D_002C1E60);
+    for (j = 3; j >= 0; j--) {
+        m[3][j] = 1.0f;
+    }
+    e = D_002C5C80;
+    k = 0;
+    for (i = 0; i < 31; i++, e++) {
+        if (*(u32*)(obj + 0x420) & (1 << i)) {
+            switch (e->unk_00) {
+                case 2:
+                case 3:
+                case 4:
+                    sceVu0CopyVector(m[k++], (f32*)((u8*)e + 0x30));
+                    break;
+            }
+        }
+    }
+    sceVu0CopyVector(m[3], (f32*)(obj + 0x430));
+}
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122EC8);
 
