@@ -5,7 +5,7 @@
 typedef struct {
     /* 0x00 */ void (*unk_00)(u16, s32);
     /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ u16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ u16 unk_0E;
@@ -121,10 +121,20 @@ s32 func_0010CBA0(XSauceTbl* p) {
 }
 
 typedef struct {
-    /* 0x00 */ char unk_00[0xA];
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ char unk_02[0x2];
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ u16 unk_08;
     /* 0x0A */ u16 unk_0A;
     /* 0x0C */ char unk_0C[0x4];
 } XSauceKey; /* size = 0x10 */
+
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ char unk_02[0xE];
+    /* 0x10 */ XSauceKey unk_10[1];
+} XSauceKeys;
 
 typedef struct {
     /* 0x00 */ char unk_00[0x18];
@@ -210,7 +220,32 @@ s32 func_0010CE98(XSauceSteps* p) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CF18);
+void func_0010CF18(XSauce* p, XSauceKeys* k) {
+    s32 lines[32];
+    s32 i;
+    s32 n;
+    s32 start;
+    s32 end;
+    s32 off;
+    s32 j;
+    n = 0;
+    /* lines: index of the last key of each line */
+    for (i = 0; i < k->unk_00 - 1; i++) {
+        if (k->unk_10[i].unk_06 != k->unk_10[i + 1].unk_06) {
+            lines[n++] = i;
+        }
+    }
+    lines[n++] = k->unk_00 - 1;
+    start = 0;
+    for (i = 0; i < n; i++) {
+        end = lines[i];
+        off = p->unk_0C - (((XSauceKey*)k)[end + 1].unk_08 >> 1) - p->unk_08;
+        for (j = start; j < end + 1; j++) {
+            ((XSauceKey*)k)[j + 1].unk_04 += off;
+        }
+        start = end + 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D010);
 
