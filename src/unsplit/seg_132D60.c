@@ -458,8 +458,6 @@ s32 func_0023CFC8(void) {
     return D_0044A820 != 0;
 }
 
-extern s32 D_0044A820;
-
 void func_0023CFD8(void) {
     D_0044A820 = 0;
 }
