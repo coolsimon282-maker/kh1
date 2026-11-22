@@ -11,7 +11,87 @@ typedef struct {
 
 sceVu0FVECTOR g_vecCamDirM;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthModelFilter", pppRyjMegaBirthModelFilterCalc);
+typedef struct {
+    /* 0x00 */ char unk_00[0xA];
+    /* 0x0A */ u16 nParticle;
+    /* 0x0C */ char unk_0C[0xDC];
+    /* 0xE8 */ f32 fDist;
+    /* 0xEC */ f32 fFade;
+    /* 0xF0 */ u8 bDistFade;
+    /* 0xF1 */ u8 unk_F1;
+    /* 0xF2 */ u8 bColor;
+} PRyjMegaBirthModelFilter;
+
+extern sceVu0FVECTOR D_003701D0;
+s32 func_001A55A8(VRyjMegaBirthModelFilter* v, PRyjMegaBirthModelFilter* p);
+void func_001A66B0(VRyjMegaBirthModelFilter* v, PRyjMegaBirthModelFilter* p, void* w);
+
+// |v.xyz| on VU0 (hand-written macro code)
+static inline f32 vu0Length(f32* v) {
+    f32 len;
+    __asm__ volatile(
+        "lqc2 $vf10, 0(%1)
+"
+        "vmul.xyz $vf10, $vf10, $vf10
+"
+        "vaddx.y $vf10, $vf10, $vf10x
+"
+        "vaddy.z $vf10, $vf10, $vf10y
+"
+        "vsqrt Q, $vf10z
+"
+        "vwaitq
+"
+        "vaddq.x $vf10, $vf0, Q
+"
+        "qmfc2.ni %0, $vf10
+"
+        : "=r"(len) : "r"(v) : "memory");
+    return len;
+}
+
+void pppRyjMegaBirthModelFilterCalc(pppPObject* pobj, PRyjMegaBirthModelFilter* p, pppCtrlTable* ctbl) {
+    VRyjMegaBirthModelFilter* v = (VRyjMegaBirthModelFilter*)&pobj->val[ctbl->useVal[2]];
+    void* w = &pobj->val[ctbl->useVal[1]];
+    sceVu0FVECTOR d;
+    f32 len;
+    f32 f;
+
+    if (v->pvParticleData == NULL) {
+        v->nParticle = p->nParticle;
+        v->pvParticleData = pppDbgAlloc(ppvEnv, v->nParticle * 0xA0);
+        if (v->pvParticleData != NULL) {
+            memset(v->pvParticleData, 0, v->nParticle * 0xA0);
+        }
+        if (p->bColor) {
+            v->pvParticleColor = pppDbgAlloc(ppvEnv, v->nParticle * 32);
+            if (v->pvParticleColor != NULL) {
+                memset(v->pvParticleColor, 0, v->nParticle * 32);
+            }
+        }
+    }
+    if (!func_001A55A8(v, p)) {
+        return;
+    }
+    if (p->bDistFade) {
+        sceVu0SubVector(d, ppvEye, D_003701D0);
+        len = vu0Length(d);
+        if (p->fDist < len) {
+            v->bActive = 0;
+        } else {
+            v->bActive = 1;
+            f = p->fDist - len;
+            if (f < p->fFade) {
+                v->fAlphaScale = f / p->fFade;
+            } else {
+                v->fAlphaScale = 1.0f;
+            }
+        }
+    }
+    if (v->bActive) {
+        func_001A66B0(v, p, w);
+    }
+}
 
 void func_001A69A8(void) {
 }
