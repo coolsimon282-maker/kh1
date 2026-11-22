@@ -44,11 +44,11 @@ s32 func_00120170(u32 arg0, u32* arg1) {
 
 extern s32 D_002C5C30;
 extern u8 D_004E4A00[];
-s32 func_001200F8();
+s32 func_001200F8(s32);
 void *bsearch(const void *, const void *, u32, u32, s32 (*)(const void *, const void *));
 
-void *func_00120190(void) {
-    return bsearch((void *)func_001200F8(), D_004E4A00, D_002C5C30, 0x10, (void *)func_00120170);
+void *func_00120190(s32 a0) {
+    return bsearch((void *)func_001200F8(a0), D_004E4A00, D_002C5C30, 0x10, (void *)func_00120170);
 }
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001201D0);
@@ -69,7 +69,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120590);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001207F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120888);
+s32 sceCdDiskReady(s32);
+s32 sceCdSeek(u32);
+
+void func_00120888(s32 a0) {
+    u8 *p;
+
+    if (sceCdDiskReady(1) == 2) {
+        p = func_00120190(a0);
+        if (p != NULL) {
+            sceCdSeek(*(u32 *)(p + 8));
+        }
+    }
+}
 
 void* func_0011EEB8(void*, s32, s32);
 s32 func_0011EF58(s32*, s32);
@@ -86,7 +98,14 @@ s32 func_00120908(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120930);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001209D8);
+s32 sceSifLoadModule(const char *, s32, const char *);
+
+void func_001209D8(void) {
+    s32 m = func_00120930();
+
+    while (sceSifLoadModule((const char *)m, 0, 0) < 0) {
+    }
+}
 
 void func_00120A20(s32 a0, s32 a1, s32 a2, s32 a3) {
     s32 t0 = func_00120930();
@@ -101,4 +120,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120AA0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120B10);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120BA0);
+extern s32 D_004F3208;
+extern u8 D_0048D2A0[];
+s32 sceCdSync(s32);
+void fm_func_00120438(void *, void *);
+void func_0011FD60(s32, s32, void *);
+void func_0011FE20(void);
+
+void func_00120BA0(void) {
+    sceCdDiskReady(0);
+    fm_func_00120438(&D_004F3208, D_0048D2A0);
+    func_0011FD60(D_004F3208, 1, D_004F2A00);
+    sceCdSync(0);
+    func_0011FE20();
+}
