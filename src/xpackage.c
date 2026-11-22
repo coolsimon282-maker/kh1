@@ -290,13 +290,12 @@ void func_00248150(void) {
     func_00247FE8(7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248168);
-// void func_00248168(s32 arg0) {
-//     if (D_00663A28[arg0]->unk_24 != 0) {
-//         free(D_00663A28[arg0]);
-//     }
-//     D_00663A28[arg0] = NULL;
-// }
+void func_00248168(s32 arg0) {
+    if (*(s32*)((u8*)XPACKAGE_TABLE[arg0] + 0x24) != 0) {
+        free(XPACKAGE_TABLE[arg0]);
+    }
+    XPACKAGE_TABLE[arg0] = NULL;
+}
 
 void func_002481B0(void) {
     func_00248168(0);
