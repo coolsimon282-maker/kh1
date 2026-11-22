@@ -3,14 +3,14 @@
 #include <stdarg.h>
 
 typedef struct {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ void (*unk_00)(u16, s32);
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
-    /* 0x0E */ s16 unk_0E;
+    /* 0x0E */ u16 unk_0E;
     /* 0x10 */ u8 unk_10;
-    /* 0x11 */ s8 unk_11;
+    /* 0x11 */ u8 unk_11;
     /* 0x12 */ u8 unk_12;
     /* 0x13 */ u8 unk_13;
     /* 0x14 */ s32 unk_14;
@@ -244,7 +244,30 @@ void func_0010E230(XSauce* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E270);
+void func_0010E270(XSauce* p) {
+    switch (p->unk_11) {
+    case 1:
+        if (p->unk_00 != NULL) {
+            if (!(u8)(p->unk_13 & 1)) {
+                p->unk_13 |= 1;
+                p->unk_0E++;
+            }
+            p->unk_00(p->unk_0E, p->unk_24);
+        }
+        break;
+    case 0:
+        p->unk_12 = 0;
+        if (p->unk_20 != 0) {
+            func_00121D50(p->unk_20);
+            p->unk_20 = 0;
+        }
+        if (p->unk_00 != NULL) {
+            p->unk_0E++;
+            p->unk_00(p->unk_0E, p->unk_24);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E330);
 
