@@ -336,7 +336,46 @@ void func_00110170(void) {
     D_002B85C0[0] = 0;
 }
 
+#ifdef VERSION_FM
+extern s32 D_002B834C;
+extern s32 D_002BBE14;
+extern s32 D_002BBE18;
+extern s32 D_002A6208;
+extern s32 D_002A2740;
+extern s32 D_002B8C88;
+extern s32 D_002A6204;
+extern s32 D_002A61F0;
+extern s32 D_002BC060[4];
+extern s32 D_002BC080[4];
+extern s32 D_002BC0B0[4];
+
+void func_00110190(void) {
+    D_002B834C = 0;
+    D_002BBE14 = 0;
+    D_002BBE18 = 0;
+    D_002A6208 = 0;
+    D_002A2740 = 0;
+    D_002B8C88 = 0;
+    D_002A6204 = 0;
+    D_002A61F0 = 0;
+    D_002BC060[2] = 0;
+    D_002BC060[1] = 0;
+    D_002BC060[0] = 0;
+    D_002BC060[3] = 0x80;
+    D_002BC080[2] = 0x80;
+    D_002BC080[1] = 0x80;
+    D_002BC080[0] = 0x80;
+    D_002BC080[3] = 0x60;
+    D_002BC0B0[2] = 0xFF;
+    D_002BC0B0[1] = 0xFF;
+    D_002BC0B0[0] = 0xFF;
+    D_002BC0B0[3] = 0;
+    func_00110150();
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110190);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110230);
 
