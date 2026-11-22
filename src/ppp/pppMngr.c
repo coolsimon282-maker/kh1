@@ -310,7 +310,36 @@ s32* dpd_h_skip_datainfo(s32* p, s32 n) {
     return p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181A58);
+void func_00181A58(s32* dpd, s32 idx, s32* out, ppvmng* m) {
+    s32* p = dpd_h_skip_version(dpd);
+    s32 n;
+    s32 i;
+    s32 v;
+    s32 a;
+    s32 b;
+
+    *out = 0;
+    n = *p++;
+    for (i = 0; i < n; i++) {
+        if (idx == i) {
+            v = *p;
+            m->pEtc = (pppPEtcData*)v;
+            *out = v + 0x110;
+        }
+        p++;
+    }
+    p = dpd_h_skip_datainfo(p, 4);
+    if (p[0] != -1) {
+        a = p[1] - 0x3781;
+        b = p[3] - 0x3D21;
+        m->unk_91 = a / 128;
+        m->unk_92 = b / 32;
+    } else {
+        m->unk_91 = 0;
+        m->unk_92 = 0;
+    }
+}
+
 
 s32* func_00181B38(s32* arg0, s32 arg1) {
     s32* p = dpd_h_skip_version(arg0);
