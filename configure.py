@@ -57,6 +57,7 @@ STRICT_ALIASING_FILES = [
     "xbuffalo.c",
     "xhumungus.c",
     "xmeowp.c",
+    "xnoodle.c",  # a5, run 6: func_0010BB50 only matches with strict aliasing; the rest of the file is unaffected
     "xpackage.c",
     "xpotato.c",  # added after a3's run 3: its matched functions only match with strict aliasing
     "xtango.c",
@@ -72,6 +73,7 @@ NO_G_FILES = [
     "gumi.c",
     "pppKeMvYpEff.c",  # a2: its C matches only without -g
     "draw.c",          # a4: func_001AADC8 (atan2) matches only without -g
+    "pppKeTh.c",       # a5: pppKeThCalc (soft-double calls; as -g leaves their delay slots empty)
 ]
 
 

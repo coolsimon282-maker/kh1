@@ -183,7 +183,108 @@ void func_0010BB10(XNoodle* arg0, s32 arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BB50);
+typedef struct {
+    /* 0x00 */ char pad_00[8];
+    /* 0x08 */ u16 x;
+    /* 0x0A */ u16 y;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ u8 unk_10;
+    /* 0x11 */ u8 pad_11;
+    /* 0x12 */ u8 unk_12;
+    /* 0x13 */ u8 unk_13;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ char pad_18[8];
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ void* unk_24;
+    /* 0x28 */ s32 unk_28;
+} XNoodleSpr;
+
+typedef struct {
+    /* 0x00 */ char pad_00[4];
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ char pad_06[4];
+    /* 0x0A */ u16 unk_0A;
+    /* 0x0C */ u16 unk_0C;
+    /* 0x0E */ u16 unk_0E;
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ char pad_1C[4];
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ char pad_24[0xC];
+    /* 0x30 */ sceVu0FVECTOR pos;
+    /* 0x40 */ f32 unk_40;
+    /* 0x44 */ f32 unk_44;
+    /* 0x48 */ char pad_48[0x28];
+    /* 0x70 */ sceVu0FVECTOR unk_70;
+    /* 0x80 */ s32 unk_80;
+    /* 0x84 */ s32 unk_84;
+} XNoodleObj;
+
+typedef struct {
+    /* 0x00 */ char pad_00[0x1C];
+    /* 0x1C */ XNoodleObj* obj;
+    /* 0x20 */ XNoodleSpr* spr;
+} XNoodleNode;
+
+extern u16 D_002B67C0[];
+extern u16 D_002B67C8[];
+extern f32 D_002B6798[];
+extern u16 D_002B6780[];
+XNoodleNode* func_0011EEB8(s32* list, s32 id, void (*func)());
+void func_0010B810();
+
+void func_0010BB50(XNoodleObj* obj, s32 arg1) {
+    XNoodleNode* node;
+    XNoodleSpr* spr;
+    XNoodleSpr* spr2;
+    s16 z;
+
+    node = func_0011EEB8(D_002B3AE0, D_0048ECD4++, func_0010B810);
+    if (node == NULL) {
+        return;
+    }
+    node->spr = (XNoodleSpr*)&obj->unk_80;
+    node->obj = obj;
+    sceVu0CopyVector(obj->unk_70, obj->pos);
+    obj->unk_18 = 0;
+    obj->unk_14 = arg1;
+    spr = node->spr;
+    spr->x = obj->pos[0] + 254.0f - obj->unk_40 * 12.0f;
+    spr->y = obj->pos[1] + 180.0f - obj->unk_44 * 12.0f;
+    z = obj->pos[0] + 256.0f;
+    obj->unk_84 = 0;
+    spr->unk_12 = 0;
+    spr->unk_24 = obj;
+    spr2 = node->spr;
+    spr2->unk_20 = 0;
+    spr->unk_0C = z;
+    spr2->unk_13 = 0;
+    spr2->unk_0E = 0;
+    node->spr->unk_13 &= ~1;
+    obj->unk_10 = D_002B67C0[obj->unk_0C];
+    node->spr->unk_14 = 0.5f;
+    obj->unk_12 = D_002B67C8[obj->unk_0E];
+    obj->unk_20 = D_002B6798[obj->unk_04];
+    obj->unk_0A = D_002B6780[obj->unk_04];
+    node->spr->unk_28 = 0;
+    switch (obj->unk_04) {
+        case 0:
+            node->spr->unk_10 = 0;
+            node->spr->unk_13 &= ~2;
+            break;
+        case 1:
+            node->spr->unk_10 = 0;
+            node->spr->unk_13 |= 2;
+            break;
+        default:
+            node->spr->unk_10 = 1;
+            node->spr->unk_13 |= 2;
+            break;
+    }
+}
 
 s32 func_0010BDA8(void) {
     func_0011EF58(&D_002B3AE0, 0);
