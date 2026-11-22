@@ -87,8 +87,63 @@ void func_0010F448(void) {
 }
 
 #ifdef VERSION_FM
-void func_0010F4A8(u32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F4A8);
+extern s32 D_002BBCC0;
+extern s32 D_004D5B0C;
+void func_001FD100(s32, s32);
+void func_001F1ED8(s32, s32, s32, s32, s32);
+void func_00207748(s32, s32, s32, s32);
+void func_0010F4A8(u32 arg0) {
+    if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
+        if (arg0 == 0) {
+            sceGsSyncPath(0, 0);
+            func_001102C0();
+            DPUT_GS_PMODE(0x22);
+        } else {
+            sceGsSyncPath(0, 0);
+            func_001102C0();
+            if (arg0 & 4) {
+                func_0010F3D0();
+                func_00106948(&D_002BBCC0);
+                if (D_004D5B0C == 0) {
+                    func_001FD100(76, 11);
+                    func_001F1ED8(0x64FFFFFF, 118, 16, func_001F0EF0(3), 15);
+                    func_00207748(1, 351, 92, 90);
+                } else {
+                    func_001FD100(84, 30);
+                    func_001F1ED8(0x64FFFFFF, 126, 39, func_001F0EF0(4), 15);
+                    func_00207748(1, 351, 70, 90);
+                }
+                func_0010F3F8();
+                func_00106948(&D_002BBCC0);
+                func_0010F420();
+                func_0010F448();
+                return;
+            }
+            if (arg0 & 2) {
+                func_0010F3D0();
+                func_00106948(&D_002BBCC0);
+                func_001FD100(96, 30);
+                func_001F1ED8(0x64FFFFFF, 138, 39, func_001F0EF0(2), 15);
+                func_0010F3F8();
+                func_00106948(&D_002BBCC0);
+                func_0010F420();
+                func_0010F448();
+                return;
+            }
+            if (arg0 & 1) {
+                func_0010F3D0();
+                func_00106948(&D_002BBCC0);
+                func_001FD100(84, 30);
+                func_001F1ED8(0x64FFFFFF, 126, 39, func_001F0EF0(1), 15);
+                func_0010F3F8();
+                func_00106948(&D_002BBCC0);
+                func_0010F420();
+                func_0010F448();
+                return;
+            }
+        }
+    }
+}
 #else
 void func_0010F4A8(u32 arg0) {
     if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
