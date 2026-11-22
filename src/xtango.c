@@ -91,8 +91,12 @@ void func_001EDCD8(f32);
 u32 func_00147808(u16);
 
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF210);
-u32 func_001EF210(); // temporary for following functions, changes signature to unsigned
+extern volatile u32 D_002BBDF4;
+extern f32 D_002BBDEC;
+
+u32 func_001EF210(void) {
+    return D_002BBDF4 * D_002BBDEC;
+}
 
 u32 func_001EF298(void) {
     return func_001EF210() / 216000;
