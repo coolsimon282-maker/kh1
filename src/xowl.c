@@ -46,23 +46,22 @@ s32 func_00122828(XHoot* arg0) {
     return uVar1;
 }
 
-// Nonmatch: Preprocessor is adding nops unintentionally
-INCLUDE_ASM("asm/nonmatchings/xowl", func_001228C8);
-// void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
-//     XHoot* pvVar1;
+void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
+    XHoot* pvVar1;
 
-//     if (0.0f >= arg0) {
-//         sceVu0CopyVector(arg1[3], arg2);
-//     } else {
-//         pvVar1 = func_0011EEB8(&D_004FA670, 0, func_00122828);
-//         pvVar1->unk_10 = arg1;
-//         pvVar1->unk_44 = arg0;
-//         pvVar1->unk_40 = arg0;
-//         pvVar1->unk_48 = arg3;
-//         sceVu0CopyVector(pvVar1->unk_20, arg1[3]);
-//         sceVu0CopyVector(pvVar1->unk_30, arg2);
-//     }
-// }
+    if (0.0f >= arg0) {
+        sceVu0CopyVector(arg1[3], arg2);
+    } else {
+        pvVar1 = func_0011EEB8(&D_004FA670, 0, func_00122828);
+        pvVar1->unk_10 = arg1;
+        pvVar1->unk_44 = arg0;
+        pvVar1->unk_40 = arg0;
+        pvVar1->unk_48 = arg3;
+        sceVu0CopyVector(pvVar1->unk_20, arg1[3]);
+        sceVu0CopyVector(pvVar1->unk_30, arg2);
+    }
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122988);
 
@@ -88,9 +87,68 @@ void func_00122B70(s32* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122B78);
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122DD8);
+extern sceVu0FMATRIX D_002C1E60;
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122EC8);
+void func_00122DD8(u8* obj, sceVu0FMATRIX m) {
+    s32 k;
+    XOwlEnt* e;
+    s32 i;
+    s32 j;
+
+    sceVu0CopyMatrix(m, D_002C1E60);
+    for (j = 3; j >= 0; j--) {
+        m[3][j] = 1.0f;
+    }
+    e = D_002C5C80;
+    k = 0;
+    for (i = 0; i < 31; i++, e++) {
+        if (*(u32*)(obj + 0x420) & (1 << i)) {
+            switch (e->unk_00) {
+                case 2:
+                case 3:
+                case 4:
+                    sceVu0CopyVector(m[k++], (f32*)((u8*)e + 0x30));
+                    break;
+            }
+        }
+    }
+    sceVu0CopyVector(m[3], (f32*)(obj + 0x430));
+}
+
+extern u32 D_002B85F8;
+extern sceVu0FVECTOR D_002C6450;
+void func_00107E10(XOwlEnt*);
+void func_00110C70(sceVu0FVECTOR);
+void func_0011EF58(s32*, s32);
+
+s32 func_00122EC8(void) {
+    XOwlEnt* e;
+    s32 i;
+
+    func_0011EF58(&D_004FA670, 0);
+    D_002C6450[3] = 1.0f;
+    D_002C6450[2] = 1.0f;
+    D_002C6450[1] = 1.0f;
+    D_002C6450[0] = 1.0f;
+    D_002B85F8 &= ~0x10;
+    e = D_002C5C80;
+    for (i = 30; i >= 0; i--, e++) {
+        if (!(e->unk_04 & 0x12)) {
+            if (e->unk_00 != 1) {
+                if (e->unk_00 == 3) {
+                    func_00107E10(e);
+                    D_002B85F8 |= 0x10;
+                }
+            } else {
+                sceVu0MulVector(D_002C6450, D_002C6450, (f32*)((u8*)e + 0x30));
+            }
+        }
+    }
+    D_002C6450[3] = 1.0f;
+    func_00110C70(D_002C6450);
+    return 0;
+}
+
 
 void func_00122FF0(void) {
     func_0011EDD0(&D_004FA670, &D_004FA680, 0x50, 8);
@@ -130,4 +188,41 @@ void func_001230D0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00123108);
+typedef struct XOwlE2 {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    char unk_0C[0x14];
+    sceVu0FVECTOR unk_20;
+    sceVu0FVECTOR unk_30;
+} XOwlE2;
+typedef union {
+    XOwlE2* p;
+    f32 f;
+} XOwlU;
+extern XOwlU D_002C6440;
+s32 func_00122EC8(void);
+s32 func_0011ED60(s32 (*)(void));
+
+void func_00123108(void) {
+    s32 i;
+
+    for (i = 0; i < 31; i++) {
+        D_002C5C80[i].unk_00 = 0;
+        D_002C5C80[i].unk_04 = 0;
+    }
+    D_002C6440.p = (void*)func_00122AF8(2, 7, 0);
+    D_002C6440.p->unk_20[0] = 0.0f;
+    D_002C6440.p->unk_20[1] = 1.0f;
+    D_002C6440.p->unk_20[2] = 0.0f;
+    D_002C6440.p->unk_20[3] = 1.0f;
+    D_002C6440.p->unk_30[0] = 1.0f;
+    D_002C6440.p->unk_30[1] = 1.0f;
+    D_002C6440.p->unk_30[2] = 1.0f;
+    D_002C6440.p->unk_30[3] = 1.0f;
+    func_00122FF0();
+    if (func_0011ED60(func_00122EC8) == 0) {
+        func_0011ED30(60000, func_00122EC8);
+    }
+}
+

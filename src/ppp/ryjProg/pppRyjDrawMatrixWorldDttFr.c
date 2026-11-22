@@ -34,7 +34,11 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", pppRyjDra
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A3F98);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A3FE0);
+f32 func_001A3F98(void);
+s8 func_001A3FE0(u8 a) {
+    f32 r = func_001A3F98();
+    return (a * 2) * r - (a >> 1);
+}
 
 s32 func_001A4040(s32* arg0, ppvmng* arg1) {
     if (arg0[0] == 0) {

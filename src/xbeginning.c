@@ -258,7 +258,41 @@ void func_001006C8(void) {
 }
 
 void func_001006F8(void);
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ char unk_00[0x54];
+    /* 0x54 */ f32 unk_54;
+    /* 0x58 */ char unk_58[0x8];
+    /* 0x60 */ f32 unk_60;
+    /* 0x64 */ f32 unk_64;
+    /* 0x68 */ f32 unk_68;
+    /* 0x6C */ char unk_6C[0x14];
+} XInchWormF;
+extern XInchWormF D_00494310[];
+extern f32 D_0029B270;
+extern f32 D_002B8344;
+extern sceVu0FVECTOR D_002DECE0;
+
+void func_001006F8(void) {
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        D_00494310[i].unk_60 = D_002DECE0[0];
+        D_00494310[i].unk_64 = 0.0f;
+        D_00494310[i].unk_68 = D_002DECE0[2];
+    }
+    D_00494310[1].unk_54 += D_0029B270 * D_002B8344;
+    if (D_00494310[1].unk_54 > PI) {
+        D_00494310[1].unk_54 -= 2 * PI;
+    }
+    if (D_00494310[1].unk_54 < -PI) {
+        D_00494310[1].unk_54 += 2 * PI;
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_001006F8);
+#endif
 
 void func_001007D0(f32 arg0) {
     D_0048DDA0[1].unk_44 = arg0;
@@ -321,7 +355,48 @@ void func_001009D8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100A10);
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ f32 unk_00;
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+} XBegCam;
+extern sceVu0FVECTOR D_002A4060[16];
+extern sceVu0FVECTOR D_0029B310[16];
+extern f32 D_0029B270;
+extern XBegCam D_002BC0F0;
+
+void func_00100B30(void) {
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        D_002A4060[i][0] = D_0029B310[i][0] / 16384.0f;
+        D_002A4060[i][1] = D_0029B310[i][1] / 16384.0f;
+        D_002A4060[i][2] = D_0029B310[i][2] / 16384.0f;
+        D_002A4060[i][3] = D_0029B310[i][3] / 16384.0f;
+    }
+    D_0029B270 = 0.00054541533f;
+    D_002BC0F0.unk_20 = 15000.0f;
+    D_002BC0F0.unk_24 = 20000.0f;
+    D_002BC0F0.unk_00 = 30000.0f;
+    D_002BC0F0.unk_04 = 20000.0f;
+    D_002BC0F0.unk_08 = 64.0f;
+    D_002BC0F0.unk_0C = 255.0f;
+    D_002BC0F0.unk_10 = 16;
+    D_002BC0F0.unk_14 = 112;
+    D_002BC0F0.unk_18 = 128;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100B30);
+#endif
 
 void func_00100C18(u_long128* srcaddr, s16 dbp) {
     sceGsSetDefLoadImage(&D_002B8700, dbp, 1, 0, 0, 0, 8, 2);
