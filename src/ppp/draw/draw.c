@@ -365,7 +365,14 @@ void func_001AC0A8(void) {
     D_0061E8B0[0] = save;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC120);
+s32 rand(void);
+
+// seeds the VU0 random register from rand()
+void func_001AC120(void) {
+    s32 r = rand();
+
+    __asm__ volatile("qmtc2.ni %0,$vf31\n\tvrxor R,$vf31x" : : "r"(r) : "$2");
+}
 
 s32 func_001AC148(s32 n) {
     s32 i = 1;
