@@ -59,3 +59,9 @@ briefly left the size-flicker state (fixed by d02303b). Code at the merge builds
 ## xblade: func_00114B50 depends on the number of declarations in the file
 a5 (run 5): func_00114B50's code changes with how many functions xblade.c declares; implicitly declared callees
 in a new match broke it (fixed by a real prototype for func_001336A0). Any later xblade match must re-check it.
+
+## register asm("$N") in committed C (a3 run 5)
+xapple func_0013AFE8 (`register s32* q asm("$16")`) and xtailor func_00110C70 (`i` in $18, a pointer in $17)
+match only with explicit register variables. Accepted for now so the code is C; candidates to redo without them
+later. xpotato func_00218A38/func_00218AC0 use FM's extra field at 0x2C without a VERSION_FM wrapper: wrap them
+when JP/EU catch up.
