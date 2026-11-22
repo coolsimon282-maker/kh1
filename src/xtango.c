@@ -61,7 +61,8 @@ typedef struct {
 extern XTangoUnkE4b D_003E3D70[];
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x19];
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ u8 unk_18;
     /* 0x19 */ u8 unk_19[0x19];
     /* 0x32 */ u8 unk_32;
     /* 0x33 */ char unk_33[0xD];
@@ -521,7 +522,25 @@ INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0218);
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F02B8);
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0330);
+s32 func_001F0330(s32 arg0) {
+    s32 count = 0;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < 10; i++) {
+        XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[i];
+
+        if (chr->unk_32 == arg0) {
+            count++;
+        }
+        for (j = 0; j < chr->unk_18; j++) {
+            if (chr->unk_19[j] == arg0) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F03A0);
 
