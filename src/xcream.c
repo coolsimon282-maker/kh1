@@ -1,5 +1,6 @@
 #include "common.h"
 #include "libdma.h"
+#include "libvu0.h"
 
 extern s32 D_0051C6C4;
 
@@ -31,7 +32,20 @@ INCLUDE_ASM("asm/nonmatchings/xcream", func_00127560);
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00127960);
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00127B18);
+extern struct {
+    f32 x, y, z, w;
+} D_002E27F0;
+extern s32 D_004F82C0;
+extern s32 D_004F82C4;
+s32 func_001145E8(void*, s32, s32, void*);
+
+void func_00127B18(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
+    sceVu0FMATRIX m;
+
+    sceVu0MulMatrix(m, arg1, (sceVu0FVECTOR*)(arg0 + 0xD0));
+    D_002E27F0.w = arg2;
+    func_001145E8(m, *(s32*)(arg0 + 0x154), D_004F82C4 + D_004F82C0++, &D_002E27F0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00127B98);
 
@@ -39,7 +53,6 @@ INCLUDE_ASM("asm/nonmatchings/xcream", func_00127C20);
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00128250);
 
-extern s32 D_004F82C0;
 extern u8 D_004F8270[];
 
 XCream* func_0015ED80(s32 arg0, s32 (*arg1)(XCream*));
