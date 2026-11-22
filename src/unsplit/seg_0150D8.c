@@ -434,7 +434,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001191C8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001195D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119688);
+s32 func_00119688(u8* p) {
+    u8 buf[0x20];
+    f32 v[4];
+    s32 w[4];
+    s32 r1, r2;
+    func_001047C8();
+    func_001195D8((s32)p, buf);
+    r1 = func_0011C338(buf, (s32)p, (s32)(p + 0x10), v, -1, w);
+    r2 = func_001191C8(buf, (s32)p, 8);
+    func_00104528();
+    if (r1 != -1 || r2 != r1) {
+        return 1;
+    }
+    return -1;
+}
 
 s32 func_00119710(s32 a0) {
     u8 buf[0x40];
