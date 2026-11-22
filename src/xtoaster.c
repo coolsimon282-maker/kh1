@@ -364,7 +364,31 @@ void func_00124CA0(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124CD8);
+typedef struct {
+    /* 0x00 */ char unk_00[0x8];
+    /* 0x08 */ u32 unk_08;
+    /* 0x0C */ char unk_0C[0x68];
+} XTPartyChar; /* size = 0x74, at D_003010F8 + 0x30 */
+
+/* 3 XToaster* slots at 0x2E26A0 (right after the XToaster array) */
+#define XT_SLOTS ((XToaster**)D_002E26A0)
+#define XT_PARTY_CHAR(o) ((XTPartyChar*)(*(s32*)&D_003010F8 + (o)))
+
+void func_00124CD8(void) {
+    s32 i;
+    s32 o;
+    for (i = 0; i < 10; i++) {
+        o = i * sizeof(XTPartyChar) + 0x30;
+        XT_PARTY_CHAR(o)->unk_08 &= ~0x10000;
+    }
+    for (i = 0; i < 3; i++) {
+        XToaster* p = XT_SLOTS[i];
+        if (p != NULL && (p->unk_000 & 0x4000)) {
+            o = p->unk_130->unk_4C * sizeof(XTPartyChar) + 0x30;
+            XT_PARTY_CHAR(o)->unk_08 |= 0x10000;
+        }
+    }
+}
 
 #ifdef VERSION_FM
 void fm_func_001249D8(void) {
