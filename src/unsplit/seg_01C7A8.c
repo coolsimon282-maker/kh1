@@ -112,15 +112,21 @@ void* func_0011D0D8(s32 arg0, s32 arg1) {
     return func_0011C850(arg0 < 1000 ? 2 : -8, arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D108);
+void* func_0011D108(s32 arg0, s32 arg1, s32 arg2) {
+    return func_0011C868(arg0 < 1000 ? 2 : -8, arg0, arg1, -1, arg2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D140);
+void* func_0011D140(s32 arg0, s32 arg1) {
+    return func_0011C838(arg0 < 1000 ? 2 : -1, arg0, arg1, 0x3FFF, 0x3FFF);
+}
 
 void* func_0011D178(s32 arg0, s32 arg1) {
     return func_0011C850(arg0 < 1000 ? 2 : -1, arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D1A8);
+void* func_0011D1A8(s32 arg0, s32 arg1, s32 arg2) {
+    return func_0011C868(arg0 < 1000 ? 2 : -1, arg0, arg1, -1, arg2);
+}
 
 void func_0011D1E0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Seg1C7A8Unk18* p = func_0011CFA8(arg0, arg1, arg2, arg3, 0);
@@ -284,7 +290,9 @@ void func_0011E7C8(s32 arg0, s32 arg1) {
     func_0011E8D0(0, 0x3000, 0, arg0, 0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E9D8);
+void func_0011E9D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    func_0011E8D0(1, arg0, arg1, arg2, 0, arg3);
+}
 
 void func_0011E830(s32 arg0, s32 arg1) {
     func_0011E8D0(0, 0x3000, 0, arg0, 1, arg1);
