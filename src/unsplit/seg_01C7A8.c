@@ -261,7 +261,17 @@ void func_0011DB50(s32* a, s32* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DBA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DC28);
+void func_0011DC28(s32* a0, s32* a1, s32* a2) {
+    s32 i;
+    if (D_002BBDE0 != 3) {
+        for (i = 0; i < 4; i++) {
+            if (*a0 == D_002C1310[i] && *a1 < 0x2400 && *a2 < 0x2400) {
+                *a1 = 0x2400;
+                *a2 = 0x2400;
+            }
+        }
+    }
+}
 
 void func_0011DC98(u8* a0) {
     s32 i;
