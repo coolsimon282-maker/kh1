@@ -1,0 +1,3 @@
+# Files reserved for the local Qwen agent (worktree kh1-wt/q1): do not assign to Claude agents
+xhumungus
+xkinetic
