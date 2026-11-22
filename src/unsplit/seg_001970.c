@@ -63,7 +63,23 @@ extern sceVu0FVECTOR* D_002A3F48;
 s32 func_001F0EF0(s32);
 void func_001F1ED8(s32, s32, s32, s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00101970);
+void func_00101970(s32 a0, s32* a1, s32 a2) {
+    s32* q = a1 + 4;
+    q[3] = 0;
+    q[2] = 0;
+    a1[3] = 0;
+    a1[2] = 0;
+    if (a0 == 0) {
+        a1[0] = 0x30000002;
+        a1[1] = (s32)D_002A4160;
+        q[0] = 4;
+    } else {
+        a1[0] = 0x30000002;
+        a1[1] = (s32)D_002A4180;
+        q[0] = 8;
+    }
+    a1[5] = a2;
+}
 
 s32 func_001019C8(u8* t) {
     iFlushCache(0);
@@ -124,7 +140,18 @@ void func_00102950(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102970);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102CC8);
+void func_00102CC8(s32* a0, s32* a1, s32* a2, s32* a3) {
+    s32 a = D_002BC0A0;
+    s32 b = D_002BC090;
+    s32 c = D_002BC0A4;
+    s32 d = D_002BC094;
+    s32 x = (b + a) << 4;
+    s32 y = (d + c) << 4;
+    *a0 = x - 0x1000;
+    *a1 = x + 0x1000;
+    *a2 = y - 0xC00;
+    *a3 = y + 0xC00;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102D20);
 
@@ -320,7 +347,14 @@ s32 func_00105AD0(s32 arg0, s32 arg1, s32 arg2) {
     return func_0011A7F8(arg0, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105B10);
+s32 func_00105B10(s32 a0, s32 a1) {
+    Seg1970Unk14* p;
+    if (a0 == -1) {
+        p = &D_002A6238[a1];
+        return ((u32)p->unk_10 >> 22) & 1;
+    }
+    return (*(u32*)func_0011AB38(a0, a1) >> 22) & 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105B68);
 
