@@ -282,7 +282,42 @@ s32* dpd_set_shape_data(s32* p, u8* use) {
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_rsd_data);
+extern pppModelSt D_00362730[];
+
+s32* dpd_set_rsd_data(s32* p, u8* use) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s32* s;
+    s32 k;
+    s32 j;
+    OMD_H* h;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        s = (s32*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            pppModelSt* d = &D_00362730[*(s16*)s];
+
+            h = (OMD_H*)(s + 4);
+            d->omd = h;
+            d->nvert = (s16)h->vc;
+            d->nnorm = (s16)h->nc;
+            d->npoly = (s16)h->pc;
+            d->vert = (pppSVECTOR*)((u8*)h + h->va);
+            d->norm = (pppSVECTOR*)((u8*)h + h->na);
+            d->nPacketSize = s[2];
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
 
 extern pppVsfSt D_00363D30[];
 
