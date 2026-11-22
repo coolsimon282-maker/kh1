@@ -137,7 +137,28 @@ s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRI
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121200);
+void func_00121200(f32* y, s32 n, f32* out) {
+    f32 h[32];
+    f32 t;
+    s32 i;
+
+    out[0] = out[n - 1] = 0.0f;
+    for (i = 0; i < n - 1; i++) {
+        h[i + 1] = y[i + 1] - y[i];
+    }
+    out[1] = h[2] - h[1] - out[0];
+    h[1] = 4.0f;
+    for (i = 1; i < n - 2; i++) {
+        t = 1.0f / h[i];
+        out[i + 1] = h[i + 2] - h[i + 1] - out[i] * t;
+        h[i + 1] = 4.0f - t;
+    }
+    out[n - 2] -= out[n - 1];
+    for (i = n - 2; i > 0; i--) {
+        out[i] = (out[i] - out[i + 1]) / h[i];
+    }
+}
+
 
 f32 func_00121340(f32 t, f32* a, f32* b) {
     s32 i = t;
