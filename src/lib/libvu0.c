@@ -1080,7 +1080,27 @@ static u32 init_vif_regs[8] __attribute__((aligned (16))) = {
 	0x00000000, // NOP
 };
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVpu0Reset);
+void sceVpu0Reset(void) {
+    DPUT_VIF0_MARK(0);
+    DPUT_VIF0_ERR(0);
+    DPUT_VIF0_FBRST(1); // VIF1 reset
+    __asm__ __volatile__("
+	.set noreorder
+	cfc2.ni	$8, $vi28
+	ori  	$8, $8, 0x0002
+	ctc2.ni	$8, $vi28
+	sync.p
+	.set reorder
+	":::"$8"); /* VU1 reset */
+    {
+        register u_long128 t0 asm("$2") = *(u_long128*)&(init_vif_regs[0]);
+        DPUT_VIF0_FIFO(t0);
+    }
+    {
+        register u_long128 t1 asm("$3") = *(u_long128*)&(init_vif_regs[4]);
+        *(u_long128*)VIF0_FIFO = t1;
+    }
+}
 // void sceVpu0Reset(void) {
 //     static u32 init_vif_regs[8] __attribute__((aligned (16))) = {
 // 	0x01000404, // STCYCL
