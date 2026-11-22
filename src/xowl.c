@@ -115,7 +115,40 @@ void func_00122DD8(u8* obj, sceVu0FMATRIX m) {
     sceVu0CopyVector(m[3], (f32*)(obj + 0x430));
 }
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122EC8);
+extern u32 D_002B85F8;
+extern sceVu0FVECTOR D_002C6450;
+void func_00107E10(XOwlEnt*);
+void func_00110C70(sceVu0FVECTOR);
+void func_0011EF58(s32*, s32);
+
+s32 func_00122EC8(void) {
+    XOwlEnt* e;
+    s32 i;
+
+    func_0011EF58(&D_004FA670, 0);
+    D_002C6450[3] = 1.0f;
+    D_002C6450[2] = 1.0f;
+    D_002C6450[1] = 1.0f;
+    D_002C6450[0] = 1.0f;
+    D_002B85F8 &= ~0x10;
+    e = D_002C5C80;
+    for (i = 30; i >= 0; i--, e++) {
+        if (!(e->unk_04 & 0x12)) {
+            if (e->unk_00 != 1) {
+                if (e->unk_00 == 3) {
+                    func_00107E10(e);
+                    D_002B85F8 |= 0x10;
+                }
+            } else {
+                sceVu0MulVector(D_002C6450, D_002C6450, (f32*)((u8*)e + 0x30));
+            }
+        }
+    }
+    D_002C6450[3] = 1.0f;
+    func_00110C70(D_002C6450);
+    return 0;
+}
+
 
 void func_00122FF0(void) {
     func_0011EDD0(&D_004FA670, &D_004FA680, 0x50, 8);
