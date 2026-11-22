@@ -24,6 +24,17 @@ versions:
     nonmatchings: "asm/nonmatchings"
     map: "build/fm/SLPS_251.98.map"
     elf: "build/fm/SLPS_251.98.elf"
+- name: eu
+  fullname: Kingdom Hearts (Europe)
+  sha1: 24a8b87207dd59bdcb76fa56f034224519e985f4
+  paths:
+    build_dir: "build/eu"
+    target: "SCES_509.67"
+    compiled_target: "build/eu/SCES_509.67.rom"
+    asm: "asm"
+    nonmatchings: "asm/nonmatchings"
+    map: "build/eu/SCES_509.67.map"
+    elf: "build/eu/SCES_509.67.elf"
 tools:
   decompme:
     preset: 108

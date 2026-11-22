@@ -21,6 +21,7 @@ TOOLS_DIR = ROOT / "tools"
 VERSIONS = {
     "jp": ("SLPS_251.05", "Original Japanese"),
     "fm": ("SLPS_251.98", "Final Mix"),
+    "eu": ("SCES_509.67", "European"),
 }
 
 CROSS = "mips-linux-gnu-"
@@ -31,18 +32,54 @@ GAME_CC_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.96"
 LIB_CC_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.9-991111/bin"
 COMMON_COMPILE_FLAGS = "-O2 -G0 $g"
 
-GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_INCLUDES} {COMMON_COMPILE_FLAGS} $in"
+# $verdef is -DVERSION_JP / -DVERSION_FM / -DVERSION_EU (set per configured version in build_stuff)
+# $cflags: per-file extra compiler flags (src/ppp/ was built without strict aliasing)
+GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS} $cflags $in"
 
 GAME_AS_CMD = f"{GAME_CC_DIR}/ee/bin/as {COMMON_COMPILE_FLAGS} -EL -mabi=eabi"
-GAME_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
+# pipefail: without it a C compile error is hidden by the pipe and a half-written .s gets assembled
+# $maspsenv: MASPS2_NO_NOPS=1 for Final Mix, which was assembled without masps2's hazard nops
+GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | $maspsenv {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
 
 PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_AS_CMD}"
 
-LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} {COMMON_COMPILE_FLAGS}"
+LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS}"
 
+# src/lib/libc and src/lib/libm are newlib's own source (newlib 1.8.2; rand.c and signal.c from 1.9.0), unchanged.
+# Sony built them with the game compiler (ee-gcc 2.96), not the 991111 one, and libm in IEEE-only mode.
+# The headers are newlib 1.8.2's (include/newlib, include/newlib-private).
+NEWLIB_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -D_IEEE_LIBM -Iinclude/newlib -Iinclude/newlib-private -isystem include/gcc -idirafter include/gcc-991111"
+# src/lib/libgcc: gcc 2.95.3's libgcc2.c / config/fp-bit.c (include/libgcc-2.95.3, with small tconfig.h/tsystem.h
+# stand-ins for the EE target: 32-bit words, little-endian), also built with the game compiler; US_SOFTWARE_GOFAST
+# gives the soft-float routines the names the game calls (dpadd, fptodp, ...).
+LIBGCC_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -DIN_GCC -DIN_LIBGCC2 -DUS_SOFTWARE_GOFAST -Iinclude/libgcc-2.95.3 -Iinclude -Iinclude/libgcc-2.95.3/config -isystem include/gcc"
+
+# Files built WITH strict aliasing (agent a4, 22 Nov: their matched code compiles differently with
+# -fno-strict-aliasing). Every other game file gets -fno-strict-aliasing.
+STRICT_ALIASING_FILES = [
+    "xblade.c",
+    "xbuffalo.c",
+    "xhumungus.c",
+    "xmeowp.c",
+    "xnoodle.c",  # a5, run 6: func_0010BB50 only matches with strict aliasing; the rest of the file is unaffected
+    "xpackage.c",
+    "xsauce.c",  # a6, run 7: func_0010F0A0 needs it; the file's other functions are unaffected
+    "xpotato.c",  # added after a3's run 3: its matched functions only match with strict aliasing
+    "xtango.c",
+    "xtrumpet.c",
+    "xturtle.c",
+]
+
+# Files built without -g. With -g the assembler never fills a call's empty delay slot (around soft-float calls
+# such as dpdiv/atan); these files have them filled. (Making no -g the default broke the build in xbeginning,
+# 22 Nov 01:40, so files are added one by one, each when a matched function shows it.)
 NO_G_FILES = [
     "xblade.c",
     "gumi.c",
+    "pppKeMvYpEff.c",  # a2: its C matches only without -g
+    "draw.c",          # a4: func_001AADC8 (atan2) matches only without -g
+    "pppKeTh.c",       # a5: pppKeThCalc (soft-double calls; as -g leaves their delay slots empty)
+    "xnoodle.c",       # a5: func_0010C010 (a .loc stops gas filling a delay slot after a volatile store)
 ]
 
 
@@ -166,6 +203,8 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             )
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
+    ninja.variable("verdef", f"-DVERSION_{paths.version.upper()}")
+    ninja.variable("maspsenv", "MASPS2_NO_NOPS=1" if paths.version == "fm" else "")
 
     # Rules
     ld_args = " ".join(
@@ -212,6 +251,18 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
     )
 
     ninja.rule(
+        "libgcccc",
+        description="cc $in",
+        command=f"{LIBGCC_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
+    )
+
+    ninja.rule(
+        "newlibcc",
+        description="cc $in",
+        command=f"{NEWLIB_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
+    )
+
+    ninja.rule(
         "ld",
         description="link $out",
         command=f"{CROSS}ld {ld_args}",
@@ -250,20 +301,24 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             build(entry.object_path, entry.src_paths, rule, implicit=implicit)
         elif isinstance(seg, splat.segtypes.common.c.CommonSegC):
             implicit = asm_dependencies(paths, entry.src_paths[0])
-            if any(
+            if str(entry.src_paths[0]).startswith("src/lib/libgcc/"):
+                build(entry.object_path, entry.src_paths, "libgcccc", implicit=implicit)
+            elif str(entry.src_paths[0]).startswith(("src/lib/libc/", "src/lib/libm/")):
+                build(entry.object_path, entry.src_paths, "newlibcc", implicit=implicit)
+            elif any(
                 str(src_path).startswith("src/lib/") for src_path in entry.src_paths
             ):
                 build(entry.object_path, entry.src_paths, "libcc", implicit=implicit)
             else:
-                if entry.src_paths[0].name in NO_G_FILES:
-                    g = ""
-                else:
-                    g = "-g"
+                g = "" if entry.src_paths[0].name in NO_G_FILES else "-g"
+                # Most of the game was built without strict aliasing (values are reloaded after stores of other
+                # types); these files were built with it (matched code changes if the flag is added).
+                cflags = "" if entry.src_paths[0].name in STRICT_ALIASING_FILES else "-fno-strict-aliasing"
                 build(
                     entry.object_path,
                     entry.src_paths,
                     "cc",
-                    variables={"g": g},
+                    variables={"g": g, "cflags": cflags},
                     implicit=implicit,
                 )
         elif isinstance(seg, splat.segtypes.common.databin.CommonSegDatabin):
