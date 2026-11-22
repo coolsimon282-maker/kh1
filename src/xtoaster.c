@@ -402,4 +402,23 @@ void fm_func_001249D8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124DD0);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124F38);
+s32 func_00123B50(void);
+void func_001372A0(void);
+void func_00138738(void);
+s32 func_0011ED60(s32 (*func)(void));
+
+void func_00124F38(void) {
+    s32 i;
+    for (i = 0; i < 96; i++) {
+        (&D_002C64A0[0].unk_374)[i * (sizeof(XToaster) / 4)] = 0;
+    }
+    D_002E26AC = D_002C64A0;
+    for (i = 0; i < 3; i++) {
+        XT_SLOTS[i] = NULL;
+    }
+    func_001372A0();
+    func_00138738();
+    if (!func_0011ED60(func_00123B50)) {
+        func_0011ED30(163001, func_00123B50);
+    }
+}
