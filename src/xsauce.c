@@ -247,7 +247,34 @@ void func_0010CF18(XSauce* p, XSauceKeys* k) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D010);
+void func_0010D010(XSauce* p, XSauceKeys* k) {
+    s32 lines[32];
+    s32 i;
+    s32 n;
+    s32 start;
+    s32 end;
+    s32 off;
+    s32 j;
+    n = 0;
+    for (i = 0; i < k->unk_00 - 1; i++) {
+        if (k->unk_10[i].unk_06 != k->unk_10[i + 1].unk_06) {
+            lines[n++] = i;
+        }
+    }
+    lines[n++] = k->unk_00 - 1;
+    if (n - 2 >= 2) {
+        start = lines[n - 3] + 1;
+        for (i = n - 2; i < n; i++) {
+            end = lines[i];
+            off = p->unk_0C + (p->unk_0C - p->unk_08) - ((XSauceKey*)k)[end + 1].unk_08 - p->unk_08;
+            for (j = start; j < end + 1; j++) {
+                ((XSauceKey*)k)[j + 1].unk_04 += off;
+            }
+            start = end + 1;
+        }
+    }
+}
+
 
 s32 func_0010D130(char* s) {
     s32 n = 0;
