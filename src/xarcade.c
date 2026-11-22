@@ -248,7 +248,35 @@ void* func_00109DE8(void) {
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109E30);
 s32 func_00109E30();
 
+#ifdef VERSION_FM
+extern f32 D_0049517C;
+extern f32 D_002B8344;
+void func_00106790(s32);
+
+s32 func_00109F60(void) {
+    switch (D_0048EC00.unk_00) {
+    case 0:
+        func_00106790(0x20);
+        D_0048EC00.unk_00++;
+        D_0049517C = 64.0f;
+    case 1:
+        break;
+    default:
+        return 0;
+    }
+    if (!(D_0049517C <= 0.0f)) {
+        func_00109C98();
+        D_002B2BB8 = 0x180808080;
+        func_00106948(&D_002B2C00);
+        D_0049517C -= D_002B8344;
+        return 0;
+    }
+    D_002B2CC4 = 0;
+    return 4;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109F60);
+#endif
 s32 func_00109F60();
 
 void* func_0010A040(void) {
