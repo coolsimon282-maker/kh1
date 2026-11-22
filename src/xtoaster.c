@@ -25,9 +25,12 @@ typedef struct XToaster148 {
     /* 0x090 */ s32 unk_090;
     /* 0x094 */ char unk_094[0x4C];
     /* 0x0E0 */ f32 unk_0E0;
-    /* 0x0E4 */ char unk_0E4[0x7C];
+    /* 0x0E4 */ char unk_0E4[0x70];
+    /* 0x154 */ s32 unk_154;
+    /* 0x158 */ char unk_158[0x8];
     /* 0x160 */ sceVu0FVECTOR unk_160;
-} XToaster148;
+    /* 0x170 */ char unk_170[0x10];
+} XToaster148; /* size = 0x180 */
 
 typedef struct XToaster {
     /* 0x000 */ s32 unk_000;
@@ -39,7 +42,9 @@ typedef struct XToaster {
     /* 0x030 */ sceVu0FVECTOR unk_030;
     /* 0x040 */ sceVu0FVECTOR unk_040;
     /* 0x050 */ sceVu0FVECTOR unk_050;
-    /* 0x060 */ char unk_060[0x14];
+    /* 0x060 */ char unk_060[0xC];
+    /* 0x06C */ u8* unk_06C;
+    /* 0x070 */ char unk_070[0x4];
     /* 0x074 */ struct XToaster* unk_074;
     /* 0x078 */ s32 unk_078;
     /* 0x07C */ char unk_07C[0x4];
@@ -66,7 +71,8 @@ typedef struct XToaster {
     /* 0x154 */ s32 unk_154;
     /* 0x158 */ char unk_158[0x8];
     /* 0x160 */ u64 unk_160;
-    /* 0x168 */ char unk_168[0x68];
+    /* 0x168 */ char unk_168[0x64];
+    /* 0x1CC */ s32 unk_1CC;
     /* 0x1D0 */ s32 unk_1D0;
     /* 0x1D4 */ char unk_1D4[0xB0];
     /* 0x284 */ f32 unk_284;
@@ -586,7 +592,49 @@ void func_00123ED0(s32 arg0, sceVu0FVECTOR arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123F00);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124108);
+s32 func_001499A0(void);
+s32 func_0013C2A8(s32);
+void func_00141E68(XToaster*);
+void func_00153D88(XToaster*);
+void func_00241C60(XToaster*, s32);
+s32* func_00157818(XToaster*, s32);
+extern XToaster148 D_004F71D0[];
+extern s32 D_002B8678;
+extern s32 D_002B8680;
+extern s32 D_002B8684;
+
+void func_00124108(XToaster* p) {
+    s32 n;
+    s32 k;
+    XToaster** slots;
+    XToaster148* e;
+
+    p->unk_14C = func_001499A0();
+    n = func_0013C2A8(p->unk_130->unk_4C);
+    k = n;
+    if ((u32)n < 3 && p->unk_006 == 3) {
+        if (n > 0) {
+            slots = XT_SLOTS;
+            k = slots[1] == NULL ? 1 : 2;
+        }
+        XT_SLOTS[k] = p;
+        e = &D_004F71D0[k];
+        p->unk_148 = e;
+        e->unk_154 = 0;
+        p->unk_1CC = 1;
+        XT_FLAGS(p) = (XT_FLAGS(p) & ~0x6000000000) | 0x2000000000;
+        p->unk_06C[0xBD] = k;
+        func_00141E68(p);
+        func_00153D88(p);
+        *(u16*)((u8*)D_003010F8 + 0x83E) |= 1 << p->unk_130->unk_4C;
+        func_001358B8(p, 0xC);
+        func_00241C60(p, n);
+        if ((D_002B8678 == 0x10 && D_002B8680 == 0x25 && D_002B8684 == 0xD && p->unk_130->unk_4C == 2) ||
+            (D_002B8678 == 0x10 && D_002B8680 == 0x26 && D_002B8684 == 0xD && p->unk_130->unk_4C == 1)) {
+            func_00157818(p, 0)[4] = 0x3000;
+        }
+    }
+}
 
 s32 func_0012B888(s32);
 void func_0012BA30(s32, void*, s32);
