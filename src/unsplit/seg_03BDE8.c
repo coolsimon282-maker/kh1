@@ -4519,7 +4519,17 @@ s32 func_00177440(f32* p, f32* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177488);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177608);
+s32 func_00177608(f32* a0, f32* a1, f32* a2) {
+    Seg3BDE8Loc40 b;
+    sceVu0SubVector(b.w, a2, a1);
+    sceVu0CopyVector(b.v, a1);
+    func_00118D78(&b);
+    if (b.h30 != -1) {
+        sceVu0CopyVector(a0, b.x);
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177680);
 
