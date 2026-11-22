@@ -553,7 +553,86 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EF00);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F0A0);
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ void (*unk_08)(s32);
+} XSauceMenu;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XSaucePos;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x8];
+    /* 0x08 */ u64 unk_08;
+    /* 0x10 */ u64 unk_10;
+} XSaucePad;
+
+extern XSaucePad D_002C5AD0;
+extern s32 D_002BBBA0;
+extern s32 D_004D5AF8;
+void func_00121D50(s32);
+void func_0011D598(s32);
+
+s32 func_0010F1C8(XSauceMenu* m, void* c) {
+    s32 lim;
+    XSaucePad* pad;
+    XSaucePad* pad2;
+    XSaucePos* pos;
+
+    pad = &D_002C5AD0;
+    if (pad->unk_10 & 0x10100010) {
+        lim = m->unk_00;
+        if (--D_004D5AF8 < lim) {
+            if (pad->unk_08 & 0x10100010) {
+                D_004D5AF8 = m->unk_04;
+                func_0011D598(1);
+            } else {
+                D_004D5AF8++;
+            }
+        } else {
+            func_0011D598(1);
+        }
+    } else if (pad->unk_10 & 0x40400040) {
+        lim = m->unk_04;
+        if (++D_004D5AF8 > lim) {
+            if (pad->unk_08 & 0x40400040) {
+                D_004D5AF8 = m->unk_00;
+                func_0011D598(1);
+            } else {
+                D_004D5AF8--;
+            }
+        } else {
+            func_0011D598(1);
+        }
+    }
+    /* a second pointer to the pad, set inside the if, gives the target's registers */
+    if (D_002BBBA0 == 0) {
+        pad2 = &D_002C5AD0;
+        if ((s32)pad2->unk_08 & 0x4000) {
+            if (D_004D5AF8 != m->unk_04) {
+                func_0011D598(3);
+            }
+            D_004D5AF8 = m->unk_04;
+        }
+    }
+    pos = (XSaucePos*)(D_004D5AF8 * 8 + D_004CF574);
+    func_0010EF00(pos->unk_00, pos->unk_04, c);
+    if (D_002C2108 & 1) {
+        func_0011D598(2);
+        m->unk_08(D_004D5AF8 + 1);
+        func_00121D50(D_004CF574);
+        D_004CF574 = 0;
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F1C8);
+#endif
 
 void func_0010F380(void) {
     if (D_004CF574 != 0) {
