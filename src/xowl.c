@@ -46,23 +46,22 @@ s32 func_00122828(XHoot* arg0) {
     return uVar1;
 }
 
-// Nonmatch: Preprocessor is adding nops unintentionally
-INCLUDE_ASM("asm/nonmatchings/xowl", func_001228C8);
-// void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
-//     XHoot* pvVar1;
+void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
+    XHoot* pvVar1;
 
-//     if (0.0f >= arg0) {
-//         sceVu0CopyVector(arg1[3], arg2);
-//     } else {
-//         pvVar1 = func_0011EEB8(&D_004FA670, 0, func_00122828);
-//         pvVar1->unk_10 = arg1;
-//         pvVar1->unk_44 = arg0;
-//         pvVar1->unk_40 = arg0;
-//         pvVar1->unk_48 = arg3;
-//         sceVu0CopyVector(pvVar1->unk_20, arg1[3]);
-//         sceVu0CopyVector(pvVar1->unk_30, arg2);
-//     }
-// }
+    if (0.0f >= arg0) {
+        sceVu0CopyVector(arg1[3], arg2);
+    } else {
+        pvVar1 = func_0011EEB8(&D_004FA670, 0, func_00122828);
+        pvVar1->unk_10 = arg1;
+        pvVar1->unk_44 = arg0;
+        pvVar1->unk_40 = arg0;
+        pvVar1->unk_48 = arg3;
+        sceVu0CopyVector(pvVar1->unk_20, arg1[3]);
+        sceVu0CopyVector(pvVar1->unk_30, arg2);
+    }
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122988);
 
