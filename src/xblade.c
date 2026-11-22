@@ -1160,7 +1160,22 @@ void func_00114800(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114818);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001149B0);
+// Two 4x4 matrices per entry (copied as words), [2 buffers][64 entries]; D_004DBC20 holds a header 8 bytes before.
+extern s32 D_00351BD0;
+extern s32 D_004DBC28[][64][36];
+extern s32 D_002BC170[4][4];
+
+void func_001149B0(s32 idx, s32 src[4][4]) {
+    s32 i, j, k = 0;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            D_004DBC28[D_00351BD0][idx][k] = src[i][j];
+            D_004DBC28[D_00351BD0][idx][k + 16] = D_002BC170[i][j];
+            k++;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114A50);
 
