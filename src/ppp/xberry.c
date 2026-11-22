@@ -151,7 +151,81 @@ void KeLnsClm_Init(KeLnsClm* p) {
     p->shp = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A8060);
+typedef struct {
+    /* 0x0 */ KeLnsLp* lp;
+    /* 0x4 */ pppShapeSt* shp;
+    /* 0x8 */ KeLnsFlr flr;
+} KeLnsShp;
+
+typedef struct {
+    /* 0x00 */ KeLnsShp* shp;
+    /* 0x04 */ s32 col;
+    /* 0x08 */ f32 (*mat)[4];
+    /* 0x0C */ f32 scale;
+    /* 0x10 */ f32* scl;
+} KeLnsShpArg;
+
+// KeLnsShpDraw as filled here
+typedef struct {
+    /* 0x00 */ pppShapeSt* shp;
+    /* 0x04 */ KeLnsFlr* flr;
+    /* 0x08 */ u8 unk_08[8];
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ u8 col[4];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ f32 (*mat)[4];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ u8 unk_30[0x10];
+} KeLnsShpPrm;
+
+// draws a flare shape at the lens position, scaled, with its alpha scaled by the lens power
+void func_001A8060(KeLnsShpArg* arg, s32 arg1) {
+    sceVu0FMATRIX m;
+    KeLnsShpPrm prm;
+    KeLnsShp* shp = arg->shp;
+    KeLnsLp* lp = shp->lp;
+    f32 s;
+
+    if (lp == (KeLnsLp*)&ppvDbgTemp) {
+        return;
+    }
+    if (shp->shp == NULL) {
+        return;
+    }
+    if (lp->vPow == 0.0f) {
+        return;
+    }
+    if (lp->md) {
+        sceVu0CopyMatrix(m, lp->mat);
+    } else {
+        sceVu0UnitMatrix(m);
+        m[3][0] = ppvWorldMatrix[3][0] + lp->lcPos[0];
+        m[3][1] = ppvWorldMatrix[3][1] + lp->lcPos[1];
+        m[3][2] = ppvWorldMatrix[3][2] + lp->lcPos[2];
+    }
+    s = arg->scale;
+    m[0][0] *= s;
+    m[1][1] *= s;
+    sceVu0ScaleVector(m[0], m[0], arg->scl[0]);
+    sceVu0ScaleVector(m[1], m[1], arg->scl[1]);
+    sceVu0ScaleVector(m[2], m[2], arg->scl[2]);
+    sceVu0MulMatrix(m, arg->mat, m);
+    *(s32*)prm.col = arg->col;
+    prm.col[3] = prm.col[3] * lp->vPow;
+    prm.shp = shp->shp;
+    prm.flr = &shp->flr;
+    func_001A75C8((KeLnsFlrRef*)&prm);
+    prm.unk_12 = arg1;
+    prm.mat = m;
+    prm.unk_2C = 0;
+    prm.unk_18 = 0;
+    prm.unk_1C = 0;
+    func_001A7668((KeLnsShpDraw*)&prm);
+}
 
 void KeLnsArnd_Init(KeLnsArnd* p) {
     p->shp = NULL;
