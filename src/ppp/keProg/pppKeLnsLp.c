@@ -8,7 +8,43 @@ typedef struct {
     /* 0xD */ u8 md;
 } PKeLnsLp;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLp", pppKeLnsLpDraw);
+typedef struct {
+    /* 0x0 */ KeLnsLp* lp;
+    /* 0x4 */ f32* pos;
+    /* 0x8 */ sceVu0FMATRIX* world;
+    /* 0xC */ sceVu0FMATRIX* screen;
+} KeLnsLpDrawSt;
+
+void func_001AB0F0(void* dst, void* src);
+void func_001A76E8(KeLnsLpDrawSt* st);
+
+void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLp* p, pppCtrlTable* ctbl) {
+    sceVu0FVECTOR v;
+    KeLnsLpDrawSt st;
+    KeLnsLp* lp = (KeLnsLp*)&pobj->val[ctbl->useVal[0]];
+
+    if (p->cdt.time == pobj->time) {
+        lp->pow += p->pow;
+        lp->r = p->r;
+        lp->lVec[3] += p->lWid;
+        lp->md = p->md;
+    }
+    if (lp->md) {
+        *(u_long128*)v = 0;
+        v[2] = 1.0f;
+        v[3] = 1.0f;
+        sceVu0ApplyMatrix(v, ppvPObj.next->cmat, v);
+        func_001AB0F0(lp->lVec, v);
+    }
+    lp->lcPos[0] = ppvPObj.next->cmat[3][0];
+    lp->lcPos[1] = ppvPObj.next->cmat[3][1];
+    lp->lcPos[2] = ppvPObj.next->cmat[3][2];
+    st.world = &ppvWorldMatrix;
+    st.screen = &ppvScreenMatrix;
+    st.lp = lp;
+    st.pos = ppvPObj.next->cmat[3];
+    func_001A76E8(&st);
+}
 
 void pppKeLnsLpCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsLp* lp = (KeLnsLp*)&pobj->val[ctbl->useVal[0]];
