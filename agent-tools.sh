@@ -8,8 +8,33 @@
 #   asm <file> <func>        the function's assembly
 #   m2c <file> <func>        a first draft of C for it (m2c, with the file's types as context)
 #   diff <func> [lines]      build, then compare the function with the original (default 120 lines)
+#   near <file> <func> [n]   the n lines (default 30) before and after the function in src/<file>.c
+#   put <file> <func> <cfile>  replace the function's INCLUDE_ASM line in src/<file>.c with the C in <cfile>
+#                            (so big files like xhumungus.c never need opening; <cfile> e.g. qwen/work.c)
 cd "$(dirname "$0")"
 case "$1" in
+  near)
+    n="${4:-30}"
+    l=$(grep -n "INCLUDE_ASM(\"[^\"]*\", $3);" "src/$2.c" | head -1 | cut -d: -f1)
+    [ -z "$l" ] && l=$(grep -nE "^[^;#]*\b$3\s*\(" "src/$2.c" | head -1 | cut -d: -f1)
+    [ -z "$l" ] && { echo "$3 not found in src/$2.c"; exit 1; }
+    s=$((l > n ? l - n : 1)); sed -n "${s},$((l + n))p" "src/$2.c" ;;
+  put)
+    [ -f "$4" ] || { echo "no file $4"; exit 1; }
+    python3 - "$2" "$3" "$4" <<'PY'
+import re, sys
+f, fn, cfile = 'src/%s.c' % sys.argv[1], sys.argv[2], sys.argv[3]
+s = open(f, encoding='utf-8').read()
+pat = re.compile(r'^INCLUDE_ASM\("[^"]+",\s*%s\);$' % re.escape(fn), re.M)
+hits = pat.findall(s)
+if len(hits) != 1:
+    sys.exit('expected exactly one INCLUDE_ASM line for %s in %s, found %d' % (fn, f, len(hits)))
+c = open(cfile, encoding='utf-8').read().replace('\r\n', '\n').rstrip('\n')
+s = pat.sub(lambda m: c, s, count=1)
+open(f, 'w', encoding='utf-8', newline='\n').write(s)
+print('replaced the INCLUDE_ASM line for %s in %s with %s (%d lines)' % (fn, f, cfile, c.count('\n') + 1))
+PY
+    ;;
   configure)
     bash wsl-build.sh python3 configure.py -c -v fm 2>&1 | grep -iE 'error|duplicate' ; bash wsl-build.sh ninja 2>&1 | tail -1 ;;
   build)

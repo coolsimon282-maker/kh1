@@ -34,6 +34,8 @@ wsl -e bash ./agent-tools.sh list xhumungus                # functions left in t
 wsl -e bash ./agent-tools.sh asm xhumungus func_001D5E48   # its assembly
 wsl -e bash ./agent-tools.sh m2c xhumungus func_001D5E48   # a first draft of C
 wsl -e bash ./agent-tools.sh diff func_001D5E48 60         # original (left) vs yours (right), 60 lines
+wsl -e bash ./agent-tools.sh near xhumungus func_001D5E48  # the 30 lines around it (its neighbours, for style)
+wsl -e bash ./agent-tools.sh put xhumungus func_001D5E48 qwen/work.c   # put your C (in qwen/work.c) in place
 git diff --stat                                            # before committing: only your one file
 git add src/xhumungus.c
 git commit -m "Match func_001D5E48 (xhumungus)"
@@ -46,10 +48,13 @@ once (about a minute).
 
 1. `list` the file; take the smallest function not in your notes' give-up list. Skip functions full of VU0
    instructions (`vadd`, `vmul`, `qmtc2`, `vcallms`, `sqc2`).
-2. `asm` it, then `m2c` it.
-3. Replace its `INCLUDE_ASM("...", name);` line with your C. Use the file's existing types, overlay structs and
-   prototypes (look at how nearby matched functions are written; xhumungus has many very similar ones). Put any
-   new prototype near the top of the file.
+2. `asm` it, `m2c` it, and `near` it (shows how the matched functions around it are written; xhumungus has many
+   very similar ones). To find a type or overlay struct, search for its name (grep), don't open the file.
+3. **Never open src/xhumungus.c with the read tool** (117 KB: half your memory, and every step then takes
+   minutes). Write your C function (plus any prototype it needs, just above it) into the small file
+   `qwen/work.c` (create or overwrite it), then `put xhumungus <func> qwen/work.c`, which replaces that one
+   INCLUDE_ASM line. To try again after a failed build: `git checkout -- src/xhumungus.c`, fix qwen/work.c, `put`
+   again. (xkinetic.c is small: you may edit it directly.)
 4. `build`. OK: go to 6. Compile error: fix. FAILED: `diff` and adjust (table below and MATCHING.md).
 5. After about 6 failed builds: `git checkout -- src/<file>.c`, add a line to `notes/q1.md` (function, what it
    does, your closest C, what still differs), and take the next function.
