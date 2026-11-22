@@ -7,7 +7,8 @@ whole files at once (your context is 64k tokens). The owner is learning: explain
 ## Where you work
 
 * Your checkout: `C:\Users\you\psp-learning\kh1-study\kh1-wt\q1` (branch `fm-q1`). Work only here.
-* **Your files: `src/xhumungus.c` and `src/xkinetic.c`.** Don't edit any other file except your notes file
+* **Your file: the one `qwen/TASK.md` names** (from 22 Nov: `src/unsplit/seg_132D60.c`, its tiny functions;
+  xhumungus/xkinetic are paused). Don't edit any other file except your notes file
   `notes/q1.md`. Never edit `include/`, `config/`, `configure.py`, `tools/`, `eu-notes/`.
 * Useful notes from earlier agents (read when you start a file): `notes/a1.md` (xhumungus: the Script stack,
   overlay structs, patterns) and `notes/a6.md` (xkinetic: the `ScriptVM` overlay).
@@ -23,7 +24,9 @@ take the next ones up.
    `rebase`).
 2. One function per commit, and only after a build whose last line is exactly
    `build/fm/SLPS_251.98.rom: OK`.
-3. Never leave the build broken. Giving up on a function: `git checkout -- src/<file>.c`.
+3. Never leave the build broken. Giving up on a function: `git checkout -- src/<file>.c` — straight away, before
+   anything else. Only ONE function may be uncommitted at a time: if `put` or `build` prints a WARNING/NOTE about
+   other uncommitted functions, run that git checkout first, or no build can pass.
 4. Keep Linux line endings and keep all `#ifdef VERSION_FM` / `#ifndef VERSION_FM` markers.
 
 ## Commands (PowerShell; run them from the checkout folder; builds take 10-60 s)
