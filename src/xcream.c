@@ -13,7 +13,19 @@ s32 func_001274C0(XCream* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_001274F8);
+void func_00121EB0(void*);
+
+s32 func_001274F8(XCream* arg0) {
+    sceDmaChan* d = sceDmaGetChan(SCE_DMA_VIF1);
+
+    d->chcr.DIR = 1;
+    d->chcr.MOD = 1;
+    d->chcr.ASP = 0;
+    d->chcr.TTE = 0;
+    sceDmaSend(d, arg0->unk_10);
+    func_00121EB0(arg0->unk_10);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00127560);
 
@@ -45,14 +57,24 @@ INCLUDE_ASM("asm/nonmatchings/xcream", func_00128780);
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00128B68);
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00128CA8);
-
 typedef struct {
     /* 0x0 */ s32 unk_0;
     /* 0x4 */ s32 unk_4;
 } XCreamUnk8CA8;
 
-s32 func_00128CA8(XCreamUnk8CA8* arg0, s32 arg1);
+extern u8* D_00514F10;
+
+s32 func_0012B930(u8*, s32);
+void func_0012BA30(s32, XCreamUnk8CA8*, s32);
+
+s32 func_00128CA8(XCreamUnk8CA8* arg0, s32 arg1) {
+    s32 r = func_0012B930(D_00514F10, *(s32*)(D_00514F10 + 4) + arg1 * 2);
+
+    if (arg0->unk_0 != 0) {
+        func_0012BA30(r, arg0, 4);
+    }
+    return r;
+}
 
 void func_00128D10(XCreamUnk8CA8* arg0) {
     arg0->unk_0 = func_00128CA8(arg0, arg0->unk_4);

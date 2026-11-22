@@ -3,6 +3,14 @@
 
 XWhiskey* D_00663A28[8];
 
+#ifdef VERSION_FM
+// FM's code reads this table at 0x669A18 (FM's linker puts the definition above somewhere else).
+extern XWhiskey* D_00669A18[8];
+#define XPACKAGE_TABLE D_00669A18
+#else
+#define XPACKAGE_TABLE D_00663A28
+#endif
+
 void func_00247778(s32 arg0, XWhiskey* arg1) {
     if (arg0 > 0) {
         while (arg0 != 0) {
@@ -166,9 +174,36 @@ s32 func_00247D18(u8* arg0) {
 void func_00247D88(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D90);
+void func_00247D90(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247DC8);
+    for (i = 7; i >= 0; i--) {
+        XPACKAGE_TABLE[i] = NULL;
+    }
+}
+
+extern s32 D_0046A038;
+extern s32 D_0046A03C;
+extern s32 D_0046A040;
+extern s32 D_0046A044;
+extern s32 D_0046A048;
+
+void func_00247DC8(s32 idx, s32 arg1, s32 arg2, s32 arg3) {
+    XWhiskey* p = XPACKAGE_TABLE[idx];
+    s32 old40, old48, new40, new48;
+
+    old40 = D_0046A040;
+    old48 = D_0046A048;
+    D_0046A03C = p->unk_0C;
+    new40 = p->unk_10;
+    D_0046A044 = p->unk_14;
+    new48 = p->unk_18;
+    D_0046A040 = new40;
+    D_0046A048 = new48;
+    func_0024AB00(arg1, arg2, arg3);
+    D_0046A040 = old40;
+    D_0046A048 = old48;
+}
 
 void func_00247E68(s32 arg0, s32 arg1, s32 arg2) {
     func_00247DC8(0, arg0, arg1, arg2);
@@ -202,7 +237,26 @@ void func_00247FB8(s32 arg0, s32 arg1, s32 arg2) {
     func_00247DC8(7, arg0, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247FE8);
+void func_0024E1D0(void);
+
+void func_00247FE8(s32 idx) {
+    s32 old40 = D_0046A040;
+    s32 old48 = D_0046A048;
+    XWhiskey* p;
+
+    if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
+        p = XPACKAGE_TABLE[idx];
+        D_0046A038 = (s32)p;
+        D_0046A03C = p->unk_0C;
+        D_0046A040 = p->unk_10;
+        D_0046A044 = p->unk_14;
+        D_0046A048 = p->unk_18;
+        p->munny++;
+        func_0024E1D0();
+        D_0046A040 = old40;
+        D_0046A048 = old48;
+    }
+}
 
 void func_002480A8(void) {
     func_00247FE8(0);
@@ -236,13 +290,12 @@ void func_00248150(void) {
     func_00247FE8(7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248168);
-// void func_00248168(s32 arg0) {
-//     if (D_00663A28[arg0]->unk_24 != 0) {
-//         free(D_00663A28[arg0]);
-//     }
-//     D_00663A28[arg0] = NULL;
-// }
+void func_00248168(s32 arg0) {
+    if (*(s32*)((u8*)XPACKAGE_TABLE[arg0] + 0x24) != 0) {
+        free(XPACKAGE_TABLE[arg0]);
+    }
+    XPACKAGE_TABLE[arg0] = NULL;
+}
 
 void func_002481B0(void) {
     func_00248168(0);
@@ -276,7 +329,21 @@ void func_00248258(void) {
     func_00248168(7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248270);
+void func_00248270(s32* arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 old40, old48, new40, new48;
+
+    old40 = D_0046A040;
+    old48 = D_0046A048;
+    D_0046A03C = arg0[3];
+    new40 = arg0[4];
+    D_0046A044 = arg0[5];
+    new48 = arg0[6];
+    D_0046A040 = new40;
+    D_0046A048 = new48;
+    func_0024AB00(arg1, arg2, arg3);
+    D_0046A040 = old40;
+    D_0046A048 = old48;
+}
 
 void func_00248300() {
     func_0024AB00();

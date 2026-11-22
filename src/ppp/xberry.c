@@ -13,9 +13,70 @@ void func_001A75B0(KeLnsFlr* flr, pppShapeSt* shp) {
     flr->seqIdx = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A75C8);
+// shape animation frames: 8-byte entries from 0x10 of the shape data; the frame count is the s16 at 0x6
+typedef struct {
+    /* 0x0 */ s16 unk_0;
+    /* 0x2 */ s16 time;
+    /* 0x4 */ s8 flag; // 0x80: loop back to the first frame
+    /* 0x5 */ u8 unk_5[3];
+} KeLnsSeq; // size = 0x8
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A7668);
+typedef struct {
+    /* 0x0 */ pppShapeSt* shp;
+    /* 0x4 */ KeLnsFlr* flr;
+} KeLnsFlrRef;
+
+// steps the shape animation by 0x200
+void func_001A75C8(KeLnsFlrRef* p) {
+    KeLnsFlr* flr = p->flr;
+    KeLnsSeq* seq = (KeLnsSeq*)(p->shp->shape + 1) + flr->seqIdx;
+
+    flr->cnt += 0x200;
+    if (flr->cnt >= seq->time) {
+        flr->cnt -= seq->time;
+        flr->seqIdx++;
+        if (flr->seqIdx >= ((s16*)p->shp->shape)[3]) {
+            if (seq->flag & 0x80) {
+                flr->seqIdx = 0;
+                flr->cnt = 0;
+            } else {
+                flr->cnt = 0;
+                flr->seqIdx--;
+            }
+        }
+    }
+}
+
+typedef struct {
+    /* 0x00 */ pppShapeSt* shp;
+    /* 0x04 */ KeLnsFlr* flr;
+    /* 0x08 */ u8 unk_08[8];
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ s16 unk_1E;
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ u8 unk_28;
+} KeLnsShpDraw;
+
+extern s32 D_00616224;
+
+s32 func_001BA340(void*, void*, s32);
+
+// sets up the draw of the current shape frame (func_001BA340 is in ppp/draw/md0)
+void func_001A7668(KeLnsShpDraw* p) {
+    KeLnsSeq* seq = (KeLnsSeq*)(p->shp->shape + 1) + p->flr->seqIdx;
+
+    p->unk_18 = 0;
+    p->unk_28 = 0;
+    p->unk_24 = D_00616224;
+    p->unk_12 |= 0x30;
+    p->unk_1C = 0x12;
+    D_00616224 = func_001BA340((u8*)p->shp->shape + seq->unk_0, &p->unk_10, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A76E8);
 

@@ -2,4 +2,8 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandDownIV", pppRandDownIVCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandDownIV", func_00189F20);
+s8 func_00189F20(s8 a, f32 b) {
+    f32 f = a;
+
+    return f * b - f;
+}

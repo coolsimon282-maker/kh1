@@ -41,7 +41,25 @@ s32* func_001C1868(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1970);
+extern s32 D_0037A170;
+extern s32 D_006257D4;
+
+void func_001C1888(void);
+
+s32 func_001C1970(s32 arg0) {
+    s32 p;
+
+    p = arg0 + 0x16BC00;
+    D_0037A16C = (XBuffaloUnk1868*)p;
+    p = arg0 + 0x170700;
+    D_0037A170 = p;
+    D_003759C4 = 0;
+    D_003759C8 = 15;
+    D_006257D4 = arg0;
+    p = arg0 + 0x171388;
+    func_001C1888();
+    return p;
+}
 
 #ifdef VERSION_FM
 s32 func_001C19E8(void) {
@@ -53,7 +71,24 @@ s32 func_001C19E8(void) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C19F8);
+s32 func_001C19F8(s32 arg0) {
+    s32 i;
+
+    if (arg0 == 0) {
+        for (i = 1; i < 16; i++) {
+            if (D_0037A16C[i].unk_00 == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    for (i = 0; i < 0x180; i++) {
+        if (D_0037A16C[i + 16].unk_00 == 0) {
+            return i + 16;
+        }
+    }
+    return -1;
+}
 
 u16 func_001C1A90(s32 arg0) {
     if (arg0 < 0) {
@@ -76,7 +111,15 @@ void func_001C1AB8(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AE0);
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", fm_func_001C0078);
+void fm_func_001C0078(s32 arg0) {
+    if (arg0 >= 0) {
+        if (D_0037A16C[arg0].unk_00 != 0) {
+            D_0037A16C[arg0].unk_04 |= 1;
+        }
+    } else if (D_0037A168 != 0) {
+        D_0037A16C[D_0037A168].unk_04 |= 1;
+    }
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);

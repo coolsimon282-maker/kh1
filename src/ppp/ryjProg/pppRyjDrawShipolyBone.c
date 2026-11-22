@@ -40,9 +40,39 @@ void pppRyjDrawShipolyBoneDes(pppPObject* pobj, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D798);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D7E0);
+f32 func_0019D798(void); // VU0 random number in [0, 1)
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D840);
+// a random value in about [-a / 2, a * 3 / 2)
+s8 func_0019D7E0(u8 a) {
+    return (a * 2) * func_0019D798() - (a / 2);
+}
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x50];
+    /* 0x50 */ s32 unk_50;
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 unk_58;
+} RyjShipolyUnk1;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xC9];
+    /* 0xC9 */ u8 unk_C9;
+    /* 0xCA */ u8 unk_CA[2];
+    /* 0xCC */ u8 unk_CC;
+} RyjShipolyUnk2;
+
+s32 func_0019D840(RyjShipolyUnk1* a, RyjShipolyUnk2* b) {
+    if (a->unk_50 == 0) {
+        return 0;
+    }
+    if ((b->unk_CC == 1 || b->unk_CC == 2) && a->unk_54 == 0) {
+        return 0;
+    }
+    if (b->unk_C9 != 0 && a->unk_58 == 0) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D898);
 

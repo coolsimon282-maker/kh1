@@ -2,7 +2,27 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLpT", pppKeLnsLpTDraw);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLpT", pppKeLnsLpTCon);
+typedef struct {
+    /* 0x00 */ KeLnsLp lp;
+    /* 0xB0 */ u8 unk_B0[0x10];
+    /* 0xC0 */ u8 unk_C0;
+    /* 0xC1 */ u8 unk_C1;
+} KeLnsLpT;
+
+extern u8 D_00372708; // next lens index
+
+void pppKeLnsLpTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
+    KeLnsLpT* p = (KeLnsLpT*)&pobj->val[ctbl->useVal[0]];
+
+    KeLnsLp_Init(&p->lp);
+    p->lp.lVec[3] = 0;
+    p->lp.pow = 0;
+    p->lp.idx = D_00372708;
+    p->lp.mbk = 2;
+    p->unk_C0 = 0;
+    p->unk_C1 = 0;
+    D_00372708++;
+}
 
 void pppKeLnsLpTCon2(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsLp* lp = (KeLnsLp*)&pobj->val[ctbl->useVal[0]];
