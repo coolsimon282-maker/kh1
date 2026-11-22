@@ -34,7 +34,35 @@ void func_0019B458(sceVu0FVECTOR dst, sceVu0FVECTOR* a, sceVu0FVECTOR* b, f32 t)
         : : "r"(dst), "r"(a), "r"(b), "r"(v) : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMatrixNoRot", func_0019B4D8);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ f32 height;
+    /* 0x14 */ u8 unk_14;
+    /* 0x15 */ u8 world;
+    /* 0x16 */ u8 unk_16;
+    /* 0x17 */ u8 unk_17;
+    /* 0x18 */ u8 unk_18;
+} RyjMatrixNoRot;
+
+extern sceVu0FMATRIX D_00615E70;
+
+void func_0019B4D8(RyjMatrixNoRot* p, sceVu0FVECTOR top, sceVu0FVECTOR bottom) {
+    sceVu0FVECTOR v;
+    f32 h;
+
+    v[3] = 1.0f;
+    h = p->height;
+    v[0] = 0.0f;
+    v[2] = 0.0f;
+    v[1] = h * 0.5f;
+    sceVu0ApplyMatrix(top, ppvPObj.next->cmat, v);
+    v[1] = -h * 0.5f;
+    sceVu0ApplyMatrix(bottom, ppvPObj.next->cmat, v);
+    if (p->world) {
+        sceVu0ApplyMatrix(top, D_00615E70, top);
+        sceVu0ApplyMatrix(bottom, D_00615E70, bottom);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMatrixNoRot", func_0019B5C0);
 
