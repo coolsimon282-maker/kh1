@@ -36,7 +36,15 @@ s32 op_spr_alloc(s32 size) {
     return addr;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_rev_alloc);
+s32 op_spr_rev_alloc(s32 size) {
+    s32 i = spr_rev_index;
+    s32 addr = spr_rev_a[i];
+
+    i++;
+    spr_rev_index = i;
+    spr_rev_a[i] = addr;
+    return addr - size;
+}
 
 // todo: next two are being compiled as unsigned despite data entries being signed
 void op_spr_free(void) {
