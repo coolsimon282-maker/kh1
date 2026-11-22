@@ -950,7 +950,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249820);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249858);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249870);
+void func_00249870(void) {
+    ((void (*)(void))sceVu0CopyVector)();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249888);
 
