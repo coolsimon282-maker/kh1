@@ -121,7 +121,38 @@ s32 func_0010CCD8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CCF0);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CE98);
+typedef struct {
+    /* 0x00 */ char unk_00[0xC];
+    /* 0x0C */ f32 unk_0C;
+} XSauceStep; /* size = 0x10 */
+
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ char unk_02[0x2];
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ char unk_0C[0x4];
+    /* 0x10 */ XSauceStep unk_10[1];
+} XSauceSteps;
+
+void func_0010CCF0(XSauceSteps* p);
+
+s32 func_0010CE98(XSauceSteps* p) {
+    s32 i;
+    f32 sum;
+    func_0010CCF0(p);
+    if (p->unk_08 >= p->unk_04) {
+        return p->unk_00;
+    }
+    sum = 0.0f;
+    for (i = 0; i < p->unk_00; i++) {
+        sum += p->unk_10[i].unk_0C;
+        if (p->unk_08 <= sum) {
+            return i + 1;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CF18);
 
