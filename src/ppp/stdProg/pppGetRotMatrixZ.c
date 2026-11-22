@@ -1,9 +1,5 @@
 #include "ppp/pppUtil.h"
 
-#ifdef VERSION_FM
-void pppGetRotMatrixZ(sceVu0FMATRIX mp, u32 angle);
-INCLUDE_ASM("asm/nonmatchings/ppp/stdProg/pppGetRotMatrixZ", pppGetRotMatrixZ);
-#else
 void pppGetRotMatrixZ(sceVu0FMATRIX mp, u32 angle) {
     f32 sin = D_0036F790[(angle / 16) % 0x1000];
     f32 cos = D_0036F790[((angle + 0x4000) / 16) % 0x1000];
@@ -25,4 +21,3 @@ void pppGetRotMatrixZ(sceVu0FMATRIX mp, u32 angle) {
     mp[2][3] = 0.0f;
     mp[3][3] = 1.0f;
 }
-#endif

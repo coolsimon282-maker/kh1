@@ -192,7 +192,24 @@ s32 func_0011F108(XGoblin* arg0, s32 arg1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F148);
+s32 func_0011F148(XGoblin* arg0, s32 arg1) {
+    XGoblin* prev = NULL;
+    XGoblin* p;
+
+    for (p = arg0->unk_08; p != NULL; p = p->unk_08) {
+        if ((s32)p == arg1) {
+            if (prev != NULL) {
+                prev->unk_08 = p->unk_08;
+            } else {
+                arg0->unk_08 = p->unk_08;
+            }
+            p->unk_08 = NULL;
+            return 1;
+        }
+        prev = p;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F1A0);
 
@@ -215,7 +232,21 @@ INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F4B8);
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F7C0);
 
+#ifdef VERSION_FM
+extern scePad2SocketParam D_002C5A88;
+extern u_long128 D_004E42C0;
+extern s32 D_004E44C0;
+
+void func_0011F8C0(void) {
+    s32* socket = &D_004E44C0;
+
+    sceDbcInit();
+    scePad2Init(0);
+    *socket = scePad2CreateSocket(&D_002C5A88, &D_004E42C0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F8C0);
+#endif
 // void func_0011F8C0(void) {
 //     sceDbcInit();
 //     scePad2Init(0);
