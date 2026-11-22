@@ -540,7 +540,24 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184548);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184728);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184DB0);
+pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+
+void func_00184DB0(ppvmng* m) {
+    s32 i;
+    pppPDataVal* pdv;
+    pppPObject* pobj;
+
+    for (i = 0; i < *(s32*)((u8*)m + 0x68); i++) {
+        pdv = &((pppPDataVal*)m->unk_80)[i];
+        if (pdv->startFrame <= *(s32*)((u8*)m + 0x58)) {
+            pdv->startFrame = 0x7FFFFFFF;
+            pobj = func_00183C10(m, pdv);
+            pdv->pobj = pobj;
+            pobj->appearf = 0;
+        }
+    }
+}
+
 
 void func_00184E48(ppvmng* pMng) {
     ppvMng = pMng;
