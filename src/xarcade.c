@@ -112,8 +112,25 @@ s32 fm_func_00109588(void) {
 #endif
 
 #ifdef VERSION_FM
-void func_001093D8(void);
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093D8);
+extern s32** D_002BC140;
+extern s32** D_002BC144;
+extern volatile s32 D_002BBDE0;
+void func_00122130(void);
+void func_0015F018(void);
+void func_00236F18(void);
+
+void func_001093D8(void) {
+    func_00122130();
+    func_0015F018();
+    func_00100240();
+    func_001C20B8();
+    func_00236F18();
+    func_00248530();
+    D_002BC140 = D_002DEC60;
+    D_002BC144 = D_002DECA0;
+    D_002BBDE0 = 3;
+    D_00495160 = 0;
+}
 #else
 void func_001093D8(void) {
     func_00122518();
