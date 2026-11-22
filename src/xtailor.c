@@ -591,7 +591,39 @@ void func_00110C40(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     D_002B90A0[2] = 0;
 }
 
+#ifdef VERSION_FM
+extern sceVu0FVECTOR D_002BC190;
+void func_00176110(f32*);
+void func_00176150(f32*);
+
+void func_00110C70(sceVu0FVECTOR arg0) {
+    register s32 i asm("$18");
+    f32* ang;
+    f32* v = D_002BC190;
+    register f32* s asm("$17");
+
+    sceVu0CopyVector(v, arg0);
+    if (D_002B9090[3] != 1.0f) {
+        ang = (f32*)D_002B90A0;
+        for (i = 0; i < 3; i++) {
+            ang[i] += D_002B9090[3];
+            if (ang[i] > 3.1415928f) {
+                ang[i] -= 6.28318548203f;
+            }
+            if (ang[i] < -3.1415928f) {
+                ang[i] += 6.28318548203f;
+            }
+            s = &D_002B9090[i];
+            *v *= *s + (1.0f - *s) * cosf(ang[i]);
+            v++;
+        }
+    }
+    func_00176110(arg0);
+    func_00176150(arg0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110C70);
+#endif
 
 void func_00110DE0() {
     D_002B9030 = 1;

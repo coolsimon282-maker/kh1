@@ -181,9 +181,117 @@ s32 func_00181600(s32 arg0) {
     return -2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181640);
+void func_00181640(u8* rsd, s16* tim, s16 tex, s16 clut) {
+    s16 dt;
+    s16 dc;
+    u8* e = rsd + *(s32*)(rsd + 4);
+    s32 size;
+    s32 flag;
+    s32 t;
+    u32 w;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001817E8);
+    if (tex == 0 && clut == 0) {
+        return;
+    }
+    if (tex != 0) {
+        dt = tex - (u16)tim[1];
+    }
+    if (clut != 0) {
+        dc = clut - (u16)tim[2];
+    }
+    if (dt == 0 && dc == 0) {
+        return;
+    }
+    while ((s8)e[1] != -1) {
+        flag = 1;
+        switch ((s8)e[1]) {
+            case 0:
+                size = 0x14;
+                flag = 0;
+                break;
+            case 1:
+                size = 0x1C;
+                flag = 0;
+                break;
+            case 2:
+                size = 0x20;
+                break;
+            case 4:
+                size = 0x18;
+                flag = 0;
+                break;
+            case 5:
+                size = 0x20;
+                flag = 0;
+                break;
+            case 3:
+            case 6:
+                size = 0x28;
+                break;
+            case 7:
+                size = 0x30;
+                break;
+        }
+        if (flag) {
+            if (tex != 0 && dt != 0) {
+                t = *(u16*)(e + 8) & 0x3FFF;
+                if (t >= 0x3800) {
+                    *(u32*)(e + 8) = (*(u32*)(e + 8) & ~0x3FFF) + (t + dt);
+                }
+            }
+            if (clut != 0 && dc != 0) {
+                w = *(u32*)(e + 0xC);
+                t = (w >> 5) & 0x3FFF;
+                if (t >= 0x3D40) {
+                    *(u32*)(e + 0xC) = (w & 0xFFF8001F) + ((t + dc) << 5);
+                }
+            }
+        }
+        e += size * *(s16*)(e + 2);
+        e += 0x10;
+    }
+}
+
+
+void func_001817E8(u8* shp, u16* tim, s16 tex, s16 clut) {
+    s16 dt = 0;
+    s16 dc = 0;
+    s32 n;
+    s16* a;
+    u8* e;
+    s32 t;
+    u32 w;
+
+    if (tex == 0 && clut == 0) {
+        return;
+    }
+    if (tex != 0) {
+        dt = tex - tim[1];
+    }
+    if (clut != 0) {
+        dc = clut - tim[2];
+    }
+    n = *(s16*)(shp + 6);
+    a = (s16*)(shp + 0x10);
+    for (; n > 0; n--) {
+        e = shp + a[0];
+        a += 4;
+        if (tex != 0 && dt != 0) {
+            t = *(u16*)(e + 0x10) & 0x3FFF;
+            if (t >= 0x3800) {
+                *(u32*)(e + 0x10) = (*(u32*)(e + 0x10) & ~0x3FFF) + (t + dt);
+            }
+        }
+        if (clut != 0 && dc != 0) {
+            w = *(u32*)(e + 0x14);
+            t = (w & 0x7FFE0) >> 5;
+            if (t >= 0x3D40) {
+                *(u32*)(e + 0x14) = (w & 0xFFF8001F) + ((t + dc) << 5);
+            }
+        }
+    }
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetUp);
 
@@ -202,7 +310,36 @@ s32* dpd_h_skip_datainfo(s32* p, s32 n) {
     return p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181A58);
+void func_00181A58(s32* dpd, s32 idx, s32* out, ppvmng* m) {
+    s32* p = dpd_h_skip_version(dpd);
+    s32 n;
+    s32 i;
+    s32 v;
+    s32 a;
+    s32 b;
+
+    *out = 0;
+    n = *p++;
+    for (i = 0; i < n; i++) {
+        if (idx == i) {
+            v = *p;
+            m->pEtc = (pppPEtcData*)v;
+            *out = v + 0x110;
+        }
+        p++;
+    }
+    p = dpd_h_skip_datainfo(p, 4);
+    if (p[0] != -1) {
+        a = p[1] - 0x3781;
+        b = p[3] - 0x3D21;
+        m->unk_91 = a / 128;
+        m->unk_92 = b / 32;
+    } else {
+        m->unk_91 = 0;
+        m->unk_92 = 0;
+    }
+}
+
 
 s32* func_00181B38(s32* arg0, s32 arg1) {
     s32* p = dpd_h_skip_version(arg0);
@@ -232,9 +369,83 @@ void func_00181BA8(s32* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181C20);
+s32* func_00181C20(s32* p, u8* use, s16 tex, s16 clut) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 j;
+    s32 k;
+    u8* shp;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181D30);
+    for (i = 0; i < n; i++) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            shp = (u8*)(tim + 8);
+            if (tim[1] == 0) {
+                tim[1] = 0x3800;
+            }
+            if (tim[2] == 0) {
+                tim[2] = 0x3D40;
+            }
+            func_001817E8(shp, (u16*)tim, tex, clut);
+            if (tex != 0) {
+                tim[1] = tex;
+            }
+            if (clut != 0) {
+                tim[2] = clut;
+            }
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
+
+void func_00181640(u8*, s16*, s16, s16);
+
+s32* func_00181D30(s32* p, u8* use, s16 tex, s16 clut) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 j;
+    s32 k;
+    u8* shp;
+
+    for (i = 0; i < n; i++) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            shp = (u8*)(tim + 8);
+            if (tim[1] == 0) {
+                tim[1] = 0x3800;
+            }
+            if (tim[2] == 0) {
+                tim[2] = 0x3D40;
+            }
+            func_00181640(shp, tim, tex, clut);
+            if (tex != 0) {
+                tim[1] = tex;
+            }
+            if (clut != 0) {
+                tim[2] = clut;
+            }
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
 
 s32* func_00181C20(s32*, u8*, s16, s16);
 s32* func_00181D30(s32*, u8*, s16, s16);
@@ -253,11 +464,101 @@ void dpd_set_object_tex(ppvmng* pMng) {
     func_00181D30(p, pMng->pEtc->abUseRsd, texpStart, clutpStart);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_shape_data);
+extern pppShapeSt D_00363930[];
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_rsd_data);
+s32* dpd_set_shape_data(s32* p, u8* use) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* s;
+    s32 k;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_vsf_data);
+    for (i = 0; i < n;) {
+        j = i & 7;
+        s = (s16*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            pppShapeSt* d = &D_00363930[s[0]];
+            d->shape = (u_long128*)(s + 8);
+            d->nPacketSize = *(s32*)(s + 4);
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
+
+extern pppModelSt D_00362730[];
+
+s32* dpd_set_rsd_data(s32* p, u8* use) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s32* s;
+    s32 k;
+    s32 j;
+    OMD_H* h;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        s = (s32*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            pppModelSt* d = &D_00362730[*(s16*)s];
+
+            h = (OMD_H*)(s + 4);
+            d->omd = h;
+            d->nvert = (s16)h->vc;
+            d->nnorm = (s16)h->nc;
+            d->npoly = (s16)h->pc;
+            d->vert = (pppSVECTOR*)((u8*)h + h->va);
+            d->norm = (pppSVECTOR*)((u8*)h + h->na);
+            d->nPacketSize = s[2];
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
+
+extern pppVsfSt D_00363D30[];
+
+s32* dpd_set_vsf_data(s32* p, u8* use) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s32* s;
+    s32 k;
+    s32 j;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        s = (s32*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            pppVsfSt* d = &D_00363D30[s[0]];
+            d->modelNo = *(u16*)(s + 1);
+            d->indexN = *(u16*)(s + 2);
+            d->index = (s16*)(s + 3);
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
 
 s32 dpd_set_object_data(ppvmng* pMng) {
     s32* piVar1;
@@ -287,9 +588,55 @@ void func_00182120(s16* tim, s16 off) {
     sceGsExecLoadImage(&li, (u_long128*)(tim + 0x10));
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001821A8);
+void func_001821A8(s16* clut, s16 off) {
+    sceGsLoadImage li;
+    s16 cbp = clut[1];
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182288);
+    if (cbp == 0) {
+        return;
+    }
+    if (cbp >= 0x3D40) {
+        cbp = cbp + off - 0x3D40;
+    }
+    switch (clut[3]) {
+        case 0x13:
+            sceGsSetDefLoadImage(&li, cbp, 1, 0, 0, 0, 16, 16);
+            break;
+        case 0x14:
+            sceGsSetDefLoadImage(&li, cbp, 1, 0, 0, 0, 8, 2);
+            break;
+        default:
+            return;
+    }
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&li, (u_long128*)((u8*)clut + ((s32*)clut)[6] + 0x20));
+}
+
+void func_00182288(s32* arg0, u8* use, s16 off) {
+    s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 k;
+    s32 j;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            func_00182120(tim, off);
+        }
+        bits >>= 1;
+    }
+}
+
 
 void func_00182348(s32* arg0) {
     s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
@@ -301,7 +648,37 @@ void func_00182348(s32* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001823B8);
+
+
+void func_001823B8(s32* arg0, u8* use, s16 off) {
+    s32* p;
+    s32 n;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 k;
+    s32 j;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    n = *p++;
+    for (i = 0; i < n;) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            func_001821A8(tim, off);
+        }
+        bits >>= 1;
+    }
+}
+
 
 void func_00182478(s32* arg0) {
     s32* p;
@@ -530,9 +907,76 @@ void func_00183B70(pppPObject* pobj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
+pppPObject* func_00183C10(ppvmng* m, pppPDataVal* pdv) {
+    PppPDataF* pdt = (PppPDataF*)pdv->pdt;
+    pppPObject* pobj;
+    pppPObject** pp;
+    pppPObject* q;
+    s16 prio;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDeletePObject);
+    pobj = (pppPObject*)pppDbgAlloc((s32)ppvEnv, pdt->cvoff + pdt->ctrlTablen * 4);
+    pobj->appearf = 1;
+    pobj->time = 0;
+    pobj->lpvert = NULL;
+    pobj->lpnorm = NULL;
+    pobj->pdtval = pdv;
+    pobj->loop_in = 0;
+    pobj->loop_start0 = 0;
+    q = m->unk_74;
+    if (q == NULL) {
+        pdv->pobj = pobj;
+        m->unk_74 = pobj;
+        pobj->next = NULL;
+    } else if (pdv->pobj != NULL) {
+        pobj->next = pdv->pobj->next;
+        pdv->pobj->next = pobj;
+    } else {
+        prio = pdt->unk_24;
+        pp = &m->unk_74;
+        do {
+            if (((PppPDataF*)q->pdtval->pdt)->unk_24 >= prio) {
+                pdv->pobj = pobj;
+                *pp = pobj;
+                pobj->next = q;
+                goto end;
+            }
+            pp = &q->next;
+            q = *pp;
+        } while (q != NULL);
+        pdv->pobj = pobj;
+        *pp = pobj;
+        pobj->next = NULL;
+    }
+end:
+    pdv->pobjn++;
+    func_00183B70(pobj);
+    return pobj;
+}
+
+
+void pppDeletePObject(pppPObject* pobj) {
+    pppPDataVal* pdv = pobj->pdtval;
+    PppPDataF* pdt = (PppPDataF*)pdv->pdt;
+    pppCtrlTable* ct;
+    pppProg* prog;
+    s32 i;
+
+    for (i = 0; i < pdt->ctrlTablen; i++) {
+        ct = &pdt->ctrlTable[i];
+        prog = (pppProg*)ct->prog;
+        if (prog != NULL && prog->desFunc != NULL) {
+            ((void (*)(pppPObject*, pppCtrlTable*))prog->desFunc)(pobj, ct);
+        }
+    }
+    pdv->pobjn--;
+    if (pdv->pobjn == 0) {
+        pdv->pobj = NULL;
+    } else if (pdv->pobj == pobj) {
+        pdv->pobj = pobj->next;
+    }
+    pppFree(ppvEnv, pobj);
+}
+
 
 void pppAllFreePObject(ppvmng* pMng) {
     pppPObject* pObj = pMng->unk_74;
@@ -634,7 +1078,44 @@ void func_00184E48(ppvmng* pMng) {
     func_00184548(pMng);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184E80);
+typedef struct {
+    /* 0x00 */ char unk_00[0x54];
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 unk_58;
+    /* 0x5C */ s32 unk_5C;
+    /* 0x60 */ char unk_60[0x14];
+    /* 0x74 */ pppPObject* unk_74;
+    /* 0x78 */ char unk_78[0xC];
+    /* 0x84 */ u8 unk_84;
+    /* 0x85 */ u8 unk_85;
+} PppMngT2;
+
+s32 func_00184E80(ppvmng* m) {
+    PppMngT2* t = (PppMngT2*)m;
+    s32 tm;
+
+    ppvMng = m;
+    func_00184728(m);
+    func_00183A60(m);
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return 0;
+    }
+    tm = t->unk_58;
+    t->unk_5C = tm;
+    t->unk_58 = tm + 0x1000;
+    if (t->unk_84 != 0) {
+        if (t->unk_85 != 0) {
+            return t->unk_74 == NULL;
+        }
+        if (tm + 0x1000 > 0x6FFFFFFF) {
+            t->unk_58 = 0x70000000;
+            t->unk_5C = 0x6FFFF000;
+        }
+        return 0;
+    }
+    return tm + 0x1000 >= t->unk_54;
+}
+
 
 typedef struct {
     /* 0x00 */ char unk_00[0x54];

@@ -334,9 +334,52 @@ void func_00218A10(void) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218A38);
+u32 func_00218A38(s32 arg0) {
+    switch (arg0) {
+        case 0:
+            return D_003ED718->unk_00;
+        case 1:
+            return D_003ED718->unk_04;
+        case 2:
+            return D_003ED718->unk_08;
+        case 3:
+            return D_003ED718->unk_10;
+        case 4:
+            return D_003ED718->unk_14;
+        case 5:
+            return D_003ED718->unk_18;
+        case 6:
+        default:
+            return *(u32*)((u8*)D_003ED718 + 0x2C);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218AC0);
+void func_00218AC0(s32 arg0, u32 arg1) {
+    switch (arg0) {
+        case 0:
+            D_003ED718->unk_00 = arg1;
+            break;
+        case 1:
+            D_003ED718->unk_04 = arg1;
+            break;
+        case 2:
+            D_003ED718->unk_08 = arg1;
+            break;
+        case 3:
+            D_003ED718->unk_10 = arg1;
+            break;
+        case 4:
+            D_003ED718->unk_14 = arg1;
+            break;
+        case 5:
+            D_003ED718->unk_18 = arg1;
+            break;
+        case 6:
+        default:
+            *(u32*)((u8*)D_003ED718 + 0x2C) = arg1;
+            break;
+    }
+}
 
 u32 func_00218B48(void) {
     return D_003ED718->unk_00;

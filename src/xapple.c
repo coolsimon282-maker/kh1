@@ -337,7 +337,48 @@ s32 func_0013AB68(u16* arg0) {
 }
 #endif
 
+#ifdef VERSION_FM
+extern s32 D_0052AE60;
+extern s32 D_00350CE0;
+extern XAppleStem D_002E26A0;
+s32 func_0014F658(XAppleBlemish*, s32);
+void func_00130340(XAppleBlemish*, f32, UNK_PTR);
+void func_001373F8(XAppleBlemish*, f32);
+s32 func_00148768(s32, s32, XAppleBlemish*, s32, f32);
+void func_001336D8(void);
+void func_0023E0B0(s32, s32);
+void func_001452E0(s32, s32);
+s32 func_0011EEB8(s32*, s32, void*);
+s32 func_0013AB30();
+
+s32 func_0013AFE8(void) {
+    register s32* q asm("$16") = &D_0052AE60; /* only way found to get $16/$17 as in the original */
+    s32 i;
+
+    func_0014F658(D_005325E8, 0x28);
+    func_00130340(D_005325E8, 20.0f, (UNK_PTR)0x1010040);
+    func_001373F8(D_005325E8, 0.0f);
+    D_005325E8->unk_00 |= 0x200000;
+    *q = func_00148768(D_00350CE0, 0, D_005325E8, 0x1C, 0.5f);
+    func_00125088(53.0f);
+    func_001336D8();
+    func_0023E0B0(0, 3);
+    func_0023E0B0(1, 3);
+    func_0023E0B0(2, 3);
+    func_001452E0(1, 4);
+    for (i = 1; i < 3; i++) {
+        if (D_002E26A0.unk_00[i] != 0) {
+            *(s32*)D_002E26A0.unk_00[i] |= 0x1000000;
+        }
+    }
+    func_0011EEB8(&D_00532518, 0, func_0013AB30);
+    func_0011ED30(100000, func_0013AB68);
+    return 1;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013AFE8);
+#endif
 
 void func_0013B138(void) {
     if (D_0053260C[2] - D_0053260C[1] > 0) {
