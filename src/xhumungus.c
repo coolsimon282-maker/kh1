@@ -2247,7 +2247,22 @@ typedef struct {
     f32 unk_10[4];
 } ScriptMsgF;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D53A8);
+s32 func_001D53A8(Script* arg0) {
+    ScriptMsgF msg;
+    f32* p = *(f32**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        msg.unk_00 = 3;
+        msg.unk_01 = 0;
+        msg.unk_04 = *(s32*)arg0->unk_00;
+        msg.unk_10[0] = p[0x50 / 4];
+        msg.unk_10[1] = p[0x54 / 4];
+        msg.unk_10[2] = p[0x58 / 4];
+        msg.unk_10[3] = 1.0f;
+        func_001C4640((ScriptMsg*)&msg);
+    }
+    return 2;
+}
 
 f32* func_0014F370(void*);
 
