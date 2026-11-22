@@ -50,7 +50,10 @@ PY
     # (then the image on disk is stale and must not be trusted).
     # The log lives in this checkout's own WSL mirror (one per worktree), so parallel agents don't overwrite it;
     # the dashboard (kh1-study\dashboard) shows it.
-    bash wsl-build.sh bash -c 'ninja > .agent_build.log 2>&1; s=$?; date "+%H:%M:%S" > .agent_build.time; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" .agent_build.log | tail -25; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1 | tee -a .agent_build.log; else echo "BUILD FAILED" | tee -a .agent_build.log; fi' ;;
+    # Every build also appends "epoch <tab> verdict <tab> functions being worked on" to .agent_build.history
+    # (the functions whose INCLUDE_ASM line is currently replaced), for the dashboard's per-agent statistics.
+    funcs=$(git diff -U0 -- src | grep -oP '^-INCLUDE_ASM\("[^"]+",\s*\K\w+' | tr '\n' ' ')
+    FUNCS="$funcs" bash wsl-build.sh bash -c 'ninja > .agent_build.log 2>&1; s=$?; date "+%H:%M:%S" > .agent_build.time; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" .agent_build.log | tail -25; if [ $s -eq 0 ] && sha1sum -c config/fm/checksum.sha1 > .agent_build.v 2>&1; then v=OK; elif [ $s -eq 0 ]; then v=DIFFERS; elif grep -q "checksum did NOT match" .agent_build.log; then v=DIFFERS; else v=ERROR; fi; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1 2>&1 | tee -a .agent_build.log; else echo "BUILD FAILED" | tee -a .agent_build.log; fi; printf "%s\t%s\t%s\n" "$(date +%s)" "$v" "$FUNCS" >> .agent_build.history' ;;
   list)
     for f in $(grep -oP '^INCLUDE_ASM\("asm/nonmatchings/[^"]+",\s*\K\w+' "src/$2.c"); do
       p="asm/nonmatchings/$2/$f.s"
