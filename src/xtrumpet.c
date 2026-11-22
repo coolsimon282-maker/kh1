@@ -452,7 +452,14 @@ s32 func_00111A70(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111B70);
+// starts the countdown timer task (func_00111A70): sec seconds, then cb
+void func_00111B70(s32 sec, void (*cb)(void)) {
+    D_004D9258 = cb;
+    D_004D29AC = 0;
+    D_004D9250 = D_002BBDF0;
+    D_002B916C = D_004D9254 = sec * 60;
+    func_0011ED30(0x2C04C, func_00111A70);
+}
 
 void func_00111BD8(void) {
     D_004D29AC = 1;
