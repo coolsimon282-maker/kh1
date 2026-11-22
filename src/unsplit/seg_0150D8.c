@@ -1,6 +1,12 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x0150D8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_002A62F0;
+extern s32 D_002B6478;
+void func_00218CA0(s32);
+s32 func_00218C78(void);
+void func_0011AF48(s32, s32, s32, s32*);
+void func_0011A410(void);
 
 void func_00115940(s32, void*);
 typedef struct {
@@ -87,7 +93,11 @@ void func_00115F50(s32 a0, u32* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115F90);
+void func_00115F90(s32 a0, Seg150D8Bits* a1) {
+    if (a1->hi != 7 && a1->hi != 5) {
+        D_002BD250[D_002C12C4++] = a0;
+    }
+}
 
 void func_00115FD8(s32 a0, u32* a1) {
     if ((*a1 & 0x10006) == 0) {
@@ -158,7 +168,11 @@ void func_00116278(s32 arg0, u32* arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001162B0);
+void func_001162B0(s32 a0, Seg150D8Bits* a1) {
+    if (a1->hi != 7 && a1->hi != 9 && a1->hi != 5) {
+        func_00115940(a0, (void*)a1->hi);
+    }
+}
 
 void func_001162F8(s32 arg0, Seg150D8Bits* arg1) {
     if (arg1->hi == 9) {
@@ -263,7 +277,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118230);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118378);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118548);
+void func_00118548(u8* a0) {
+    s32 m;
+    if (D_002A62F0 != 0) {
+        func_00118060((s32)a0, 9, 1, -1);
+        return;
+    }
+    m = -1;
+    *(s32*)(a0 + 0x34) = m;
+    *(s16*)(a0 + 0x30) = m;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118590);
 
@@ -417,4 +440,8 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011C118);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011C338);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011C5E8);
+void func_0011C5E8(void) {
+    if (func_00218C78() == 1 && D_002B6478 != 2) {
+        func_00218CA0(0);
+    }
+}
