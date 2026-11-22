@@ -582,43 +582,49 @@ void func_00113130(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113170);
-s32 func_00113170();
-// s32 func_00113170(void) {
-//     if (D_002B2CC4 != 0) {
-//         return 0;
-//     }
-//     D_002B8354 = 1;
-//     func_00105660();
-//     func_00180CE0();
-//     func_00132450();
-//     D_002B933C = 1;
+// func_00105860 (returns a value) is called without a prototype: one more declaration here changes
+// func_00114B50's code.
+void func_00132550();
+void func_00175F58();
+void func_001113E8();
+extern s32 D_0029B410;
+extern s32 D_0029B414;
 
-//     if (D_002979E0 != 0 && D_002979E4 != 0) {
-//         func_00177470(D_002979E0, D_002979E4, D_002B8680 + 1, 100000);
-//     }
+s32 func_00113170(void) {
+    if (D_002B2CC4 != 0) {
+        return 0;
+    }
+    D_002B8354 = 1;
+    func_00105860();
+    func_00180CE0();
+    func_00132550();
+    D_002B933C = 1;
 
-//     func_001009A8();
-//     D_002C1EA8 &= ~0x4;
-//     D_002C1EA8 &= ~0x8000000;
-//     func_001C4FF0(D_002B91E0, 0);
-//     D_002B930C = 0;
-//     D_002B9310 = 0;
-//     D_002B9328 = 0;
-//     func_00114430();
-//     D_002BD8D8 = 0;
+    if (D_0029B410 != 0 && D_0029B414 != 0) {
+        func_00175F58(D_0029B410, D_0029B414, D_002B8680 + 1, 100000);
+    }
 
-//     if (D_002B8364 == 1 || D_002B29C4 == 1) {
-//         func_001113E8();
-//     }
+    func_001009A8();
+    D_002C1EA8 &= ~0x4;
+    D_002C1EA8 &= ~0x8000000;
+    func_001C4FF0(D_002B91E0, 0);
+    D_002B930C = 0;
+    D_002B9310 = 0;
+    D_002B9328 = 0;
+    func_00114430();
+    D_002BD8D8 = 0;
 
-//     D_002B8364 = 0;
-//     func_00111198();
-//     func_001116C8();
-//     func_001ED878(0);
-//     D_002B9314 = 0;
-//     return 4;
-// }
+    if (D_002B8364 == 1 || D_002B29C4 == 1) {
+        func_001113E8();
+    }
+
+    D_002B8364 = 0;
+    func_00111198();
+    func_001116C8();
+    func_001ED878(0);
+    D_002B9314 = 0;
+    return 4;
+}
 
 void* func_001132A0(void) {
     return func_0011ED30(49900, func_00113170);
