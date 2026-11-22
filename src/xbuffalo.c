@@ -71,7 +71,24 @@ s32 func_001C19E8(void) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C19F8);
+s32 func_001C19F8(s32 arg0) {
+    s32 i;
+
+    if (arg0 == 0) {
+        for (i = 1; i < 16; i++) {
+            if (D_0037A16C[i].unk_00 == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    for (i = 0; i < 0x180; i++) {
+        if (D_0037A16C[i + 16].unk_00 == 0) {
+            return i + 16;
+        }
+    }
+    return -1;
+}
 
 u16 func_001C1A90(s32 arg0) {
     if (arg0 < 0) {
