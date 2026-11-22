@@ -544,7 +544,79 @@ void func_00100DF8(u_long128* srcaddr, s16 dbp) {
 
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100E70);
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ u64 d[20];
+} XBegObj;
+
+typedef struct {
+    /* 0x00 */ u8 type[0x14];
+    /* 0x14 */ u16 n14;
+    /* 0x16 */ u16 n16;
+} XBegTexHdr;
+
+extern s32* D_002A050C;
+extern s32 D_002A3F20;
+extern XBegObj D_0029B420[];
+extern s32 D_002A3F24;
+s32 func_00108618(void);
+void func_00101E70(void);
+void func_00102978(void);
+s32 func_00113380();
+
+// the original called the image loaders without a prototype (dbp passed as a plain int, no s16 truncation)
+typedef void (*XBegLoadFn)();
+
+s32 func_00100F48(void) {
+    s32* h;
+    XBegObj* src;
+    XBegTexHdr* t;
+    u_long128* tex;
+    u_long128* img;
+    s32 i;
+    u8* p;
+
+    func_00108618();
+    h = D_002A050C;
+    src = (XBegObj*)((u8*)h + h[0]);
+    D_002A3F20 = (u32)h[1] / sizeof(XBegObj);
+    for (i = 0; i < D_002A3F20; i++) {
+        D_0029B420[i] = src[i];
+    }
+    t = (XBegTexHdr*)((u8*)h + h[2]);
+    tex = (u_long128*)((u8*)h + h[4]);
+    img = (u_long128*)((u8*)h + h[6]);
+    func_00100A10((XBegCamSrc*)t);
+    for (i = 0; i < t->n14; i++) {
+        ((XBegLoadFn)func_00100C18)(tex + i * 0x10, i + 0x3E00);
+    }
+    for (i = t->n14; i < t->n16; i += 4) {
+        ((XBegLoadFn)func_00100C90)(tex + i * 0x10, i + 0x3E00);
+    }
+    for (i = 0; i < 16; i++) {
+        switch (t->type[i]) {
+        case 0x14:
+            ((XBegLoadFn)func_00100D08)(img + i * 0x1000, 0x2600 + i * 0x100);
+            break;
+        case 0x13:
+            ((XBegLoadFn)func_00100D80)(img + i * 0x1000, 0x2600 + i * 0x100);
+            break;
+        }
+    }
+    ((XBegLoadFn)func_00100DF8)(img + 0x10000, 0);
+    p = (u8*)h + h[8];
+    D_002A3F24 = (u32)h[9] / 0x810;
+    func_00100E70(p);
+    func_00101E70();
+    func_00102978();
+    func_0011ED30(50000, func_00113380);
+    return 4;
+}
+
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100F48);
+#endif
 s32 func_00100F48();
 
 void func_001011B8(void) {
