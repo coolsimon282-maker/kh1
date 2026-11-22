@@ -2,4 +2,6 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandIV", pppRandIVCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandIV", func_00189BC0);
+s32 func_00189BC0(s32 arg0, f32 arg1) {
+    return arg0 * arg1;
+}
