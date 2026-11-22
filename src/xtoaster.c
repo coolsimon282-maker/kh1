@@ -2,7 +2,9 @@
 #include "libvu0.h"
 
 typedef struct {
-    /* 0x00*/ char unk_04[0x44];
+    /* 0x00*/ char unk_00[0xC];
+    /* 0x0C*/ s32 unk_0C;
+    /* 0x10*/ char unk_10[0x34];
     /* 0x44*/ f32 unk_44;
     /* 0x48*/ char unk_48[0x4];
     /* 0x4C*/ u16 unk_4C;
@@ -30,7 +32,10 @@ typedef struct XToaster {
     /* 0x084 */ char unk_084[0xAC];
     /* 0x130 */ XToast* unk_130;
     /* 0x134 */ u8* unk_134;
-    /* 0x138 */ char unk_138[0x14];
+    /* 0x138 */ s32 unk_138;
+    /* 0x13C */ char unk_13C[0x8];
+    /* 0x144 */ s32 unk_144;
+    /* 0x148 */ char unk_148[0x4];
     /* 0x14C */ s32 unk_14C;
     /* 0x150 */ s32 unk_150;
     /* 0x154 */ s32 unk_154;
@@ -384,7 +389,41 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123F00);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124108);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001242E8);
+s32 func_0012B888(s32);
+void func_0012BA30(s32, void*, s32);
+s32 func_00132008(XToaster*);
+void func_00170400(XToaster*);
+
+void func_001242E8(XToaster* p) {
+    XToast* t = p->unk_130;
+    s8 k = t->unk_54;
+
+    if (k >= 0) {
+        switch (k) {
+        case 1:
+            func_00170400(p);
+            break;
+        case 6:
+            p->unk_3A0 = func_00132008(p);
+            break;
+        case 2:
+        case 5:
+            XT_FLAGS(p) |= 0x1000000000000;
+            break;
+        }
+    } else {
+        p->unk_138 = t->unk_0C;
+        XT_FLAGS(p) |= 0x1000000000000;
+    }
+    if ((s32)(XT_FLAGS(p) >> 48) & 1) {
+        if (p->unk_138 == 0) {
+            XT_FLAGS(p) &= ~0x1000000000000;
+        } else {
+            p->unk_144 = func_0012B888(p->unk_138);
+            func_0012BA30(p->unk_144, &p, 4);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124420);
 
