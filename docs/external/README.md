@@ -29,3 +29,14 @@ None of these forks has matched functions we lack (all at upstream's ~1,717 unma
 - Build-tool (splat) version bumps only. Nothing taken.
 
 The four forks are fetched as read-only remotes named x_<owner>_<repo> (push disabled).
+
+## Lrs121/kh1 (branch matchin, 2024) - credit: Lrs121
+- `Lrs121/matchin.patch`: xbiscuit func_001F0D88, func_001F0E58, func_001F3990 written as matching C for the JP
+  version (upstream still has them as INCLUDE_ASM with "assignment order" notes). xbiscuit.c is not part of the
+  Final Mix layout yet (that code sits in src/unsplit/seg_0EF950.c under Final Mix names), so this applies when
+  xbiscuit is mapped for FM / when JP is built again. Old INCLUDE_ASM syntax: adapt, don't apply as is.
+
+## Xeeynamo/kh1 (branch xkingdom-xcrown-docs, 2023) - credit: Xeeynamo
+- `Xeeynamo/xkingdom-xcrown-docs.patch`: field names for the XCrown file-request struct in src/xkingdom.c
+  (flags, nSector, length, dst, bytesRead). Its base predates later upstream changes to xkingdom.c: use the names
+  at the naming stage rather than applying the patch.
