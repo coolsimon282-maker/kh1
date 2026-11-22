@@ -3,6 +3,13 @@
 #include "sifrpc.h"
 #include "libmc.h"
 
+#ifdef VERSION_FM
+// Final Mix links a newer libmc: its messages go through scePrintf, and this buffer sits at FM's own address.
+#define printf scePrintf
+#define D_0066DB00 D_00673B00
+extern s32 D_00673B00;
+#endif
+
 typedef struct {
     /* 0x00 */ s32 fd;
     /* 0x04 */ s32 port;
@@ -35,7 +42,9 @@ McStatus mcStatus;
 s32 mcRetVal[4]; // Buffer for data received from RPC
 
 sceMcTblGetDir mcFileTable;
+#ifndef VERSION_FM
 s32 D_0066DB00;
+#endif
 sceMcTblGetDir mcCachedTables[16];
 
 /**
@@ -105,7 +114,12 @@ s32 sceMcEnd(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", _lmcGetClientPtr);
+sceSifClientData* _lmcGetClientPtr(s32** ret, s32** cmd) {
+    *ret = mcRetVal;
+    *cmd = &mcRunCmdNo;
+    mcRetVal[15] = semaidRegFunc;
+    return &mcClientID;
+}
 
 /**
  * @brief Change `mcserv.irx` IOP module thread priority
@@ -190,7 +204,8 @@ s32 sceMcOpen(s32 port, s32 slot, const char* name, s32 mode) {
         mcStatus.port = port;
         mcStatus.mode = mode;
         mcStatus.slot = slot;
-        sifServerStat = sceSifCallRpc(&mcClientID, sceMcFuncNoOpen, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
+        sifServerStat =
+            sceSifCallRpc(&mcClientID, sceMcFuncNoOpen, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
         if (sifServerStat == 0) {
             mcRunCmdNo = sceMcFuncNoOpen;
         } else {
@@ -278,7 +293,33 @@ s32 sceMcSeek(s32 fd, s32 offset, s32 mode) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceIntrReadFixAlign);
+typedef struct {
+    /* 0x00 */ s32 size1;
+    /* 0x04 */ s32 size2;
+    /* 0x08 */ u8* dest1;
+    /* 0x0C */ u8* dest2;
+    /* 0x10 */ u8 buf1[0x40];
+    /* 0x50 */ u8 buf2[0x40];
+} McRpcReadFix;
+
+void mceIntrReadFixAlign(McRpcReadFix* arg) {
+    McRpcReadFix* p = (McRpcReadFix*)((u32)arg | 0x20000000);
+    u8* d;
+    s32 i;
+
+    if (p->size1 != 0) {
+        d = p->dest1;
+        for (i = 0; i < p->size1; i++) {
+            *d++ = p->buf1[i];
+        }
+    }
+    if (p->size2 != 0) {
+        d = p->dest2;
+        for (i = 0; i < p->size2; i++) {
+            *d++ = p->buf2[i];
+        }
+    }
+}
 void mceIntrReadFixAlign();
 
 /**
@@ -317,7 +358,42 @@ s32 sceMcRead(s32 fd, void* buff, s32 size) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcWrite);
+s32 sceMcWrite(s32 fd, const void* buff, s32 size) {
+    s32 sifServerStat;
+    u32 i;
+
+    if (PollSema(semaidRegFunc) < 0) {
+        return sceMcErrSemapho;
+    } else if (mcClientID.serve == NULL) {
+        SignalSema(semaidRegFunc);
+        return sceMcErrUnbind;
+    } else {
+        mcSifParams.fd = fd;
+        if (size < 0x11) {
+            mcSifParams.mode = size;
+            mcSifParams.size = 0;
+            mcSifParams.buffer = NULL;
+        } else {
+            u32 t = (u32)buff - 0x10;
+            mcSifParams.mode = (((u32)buff - 1) & 0xFFFFFFF0) - t;
+            mcSifParams.size = size - mcSifParams.mode;
+            mcSifParams.buffer = (u8*)buff + mcSifParams.mode;
+        }
+        for (i = 0; i < mcSifParams.mode; i++) {
+            mcSifParams.unk_20[i] = ((u8*)buff)[i];
+        }
+        FlushCache(0);
+        sifServerStat = sceSifCallRpc(
+            &mcClientID, sceMcFuncNoWrite, 1, &mcSifParams, sizeof(mcSifParams), &mcRetVal, 4, NULL, NULL
+        );
+        if (sifServerStat == 0) {
+            mcRunCmdNo = sceMcFuncNoWrite;
+        } else {
+            SignalSema(semaidRegFunc);
+        }
+        return sifServerStat;
+    }
+}
 
 void mcHearAlarm(s32 arg0, u16 arg1, void* thread) {
     iWakeupThread((s32)thread);
@@ -329,12 +405,103 @@ void mcDelayThread(u16 arg0) {
     SleepThread();
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcSync);
+s32 sceMcSync(s32 mode, s32* cmd, s32* result) {
+    s32 ret;
 
+    if (mcRunCmdNo == 0) {
+        return -1;
+    }
+    ret = sceSifCheckStatRpc(&mcClientID);
+    if (mode == 0 && ret != 0) {
+        while (sceSifCheckStatRpc(&mcClientID)) {
+            mcDelayThread(0x3C);
+        }
+        ret = 0;
+    }
+    ret = ret == 0;
+    if (cmd != NULL) {
+        *cmd = mcRunCmdNo;
+    }
+    if (ret) {
+        mcRunCmdNo = 0;
+        if (result != NULL) {
+            *result = mcRetVal[0];
+        }
+        SignalSema(semaidRegFunc);
+    }
+    return ret;
+}
+
+#ifdef VERSION_FM
+extern s32* D_00673628;
+extern s32* D_0067362C;
+extern s32* D_00673630;
+
+void mceGetInfoApdx(s32 addr) {
+    s32* p = (s32*)(addr | 0x20000000);
+
+    if (D_00673628 != NULL) {
+        *D_00673628 = p[0];
+    }
+    if (D_0067362C != NULL) {
+        *D_0067362C = p[1];
+    }
+    if (D_00673630 != NULL) {
+        *D_00673630 = p[0x24];
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceGetInfoApdx);
+#endif
 void mceGetInfoApdx();
 
+#ifdef VERSION_FM
+s32 sceMcGetInfo(s32 port, s32 slot, s32* type, s32* free, s32* format) {
+    s32 sifServerStat;
+
+    if (PollSema(semaidRegFunc) < 0) {
+        return sceMcErrSemapho;
+    } else if (mcClientID.serve == NULL) {
+        SignalSema(semaidRegFunc);
+        return sceMcErrUnbind;
+    } else {
+        mcSifParams.port = port;
+        mcSifParams.slot = slot;
+        mcSifParams.unk_1C = &D_0066DB00;
+        if (type != NULL) {
+            mcSifParams.mode = 1;
+        } else {
+            mcSifParams.mode = 0;
+        }
+        if (free != NULL) {
+            mcSifParams.offset = 1;
+        } else {
+            mcSifParams.offset = 0;
+        }
+        if (format != NULL) {
+            mcSifParams.size = 1;
+        } else {
+            mcSifParams.size = 0;
+        }
+        D_00673628 = type;
+        D_0067362C = free;
+        D_00673630 = format;
+        sceSifWriteBackDCache(&D_0066DB00, 0xC0);
+        sifServerStat = sceSifCallRpc(
+            &mcClientID, sceMcFuncNoCardInfo, 1, &mcSifParams, sizeof(mcSifParams), &mcRetVal, 4, mceGetInfoApdx,
+            &D_0066DB00
+        );
+        if (sifServerStat == 0) {
+            mcRunCmdNo = sceMcFuncNoCardInfo;
+        } else {
+            SignalSema(semaidRegFunc);
+        }
+        return sifServerStat;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcGetInfo);
+#endif
 
 s32 sceMcUdCheckNewCard(void) {
     if (sceSifCallRpc(&mcClientID, 0x35, 0, &mcSifParams, sizeof(mcSifParams), &mcRetVal, 4, NULL, NULL) != 0) {
@@ -378,7 +545,8 @@ s32 sceMcGetDir(s32 port, s32 slot, const char* name, u32 mode, s32 maxent, sceM
         if (-1 < maxent) {
             sceSifWriteBackDCache(table, maxent << 6);
         }
-        sifServerStat = sceSifCallRpc(&mcClientID, sceMcFuncNoGetDir, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
+        sifServerStat =
+            sceSifCallRpc(&mcClientID, sceMcFuncNoGetDir, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
         if (sifServerStat == 0) {
             mcRunCmdNo = sceMcFuncNoGetDir;
         } else {
@@ -388,7 +556,17 @@ s32 sceMcGetDir(s32 port, s32 slot, const char* name, u32 mode, s32 maxent, sceM
     return sifServerStat;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceStorePwd);
+void mceStorePwd(char* dst) {
+    s32 len;
+
+    if (dst != NULL) {
+        len = strlen((char*)((u32)mcCachedTables | 0x20000000)) < 0x400
+                  ? strlen((char*)((u32)mcCachedTables | 0x20000000))
+                  : 0x3FF;
+        memcpy(dst, (void*)((u32)mcCachedTables | 0x20000000), len);
+        dst[len] = 0;
+    }
+}
 void mceStorePwd();
 
 /**
@@ -485,7 +663,8 @@ s32 sceMcDelete(s32 port, s32 slot, const char* name) {
         mcStatus.port = port;
         mcStatus.slot = slot;
         mcStatus.mode = 0;
-        sifServerStat = sceSifCallRpc(&mcClientID, sceMcFuncNoDelete, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
+        sifServerStat =
+            sceSifCallRpc(&mcClientID, sceMcFuncNoDelete, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
         if (sifServerStat == 0) {
             mcRunCmdNo = sceMcFuncNoDelete;
         } else {
@@ -523,7 +702,41 @@ s32 sceMcFlush(s32 fd) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcSetFileInfo);
+typedef struct {
+    char d[0x40];
+} McTblBytes;
+
+s32 sceMcSetFileInfo(s32 port, s32 slot, const char* name, const char* info, u32 valid) {
+    s32 sifServerStat;
+
+    if (PollSema(semaidRegFunc) < 0) {
+        return sceMcErrSemapho;
+    } else if (mcClientID.serve == NULL) {
+        SignalSema(semaidRegFunc);
+        return sceMcErrUnbind;
+    } else if (name == NULL || *name == '\0') {
+        SignalSema(semaidRegFunc);
+        return sceMcErrNullStr;
+    } else {
+        valid &= 7;
+        mcStatus.port = port;
+        mcStatus.slot = slot;
+        mcStatus.mode = valid;
+        *(McTblBytes*)&mcFileTable = *(McTblBytes*)info;
+        mcStatus.table = &mcFileTable;
+        strncpy(mcStatus.name, name, sizeof(mcStatus.name));
+        mcStatus.unk_413 = '\0';
+        FlushCache(0);
+        sifServerStat =
+            sceSifCallRpc(&mcClientID, sceMcFuncNoFileInfo, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
+        if (sifServerStat == 0) {
+            mcRunCmdNo = sceMcFuncNoFileInfo;
+        } else {
+            SignalSema(semaidRegFunc);
+        }
+        return sifServerStat;
+    }
+}
 
 /**
  * @brief Change the file or directory name

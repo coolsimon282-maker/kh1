@@ -14,10 +14,34 @@ void sceVu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m0, sceVu0FVECTOR v1) {
 	vmaddaz.xyzw	ACC, vf6,vf8    \n\
 	vmaddw.xyzw	    vf9, vf7,vf8    \n\
 	sqc2            vf9,0x0(%0)     \n\
-	" : : "r"(v0), "r"(m0), "r"(v1) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(m0), "r"(v1)
+                         : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0MulMatrix);
+void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2) {
+    __asm__ __volatile__("          
+	.set noreorder                  
+	lqc2            vf4,0x0(%2)     
+	lqc2            vf5,0x10(%2)    
+	lqc2            vf6,0x20(%2)    
+	lqc2            vf7,0x30(%2)    
+	li              $7,4            
+_loop:                              
+	lqc2            vf8,0x0(%1)     
+	vmulax.xyzw	    ACC,vf4,vf8     
+	vmadday.xyzw    ACC,vf5,vf8     
+	vmaddaz.xyzw	ACC,vf6,vf8     
+	vmaddw.xyzw	    vf9,vf7,vf8     
+	sqc2            vf9,0x0(%0)     
+	addi            $7,-1           
+	addi            %1,0x10         
+	bne             $0,$7,_loop     
+	addi            %0,0x10         
+	.set reorder                    
+	":: "r" (m0), "r" (m2), "r" (m1) : "$7", "memory");
+}
 // void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1,sceVu0FMATRIX m2) {
 //     __asm__ __volatile__("          \n\
 // 	lqc2            vf4,0x0(%2)     \n\
@@ -47,7 +71,10 @@ void sceVu0OuterProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 	vopmsub.xyz	vf6,vf5,vf4     \n\
 	vsub.w vf6,vf6,vf6		    \n\
 	sqc2    vf6,0x0(%0)         \n\
-	": : "r" (v0) , "r" (v1) ,"r" (v2) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "r"(v2)
+                         : "memory");
 }
 
 f32 sceVu0InnerProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
@@ -61,7 +88,10 @@ f32 sceVu0InnerProduct(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
 	vaddz.x vf5,vf5,vf5         \n\
 	qmfc2   $2 ,vf5             \n\
 	mtc1    $2,%0               \n\
-	": "=f" (product) :"r" (v0) ,"r" (v1) :"$2", "memory" );
+	"
+                         : "=f"(product)
+                         : "r"(v0), "r"(v1)
+                         : "$2", "memory");
 }
 
 void sceVu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
@@ -80,10 +110,34 @@ void sceVu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
     vwaitq                      \n\
     vmulq.xyz   vf6,vf4,Q       \n\
     sqc2        vf6,0x0(%0)     \n\
-    ": : "r" (v0) , "r" (v1) : "memory");
+    "
+                         :
+                         : "r"(v0), "r"(v1)
+                         : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0TransposeMatrix);
+void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
+    register u_long128 r11 asm("$11");
+
+    __asm__ __volatile__("      
+	lq $8,0x0000(%1)            
+	lq $9,0x0010(%1)            
+	lq $10,0x0020(%1)           
+	lq $11,0x0030(%1)           
+	pextlw     $12,$9,$8        
+	pextuw     $13,$9,$8        
+	pextlw     $14,$11,$10      
+	pextuw     $15,$11,$10      
+	pcpyld     $8,$14,$12       
+	pcpyud     $9,$12,$14       
+	pcpyld     $10,$15,$13      
+	pcpyud     $11,$13,$15      
+	sq $8,0x0000(%2)            
+	sq $9,0x0010(%2)            
+	sq $10,0x0020(%2)           
+	": "=r" (r11) : "r" (m1), "r" (m0) : "$8", "$9", "$10", "$12", "$13", "$14", "$15", "memory");
+    ((u_long128*)m0)[3] = r11;
+}
 // void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 //     __asm__ __volatile__("      \n\
 // 	lq $8,0x0000(%1)            \n\
@@ -133,7 +187,10 @@ void sceVu0InversMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 	sq 			$9,0x0010(%0)   \n\
 	sq 			$10,0x0020(%0)  \n\
 	sqc2 		vf4,0x0030(%0)  \n\
-	": : "r" (m0) , "r" (m1):"$8","$9","$10","$11","$12","$13","$14","$15", "memory");
+	"
+                         :
+                         : "r"(m0), "r"(m1)
+                         : "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "memory");
 }
 
 void sceVu0DivVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 q) {
@@ -145,7 +202,10 @@ void sceVu0DivVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 q) {
 	vwaitq						\n\
 	vmulq.xyzw	vf4,vf4,Q		\n\
 	sqc2    	vf4,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "f" (q):"$8", "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "f"(q)
+                         : "$8", "memory");
 }
 
 void sceVu0DivVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 q) {
@@ -157,7 +217,10 @@ void sceVu0DivVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 q) {
 	vwaitq						\n\
 	vmulq.xyz	vf4,vf4,Q		\n\
 	sqc2		vf4,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "f" (q) : "$8", "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "f"(q)
+                         : "$8", "memory");
 }
 
 void sceVu0InterVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, f32 t) {
@@ -171,7 +234,10 @@ void sceVu0InterVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, f32
 	vmulax.xyzw	ACC,vf4,vf6		\n\
 	vmaddx.xyzw	vf9,vf5,vf8		\n\
 	sqc2    	vf9,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "r" (v2), "f" (t) : "$8", "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "r"(v2), "f"(t)
+                         : "$8", "memory");
 }
 
 void sceVu0AddVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
@@ -180,7 +246,10 @@ void sceVu0AddVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 	lqc2		vf5,0x0(%2)		\n\
 	vadd.xyzw	vf6,vf4,vf5		\n\
 	sqc2    	vf6,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "r" (v2) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "r"(v2)
+                         : "memory");
 }
 
 void sceVu0SubVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
@@ -189,7 +258,10 @@ void sceVu0SubVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 	lqc2    	vf5,0x0(%2)		\n\
 	vsub.xyzw	vf6,vf4,vf5		\n\
 	sqc2		vf6,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "r" (v2) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "r"(v2)
+                         : "memory");
 }
 
 void sceVu0MulVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
@@ -198,7 +270,10 @@ void sceVu0MulVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 	lqc2		vf5,0x0(%2)		\n\
 	vmul.xyzw	vf6,vf4,vf5		\n\
 	sqc2		vf6,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "r" (v2) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "r"(v2)
+                         : "memory");
 }
 
 void sceVu0ScaleVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 t) {
@@ -208,7 +283,10 @@ void sceVu0ScaleVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 t) {
 	qmtc2    	$8,vf5			\n\
 	vmulx.xyzw	vf6,vf4,vf5		\n\
 	sqc2    	vf6,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "f" (t):"$8", "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "f"(t)
+                         : "$8", "memory");
 }
 
 void sceVu0TransMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR tv) {
@@ -223,10 +301,19 @@ void sceVu0TransMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR tv) {
 	sq    		$8,0x10(%0)		\n\
 	sq    		$9,0x20(%0)		\n\
 	sqc2    	vf5,0x30(%0)	\n\
-	": : "r" (m0) , "r" (m1), "r" (tv):"$7","$8","$9","memory");
+	"
+                         :
+                         : "r"(m0), "r"(m1), "r"(tv)
+                         : "$7", "$8", "$9", "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyVector);
+// The SDK's inline-asm version (below) leaves the last sq out of the jr delay slot with this compiler; the same
+// instructions come out of register variables, which gcc can schedule.
+void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
+    register u_long128 t asm("$6") = *(u_long128*)v1;
+
+    *(u_long128*)v0 = t;
+}
 // void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
 //     __asm__ __volatile__("	\n\
 // 	lq	$6,0x0(%1)			\n\
@@ -234,7 +321,17 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyVector);
 // 	": : "r" (v0) , "r" (v1):"$6", "memory");
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyMatrix);
+void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
+    register u_long128 r7 asm("$7") = ((u_long128*)m1)[1];
+    register u_long128 r8 asm("$8") = ((u_long128*)m1)[2];
+    register u_long128 r9 asm("$9") = ((u_long128*)m1)[3];
+    register u_long128 r6 asm("$6") = ((u_long128*)m1)[0];
+
+    ((u_long128*)m0)[1] = r7;
+    ((u_long128*)m0)[2] = r8;
+    ((u_long128*)m0)[3] = r9;
+    ((u_long128*)m0)[0] = r6;
+}
 // void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 //     __asm__ __volatile__("	\n\
 // 	lq    $6,0x0(%1)		\n\
@@ -253,7 +350,10 @@ void sceVu0FTOI4Vector(sceVu0IVECTOR v0, sceVu0FVECTOR v1) {
 	lqc2    	vf4,0x0(%1)		\n\
 	vftoi4.xyzw	vf5,vf4			\n\
 	sqc2    	vf5,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1)
+                         : "memory");
 }
 
 void sceVu0FTOI0Vector(sceVu0IVECTOR v0, sceVu0FVECTOR v1) {
@@ -261,7 +361,10 @@ void sceVu0FTOI0Vector(sceVu0IVECTOR v0, sceVu0FVECTOR v1) {
 	lqc2    	vf4,0x0(%1)		\n\
 	vftoi0.xyzw	vf5,vf4			\n\
 	sqc2    	vf5,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1)
+                         : "memory");
 }
 
 void sceVu0ITOF4Vector(sceVu0FVECTOR v0, sceVu0IVECTOR v1) {
@@ -269,7 +372,10 @@ void sceVu0ITOF4Vector(sceVu0FVECTOR v0, sceVu0IVECTOR v1) {
 	lqc2    	vf4,0x0(%1)		\n\
 	vitof4.xyzw	vf5,vf4			\n\
 	sqc2    	vf5,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1)
+                         : "memory");
 }
 
 void sceVu0ITOF0Vector(sceVu0FVECTOR v0, sceVu0IVECTOR v1) {
@@ -277,7 +383,10 @@ void sceVu0ITOF0Vector(sceVu0FVECTOR v0, sceVu0IVECTOR v1) {
 	lqc2    	vf4,0x0(%1)		\n\
 	vitof0.xyzw	vf5,vf4			\n\
 	sqc2    	vf5,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1) : "memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1)
+                         : "memory");
 }
 
 void sceVu0UnitMatrix(sceVu0FMATRIX m0) {
@@ -291,11 +400,14 @@ void sceVu0UnitMatrix(sceVu0FMATRIX m0) {
 	sqc2   		vf5,0x20(%0)	\n\
 	sqc2   		vf6,0x10(%0)	\n\
 	sqc2   		vf7,0x0(%0)		\n\
-	": : "r" (m0) : "memory");
+	"
+                         :
+                         : "r"(m0)
+                         : "memory");
 }
 
 // Coefficients for sceVu0ecossin
-__asm__ ("				\n\
+__asm__("				\n\
 	.data				\n\
 	.align 4			\n\
 	S5432:				\n\
@@ -336,10 +448,59 @@ static void _sceVu0ecossin(f32 t) {
 _ecossin_01:                        \n\
 	vsubx.x     vf04,vf05,vf07      \n\
 _ecossin_02:                        \n\
-	": : :"$7","$8");
+	"
+                         :
+                         :
+                         : "$7", "$8");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixZ);
+void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 rz) {
+    __asm__ __volatile__("
+	.set noreorder
+	mtc1			$0,$f0
+	c.olt.s 		%2,$f0
+	li.s    $f0,1.57079637050628662109e0
+	bc1f    		_RotMatrixZ_01
+	nop
+	add.s   		%2,$f0,%2
+	j				_RotMatrixZ_02
+	li 				$7,1
+	.set reorder
+_RotMatrixZ_01:
+	sub.s   		%2,$f0,%2
+	move			$7,$0
+_RotMatrixZ_02:
+	mfc1    		$8,%2
+	qmtc2.ni   		$8,vf6
+	move			$6,$31
+	jal	_sceVu0ecossin
+	move			$31,$6
+	vmove.xyzw 		vf06,vf05
+	vmove.xyzw 		vf07,vf05
+	vmove.xyzw 		vf09,vf00
+	vsub.xyz 		vf09,vf09,vf09
+	vmr32.xyzw 		vf08,vf09
+	vsub.zw 		vf04,vf04,vf04
+	vaddx.y 		vf06,vf05,vf04
+	vaddy.x 		vf06,vf05,vf04
+	vsubx.x 		vf07,vf05,vf04
+	vaddy.y 		vf07,vf05,vf04
+	li    			$7,4
+	.set noreorder
+_loopRotMatrixZ:
+	lqc2    		vf4,0x0(%1)
+	vmulax.xyzw		ACC,vf6,vf4
+	vmadday.xyzw	ACC,vf7,vf4
+	vmaddaz.xyzw	ACC,vf8,vf4
+	vmaddw.xyzw		vf5,vf9,vf4
+	sqc2    		vf5,0x0(%0)
+	addi    		$7,-1
+	addi    		%1,0x10
+	bne				$0,$7,_loopRotMatrixZ
+	addi    		%0,0x10
+	.set reorder
+	": : "r" (m0) , "r" (m1), "f" (rz):"$6","$7","$8","$f0", "memory");
+}
 // void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 rz) {
 //     __asm__ __volatile__("					\n\
 // 	mtc1			$0,$f0					\n\
@@ -383,7 +544,54 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixZ);
 // 	": : "r" (m0) , "r" (m1), "f" (rz):"$6","$7","$8","$f0", "memory");
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixX);
+void sceVu0RotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 rx) {
+    __asm__ __volatile__("
+	.set noreorder
+	mtc1			$0,$f0
+	c.olt.s 		%2,$f0
+	li.s    $f0,1.57079637050628662109e0
+	bc1f    		_RotMatrixX_01
+	nop
+	add.s   		%2,$f0,%2
+	j				_RotMatrixX_02
+	li 				$7,1
+	.set reorder
+_RotMatrixX_01:
+	sub.s   		%2,$f0,%2
+	move			$7,$0
+_RotMatrixX_02:
+	mfc1    		$8,%2
+	qmtc2.ni   		$8,vf6
+	move			$6,$31
+	jal	_sceVu0ecossin
+	move			$31,$6
+	vmove.xyzw vf06,vf05
+	vmove.xyzw vf07,vf05
+	vmove.xyzw vf08,vf05
+	vmove.xyzw vf09,vf05
+	vaddw.x vf06,vf05,vf00
+	vaddw.w vf09,vf05,vf00
+	vsub.zw vf04,vf04,vf04
+	vaddx.z vf07,vf05,vf04
+	vaddy.y vf07,vf05,vf04
+	vsubx.y vf08,vf05,vf04
+	vaddy.z vf08,vf05,vf04
+	li    			$7,4
+	.set noreorder
+_loopRotMatrixX:
+	lqc2    		vf4,0x0(%1)
+	vmulax.xyzw		ACC,vf6,vf4
+	vmadday.xyzw	ACC,vf7,vf4
+	vmaddaz.xyzw	ACC,vf8,vf4
+	vmaddw.xyzw		vf5,vf9,vf4
+	sqc2    		vf5,0x0(%0)
+	addi    		$7,-1
+	addi    		%1,0x10
+	bne				$0,$7,_loopRotMatrixX
+	addi    		%0,0x10
+	.set reorder
+	": : "r" (m0) , "r" (m1), "f" (rx):"$6","$7","$8","$f0", "memory");
+}
 // void sceVu0RotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 rx) {
 //     __asm__ __volatile__("					\n\
 // 	mtc1			$0,$f0					\n\
@@ -428,7 +636,54 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixX);
 // 	": : "r" (m0) , "r" (m1), "f" (rx):"$6","$7","$8","$f0","memory");
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixY);
+void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 ry) {
+    __asm__ __volatile__("
+	.set noreorder
+	mtc1			$0,$f0
+	c.olt.s 		%2,$f0
+	li.s    $f0,1.57079637050628662109e0
+	bc1f    		_RotMatrixY_01
+	nop
+	add.s   		%2,$f0,%2
+	j				_RotMatrixY_02
+	li 				$7,1
+	.set reorder
+_RotMatrixY_01:
+	sub.s   		%2,$f0,%2
+	move			$7,$0
+_RotMatrixY_02:
+	mfc1    		$8,%2
+	qmtc2.ni   		$8,vf6
+	move			$6,$31
+	jal	_sceVu0ecossin
+	move			$31,$6
+	vmove.xyzw vf06,vf05
+	vmove.xyzw vf07,vf05
+	vmove.xyzw vf08,vf05
+	vmove.xyzw vf09,vf05
+	vaddw.y vf07,vf05,vf00
+	vaddw.w vf09,vf05,vf00
+	vsub.zw vf04,vf04,vf04
+	vsubx.z vf06,vf05,vf04
+	vaddy.x vf06,vf05,vf04
+	vaddx.x vf08,vf05,vf04
+	vaddy.z vf08,vf05,vf04
+	li    			$7,4
+	.set noreorder
+_loopRotMatrixY:
+	lqc2    		vf4,0x0(%1)
+	vmulax.xyzw		ACC,vf6,vf4
+	vmadday.xyzw	ACC,vf7,vf4
+	vmaddaz.xyzw	ACC,vf8,vf4
+	vmaddw.xyzw		vf5,vf9,vf4
+	sqc2    		vf5,0x0(%0)
+	addi    		$7,-1
+	addi    		%1,0x10
+	bne				$0,$7,_loopRotMatrixY
+	addi    		%0,0x10
+	.set reorder
+	": : "r" (m0) , "r" (m1), "f" (ry):"$6","$7","$8","$f0", "memory");
+}
 // void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 ry) {
 //     __asm__ __volatile__("					\n\
 // 	mtc1			$0,$f0					\n\
@@ -474,9 +729,9 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixY);
 // }
 
 void sceVu0RotMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR rot) {
-	sceVu0RotMatrixZ(m0, m1, rot[2]);
-	sceVu0RotMatrixY(m0, m0, rot[1]);
-	sceVu0RotMatrixX(m0, m0, rot[0]);
+    sceVu0RotMatrixZ(m0, m1, rot[2]);
+    sceVu0RotMatrixY(m0, m0, rot[1]);
+    sceVu0RotMatrixX(m0, m0, rot[0]);
 }
 
 void sceVu0ClampVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 min, f32 max) {
@@ -489,7 +744,10 @@ void sceVu0ClampVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 min, f32 max) {
 	vmaxx.xyzw 	$vf06,$vf06,$vf04	\n\
 	vminix.xyzw $vf06,$vf06,$vf05	\n\
 	sqc2    	vf6,0x0(%0)			\n\
-	": : "r" (v0) , "r" (v1), "f" (min), "f" (max):"$8","$9","memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "f"(min), "f"(max)
+                         : "$8", "$9", "memory");
 }
 
 void sceVu0CameraMatrix(sceVu0FMATRIX m, sceVu0FVECTOR p, sceVu0FVECTOR zd, sceVu0FVECTOR yd) {
@@ -509,18 +767,18 @@ void sceVu0NormalLightMatrix(sceVu0FMATRIX m, sceVu0FVECTOR l0, sceVu0FVECTOR l1
     sceVu0FVECTOR t;
 
     sceVu0ScaleVector(t, l0, -1);
-	sceVu0Normalize(m[0], t);
+    sceVu0Normalize(m[0], t);
 
     sceVu0ScaleVector(t, l1, -1);
-	sceVu0Normalize(m[1], t);
+    sceVu0Normalize(m[1], t);
 
     sceVu0ScaleVector(t, l2, -1);
-	sceVu0Normalize(m[2], t);
+    sceVu0Normalize(m[2], t);
 
-	m[3][0] = m[3][1] = m[3][2] = 0.0f;
-	m[3][3] = 1.0f;
+    m[3][0] = m[3][1] = m[3][2] = 0.0f;
+    m[3][3] = 1.0f;
 
-	sceVu0TransposeMatrix(m, m);
+    sceVu0TransposeMatrix(m, m);
 }
 
 void sceVu0LightColorMatrix(sceVu0FMATRIX m, sceVu0FVECTOR c0, sceVu0FVECTOR c1, sceVu0FVECTOR c2, sceVu0FVECTOR a) {
@@ -531,8 +789,8 @@ void sceVu0LightColorMatrix(sceVu0FMATRIX m, sceVu0FVECTOR c0, sceVu0FVECTOR c1,
 }
 
 INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ViewScreenMatrix);
-// void sceVu0ViewScreenMatrix(sceVu0FMATRIX m, f32 scrz, f32 ax, f32 ay, 
-// 	f32 cx, f32 cy, f32 zmin, f32 zmax, f32 nearz, f32 farz) 
+// void sceVu0ViewScreenMatrix(sceVu0FMATRIX m, f32 scrz, f32 ax, f32 ay,
+// 	f32 cx, f32 cy, f32 zmin, f32 zmax, f32 nearz, f32 farz)
 // {
 // 	sceVu0FMATRIX mt;
 
@@ -580,7 +838,34 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0DropShadowMatrix);
 //     }
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotTransPersN);
+void sceVu0RotTransPersN(sceVu0IVECTOR* v0, sceVu0FMATRIX m0, sceVu0FVECTOR* v1, s32 n, s32 mode) {
+    __asm__ __volatile__("			
+	.set noreorder					
+	lqc2			vf4,0x0(%1)		
+	lqc2			vf5,0x10(%1)	
+	lqc2			vf6,0x20(%1)	
+	lqc2			vf7,0x30(%1)	
+_rotTPN_loop:						
+	lqc2			vf8,0x0(%2)		
+	vmulax.xyzw     ACC, vf4,vf8	
+	vmadday.xyzw    ACC, vf5,vf8	
+	vmaddaz.xyzw	ACC, vf6,vf8	
+	vmaddw.xyzw		vf9,vf7,vf8		
+	vdiv    		Q,vf0w,vf9w		
+	vwaitq							
+	vmulq.xyz		vf9,vf9,Q		
+	beqz			%4,_rotTPN		
+	vftoi4.xyzw		vf10,vf9		
+	vftoi0.zw		vf10,vf9		
+_rotTPN:							
+	sqc2			vf10,0x0(%0)	
+	addi			%3,-1			
+	addi			%2,0x10			
+	bne		$0,%3,_rotTPN_loop		
+	addi			%0,0x10			
+	.set reorder					
+	": : "r" (v0) , "r" (m0) ,"r" (v1), "r" (n) ,"r" (mode):"memory");
+}
 // void sceVu0RotTransPersN(sceVu0IVECTOR* v0, sceVu0FMATRIX m0, sceVu0FVECTOR* v1, s32 n, s32 mode) {
 //     __asm__ __volatile__("			\n\
 // 	lqc2			vf4,0x0(%1)		\n\
@@ -627,7 +912,10 @@ void sceVu0RotTransPers(sceVu0IVECTOR v0, sceVu0FMATRIX m0, sceVu0FVECTOR v1, s3
 	vftoi0.zw		vf10,vf9		\n\
 _rotTP:								\n\
 	sqc2	vf10,0x0(%0)			\n\
-	": : "r" (v0) , "r" (m0) ,"r" (v1), "r" (mode):"memory");
+	"
+                         :
+                         : "r"(v0), "r"(m0), "r"(v1), "r"(mode)
+                         : "memory");
 }
 
 void sceVu0CopyVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
@@ -648,7 +936,10 @@ void sceVu0InterVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2, 
 	vmulax.xyz	ACC,vf4,vf6			\n\
 	vmaddx.xyz	vf9,vf5,vf8			\n\
 	sqc2    	vf9,0x0(%0)			\n\
-	": : "r" (v0) , "r" (v1), "r" (v2), "f" (r) : "$8","memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "r"(v2), "f"(r)
+                         : "$8", "memory");
 }
 
 void sceVu0ScaleVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 s) {
@@ -658,10 +949,33 @@ void sceVu0ScaleVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 s) {
 	qmtc2		$8,vf5			\n\
 	vmulx.xyz	vf4,vf4,vf5		\n\
 	sqc2		vf4,0x0(%0)		\n\
-	": : "r" (v0) , "r" (v1), "f" (s):"$8","memory");
+	"
+                         :
+                         : "r"(v0), "r"(v1), "f"(s)
+                         : "$8", "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen);
+s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
+    register s32 ret;
+
+    __asm__ __volatile__("
+	vsub.xyzw	vf04,vf00,vf00			
+	li     		%0,0x4580000045800000	
+	lqc2    	vf07,0x0(%1)			
+	qmtc2.ni	%0,vf06					
+	ctc2.ni		$0,$vi16				
+	vsub.xyw	vf05,vf07,vf04			
+	vsub.xy		vf05,vf06,vf07			
+	vnop			    				
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	cfc2.ni	%0,$vi16					
+	":"=&r"(ret): "r" (v0));
+
+    return ret & 0xC0;
+}
 // s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
 //     register s32 ret;
 
@@ -685,7 +999,33 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen);
 //     return ret;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen3);
+s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
+    register s32 ret;
+
+    __asm__ __volatile__("				
+	vsub.xyzw	vf04,vf00,vf00			
+	li			%0,0x4580000045800000	
+	lqc2    	vf06,0x0(%1)			
+	lqc2    	vf08,0x0(%2)			
+	lqc2    	vf09,0x0(%3)			
+	qmtc2.ni	%0,vf07					
+	ctc2.ni		$0,$vi16				
+	vsub.xyw	vf05,vf06,vf04			
+	vsub.xy 	vf05,vf07,vf06 			
+	vsub.xyw	vf05,vf08,vf04			
+	vsub.xy 	vf05,vf07,vf08			
+	vsub.xyw	vf05,vf09,vf04			
+	vsub.xy 	vf05,vf07,vf09			
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	cfc2.ni    	%0,$vi16				
+	":"=&r"(ret): "r" (v0), "r" (v1), "r" (v2) );
+
+    return ret & 0xC0;
+}
 // s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 //     register s32 ret;
 
@@ -715,7 +1055,49 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen3);
 //     return ret;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipAll);
+s32 sceVu0ClipAll(sceVu0FVECTOR minv, sceVu0FVECTOR maxv, sceVu0FMATRIX ms, sceVu0FVECTOR* vm, s32 n) {
+    register s32 ret;
+    __asm__ __volatile__("
+	.set noreorder
+	lqc2		vf8,0x0(%4)
+	lqc2		vf4,0x0(%3)
+	lqc2		vf5,0x10(%3)
+	lqc2		vf6,0x20(%3)
+	lqc2		vf7,0x30(%3)
+	lqc2		vf9,0x0(%1)
+	lqc2		vf10,0x0(%2)
+	lqc2		vf11,0x0(%1)
+	lqc2		vf12,0x0(%2)
+loop_clip_all:
+	vmulax.xyzw		ACC,vf4,vf8
+	vmadday.xyzw	ACC,vf5,vf8
+	vmaddaz.xyzw	ACC,vf6,vf8
+	vmaddw.xyzw		vf8,vf7,vf8
+	vmulw.xyz		vf11,vf9,vf8
+	vmulw.xyz		vf12,vf10,vf8
+	vnop
+	vnop
+	ctc2.ni    	$0,$vi16
+	vsub.xyw	vf11,vf8,vf11
+	vsub.xyw	vf12,vf12,vf8
+	vmove.w		vf11,vf9
+	vmove.w		vf12,vf10
+	vnop
+	addi		%4,0x10
+	lqc2    	vf8,0x0(%4)
+	addi		%5,-1
+	cfc2.ni    	%0,$vi16
+	andi		%0,%0,0xc0
+	beqz		%0,end_clip_all
+	nop
+	bne			$0,%5,loop_clip_all
+	nop
+	addi		%0,$0,1
+end_clip_all:
+	.set reorder
+	":"=&r"(ret): "r" (minv),"r" (maxv),"r" (ms),"r" (vm),"r" (n));
+    return ret;
+}
 // s32 sceVu0ClipAll(sceVu0FVECTOR minv, sceVu0FVECTOR maxv, sceVu0FMATRIX ms, sceVu0FVECTOR *vm, s32 n) {
 //     register s32 ret;
 //     __asm__ __volatile__("			\n\
@@ -756,18 +1138,38 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipAll);
 //     return ret;
 // }
 
-static u32 init_vif_regs[8] __attribute__((aligned (16))) = {
-	0x01000404, // STCYCL
-	0x20000000, // STMASK
-	0x00000000, // DATA
-	0x05000000, // STMOD
-	0x04000000, // ITOP
-	0x00000000, // NOP
-	0x00000000, // NOP
-	0x00000000, // NOP
+static u32 init_vif_regs[8] __attribute__((aligned(16))) = {
+    0x01000404, // STCYCL
+    0x20000000, // STMASK
+    0x00000000, // DATA
+    0x05000000, // STMOD
+    0x04000000, // ITOP
+    0x00000000, // NOP
+    0x00000000, // NOP
+    0x00000000, // NOP
 };
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVpu0Reset);
+void sceVpu0Reset(void) {
+    DPUT_VIF0_MARK(0);
+    DPUT_VIF0_ERR(0);
+    DPUT_VIF0_FBRST(1); // VIF1 reset
+    __asm__ __volatile__("
+	.set noreorder
+	cfc2.ni	$8, $vi28
+	ori  	$8, $8, 0x0002
+	ctc2.ni	$8, $vi28
+	sync.p
+	.set reorder
+	":::"$8"); /* VU1 reset */
+    {
+        register u_long128 t0 asm("$2") = *(u_long128*)&(init_vif_regs[0]);
+        DPUT_VIF0_FIFO(t0);
+    }
+    {
+        register u_long128 t1 asm("$3") = *(u_long128*)&(init_vif_regs[4]);
+        *(u_long128*)VIF0_FIFO = t1;
+    }
+}
 // void sceVpu0Reset(void) {
 //     static u32 init_vif_regs[8] __attribute__((aligned (16))) = {
 // 	0x01000404, // STCYCL
