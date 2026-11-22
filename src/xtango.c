@@ -596,7 +596,22 @@ s32 func_001F06E8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0730);
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F07A0);
+s32 func_001F07A0(s32 arg0) {
+    s32 count = 0;
+    s32 i;
+
+    for (i = 0; i < 48; i++) {
+        s32 c = ((XTangoUnk3010F8*)D_003010F8)->unk_599[i];
+
+        if (c == 0) {
+            break;
+        }
+        if ((c & ~0x80) == arg0) {
+            count++;
+        }
+    }
+    return count;
+}
 
 XBravo* func_001F0808(s32 arg0) {
     return func_00147AE8(arg0);
