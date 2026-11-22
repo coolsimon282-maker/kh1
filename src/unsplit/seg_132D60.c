@@ -304,7 +304,12 @@ s32 func_00236FD0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236FD8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237008);
+// func_00237008 (src/unsplit/seg_132D60.c)
+u64* func_00237008(u64 arg0, u64 arg1, u64* arg2) {
+    arg2[0] = arg1;
+    arg2[1] = arg0;
+    return arg2 + 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237018);
 
