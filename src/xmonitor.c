@@ -15,7 +15,39 @@ typedef struct {
     MonitorSub sub[3];
 } Monitor;
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00246B50);
+typedef struct {
+    /* 0x00 */ s32 time;
+    /* 0x04 */ u8 unk_04[0xC];
+    /* 0x10 */ f32 col[4];
+} MonitorKey; // size = 0x20
+
+extern char D_00491848[]; // "ttlib/ui.c"
+extern char D_00491858[];
+void __assert(const char* file, int line, const char* expr);
+
+void func_00246B50(Monitor* m, s32 dt) {
+    MonitorSub* s;
+
+    if ((*(u64*)&m->unk60 & 0xA) == 0xA) {
+        s = &m->sub[0];
+        if (s == NULL) {
+            __assert(D_00491848, 14, D_00491858);
+        }
+        if (s->unk4 < s->unk8 - 1) {
+            s->unk0 += dt;
+            do {
+                s32 t = ((MonitorKey*)s->unkC)[s->unk4].time;
+
+                if (s->unk0 < t) {
+                    return;
+                }
+                s->unk0 -= t;
+                s->unk4++;
+            } while (s->unk4 != s->unk8 - 1);
+            m->sub[0].unk10 |= 4;
+        }
+    }
+}
 
 void func_00246C28(Monitor* m) {
     m->unk60 |= 8;
@@ -34,7 +66,28 @@ void func_00246C60(Monitor* m) {
     s->unk10 &= ~4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00246C80);
+void func_00246C80(Monitor* m, s32* out) {
+    MonitorSub* s = &m->sub[0];
+    MonitorKey* k;
+    f32 r;
+    s32 i;
+
+    if (s->unk4 < s->unk8 - 1) {
+        k = (MonitorKey*)(s->unk4 * 32 + s->unkC);
+        r = (f32)s->unk0 / (f32)k->time;
+        for (i = 0; i < 4; i++) {
+            out[i] = k->col[i] + (k[1].col[i] - k->col[i]) * r;
+        }
+    } else {
+        MonitorKey* e = &((MonitorKey*)s->unkC)[s->unk4];
+
+        for (i = 0; i < 4; i++) {
+            s32* o = &out[i];
+
+            *o = e->col[i];
+        }
+    }
+}
 
 s32 func_00246D60(Monitor* m) {
     return m->sub[0].unk10;
@@ -65,7 +118,29 @@ s32 func_00247028(Monitor* m) {
     return m->sub[1].unk10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247030);
+void func_00247030(Monitor* m, s32 dt) {
+    MonitorSub* s;
+
+    if ((*(u64*)&m->unk60 & 0x14) == 0x14) {
+        s = &m->sub[2];
+        if (s == NULL) {
+            __assert(D_00491848, 199, D_00491858);
+        }
+        if (s->unk4 < s->unk8 - 1) {
+            s->unk0 += dt;
+            do {
+                s32 t = ((MonitorKey*)s->unkC)[s->unk4].time;
+
+                if (s->unk0 < t) {
+                    return;
+                }
+                s->unk0 -= t;
+                s->unk4++;
+            } while (s->unk4 != s->unk8 - 1);
+            m->sub[2].unk10 |= 4;
+        }
+    }
+}
 
 void func_00247108(Monitor* m) {
     MonitorSub* s = &m->sub[2];

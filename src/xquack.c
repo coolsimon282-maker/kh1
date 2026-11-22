@@ -54,7 +54,34 @@ void* func_001EDB68(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDBC0);
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDD20);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ u8 rate[4]; // big-endian sample rate
+    /* 0x14 */ u8 unk_14[0xA];
+    /* 0x1E */ u8 unk_1E;
+    /* 0x1F */ u8 unk_1F;
+} XQuackVag;
+
+void* func_001EDD20(XQuackVag* vag, s32 arg1, s32 arg2, s32 arg3) {
+    s32 base = 48000;
+    s32 rate;
+    s32 pitch;
+    u8 e;
+    u8 f;
+
+    rate = vag->rate[0] << 24;
+    rate |= vag->rate[1] << 16;
+    rate |= vag->rate[2] << 8;
+    rate |= vag->rate[3];
+    pitch = (rate << 12) / base;
+    e = vag->unk_1E;
+    f = vag->unk_1F;
+    if (!(D_003DE5B8 & 4)) {
+        func_001EE0B8(0x12, (s32)vag, arg1, arg2, arg3, pitch, e, f);
+        return D_0062D980;
+    }
+    return D_0062D980;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDDC0);
 
@@ -109,7 +136,28 @@ s32 func_001EE090(void) {
     return D_00639880;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EE0B8);
+extern s32 D_00635640[0x400][8];
+extern s32 D_003E3CB0;
+extern char D_00490928[];
+int printf(const char*, ...);
+
+void func_001EE0B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+    s32 n = D_003E3CB0;
+
+    D_00635640[n][0] = arg0;
+    D_00635640[n][1] = arg1;
+    D_00635640[n][2] = arg2;
+    D_00635640[n][3] = arg3;
+    D_00635640[n][4] = arg4;
+    D_00635640[n][5] = arg5;
+    D_00635640[n][6] = arg6;
+    D_00635640[n][7] = arg7;
+    D_003E3CB0 = n + 1;
+    if (n + 1 >= 0x400) {
+        D_003E3CB0 = 0;
+        printf(D_00490928);
+    }
+}
 
 void* func_001EE188(void* arg0) {
     D_0062D980 = arg0;
@@ -307,4 +355,17 @@ void* func_001EEC00(void* arg0) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EEC58);
+void* func_001EEC58(void) {
+    s32 i, j;
+
+    if (D_00635640[0][0] != -1) {
+        sceSifCallRpc(&D_003DE5C0, 30, 0, D_00635640, 0x2000, D_00635640, 0x2000, NULL, NULL);
+        D_003E3CB0 = 0;
+        for (i = 0; i < 0x400; i++) {
+            for (j = 7; j >= 0; j--) {
+                D_00635640[i][j] = -1;
+            }
+        }
+    }
+    return D_0062D980;
+}

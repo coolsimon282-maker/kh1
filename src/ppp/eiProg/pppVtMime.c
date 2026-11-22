@@ -7,7 +7,28 @@ typedef struct {
     /* 0xC */ pppFVECTOR* lpvt;
 } VVtMime;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppVtMime", pppVtMimeCalc);
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ u8 unk_04[8];
+    /* 0x0C */ f32 inp;
+    /* 0x10 */ f32 dinp;
+    /* 0x14 */ f32 ddinp;
+} PVtMime;
+
+void pppVtMimeCalc(pppPObject* pobj, PVtMime* p, pppCtrlTable* ctbl) {
+    VVtMime* v = (VVtMime*)&pobj->val[ctbl->useVal[0]];
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    v->dinp += v->ddinp;
+    v->inp += v->dinp;
+    if (p->cdt.time == pobj->time) {
+        v->inp += p->inp;
+        v->dinp += p->dinp;
+        v->ddinp += p->ddinp;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppVtMime", pppVtMimeDraw);
 

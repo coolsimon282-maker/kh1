@@ -110,7 +110,16 @@ u32 func_001EF300(void) {
     return func_001EF210() / 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF330);
+void func_001EF330(u32* h, u32* m, u32* s, u32* f) {
+    u32 t = func_001EF210();
+
+    *h = t / 216000;
+    t %= 216000;
+    *m = t / 3600;
+    t %= 3600;
+    *s = t / 60;
+    *f = t % 60;
+}
 
 u32 func_001EF3D0(void) {
     return func_001EF210() / 216000;
@@ -124,7 +133,9 @@ u32 func_001EF448(void) {
     return (func_001EF210() / 60) % 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF488);
+u32 func_001EF488(void) {
+    return (f32)(func_001EF210() % 60) * (100.0f / 60.0f);
+}
 
 #ifdef VERSION_FM
 void fm_func_001EE428(void) {
@@ -181,8 +192,41 @@ void func_001EF840(void) {
 }
 
 #ifdef VERSION_FM
-void func_001EF878(void);
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF878);
+void func_00233610(void);
+void func_00233A80(void);
+void fm_func_001EFAA8(void);
+void func_001F2EB8(void);
+void func_0020D748(void);
+void func_0022BD20(void);
+void func_0022D138(void);
+void func_0022D728(void);
+void func_0022DB90(void);
+void func_0022DFD0(void);
+void func_0022E458(void);
+void func_0022EBE8(void);
+void func_0022EBF0(void);
+void func_002319C0(void);
+void func_00232790(void);
+void func_00232AC8(void);
+void func_001EF878(void) {
+    func_00233610();
+    func_00233A80();
+    fm_func_001EFAA8();
+    func_001F2EB8();
+    func_001F0C28();
+    func_0020D748();
+    func_0022BD20();
+    func_0022D138();
+    func_0022D728();
+    func_0022DB90();
+    func_0022DFD0();
+    func_0022E458();
+    func_0022EBE8();
+    func_0022EBF0();
+    func_002319C0();
+    func_00232790();
+    func_00232AC8();
+}
 #else
 void func_001EF878(void) {
     func_00230068();
@@ -844,7 +888,30 @@ s32 func_001F0938(s32 arg0) {
     return D_003E3E50[arg0].unk_00;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0960);
+s32 func_001F0960(s32 arg0) {
+    XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
+    s32 sum = 0;
+    s32 i = 0;
+    u8* p = chr->unk_40;
+    s32 c;
+
+loop:
+    if (i >= 48) {
+        goto end;
+    }
+    i++;
+    c = *p++;
+    if (c == 0) {
+        goto end;
+    }
+    if (c & 0x80) {
+        goto loop;
+    }
+    sum += func_001F08A0(c);
+    goto loop;
+end:
+    return sum;
+}
 
 s32 func_001F0A00(s32 arg0) {
     XTangoUnkE4b* entry = &D_003E3D70[arg0];
@@ -890,7 +957,25 @@ void func_001F0AD0(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0B10);
+extern s32 D_003E3D6C;
+
+void func_001F0B10(void) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        if (D_003010F8->unk_48E[i] == 0xFF) {
+            break;
+        }
+    }
+    D_003E3D6C = i;
+    D_003DE6A0 = i;
+    if (D_003010F8->unk_48E[3] != 0xFF) {
+        D_003DE6A0 = i + 1;
+    }
+    for (i = 0; i < 10; i++) {
+        func_00141B10(i, (s32*)&D_003E3D70[i]);
+    }
+}
 
 s32 func_001F0BD8(s32 arg0) {
     s32 val = func_0013DA88(D_003010F8->unk_48E[arg0]);

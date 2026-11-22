@@ -274,7 +274,27 @@ void func_001128D8(s32 arg0) {
     D_002B9310 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001128F0);
+extern s32 D_002A050C;
+extern s32 D_002B868C;
+
+void func_001128F0(s32 arg0) {
+    char str[0x40];
+    s32 one = 1;
+    s32 id;
+
+    if (((D_002C1EA8 >> 13) & 1) != one) {
+        id = D_002BCDAC[D_002BCDA0[arg0].unk_00].unk_00;
+        if (D_002B868C != id) {
+            D_002B930C = one;
+            worldfile_getBinImgName(id);
+            strcpy(str, worldBinImgFile);
+            strcat(str, ".img");
+            D_002A050C = func_00155ED8(0x34, 8);
+            D_002A050C = func_001133E0(D_002A050C, 0x80);
+            func_00120590(str, D_002A050C, (s32 (*)(void))func_001128D8, 0);
+        }
+    }
+}
 // extern s32 D_002A050C;
 // extern s32 D_002B868C;
 // extern s32 D_002B92FC;
@@ -1101,7 +1121,30 @@ void func_00114440(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001144C8);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xD0];
+} XBladeD0;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x90];
+} XBlade90;
+
+extern XBladeD0 D_002A6C60[64];
+extern XBladeD0 D_002AA060[64];
+extern XBlade90 D_002AD460[2][64];
+extern XBlade90 D_002B1C60[2][64];
+s32 func_00108A60(s32 idx, s32 type, void* arg2, void* arg3, void* arg4);
+
+void func_001144C8(void) {
+    s32 i;
+
+    D_004D2AAC = 0;
+    D_004D2AB0 = 0;
+    for (i = 0; i < 64; i++) {
+        func_00108A60(i, 1, &D_002A6C60[i], &D_002AD460[0][i], &D_002AD460[1][i]);
+        func_00108A60(i, 5, &D_002AA060[i], &D_002B1C60[0][i], &D_002B1C60[1][i]);
+    }
+}
 
 s32 func_001145B0(XBladeHdr* arg0) {
     s32* offset = &arg0->unk_18;
@@ -1158,11 +1201,120 @@ void func_00114800(void) {
     D_004D2AB0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114818);
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ void* unk_10;
+} XBladeTask;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001149B0);
+typedef struct {
+    /* 0x00 */ s32 unk_00[4];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ void* unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20[4];
+    /* 0x30 */ s32 unk_30[4];
+    /* 0x40 */ s32 unk_40[4];
+} XBladePkt; // size = 0x50
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114A50);
+typedef struct {
+    /* 0x00 */ s32 (*unk_00)[4];
+    /* 0x04 */ u8 unk_04[0xC];
+} XBlade3044D8; // size = 0x10
+
+extern XBladePkt D_004D9380[2];
+extern XBladePkt D_004D9420[][2];
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XBladeMatTag;
+
+typedef struct {
+    /* 0x00 */ XBladeMatTag tag;
+    /* 0x08 */ s32 m[2][4][4];
+    /* 0x88 */ s32 unk_88[2];
+} XBladeMatEnt; // size = 0x90
+
+extern XBladeMatEnt D_004DBC20[2][64];
+extern XBladeMatTag D_0048BFD0;
+
+extern XBladePkt D_0048C630;
+extern XBladePkt D_0048C690;
+extern s32 D_00486430[][4];
+extern s32 D_0046BE90[4];
+extern s32 D_00486300[4];
+
+void func_00114818(XBladePkt* pkt, s32 idx, s32 n) {
+    s32 k;
+
+    if (idx == -1) {
+        pkt[0].unk_14 = D_0048C630.unk_14;
+        pkt[1].unk_14 = D_0048C690.unk_14;
+    } else {
+        pkt[0].unk_14 = &D_004DBC20[0][idx];
+        pkt[1].unk_14 = &D_004DBC20[1][idx];
+    }
+    pkt[0].unk_10 = D_0048C630.unk_10;
+    pkt[0].unk_18 = D_0048C630.unk_18;
+    pkt[0].unk_1C = D_0048C630.unk_1C;
+    pkt[1].unk_10 = D_0048C690.unk_10;
+    pkt[1].unk_18 = D_0048C690.unk_18;
+    pkt[1].unk_1C = D_0048C690.unk_1C;
+    pkt[0].unk_20[0] = D_0048C630.unk_20[0];
+    pkt[0].unk_20[1] = D_0048C630.unk_20[1];
+    pkt[0].unk_20[2] = D_0048C630.unk_20[2];
+    pkt[0].unk_20[3] = D_0048C630.unk_20[3];
+    pkt[1].unk_20[0] = D_0048C690.unk_20[0];
+    pkt[1].unk_20[1] = D_0048C690.unk_20[1];
+    pkt[1].unk_20[2] = D_0048C690.unk_20[2];
+    pkt[1].unk_20[3] = D_0048C690.unk_20[3];
+    for (k = 0; k < 2; k++) {
+        pkt[k].unk_00[0] = D_00486430[n][0];
+        pkt[k].unk_00[1] = D_00486430[n][1];
+        pkt[k].unk_00[2] = D_00486430[n][2];
+        pkt[k].unk_00[3] = D_00486430[n][3];
+        pkt[k].unk_40[0] = D_0046BE90[0];
+        pkt[k].unk_40[1] = D_0046BE90[1];
+        pkt[k].unk_40[2] = D_0046BE90[2];
+        pkt[k].unk_40[3] = D_0046BE90[3];
+        pkt[k].unk_30[0] = D_00486300[0];
+        pkt[k].unk_30[1] = D_00486300[1];
+        pkt[k].unk_30[2] = D_00486300[2];
+        pkt[k].unk_30[3] = D_00486300[3];
+    }
+}
+
+// Two 4x4 matrices per entry (copied as words), [2 buffers][64 entries]; D_004DBC20 holds a header 8 bytes before.
+extern s32 D_00351BD0;
+extern s32 D_004DBC28[][64][36];
+extern s32 D_002BC170[4][4];
+
+void func_001149B0(s32 idx, s32 src[4][4]) {
+    s32 i, j, k = 0;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            D_004DBC28[D_00351BD0][idx][k] = src[i][j];
+            D_004DBC28[D_00351BD0][idx][k + 16] = D_002BC170[i][j];
+            k++;
+        }
+    }
+}
+
+void func_00114A50(void) {
+    s32 i, j;
+
+    for (i = 0; i < 64; i++) {
+        for (j = 0; j < 2; j++) {
+            D_004DBC20[j][i].tag.unk_00 = D_0048BFD0.unk_00;
+            D_004DBC20[j][i].tag.unk_04 = D_0048BFD0.unk_04;
+        }
+    }
+    func_00114818(D_004D9380, -1, 2);
+    for (j = 0; j < 64; j++) {
+        func_00114818(D_004D9420[j], j, 2);
+    }
+}
 
 void func_00114B18(f32* arg0, s32 arg1) {
     if (arg1 == -1) {
@@ -1172,7 +1324,18 @@ void func_00114B18(f32* arg0, s32 arg1) {
     func_0011AED0(arg1, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114B50);
+extern XBlade3044D8 D_003044D8[];
+s32 func_00108D90(XBladeTask*);
+XBladeTask* func_0015ED80(s32 arg0, s32 (*arg1)(XBladeTask*));
+
+void func_00114B50(s32 arg0, s32 idx) {
+    if (idx == -1) {
+        func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9380[D_00351BD0];
+    } else {
+        func_001149B0(idx, D_003044D8[idx].unk_00);
+        func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9420[idx][D_00351BD0];
+    }
+}
 
 s32 func_00114C18(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {
