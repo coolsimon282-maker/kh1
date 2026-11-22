@@ -1206,7 +1206,28 @@ void func_001D19C8(void) {
     D_002BC080[3] += ((XGiantMountainX*)&D_003854E0)->unk_312C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1A20);
+// 0x3070 flags as a bitfield: keeps the flag store ordered against the s32 loads
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3070];
+    /* 0x3070 */ u64 unk_3070_0 : 38;
+    u64 unk_3070_38 : 1;
+    u64 unk_3070_39 : 25;
+    /* 0x3078 */ u8 unk_3078[0xB0];
+    /* 0x3128 */ s32 unk_3128;
+    /* 0x312C */ s32 unk_312C;
+} XGiantMountainD;
+
+extern s32 D_002BC08C;
+
+s32 func_001D1A20(Script* arg0) {
+    XGiantMountainD* g = (XGiantMountainD*)&D_003854E0;
+
+    g->unk_3128 = arg0->unk_174[arg0->unk_174[3] + 4];
+    g->unk_312C = (arg0->unk_174[arg0->unk_174[3] + 3] - D_002BC08C) / g->unk_3128;
+    g->unk_3070_38 = 1;
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 typedef struct {
     /* 0x0000 */ u8 unk_0000[0x3130];
