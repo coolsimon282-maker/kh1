@@ -92,7 +92,25 @@ void func_0010CBF8(XSauceAnim* p, s32 n) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CC80);
+void func_0010CC80(XSauceAnim* p, s32 n) {
+    XSauceKey* k;
+    s32 v;
+    f32 d;
+    p->unk_18 = 0.0f;
+    if (n > 0) {
+        d = p->unk_1C;
+        k = &p->unk_20[1];
+        do {
+            v = k->unk_0A + d;
+            if (v < 0) {
+                k->unk_0A = 0;
+            } else {
+                k->unk_0A = v;
+            }
+            k++;
+        } while (--n);
+    }
+}
 
 s32 func_0010CCD8(void) {
     if (D_002C2108 & 1) {
