@@ -1,3 +1,10 @@
 # Files reserved for the local Qwen agent (worktree kh1-wt/q1): do not assign to Claude agents
 xhumungus
 xkinetic
+unsplit/seg_132D60
+# plus these single functions (twin jobs, see kh1-wt/q1/qwen/twins.txt):
+# xtango: func_001EF530 func_001EF5C8 func_001EF668
+# ppp/ryjProg/pppRyjDrawMatrixWorldDttFr: func_001A3F98 func_001A4538
+# ppp/ryjProg/pppRyjDrawShipoly: func_0019C618 func_0019C460
+# ppp/keProg/pppKeBornRnd5: func_0018F780   ppp/keProg/pppKeBornPtCmpl: func_0018FE28
+# ppp/keProg/pppKeShpTail3: pppKeShpTail3Calc

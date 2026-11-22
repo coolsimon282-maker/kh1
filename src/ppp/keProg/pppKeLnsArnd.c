@@ -1,6 +1,37 @@
 #include "ppp/pppKeLns.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsArnd", pppKeLnsArndDraw);
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ u8 col[4];
+    /* 0x0C */ f32 scale;
+} PKeLnsArndDraw;
+
+typedef struct {
+    /* 0x00 */ void* shp;
+    /* 0x04 */ u8 col[4];
+    /* 0x08 */ f32 (*mat)[4];
+    /* 0x0C */ f32 scale;
+    /* 0x10 */ f32* scl;
+} KeLnsArndArg;
+
+void func_00193978(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl);
+void func_001A8060(KeLnsArndArg* arg, s32 arg1);
+
+void pppKeLnsArndDraw(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl) {
+    KeLnsArndArg arg;
+
+    func_00193978(pobj, p, ctbl);
+    arg.col[0] = p->col[0] * ppvMng->colorR;
+    arg.col[1] = p->col[1] * ppvMng->colorG;
+    arg.col[2] = p->col[2] * ppvMng->colorB;
+    arg.col[3] = p->col[3] * ppvMng->colorA;
+    arg.mat = ppvScreenMatrix;
+    arg.scl = ppvParScl;
+    arg.scale = p->scale;
+    arg.shp = &pobj->val[ctbl->useVal[0]];
+    func_001A8060(&arg, 0);
+}
 
 void pppKeLnsArndCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsArnd* arnd = (KeLnsArnd*)&pobj->val[ctbl->useVal[0]];

@@ -1,6 +1,43 @@
 #include "ppp/pppKeLns.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsCrn", pppKeLnsCrnDraw);
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ u8 col[4];
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+} PKeLnsCrnDraw;
+
+typedef struct {
+    /* 0x00 */ KeLnsCrn* crn;
+    /* 0x04 */ u8 col[4];
+    /* 0x08 */ sceVu0FVECTOR* scr;
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ f32* scl;
+} KeLnsCrnDrawInfo;
+
+void func_00193E80(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl);
+void func_001A8248(KeLnsCrnDrawInfo* info, s32 arg1);
+
+void pppKeLnsCrnDraw(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl) {
+    KeLnsCrnDrawInfo info;
+
+    func_00193E80(pobj, p, ctbl);
+    info.col[0] = p->col[0] * ppvMng->colorR;
+    info.col[1] = p->col[1] * ppvMng->colorG;
+    info.col[2] = p->col[2] * ppvMng->colorB;
+    info.col[3] = p->col[3] * ppvMng->colorA;
+    info.unk_10 = p->unk_10;
+    info.unk_12 = p->unk_12;
+    info.scr = ppvScreenMatrix;
+    info.unk_0C = p->unk_0C;
+    info.crn = (KeLnsCrn*)&pobj->val[ctbl->useVal[0]];
+    info.scl = ppvParScl;
+    func_001A8248(&info, 0);
+}
 
 void pppKeLnsCrnCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsCrn* crn = (KeLnsCrn*)&pobj->val[ctbl->useVal[0]];

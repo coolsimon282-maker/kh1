@@ -53,8 +53,36 @@ extern void func_00233968();
 extern void func_00248530();
 
 #ifdef VERSION_FM
-void func_001090D8(void);
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_001090D8);
+extern u32 D_002BBDE4;
+extern char D_002B6460[];
+extern DiskManager D_0046A688; // disk_Mgr
+extern char* D_002B6478;
+extern s32 D_002BC73C;
+void fm_func_00110068(void);
+KingdomFile* func_00120190(char* filename); // cdvd_FindFile
+
+void func_001090D8(void) {
+    KingdomFile* file;
+
+    D_002BBDE4 = 7;
+    fm_func_00110068();
+    func_0010C010();
+    func_001EF810();
+    func_0022F578(-1);
+    func_0011EAF8(D_002B6460, "host:./kingdom.log");
+
+    file = func_00120190("kingdom.img");
+    if (file != NULL) {
+        D_0046A688.unk_18(file->length);
+    } else {
+        D_0046A688.unk_18(0);
+    }
+    D_002B6478 = D_0046A688.unk_1C();
+    func_00110230(0);
+    D_002BC73C = 0;
+    func_001ED888(NULL);
+    func_0011F7C0();
+}
 #else
 void func_001090D8(void) {
     KingdomFile* file;
@@ -112,8 +140,25 @@ s32 fm_func_00109588(void) {
 #endif
 
 #ifdef VERSION_FM
-void func_001093D8(void);
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093D8);
+extern s32** D_002BC140;
+extern s32** D_002BC144;
+extern volatile s32 D_002BBDE0;
+void func_00122130(void);
+void func_0015F018(void);
+void func_00236F18(void);
+
+void func_001093D8(void) {
+    func_00122130();
+    func_0015F018();
+    func_00100240();
+    func_001C20B8();
+    func_00236F18();
+    func_00248530();
+    D_002BC140 = D_002DEC60;
+    D_002BC144 = D_002DECA0;
+    D_002BBDE0 = 3;
+    D_00495160 = 0;
+}
 #else
 void func_001093D8(void) {
     func_00122518();
@@ -161,7 +206,43 @@ void* func_00109B00(void) {
     return func_0011ED30(190000, func_00109AA0);
 }
 
+#ifdef VERSION_FM
+extern f32 D_00495184;
+extern f32 D_00495168;
+extern f32 D_0049516C;
+extern f32 D_002B8344;
+extern u64 D_002B6490[];
+extern u8 D_002B65E0[];
+void func_001099D8(void);
+
+s32 func_00109B28(void) {
+    f32 a;
+    f32 c;
+    switch (D_0048EC08) {
+    case 0:
+        D_0048EC08 = 1;
+        D_00495168 = D_00495184;
+        D_0049516C = 128.0f / D_00495184;
+    case 1:
+        break;
+    default:
+        return 0;
+    }
+    if (!(D_00495184 <= 0.0f)) {
+        func_001099D8();
+        c = (D_00495168 - D_00495184) * D_0049516C;
+        a = D_00495184 * D_0049516C;
+        D_002B6490[33] = (u64)(s32)a << 24 | 0x100808080;
+        D_002B6490[17] = (u64)(s32)c << 24 | 0x100808080;
+        func_00106948(D_002B65E0);
+        D_00495184 -= D_002B8344;
+        return 0;
+    }
+    return 4;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109B28);
+#endif
 s32 func_00109B28();
 
 void* func_00109C50(s32 arg0) {
@@ -170,7 +251,16 @@ void* func_00109C50(s32 arg0) {
     return func_0011ED30(190000, func_00109B28);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C98);
+void func_00109C98(void) {
+    sceGsSetDefLoadImage(&D_002B8700, 0xE00, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_002B8700, D_002B2CCC);
+    sceGsSetDefLoadImage(&D_002B8760, 0x1400, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_002B8760, D_002B2CCC + 0x4800);
+}
 
 s32 func_00109D68(void) {
     sceGsStoreImage img;
@@ -191,10 +281,73 @@ void* func_00109DE8(void) {
     return func_0011ED30(190000, func_00109D68);
 }
 
+#ifdef VERSION_FM
+extern f32 D_00495170;
+extern s32 D_00495174;
+extern f32 D_00495178;
+extern f32 D_002B8344;
+void func_00110170(void);
+
+s32 func_00109E30(void) {
+    s32 c;
+    switch (D_0048EC00.unk_00) {
+    case 0:
+        D_00495170 = 64.0f;
+        D_00495174 = 0x80;
+        D_00495178 = 2.0f;
+        D_0048EC00.unk_00 = 1;
+    case 1:
+        break;
+    default:
+        return 0;
+    }
+    if (!(D_00495170 <= 0.0f)) {
+        func_00109C98();
+        c = D_00495174;
+        D_002B2BB8 = (u64)c | ((u64)c << 8) | ((u64)c << 16) | ((u64)0x80 << 24) | ((u64)1 << 32);
+        func_00106948(&D_002B2C00);
+        D_00495170 -= D_002B8344;
+        D_00495174 = D_00495170 * D_00495178;
+        return 0;
+    }
+    D_002B2CC4 = 0;
+    func_00110170();
+    return 4;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109E30);
+#endif
 s32 func_00109E30();
 
+#ifdef VERSION_FM
+extern f32 D_0049517C;
+extern f32 D_002B8344;
+void func_00106790(s32);
+
+s32 func_00109F60(void) {
+    switch (D_0048EC00.unk_00) {
+    case 0:
+        func_00106790(0x20);
+        D_0048EC00.unk_00++;
+        D_0049517C = 64.0f;
+    case 1:
+        break;
+    default:
+        return 0;
+    }
+    if (!(D_0049517C <= 0.0f)) {
+        func_00109C98();
+        D_002B2BB8 = 0x180808080;
+        func_00106948(&D_002B2C00);
+        D_0049517C -= D_002B8344;
+        return 0;
+    }
+    D_002B2CC4 = 0;
+    return 4;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109F60);
+#endif
 s32 func_00109F60();
 
 void* func_0010A040(void) {

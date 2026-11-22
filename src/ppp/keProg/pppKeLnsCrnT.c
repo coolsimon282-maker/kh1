@@ -1,6 +1,42 @@
 #include "ppp/pppKeLns.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsCrnT", pppKeLnsCrnTDraw);
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ u8 col[4];
+    /* 0x0C */ f32 unk_0C;
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+} PKeLnsCrnTDraw;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ sceVu0FVECTOR scl;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ u8 col[4];
+    /* 0x28 */ f32 unk_28;
+    /* 0x2C */ f32 unk_2C;
+} KeLnsCrnTWork;
+
+void func_00193E80(pppPObject* pobj, PKeLnsCrnTDraw* p, pppCtrlTable* ctbl);
+void func_00194E58(KeLnsCrnTWork* w, s32 arg1, s32 arg2);
+
+void pppKeLnsCrnTDraw(pppPObject* pobj, PKeLnsCrnTDraw* p, pppCtrlTable* ctbl) {
+    KeLnsCrnTWork* w = (KeLnsCrnTWork*)&pobj->val[ctbl->useVal[0]];
+
+    func_00193E80(pobj, p, ctbl);
+    if (p->cdt.time == pobj->time) {
+        w->unk_20 = p->unk_0C;
+        w->unk_28 = p->unk_10;
+        w->unk_2C = p->unk_12;
+    }
+    w->col[0] = p->col[0] * ppvMng->colorR;
+    w->col[1] = p->col[1] * ppvMng->colorG;
+    w->col[2] = p->col[2] * ppvMng->colorB;
+    w->col[3] = p->col[3] * ppvMng->colorA;
+    sceVu0CopyVector(w->scl, ppvParScl);
+    func_00194E58(w, 0, 0);
+}
 
 void pppKeLnsCrnTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsCrn* crn = (KeLnsCrn*)&pobj->val[ctbl->useVal[0]];

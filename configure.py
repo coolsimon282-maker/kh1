@@ -63,6 +63,7 @@ STRICT_ALIASING_FILES = [
     "xmeowp.c",
     "xnoodle.c",  # a5, run 6: func_0010BB50 only matches with strict aliasing; the rest of the file is unaffected
     "xpackage.c",
+    "xsauce.c",  # a6, run 7: func_0010F0A0 needs it; the file's other functions are unaffected
     "xpotato.c",  # added after a3's run 3: its matched functions only match with strict aliasing
     "xtango.c",
     "xtrumpet.c",
