@@ -292,7 +292,33 @@ s32 sceMcSeek(s32 fd, s32 offset, s32 mode) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceIntrReadFixAlign);
+typedef struct {
+    /* 0x00 */ s32 size1;
+    /* 0x04 */ s32 size2;
+    /* 0x08 */ u8* dest1;
+    /* 0x0C */ u8* dest2;
+    /* 0x10 */ u8 buf1[0x40];
+    /* 0x50 */ u8 buf2[0x40];
+} McRpcReadFix;
+
+void mceIntrReadFixAlign(McRpcReadFix* arg) {
+    McRpcReadFix* p = (McRpcReadFix*)((u32)arg | 0x20000000);
+    u8* d;
+    s32 i;
+
+    if (p->size1 != 0) {
+        d = p->dest1;
+        for (i = 0; i < p->size1; i++) {
+            *d++ = p->buf1[i];
+        }
+    }
+    if (p->size2 != 0) {
+        d = p->dest2;
+        for (i = 0; i < p->size2; i++) {
+            *d++ = p->buf2[i];
+        }
+    }
+}
 void mceIntrReadFixAlign();
 
 /**
