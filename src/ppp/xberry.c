@@ -47,7 +47,36 @@ void func_001A75C8(KeLnsFlrRef* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A7668);
+typedef struct {
+    /* 0x00 */ pppShapeSt* shp;
+    /* 0x04 */ KeLnsFlr* flr;
+    /* 0x08 */ u8 unk_08[8];
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ s16 unk_1E;
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ u8 unk_28;
+} KeLnsShpDraw;
+
+extern s32 D_00616224;
+
+s32 func_001BA340(void*, void*, s32);
+
+// sets up the draw of the current shape frame (func_001BA340 is in ppp/draw/md0)
+void func_001A7668(KeLnsShpDraw* p) {
+    KeLnsSeq* seq = (KeLnsSeq*)(p->shp->shape + 1) + p->flr->seqIdx;
+
+    p->unk_18 = 0;
+    p->unk_28 = 0;
+    p->unk_24 = D_00616224;
+    p->unk_12 |= 0x30;
+    p->unk_1C = 0x12;
+    D_00616224 = func_001BA340((u8*)p->shp->shape + seq->unk_0, &p->unk_10, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A76E8);
 
