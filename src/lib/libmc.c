@@ -345,7 +345,27 @@ void mcDelayThread(u16 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcSync);
 
+#ifdef VERSION_FM
+extern s32* D_00673628;
+extern s32* D_0067362C;
+extern s32* D_00673630;
+
+void mceGetInfoApdx(s32 addr) {
+    s32* p = (s32*)(addr | 0x20000000);
+
+    if (D_00673628 != NULL) {
+        *D_00673628 = p[0];
+    }
+    if (D_0067362C != NULL) {
+        *D_0067362C = p[1];
+    }
+    if (D_00673630 != NULL) {
+        *D_00673630 = p[0x24];
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceGetInfoApdx);
+#endif
 void mceGetInfoApdx();
 
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcGetInfo);
