@@ -533,7 +533,16 @@ s32 func_001EFF90(s32 arg0, s32 arg1, u8 arg2) {
     return buf[15];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFFF8);
+s32 func_001EFFF8(s32 arg0, s32 arg1, u8 arg2) {
+    s32 buf[60];
+    XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
+    u8 save = chr->unk_19[arg1];
+
+    chr->unk_19[arg1] = arg2;
+    func_00141B10(arg0, buf);
+    chr->unk_19[arg1] = save;
+    return buf[17];
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0060);
 
