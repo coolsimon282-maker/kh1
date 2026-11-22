@@ -2341,7 +2341,45 @@ s32 func_001D5FA0(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6020);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[2];
+    f32 unk_10[4];
+} ScriptMsgF;
+
+typedef struct {
+    /* 0x000 */ u8 unk_000[0x180];
+    /* 0x180 */ s32 top;
+    /* 0x184 */ s32 stack[92];
+    /* 0x2F4 */ f32 unk_2F4;
+    /* 0x2F8 */ u8 unk_2F8[0x30];
+    /* 0x328 */ u64 unk_328_0 : 1;
+    u64 unk_328_1 : 5;
+    u64 unk_328_6 : 1;
+    u64 unk_328_7 : 2;
+    u64 unk_328_9 : 1;
+    u64 unk_328_10 : 54;
+    /* 0x330 */ f32 unk_330;
+} ScriptW;
+
+s32 func_001D6020(Script* arg0) {
+    ScriptMsgF msg;
+
+    ((ScriptW*)arg0)->unk_328_0 = 0;
+    ((ScriptW*)arg0)->unk_328_6 = 0;
+    ((ScriptW*)arg0)->unk_328_9 = 0;
+    msg.unk_00 = 0x12;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D60A8);
 
