@@ -230,7 +230,13 @@ s32 func_001AAFC0(DrawRaySphere* r) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0B0);
+f32 func_001AB0B0(f32 a, f32 b) {
+    f32 v[4];
+    v[0] = a;
+    v[1] = b;
+    __asm__ volatile("lqc2 $vf1,0(%0)\n\tvmaxy.x $vf1,$vf1,$vf1y\n\tsqc2 $vf1,0(%0)" : : "r"(v) : "memory");
+    return v[0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0D8);
 
