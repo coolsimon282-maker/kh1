@@ -181,7 +181,77 @@ s32 func_00181600(s32 arg0) {
     return -2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181640);
+void func_00181640(u8* rsd, s16* tim, s16 tex, s16 clut) {
+    s16 dt;
+    s16 dc;
+    u8* e = rsd + *(s32*)(rsd + 4);
+    s32 size;
+    s32 flag;
+    s32 t;
+    u32 w;
+
+    if (tex == 0 && clut == 0) {
+        return;
+    }
+    if (tex != 0) {
+        dt = tex - (u16)tim[1];
+    }
+    if (clut != 0) {
+        dc = clut - (u16)tim[2];
+    }
+    if (dt == 0 && dc == 0) {
+        return;
+    }
+    while ((s8)e[1] != -1) {
+        flag = 1;
+        switch ((s8)e[1]) {
+            case 0:
+                size = 0x14;
+                flag = 0;
+                break;
+            case 1:
+                size = 0x1C;
+                flag = 0;
+                break;
+            case 2:
+                size = 0x20;
+                break;
+            case 4:
+                size = 0x18;
+                flag = 0;
+                break;
+            case 5:
+                size = 0x20;
+                flag = 0;
+                break;
+            case 3:
+            case 6:
+                size = 0x28;
+                break;
+            case 7:
+                size = 0x30;
+                break;
+        }
+        if (flag) {
+            if (tex != 0 && dt != 0) {
+                t = *(u16*)(e + 8) & 0x3FFF;
+                if (t >= 0x3800) {
+                    *(u32*)(e + 8) = (*(u32*)(e + 8) & ~0x3FFF) + (t + dt);
+                }
+            }
+            if (clut != 0 && dc != 0) {
+                w = *(u32*)(e + 0xC);
+                t = (w >> 5) & 0x3FFF;
+                if (t >= 0x3D40) {
+                    *(u32*)(e + 0xC) = (w & 0xFFF8001F) + ((t + dc) << 5);
+                }
+            }
+        }
+        e += size * *(s16*)(e + 2);
+        e += 0x10;
+    }
+}
+
 
 void func_001817E8(u8* shp, u16* tim, s16 tex, s16 clut) {
     s16 dt = 0;
