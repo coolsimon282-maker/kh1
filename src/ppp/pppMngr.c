@@ -791,7 +791,47 @@ s32 func_00182A78(void) {
 }
 
 
+#ifdef VERSION_FM
+void func_00182B18(f32* a, s32* b, s32 left, s32 right) {
+    s32 i;
+    s32 j;
+    f32 pivot;
+    f32 tf;
+    s32 ti;
+
+    pivot = a[(left + right) / 2];
+    i = left;
+    j = right;
+    for (;;) {
+        while (a[i] > pivot) {
+            i++;
+        }
+        while (pivot > a[j]) {
+            j--;
+        }
+        if (i >= j) {
+            break;
+        }
+        tf = a[i];
+        a[i] = a[j];
+        a[j] = tf;
+        ti = b[i];
+        b[i] = b[j];
+        b[j] = ti;
+        i++;
+        j--;
+    }
+    if (left < i - 1) {
+        func_00182B18(a, b, left, i - 1);
+    }
+    if (j + 1 < right) {
+        func_00182B18(a, b, j + 1, right);
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182B18);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182C78);
 
