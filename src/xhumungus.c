@@ -3133,7 +3133,35 @@ s32 func_001D8AF0(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8B30);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8C50);
+typedef struct {
+    /* 0x00 */ void* unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+} Unk18B;
+
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3384];
+    /* 0x3384 */ Unk18B unk_3384[8];
+} XGiantMountainZB;
+
+s32 func_001D8C50(Script* arg0) {
+    void* v = *(void**)&arg0->unk_00[4];
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        if (((XGiantMountainZB*)&D_003854E0)->unk_3384[i].unk_00 == NULL || ((XGiantMountainZB*)&D_003854E0)->unk_3384[i].unk_00 == v) {
+            ((XGiantMountainZB*)&D_003854E0)->unk_3384[i].unk_00 = v;
+            ((XGiantMountainZB*)&D_003854E0)->unk_3384[i].unk_08 = arg0->unk_174[arg0->unk_174[3] + 3];
+            ((XGiantMountainZB*)&D_003854E0)->unk_3384[i].unk_10 = arg0->unk_174[arg0->unk_174[3] + 4];
+            break;
+        }
+    }
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 typedef struct {
     /* 0x00 */ void* unk_00;
