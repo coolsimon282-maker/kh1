@@ -20,6 +20,15 @@ typedef struct {
     /* 0x5F*/ u8 unk_5F;
 } XToast;
 
+typedef struct XToaster148 {
+    /* 0x000 */ char unk_000[0x90];
+    /* 0x090 */ s32 unk_090;
+    /* 0x094 */ char unk_094[0x4C];
+    /* 0x0E0 */ f32 unk_0E0;
+    /* 0x0E4 */ char unk_0E4[0x7C];
+    /* 0x160 */ sceVu0FVECTOR unk_160;
+} XToaster148;
+
 typedef struct XToaster {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ char unk_004[0x2];
@@ -35,7 +44,11 @@ typedef struct XToaster {
     /* 0x078 */ s32 unk_078;
     /* 0x07C */ char unk_07C[0x4];
     /* 0x080 */ s32 unk_080;
-    /* 0x084 */ char unk_084[0x3C];
+    /* 0x084 */ char unk_084[0x4];
+    /* 0x088 */ s32 unk_088;
+    /* 0x08C */ char unk_08C[0xC];
+    /* 0x098 */ s32 unk_098;
+    /* 0x09C */ char unk_09C[0x24];
     /* 0x0C0 */ s32 unk_0C0;
     /* 0x0C4 */ f32 unk_0C4;
     /* 0x0C8 */ s32 unk_0C8;
@@ -47,13 +60,17 @@ typedef struct XToaster {
     /* 0x138 */ s32 unk_138;
     /* 0x13C */ char unk_13C[0x8];
     /* 0x144 */ s32 unk_144;
-    /* 0x148 */ char unk_148[0x4];
+    /* 0x148 */ struct XToaster148* unk_148;
     /* 0x14C */ s32 unk_14C;
     /* 0x150 */ s32 unk_150;
     /* 0x154 */ s32 unk_154;
-    /* 0x158 */ char unk_158[0x78];
+    /* 0x158 */ char unk_158[0x8];
+    /* 0x160 */ u64 unk_160;
+    /* 0x168 */ char unk_168[0x68];
     /* 0x1D0 */ s32 unk_1D0;
-    /* 0x1D4 */ char unk_1D4[0xCC];
+    /* 0x1D4 */ char unk_1D4[0xB0];
+    /* 0x284 */ f32 unk_284;
+    /* 0x288 */ char unk_288[0x18];
     /* 0x2A0 */ sceVu0FVECTOR unk_2A0;
     /* 0x2B0 */ char unk_2B0[0xA0];
     /* 0x350 */ s32 unk_350[4];
@@ -74,10 +91,21 @@ typedef struct XToaster {
     /* 0x3B4 */ f32 unk_3B4;
     /* 0x3B8 */ s32 unk_3B8;
     /* 0x3BC */ s32 unk_3BC;
-    /* 0x3C0 */ char unk_3C0[0x50];
+    /* 0x3C0 */ sceVu0FVECTOR unk_3C0;
+    /* 0x3D0 */ char unk_3D0[0x40];
     /* 0x410 */ f32 unk_410;
     /* 0x414 */ f32 unk_414;
-    /* 0x418 */ char unk_418[0x98];
+    /* 0x418 */ char unk_418[0x38];
+    /* 0x450 */ s32 unk_450;
+    /* 0x454 */ s32 unk_454;
+    /* 0x458 */ f32 unk_458;
+    /* 0x45C */ char unk_45C[0x14];
+    /* 0x470 */ s32 unk_470;
+    /* 0x474 */ s32 unk_474;
+    /* 0x478 */ char unk_478[0x8];
+    /* 0x480 */ f32 unk_480;
+    /* 0x484 */ char unk_484[0x28];
+    /* 0x4AC */ f32 unk_4AC;
 } XToaster; /* size = 0x4B0 */
 
 extern XToaster D_002C64A0[];
@@ -594,7 +622,69 @@ void func_001242E8(XToaster* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124420);
+typedef struct {
+    /* 0x00 */ char unk_00[0x1C];
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ char unk_20[0x4];
+    /* 0x24 */ s32 unk_24;
+} XToaster14C;
+
+void func_00145240(void);
+void func_001358B8(XToaster*, s32);
+void func_00176310(s32);
+s32 func_0014F5C8(XToaster*);
+s32 func_0014F658(void*, s32);
+s32 func_00134928(XToaster*);
+void func_001350D0(s32);
+void func_00137448(XToaster*);
+extern sceVu0FVECTOR D_002C58B0;
+
+void func_00124420(XToaster* p, s32 arg1) {
+    f32 f;
+    s32 r;
+
+    if (p->unk_148 != NULL) {
+        p->unk_148->unk_090 = 0xFFFF;
+        f = p->unk_148->unk_0E0;
+        if (f > 0.0f) {
+            (*(f32**)(p->unk_134 + 0x10))[3] = f;
+            p->unk_148->unk_0E0 = 0.0f;
+        }
+        func_00145240();
+        sceVu0CopyVector(p->unk_148->unk_160, D_002C58B0);
+        func_001358B8(p, 0xC);
+    }
+    if (p->unk_14C != 0) {
+        if (((XToaster14C*)p->unk_14C)->unk_1C != 0) {
+            func_00176310(((XToaster14C*)p->unk_14C)->unk_1C);
+            ((XToaster14C*)p->unk_14C)->unk_1C = 0;
+        }
+        ((XToaster14C*)p->unk_14C)->unk_24 = -1;
+    }
+    if (func_0014F5C8(p) == 0) {
+        func_0014F658(p, 0);
+    }
+    p->unk_388 = 0;
+    p->unk_480 = 1.0f;
+    p->unk_000 = (p->unk_000 & 0x1004083) | 0x8000;
+    p->unk_088 = 0;
+    while ((r = func_00134928(p)) != 0) {
+        func_001350D0(r);
+    }
+    p->unk_160 &= ~0x10;
+    p->unk_284 = 1.0f;
+    p->unk_458 = -1.0f;
+    p->unk_470 = 0;
+    p->unk_450 = 0;
+    p->unk_454 = 0;
+    p->unk_474 = 0;
+    p->unk_098 = 0;
+    func_00137448(p);
+    p->unk_4AC = 60.0f;
+    func_00123C90(p, arg1);
+    sceVu0CopyVector(p->unk_3C0, D_002C58B0);
+    sceVu0CopyVector(p->unk_120, D_002C58B0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001245F0);
 
