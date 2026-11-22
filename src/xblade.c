@@ -1187,7 +1187,34 @@ void func_00114B18(f32* arg0, s32 arg1) {
     func_0011AED0(arg1, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114B50);
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ void* unk_10;
+} XBladeTask;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x50];
+} XBladePkt; // size = 0x50
+
+typedef struct {
+    /* 0x00 */ s32 (*unk_00)[4];
+    /* 0x04 */ u8 unk_04[0xC];
+} XBlade3044D8; // size = 0x10
+
+extern XBladePkt D_004D9380[2];
+extern XBladePkt D_004D9420[][2];
+extern XBlade3044D8 D_003044D8[];
+s32 func_00108D90(XBladeTask*);
+XBladeTask* func_0015ED80(s32 arg0, s32 (*arg1)(XBladeTask*));
+
+void func_00114B50(s32 arg0, s32 idx) {
+    if (idx == -1) {
+        func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9380[D_00351BD0];
+    } else {
+        func_001149B0(idx, D_003044D8[idx].unk_00);
+        func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9420[idx][D_00351BD0];
+    }
+}
 
 s32 func_00114C18(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {
