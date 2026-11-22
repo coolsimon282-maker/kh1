@@ -43,7 +43,7 @@ GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | $maspsenv {TOOL
 
 PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_AS_CMD}"
 
-LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} {COMMON_COMPILE_FLAGS}"
+LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS}"
 
 # Files built WITH strict aliasing (agent a4, 22 Nov: their matched code compiles differently with
 # -fno-strict-aliasing). Every other game file gets -fno-strict-aliasing.

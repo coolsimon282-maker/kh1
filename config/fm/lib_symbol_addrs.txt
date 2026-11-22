@@ -997,8 +997,8 @@ D_00465378                   = 0x0046AEF0; // size:4
 //=========================================================
 // lib/libkernl/initsys
 //=========================================================
-_sce_sema_id                = 0x0046AF10; // size:4
-_sce_eh_sema_id             = 0x0046AF14; // size:4
+__sce_sema_id               = 0x0046AF10; // size:4
+__sce_eh_sema_id            = 0x0046AF14; // size:4
 
 //=========================================================
 // lib/libgraph
@@ -1088,3 +1088,4 @@ mcSifParams                 = 0x00673680;
 mcStatus                    = 0x006736B0;
 mcCachedTables              = 0x00673BC0;
 mcRetVal                    = 0x00674BC0;
+init_vif_regs               = 0x0046C590; // size:0x20

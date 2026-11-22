@@ -3,6 +3,13 @@
 #include "sifrpc.h"
 #include "libmc.h"
 
+#ifdef VERSION_FM
+// Final Mix links a newer libmc: its messages go through scePrintf, and this buffer sits at FM's own address.
+#define printf scePrintf
+#define D_0066DB00 D_00673B00
+extern s32 D_00673B00;
+#endif
+
 typedef struct {
     /* 0x00 */ s32 fd;
     /* 0x04 */ s32 port;
@@ -35,7 +42,9 @@ McStatus mcStatus;
 s32 mcRetVal[4]; // Buffer for data received from RPC
 
 sceMcTblGetDir mcFileTable;
+#ifndef VERSION_FM
 s32 D_0066DB00;
+#endif
 sceMcTblGetDir mcCachedTables[16];
 
 /**
