@@ -223,7 +223,20 @@ void func_0010BF50(void (*arg0)(IOReadTask*)) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BF98);
+// include/xnoodle.h declares this `void func_0010BF98();`, but it returns whether an IO slot is in use.
+s32 func_0010BF98_s32(void) __asm__("func_0010BF98");
+
+s32 func_0010BF98_s32(void) {
+    XNoodleSlot* slot = D_002B3AF0.slot;
+    s32 i;
+
+    for (i = 0; i < 2; i++, slot++) {
+        if (slot->unk_0 != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void func_0010BFD8(void) {
     XNoodleSlot* slot = D_002B3AF0.slot;
