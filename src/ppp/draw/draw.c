@@ -14,26 +14,74 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A96D0);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9C50);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AA7C0);
-
 typedef struct DrawNode {
     /* 0x00 */ struct DrawNode* next;
     /* 0x04 */ struct DrawNode* prev;
     /* 0x08 */ struct DrawNode* link;
     /* 0x0C */ struct DrawNode* linkPrev;
-    /* 0x10 */ u8 pad10[0x20];
+    /* 0x10 */ struct DrawNode* self;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ u16 unk_1C;
+    /* 0x1E */ u8 unk_1E;
+    /* 0x1F */ u8 pad1F;
+    /* 0x20 */ u16 unk_20;
+    /* 0x22 */ u8 pad22;
+    /* 0x23 */ u8 unk_23;
+    /* 0x24 */ u8 pad24[4];
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ u8 pad2C[4];
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u16 unk_34;
-    /* 0x36 */ u8 pad36[2];
+    /* 0x36 */ u8 unk_36;
+    /* 0x37 */ u8 unk_37;
     /* 0x38 */ u16 unk_38;
     /* 0x3A */ u8 pad3A[2];
     /* 0x3C */ u16 unk_3C;
     /* 0x3E */ u16 flags;
     /* 0x40 */ f32 unk_40[4];
-    /* 0x50 */ u8 pad50[0xC];
+    /* 0x50 */ u8 pad50[8];
+    /* 0x58 */ s32 unk_58;
     /* 0x5C */ s32 unk_5C;
     /* 0x60 */ f32 unk_60[4];
 } DrawNode;
+
+typedef struct {
+    /* 0x0 */ DrawNode* node;
+    /* 0x4 */ u8 count;
+} DrawNodeInit;
+
+// sets up a node taken from the pool: clears it, links it to itself and writes the first entry's GIF tags
+void func_001AA7C0(DrawNodeInit* init) {
+    DrawNode* node = init->node;
+    s32* e;
+
+    node->flags = 0;
+    node->self = node;
+    node->unk_37 = init->count;
+    node->unk_18 = 0;
+    node->unk_40[3] = 1.0f;
+    node->unk_34 = 0;
+    node->unk_36 = 0;
+    node->unk_20 = node->unk_37 * 3 + 2;
+    node->unk_3C = 0;
+    node->unk_38 = 0;
+    node->unk_1E = 0;
+    node->unk_14 = 0;
+    node->prev = NULL;
+    e = (s32*)((u8*)node + 0x40 + node->unk_37 * 0x30);
+    node->next = NULL;
+    node->linkPrev = NULL;
+    node->unk_23 = 0x70;
+    node->link = NULL;
+    node->unk_58 = 0;
+    node->unk_28 = 0x040000B0;
+    node->unk_1C = 0;
+    e[0] = 0;
+    e[1] = 0x11000000;
+    e[2] = 0x14000000;
+    e[3] = 0x11000000;
+}
 
 typedef struct {
     /* 0x0 */ s32 unk_0;
@@ -122,11 +170,6 @@ typedef struct {
     /* 0x0 */ DrawNode* first;
     /* 0x4 */ u8 flags;
 } DrawNodeHead;
-
-typedef struct {
-    /* 0x0 */ DrawNode* node;
-    /* 0x4 */ u8 count;
-} DrawNodeInit;
 
 void func_001AA7C0(DrawNodeInit*);
 void func_001AB0F0(f32*, f32*);
