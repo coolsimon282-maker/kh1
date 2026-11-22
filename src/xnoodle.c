@@ -375,7 +375,35 @@ void func_0010BFD8(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010C010);
+extern s32 D_00494050;
+extern s32 D_0049525C;
+void func_0010BE60(void);
+
+void func_0010C010(void) {
+    struct ThreadParam tp;
+    u8 unused[0x20];
+    struct SemaParam sp;
+    s32 id;
+
+    func_0010BFD8();
+    ChangeThreadPriority(GetThreadId(), 30);
+    sp.maxCount = 1;
+    sp.currentCount = 0;
+    sp.initCount = 0;
+    sp.option = 0;
+    D_00495258 = CreateSema(&sp);
+    D_0048ECE0 = CreateSema(&sp);
+    tp.entry = (void (*)(void*))func_0010BE60;
+    tp.stack = D_002B3B10;
+    tp.stackSize = 0x4000;
+    tp.initPriority = 0x28;
+    tp.gpReg = &D_00494050;
+    id = CreateThread(&tp);
+    D_0049525C = id;
+    if (id != -1) {
+        StartThread(id, NULL);
+    }
+}
 
 void func_0010C0E0(void) {
     SignalSema(D_0048ECE0);

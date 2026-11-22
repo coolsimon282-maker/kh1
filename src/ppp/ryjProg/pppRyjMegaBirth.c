@@ -35,12 +35,73 @@ typedef struct {
     /* 0x0E */ u8 unk_0E;
     /* 0x0F */ u8 unk_0F;
     /* 0x10 */ f32 unk_10[3];
-    /* 0x1C */ char unk_1C[0xB0];
+    /* 0x1C */ u16 nParticle;
+    /* 0x1E */ char unk_1E[0x8];
+    /* 0x26 */ u8 unk_26;
+    /* 0x27 */ char unk_27[0x71];
+    /* 0x98 */ f32 force[3];
+    /* 0xA4 */ char unk_A4[0x25];
+    /* 0xC9 */ u8 bColor;
+    /* 0xCA */ char unk_CA[0x2];
     /* 0xCC */ u8 unk_CC;
     /* 0xCD */ u8 unk_CD;
 } PRyjMegaBirth;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirth", pppRyjMegaBirthCalc);
+extern sceVu0FMATRIX D_00615E70;
+extern sceVu0FVECTOR D_003701D0;
+s32 func_0019D840(VRyjMegaBirth* v, PRyjMegaBirth* p);
+void func_0019E8B0(VRyjMegaBirth* v, PRyjMegaBirth* p, void* w);
+
+void pppRyjMegaBirthCalc(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl) {
+    VRyjMegaBirth* v = (VRyjMegaBirth*)&pobj->val[ctbl->useVal[2]];
+    void* w = &pobj->val[ctbl->useVal[1]];
+
+    if (v->pvParticleData == NULL) {
+        v->nParticle = p->nParticle;
+        v->pvParticleData = pppDbgAlloc(ppvEnv, v->nParticle * 0x60);
+        if (v->pvParticleData != NULL) {
+            memset(v->pvParticleData, 0, v->nParticle * 0x60);
+        }
+        if (p->unk_CC == 1 || p->unk_CC == 2) {
+            v->pvParticleWmat = pppDbgAlloc(ppvEnv, v->nParticle * 64);
+            if (v->pvParticleWmat != NULL) {
+                memset(v->pvParticleWmat, 0, v->nParticle * 64);
+            }
+        }
+        if (p->bColor) {
+            v->pvParticleColor = pppDbgAlloc(ppvEnv, v->nParticle * 32);
+            if (v->pvParticleColor != NULL) {
+                memset(v->pvParticleColor, 0, v->nParticle * 32);
+            }
+        }
+        v->vecForce[0] = p->force[0];
+        v->vecForce[1] = p->force[1];
+        v->vecForce[2] = p->force[2];
+        v->vecForce[3] = 0.0f;
+        sceVu0Normalize(v->vecForce, v->vecForce);
+    }
+    if (!func_0019D840(v, p)) {
+        return;
+    }
+    switch (p->unk_26) {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 9:
+            sceVu0UnitMatrix(v->matPar);
+            sceVu0ScaleVectorXYZ(v->matPar[0], v->matPar[0], ppvParScl[0]);
+            sceVu0ScaleVectorXYZ(v->matPar[1], v->matPar[1], ppvParScl[1]);
+            sceVu0ScaleVectorXYZ(v->matPar[2], v->matPar[2], ppvParScl[2]);
+            sceVu0CopyVector(v->matPar[3], D_003701D0);
+            v->matPar[3][3] = 1.0f;
+            break;
+        default:
+            sceVu0CopyMatrix(v->matPar, D_00615E70);
+            break;
+    }
+    func_0019E8B0(v, p, w);
+}
 
 extern sceVu0FMATRIX D_00615EB0;
 

@@ -535,6 +535,7 @@ segments:
   - [ 0x38fb58, .rodata, ppp/keProg/pppKeMvYpEff ]
   - [ 0x38fb68, rodata ]
   - [ 0x38fc80, .rodata, ppp/ryjProg/pppRyjMegaBirth ]
+  - [ 0x38fca8, rodata ] # zero padding after pppRyjMegaBirth's jump table (the next piece is 16-aligned)
   - [ 0x38fcb0, rodata ]
   - [ 0x38fda0, .rodata, ppp/draw/draw ]
   - [ 0x38fe18, .rodata, ppp/draw/global ]
