@@ -1,5 +1,6 @@
 #include "common.h"
 #include "xnoodle.h"
+#include <stdarg.h>
 
 typedef struct {
     /* 0x00 */ s32 unk_00;
@@ -202,7 +203,28 @@ s32 func_0010D130(char* s) {
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D168);
+int vsprintf(char* buf, const char* fmt, va_list ap);
+
+s32 func_0010D168(char* buf, const char* fmt, ...) {
+    va_list ap;
+    s32 n;
+    char* p;
+    va_start(ap, fmt);
+    vsprintf(buf, fmt, ap);
+    n = 0;
+    p = buf;
+    while (*p) {
+        if (*p == ' ') {
+            *p = 1;
+        } else {
+            *p = *p - 0xF;
+        }
+        p++;
+        n++;
+    }
+    va_end(ap);
+    return n;
+}
 
 s16 func_0010D218(s32* pos, u8* buf) {
     s32 i = *pos;
