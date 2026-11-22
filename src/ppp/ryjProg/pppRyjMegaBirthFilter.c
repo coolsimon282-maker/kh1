@@ -392,4 +392,51 @@ void func_001A5EF8(void* v, PRyjMegaBirthFilterB* p, f32* data, u8* color) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A6040);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A66B0);
+typedef struct {
+    /* 0x00 */ u8* data;
+    /* 0x04 */ u8* color;
+    /* 0x08 */ s32 n;
+    /* 0x0C */ char unk_0C[4];
+    /* 0x10 */ u16 interval;
+} VRyjMegaBirthFilterC;
+
+typedef struct {
+    /* 0x00 */ char unk_00[4];
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ char unk_08[4];
+    /* 0x0C */ u16 max;
+    /* 0x0E */ u16 timing;
+} PRyjMegaBirthFilterC;
+
+void func_001A6040(VRyjMegaBirthFilterC* v, PRyjMegaBirthFilterC* p, u8* data, void* w, u8* color);
+
+void func_001A66B0(VRyjMegaBirthFilterC* v, PRyjMegaBirthFilterC* p, void* w) {
+    u8* data = v->data;
+    u8* color = v->color;
+    s32 n = v->n;
+    s32 cnt = 0;
+    s32 i;
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    if (p->shpIdx == 0xFFFF) {
+        return;
+    }
+    v->interval++;
+    for (i = 0; i < n; i++) {
+        if (*(u16*)(data + 0x20) != 0) {
+            func_001A6040(v, p, data, w, color);
+        } else if (p->timing <= v->interval && cnt < p->max) {
+            func_001A5EF8(v, (PRyjMegaBirthFilterB*)p, (f32*)data, color);
+            cnt++;
+        }
+        if (color != NULL) {
+            color += 0x20;
+        }
+        data += 0xA0;
+    }
+    if (cnt > 0) {
+        v->interval = 0;
+    }
+}
