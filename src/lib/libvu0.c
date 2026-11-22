@@ -790,7 +790,33 @@ s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
 //     return ret;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen3);
+s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
+    register s32 ret;
+
+    __asm__ __volatile__("				
+	vsub.xyzw	vf04,vf00,vf00			
+	li			%0,0x4580000045800000	
+	lqc2    	vf06,0x0(%1)			
+	lqc2    	vf08,0x0(%2)			
+	lqc2    	vf09,0x0(%3)			
+	qmtc2.ni	%0,vf07					
+	ctc2.ni		$0,$vi16				
+	vsub.xyw	vf05,vf06,vf04			
+	vsub.xy 	vf05,vf07,vf06 			
+	vsub.xyw	vf05,vf08,vf04			
+	vsub.xy 	vf05,vf07,vf08			
+	vsub.xyw	vf05,vf09,vf04			
+	vsub.xy 	vf05,vf07,vf09			
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	cfc2.ni    	%0,$vi16				
+	":"=&r"(ret): "r" (v0), "r" (v1), "r" (v2) );
+
+    return ret & 0xC0;
+}
 // s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 //     register s32 ret;
 
