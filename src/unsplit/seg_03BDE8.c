@@ -1,6 +1,16 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_0035C6F4;
+extern s32 ppvUserStopPartF;
+extern s32 D_002BC140;
+extern s32 D_002BC144;
+void pppSetPartMatrix(s32, s32, f32*, f32*);
+void func_00182D90(void);
+extern f32 D_00575970[4];
+void func_0017B308(f32*, u8*, s32, s32, s32);
+void func_0017B250(f32*, f32*, f32);
+void func_00120A58(f32*);
 s32 func_00137618(u8*);
 s32 func_00130030(u8*);
 void func_001528F0(u8*);
@@ -4195,7 +4205,19 @@ void func_00175A98(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175AF0);
+s32 func_00175AF0(void) {
+    if (D_00358BE0 == 0) {
+        return 0;
+    }
+    if (D_0035C6F4 != 0) {
+        ppvUserStopPartF = 1;
+    } else {
+        ppvUserStopPartF = 0;
+    }
+    pppSetPartMatrix(D_002BC140, D_002BC144, D_002DECE0, D_002DECF0);
+    func_00182D90();
+    return 0;
+}
 
 s32 func_00175B70(void) {
     if (D_00358BE0 == 0) {
@@ -4428,7 +4450,18 @@ s32 func_00176530(u8* p, s32* out) {
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176578);
+s32 func_00176578(u8* p, u32 a, u32 b, u64 c) {
+    s32 i;
+    u8* e = p + 0x10;
+    for (i = 0; i < *(s32*)(p + 0xC); i++) {
+        if ((a == (a & *(u32*)(e + 0x10)) || a == 0) && (b == (b & *(u32*)(e + 0x14)) || b == 0) &&
+            (c == (c & *(u64*)(e + 0x18)) || c == 0)) {
+            return *(s32*)(e + 8);
+        }
+        e += 0x20;
+    }
+    return -1;
+}
 
 s32 func_001765F8(s32 arg0) {
     return func_00181600(arg0);
@@ -4775,7 +4808,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BC90);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BFE8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017C110);
+void func_0017C110(s32 a0, f32 f) {
+    f32 m[16];
+    f32 v[4];
+    u8* g = D_00362438;
+    func_0017B308(m, g + 0x20, *(s32*)g, a0, *(s32*)(g + 0x18) & 1);
+    func_0017B250(v, m, f);
+    sceVu0SubVector(v, D_00575970, v);
+    func_00120A58(v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017C190);
 
