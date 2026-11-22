@@ -13,7 +13,39 @@ void func_001A75B0(KeLnsFlr* flr, pppShapeSt* shp) {
     flr->seqIdx = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A75C8);
+// shape animation frames: 8-byte entries from 0x10 of the shape data; the frame count is the s16 at 0x6
+typedef struct {
+    /* 0x0 */ s16 unk_0;
+    /* 0x2 */ s16 time;
+    /* 0x4 */ s8 flag; // 0x80: loop back to the first frame
+    /* 0x5 */ u8 unk_5[3];
+} KeLnsSeq; // size = 0x8
+
+typedef struct {
+    /* 0x0 */ pppShapeSt* shp;
+    /* 0x4 */ KeLnsFlr* flr;
+} KeLnsFlrRef;
+
+// steps the shape animation by 0x200
+void func_001A75C8(KeLnsFlrRef* p) {
+    KeLnsFlr* flr = p->flr;
+    KeLnsSeq* seq = (KeLnsSeq*)(p->shp->shape + 1) + flr->seqIdx;
+
+    flr->cnt += 0x200;
+    if (flr->cnt >= seq->time) {
+        flr->cnt -= seq->time;
+        flr->seqIdx++;
+        if (flr->seqIdx >= ((s16*)p->shp->shape)[3]) {
+            if (seq->flag & 0x80) {
+                flr->seqIdx = 0;
+                flr->cnt = 0;
+            } else {
+                flr->cnt = 0;
+                flr->seqIdx--;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A7668);
 
