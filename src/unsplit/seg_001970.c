@@ -1,6 +1,14 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x001970).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_002A6B84;
+void func_00121EB0(s32);
+void sceDmaSend(s32, s32);
+void iFlushCache(s32);
+s32 func_0011A7F8(s32, s32, s32);
+s32 func_00104AE0(s32, s32);
+s32 func_0011A758(s32, s32, s32);
+s32 func_00104CF8(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00101970);
 
@@ -23,7 +31,12 @@ void func_00101E18(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00101F30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00101F80);
+s32 func_00101F80(u8* t) {
+    iFlushCache(0);
+    sceDmaSend(D_002A6B84, *(s32*)(t + 0x10));
+    func_00121EB0(*(s32*)(t + 0x10));
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00101FC8);
 
@@ -208,11 +221,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105960);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_001059D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105A30);
+s32 func_00105A30(s32 arg0, s32 arg1, s32 arg2) {
+    if (arg0 == -1) {
+        return func_00104CF8(arg1, arg2);
+    }
+    return func_0011A758(arg0, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105A70);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105AD0);
+s32 func_00105AD0(s32 arg0, s32 arg1, s32 arg2) {
+    if (arg0 == -1) {
+        return func_00104AE0(arg1, arg2);
+    }
+    return func_0011A7F8(arg0, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105B10);
 
