@@ -25,9 +25,42 @@ void pppRyjMegaPlaceLampCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     v0->unk_08++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0E60);
-
-f32 func_001A0E60(void);
+f32 func_001A0E60(void) {
+    f32 r;
+    __asm__ volatile(
+        "addi $8, $0, -1
+"
+        "qmtc2.ni $8, $vf2
+"
+        "vrxor R, $vf2x
+"
+        "vrnext.x $vf1, R
+"
+        "vrxor R, $vf2x
+"
+        "vrnext.x $vf1, R
+"
+        "vrxor R, $vf2x
+"
+        "vrnext.x $vf1, R
+"
+        "vrxor R, $vf2x
+"
+        "vrnext.x $vf1, R
+"
+        "vrxor R, $vf2x
+"
+        "vrnext.x $vf1, R
+"
+        "vitof0.x $vf2, $vf2
+"
+        "vadd.x $vf1, $vf1, $vf2
+"
+        "qmfc2.ni %0, $vf1
+"
+        : "=r"(r) : : "$8");
+    return r;
+}
 
 s8 func_001A0EA8(u8 arg0) {
     func_001A0E60();

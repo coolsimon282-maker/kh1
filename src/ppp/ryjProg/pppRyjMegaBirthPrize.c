@@ -116,4 +116,59 @@ s32 func_0019FE58(RyjPrizeList* l, RyjPrizeSrc* s) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthPrize", func_0019FF38);
+typedef struct {
+    /* 0x00 */ char unk_00[0x4];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[0x1C];
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 unk_28;
+    /* 0x2C */ f32 unk_2C;
+    /* 0x30 */ char unk_30[0x10];
+    /* 0x40 */ u8 unk_40;
+    /* 0x41 */ u8 unk_41;
+    /* 0x42 */ u8 unk_42;
+} RyjPrizeSrc2;
+
+typedef struct {
+    /* 0x00 */ sceVu0FVECTOR pos;
+    /* 0x10 */ RyjPrizeSrc2* src;
+    /* 0x14 */ RyjPrize* prize;
+    /* 0x18 */ char unk_18[0x4];
+    /* 0x1C */ u8 unk_1C;
+    /* 0x1D */ u8 unk_1D;
+    /* 0x1E */ s16 unk_1E;
+    /* 0x20 */ char unk_20[0x10];
+} RyjPrizeSlot2; // size = 0x30
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x8];
+    /* 0x08 */ u32 unk_08;
+    /* 0x0C */ char unk_0C[0x8];
+    /* 0x14 */ RyjPrizeSlot2* unk_14;
+} RyjPrizeList2;
+
+s32 func_0019FF38(RyjPrizeList2* l, RyjPrizeSrc2* s) {
+    u32 i;
+    RyjPrizeSlot2* e;
+
+    if (l->unk_14 == NULL) {
+        return 0;
+    }
+    for (i = 0; i < l->unk_08; i++) {
+        e = &l->unk_14[i];
+        if (e->src == NULL) {
+            e->src = s;
+            e->prize = func_0019FD18(s->unk_04);
+            e->unk_1C = s->unk_40;
+            e->unk_1D = s->unk_41;
+            e->unk_1E = 0x7FFF / s->unk_42;
+            sceVu0CopyVector(e->pos, e->prize->unk_10);
+            e->pos[0] += s->unk_24;
+            e->pos[1] += s->unk_28;
+            e->pos[2] += s->unk_2C;
+            e->pos[3] = 1.0f;
+            break;
+        }
+    }
+    return 1;
+}
