@@ -1,6 +1,10 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+void func_00148768(s32, s32, u8*, s32);
+extern u8* D_0052AE70[];
+extern s32 D_00308C70[];
+extern u8 D_00304E40[];
 
 typedef struct {
     char pad0[0x48E];
@@ -669,7 +673,9 @@ s32 func_0013DBB0(u32 n) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013DBE0);
+u8* func_0013DBE0(u8* a0, s32 a1) {
+    return D_0052AE70[*(u16*)(*(u8**)(a0 + 0x130) + 0x4C)] + a1 * 20;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013DC10);
 
@@ -1091,7 +1097,9 @@ void func_00144E38(void) {
     func_0014F830(0x11, 1, (s32)func_00144350, 0, (s32)func_00144958, (s32)func_00144CE0, 0, 0, (s32)func_00144D08);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144E88);
+u8* func_00144E88(s32 a0) {
+    return D_00304E40 + a0 * 13;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144EB0);
 
@@ -1283,7 +1291,9 @@ u8* func_00147A10(s32 i) {
     return D_00533BA0 + i;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001477E0);
+s32 func_001477E0(s32 a0) {
+    return (s32)func_00147A10(D_00308C70[a0]);
+}
 
 s32 func_00147808(s32 n) {
     return *(s32*)(func_00147A10(0x258) + n * 4);
@@ -1432,7 +1442,9 @@ s32 func_00148A40(u8* p, s32 b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148A60);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148B70);
+void func_00148B70(u8 *a0, s32 a1, s32 a2) {
+    func_00148768(*(s32 *)(a0 + 0x68), a1, a0, a2);
+}
 
 void func_00148B98(u8* p, s32 b, s32 c) {
     func_001487F8(*(s32*)(p + 0x68), b, (s32)p, c);
@@ -1628,7 +1640,14 @@ void func_0014A380(s32 a, u8* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014A398);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014A408);
+s32 func_0014A408(void) {
+    s32 i;
+    for (i = 0; i < 31; i++) {
+        s32 m = 1 << i;
+        if (!(D_0054F440 & m)) return m;
+    }
+    return 0;
+}
 
 u8* func_0014A450(void) {
     u8* e = D_0054C440;
