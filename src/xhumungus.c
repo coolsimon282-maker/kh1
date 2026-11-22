@@ -224,8 +224,6 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB5C0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB7B8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB850);
-
 typedef struct {
     /* 0x000 */ u64 unk_00_0 : 9;
     u64 unk_00_9 : 1;
@@ -244,6 +242,18 @@ typedef struct {
 
 extern Unk3C5510 D_003C5510;
 extern f32 D_0036266C;
+
+extern f32 D_002B8344;
+
+void func_001CB850(void) {
+    D_003C5510.unk_28 += D_002B8344;
+    if (D_003C5510.unk_14 < D_003C5510.unk_28) {
+        D_003C5510.unk_00_9 = 0;
+        D_0036266C = D_003C5510.unk_98;
+    } else {
+        D_0036266C = (D_003C5510.unk_98 - D_003C5510.unk_68) * (D_003C5510.unk_28 / D_003C5510.unk_14);
+    }
+}
 
 s32 func_001CB8C8(Script* arg0) {
     D_003C5510.unk_00_9 = 1;
