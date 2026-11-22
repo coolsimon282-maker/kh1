@@ -303,7 +303,25 @@ s32 func_00123B50(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123BD0);
+void* memset(void*, s32, u32);
+extern XToaster* D_002E26AC;
+
+XToaster* func_00123BD0(void) {
+    s32 i;
+    for (i = 0; i < 96; i++) {
+        XToaster* p = D_002E26AC;
+        D_002E26AC = p + 1;
+        if (D_002E26AC >= D_002E26A0) {
+            D_002E26AC = D_002C64A0;
+        }
+        if (!((s32)(XT_FLAGS(p) >> 32) & 1)) {
+            memset(p, 0, sizeof(XToaster));
+            XT_FLAGS(p) |= 0x100000000;
+            return p;
+        }
+    }
+    return NULL;
+}
 
 void func_00123C80(XToaster* arg0, f32 arg1, f32 arg2) {
     arg0->unk_410 = arg1;
