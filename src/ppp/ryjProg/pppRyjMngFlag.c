@@ -15,8 +15,6 @@ void pppRyjMngFlagCalc(pppPObject* pobj, PRyjMngFlag* p, pppCtrlTable* ctbl) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMngFlag", func_0019F698);
-
 typedef struct {
     /* 0x00 */ f32 pos[4] __attribute__((aligned(16)));
     /* 0x10 */ s32 unk_10[2];
@@ -36,7 +34,40 @@ typedef union {
 
 #define SORT_COUNT (((RyjCount*)&D_0061E710)->v)
 
-void func_0019F698(s32, s32);
+// quicksort of D_0061E310[left..right] by pos[3], largest first
+void func_0019F698(s32 left, s32 right) {
+    s32 i;
+    s32 j;
+    f32 pivot;
+    RyjSortEnt* t;
+
+    i = left;
+    j = right;
+    pivot = D_0061E310[(left + right) / 2]->pos[3];
+    while (1) {
+        while (pivot < D_0061E310[i]->pos[3]) {
+            i++;
+        }
+        while (D_0061E310[j]->pos[3] < pivot) {
+            j--;
+        }
+        if (i >= j) {
+            break;
+        }
+        t = D_0061E310[i];
+        D_0061E310[i] = D_0061E310[j];
+        D_0061E310[j] = t;
+        i++;
+        j--;
+    }
+    if (left < i - 1) {
+        func_0019F698(left, i - 1);
+    }
+    if (j + 1 < right) {
+        func_0019F698(j + 1, right);
+    }
+}
+
 
 void func_0019F810(void) {
     s32 i;
