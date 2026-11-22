@@ -540,7 +540,27 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", func_001102C0);
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110410);
 
+#ifdef VERSION_FM
+extern f32 D_004D90F8;
+void func_00110AE0(void);
+void func_00110410(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
+                   f32, f32, f32, f32, f32, f32, f32, f32);
+
+void func_00110848(f32 arg0) {
+    func_00110AE0();
+    sceVu0CopyMatrix(D_004D2590, D_002B8370);
+    sceVu0CopyMatrix(D_004D2850, D_002B83B0);
+    sceVu0CopyMatrix(D_004D2890, D_002B83F0);
+    sceVu0CopyMatrix(D_004D28D0, D_002B8430);
+    sceVu0CopyMatrix(D_004D2910, D_002B8470);
+    sceVu0CopyMatrix(D_004D25D0, D_002B84B0);
+    func_00110410(D_002B8370, D_002B83B0, D_002B83F0, D_002B8430, D_002B8470, D_002B84B0, arg0, 0.79999996f,
+                  0.8399998546f, 2048.0f, 2048.0f, 1.0f, 16777000.0f, 1.0f, 400000000.0f, D_004D90F8);
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110848);
+#endif
 
 void func_001109A8(void) {
     sceVu0CopyMatrix(D_004D2950, D_002B84F0);
