@@ -4549,7 +4549,22 @@ void func_001DD620(s32 arg0, s32 arg1, s32 arg2) {
     D_003854E0.unk_3078 &= ~0x200;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD658);
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3078];
+    /* 0x3078 */ u64 unk_3078_0 : 9;
+    u64 unk_3078_9 : 1;
+    u64 unk_3078_10 : 54;
+    /* 0x3080 */ s32 unk_3080;
+} XGiantMountainS;
+
+extern char D_004906C0[];
+
+s32 func_001DD658(Script* arg0) {
+    func_00120590(D_004906C0, func_00155ED8(arg0->unk_174[arg0->unk_174[3] + 3], arg0->unk_174[arg0->unk_174[3] + 4]), (s32 (*)(void))func_001DD620, 0);
+    ((XGiantMountainS*)&D_003854E0)->unk_3078_9 = 1;
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001DD6E0(void) {
     return ((s32)(*(u64*)&D_0038CD00[2] >> 9) & 1) ? 4 : 2;
