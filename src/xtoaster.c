@@ -95,7 +95,49 @@ INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487060);
 
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487068);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001231E0);
+int sprintf(char*, const char*, ...);
+int strlen(const char*);
+XToast* func_001320A8(s32);
+extern char D_00487018[];
+extern char D_00487020[];
+extern char D_00487028[];
+extern char* D_002C6460[];
+extern s32 D_002C648C;
+extern char D_004F7150[4][32];
+extern char D_0048B549[];
+
+char* func_001231E0(s32 id, char* buf) {
+    XToaster* p = func_00123880(id);
+    XToast* t;
+    s32 len;
+    s32 i;
+
+    if (p != NULL) {
+        t = p->unk_130;
+    } else {
+        t = func_001320A8(id);
+    }
+    if (buf == NULL) {
+        buf = D_004F7150[D_002C648C];
+        D_002C648C = (D_002C648C + 1) % 4;
+    }
+    if (t != NULL) {
+        sprintf(buf, D_00487018, D_002C6460[(u32)id >> 16 & 0xFF], (char*)t + 0x68);
+    } else if (((u32)id >> 16 & 0xFF) < 11) {
+        sprintf(buf, D_00487020, D_002C6460[(u32)id >> 16 & 0xFF], id);
+    } else {
+        sprintf(buf, D_00487028, (u32)id >> 16 & 0xFF, id);
+    }
+    len = strlen(buf);
+    for (i = 0; i < len; i++) {
+        s32 c = buf[i];
+        if (*(D_0048B549 + c) & 2) {
+            c -= 0x20;
+        }
+        buf[i] = c;
+    }
+    return buf;
+}
 
 void func_00123318(XToaster* arg0, s32* arg1) {
     arg1[0] = arg0->unk_154;
