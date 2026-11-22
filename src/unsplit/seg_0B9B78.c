@@ -2,6 +2,8 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
+s32 func_001BB740(void);
+
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001B9B78);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001B9BB0);
@@ -52,9 +54,29 @@ u16 func_001BC390(s32 i) {
     return func_001BB658(i)->unk_16;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BA228);
+void func_001BB558(void);
+s32 func_001BE5C8(s32);
+s32 func_001BE5D0(s32);
+s32 func_001EFBB8(s32);
+void func_001EFAF0(void);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BA268);
+s32 func_001BA228(s32 a0) {
+    s32 r;
+
+    func_001BB558();
+    r = func_001EFBB8(func_001BE5C8(a0));
+    func_001EFAF0();
+    return r;
+}
+
+s32 func_001BA268(s32 a0) {
+    s32 r;
+
+    func_001BB558();
+    r = func_001EFBB8(func_001BE5D0(a0));
+    func_001EFAF0();
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BA2A8);
 
@@ -222,13 +244,26 @@ s32 func_001BAF08(s32 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BAF38);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BAF70);
+s32 func_001BAF08(s32 *p);
+
+s32 func_001BAF70(s32 a0, s32 *a, s32 *b) {
+    return func_001BAF08(a) - func_001BAF08(b);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BAFB0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB198);
+void fm_func_001B9B30();
+void *func_0022F768(s32);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB1D8);
+u8 *func_001BB198(s32 i) {
+    fm_func_001B9B30();
+    return (u8 *)func_0022F768(4) + i * 64 + 0x9C20;
+}
+
+u8 *func_001BB1D8(s32 i) {
+    fm_func_001B9B30();
+    return (u8 *)func_0022F768(4) + i * 64 + 0xA420;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB218);
 
@@ -455,7 +490,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE370);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE3C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE430);
+extern s32 D_00625640;
+void *func_001BA9D8(s32);
+void func_001BB880(s32);
+void func_001BD470(void);
+
+void func_001BE430(s32 a0) {
+    memset(func_001BA9D8(a0 - D_00625640), 0, 0xF70);
+    func_001BB880(0);
+    func_001BD470();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE470);
 
@@ -471,11 +515,20 @@ s32 func_001BE5C8(s32 x) {
     return x + 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE5D0);
+s32 func_001BE5D0(s32 a0) {
+    s32 t0 = func_001BB740();
+    return ((a0 + t0) + 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE600);
+s32 func_001BE600(s32 a0) {
+    s32 t0 = func_001BB740();
+    return ((a0 + (t0 << 1)) + 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE630);
+s32 func_001BE630(s32 a0) {
+    s32 t0 = func_001BB740();
+    return ((a0 + (t0 << 1)) + 0xB);
+}
 
 extern s32 D_0037A158;
 

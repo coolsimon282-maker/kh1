@@ -3,6 +3,16 @@
 #include "common.h"
 
 extern s32 D_0046A058[];
+extern u8 D_004919B0[];
+extern u8 D_004919E8[];
+extern s32 D_0066AA84;
+extern s32 _impure_ptr;
+void abort(void);
+void fiprintf(s32, u8 *, s32, s32, s32);
+void func_00149E38(s32, u8 *);
+void func_0024F008();
+s32 sceCdGetError(void);
+void sceDevctl(u8 *, s32, s32, s32, s32, s32);
 
 s32 func_0024B9A8(s32 i) {
     return D_0046A058[i];
@@ -28,7 +38,12 @@ void func_0024B9F0(s32 x) {
     D_00669A3C = x;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA00);
+void func_0024BA00(s32 a0) {
+    s32 t0;
+    D_00669A38 = a0;
+    t0 = sceCdGetError();
+    D_00669A3C = t0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA28);
 
@@ -158,7 +173,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D9A0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D9F0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DAA0);
+void func_0024DAA0(void) {
+    sceDevctl(D_004919B0, 0x4807, 0, 0, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DAD0);
 
@@ -228,7 +245,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024EF88);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F008);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F070);
+void func_0024F070(void) {
+    func_00149E38(*(u16 *)(*(u8 **)&D_0066AA84 + 0x4C), func_0024F008);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F098);
 
@@ -236,4 +255,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F1D0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F210);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", __assert);
+void __assert(s32 a0, s32 a1, s32 a2) {
+    fiprintf(*(s32 *)(*(u8 **)&_impure_ptr + 0xC), D_004919E8, a2, a0, a1);
+    abort();
+}
