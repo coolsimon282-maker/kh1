@@ -822,7 +822,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249C60);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249D20);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249D48);
+void func_00249D48(s32 *arg0) {
+    *arg0 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249D50);
 
