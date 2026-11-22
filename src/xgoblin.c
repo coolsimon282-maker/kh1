@@ -519,4 +519,26 @@ void func_0011F9B0(u_long128* arg0, s32 arg1, u_long128* arg2) {
     *(u64*)arg0 = tag;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F9E8);
+u_long128* func_0011F9E8(s32 dbp, s32 dbw, s32 dpsm, s32 dsax, s32 dsay, s32 rrw, s32 rrh, s32 qwc, s32 src,
+                         u_long128* pkt) {
+    u_long128* dma = pkt;
+    u_long128* gif = pkt + 1;
+    u_long128* p = pkt + 2;
+
+    p = (u_long128*)func_0011F970(0x50, (u64)dbp << 32 | (u64)dbw << 48 | (u64)dpsm << 56, (u64*)p);
+    p = (u_long128*)func_0011F970(0x51, (u64)dsax << 32 | (u64)dsay << 48, (u64*)p);
+    p = (u_long128*)func_0011F970(0x52, (u64)rrw | (u64)rrh << 32, (u64*)p);
+    p = (u_long128*)func_0011F970(0x53, 0, (u64*)p);
+    func_0011F980(gif, 0, p);
+    gif = p++;
+    *(u64*)gif = (u64)(u32)qwc | (2ULL << 58);
+    func_0011F9B0(dma, 1, p);
+    dma = p++;
+    *(u64*)dma = (u64)(u32)(qwc | 0x30000000) | (u64)src << 32;
+    dma = p++;
+    gif = p++;
+    p = (u_long128*)func_0011F970(0x3F, 0, (u64*)p);
+    func_0011F980(gif, 1, p);
+    func_0011F9B0(dma, 7, p);
+    return dma;
+}
