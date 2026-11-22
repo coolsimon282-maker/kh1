@@ -110,7 +110,22 @@ void func_00122410(void) {
     D_004F6EB8 = D_004F6DB8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00122048);
+u32 func_00122048(s32 a, u32 b) {
+    u32 *p = D_004F6EB8;
+    u32 *old = p;
+    u32 n;
+
+    p += 2;
+    D_004F6EB8 = p;
+    n = (old[1] + b - 1) / b * b;
+    p[0] = n;
+    if (a != 0) {
+        D_004F6EB8[1] = n + a;
+    } else {
+        D_004F6EB8[1] = 0x70004000;
+    }
+    return n;
+}
 
 void func_001220B8(void) {
     D_004F6EB8 -= 2;
