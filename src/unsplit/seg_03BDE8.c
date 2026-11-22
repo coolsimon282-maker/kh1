@@ -1640,7 +1640,14 @@ void func_0014A380(s32 a, u8* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014A398);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014A408);
+s32 func_0014A408(void) {
+    s32 i;
+    for (i = 0; i < 31; i++) {
+        s32 m = 1 << i;
+        if (!(D_0054F440 & m)) return m;
+    }
+    return 0;
+}
 
 u8* func_0014A450(void) {
     u8* e = D_0054C440;
