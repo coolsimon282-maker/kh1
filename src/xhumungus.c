@@ -272,7 +272,19 @@ void func_001CA7A0(void) {
     } while (0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA888);
+s32 func_001CA888(Script* arg0) {
+    Unk3C5510A* p;
+
+    func_001C6890(arg0);
+    p = (Unk3C5510A*)&D_003C5510;
+    p->unk_00_3 = 1;
+    p->unk_60[1] = p->unk_120[1];
+    p->unk_20[1] = 0.0f;
+    p->unk_0C[1] = arg0->unk_174[arg0->unk_174[3] + 3] * 2.0f;
+    p->unk_90[1] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA908);
 
