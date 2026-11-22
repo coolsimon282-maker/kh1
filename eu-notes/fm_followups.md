@@ -22,3 +22,14 @@ different compiler/flags for those files, or hand-written.
 - gcc emits bnel (branch-likely) where the target has bnez (xbuffalo func_001C1AE0).
 - gcc turns a final call into a tail jump where the target uses jal + return (xbuffalo func_001C20B8).
 Both may point at different optimisation flags for some files.
+
+## Jump tables in files without a .rodata piece (FM)
+A C `switch` that compiles to a jump table puts the table in the file's .rodata. Files placed without their own
+.rodata piece in config/kh.fm.yaml (e.g. xpotato) then fail to link. a3: xpotato func_00218A38 and
+func_00218AC0 match byte for byte but can't link. Fix: give xpotato (and similar files) a `.rodata` piece in the
+FM layout at the right address (gen_eu_c.py would do it once the object has .rodata), then re-commit those two.
+
+## Agents' commit hygiene (night of 21-22 Nov)
+a3 run 2 committed one function while the build was failing (its `| tail -1` hid it) and reverted it; it also
+amended one commit message. a4 run 2 and a6 run 2 made batch commits (a6 reverted and re-committed singly).
+The fm branch built OK after every merge.

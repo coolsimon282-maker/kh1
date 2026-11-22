@@ -94,6 +94,13 @@ INCLUDE_ASM("...", fm_func_X);
   checkout that was set up before then.
 * **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
   FM-address name (`D_00xxxxxx`) for globals it doesn't list.
+* **Aliasing in ppp (and xpotato)**: these behave as if built without strict aliasing; if the target keeps a load
+  after a store of a different type, go through a union (`typedef union { f32 f; s32 i; } FI;`) or type the
+  pointer field as `s32`.
+* **Check the build result properly**: don't trust `| tail -1` of a filtered log; the commit must follow a build
+  whose last line is `build/fm/SLPS_251.98.rom: OK`.
+* **Jump tables**: a `switch` that becomes a jump table needs the file to have a .rodata piece in the FM config;
+  if the link fails for that reason, give up on the function and note it (the coordinator fixes the config).
 * **Scratch files**: the scratchpad folder is shared between agents; use your own subfolder in it.
 
 ## Your notes file
