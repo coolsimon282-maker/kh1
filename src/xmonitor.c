@@ -253,4 +253,56 @@ void func_002475E8(s32 arg0, sceGsTex0* tex, u64* arg2) {
     tex->PSM = 0x13;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247668);
+typedef struct {
+    u8 pad0[8];
+    s32 unk8;
+    u32 unkC;
+    s32 unk10;
+    s32 pad14;
+    s32 unk18;
+    s32 pad1C;
+    s32 unk20;
+} MonitorFile;
+typedef struct {
+    Monitor m;
+    u8 pad[0x20];
+} MonitorEntry;
+extern char D_00491860[];
+
+void func_00247668(MonitorFile* f) {
+    MonitorEntry* e;
+    u8* b0;
+    u8* b1;
+    u8* b2;
+    s32 n;
+    s32 i;
+
+    if ((u32)f & 0xF) {
+        __assert(D_00491848, 0x20C, D_00491860);
+    }
+    n = f->unkC / sizeof(MonitorEntry);
+    i = f->unkC / sizeof(MonitorKey50); // unused; leaves a dead `li 0x50`
+    e = (MonitorEntry*)((u8*)f + f->unk8);
+    b0 = (u8*)f + f->unk10;
+    b1 = (u8*)f + f->unk18;
+    b2 = (u8*)f + f->unk20;
+    for (i = 0; i < n; i++, e++) {
+        s32 fl = e->m.unk60;
+
+        if (fl & 2) {
+            if (e->m.sub[0].unkC < 0x100000) {
+                e->m.sub[0].unkC = (s32)(b0 + e->m.sub[0].unkC * 0x20);
+            }
+        }
+        if (fl & 0x40) {
+            if (e->m.sub[1].unkC < 0x100000) {
+                e->m.sub[1].unkC = (s32)(b1 + e->m.sub[1].unkC * 0x50);
+            }
+        }
+        if (fl & 4) {
+            if (e->m.sub[2].unkC < 0x100000) {
+                e->m.sub[2].unkC = (s32)(b2 + e->m.sub[2].unkC * 0x20);
+            }
+        }
+    }
+}
