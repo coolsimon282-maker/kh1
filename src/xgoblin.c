@@ -130,7 +130,38 @@ XGoblin* func_0011EE80(XGoblin* arg0, XGoblin* arg1) {
     return pXVar2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EEB8);
+/* Union access = alias set 0: the target loads the list head only after the stores to the new entry, as
+   if built with -fno-strict-aliasing. */
+typedef union {
+    XGoblin g;
+} XGoblinAny;
+
+// Takes a free entry, fills it in and links it into the list sorted by priority (unk_04).
+void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
+    XGoblin* g = (XGoblin*)arg0;
+    XGoblin* n = func_0011EE10(g);
+    XGoblin* prev;
+    XGoblin* cur;
+
+    if (n != NULL) {
+        n->unk_0C = (void*)func;
+        n->unk_00 = 0x11;
+        n->unk_04 = arg1;
+        n->unk_02 = 0;
+        prev = NULL;
+        for (cur = ((XGoblinAny*)g)->g.unk_08; cur != NULL && arg1 >= cur->unk_04; cur = cur->unk_08) {
+            prev = cur;
+        }
+        if (prev != NULL) {
+            prev->unk_08 = n;
+        } else {
+            g->unk_08 = n;
+        }
+        n->unk_08 = cur;
+    }
+    g->unk_0C = (void*)n;
+    return n;
+}
 
 #ifdef VERSION_FM
 s32 func_0011EF58(XGoblin* arg0, s32 arg1);
