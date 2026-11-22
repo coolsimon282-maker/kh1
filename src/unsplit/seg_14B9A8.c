@@ -53,7 +53,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BBC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BC08);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BC68);
+typedef union {
+    u32 w;
+    struct {
+        s16 lo;
+        s16 hi;
+    } s;
+} A2Ent4;
+extern s32 D_0046A540;
+extern A2Ent4 *D_0046A568[];
+
+s32 func_0024BC68(s32 a, s32 b) {
+    A2Ent4 *e;
+
+    for (e = D_0046A568[D_0046A540]; e->s.hi != -10; e++) {
+        if (e->s.hi == -1 && a == ((e->w >> 4) & 0xF) && b == ((e->w >> 8) & 0xF)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BCE8);
 
@@ -81,7 +100,25 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C950);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CDE8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CE80);
+void func_0024CE80(u8 *dst, s16 *src) {
+    s32 i;
+    s32 j = 0;
+    s32 c;
+
+    for (i = 0; i < 8 && (c = *src) >= 0; i++, src++) {
+        if (c == 0) {
+            c = 1;
+        } else {
+            c += 0x20;
+            if (c >= 0x100) {
+                c += 0x1800;
+                dst[j++] = c >> 8;
+            }
+        }
+        dst[j++] = c;
+    }
+    dst[j] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CF00);
 
