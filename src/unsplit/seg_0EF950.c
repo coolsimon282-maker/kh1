@@ -9,6 +9,13 @@ typedef struct {
     u8 pad2[4];
     s16 belo : 4;
     s16 be : 12;
+    s16 c0lo : 4;
+    s16 c0 : 12;
+    u8 pad3[2];
+    s16 c4lo : 4;
+    s16 c4 : 12;
+    u8 pad4[0xA];
+    u16 d0lo : 4;
 } SObj;
 
 void func_00201600(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
@@ -1445,9 +1452,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206E28);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206E60);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206EA8);
+void func_00206EA8(s32 n) {
+    struct {
+        u8 pad[0x30];
+        s32 a[1];
+    } *p = (void *)D_003ED718;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206EE8);
+    p->a[n / 32] |= 1 << n;
+}
+
+s32 func_00206EE8(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x30))[n / 32] & (1 << n);
+}
 
 void func_00206F20(void) {
     *(s32 *)(*(u8 **)&D_003ED718 + 0x38) = 0;
@@ -1455,9 +1471,13 @@ void func_00206F20(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206F30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206F78);
+void func_00206F78(s32 n) {
+    ((s32 *)(D_003ED718 + 0x38))[n / 32] |= 1 << n;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206FB8);
+s32 func_00206FB8(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x38))[n / 32] & (1 << n);
+}
 
 void func_00206FF0(void) {
     *(s32 *)(*(u8 **)&D_003ED718 + 0x3C) = 0;
@@ -1465,9 +1485,13 @@ void func_00206FF0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207000);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207048);
+void func_00207048(s32 n) {
+    ((s32 *)(D_003ED718 + 0x3C))[n / 32] |= 1 << n;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207088);
+s32 func_00207088(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x3C))[n / 32] & (1 << n);
+}
 
 void func_002070C0(void) {
     s32 *p = (s32 *)((u8 *)D_003ED718 + 0x40);
@@ -1479,9 +1503,18 @@ void func_002070C0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002070F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207140);
+void func_00207140(s32 n) {
+    struct {
+        u8 pad[0x40];
+        s32 a[1];
+    } *p = (void *)D_003ED718;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207180);
+    p->a[n / 32] |= 1 << n;
+}
+
+s32 func_00207180(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x40))[n / 32] & (1 << n);
+}
 
 void func_002071B8(void) {
     *(s32 *)(*(u8 **)&D_003ED718 + 0x68) = 0;
@@ -1489,9 +1522,13 @@ void func_002071B8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002071C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207210);
+void func_00207210(s32 n) {
+    ((s32 *)(D_003ED718 + 0x68))[n / 32] |= 1 << n;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207250);
+s32 func_00207250(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x68))[n / 32] & (1 << n);
+}
 
 void func_00207288(void) {
     *(s32 *)(*(u8 **)&D_003ED718 + 0x6C) = 0;
@@ -1499,9 +1536,13 @@ void func_00207288(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207298);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002072E0);
+void func_002072E0(s32 n) {
+    ((s32 *)(D_003ED718 + 0x6C))[n / 32] |= 1 << n;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207320);
+s32 func_00207320(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x6C))[n / 32] & (1 << n);
+}
 
 void func_00207358(void) {
     *(s32 *)(*(u8 **)&D_003ED718 + 0x70) = 0;
@@ -1509,9 +1550,18 @@ void func_00207358(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207368);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002073B0);
+void func_002073B0(s32 n, u8 *a1) {
+    struct {
+        u8 pad[0x70];
+        s32 a[1];
+    } *p = (void *)D_003ED718;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002073F0);
+    p->a[n / 32] |= 1 << n;
+}
+
+s32 func_002073F0(s32 n) {
+    return ((s32 *)(D_003ED718 + 0x70))[n / 32] & (1 << n);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207428);
 
