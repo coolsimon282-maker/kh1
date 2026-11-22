@@ -114,7 +114,12 @@ s32 sceMcEnd(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", _lmcGetClientPtr);
+sceSifClientData* _lmcGetClientPtr(s32** ret, s32** cmd) {
+    *ret = mcRetVal;
+    *cmd = &mcRunCmdNo;
+    mcRetVal[15] = semaidRegFunc;
+    return &mcClientID;
+}
 
 /**
  * @brief Change `mcserv.irx` IOP module thread priority
@@ -287,7 +292,33 @@ s32 sceMcSeek(s32 fd, s32 offset, s32 mode) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceIntrReadFixAlign);
+typedef struct {
+    /* 0x00 */ s32 size1;
+    /* 0x04 */ s32 size2;
+    /* 0x08 */ u8* dest1;
+    /* 0x0C */ u8* dest2;
+    /* 0x10 */ u8 buf1[0x40];
+    /* 0x50 */ u8 buf2[0x40];
+} McRpcReadFix;
+
+void mceIntrReadFixAlign(McRpcReadFix* arg) {
+    McRpcReadFix* p = (McRpcReadFix*)((u32)arg | 0x20000000);
+    u8* d;
+    s32 i;
+
+    if (p->size1 != 0) {
+        d = p->dest1;
+        for (i = 0; i < p->size1; i++) {
+            *d++ = p->buf1[i];
+        }
+    }
+    if (p->size2 != 0) {
+        d = p->dest2;
+        for (i = 0; i < p->size2; i++) {
+            *d++ = p->buf2[i];
+        }
+    }
+}
 void mceIntrReadFixAlign();
 
 /**
@@ -338,9 +369,54 @@ void mcDelayThread(u16 arg0) {
     SleepThread();
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcSync);
+s32 sceMcSync(s32 mode, s32* cmd, s32* result) {
+    s32 ret;
 
+    if (mcRunCmdNo == 0) {
+        return -1;
+    }
+    ret = sceSifCheckStatRpc(&mcClientID);
+    if (mode == 0 && ret != 0) {
+        while (sceSifCheckStatRpc(&mcClientID)) {
+            mcDelayThread(0x3C);
+        }
+        ret = 0;
+    }
+    ret = ret == 0;
+    if (cmd != NULL) {
+        *cmd = mcRunCmdNo;
+    }
+    if (ret) {
+        mcRunCmdNo = 0;
+        if (result != NULL) {
+            *result = mcRetVal[0];
+        }
+        SignalSema(semaidRegFunc);
+    }
+    return ret;
+}
+
+#ifdef VERSION_FM
+extern s32* D_00673628;
+extern s32* D_0067362C;
+extern s32* D_00673630;
+
+void mceGetInfoApdx(s32 addr) {
+    s32* p = (s32*)(addr | 0x20000000);
+
+    if (D_00673628 != NULL) {
+        *D_00673628 = p[0];
+    }
+    if (D_0067362C != NULL) {
+        *D_0067362C = p[1];
+    }
+    if (D_00673630 != NULL) {
+        *D_00673630 = p[0x24];
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceGetInfoApdx);
+#endif
 void mceGetInfoApdx();
 
 INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcGetInfo);
@@ -397,7 +473,17 @@ s32 sceMcGetDir(s32 port, s32 slot, const char* name, u32 mode, s32 maxent, sceM
     return sifServerStat;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceStorePwd);
+void mceStorePwd(char* dst) {
+    s32 len;
+
+    if (dst != NULL) {
+        len = strlen((char*)((u32)mcCachedTables | 0x20000000)) < 0x400
+                  ? strlen((char*)((u32)mcCachedTables | 0x20000000))
+                  : 0x3FF;
+        memcpy(dst, (void*)((u32)mcCachedTables | 0x20000000), len);
+        dst[len] = 0;
+    }
+}
 void mceStorePwd();
 
 /**
