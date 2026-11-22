@@ -12,6 +12,8 @@ extern u8 D_003F1660[];
 extern s32 D_003F1A60;
 extern s32 D_003F1A64;
 extern s32 D_003F1A68;
+extern u8 D_003F2670[];
+extern u8 D_003F2720[];
 extern u8 D_003F2C40[];
 extern s32 D_0063F740;
 extern s32 D_0063F744;
@@ -94,6 +96,9 @@ s32 func_001FE5A0(void);
 void func_001FEFF0(s32, s32, s32, s32, s32, s32, s32, s32);
 void func_001FF488(u8 *, s32, s32, s32, s32, s32);
 void func_00200648(s32, s32, s32, s32, s32, s32);
+void func_00201440(s32, s32, s32, s32, s32, s32, s32, s32);
+void func_00201460(s32, s32, s32, s32, s32, s32, s32, s32);
+void func_00201480(s32, s32, s32, s32, s32, s32, s32, s32);
 void func_00202678(void *, s32, s32);
 void func_00203A10(void *, s32);
 void func_00206130(s32, s32, s32, s32, s32, s32);
@@ -105,6 +110,8 @@ void func_0020BE10(s32);
 void func_00214B20(u8 *, s32);
 void func_00214FC8(u8 *, s32);
 s32 func_002366D8(s32, s32);
+s32 sceDmaGetChan(s32);
+s32 sceDmaSend(s32, u8 *);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EF950);
 
@@ -671,7 +678,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8170);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F81E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8270);
+void func_001F8270(void) {
+    s32 t0;
+    s32 t1;
+    s32 t2;
+    t0 = sceDmaGetChan(2);
+    t1 = sceDmaSend(t0, D_003F2670);
+    t2 = sceDmaGetChan(2);
+    sceDmaSend(t2, D_003F2720);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F82B0);
 
