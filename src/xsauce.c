@@ -512,7 +512,44 @@ s32 func_0010EEC8(s32 arg0) {
     return func_0010EDC0(arg0, stack) / 24 + 1;
 }
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ char unk_00[0x30];
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ f32 unk_34;
+    /* 0x38 */ char unk_38[0x38];
+    /* 0x70 */ f32 unk_70;
+    /* 0x74 */ f32 unk_74;
+} XSauceScroll;
+
+
+extern f32 D_002B8344;
+extern f32 D_004D5AFC_f __asm__("D_004D5AFC");
+extern u64 D_002BBAF0[];
+extern u8 D_002BBB90[];
+f32 cosf(f32);
+
+
+void func_0010EF00(s32 x, s32 y, XSauceScroll* c) {
+    s32 r;
+
+    D_004D5AFC_f += D_002B8344 * 0.19999999f;
+    if (D_004D5AFC_f > 3.1415928f) {
+        D_004D5AFC_f -= 6.2831855f;
+    }
+    if (D_004D5AFC_f < -3.1415928f) {
+        D_004D5AFC_f += 6.2831855f;
+    }
+    r = cosf(D_004D5AFC_f) * 64.0f + 64.0f;
+    x = x + (c->unk_30 - c->unk_70);
+    y = y + (c->unk_34 - c->unk_74);
+    D_002BBAF0[17] = (u64)(x * 16 - r + 0x7000) | (u64)(y * 16 + 0x7400) << 16 | 0x100000000;
+    D_002BBAF0[19] = (u64)(((x + 40) << 4) - r + 0x7000) | (u64)(((y + 24) << 4) + 0x7400) << 16 | 0x100000000;
+    func_00106948(D_002BBB90);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EF00);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F0A0);
 
