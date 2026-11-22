@@ -242,9 +242,139 @@ s32 func_00247250(Monitor* m) {
     return m->sub[2].unk10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247258);
-
 void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2);
+
+typedef struct {
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s32 w;
+    /* 0x0C */ s32 h;
+    /* 0x10 */ s32 u0;
+    /* 0x14 */ s32 v0;
+    /* 0x18 */ s32 u1;
+    /* 0x1C */ s32 v1;
+    /* 0x20 */ s32 col[4][4];
+    /* 0x60 */ s32 flags;
+} MonitorG;
+
+typedef struct {
+    /* 0x00 */ s32 u;
+    /* 0x04 */ s32 v;
+    /* 0x08 */ s32 pad[2];
+} MonitorUV;
+
+typedef struct {
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s32 z;
+    /* 0x0C */ s32 w;
+} MonitorXYZ;
+
+typedef struct {
+    /* 0x00 */ u64 tag0;
+    /* 0x08 */ u64 reg0;
+    /* 0x10 */ u64 tag1;
+    /* 0x18 */ u64 reg1;
+    /* 0x20 */ MonitorUV uv[4];
+    /* 0x60 */ s32 col[4][4];
+    /* 0xA0 */ MonitorXYZ xyz[4];
+} MonitorPkt;
+
+static inline void MonitorSetXYZ(MonitorPkt* o, s32 x, s32 y, s32 w, s32 h) {
+    s32 x0 = (x << 4) + 0x7000;
+    s32 y0 = (y << 4) + 0x7400;
+    s32 y1 = ((y + h) << 4) + 0x7400;
+    s32 x1 = ((x + w) << 4) + 0x7000;
+
+    o->xyz[0].x = x0;
+    o->xyz[0].y = y0;
+    o->xyz[0].z = -0x100;
+    o->xyz[0].w = 0;
+    o->xyz[1].x = x0;
+    o->xyz[1].y = y1;
+    o->xyz[1].z = -0x100;
+    o->xyz[1].w = 0;
+    o->xyz[2].x = x1;
+    o->xyz[2].y = y0;
+    o->xyz[2].z = -0x100;
+    o->xyz[2].w = 0;
+    o->xyz[3].x = x1;
+    o->xyz[3].y = y1;
+    o->xyz[3].z = -0x100;
+    o->xyz[3].w = 0;
+}
+
+void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2) {
+    MonitorPkt* o = (MonitorPkt*)tex;
+    MonitorG* m = (MonitorG*)arg1;
+    s32 c[4];
+    s32 r[4];
+    s32 cm[4][4];
+    s32 i;
+    s32 j;
+    u64 fl;
+
+    o->tag0 = arg2;
+    o->reg0 = 6;
+    o->tag1 = arg2;
+    o->reg1 = 6;
+    fl = *(u64*)&m->flags;
+    if ((fl & 0xA) == 0xA) {
+        func_00246C80((Monitor*)m, c);
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                o->col[i][j] = c[j];
+            }
+        }
+    } else if ((fl & 0xC0) == 0xC0) {
+        func_00246EA0((Monitor*)m, cm);
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                o->col[i][j] = cm[i][j];
+            }
+        }
+    } else if (m->flags & 0x20) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                o->col[i][j] = m->col[i][j];
+            }
+        }
+    } else {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                o->col[i][j] = m->col[0][j];
+            }
+        }
+    }
+    if ((*(u64*)&m->flags & 0x14) == 0x14) {
+        func_00247128((Monitor*)m, r);
+        MonitorSetXYZ(o, r[0], r[1], r[2], r[3]);
+    } else {
+        MonitorSetXYZ(o, m->x, m->y, m->w, m->h);
+    }
+    if (m->u0 < m->u1) {
+        o->uv[0].u = (m->u0 << 4) + 8;
+        o->uv[1].u = (m->u0 << 4) + 8;
+        o->uv[2].u = (m->u1 << 4) + 0x18;
+        o->uv[3].u = (m->u1 << 4) + 0x18;
+    } else {
+        o->uv[0].u = (m->u0 << 4) + 8;
+        o->uv[1].u = (m->u0 << 4) + 8;
+        o->uv[2].u = (m->u1 << 4) - 8;
+        o->uv[3].u = (m->u1 << 4) - 8;
+    }
+    if (m->v0 < m->v1) {
+        o->uv[0].v = (m->v0 << 4) + 8;
+        o->uv[1].v = (m->v1 << 4) + 0x18;
+        o->uv[2].v = (m->v0 << 4) + 8;
+        o->uv[3].v = (m->v1 << 4) + 0x18;
+    } else {
+        o->uv[0].v = (m->v0 << 4) + 8;
+        o->uv[1].v = (m->v1 << 4) - 8;
+        o->uv[2].v = (m->v0 << 4) + 8;
+        o->uv[3].v = (m->v1 << 4) - 8;
+    }
+}
 
 void func_002475E8(s32 arg0, sceGsTex0* tex, u64* arg2) {
     func_00247258(tex, arg0, arg2[3]);
