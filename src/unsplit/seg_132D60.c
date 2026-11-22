@@ -60,7 +60,11 @@ void func_002336C8(void) {
     D_00647798 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002336D8);
+extern s32 D_006477A4;
+
+void func_002336D8(void) {
+    D_006477A4 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002336E8);
 
