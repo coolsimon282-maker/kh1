@@ -181,8 +181,41 @@ void func_001EF840(void) {
 }
 
 #ifdef VERSION_FM
-void func_001EF878(void);
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF878);
+void func_00233610(void);
+void func_00233A80(void);
+void fm_func_001EFAA8(void);
+void func_001F2EB8(void);
+void func_0020D748(void);
+void func_0022BD20(void);
+void func_0022D138(void);
+void func_0022D728(void);
+void func_0022DB90(void);
+void func_0022DFD0(void);
+void func_0022E458(void);
+void func_0022EBE8(void);
+void func_0022EBF0(void);
+void func_002319C0(void);
+void func_00232790(void);
+void func_00232AC8(void);
+void func_001EF878(void) {
+    func_00233610();
+    func_00233A80();
+    fm_func_001EFAA8();
+    func_001F2EB8();
+    func_001F0C28();
+    func_0020D748();
+    func_0022BD20();
+    func_0022D138();
+    func_0022D728();
+    func_0022DB90();
+    func_0022DFD0();
+    func_0022E458();
+    func_0022EBE8();
+    func_0022EBF0();
+    func_002319C0();
+    func_00232790();
+    func_00232AC8();
+}
 #else
 void func_001EF878(void) {
     func_00230068();
