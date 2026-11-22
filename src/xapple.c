@@ -444,7 +444,55 @@ s32 func_0013B480(OtherApple* arg0) {
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B480);
 #endif
 
+#ifdef VERSION_FM
+typedef union {
+    XAppleBlemish* p;
+    f32 f;
+} XAppleBU;
+#define APL_E8 (((XAppleBU*)&D_005325E8)->p)
+extern XAppleStem D_002E26A0;
+extern sceVu0FVECTOR D_0052AE40;
+s32 func_0014F658(XAppleBlemish*, s32);
+void func_00131500(XAppleBlemish*);
+void func_00130340(XAppleBlemish*, f32, UNK_PTR);
+s32 func_00123858(void*);
+void func_001250B0(void);
+void func_00133588(void);
+void func_001452E0(s32, s32);
+void func_0023E0B0(s32, s32);
+
+void func_0013B578(void) {
+    XAppleBlemish* var_16;
+
+    func_00133588();
+    func_001250B0();
+    func_0023E0B0(0, 1);
+    var_16 = func_001234A0(NULL);
+    if (var_16 != NULL) {
+        do {
+            if (!((var_16->unk_370 >> 0x21) & 1) && (var_16 != (XAppleBlemish*)D_002E26A0.unk_00[1]) &&
+                (var_16 != (XAppleBlemish*)D_002E26A0.unk_00[2])) {
+                func_00123858(var_16);
+            }
+            var_16 = func_001234A0(var_16);
+        } while (var_16 != NULL);
+    }
+    func_0014F658(D_005325E8, 0);
+    func_00123E48(D_005325E8->unk_04.s32, D_0052AE40);
+    func_00131500(D_005325E8);
+    func_00130340(D_005325E8, 0.0f, (UNK_PTR)0x40000000);
+    APL_E8->unk_370 &= ~0x10000000000000;
+    APL_E8->unk_00 &= ~0x200000;
+    APL_E8->unk_444 = 0;
+    func_001778A0(0);
+    D_002C1EA8 &= ~0x4000;
+    func_001452E0(0, 4);
+    func_0011EEB8(&D_00532518, 0, &func_0013B480);
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
+#endif
 // int func_0011EEB8(int*, int, int*);
 // int func_00123858(void*);
 // void func_001250B0(void);
