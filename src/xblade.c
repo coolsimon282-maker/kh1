@@ -1160,6 +1160,24 @@ void func_00114800(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114818);
 
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ void* unk_10;
+} XBladeTask;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x50];
+} XBladePkt; // size = 0x50
+
+typedef struct {
+    /* 0x00 */ s32 (*unk_00)[4];
+    /* 0x04 */ u8 unk_04[0xC];
+} XBlade3044D8; // size = 0x10
+
+extern XBladePkt D_004D9380[2];
+extern XBladePkt D_004D9420[][2];
+void func_00114818(XBladePkt* pkt, s32 idx, s32 n);
+
 // Two 4x4 matrices per entry (copied as words), [2 buffers][64 entries]; D_004DBC20 holds a header 8 bytes before.
 extern s32 D_00351BD0;
 extern s32 D_004DBC28[][64][36];
@@ -1177,7 +1195,34 @@ void func_001149B0(s32 idx, s32 src[4][4]) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114A50);
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XBladeMatTag;
+
+typedef struct {
+    /* 0x00 */ XBladeMatTag tag;
+    /* 0x08 */ s32 m[2][4][4];
+    /* 0x88 */ s32 unk_88[2];
+} XBladeMatEnt; // size = 0x90
+
+extern XBladeMatEnt D_004DBC20[2][64];
+extern XBladeMatTag D_0048BFD0;
+
+void func_00114A50(void) {
+    s32 i, j;
+
+    for (i = 0; i < 64; i++) {
+        for (j = 0; j < 2; j++) {
+            D_004DBC20[j][i].tag.unk_00 = D_0048BFD0.unk_00;
+            D_004DBC20[j][i].tag.unk_04 = D_0048BFD0.unk_04;
+        }
+    }
+    func_00114818(D_004D9380, -1, 2);
+    for (j = 0; j < 64; j++) {
+        func_00114818(D_004D9420[j], j, 2);
+    }
+}
 
 void func_00114B18(f32* arg0, s32 arg1) {
     if (arg1 == -1) {
@@ -1187,22 +1232,6 @@ void func_00114B18(f32* arg0, s32 arg1) {
     func_0011AED0(arg1, arg0);
 }
 
-typedef struct {
-    /* 0x00 */ char unk_00[0x10];
-    /* 0x10 */ void* unk_10;
-} XBladeTask;
-
-typedef struct {
-    /* 0x00 */ u8 unk_00[0x50];
-} XBladePkt; // size = 0x50
-
-typedef struct {
-    /* 0x00 */ s32 (*unk_00)[4];
-    /* 0x04 */ u8 unk_04[0xC];
-} XBlade3044D8; // size = 0x10
-
-extern XBladePkt D_004D9380[2];
-extern XBladePkt D_004D9420[][2];
 extern XBlade3044D8 D_003044D8[];
 s32 func_00108D90(XBladeTask*);
 XBladeTask* func_0015ED80(s32 arg0, s32 (*arg1)(XBladeTask*));
