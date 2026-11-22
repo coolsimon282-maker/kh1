@@ -129,4 +129,41 @@ void func_001230D0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00123108);
+typedef struct XOwlE2 {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    char unk_0C[0x14];
+    sceVu0FVECTOR unk_20;
+    sceVu0FVECTOR unk_30;
+} XOwlE2;
+typedef union {
+    XOwlE2* p;
+    f32 f;
+} XOwlU;
+extern XOwlU D_002C6440;
+s32 func_00122EC8(void);
+s32 func_0011ED60(s32 (*)(void));
+
+void func_00123108(void) {
+    s32 i;
+
+    for (i = 0; i < 31; i++) {
+        D_002C5C80[i].unk_00 = 0;
+        D_002C5C80[i].unk_04 = 0;
+    }
+    D_002C6440.p = (void*)func_00122AF8(2, 7, 0);
+    D_002C6440.p->unk_20[0] = 0.0f;
+    D_002C6440.p->unk_20[1] = 1.0f;
+    D_002C6440.p->unk_20[2] = 0.0f;
+    D_002C6440.p->unk_20[3] = 1.0f;
+    D_002C6440.p->unk_30[0] = 1.0f;
+    D_002C6440.p->unk_30[1] = 1.0f;
+    D_002C6440.p->unk_30[2] = 1.0f;
+    D_002C6440.p->unk_30[3] = 1.0f;
+    func_00122FF0();
+    if (func_0011ED60(func_00122EC8) == 0) {
+        func_0011ED30(60000, func_00122EC8);
+    }
+}
+
