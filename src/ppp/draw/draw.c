@@ -170,7 +170,66 @@ void func_001AAA30(DrawNodeHead* head, s32 pool, f32* arg2, f32* arg3) {
     head->first = node;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAB28);
+typedef struct {
+    /* 0x00 */ DrawNodeHead* head;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ DrawNodeList* freeList;
+    /* 0x10 */ f32* unk_10;
+    /* 0x14 */ f32* unk_14;
+} DrawNodeUpd;
+
+typedef struct {
+    /* 0x00 */ sceVu0FMATRIX m;
+    /* 0x40 */ DrawNode* node;
+    /* 0x44 */ s32 unk_44;
+    /* 0x48 */ DrawNodeList* unk_48;
+    /* 0x4C */ s32 unk_4C;
+} DrawNodeCtx;
+
+void func_001A9C50(DrawNodeCtx*);
+// updates every node of a list (vectors, flags), draws it with func_001A9C50 and frees the ones flagged 0x10
+void func_001AAB28(DrawNodeUpd* u) {
+    DrawNodeCtx ctx;
+    DrawNodeHead* head = u->head;
+    DrawNode* node;
+    DrawNode* cur;
+    s32 bits = 0;
+
+    if (head->flags & 2) {
+        head->flags &= ~2;
+        bits = 0x20;
+    }
+    sceVu0UnitMatrix(ctx.m);
+    ctx.unk_44 = u->unk_04;
+    ctx.unk_48 = u->freeList;
+    ctx.unk_4C = u->unk_08;
+    node = head->first;
+    while (node != NULL) {
+        if (node->flags & 0x200) {
+            func_001AB0F0((f32*)((DrawNodeEntry*)node->unk_40 + node->unk_34)->data, u->unk_10);
+            func_001AB0F0((f32*)(((DrawNodeEntry*)node->unk_40 + node->unk_34)->data + 0x20), u->unk_14);
+        }
+        if (node->flags & 0x100) {
+            node->flags |= bits;
+        }
+        ctx.node = node;
+        func_001A9C50(&ctx);
+        if (node->flags & 0x10) {
+            cur = node;
+            node = cur->next;
+            if (cur->next != NULL) {
+                cur->next->prev = cur->prev;
+            }
+            cur->prev->next = cur->next;
+            func_001AA868(cur);
+            cur->next = u->freeList->free;
+            u->freeList->free = cur;
+        } else {
+            node = node->next;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAC80);
 
@@ -192,7 +251,11 @@ void func_001AAF58(void) {
     D_00372760 = (D_00372760 * 0x80D + 7) & 0xFFFF;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAF80);
+s32 func_001AAF80(void) {
+    f32 r;
+    __asm__ volatile("addi $8,$0,-1\n\tqmtc2.ni $8,$vf2\n\tvrxor R,$vf2x\n\tvitof0.x $vf2,$vf2\n\tvrnext.x $vf1,R\n\tvadd.x $vf1,$vf1,$vf2\n\tqmfc2.ni %0,$vf1" : "=r"(r) : : "$8");
+    return r * 32768.0f;
+}
 
 typedef struct {
     /* 0x00 */ f32 org[4]; // ray origin, relative to the sphere's centre
@@ -226,7 +289,13 @@ s32 func_001AAFC0(DrawRaySphere* r) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0B0);
+f32 func_001AB0B0(f32 a, f32 b) {
+    f32 v[4];
+    v[0] = a;
+    v[1] = b;
+    __asm__ volatile("lqc2 $vf1,0(%0)\n\tvmaxy.x $vf1,$vf1,$vf1y\n\tsqc2 $vf1,0(%0)" : : "r"(v) : "memory");
+    return v[0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0D8);
 
@@ -264,11 +333,25 @@ f32 func_001AB348(s32 n, f32 x) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB380);
+f32 func_001AB380(f32 a) {
+    f32 v[4];
+    f32 r;
+    v[1] = a;
+    __asm__ volatile("lqc2 $vf10,0(%1)\n\tvsqrt Q,$vf10y\n\tvwaitq\n\tcfc2.ni $2,$vi22\n\tmtc1 $2,%0" : "=f"(r) : "r"(v) : "$2", "memory");
+    return r;
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB3A8);
+f32 func_001AB3A8(f32* a) {
+    f32 v[4];
+    __asm__ volatile("lqc2 $vf10,0(%0)\n\tvmul.xyz $vf10,$vf10,$vf10\n\tvmove.xyz $vf9,$vf10\n\tvaddx.y $vf9,$vf9,$vf9x\n\tvaddy.z $vf9,$vf9,$vf9y\n\tvsqrt Q,$vf9z\n\tvwaitq\n\tvaddq.x $vf10,$vf0,Q\n\tsqc2 $vf10,0(%1)" : : "r"(a), "r"(v) : "memory");
+    return v[0];
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB3E0);
+f32 func_001AB3E0(f32* a) {
+    f32 r;
+    __asm__ volatile("lqc2 $vf10,0(%1)\n\tvmul.xy $vf10,$vf10,$vf10\n\tvaddx.y $vf10,$vf10,$vf10x\n\tvsqrt Q,$vf10y\n\tvwaitq\n\tcfc2.ni $2,$vi22\n\tmtc1 $2,%0" : "=f"(r) : "r"(a) : "$2");
+    return r;
+}
 
 void func_001AB408(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     sceVu0FVECTOR stack;
@@ -323,11 +406,108 @@ void ops_init_draw_work(void) {
     oa_dmagif = sceDmaGetChan(SCE_DMA_GIF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_gs2_init);
-
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_otz_init);
-
+extern u_long128 D_0061E800[];
 extern u_long128 D_0061E8B0[];
+
+// the two fixed GS register packets (A+D): ZBUF_1, TEST_1, TEX1_1, CLAMP_1, TEXA; they differ only in ZBUF
+void op_gs2_init(void) {
+    u64* p;
+
+    p = (u64*)D_0061E800;
+    p[2] = 0x5000000000008001;
+    p[3] = 0xEEEEE;
+    p[6] = 0x131000070;
+    p[7] = 0x4E;
+    p[12] = 0x7000D;
+    p[13] = 0x47;
+    p[14] = 0x21;
+    p[15] = 0x14;
+    p[18] = 0;
+    p[19] = 8;
+    p[16] = 0x8000000000;
+    p[17] = 0x3B;
+    p = (u64*)D_0061E8B0;
+    p[2] = 0x5000000000008001;
+    p[3] = 0xEEEEE;
+    p[6] = 0x31000070;
+    p[7] = 0x4E;
+    p[12] = 0x7000D;
+    p[13] = 0x47;
+    p[14] = 0x21;
+    p[15] = 0x14;
+    p[18] = 0;
+    p[19] = 8;
+    p[16] = 0x8000000000;
+    p[17] = 0x3B;
+}
+
+// stores a zero qword with `sq $0` (gcc itself always goes through a register)
+#define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
+
+// a word store gcc can't move (DMA tags are written this way, right after DRAW_SQ_ZERO)
+#define DRAW_SW(dst, val) __asm__ volatile("sw %1,%0" : "=m"(dst) : "r"(val))
+
+// ordering-table entry: a DMA "next" tag; `last` is the last packet linked into it
+typedef struct {
+    /* 0x0 */ u32 tag;
+    /* 0x4 */ u32* next;
+    /* 0x8 */ u32* last;
+    /* 0xC */ u32 pad;
+} DrawOtEnt;
+
+// links packet p (qwc qwords) at priority pri (clamped to 0..max) into ordering table ot
+#define DRAW_OT_INSERT(ot, max, p, qwc, pri)       \
+    {                                              \
+        DrawOtEnt* e;                              \
+        u32* last;                                 \
+        u32* t;                                    \
+                                                   \
+        DRAW_SQ_ZERO(p);                           \
+        DRAW_SW((p)[0], ((qwc) - 1) | 0x20000000); \
+        if (pri < 1) {                             \
+            pri = 0;                               \
+        }                                          \
+        if (pri > (max)) {                         \
+            pri = (max);                           \
+        }                                          \
+        e = &(ot)[pri];                            \
+        last = e->last;                            \
+        t = (u32*)last[1];                         \
+        last[1] = (u32)(p);                        \
+        (p)[1] = (u32)t;                           \
+        e->last = (p);                             \
+    }
+
+// stores a qword through a pointer register
+#define DRAW_SQ(ptr, val) __asm__ volatile("sq %1,0(%0)" : : "r"(ptr), "r"(val) : "memory")
+
+extern u_long128 D_0061E800[];
+extern u_long128 D_0061E8B0[];
+extern u8 D_0061EEA0[];
+
+void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3);
+void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3);
+
+// the three ordering tables (16 + 256 + 16 entries at D_0061EEA0) chained by "next" tags and closed by an end
+// tag, then the two fixed packets linked in
+void op_otz_init(void) {
+    DrawOtEnt* p;
+    s32 i;
+    u_long128 tag;
+
+    p = (DrawOtEnt*)D_0061EEA0;
+    tag = 0x20000000;
+    for (i = 0; i < 0x120; i++) {
+        DRAW_SQ(p, tag);
+        p->next = (u32*)(p + 1);
+        p->last = (u32*)p;
+        p++;
+    }
+    DRAW_SQ(p, tag);
+    p->tag = 0x70000000;
+    func_001AC758((u32*)D_0061E800, 7, 0, 0);
+    func_001AC7A8((u32*)D_0061E8B0, 7, 15, 0);
+}
 
 // sends the packet at D_0061E8B0 on its own (its first tag replaced by an end tag with 6 qwords)
 void func_001AC0A8(void) {
@@ -341,7 +521,14 @@ void func_001AC0A8(void) {
     D_0061E8B0[0] = save;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC120);
+s32 rand(void);
+
+// seeds the VU0 random register from rand()
+void func_001AC120(void) {
+    s32 r = rand();
+
+    __asm__ volatile("qmtc2.ni %0,$vf31\n\tvrxor R,$vf31x" : : "r"(r) : "$2");
+}
 
 s32 func_001AC148(s32 n) {
     s32 i = 1;
@@ -451,8 +638,6 @@ void func_001AC4C8(DrawUnkAC4C8* arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC4F0);
 
-extern u8 D_0061EEA0[];
-
 void op_ot_draw(void) {
     u8* ot = D_0061EEA0;
 
@@ -463,13 +648,41 @@ void op_ot_draw(void) {
     sceGsSyncPath(0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC758);
+// ordering table 0 (16 priorities)
+void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3) {
+    DRAW_OT_INSERT((DrawOtEnt*)D_0061EEA0, 15, p, qwc, pri);
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7A8);
+extern DrawOtEnt D_0061FFA0[];
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7F8);
+// ordering table 1 (16 priorities)
+void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3) {
+    DRAW_OT_INSERT(D_0061FFA0, 15, p, qwc, pri);
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC848);
+extern DrawOtEnt D_0061EFA0[];
+
+// ordering table 2 (256 priorities)
+void func_001AC7F8(u32* p, s32 qwc, s32 pri, s32 arg3) {
+    DRAW_OT_INSERT(D_0061EFA0, 255, p, qwc, pri);
+}
+
+
+// GS packet: alpha register + a 2-vertex sprite in colour rgba, inserted in OT 1 at priority 0
+u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
+    *(u64*)(p + 0x10) = 0x41A3400000008001;
+    *(u64*)(p + 0x18) = 0x441E;
+    DRAW_SQ_ZERO(p + 0x20);
+    p[0x20] = alpha;
+    p[0x24] = fix;
+    *(u64*)(p + 0x28) = 0x42;
+    // spread the four colour bytes into the RGBAQ words
+    __asm__ volatile("pextlb %1,$0,%1\n\tpextlh %1,$0,%1\n\tsq %1,%0" : "=m"(*(u_long128*)(p + 0x30)), "+r"(rgba));
+    *(u_long128*)(p + 0x40) = (u_long128)0xFFFFFFFE0000780000007000;
+    *(u_long128*)(p + 0x50) = (u_long128)0xFFFFFFFE0000880000009000;
+    func_001AC7A8((u32*)p, 6, 0, 0);
+    return p + 0x60;
+}
 
 extern f32 D_00372800[16]; // fog work
 

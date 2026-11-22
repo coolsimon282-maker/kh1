@@ -38,7 +38,32 @@ void pppRyjDrawShipolyBoneDes(pppPObject* pobj, pppCtrlTable* ctbl) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D798);
+static inline f32 vu0Rand(void) {
+    f32 r;
+    __asm__ volatile(
+        "addi $8, $0, -1\n"
+        "qmtc2.ni $8, $vf2\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vitof0.x $vf2, $vf2\n"
+        "vadd.x $vf1, $vf1, $vf2\n"
+        "qmfc2.ni %0, $vf1\n"
+        : "=r"(r) : : "$8");
+    return r;
+}
+
+// VU0 random number in [0, 1)
+f32 func_0019D798(void) {
+    return vu0Rand();
+}
 
 f32 func_0019D798(void); // VU0 random number in [0, 1)
 

@@ -88,7 +88,33 @@ void KeLnsLp_Init(KeLnsLp* lp) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A7C40);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A7F48);
+// flag bit 0 is written with plain byte ops but read as a bitfield
+typedef union {
+    u8 b;
+    struct {
+        u8 seeded : 1;
+        u8 rest : 7;
+    } f;
+} KeLnsClmFlag;
+
+// sets the shape of every flare and, once, their random phases (rdPr) from seed
+void func_001A7F48(KeLnsClm* p, pppShapeSt* shp, s32 seed) {
+    s32 i;
+    s32 r;
+
+    p->shp = shp;
+    for (i = 0; i < p->num; i++) {
+        func_001A75B0(&p->flr[i].flr, shp);
+    }
+    if (!((KeLnsClmFlag*)&p->flag)->f.seeded) {
+        r = seed;
+        for (i = 0; i < p->num; i++) {
+            r = (r * 0x80D + 7) & 0xFFFF;
+            p->flr[i].rdPr = r / 65535.0f;
+        }
+        p->flag |= 1;
+    }
+}
 
 void KeLnsClm_Init(KeLnsClm* p) {
     p->flag = 0;

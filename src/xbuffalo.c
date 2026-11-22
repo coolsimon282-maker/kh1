@@ -1,4 +1,5 @@
 #include "common.h"
+#include <stdarg.h>
 
 s32 D_003759C4;
 s32 D_003759C8;
@@ -25,7 +26,9 @@ typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u8 unk_06[0xA];
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ u8* unk_08;
+    /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ u8 unk_14[0xC];
     /* 0x20 */ void (*unk_20)(void);
@@ -39,10 +42,57 @@ s32* func_001C1868(void) {
     return &D_0037A16C[D_0037A168].unk_10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
-
+extern s32 D_0037A164;
 extern s32 D_0037A170;
 extern s32 D_006257D4;
+void func_001BE820(void*, s32);
+
+// sets up the slot table: slot 0, 15 big buffers (0x81C0) and 384 small ones (0x9C0) in D_006257D4
+void func_001C1888(void) {
+    s32 buf;
+    s32 i;
+    s32* p;
+
+    D_003759DC = 1;
+    D_0037A164 = 0;
+    D_0037A168 = 0;
+    buf = D_006257D4;
+    func_001BE820(D_0037A16C, 0x30);
+    D_0037A16C[0].unk_00 = 1;
+    D_0037A16C[0].unk_0C = 0;
+    D_0037A16C[0].unk_02 = 0;
+    D_0037A16C[0].unk_04 = 0;
+    D_0037A16C[0].unk_06 = 0;
+    D_0037A16C[0].unk_08 = (u8*)buf;
+    buf += 0x1C0;
+    for (i = 1; i < 16; i++) {
+        func_001BE820(&D_0037A16C[i], 0x30);
+        D_0037A16C[i].unk_08 = (u8*)buf;
+        buf += 0x81B0;
+        D_0037A16C[i].unk_0C = buf;
+        buf += 0x10;
+        D_0037A16C[i].unk_02 = 0;
+        D_0037A16C[i].unk_04 = 0;
+        D_0037A16C[i].unk_06 = 0;
+        D_0037A16C[i].unk_00 = 0;
+    }
+    for (i = 0; i < 0x180; i++) {
+        func_001BE820(&D_0037A16C[i + 16], 0x30);
+        D_0037A16C[i + 16].unk_08 = (u8*)buf;
+        buf += 0x9B0;
+        D_0037A16C[i + 16].unk_0C = buf;
+        buf += 0x10;
+        D_0037A16C[i + 16].unk_02 = 0;
+        D_0037A16C[i + 16].unk_04 = 0;
+        D_0037A16C[i + 16].unk_06 = 0;
+        D_0037A16C[i + 16].unk_00 = 0;
+    }
+    p = (s32*)D_0037A170;
+    p[0] = (s32)D_0037A16C[0].unk_08;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = -1;
+}
 
 void func_001C1888(void);
 
@@ -124,9 +174,75 @@ void fm_func_001C0078(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1BE8);
+typedef union { u_long128 q; s32 w[4]; } XBuffaloQW;
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1D38);
+s32 puts(const char*);
+extern char D_00490300[]; // error message for a full table
+
+// like func_001C1D38, with a slot from 1..15
+s32 func_001C1BE8(s32 arg0, s32 arg1, ...) {
+    va_list ap;
+    XBuffaloQW t;
+    s32 idx;
+    s32 i;
+
+    if (arg0 < 0) {
+        arg0 = 0xFFFF;
+    }
+    idx = func_001C19F8(0);
+    if (idx < 0) {
+        puts(D_00490300);
+        return -1;
+    }
+    D_0037A16C[idx].unk_00 = 1;
+    D_0037A16C[idx].unk_02 = arg0;
+    t.q = 0;
+    t.w[0] = D_0037A16C[idx].unk_0C;
+    *(u_long128*)(D_0037A16C[idx].unk_08 + 0xD0) = t.q;
+    t.w[0] = arg1;
+    *(u_long128*)(D_0037A16C[idx].unk_08 + 0xF0) = t.q;
+    t.q = 0;
+    va_start(ap, arg1);
+    for (i = 0; i < 8; i++) {
+        t.w[0] = va_arg(ap, s32);
+        *(u_long128*)(D_0037A16C[idx].unk_08 + i * 16 + 0x140) = t.q;
+    }
+    va_end(ap);
+    *(u_long128*)&D_0037A16C[idx].unk_10 = 0;
+    return idx;
+}
+
+// takes a free slot from 16 up; arg0 = id (0xFFFF if < 0), then nine words copied into qwords of unk_08
+s32 func_001C1D38(s32 arg0, s32 arg1, ...) {
+    va_list ap;
+    XBuffaloQW t;
+    s32 idx;
+    s32 i;
+
+    if (arg0 < 0) {
+        arg0 = 0xFFFF;
+    }
+    idx = func_001C19F8(1);
+    if (idx < 0) {
+        return -1;
+    }
+    D_0037A16C[idx].unk_00 = 1;
+    D_0037A16C[idx].unk_02 = arg0;
+    t.q = 0;
+    t.w[0] = D_0037A16C[idx].unk_0C;
+    *(u_long128*)(D_0037A16C[idx].unk_08 + 0xD0) = t.q;
+    t.w[0] = arg1;
+    *(u_long128*)(D_0037A16C[idx].unk_08 + 0xF0) = t.q;
+    t.q = 0;
+    va_start(ap, arg1);
+    for (i = 0; i < 8; i++) {
+        t.w[0] = va_arg(ap, s32);
+        *(u_long128*)(D_0037A16C[idx].unk_08 + i * 16 + 0x140) = t.q;
+    }
+    va_end(ap);
+    *(u_long128*)&D_0037A16C[idx].unk_10 = 0;
+    return idx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1E78);
 
