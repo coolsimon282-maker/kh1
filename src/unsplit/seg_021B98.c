@@ -2,6 +2,14 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
+void func_00127340(void);
+void func_00132E38(void);
+void func_0013F2C0(void);
+void func_001478E0(void);
+void func_00148E60(void);
+void func_0014F868(void);
+void func_00151B90(void);
+
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121B98);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121AE8);
@@ -33,7 +41,13 @@ void func_00121EB0(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121F30);
+void func_00121F30(s32 a0, s32 *a1) {
+    Seg21B98Unk10 *p = func_00121DE0(a0, (s32)a1);
+
+    *a1 = a0;
+    p->unk_0C = a1;
+    p->unk_00 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121F6C);
 
@@ -57,7 +71,15 @@ void func_001220D0(void) {
     scePcStop();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_001220E8);
+void func_001220E8(void) {
+    func_00148E60();
+    func_001478E0();
+    func_0013F2C0();
+    func_00127340();
+    func_0014F868();
+    func_00151B90();
+    func_00132E38();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00122130);
 

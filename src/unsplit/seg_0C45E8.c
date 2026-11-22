@@ -2,11 +2,42 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C45E8);
+extern u8 D_00375BC0[];
+void func_001C5918(s32, s32);
+void func_001DE3E0(s32, s32);
+
+typedef struct {
+    u8 b[32];
+} A2Ring32;
+extern s32 D_006277E0;
+extern s32 D_006277E4;
+extern A2Ring32 D_006257E0[];
+
+A2Ring32 *func_001C45E8(void) {
+    s32 r = D_006277E0;
+
+    if (r == D_006277E4) {
+        return NULL;
+    }
+    D_006277E0 = (r + 1) % 256;
+    return &D_006257E0[r];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4640);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4730);
+extern s32 D_006297F0;
+extern s32 D_006297F4;
+extern A2Ring32 D_006277F0[];
+
+A2Ring32 *func_001C4730(void) {
+    s32 r = D_006297F0;
+
+    if (r == D_006297F4) {
+        return NULL;
+    }
+    D_006297F0 = (r + 1) % 256;
+    return &D_006277F0[r];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4788);
 
@@ -14,7 +45,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4808);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C48C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4D90);
+void func_001C4D90(s32 a0, s32 a1, s32 a2) {
+    func_001DE3E0(a1, a2);
+    func_001C5918(a0, 0);
+    *(s32 *)(D_00375BC0 + 0x0) = (*(s32 *)(D_00375BC0 + 0x0) | 0x4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C6530);
 
