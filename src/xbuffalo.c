@@ -244,7 +244,59 @@ s32 func_001C1D38(s32 arg0, s32 arg1, ...) {
     return idx;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1E78);
+typedef struct {
+    /* 0x0 */ u8* buf;
+    /* 0x4 */ s32 idx;
+} XBuffaloDraw;
+
+// frees the slots flagged in unk_04 bit 0, then lists the used slots in D_0037A170 sorted by unk_02 (ends with -1)
+void func_001C1E78(void) {
+    s16 order[0x400];
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 n;
+    XBuffaloUnk1868* p;
+
+    n = 1;
+    for (i = 1; i < 400; i++) {
+        if (D_0037A16C[i].unk_00 != 0 && (u16)(D_0037A16C[i].unk_04 & 1)) {
+            func_001C1AB8(i);
+        }
+        if (D_0037A16C[i].unk_00 != 0) {
+            n++;
+        }
+    }
+    D_003759DC = n;
+    ((XBuffaloDraw*)D_0037A170)[0].idx = 0;
+    ((XBuffaloDraw*)D_0037A170)[0].buf = D_0037A16C[0].unk_08;
+    if (n < 2) {
+        return;
+    }
+    order[0] = -1;
+    n = 0;
+    for (i = 1, p = &D_0037A16C[1]; i < 400; i++, p++) {
+        if (p->unk_00 == 0) {
+            continue;
+        }
+        for (j = 0; j < n; j++) {
+            if (D_0037A16C[i].unk_02 < D_0037A16C[order[j]].unk_02) {
+                break;
+            }
+        }
+        for (k = n - 1; k >= j; k--) {
+            order[k + 1] = order[k];
+        }
+        order[j] = i;
+        n++;
+    }
+    for (i = 0; i < n; i++) {
+        ((XBuffaloDraw*)D_0037A170)[i + 1].idx = order[i];
+        ((XBuffaloDraw*)D_0037A170)[i + 1].buf = D_0037A16C[order[i]].unk_08;
+    }
+    ((XBuffaloDraw*)D_0037A170)[i + 1].idx = -1;
+    ((XBuffaloDraw*)D_0037A170)[i + 1].buf = 0;
+}
 
 void func_001C1680(void);
 
