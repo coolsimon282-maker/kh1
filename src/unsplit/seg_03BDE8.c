@@ -1,6 +1,10 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+s32 func_00137618(u8*);
+s32 func_00130030(u8*);
+void func_001528F0(u8*);
+void func_001223B0(f32*, f32*);
 void func_0012BCE0_5(s32, s32, s32, void*, s32) __asm__("func_0012BCE0");
 void func_001C48C8(s32, s32, s32);
 void func_00152BA8(u8*, f32*, f32);
@@ -413,7 +417,7 @@ s32 func_00153BB0(void);
 void func_0015DE88(u8*);
 s32 func_0015DEF8(void);
 s32 func_0015DFF8(void);
-s32 func_0015E0A8(void);
+u8* func_0015E0A8(u8*, f32*);
 void pppInitPartRender(void);
 s32 func_001829D0(s32);
 u8* func_00123880(s32);
@@ -726,7 +730,18 @@ s32 func_0013DAA8(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013DA88);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013DB30);
+s32 func_0013DB30(s32 a) {
+    u8* p = (u8*)a;
+    s32 r = 0;
+    u8* q;
+    if (func_00137618(p) != 0 || func_00130030(p) != 0) {
+        q = *(u8**)(p + 0x398);
+        if (q == NULL || (q = *(u8**)(q + 0x398)) == NULL || *(s8*)(*(u8**)(q + 0x130) + 0x54) != 10) {
+            r = 1;
+        }
+    }
+    return r;
+}
 
 s32 func_0013DBB0(u32 n) {
     if (n < 10) {
@@ -931,7 +946,18 @@ void func_00140EE0(u8* p, f32* v) {
     sceVu0ScaleVector(v, (f32*)(p + 0x20), D_002B8344);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00140F08);
+s32 func_00140F08(u8* p, s32 a1) {
+    s32 r;
+    if (*(u16*)(p + 0x30C) != 0xFFFF && func_001375F0(p) != 0 && *(f32*)(p + 0x24) < 0.0f) {
+        return 11;
+    }
+    if (a1 != 0) {
+        return 10;
+    }
+    r = 0;
+    if (*(f32*)(p + 0x24) <= 0.0f) r = 10;
+    return r;
+}
 
 s32 func_00140F88(void) {
     func_00140DB8();
@@ -992,7 +1018,25 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141668);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141608);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141720);
+void func_00141720(u8* p) {
+    u8* q = *(u8**)(p + 0x6C);
+    u8* r;
+    s32 v, lim;
+    if (q == NULL || q == (u8*)D_00304C70) {
+        return;
+    }
+    v = *(u16*)(q + 0xBE);
+    lim = *(s32*)(q + 0x44) * 30 + 30;
+    if (v >= lim) {
+        func_00141668((s32)p, 1);
+        v -= lim;
+    }
+    *(u16*)(q + 0xBE) = v;
+    r = *(u8**)(q + 0xC8);
+    if (r != NULL) {
+        *(u16*)(r + 0x38) = v;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001417A0);
 
@@ -2460,7 +2504,15 @@ void func_001528F0(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152928);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152BA8);
+void func_00152BA8(u8* p, f32* a1, f32 f) {
+    sceVu0CopyVector((f32*)(p + 0x3C0), a1);
+    *(f32*)(p + 0x3CC) = 1.0f;
+    *(f32*)(p + 0x3B4) = f;
+    *(s32*)(p + 0x3B0) = 0;
+    *(f32*)(p + 0x3B8) = -a1[1] / f;
+    func_0014F658((s32)p, 3);
+    func_001528F0(p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152C28);
 
@@ -2583,7 +2635,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001549B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154AF8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154BE0);
+void func_00154BE0(u8* p, s32 a1, u8* a2) {
+    func_00130340(p, 0x100006F, 0.0f);
+    func_00130578((s32)p, 0x40000000, 0.0f);
+    func_001373F8(p, 8.0f);
+    *(u8*)(*(u8**)(p + 0x14C) + 0x29) -= 1;
+    *(f32*)(a2 + 0xC) = 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154C60);
 
@@ -3226,7 +3284,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015DEF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015DFF8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E0A8);
+u8* func_0015E0A8(u8* p, f32* a1) {
+    u8* r = func_0014CB90_r(p);
+    *(f32*)(r + 4) = 4.0f;
+    func_0014CCE0_f(p, *(f32*)(*(u8**)(p + 0x6C) + 0x10));
+    sceVu0CopyVector(a1, (f32*)(*(u8**)(p + 0x148) + 0x110));
+    *(s32*)(a1 + 1) = 0;
+    func_001223B0(a1, a1);
+    return r;
+}
 
 void func_0015E128(void) {
     func_0014F830(0xC, 0, 0, 0, (s32)func_0015DE88, (s32)func_0015DEF8, (s32)func_0015DFF8, 0, (s32)func_0015E0A8);
