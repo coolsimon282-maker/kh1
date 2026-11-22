@@ -1,6 +1,25 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x01C7A8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+} Seg1C7A8Pair;
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+} Seg1C7A8Ent0C;
+extern s32 D_002BBDE0;
+extern s32 D_002C1310[];
+extern Seg1C7A8Pair D_004E39F8[];
+extern s32 D_004E344C;
+extern Seg1C7A8Ent0C* D_004E3454;
+void func_0011D028(s32, s32);
+extern s32 D_002BD8D8;
+extern s32 D_004E3444;
+extern void (*D_004E3434)(void);
+void func_0011E610(void);
 void func_0011C7A8_v(s32, s32, s32, s32, s32, s32) __asm__("func_0011C7A8");
 extern s32 D_002C1364;
 extern void (*D_004E3430)(void);
@@ -121,7 +140,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CFA8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D028);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D080);
+void func_0011D080(s32 a0, s32 a1) {
+    func_0011C838(a0 < 1000 ? 2 : -8, a0, a1, 0x3FFF, 0x3FFF);
+    func_0011D028(a0, a1);
+}
 
 void* func_0011D0D8(s32 arg0, s32 arg1) {
     return func_0011C850(arg0 < 1000 ? 2 : -8, arg0, arg1);
