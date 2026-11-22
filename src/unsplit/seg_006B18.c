@@ -1,6 +1,17 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x006B18).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0C;
+} Seg6B18Q;
+extern f32 D_002DECF0[];
+extern f32 D_002DECE0[];
+extern f32 D_002A6C10[][4];
+extern f32 D_00297850[][4];
+extern Seg6B18Q D_00486430[];
 typedef struct { f32 unk_00; s32 unk_04; f32 unk_08; } Seg6B18F0C;
 extern Seg6B18F0C D_00494C00_f[] __asm__("D_00494C00");
 
@@ -133,7 +144,13 @@ void func_00107E10(f32* a0) {
     sceVu0CopyVector(D_00494BC0 + 4, a0 + 12);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107E60);
+void func_00107E60(void) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    sceVu0SubVector(v, D_002DECF0, D_002DECE0);
+    sceVu0Normalize(v, v);
+    sceVu0RotMatrix(D_002A6C10, D_00297850, v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107CF8);
 
@@ -161,7 +178,13 @@ void func_00108618(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108488);
+void func_00108488(s32 a0, s32 a1) {
+    f32 f = a1 * 2;
+    D_00494C00_f[a0].unk_00 = f;
+    *(f32*)&D_00494C00_f[a0].unk_04 = 1.0f;
+    D_00494C00_f[a0].unk_08 = -(1.0f / f);
+    func_001081A0(a0);
+}
 
 void func_001084F0(s32 a0, s32 a1) {
     f32 f = a1 * 2;
