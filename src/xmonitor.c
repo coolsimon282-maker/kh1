@@ -1,4 +1,5 @@
 #include "common.h"
+#include "eestruct.h"
 
 typedef struct {
     s32 unk0;
@@ -91,6 +92,13 @@ s32 func_00247250(Monitor* m) {
 
 INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247258);
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_002475E8);
+void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2);
+
+void func_002475E8(s32 arg0, sceGsTex0* tex, u64* arg2) {
+    func_00247258(tex, arg0, arg2[3]);
+    tex->CSA = 0;
+    tex->CLD = 1;
+    tex->PSM = 0x13;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247668);
