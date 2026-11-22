@@ -1734,7 +1734,20 @@ s32 func_001D2CA0(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2D28);
+s32 func_001D2D28(Script* arg0) {
+    ScriptP* x = (ScriptP*)arg0;
+
+    x->unk_328_6 = 1;
+    x->unk_020 = arg0->unk_174[arg0->unk_174[3] + 1] * D_002B8344;
+    x->unk_014 = arg0->unk_174[arg0->unk_174[3] + 2];
+    x->unk_018 = arg0->unk_174[arg0->unk_174[3] + 3];
+    x->unk_01C = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 4;
+    x->unk_008[0] = x->unk_004[4];
+    x->unk_008[1] = x->unk_004[5];
+    x->unk_008[2] = x->unk_004[6];
+    return 2;
+}
 
 s32 func_001D2DB8(Script* arg0) {
     D_003854E0.unk_3148 |= arg0->unk_174[arg0->unk_174[3] + 4];
