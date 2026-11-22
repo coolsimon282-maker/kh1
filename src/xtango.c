@@ -301,7 +301,18 @@ u16 func_001EFB08(s32 arg0) {
     return obj->unk_04 & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EFB30);
+s32 func_001EFB30(s32 arg0) {
+    s32 n = D_003DE6A0;
+    s32 i = 0;
+
+    do {
+        if (func_001495C8(arg0, D_003010F8->unk_48E[i++]) != 0) {
+            return 1;
+        }
+        n--;
+    } while (n != 0);
+    return 0;
+}
 
 s8 func_001EFBB0(s32 arg0, s32 arg1) {
     s8 bVar1;
