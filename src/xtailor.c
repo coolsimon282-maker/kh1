@@ -391,8 +391,51 @@ void fm_func_001101E8(void) {
 }
 #endif
 
+#ifdef VERSION_FM
+extern s32 D_002BBDE8;
+extern volatile s32 D_002B9664;
+extern s32 D_002B9174;
+extern volatile s32 D_002BBDF0;
+extern volatile u32 D_002BBDF4;
+extern volatile u32 D_004D90F0;
+extern volatile s32 D_002B8340;
+extern volatile s32 D_004D90F4;
+s32 func_001115A0(void);
+void func_001115C0(void);
+void func_0010C110(void);
+
+s32 func_00110038(s32 arg0) {
+    if (DGET_GS_CSR() & 0x2000) {
+        D_002BBDE8 = 1;
+    } else {
+        D_002BBDE8 = 0;
+    }
+    if (D_002B9664 == 0 && D_002B9174 == 0) {
+        D_002BBDF0++;
+    }
+    if (D_002BBDF4 < D_004D90F0) {
+        D_002BBDF4++;
+    } else if (func_001115A0() < 3) {
+        if (D_004D90F0 + 60 > D_002BBDF4) {
+            D_002BBDF4++;
+        } else {
+            func_001115C0();
+            D_002BBDF4 = 0;
+        }
+    } else {
+        D_002BBDF4 = D_004D90F0;
+    }
+    D_002B8340++;
+    /* volatile read, plain store (the store sits in the jal delay slot) */
+    *(s32*)&D_004D90F4 = D_004D90F4 + 1;
+    func_0010C110();
+    return 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110038);
 s32 func_00110038(s32);
+#endif
 
 void func_00110150(void) {
     D_002B85C0[3] = 128;
