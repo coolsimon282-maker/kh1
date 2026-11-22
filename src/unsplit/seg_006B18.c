@@ -8,7 +8,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106B58);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106B98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106A08);
+typedef struct {
+    u8 unk_00[0x10];
+    s32 unk_10;
+} Seg6B18Task;
+Seg6B18Task* func_0015ED80(s32, s32 (*)(Seg6B18Task*));
+s32 func_00106B98(Seg6B18Task*);
+s32 func_00106E18(Seg6B18Task*);
+extern s32 D_002A6C50;
+
+void func_00106A08(s32 arg0, s32 arg1) {
+    func_0015ED80(arg1, func_00106B98)->unk_10 = arg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106A40);
 
@@ -39,7 +50,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106DB0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106E18);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106CB0);
+void func_00106CB0(s32 arg0) {
+    if (D_002A6C50 != 0) {
+        func_0015ED80(arg0, func_00106E18);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106ED0);
 
@@ -92,11 +107,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001081C8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001083D8);
 
-typedef struct {
-    u8 unk_00[0x10];
-    s32 unk_10;
-} Seg6B18Task;
-Seg6B18Task* func_0015ED80(s32, s32 (*)(Seg6B18Task*));
 s32 func_00106DB0(Seg6B18Task*);
 
 void func_001085E8(s32 arg0, s32 arg1) {
@@ -168,9 +178,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001090E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00109180);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001091F8);
+void func_001090E8(s32, s32, s32, s32);
+void func_00109180(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00109230);
+void func_001091F8(s32 arg0, s32 arg1) {
+    func_001090E8(arg0, 0x80, 0xE0, 0x3600);
+    func_00109180(arg1, 0x3A00);
+}
+
+void func_00109230(s32 arg0, s32 arg1) {
+    func_001090E8(arg0, 0x80, 0x30, 0x3A00);
+    func_00109180(arg1, 0x3C00);
+}
 
 extern s32 D_002B6484;
 
