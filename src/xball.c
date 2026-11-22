@@ -120,7 +120,16 @@ s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRI
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_00121200);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121340);
+f32 func_00121340(f32 t, f32* a, f32* b) {
+    s32 i = t;
+    f32 f = t - i;
+    f32 a0 = a[i];
+    f32 a1 = a[i + 1];
+    f32 b0 = b[i];
+    f32 b1 = b[i + 1];
+
+    return (((b1 - b0) * f + b0 * 3.0f) * f + ((a1 - a0) - (b0 + b0 + b1))) * f + a0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_001213B0);
 
