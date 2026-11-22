@@ -556,7 +556,21 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184F60);
 void func_00185000(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00185008);
+void func_00185008(pppMemMng* m, pppEMCB* start, s32 size) {
+    pppEMCB* b;
+
+    m->effectHeapTop = start;
+    m->lastFreeHeap = NULL;
+    m->effectHeapBottom = (pppEMCB*)((u8*)start + size - 16);
+    start->prev = NULL;
+    start->next = m->effectHeapBottom;
+    start->owner = 0;
+    b = m->effectHeapBottom;
+    b->prev = m->effectHeapTop;
+    b->owner = 1;
+    b->next = NULL;
+    m->allocSize = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAlloc);
 
