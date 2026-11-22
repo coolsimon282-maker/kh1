@@ -746,7 +746,27 @@ void sceVu0ScaleVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 s) {
 	": : "r" (v0) , "r" (v1), "f" (s):"$8","memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen);
+s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
+    register s32 ret;
+
+    __asm__ __volatile__("
+	vsub.xyzw	vf04,vf00,vf00			
+	li     		%0,0x4580000045800000	
+	lqc2    	vf07,0x0(%1)			
+	qmtc2.ni	%0,vf06					
+	ctc2.ni		$0,$vi16				
+	vsub.xyw	vf05,vf07,vf04			
+	vsub.xy		vf05,vf06,vf07			
+	vnop			    				
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	cfc2.ni	%0,$vi16					
+	":"=&r"(ret): "r" (v0));
+
+    return ret & 0xC0;
+}
 // s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
 //     register s32 ret;
 
