@@ -9,19 +9,18 @@ typedef struct {
 } PKeLnsLp;
 
 typedef struct {
-    /* 0x0 */ KeLnsLp* lp;
-    /* 0x4 */ f32* pos;
-    /* 0x8 */ sceVu0FMATRIX* world;
-    /* 0xC */ sceVu0FMATRIX* screen;
-} KeLnsLpDrawSt;
-
+    KeLnsLp* lp;
+    f32* pos;
+    void* wm;
+    void* sm;
+} KeLnsLpInfo;
 void func_001AB0F0(void* dst, void* src);
-void func_001A76E8(KeLnsLpDrawSt* st);
+void func_001A76E8(KeLnsLpInfo* info);
 
 void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLp* p, pppCtrlTable* ctbl) {
-    sceVu0FVECTOR v;
-    KeLnsLpDrawSt st;
     KeLnsLp* lp = (KeLnsLp*)&pobj->val[ctbl->useVal[0]];
+    sceVu0FVECTOR v;
+    KeLnsLpInfo info;
 
     if (p->cdt.time == pobj->time) {
         lp->pow += p->pow;
@@ -39,11 +38,11 @@ void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLp* p, pppCtrlTable* ctbl) {
     lp->lcPos[0] = ppvPObj.next->cmat[3][0];
     lp->lcPos[1] = ppvPObj.next->cmat[3][1];
     lp->lcPos[2] = ppvPObj.next->cmat[3][2];
-    st.world = &ppvWorldMatrix;
-    st.screen = &ppvScreenMatrix;
-    st.lp = lp;
-    st.pos = ppvPObj.next->cmat[3];
-    func_001A76E8(&st);
+    info.wm = ppvWorldMatrix;
+    info.sm = ppvScreenMatrix;
+    info.lp = lp;
+    info.pos = ppvPObj.next->cmat[3];
+    func_001A76E8(&info);
 }
 
 void pppKeLnsLpCon(pppPObject* pobj, pppCtrlTable* ctbl) {

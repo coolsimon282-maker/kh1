@@ -17,7 +17,28 @@ void sceVu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m0, sceVu0FVECTOR v1) {
 	" : : "r"(v0), "r"(m0), "r"(v1) : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0MulMatrix);
+void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2) {
+    __asm__ __volatile__("          
+	.set noreorder                  
+	lqc2            vf4,0x0(%2)     
+	lqc2            vf5,0x10(%2)    
+	lqc2            vf6,0x20(%2)    
+	lqc2            vf7,0x30(%2)    
+	li              $7,4            
+_loop:                              
+	lqc2            vf8,0x0(%1)     
+	vmulax.xyzw	    ACC,vf4,vf8     
+	vmadday.xyzw    ACC,vf5,vf8     
+	vmaddaz.xyzw	ACC,vf6,vf8     
+	vmaddw.xyzw	    vf9,vf7,vf8     
+	sqc2            vf9,0x0(%0)     
+	addi            $7,-1           
+	addi            %1,0x10         
+	bne             $0,$7,_loop     
+	addi            %0,0x10         
+	.set reorder                    
+	":: "r" (m0), "r" (m2), "r" (m1) : "$7", "memory");
+}
 // void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1,sceVu0FMATRIX m2) {
 //     __asm__ __volatile__("          \n\
 // 	lqc2            vf4,0x0(%2)     \n\
@@ -83,7 +104,28 @@ void sceVu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
     ": : "r" (v0) , "r" (v1) : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0TransposeMatrix);
+void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
+    register u_long128 r11 asm("$11");
+
+    __asm__ __volatile__("      
+	lq $8,0x0000(%1)            
+	lq $9,0x0010(%1)            
+	lq $10,0x0020(%1)           
+	lq $11,0x0030(%1)           
+	pextlw     $12,$9,$8        
+	pextuw     $13,$9,$8        
+	pextlw     $14,$11,$10      
+	pextuw     $15,$11,$10      
+	pcpyld     $8,$14,$12       
+	pcpyud     $9,$12,$14       
+	pcpyld     $10,$15,$13      
+	pcpyud     $11,$13,$15      
+	sq $8,0x0000(%2)            
+	sq $9,0x0010(%2)            
+	sq $10,0x0020(%2)           
+	": "=r" (r11) : "r" (m1), "r" (m0) : "$8", "$9", "$10", "$12", "$13", "$14", "$15", "memory");
+    ((u_long128*)m0)[3] = r11;
+}
 // void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 //     __asm__ __volatile__("      \n\
 // 	lq $8,0x0000(%1)            \n\
@@ -226,7 +268,13 @@ void sceVu0TransMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR tv) {
 	": : "r" (m0) , "r" (m1), "r" (tv):"$7","$8","$9","memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyVector);
+// The SDK's inline-asm version (below) leaves the last sq out of the jr delay slot with this compiler; the same
+// instructions come out of register variables, which gcc can schedule.
+void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
+    register u_long128 t asm("$6") = *(u_long128*)v1;
+
+    *(u_long128*)v0 = t;
+}
 // void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
 //     __asm__ __volatile__("	\n\
 // 	lq	$6,0x0(%1)			\n\
@@ -234,7 +282,17 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyVector);
 // 	": : "r" (v0) , "r" (v1):"$6", "memory");
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyMatrix);
+void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
+    register u_long128 r7 asm("$7") = ((u_long128*)m1)[1];
+    register u_long128 r8 asm("$8") = ((u_long128*)m1)[2];
+    register u_long128 r9 asm("$9") = ((u_long128*)m1)[3];
+    register u_long128 r6 asm("$6") = ((u_long128*)m1)[0];
+
+    ((u_long128*)m0)[1] = r7;
+    ((u_long128*)m0)[2] = r8;
+    ((u_long128*)m0)[3] = r9;
+    ((u_long128*)m0)[0] = r6;
+}
 // void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 //     __asm__ __volatile__("	\n\
 // 	lq    $6,0x0(%1)		\n\
@@ -580,7 +638,34 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0DropShadowMatrix);
 //     }
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotTransPersN);
+void sceVu0RotTransPersN(sceVu0IVECTOR* v0, sceVu0FMATRIX m0, sceVu0FVECTOR* v1, s32 n, s32 mode) {
+    __asm__ __volatile__("			
+	.set noreorder					
+	lqc2			vf4,0x0(%1)		
+	lqc2			vf5,0x10(%1)	
+	lqc2			vf6,0x20(%1)	
+	lqc2			vf7,0x30(%1)	
+_rotTPN_loop:						
+	lqc2			vf8,0x0(%2)		
+	vmulax.xyzw     ACC, vf4,vf8	
+	vmadday.xyzw    ACC, vf5,vf8	
+	vmaddaz.xyzw	ACC, vf6,vf8	
+	vmaddw.xyzw		vf9,vf7,vf8		
+	vdiv    		Q,vf0w,vf9w		
+	vwaitq							
+	vmulq.xyz		vf9,vf9,Q		
+	beqz			%4,_rotTPN		
+	vftoi4.xyzw		vf10,vf9		
+	vftoi0.zw		vf10,vf9		
+_rotTPN:							
+	sqc2			vf10,0x0(%0)	
+	addi			%3,-1			
+	addi			%2,0x10			
+	bne		$0,%3,_rotTPN_loop		
+	addi			%0,0x10			
+	.set reorder					
+	": : "r" (v0) , "r" (m0) ,"r" (v1), "r" (n) ,"r" (mode):"memory");
+}
 // void sceVu0RotTransPersN(sceVu0IVECTOR* v0, sceVu0FMATRIX m0, sceVu0FVECTOR* v1, s32 n, s32 mode) {
 //     __asm__ __volatile__("			\n\
 // 	lqc2			vf4,0x0(%1)		\n\
@@ -661,7 +746,27 @@ void sceVu0ScaleVectorXYZ(sceVu0FVECTOR v0, sceVu0FVECTOR v1, f32 s) {
 	": : "r" (v0) , "r" (v1), "f" (s):"$8","memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen);
+s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
+    register s32 ret;
+
+    __asm__ __volatile__("
+	vsub.xyzw	vf04,vf00,vf00			
+	li     		%0,0x4580000045800000	
+	lqc2    	vf07,0x0(%1)			
+	qmtc2.ni	%0,vf06					
+	ctc2.ni		$0,$vi16				
+	vsub.xyw	vf05,vf07,vf04			
+	vsub.xy		vf05,vf06,vf07			
+	vnop			    				
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	cfc2.ni	%0,$vi16					
+	":"=&r"(ret): "r" (v0));
+
+    return ret & 0xC0;
+}
 // s32 sceVu0ClipScreen(sceVu0FVECTOR v0) {
 //     register s32 ret;
 
@@ -685,7 +790,33 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen);
 //     return ret;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipScreen3);
+s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
+    register s32 ret;
+
+    __asm__ __volatile__("				
+	vsub.xyzw	vf04,vf00,vf00			
+	li			%0,0x4580000045800000	
+	lqc2    	vf06,0x0(%1)			
+	lqc2    	vf08,0x0(%2)			
+	lqc2    	vf09,0x0(%3)			
+	qmtc2.ni	%0,vf07					
+	ctc2.ni		$0,$vi16				
+	vsub.xyw	vf05,vf06,vf04			
+	vsub.xy 	vf05,vf07,vf06 			
+	vsub.xyw	vf05,vf08,vf04			
+	vsub.xy 	vf05,vf07,vf08			
+	vsub.xyw	vf05,vf09,vf04			
+	vsub.xy 	vf05,vf07,vf09			
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	vnop								
+	cfc2.ni    	%0,$vi16				
+	":"=&r"(ret): "r" (v0), "r" (v1), "r" (v2) );
+
+    return ret & 0xC0;
+}
 // s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 //     register s32 ret;
 
