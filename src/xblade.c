@@ -963,7 +963,60 @@ void func_00113CA8(void) {
     D_002B9668 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113CB8);
+extern u32 D_00375BC0;
+extern s32 D_002B85C0;
+extern s32 D_002B860C;
+extern s32 D_002A6204;
+extern s32 D_002BD858;
+extern s32 D_002BD85C;
+// func_001336A0 is left without a prototype on purpose: with one more function declaration in this
+// file, func_00114B50 compiles differently (cse hashes symbol addresses).
+
+// include/xblade.h declares this `void func_00113CB8();` but it returns D_002B9668; define it under
+// another C name with the real symbol name.
+s32 func_00113CB8_s32(void) __asm__("func_00113CB8");
+
+s32 func_00113CB8_s32(void) {
+    s32 one;
+
+    if (D_004D2A60 == 0) {
+        one = 1;
+        D_002B9668 = 0;
+        if ((D_002C1EA8 & 1) == one) {
+            D_002B9668 = 2;
+        }
+        if (((D_002C1EA8 >> 4) & 1) == one) {
+            D_002B9668 = 2;
+        }
+        if (((D_00375BC0 >> 1) & 1) == one) {
+            D_002B9668 = one;
+        }
+        if (((D_00375BC0 >> 3) & 1) == one) {
+            D_002B9668 = 3;
+        }
+        if (D_002B966C == one) {
+            D_002B9668 = D_002B966C;
+        }
+        if (D_002BD858 != 0) {
+            D_002B9668 = 4;
+        }
+        if (D_002BD85C != 0) {
+            D_002B9668 = 5;
+        }
+        if (D_002BBDE0 == 5) {
+            D_002B9668 = 7;
+        }
+        if (func_001336A0() != 0) {
+            D_002B9668 = 2;
+        }
+        if (D_002B9668 == 0) {
+            if (D_002B85C0 != 0x80 || D_002B860C != 0 || D_002A6204 != 0) {
+                D_002B9668 = 1;
+            }
+        }
+    }
+    return D_002B9668;
+}
 
 void func_00113E18(void) {
     D_002C1EBC = 1;
