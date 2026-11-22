@@ -158,7 +158,17 @@ void func_001C1AB8(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1AE0);
+// frees every used slot (except slot 0) and sets the table up again
+void func_001C1AE0(void) {
+    s32 i;
+
+    for (i = 1; i < 400; i++) {
+        if (D_0037A16C[i].unk_00 != 0) {
+            func_001C1AB8(i);
+        }
+    }
+    func_001C1888();
+}
 
 #ifdef VERSION_FM
 void fm_func_001C0078(s32 arg0) {
