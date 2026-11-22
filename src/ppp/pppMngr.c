@@ -896,7 +896,39 @@ void pppInitPartRender(void) {
     pppSetPrimPacket(NULL, -1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetPartMatrix);
+typedef struct {
+    u_long128 q[4];
+} PppMtx;
+
+extern sceVu0FMATRIX D_00615EB0;
+extern sceVu0FMATRIX D_00615EF0;
+extern sceVu0FMATRIX D_00615F30;
+extern sceVu0FVECTOR D_00615F90;
+extern sceVu0FVECTOR D_00615FA0;
+extern f32 D_00615FB0;
+extern f32 D_002DED00;
+extern sceVu0FMATRIX D_00616180;
+
+void pppSetPartMatrix(sceVu0FMATRIX world, sceVu0FMATRIX screen, sceVu0FVECTOR eye, sceVu0FVECTOR at) {
+    sceVu0FMATRIX unused;
+
+    sceVu0CopyMatrix(D_00615EF0, D_00615EB0);
+    ((u_long128*)D_00615EB0)[0] = ((u_long128*)world)[0];
+    ((u_long128*)D_00615EB0)[1] = ((u_long128*)world)[1];
+    ((u_long128*)D_00615EB0)[2] = ((u_long128*)world)[2];
+    ((u_long128*)D_00615EB0)[3] = ((u_long128*)world)[3];
+    ((u_long128*)ppvScreenMatrix)[0] = ((u_long128*)screen)[0];
+    ((u_long128*)ppvScreenMatrix)[1] = ((u_long128*)screen)[1];
+    ((u_long128*)ppvScreenMatrix)[2] = ((u_long128*)screen)[2];
+    ((u_long128*)ppvScreenMatrix)[3] = ((u_long128*)screen)[3];
+    *(u_long128*)D_00615F90 = *(u_long128*)ppvEye;
+    *(u_long128*)D_00615FA0 = *(u_long128*)ppvAt;
+    *(u_long128*)ppvEye = *(u_long128*)eye;
+    *(u_long128*)ppvAt = *(u_long128*)at;
+    D_00615FB0 = D_002DED00;
+    sceVu0InversMatrix(D_00615F30, D_00615EB0);
+    sceVu0MulMatrix(D_00616180, ppvScreenMatrix, D_00615EB0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001838E8);
 
