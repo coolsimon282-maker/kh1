@@ -517,7 +517,24 @@ INCLUDE_ASM("asm/nonmatchings/xtango", func_001F00C8);
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0130);
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0198);
+s32 func_001F0198(s32 arg0) {
+    s32 count = 0;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        s32 idx = D_003010F8->unk_48E[i];
+        XTangoChar* chr;
+
+        if (idx == 0xFF) {
+            break;
+        }
+        chr = &((XTangoParty*)D_003010F8)->chars[idx];
+        if (chr->unk_32 == arg0) {
+            count++;
+        }
+    }
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0218);
 
