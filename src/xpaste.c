@@ -20,6 +20,27 @@ void func_0011C540();
 extern void func_00180CE0();
 extern void func_0022BA18(u16);
 
+#ifdef VERSION_FM
+extern s32 D_003F34A4;
+extern s32 D_003F720C;
+
+void func_0011C5E8();
+void fm_func_001C07A8(void);
+
+s32 func_0011C440(void) {
+    if (D_003F34A4 == 0) {
+        if (D_003F720C == 1) {
+            func_0011C5E8();
+            func_001093A8(15);
+            fm_func_001C07A8();
+        } else {
+            func_0011C540();
+        }
+        return 4;
+    }
+    return 0;
+}
+#else
 s32 func_0011C440(void) {
     if (D_003ED704 == 0) {
         if (D_003F117C == 1) {
@@ -33,7 +54,29 @@ s32 func_0011C440(void) {
     }
     return 0;
 }
+#endif
 
+#ifdef VERSION_FM
+extern s32 D_003F7774;
+extern s32 D_003F7778;
+
+void func_0022BCB8(s32);
+
+s32 func_0011C4B0(void) {
+    if (D_003F7774 == 0) {
+        switch (D_003F7778) {
+            case FALSE:
+                func_001093A8(10);
+                return 4;
+            case TRUE:
+                func_0022BCB8(0xffff);
+                func_0011ED30(30000, func_0011C440);
+                return 4;
+        }
+    }
+    return 0;
+}
+#else
 s32 func_0011C4B0(void) {
     if (D_003F1514 == 0) {
         switch (D_003F1518) {
@@ -51,6 +94,7 @@ s32 func_0011C4B0(void) {
     }
     return 0;
 }
+#endif
 
 void func_0011C540(void) {
     D_002BD854 = 1;

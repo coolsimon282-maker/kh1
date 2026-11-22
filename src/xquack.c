@@ -24,11 +24,72 @@ XDuck D_00639180[3];
 s32 D_00639588;
 s32 D_00639880;
 
+extern s8 D_0063F640[256];
+
+typedef struct {
+    /* 0x00 */ s8 active;
+    /* 0x01 */ char unk_01[3];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[4];
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ char unk_14[0xA0];
+} XQuackVoice; // size = 0xB4
+
+extern u8 D_0063D640[0x2000];
+
 void func_001ED878(s32 arg0) {
     D_003DE5B8 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001ED888);
+extern s32 D_00635640[0x400][8];
+extern s32 D_003E3CB0;
+extern char D_00490910[];
+int printf(const char*, ...);
+
+s32 func_001ED888(s32 arg0) {
+    u32 i;
+    u32 j;
+    s32* buf;
+    u8* p;
+
+    func_001ED878(0);
+    for (i = 0; i < 0x800; i++) {
+        ((u32*)&D_0062D980)[i] = 0;
+    }
+    p = D_0063D640;
+    for (i = 0; i < 0x2000; i++) {
+        p[i] = 0;
+    }
+    p = (u8*)D_0063F640;
+    for (i = 0; i < 0x100; i++) {
+        p[i] = 0;
+    }
+    while (1) {
+        if (sceSifBindRpc(&D_003DE5C0, 0x11, 0) < 0) {
+            printf(D_00490910);
+            return -1;
+        }
+        if (D_003DE5C0.serve != NULL) {
+            break;
+        }
+        i = 0x10000;
+        while (i--) {
+        }
+    }
+    D_003E3CB0 = 0;
+    for (j = 0; j < 0x400; j++) {
+        for (i = 0; i < 8; i++) {
+            D_00635640[j][i] = -1;
+        }
+    }
+    buf = (s32*)&D_0062D980;
+    buf[0] = (s32)D_0063D640;
+    buf[1] = arg0;
+    buf[2] = (s32)D_0063F640;
+    sceSifCallRpc(&D_003DE5C0, 0, 0, buf, 0x2000, buf, 0x2000, NULL, NULL);
+    return 0;
+}
 
 void* func_001EDA60(void) {
     sceSifCallRpc(&D_003DE5C0, 31, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
@@ -50,11 +111,107 @@ void* func_001EDB68(void) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDBC0);
+s32 func_001EDBC0(s32 arg0, s32 arg1, s32 arg2) {
+    XQuackVoice* p;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDD20);
+    FlushCache(0);
+    p = (XQuackVoice*)D_0063D640;
+    if (arg1 < 0 && arg2 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0) {
+                return 1;
+            }
+        }
+    } else if (arg1 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0 && p->unk_04 == arg2) {
+                return 1;
+            }
+        }
+    } else if (arg2 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0 && p->unk_10 == arg1) {
+                return 1;
+            }
+        }
+    }
+    for (i = 0; i < 24; i++, p++) {
+        if (p->active != 0 && p->unk_0C == arg0 && p->unk_10 == arg1 && p->unk_04 == arg2) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDDC0);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ u8 rate[4]; // big-endian sample rate
+    /* 0x14 */ u8 unk_14[0xA];
+    /* 0x1E */ u8 unk_1E;
+    /* 0x1F */ u8 unk_1F;
+} XQuackVag;
+
+void* func_001EDD20(XQuackVag* vag, s32 arg1, s32 arg2, s32 arg3) {
+    s32 base = 48000;
+    s32 rate;
+    s32 pitch;
+    u8 e;
+    u8 f;
+
+    rate = vag->rate[0] << 24;
+    rate |= vag->rate[1] << 16;
+    rate |= vag->rate[2] << 8;
+    rate |= vag->rate[3];
+    pitch = (rate << 12) / base;
+    e = vag->unk_1E;
+    f = vag->unk_1F;
+    if (!(D_003DE5B8 & 4)) {
+        func_001EE0B8(0x12, (s32)vag, arg1, arg2, arg3, pitch, e, f);
+        return D_0062D980;
+    }
+    return D_0062D980;
+}
+
+s32 func_001EDDC0(s32 arg0, s32 arg1, s32 arg2) {
+    XDuck* p;
+    s32 i;
+    s32 count;
+
+    FlushCache(0);
+    p = D_00639180;
+    if (arg0 < 0 && arg1 < 0 && arg2 == 0) {
+        count = 0;
+        for (i = 0; i < 4; i++, p++) {
+            if (p->unk_04 != 0) {
+                count++;
+            }
+        }
+        return count;
+    } else if (arg0 < 0) {
+        if (arg2 == 0) {
+            count = 0;
+            for (i = 0; i < 4; i++, p++) {
+                if (p->unk_04 != 0 && (p->unk_00 & 0x7F) == 1) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        for (i = 0; i < 4; i++, p++) {
+            if (p->unk_04 != 0 && (p->unk_00 & 0x7F) == 1 && p->unk_10 == arg2) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    for (i = 0; i < 4; i++, p++) {
+        if (p->unk_04 != 0 && p->unk_00 == 0 && p->unk_02 == arg0 && p->unk_03 == arg1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void* func_001EDF28(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (!(D_003DE5B8 & 8)) {
@@ -79,7 +236,23 @@ s32 func_001EDF88(s32 arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDFF8);
+s32 func_001EDFF8(s8* arg0) {
+    s32 i;
+    s8* p;
+
+    for (i = 0; i < 255; i++) {
+        *arg0++ = D_0063F640[i];
+    }
+    D_0063F640[255] = 0;
+    if (D_0063F640[0] == 0) {
+        return 0;
+    }
+    p = &D_0063F640[255];
+    for (i = 255; i >= 0; i--) {
+        *p-- = 0;
+    }
+    return 1;
+}
 
 s32 func_001EE068(void) {
     FlushCache(WRITEBACK_DCACHE);
@@ -91,7 +264,28 @@ s32 func_001EE090(void) {
     return D_00639880;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EE0B8);
+extern s32 D_00635640[0x400][8];
+extern s32 D_003E3CB0;
+extern char D_00490928[];
+int printf(const char*, ...);
+
+void func_001EE0B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+    s32 n = D_003E3CB0;
+
+    D_00635640[n][0] = arg0;
+    D_00635640[n][1] = arg1;
+    D_00635640[n][2] = arg2;
+    D_00635640[n][3] = arg3;
+    D_00635640[n][4] = arg4;
+    D_00635640[n][5] = arg5;
+    D_00635640[n][6] = arg6;
+    D_00635640[n][7] = arg7;
+    D_003E3CB0 = n + 1;
+    if (n + 1 >= 0x400) {
+        D_003E3CB0 = 0;
+        printf(D_00490928);
+    }
+}
 
 void* func_001EE188(void* arg0) {
     D_0062D980 = arg0;
@@ -246,7 +440,16 @@ void* func_001EE9D8(void) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EEA30);
+void* func_001EEA30(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32* buf = (s32*)&D_0062D980;
+
+    buf[0] = arg0;
+    buf[1] = arg1;
+    buf[2] = arg2;
+    buf[3] = arg3;
+    sceSifCallRpc(&D_003DE5C0, 25, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
+    return D_0062D980;
+}
 
 void* func_001EEA98(void) {
     sceSifCallRpc(&D_003DE5C0, 27, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
@@ -259,7 +462,14 @@ void* func_001EEAF0(void* arg0) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EEB48);
+void* func_001EEB48(s32 arg0, s32 arg1) {
+    s32* buf = (s32*)&D_0062D980;
+
+    buf[0] = arg0;
+    buf[1] = arg1;
+    sceSifCallRpc(&D_003DE5C0, 50, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
+    return D_0062D980;
+}
 
 void* func_001EEBA8(void* arg0) {
     D_0062D980 = arg0;
@@ -273,4 +483,17 @@ void* func_001EEC00(void* arg0) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EEC58);
+void* func_001EEC58(void) {
+    s32 i, j;
+
+    if (D_00635640[0][0] != -1) {
+        sceSifCallRpc(&D_003DE5C0, 30, 0, D_00635640, 0x2000, D_00635640, 0x2000, NULL, NULL);
+        D_003E3CB0 = 0;
+        for (i = 0; i < 0x400; i++) {
+            for (j = 7; j >= 0; j--) {
+                D_00635640[i][j] = -1;
+            }
+        }
+    }
+    return D_0062D980;
+}

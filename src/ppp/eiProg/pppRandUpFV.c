@@ -1,5 +1,63 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandUpFV", pppRandUpFVCalc);
+typedef struct {
+    pppCDT cdt;
+    s32 index;
+    f32 scale[3];
+    u8 twice;
+} PRandUpFV;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandUpFV", func_00189860);
+f32 func_001896B0(f32 a, f32 b);
+
+static inline f32 vu0Rand(void) {
+    f32 r;
+    __asm__ volatile("addi $8, $0, -1\n"
+                     "qmtc2.ni $8, $vf2\n"
+                     "vrxor R, $vf2x\n"
+                     "vrnext.x $vf1, R\n"
+                     "vrxor R, $vf2x\n"
+                     "vrnext.x $vf1, R\n"
+                     "vrxor R, $vf2x\n"
+                     "vrnext.x $vf1, R\n"
+                     "vrxor R, $vf2x\n"
+                     "vrnext.x $vf1, R\n"
+                     "vrxor R, $vf2x\n"
+                     "vrnext.x $vf1, R\n"
+                     "vitof0.x $vf2, $vf2\n"
+                     "vadd.x $vf1, $vf1, $vf2\n"
+                     "qmfc2.ni %0, $vf1\n"
+                     : "=r"(r)
+                     :
+                     : "$8");
+    return r;
+}
+
+void pppRandUpFVCalc(pppPObject* pobj, PRandUpFV* p, pppCtrlTable* ctbl) {
+    f32* rv;
+    f32* tgt;
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    if (pobj->time == 0) {
+        f32 r = vu0Rand();
+        if (p->twice) {
+            r = (r + vu0Rand()) * 0.5f;
+        }
+        rv = (f32*)&pobj->val[ctbl->useVal[0]];
+        *rv = r;
+    } else {
+        if (p->cdt.time != pobj->time) {
+            return;
+        }
+        rv = (f32*)&pobj->val[ctbl->useVal[0]];
+    }
+    tgt = p->index != -1 ? (f32*)&pobj->val[p->index] : (f32*)&ppvDbgTemp;
+    tgt[0] += func_001896B0(p->scale[0], *rv);
+    tgt[1] += func_001896B0(p->scale[1], *rv);
+    tgt[2] += func_001896B0(p->scale[2], *rv);
+}
+
+f32 func_00189860(f32 arg0, f32 arg1) {
+    return arg0 * arg1;
+}

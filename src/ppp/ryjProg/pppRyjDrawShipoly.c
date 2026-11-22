@@ -33,6 +33,52 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C460);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C618);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C698);
+typedef struct {
+    /* 0x00 */ char pad_00[0x21];
+    /* 0x21 */ u8 w;
+    /* 0x22 */ u8 h;
+    /* 0x23 */ u8 x;
+} PRyjShipolyTex;
+
+void func_0019C698(PRyjShipolyTex* p, s32* x0, s32* x1, s32* y0, s32* y1) {
+    s32 x = 0;
+    s32 w = 0x1000;
+    s32 h = 0x1000;
+
+    switch (p->w) {
+        case 1:
+            w = 0x800;
+            break;
+        case 2:
+            w = 0x400;
+            break;
+    }
+    switch (p->h) {
+        case 1:
+            h = 0x800;
+            break;
+        case 2:
+            h = 0x400;
+            break;
+    }
+    switch (p->x) {
+        case 1:
+            x = 0x400;
+            w += 0x400;
+            break;
+        case 2:
+            x = 0x800;
+            w += 0x800;
+            break;
+        case 3:
+            x = 0xC00;
+            w += 0xC00;
+            break;
+    }
+    *x0 = x + 0x10;
+    *x1 = w - 0x10;
+    *y0 = 0x10;
+    *y1 = h - 0x10;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C770);

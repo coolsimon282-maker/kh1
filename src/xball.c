@@ -21,37 +21,107 @@ s32 func_00120A78(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0RotMatrixY(arg0, arg0, arg2[1]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120AC8);
+f32 func_00120AC8(f32 x) {
+    s32 i;
+
+    for (i = 0; i < 0x400; i++) {
+        if (x > PI) {
+            x -= 2 * PI;
+        } else if (x < -PI) {
+            x += 2 * PI;
+        } else {
+            break;
+        }
+    }
+    return x;
+}
 f32 func_00120AC8(f32);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120B40);
+void func_00120B40(sceVu0FVECTOR axis, sceVu0FMATRIX m, f32 ang) {
+    sceVu0FVECTOR tmp[3];
+    sceVu0FVECTOR v;
+    f32 c;
+    f32 f;
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120D38);
+    for (i = 0; i < 3; i++) {
+        m[i][3] = m[3][i] = 0.0f;
+    }
+    m[3][3] = 1.0f;
+    sceVu0ScaleVector(v, axis, sinf(ang));
+    c = cosf(ang);
+    for (i = 0; i < 3; i++) {
+        sceVu0ScaleVector(tmp[i], axis, axis[i]);
+    }
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            if (i == j) {
+                m[i][j] = c;
+            } else {
+                if ((i + 3 - j) % 3 == 1) {
+                    m[i][j] = -v[3 - (i + j)];
+                } else {
+                    m[i][j] = v[3 - (i + j)];
+                }
+            }
+        }
+    }
+    c = 1.0f - c;
+    for (i = 0; i < 3; i++) {
+        sceVu0ScaleVector(tmp[i], tmp[i], c);
+    }
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            m[i][j] += tmp[i][j];
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120DB8);
+f32 func_00120D38(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+    f32 f;
+    s32 i;
 
-// nonmatch: extra nops
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120E48);
-// s32 func_00120E48(sceVu0FMATRIX arg0, sceVu0FVECTOR* arg1) {
-//     sceVu0FVECTOR local_40;
-//     s32 i;
+    arg2[3] = 1.0f;
+    sceVu0ApplyMatrix(arg0, arg1, arg2);
+    f = 1.0f / arg0[3];
+    for (i = 0; i < 3; i++) {
+        arg0[i] *= f;
+    }
+    arg0[3] = 1.0f;
+    return f;
+}
 
-//     for (i = 0; i < 8; i++) {
-//         sceVu0ApplyMatrix(local_40, arg0, arg1[i]);
-//         if (local_40[3] < 1.0f) {
-//             return 0;
-//         }
-//         local_40[0] /= local_40[3];
-//         local_40[1] /= local_40[3];
-//         if (local_40[0] < 0.0f || local_40[0] > 4095.0f) {
-//             return 0;
-//         }
-//         if (local_40[1] < 0.0f || local_40[1] > 4095.0f) {
-//             return 0;
-//         }
-//     }
-//     return 1;
-// }
+void func_00120DB8(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
+    sceVu0FVECTOR v[2];
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        sceVu0SubVector(v[i], arg0[i + 1], arg0[i]);
+    }
+    v[0][3] = 1.0f;
+    v[1][3] = 1.0f;
+    sceVu0OuterProduct(arg1, v[0], v[1]);
+    func_001223B0(arg1, arg1);
+}
+
+s32 func_00120E48(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
+    sceVu0FVECTOR t;
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        sceVu0ApplyMatrix(t, m, v[i]);
+        if (t[3] < 1.0f) {
+            return 0;
+        }
+        t[0] /= t[3];
+        t[1] /= t[3];
+        if (t[0] < 0.0f || 4095.0f < t[0] || t[1] < 0.0f || 4095.0f < t[1]) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 void func_00120F48(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = arg2[0] * arg0;
@@ -105,11 +175,51 @@ s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRI
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121200);
+void func_00121200(f32* y, s32 n, f32* out) {
+    f32 h[32];
+    f32 t;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121340);
+    out[0] = out[n - 1] = 0.0f;
+    for (i = 0; i < n - 1; i++) {
+        h[i + 1] = y[i + 1] - y[i];
+    }
+    out[1] = h[2] - h[1] - out[0];
+    h[1] = 4.0f;
+    for (i = 1; i < n - 2; i++) {
+        t = 1.0f / h[i];
+        out[i + 1] = h[i + 2] - h[i + 1] - out[i] * t;
+        h[i + 1] = 4.0f - t;
+    }
+    out[n - 2] -= out[n - 1];
+    for (i = n - 2; i > 0; i--) {
+        out[i] = (out[i] - out[i + 1]) / h[i];
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001213B0);
+f32 func_00121340(f32 t, f32* a, f32* b) {
+    s32 i = t;
+    f32 f = t - i;
+    f32 a0 = a[i];
+    f32 a1 = a[i + 1];
+    f32 b0 = b[i];
+    f32 b1 = b[i + 1];
+
+    return (((b1 - b0) * f + b0 * 3.0f) * f + ((a1 - a0) - (b0 + b0 + b1))) * f + a0;
+}
+
+f32 func_001213B0(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVECTOR q, sceVu0FVECTOR n) {
+    f32 den = d[2] * n[0] - n[2] * d[0];
+    f32 t;
+
+    if (den == 0.0f) {
+        return nan();
+    }
+    t = (n[0] * (q[2] - p[2]) + n[2] * (p[0] - q[0])) / den;
+    sceVu0ScaleVector(out, d, t);
+    sceVu0AddVector(out, out, p);
+    return t;
+}
 
 void func_00121480(f32 arg0, f32 arg1, f32 arg2, f32 arg3, sceVu0FMATRIX arg4, sceVu0FVECTOR arg5) {
     sceVu0DropShadowMatrix(arg4, arg5, arg0, arg1, arg2, 0);
@@ -135,19 +245,73 @@ void func_001214C8(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1) {
     arg0[3][3] = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121538);
+f32 func_00121538(f32 a, f32 b, f32 c) {
+    f32 d = func_00120AC8(b - a);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001215A8);
+    c *= D_002B8344[0];
+    if (c < d) {
+        d = c;
+    } else if (d < -c) {
+        d = -c;
+    }
+    return func_00120AC8(a + d);
+}
+
+#define XB_COS(a, b) (sceVu0InnerProduct(a, b) / (func_00120A38(a) * func_00120A38(b)))
+f32 func_001215A8(sceVu0FVECTOR a, sceVu0FVECTOR b) {
+    if (XB_COS(a, b) < -1.0f) {
+        return -1.0f;
+    }
+    if (1.0f < XB_COS(a, b)) {
+        return 1.0f;
+    }
+    return XB_COS(a, b);
+}
 
 f32 func_001216A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     return acosf(func_001215A8(arg0, arg1));
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001216C8);
+void func_00120B40(sceVu0FVECTOR, sceVu0FMATRIX, f32);
+void func_001216C8(sceVu0FVECTOR a, sceVu0FVECTOR b, sceVu0FVECTOR out, f32 t) {
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    sceVu0FVECTOR axis;
+    sceVu0FMATRIX m;
+    f32 ang;
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001217C0);
+    sceVu0Normalize(v0, a);
+    sceVu0Normalize(v1, b);
+    sceVu0OuterProduct(axis, v0, v1);
+    sceVu0Normalize(axis, axis);
+    ang = func_001216A8(v0, v1);
+    t *= D_002B8344[0];
+    if (t < ang) {
+        ang = t;
+    } else if (ang < -t) {
+        ang = -t;
+    }
+    func_00120B40(axis, m, ang);
+    sceVu0CopyVector(out, v0);
+    out[3] = 0.0f;
+    sceVu0ApplyMatrix(out, m, out);
+}
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121830);
+void func_001217C0(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, f32* arg2) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        sceVu0ScaleVectorXYZ(arg0[i], arg1[i], arg2[i]);
+    }
+}
+
+void func_00121830(f32* arg0, f32* arg1, f32* arg2) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        arg0[i] = arg1[i] / arg2[i];
+    }
+}
 
 void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = atan2f(-arg0[1], func_00120A58(arg0));
@@ -156,7 +320,17 @@ void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[3] = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001218E0);
+void func_001218E0(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
+    sceVu0FMATRIX m;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        sceVu0Normalize(m[i], arg0[i]);
+    }
+    arg1[0] = atan2f(-m[1][2], m[0][2]);
+    arg1[1] = asinf(-m[2][2]);
+    arg1[2] = atan2f(m[2][1], m[2][0]);
+}
 
 f32 func_00121970(f32 arg0) {
     if (arg0 > 0.0f) {

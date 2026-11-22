@@ -62,7 +62,31 @@ void func_00125100(f32 arg0, f32 arg1, f32* arg2, f32* arg3) {
 
 INCLUDE_ASM("asm/nonmatchings/xpeanut", func_001251B0);
 
-INCLUDE_ASM("asm/nonmatchings/xpeanut", func_001253B8);
+extern f32 D_004F77E0;
+void func_001109A8(void);
+
+// builds this frame's camera: view from D_002DECE0 towards D_002DECF0, rolled by D_002DED04
+s32 func_001253B8(void) {
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    sceVu0FMATRIX m;
+
+    func_00110848(D_004FAE00);
+    sceVu0SubVector(v0, D_002DECF0, D_002DECE0);
+    sceVu0Normalize(v0, v0);
+    func_00120B40(func_00120AC8(D_002DED04), v0, m);
+    sceVu0ApplyMatrix(v1, m, D_002DEC10);
+    sceVu0CameraMatrix(D_004FAE90[D_002C1EA0], D_002DECE0, v0, v1);
+    sceVu0CopyMatrix(D_002DEC60, D_004FAE90[D_002C1EA0]);
+    sceVu0CopyMatrix(D_004FAF10[D_002C1EA0], D_002B8370);
+    sceVu0CopyMatrix(D_002DECA0, D_004FAF10[D_002C1EA0]);
+    sceVu0MulMatrix(D_004FAE10[D_002C1EA0], D_002DECA0, D_002DEC60);
+    sceVu0CopyMatrix(D_002DEC20, D_004FAE10[D_002C1EA0]);
+    D_002DED0C = (s32*)D_004FAE10[D_002C1EA0];
+    func_001109A8();
+    D_004F77E0 = ((f32 (*)(f32*, f32*))func_001250D0)(D_002DECE0, D_002DECF0);
+    return 0;
+}
 s32 func_001253B8(void);
 // s32 func_001253B8(void) {
 //     sceVu0FVECTOR v0;

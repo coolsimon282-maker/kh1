@@ -1,5 +1,5 @@
 #ifndef PPP_H
-#define PPP
+#define PPP_H
 
 #include "common.h"
 #include "ppp/pppEnv.h"
@@ -96,7 +96,7 @@ extern sceVu0FVECTOR ppvParScl;
 
 // todo: find what this is, maybe KeLnsLp, but used extensively for non-KeLns stuff
 // symbol name is possibly a debug thing from 2.5 proto and will need renamed here
-extern UNK_TYPE ppvDbgTemp; 
+extern UNK_TYPE ppvDbgTemp;
 
 typedef void (*pppDrawFunc)(pppPObject* pobj, s32 param);
 
@@ -117,6 +117,5 @@ extern s32 ppvEmptyLoop;
 extern sceVu0FMATRIX g_matUnit;
 extern sceVu0FMATRIX KeDMat;
 extern sceVu0FMATRIX KeMatPht;
-
 
 #endif /* PPP_H */

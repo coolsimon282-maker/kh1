@@ -39,11 +39,51 @@ extern sceVu0FMATRIX D_002B84F0;
 extern u32 D_002B85F8;
 extern s32 D_002B8678;
 extern s32 D_002B8680;
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[0x38];
+} XWorldEntry; // size = 0x40
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ f32 unk_10;
+    /* 0x14 */ f32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ char unk_1C[0x20];
+    /* 0x3C */ f32 unk_3C;
+} XBladeObj;
+
+extern XWorldEntry* D_002BCDAC;
+extern XWorldEntry* D_002BCDA0;
+extern s32 D_002BCDA4;
+extern sceVu0FVECTOR D_004D92F0[3];
+extern XBladeObj* D_002E26A0[3];
+extern s32 D_002B91E8;
+extern s32 D_004D92E0;
+extern volatile s32 D_002BBDE0;
+extern s32 D_002B9660;
+void func_0011C5A8(void);
+void func_0011C5C8(void);
+void func_00113660(void);
+void func_0011D598(s32, s32);
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ char unk_04[0x14];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20;
+} XBladeHdr;
+
+void func_00111408(s32, s32, s32);
+void func_001089D0(void*);
+void func_00108FD0(s32, s32, s32, void*, s32);
 extern s32 D_002B8684;
 extern s32 D_002B8688;
 extern s32 D_002B8698[];
 extern s32 D_002B91E0;
-//extern XBlobule D_002B92F0[];
+// extern XBlobule D_002B92F0[];
 extern s32 D_002B92F8;
 extern s32 D_002B9304;
 extern s32 D_002B9308;
@@ -102,7 +142,9 @@ void func_001C4FF0();
 void* func_001EE280(s32);
 void func_001ED878();
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112168);
+void func_00112168(void) {
+    D_002B91E8 = D_002BCDAC[D_002B8680].unk_04;
+}
 
 void func_00112190(void) {
     D_002B85F8 |= 0x20;
@@ -173,7 +215,7 @@ s32 func_00112690(void) {
     if (D_002B8688 == D_002B8678) {
         D_002B9304 = 1;
     }
-    
+
     if (D_002B9304 == 1) {
         func_001121C8();
         if (D_002B9328 != 0) {
@@ -200,7 +242,14 @@ void* func_001127E0(void) {
     return func_0011ED30(190000, func_001127A0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112810);
+void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    D_002B92F8 = arg3;
+    D_002B8678 = arg0;
+    D_002B8680 = arg1;
+    D_002B8684 = arg2;
+    func_00111408(arg0, arg1, arg2);
+    func_001127E0();
+}
 
 void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_002B92F8 = arg3;
@@ -210,14 +259,42 @@ void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return func_001127E0();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112880);
+void func_00112880(s32 arg0) {
+    s32 val;
+
+    D_002B92F8 = arg0;
+    val = D_002BCDA0[arg0].unk_00;
+    D_002B8680 = val;
+    D_002B8684 = func_00111468(D_002B8678, val);
+    func_001127E0();
+}
 
 void func_001128D8(s32 arg0) {
     D_002A0510 = arg0;
     D_002B9310 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001128F0);
+extern s32 D_002A050C;
+extern s32 D_002B868C;
+
+void func_001128F0(s32 arg0) {
+    char str[0x40];
+    s32 one = 1;
+    s32 id;
+
+    if (((D_002C1EA8 >> 13) & 1) != one) {
+        id = D_002BCDAC[D_002BCDA0[arg0].unk_00].unk_00;
+        if (D_002B868C != id) {
+            D_002B930C = one;
+            worldfile_getBinImgName(id);
+            strcpy(str, worldBinImgFile);
+            strcat(str, ".img");
+            D_002A050C = func_00155ED8(0x34, 8);
+            D_002A050C = func_001133E0(D_002A050C, 0x80);
+            func_00120590(str, D_002A050C, (s32 (*)(void))func_001128D8, 0);
+        }
+    }
+}
 // extern s32 D_002A050C;
 // extern s32 D_002B868C;
 // extern s32 D_002B92FC;
@@ -234,7 +311,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", func_001128F0);
 //     s32* temp;
 //     s32 temp2;
 //     s32 new_var2 = 1;
-    
+
 //     if (((D_002C1EA8 >> 0xD) & 1) != new_var2) {
 //         temp = (D_002B92F0[arg0 << 4] << 6) + D_002B92FC;
 //         temp2 = *temp;
@@ -324,10 +401,30 @@ void* func_00112C70(void) {
     return func_001093A8(9);
 }
 
+#ifdef VERSION_FM
+s32 fm_func_00112FC0(void) {
+    return D_004D92E0;
+}
+#endif
+
+#ifdef VERSION_FM
+void fm_func_00112FD0(s32 arg0) {
+    D_004D92E0 = arg0;
+}
+#endif
+
+#ifdef VERSION_FM
+void* func_00112C90(void) {
+    func_00114420();
+    fm_func_00112FD0(1);
+    return func_001093A8(8);
+}
+#else
 void* func_00112C90(void) {
     func_00114420();
     return func_001093A8(8);
 }
+#endif
 
 s32 func_00112CB0(void) {
     return func_00155ED8(61, 3);
@@ -337,17 +434,107 @@ s32 func_00112CD0(void) {
     return func_00155ED8(0, 64);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112CF0);
+void func_00112CF0(void) {
+    s32 i;
+    XBladeObj* obj;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D48);
+    for (i = 0; i < 3; i++) {
+        obj = D_002E26A0[i];
+        if (obj != NULL) {
+            D_004D92F0[i][0] = obj->unk_10;
+            D_004D92F0[i][1] = obj->unk_14;
+            D_004D92F0[i][2] = obj->unk_18;
+            D_004D92F0[i][3] = obj->unk_3C;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112D88);
+void func_00112D48(s32 i, sceVu0FVECTOR dst) {
+    dst[0] = D_004D92F0[i][0];
+    dst[1] = D_004D92F0[i][1];
+    dst[2] = D_004D92F0[i][2];
+    dst[3] = D_004D92F0[i][3];
+}
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112DE0);
+s32 func_00112D88(void) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112EE8);
+    for (i = 0; i < D_002BCDA4; i++) {
+        if (D_002B8680 == D_002BCDA0[i].unk_00) {
+            return i;
+        }
+    }
+    return 1000;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112FE8);
+void func_001113A8(s32, sceVu0FVECTOR);
+void func_00104FD0(s32, sceVu0FVECTOR);
+
+void func_00112DE0(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[4];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[5];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[6];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[7];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(0, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(0, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
+
+void func_00112EE8(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[8];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[9];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[10];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[11];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(1, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(1, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
+
+void func_00112FE8(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[12];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[13];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[14];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[15];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(2, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(2, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
 extern s32 D_002B92F4;
 
 // void func_00104DC8(s32, sceVu0FVECTOR);
@@ -395,43 +582,49 @@ void func_00113130(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113170);
-s32 func_00113170();
-// s32 func_00113170(void) {
-//     if (D_002B2CC4 != 0) {
-//         return 0;
-//     }
-//     D_002B8354 = 1;
-//     func_00105660();
-//     func_00180CE0();
-//     func_00132450();
-//     D_002B933C = 1;
+// func_00105860 (returns a value) is called without a prototype: one more declaration here changes
+// func_00114B50's code.
+void func_00132550();
+void func_00175F58();
+void func_001113E8();
+extern s32 D_0029B410;
+extern s32 D_0029B414;
 
-//     if (D_002979E0 != 0 && D_002979E4 != 0) {
-//         func_00177470(D_002979E0, D_002979E4, D_002B8680 + 1, 100000);
-//     }
+s32 func_00113170(void) {
+    if (D_002B2CC4 != 0) {
+        return 0;
+    }
+    D_002B8354 = 1;
+    func_00105860();
+    func_00180CE0();
+    func_00132550();
+    D_002B933C = 1;
 
-//     func_001009A8();
-//     D_002C1EA8 &= ~0x4;
-//     D_002C1EA8 &= ~0x8000000;
-//     func_001C4FF0(D_002B91E0, 0);
-//     D_002B930C = 0;
-//     D_002B9310 = 0;
-//     D_002B9328 = 0;
-//     func_00114430();
-//     D_002BD8D8 = 0;
+    if (D_0029B410 != 0 && D_0029B414 != 0) {
+        func_00175F58(D_0029B410, D_0029B414, D_002B8680 + 1, 100000);
+    }
 
-//     if (D_002B8364 == 1 || D_002B29C4 == 1) {
-//         func_001113E8();
-//     }
+    func_001009A8();
+    D_002C1EA8 &= ~0x4;
+    D_002C1EA8 &= ~0x8000000;
+    func_001C4FF0(D_002B91E0, 0);
+    D_002B930C = 0;
+    D_002B9310 = 0;
+    D_002B9328 = 0;
+    func_00114430();
+    D_002BD8D8 = 0;
 
-//     D_002B8364 = 0;
-//     func_00111198();
-//     func_001116C8();
-//     func_001ED878(0);
-//     D_002B9314 = 0;
-//     return 4;
-// }
+    if (D_002B8364 == 1 || D_002B29C4 == 1) {
+        func_001113E8();
+    }
+
+    D_002B8364 = 0;
+    func_00111198();
+    func_001116C8();
+    func_001ED878(0);
+    D_002B9314 = 0;
+    return 4;
+}
 
 void* func_001132A0(void) {
     return func_0011ED30(49900, func_00113170);
@@ -490,15 +683,15 @@ void func_00113410(void) {
     u64 temp_5;
     u64 new_var2;
     s32 new_var4;
-    s32 *new_var6;
+    s32* new_var6;
 
     new_var6 = &D_004D2A98;
     new_var4 = (*new_var6) << 0x18;
     temp_7 = D_004D2A94 << 0x10;
-    new_var2 = (u64) D_004D2A9C << 0x18;
+    new_var2 = (u64)D_004D2A9C << 0x18;
     temp_7 = temp_7 | D_004D2A90 << 8;
 
-    temp_3 = ((u64) D_004D2AA0 << 0x18) | 0x100D17A88;
+    temp_3 = ((u64)D_004D2AA0 << 0x18) | 0x100D17A88;
 
     D_002B9350.unk_00[0x140 / 8] = temp_3;
     D_002B9350.unk_00[0x160 / 8] = temp_3;
@@ -516,9 +709,9 @@ void func_00113410(void) {
     D_002B9350.unk_00[0x2A0 / 8] = temp_3;
     D_002B9350.unk_00[0x2C0 / 8] = temp_3;
     D_002B9350.unk_00[0x2E0 / 8] = temp_3;
-    
+
     temp_5 = new_var2 | 0x100000000;
-    
+
     D_002B9350.unk_00[0x50 / 8] = temp_5;
     D_002B9350.unk_00[0x70 / 8] = temp_5;
     D_002B9350.unk_00[0x90 / 8] = temp_5;
@@ -529,7 +722,7 @@ void func_00113410(void) {
     D_002B9350.unk_00[0x100 / 8] = temp_5;
 
     temp_16 = D_004D2A8C | new_var4 | temp_7;
-    
+
     func_001102C0();
     func_0010F3D0();
     func_00106948(&D_002B9650);
@@ -556,10 +749,57 @@ void func_00113618(void) {
     D_004D2AA0 = 128;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113660);
+typedef struct {
+    /* 0x0 */ s32 unk_00;
+    /* 0x4 */ s32 unk_04;
+    /* 0x8 */ s32 unk_08;
+} XBlade5AD0;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C[9];
+    /* 0x30 */ s32 unk_30[15];
+    /* 0x6C */ s32 unk_6C;
+} XBlade5BB0;
+
+extern volatile XBlade5AD0 D_002C5AD0;
+extern volatile XBlade5BB0 D_002C5BB0;
+
+void func_00113660(void) {
+    D_002C5AD0.unk_08 = 0;
+    D_002C5AD0.unk_04 = 0;
+    D_002C5BB0.unk_6C = 0;
+    D_002C5BB0.unk_04 = 0;
+    D_002C5BB0.unk_08 = 0;
+    D_002C5BB0.unk_30[0] = 0;
+    D_002C5BB0.unk_30[1] = 0;
+    D_002C5BB0.unk_30[2] = 0;
+    D_002C5BB0.unk_30[3] = 0;
+    D_002C5BB0.unk_30[4] = 0;
+    D_002C5BB0.unk_30[5] = 0;
+    D_002C5BB0.unk_30[6] = 0;
+    D_002C5BB0.unk_30[7] = 0;
+    D_002C5BB0.unk_30[8] = 0;
+    D_002C5BB0.unk_30[9] = 0;
+    D_002C5BB0.unk_30[10] = 0;
+    D_002C5BB0.unk_30[11] = 0;
+    D_002C5BB0.unk_30[12] = 0;
+    D_002C5BB0.unk_30[13] = 0;
+    D_002C5BB0.unk_30[14] = 0;
+}
 
 void func_001136C8(s32);
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001136C8);
+void func_001136C8(s32 arg0) {
+    if (arg0 == 0) {
+        func_001102C0();
+        DPUT_GS_PMODE(0x22);
+    } else {
+        func_00113618();
+        func_00113410();
+    }
+}
 
 extern s32 D_004D2A80;
 extern s32 D_004D2A84;
@@ -729,7 +969,61 @@ void func_00113CA8(void) {
     D_002B9668 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113CB8);
+extern u32 D_00375BC0;
+extern s32 D_002B85C0;
+extern s32 D_002B860C;
+extern s32 D_002A6204;
+extern s32 D_002BD858;
+extern s32 D_002BD85C;
+// func_00114B50 compiles differently with another number of function declarations in this file (cse
+// hashes symbol addresses); func_001336A0's prototype keeps the count right since func_00114638 matched.
+s32 func_001336A0(void);
+
+// include/xblade.h declares this `void func_00113CB8();` but it returns D_002B9668; define it under
+// another C name with the real symbol name.
+s32 func_00113CB8_s32(void) __asm__("func_00113CB8");
+
+s32 func_00113CB8_s32(void) {
+    s32 one;
+
+    if (D_004D2A60 == 0) {
+        one = 1;
+        D_002B9668 = 0;
+        if ((D_002C1EA8 & 1) == one) {
+            D_002B9668 = 2;
+        }
+        if (((D_002C1EA8 >> 4) & 1) == one) {
+            D_002B9668 = 2;
+        }
+        if (((D_00375BC0 >> 1) & 1) == one) {
+            D_002B9668 = one;
+        }
+        if (((D_00375BC0 >> 3) & 1) == one) {
+            D_002B9668 = 3;
+        }
+        if (D_002B966C == one) {
+            D_002B9668 = D_002B966C;
+        }
+        if (D_002BD858 != 0) {
+            D_002B9668 = 4;
+        }
+        if (D_002BD85C != 0) {
+            D_002B9668 = 5;
+        }
+        if (D_002BBDE0 == 5) {
+            D_002B9668 = 7;
+        }
+        if (func_001336A0() != 0) {
+            D_002B9668 = 2;
+        }
+        if (D_002B9668 == 0) {
+            if (D_002B85C0 != 0x80 || D_002B860C != 0 || D_002A6204 != 0) {
+                D_002B9668 = 1;
+            }
+        }
+    }
+    return D_002B9668;
+}
 
 void func_00113E18(void) {
     D_002C1EBC = 1;
@@ -767,7 +1061,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", func_00113E98);
 //                     D_004D2AA4 = 0;
 //                     temp_f20 = D_002B8340[1];
 //                     init1 = D_002B8354;
-   
+
 //                     do {
 //                         init2 = D_004D2A80;
 //                         if (D_004D2AA4 == 0) {
@@ -811,8 +1105,8 @@ INCLUDE_ASM("asm/nonmatchings/xblade", func_00113E98);
 //                             func_001224B8();
 //                             func_0010FB90();
 //                             if (func_00109468() == 0) {
-//                                 break; 
-//                             } 
+//                                 break;
+//                             }
 //                             if (func_0010F768() != 0) {
 //                                 func_001136C8(D_004D2A78);
 //                             }
@@ -938,63 +1232,228 @@ void func_00114430(void) {
     D_004D2A74 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114440);
+void func_00114440(void) {
+    D_004D2A60 = 0;
+    D_004D2A70 = 0;
+    func_00114420();
+    D_002B9664 = 0;
+    func_00114410();
+    func_0011C5A8();
+    func_0011C5C8();
+}
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
+// include/xblade.h declares this `void func_00114480();`; it is built as returning a value (no tail call).
+s32 func_00114480_s32(void) __asm__("func_00114480");
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001144C8);
+s32 func_00114480_s32(void) {
+    if (D_002BBDE0 == 3 && D_002B9660 != 0) {
+        func_00113660();
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001145B0);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xD0];
+} XBladeD0;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001145E8);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x90];
+} XBlade90;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114638);
-// s32 func_00114638(sceVu0FMATRIX arg0, f32 arg1, s32 arg2, s32 arg3) {
-//     f32* temp_16;
-//     sceVu0FVECTOR* temp_2;
-//     s32 temp_4;
-//     s32 ret;
-//     f32* temp_3;
+extern XBladeD0 D_002A6C60[64];
+extern XBladeD0 D_002AA060[64];
+extern XBlade90 D_002AD460[2][64];
+extern XBlade90 D_002B1C60[2][64];
+s32 func_00108A60(s32 idx, s32 type, void* arg2, void* arg3, void* arg4);
 
-//     temp_2 = func_00122430(0x110, 0x80);
-//     temp_3 = arg1 + 0x18;
-//     temp_2[0][1] = *temp_3;
-//     temp_16 = arg1 + *temp_3;
-//     temp_2[0][0] = temp_16;
-//     D_004D2AA8 = temp_2;
-//     ret = 0;
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0x80 / 4, arg0, *D_004D2AA8 + 0x00 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0x90 / 4, arg0, *D_004D2AA8 + 0x10 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xA0 / 4, arg0, *D_004D2AA8 + 0x20 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xB0 / 4, arg0, *D_004D2AA8 + 0x30 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xC0 / 4, arg0, *D_004D2AA8 + 0x40 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xD0 / 4, arg0, *D_004D2AA8 + 0x50 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xE0 / 4, arg0, *D_004D2AA8 + 0x60 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xF0 / 4, arg0, *D_004D2AA8 + 0x70 / 4);
-//     sceVu0MulMatrix(D_004D2AA8 + 0x10 / 4, D_002B84F0, D_00297850);
-//     if (func_0024B800(D_004D2AA8 + 0x10 / 4, D_004D2AA8 + 0x80 / 4) == 0) {
-//         if (arg2 == 40000) {
-//             func_00106A08(&D_002B9690, 40000);
-//         }
-//         temp_4 = D_004D2AAC;
-//         D_004D2AAC++;
-//         func_00108C48(temp_4, arg2, arg0, D_004D2AA8, arg3);
-//         ret = 1;
-//     }
-//     func_001224A0(D_004D2AA8);
-//     return ret;
-// }
+void func_001144C8(void) {
+    s32 i;
+
+    D_004D2AAC = 0;
+    D_004D2AB0 = 0;
+    for (i = 0; i < 64; i++) {
+        func_00108A60(i, 1, &D_002A6C60[i], &D_002AD460[0][i], &D_002AD460[1][i]);
+        func_00108A60(i, 5, &D_002AA060[i], &D_002B1C60[0][i], &D_002B1C60[1][i]);
+    }
+}
+
+s32 func_001145B0(XBladeHdr* arg0) {
+    s32* offset = &arg0->unk_18;
+
+    if (arg0->unk_00 >= 2) {
+        func_001089D0((u8*)arg0 + *offset);
+    }
+}
+
+s32 func_001145E8(s32 arg0, XBladeHdr* arg1, s32 arg2, s32 arg3) {
+    func_00108FD0(D_004D2AB0++, arg2, arg0, (u8*)arg1 + arg1->unk_20, arg3);
+    return 1;
+}
+
+typedef struct {
+    /* 0x00 */ f32* verts;
+    /* 0x04 */ void* hdr;
+    /* 0x08 */ char unk_08[0x8];
+    /* 0x10 */ sceVu0FMATRIX m;
+    /* 0x50 */ char unk_50[0x30];
+    /* 0x80 */ sceVu0FVECTOR v[8];
+    /* 0x100 */ char unk_100[0x10];
+} XBladeBox; // size = 0x110
+
+extern void* D_004D9368; // XBladeBox*
+extern u8 D_002BD140[];
+
+s32 func_00114638(sceVu0FVECTOR* m, u8* mdl, s32 id, s32 arg3) {
+    XBladeBox* w;
+    s32 ret;
+
+    w = (XBladeBox*)func_00122048(0x110, 0x80);
+    {
+        s32* hp = (s32*)(mdl + 0x18);
+        s32 o = *hp;
+        D_004D9368 = w;
+        w->hdr = hp;
+        w->verts = (f32*)(mdl + o);
+    }
+    ret = 0;
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[0], m, ((XBladeBox*)D_004D9368)->verts + 0);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[1], m, ((XBladeBox*)D_004D9368)->verts + 4);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[2], m, ((XBladeBox*)D_004D9368)->verts + 8);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[3], m, ((XBladeBox*)D_004D9368)->verts + 12);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[4], m, ((XBladeBox*)D_004D9368)->verts + 16);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[5], m, ((XBladeBox*)D_004D9368)->verts + 20);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[6], m, ((XBladeBox*)D_004D9368)->verts + 24);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[7], m, ((XBladeBox*)D_004D9368)->verts + 28);
+    sceVu0MulMatrix(((XBladeBox*)D_004D9368)->m, D_002B84F0, D_00297850);
+    if (func_0024EDF0(((XBladeBox*)D_004D9368)->m, ((XBladeBox*)D_004D9368)->v) == 0) {
+        if (id == 40000) {
+            func_00106A08(D_002BD140, 40000);
+        }
+        func_00108DF8(D_004D2AAC++, id, m, ((XBladeBox*)D_004D9368)->verts, arg3);
+        ret = 1;
+    }
+    func_001220B8(D_004D9368);
+    return ret;
+}
 
 void func_00114800(void) {
     D_004D2AAC = 0;
     D_004D2AB0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114818);
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ void* unk_10;
+} XBladeTask;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001149B0);
+typedef struct {
+    /* 0x00 */ s32 unk_00[4];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ void* unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20[4];
+    /* 0x30 */ s32 unk_30[4];
+    /* 0x40 */ s32 unk_40[4];
+} XBladePkt; // size = 0x50
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114A50);
+typedef struct {
+    /* 0x00 */ s32 (*unk_00)[4];
+    /* 0x04 */ u8 unk_04[0xC];
+} XBlade3044D8; // size = 0x10
+
+extern XBladePkt D_004D9380[2];
+extern XBladePkt D_004D9420[][2];
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XBladeMatTag;
+
+typedef struct {
+    /* 0x00 */ XBladeMatTag tag;
+    /* 0x08 */ s32 m[2][4][4];
+    /* 0x88 */ s32 unk_88[2];
+} XBladeMatEnt; // size = 0x90
+
+extern XBladeMatEnt D_004DBC20[2][64];
+extern XBladeMatTag D_0048BFD0;
+
+extern XBladePkt D_0048C630;
+extern XBladePkt D_0048C690;
+extern s32 D_00486430[][4];
+extern s32 D_0046BE90[4];
+extern s32 D_00486300[4];
+
+void func_00114818(XBladePkt* pkt, s32 idx, s32 n) {
+    s32 k;
+
+    if (idx == -1) {
+        pkt[0].unk_14 = D_0048C630.unk_14;
+        pkt[1].unk_14 = D_0048C690.unk_14;
+    } else {
+        pkt[0].unk_14 = &D_004DBC20[0][idx];
+        pkt[1].unk_14 = &D_004DBC20[1][idx];
+    }
+    pkt[0].unk_10 = D_0048C630.unk_10;
+    pkt[0].unk_18 = D_0048C630.unk_18;
+    pkt[0].unk_1C = D_0048C630.unk_1C;
+    pkt[1].unk_10 = D_0048C690.unk_10;
+    pkt[1].unk_18 = D_0048C690.unk_18;
+    pkt[1].unk_1C = D_0048C690.unk_1C;
+    pkt[0].unk_20[0] = D_0048C630.unk_20[0];
+    pkt[0].unk_20[1] = D_0048C630.unk_20[1];
+    pkt[0].unk_20[2] = D_0048C630.unk_20[2];
+    pkt[0].unk_20[3] = D_0048C630.unk_20[3];
+    pkt[1].unk_20[0] = D_0048C690.unk_20[0];
+    pkt[1].unk_20[1] = D_0048C690.unk_20[1];
+    pkt[1].unk_20[2] = D_0048C690.unk_20[2];
+    pkt[1].unk_20[3] = D_0048C690.unk_20[3];
+    for (k = 0; k < 2; k++) {
+        pkt[k].unk_00[0] = D_00486430[n][0];
+        pkt[k].unk_00[1] = D_00486430[n][1];
+        pkt[k].unk_00[2] = D_00486430[n][2];
+        pkt[k].unk_00[3] = D_00486430[n][3];
+        pkt[k].unk_40[0] = D_0046BE90[0];
+        pkt[k].unk_40[1] = D_0046BE90[1];
+        pkt[k].unk_40[2] = D_0046BE90[2];
+        pkt[k].unk_40[3] = D_0046BE90[3];
+        pkt[k].unk_30[0] = D_00486300[0];
+        pkt[k].unk_30[1] = D_00486300[1];
+        pkt[k].unk_30[2] = D_00486300[2];
+        pkt[k].unk_30[3] = D_00486300[3];
+    }
+}
+
+// Two 4x4 matrices per entry (copied as words), [2 buffers][64 entries]; D_004DBC20 holds a header 8 bytes before.
+extern s32 D_00351BD0;
+extern s32 D_004DBC28[][64][36];
+extern s32 D_002BC170[4][4];
+
+void func_001149B0(s32 idx, s32 src[4][4]) {
+    s32 i, j, k = 0;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            D_004DBC28[D_00351BD0][idx][k] = src[i][j];
+            D_004DBC28[D_00351BD0][idx][k + 16] = D_002BC170[i][j];
+            k++;
+        }
+    }
+}
+
+void func_00114A50(void) {
+    s32 i, j;
+
+    for (i = 0; i < 64; i++) {
+        for (j = 0; j < 2; j++) {
+            D_004DBC20[j][i].tag.unk_00 = D_0048BFD0.unk_00;
+            D_004DBC20[j][i].tag.unk_04 = D_0048BFD0.unk_04;
+        }
+    }
+    func_00114818(D_004D9380, -1, 2);
+    for (j = 0; j < 64; j++) {
+        func_00114818(D_004D9420[j], j, 2);
+    }
+}
 
 void func_00114B18(f32* arg0, s32 arg1) {
     if (arg1 == -1) {
@@ -1004,7 +1463,18 @@ void func_00114B18(f32* arg0, s32 arg1) {
     func_0011AED0(arg1, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114B50);
+extern XBlade3044D8 D_003044D8[];
+s32 func_00108D90(XBladeTask*);
+XBladeTask* func_0015ED80(s32 arg0, s32 (*arg1)(XBladeTask*));
+
+void func_00114B50(s32 arg0, s32 idx) {
+    if (idx == -1) {
+        func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9380[D_00351BD0];
+    } else {
+        func_001149B0(idx, D_003044D8[idx].unk_00);
+        func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9420[idx][D_00351BD0];
+    }
+}
 
 s32 func_00114C18(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {
