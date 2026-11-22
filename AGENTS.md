@@ -1,141 +1,67 @@
-# Instructions for the coding agent (local Qwen in OpenCode)
+# Instructions for the local agent (Qwen in OpenCode): matching Final Mix functions
 
-This folder is a local clone of https://github.com/ethteck/kh1, a **matching decompilation** of the PS2
-game Kingdom Hearts. Your job: turn functions that are still assembly into C that compiles to exactly the
-same bytes, one function at a time. The owner is learning; explain what you did in plain words.
+You turn assembly functions of the PS2 game Kingdom Hearts Final Mix into C that compiles to exactly the same
+bytes. The full background is in RUNBOOK.md and the matching tricks in MATCHING.md: read the parts you need, not
+whole files at once (your context is 64k tokens). The owner is learning: explain what you did in plain words.
+
+## Where you work
+
+* Your checkout: `C:\Users\you\psp-learning\kh1-study\kh1-wt\q1` (branch `fm-q1`). Work only here.
+* **Your files: `src/xhumungus.c` and `src/xkinetic.c`.** Don't edit any other file except your notes file
+  `notes/q1.md`. Never edit `include/`, `config/`, `configure.py`, `tools/`, `eu-notes/`.
+* Useful notes from earlier agents (read when you start a file): `notes/a1.md` (xhumungus: the Script stack,
+  overlay structs, patterns) and `notes/a6.md` (xkinetic: the `ScriptVM` overlay).
 
 ## Hard rules
 
-1. **Never download game files**: no ISO, no ELF, no extracted game data, from anywhere. The owner supplies
-   them from their own disc. If a file is missing, stop and say which one.
-2. **Commits stay on this PC.** Committing to the local repo is fine (and expected, step 7). Never commit game
-   files: `.gitignore` already excludes `SLPS_*`, `*.iso`, `*.bin`, `asm/`, `assets/`, `build/`, `kingdom/`, and
-   `.git/info/exclude` covers `SCES_*`. Run `git status` before every commit and check nothing like that is staged.
-   Don't rewrite history (`reset --hard`, `rebase`, `commit --amend`) or switch branches without asking.
-3. **Never push to any remote, and never open pull requests or issues.** `origin` is someone else's repo
-   (ethteck/kh1); pushing to it is disabled. The repo has no licence.
-4. **Nothing from here goes into `psp-engine`** or any other project: no code, no data tables, no
-   loaders or converters for the game's files. Study notes go in this folder only.
-5. Work only inside this folder. Don't edit `configure.py`, `config/`, `tools/`, `eu-notes/` or the build rules.
-6. One function per change. Build and check after every change. Never leave the build broken: if a
-   function won't match, put the `INCLUDE_ASM` line back.
+1. Never download anything, never push, never change branches, never rewrite history (`--amend`, `reset`,
+   `rebase`).
+2. One function per commit, and only after a build whose last line is exactly
+   `build/fm/SLPS_251.98.rom: OK`.
+3. Never leave the build broken. Giving up on a function: `git checkout -- src/<file>.c`.
+4. Keep Linux line endings and keep all `#ifdef VERSION_FM` / `#ifndef VERSION_FM` markers.
 
-## The machine
-
-* Windows 10. Your shell is **PowerShell 5.1**. The build runs in **WSL (Ubuntu)**, because the PS2
-  compilers in `tools/cc/` are 32-bit Linux programs.
-* Those compilers **can't run from the Windows drive**, so every build command goes through `wsl-build.sh`.
-  It copies this folder to `~/kh1-decomp-build` inside WSL, runs the command there, and copies the generated
-  `asm/` folder back here so you can read it. Run it like this (one line):
-
-  ```
-  wsl -e bash -c "cd /mnt/c/Users/you/psp-learning/kh1-study/kh1-decomp && bash wsl-build.sh ninja"
-  ```
-
-  Replace `ninja` with the command you need (`python3 diff.py ...`). Don't use `&&` outside the quotes
-  (PowerShell 5.1 has none). Edit files here only; the WSL copy is overwritten on every run.
-* Files use Linux line endings (LF). Keep them that way when you edit.
-* First-time setup is done by the owner double-clicking
-  `C:\Users\you\psp-learning\kh1-study\launchers\Set up KH1 decompile build.cmd`. If the build says
-  `build.ninja` is missing, ask the owner to run it. Don't install packages yourself.
-* Your context is 64k tokens. Don't read whole large files. Use grep, and read only the function you're
-  working on plus the lines around it.
-
-### Which game version: work on EU
-
-The owner's disc is the **European** release, `SCES_509.67`, and it's in this folder. This copy of the project
-builds it (version `eu`; upstream only has `jp` and `fm`). **Work against `eu`** unless the owner says otherwise:
-
-* configure once per session if `build.ninja` is missing or was made for another version:
-  `bash wsl-build.sh python3 configure.py -v eu`
-* build: `bash wsl-build.sh ninja` (it must end with `build/eu/SCES_509.67.rom: OK`)
-* compare one function: `KH_VERSION=eu bash wsl-build.sh python3 diff.py --format plain <function>`
-
-EU is the Japanese code with small edits, at different addresses. The JP names are kept: `func_00112190` is
-the JP address, and `config/eu/jp_names.txt` says where it is in EU (0x112408). So a C function that matches
-EU almost always matches JP too. 267 of the 275 game C files build for EU; `eu-notes/README.md` has the details.
-
-Three kinds of EU-only code in the C files (don't remove these markers):
+## Commands (PowerShell; run them from the checkout folder; builds take 10-60 s)
 
 ```
-#ifdef VERSION_EU                  a function whose EU code differs from JP's: EU builds it from EU's assembly,
-void func_00120F78(...);           JP keeps its C. To match it for EU, replace the INCLUDE_ASM line inside
-INCLUDE_ASM("...", func_00120F78); the #ifdef with C for EU (keep the #else part as it is).
-#else
-...JP's C...
-#endif
-
-#ifdef VERSION_EU                  a function only EU has. Match it the normal way, inside the #ifdef.
-INCLUDE_ASM("...", eu_func_00128750);
-#endif
-
-#ifndef VERSION_EU                 a function EU doesn't have. Leave it alone.
-...
-#endif
+wsl -e bash ./agent-tools.sh build                         # last line must be: build/fm/SLPS_251.98.rom: OK
+wsl -e bash ./agent-tools.sh list xhumungus                # functions left in the file, smallest first (bytes, name)
+wsl -e bash ./agent-tools.sh asm xhumungus func_001D5E48   # its assembly
+wsl -e bash ./agent-tools.sh m2c xhumungus func_001D5E48   # a first draft of C
+wsl -e bash ./agent-tools.sh diff func_001D5E48 60         # original (left) vs yours (right), 60 lines
+git diff --stat                                            # before committing: only your one file
+git add src/xhumungus.c
+git commit -m "Match func_001D5E48 (xhumungus)"
 ```
 
-If the Japanese program file (`SLPS_251.05`) appears later, `configure.py -v jp` builds JP the same way.
+If the build says `build.ninja` is missing or the toolchain changed, run `wsl -e bash ./agent-tools.sh configure`
+once (about a minute).
 
-## How the code is laid out
+## The loop
 
-* `src/*.c`: one file per original module (`xblade.c`, `xkingdom.c`...). `src/lib/` is Sony's libraries.
-* A function not done yet is one line:
-  `INCLUDE_ASM("asm/nonmatchings/xblade", func_00112168);`
-  Its assembly is in `asm/nonmatchings/xblade/func_00112168.s` (generated by `configure.py`; not in git).
-* Functions already in C sit between those lines. Names like `func_00112168` and `D_002B85F8` are the
-  JP address of the thing; give nothing a new name unless you're sure what it is.
-* Types are in `include/` (`s32`, `u8`, `UNK_TYPE`...). The compiler is ee-gcc 2.96 at `-O2`-style
-  settings (see `COMMON_COMPILE_FLAGS` in `configure.py`); write C the way a 2001 programmer would.
+1. `list` the file; take the smallest function not in your notes' give-up list. Skip functions full of VU0
+   instructions (`vadd`, `vmul`, `qmtc2`, `vcallms`, `sqc2`).
+2. `asm` it, then `m2c` it.
+3. Replace its `INCLUDE_ASM("...", name);` line with your C. Use the file's existing types, overlay structs and
+   prototypes (look at how nearby matched functions are written; xhumungus has many very similar ones). Put any
+   new prototype near the top of the file.
+4. `build`. OK: go to 6. Compile error: fix. FAILED: `diff` and adjust (table below and MATCHING.md).
+5. After about 6 failed builds: `git checkout -- src/<file>.c`, add a line to `notes/q1.md` (function, what it
+   does, your closest C, what still differs), and take the next function.
+6. `git diff --stat` (only your file), `git add`, `git commit -m "Match <func> (<file>)"`. Tell the owner in one
+   sentence what the function does.
 
-## Matching one function
+| The diff shows | Try |
+|---|---|
+| two `li` swapped, or `movz` vs `movn` | flip the condition or swap the ternary arms |
+| same instructions, different registers | reorder declarations; reuse a variable; add a prototype for the called function |
+| stores in a different order | the last store usually comes first; permute the statements |
+| original reloads a value after a store | read it through a union, or type the field `s32` (xhumungus is a strict-aliasing file) |
+| `j` (tail call) where the original has `jal` and returns | `do { f(); } while (0);` around the call, or return `s32` |
+| `dsll32`/`dsra32` on a u64 bit test | `(s32)(x >> n) & 1` |
 
-1. **Pick a small one.** List a file's remaining functions and their sizes:
+## Session length
 
-   ```
-   wsl -e bash -c "cd /mnt/c/Users/you/psp-learning/kh1-study/kh1-decomp && wc -l asm/nonmatchings/xblade/*.s | sort -n | head -20"
-   ```
-
-   Start with the shortest (under ~40 lines). Skip any that use VU0 macro instructions (`vadd`,
-   `vmul`, `qmfc2`...), MMI instructions (`pextlw`, `paddw`...) or `ctc2`/`cfc2`; those are hard.
-2. **Read the assembly** for that one function. Work out its arguments (`$a0`–`$a3`, floats in `$f12`,
-   `$f14`), what it reads and writes (`D_xxxxxxxx` globals), what it calls (`jal func_xxxxxxxx`), and what it
-   returns (`$v0`, or `$f0` for a float).
-3. **Look at the neighbours.** Find how other C in the same file calls this function or uses the same globals
-   (grep the name across `src/` and `include/`), and reuse their types and prototypes.
-4. **Write the C.** Replace the `INCLUDE_ASM(...)` line with the function. If you need a prototype for
-   something it calls, add it near the top of the file like the existing ones.
-5. **Build:** run `ninja` through `wsl-build.sh`.
-   * The last step prints `OK` from `sha1sum`: **it matches.** Go to step 7.
-   * A compile error: fix it.
-   * The checksum fails: compare with the original:
-
-     ```
-     wsl -e bash -c "cd /mnt/c/Users/you/psp-learning/kh1-study/kh1-decomp && KH_VERSION=eu bash wsl-build.sh python3 diff.py -m --format plain func_00112168"
-     ```
-
-     Lines marked as different show where your C compiles differently. Common fixes: argument or variable
-     types (`s32` vs `u32`, `s16`, pointers), order of statements, `if/else` vs early return, a temporary
-     variable, a `do { } while` loop instead of `for`, `register` hints, casting.
-6. **Give up cleanly** after about 8 attempts without progress: put the `INCLUDE_ASM` line back exactly as
-   it was (`git diff` should show nothing for that function), and add a line to `NOTES-agent.md`: the
-   function, what it seems to do, your closest C (in a code block), and what still differs.
-7. **Commit the match** (local only, never pushed):
-
-   ```
-   git add src/<file>.c
-   git commit -m "Match func_00112168 (xblade)"
-   ```
-
-   Then tell the owner in a few plain sentences what the function does.
-
-## Study notes
-
-The owner studies how the game animates characters. If you meet code that plays animations, blends them, or
-solves the skeleton (joints, matrices, IK), note the function names and what they do in `NOTES-agent.md`
-under "Animation". The owner's notes on the file formats are in `..\kh1anim\FORMAT.md` and
-`..\kh1anim\TECHNICAL_RUNDOWN.md`. Read them for context, and ask before changing them. Only notes: no
-converters or exporters (rule 4).
-
-## When you're done with a session
-
-Say how many functions you matched, which ones, which you gave up on, and anything the owner needs to do.
+After about 10 functions (or when your context is getting full), commit your notes file
+(`git add notes/q1.md`, `git commit -m "q1 notes"`) and stop. Tell the owner: how many matched, which, which you
+gave up on. The owner starts a fresh session to continue, and asks Claude to merge `fm-q1` into `fm`.
