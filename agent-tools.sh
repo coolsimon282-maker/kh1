@@ -10,6 +10,7 @@
 #   diff <func> [lines]      build, then compare the function with the original (default 120 lines)
 #   near <file> <func> [n]   the n lines (default 30) before and after the function in src/<file>.c
 #   put <file> <func> <cfile>  replace the function's INCLUDE_ASM line in src/<file>.c with the C in <cfile>
+#                            (again after a failed try: it starts from the last commit of the file)
 #                            (so big files like xhumungus.c never need opening; <cfile> e.g. qwen/work.c)
 cd "$(dirname "$0")"
 case "$1" in
@@ -22,11 +23,18 @@ case "$1" in
   put)
     [ -f "$4" ] || { echo "no file $4"; exit 1; }
     python3 - "$2" "$3" "$4" <<'PY'
-import re, sys
+import re, subprocess, sys
 f, fn, cfile = 'src/%s.c' % sys.argv[1], sys.argv[2], sys.argv[3]
 s = open(f, encoding='utf-8').read()
 pat = re.compile(r'^INCLUDE_ASM\("[^"]+",\s*%s\);$' % re.escape(fn), re.M)
 hits = pat.findall(s)
+if len(hits) == 0:
+    # an earlier attempt is already in place: start again from the file as last committed (every match is
+    # committed straight away, so the only uncommitted change in it is this function's attempt)
+    base = subprocess.run(['git', 'show', 'HEAD:' + f], capture_output=True, text=True).stdout
+    if len(pat.findall(base)) == 1:
+        s, hits = base, pat.findall(base)
+        print('(an earlier attempt was in place: started again from the last commit of %s)' % f)
 if len(hits) != 1:
     sys.exit('expected exactly one INCLUDE_ASM line for %s in %s, found %d' % (fn, f, len(hits)))
 c = open(cfile, encoding='utf-8').read().replace('\r\n', '\n').rstrip('\n')
