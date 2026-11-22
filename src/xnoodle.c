@@ -11,7 +11,16 @@ sceVu0FVECTOR D_002B3A30 = {0.0f, 0.0f, 1.0f, 1.0f};
 sceVu0FVECTOR D_002B3A40 = {0.0f, 1.0f, 0.0f, 1.0f};
 s32 D_002B3A50[36] = {0};
 s32 D_002B3AE0[4] = {0};
-s32 D_002B3AF0[8] = {0};
+typedef struct {
+    /* 0x0 */ void (*unk_0)(IOReadTask*);
+    /* 0x4 */ IOReadTask* unk_4;
+    /* 0x8 */ s32 unk_8;
+} XNoodleSlot; // size = 0xC
+
+union {
+    s32 raw[8];
+    XNoodleSlot slot[2];
+} D_002B3AF0 = {{0}};
 s32 D_002B3B10[0x1000] = {0};
 
 extern sceGsLoadImage D_002B8700;
@@ -31,12 +40,6 @@ s32 D_0048ECE0;
 u_long128* D_0048ED00;
 
 extern volatile s32 D_00495258;
-
-typedef struct {
-    /* 0x0 */ void (*unk_0)(IOReadTask*);
-    /* 0x4 */ IOReadTask* unk_4;
-    /* 0x8 */ s32 unk_8;
-} XNoodleSlot; // size = 0xC
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A1F8);
 
@@ -139,14 +142,26 @@ void* func_0010BE10(void) {
     return func_0011ED30(180200, func_0010BDA8);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BE60);
+void func_0010BE60(void) {
+    s32 i;
+
+    while (1) {
+        WaitSema(D_0048ECE0);
+        for (i = 0; i < 2; i++) {
+            if (D_002B3AF0.slot[i].unk_0 != 0) {
+                D_002B3AF0.slot[i].unk_0(D_002B3AF0.slot[i].unk_4);
+                D_002B3AF0.slot[i].unk_8 = 1;
+            }
+        }
+    }
+}
 
 void func_0010BEE8(void) {
     WaitSema(D_0048ECE0);
 }
 
 void func_0010BF08(void (*arg0)(IOReadTask*), IOReadTask* arg1) {
-    XNoodleSlot* slot = (XNoodleSlot*)D_002B3AF0;
+    XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
 
     for (i = 0; i < 2; i++, slot++) {
@@ -160,7 +175,7 @@ void func_0010BF08(void (*arg0)(IOReadTask*), IOReadTask* arg1) {
 }
 
 void func_0010BF50(void (*arg0)(IOReadTask*)) {
-    XNoodleSlot* slot = (XNoodleSlot*)D_002B3AF0;
+    XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
 
     for (i = 0; i < 2; i++, slot++) {
@@ -176,7 +191,7 @@ void func_0010BF50(void (*arg0)(IOReadTask*)) {
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BF98);
 
 void func_0010BFD8(void) {
-    XNoodleSlot* slot = (XNoodleSlot*)D_002B3AF0;
+    XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
 
     for (i = 0; i < 2; i++, slot++) {
