@@ -10,7 +10,7 @@ typedef struct {
     s32 unk_04;
     s32 unk_08;
 } Seg1C7A8Ent0C;
-extern s32 D_002BBDE0;
+extern volatile s32 D_002BBDE0;
 extern s32 D_002C1310[];
 extern Seg1C7A8Pair D_004E39F8[];
 extern s32 D_004E344C;
@@ -250,7 +250,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DBA0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DC28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DC98);
+void func_0011DC98(u8* a0) {
+    s32 i;
+    if (D_002BBDE0 != 3) {
+        for (i = 0; i < 4; i++) {
+            if (*(s32*)a0 == D_002C1310[i]) a0[0x14] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DCF0);
 
@@ -258,7 +265,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DDD0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DE90);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E1C8);
+void func_0011E1C8(void* a0) {
+    s32 i;
+    i = 0;
+    do {
+        if (D_004E39F8[i].unk_00 == 0) break;
+        i++;
+    } while (i < 4);
+    D_004E39F8[i].unk_00 = (s32)a0;
+    D_004E39F8[i].unk_04 = 2;
+}
 
 void func_0011E220(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001EDD20(arg0, arg1, arg2, arg3);
