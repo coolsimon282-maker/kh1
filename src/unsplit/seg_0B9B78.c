@@ -2,6 +2,9 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
+extern s32 D_0037A148;
+extern s32 D_0037A150;
+extern s32 D_0037A154;
 s32 func_001BB740(void);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001B9B78);
@@ -633,7 +636,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEFC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF048);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF098);
+void func_001BF098(u8 *a0, u8 *a1) {
+    *(f32 *)(a0 + 0x0) = *(f32 *)(a1 + 0x0);
+    *(f32 *)(a0 + 0x4) = *(f32 *)(a1 + 0x4);
+    *(f32 *)(a0 + 0x8) = *(f32 *)(a1 + 0x8);
+    *(f32 *)(a0 + 0x10) = *(f32 *)(a1 + 0x10);
+    *(f32 *)(a0 + 0x14) = *(f32 *)(a1 + 0x14);
+    *(f32 *)(a0 + 0x18) = *(f32 *)(a1 + 0x18);
+    *(f32 *)(a0 + 0x20) = *(f32 *)(a1 + 0x20);
+    *(f32 *)(a0 + 0x24) = *(f32 *)(a1 + 0x24);
+    *(f32 *)(a0 + 0x28) = *(f32 *)(a1 + 0x28);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF0E8);
 
