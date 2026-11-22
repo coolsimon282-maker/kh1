@@ -59,10 +59,14 @@ STRICT_ALIASING_FILES = [
     "xturtle.c",
 ]
 
+# Files built without -g. With -g the assembler never fills a call's empty delay slot (around soft-float calls
+# such as dpdiv/atan); these files have them filled. (Making no -g the default broke the build in xbeginning,
+# 22 Nov 01:40, so files are added one by one, each when a matched function shows it.)
 NO_G_FILES = [
     "xblade.c",
     "gumi.c",
-    "pppKeMvYpEff.c",  # a2: its C matches only without -g (gas leaves the dpdiv/dptoli delay slots empty with -g)
+    "pppKeMvYpEff.c",  # a2: its C matches only without -g
+    "draw.c",          # a4: func_001AADC8 (atan2) matches only without -g
 ]
 
 
@@ -277,10 +281,7 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             ):
                 build(entry.object_path, entry.src_paths, "libcc", implicit=implicit)
             else:
-                if entry.src_paths[0].name in NO_G_FILES:
-                    g = ""
-                else:
-                    g = "-g"
+                g = "" if entry.src_paths[0].name in NO_G_FILES else "-g"
                 # Most of the game was built without strict aliasing (values are reloaded after stores of other
                 # types); these files were built with it (matched code changes if the flag is added).
                 cflags = "" if entry.src_paths[0].name in STRICT_ALIASING_FILES else "-fno-strict-aliasing"
