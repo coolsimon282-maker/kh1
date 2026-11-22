@@ -48,4 +48,61 @@ void pppRyjMegaBirthModelDes(pppPObject* pobj, pppCtrlTable* ctbl) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthModel", func_001A2F20);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x31];
+    /* 0x31 */ u8 uSel;
+    /* 0x32 */ u8 vSel;
+    /* 0x33 */ u8 uOfs;
+} PRyjMegaBirthModelUv;
+
+// texture coordinates of the 8 corners: width/height picked by uSel/vSel, the u offset by uOfs
+void func_001A2F20(PRyjMegaBirthModelUv* p, sceVu0FVECTOR* uv) {
+    f32 w;
+    f32 h;
+    f32 u;
+
+    switch (p->uSel) {
+    case 1:
+        w = 0.49f;
+        break;
+    case 2:
+        w = 0.24f;
+        break;
+    case 0:
+    default:
+        w = 0.99f;
+        break;
+    }
+    switch (p->vSel) {
+    case 1:
+        h = 0.49f;
+        break;
+    case 2:
+        h = 0.24f;
+        break;
+    case 0:
+    default:
+        h = 0.99f;
+        break;
+    }
+    switch (p->uOfs) {
+    case 1:
+        u = 0.25f;
+        break;
+    case 2:
+        u = 0.5f;
+        break;
+    case 3:
+        u = 0.75f;
+        break;
+    case 0:
+    default:
+        u = 0.0f;
+        break;
+    }
+    uv[0][0] = uv[1][0] = uv[6][0] = uv[7][0] = u + 0.01f;
+    uv[2][0] = uv[3][0] = uv[4][0] = uv[5][0] = u + w;
+    uv[1][1] = uv[3][1] = uv[5][1] = uv[7][1] = h;
+    uv[0][1] = uv[2][1] = uv[4][1] = uv[6][1] = 0.01f;
+    uv[0][2] = uv[1][2] = uv[2][2] = uv[3][2] = uv[4][2] = uv[5][2] = uv[6][2] = uv[7][2] = 1.0f;
+}
