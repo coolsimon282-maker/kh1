@@ -1,13 +1,42 @@
 #include "ppp/pppKeLns.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsLpT", pppKeLnsLpTDraw);
-
 typedef struct {
     /* 0x00 */ KeLnsLp lp;
     /* 0xB0 */ u8 unk_B0[0x10];
     /* 0xC0 */ u8 unk_C0;
     /* 0xC1 */ u8 unk_C1;
 } KeLnsLpT;
+
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ u8 unk_04[0xA];
+    /* 0x0E */ u8 rx;
+    /* 0x0F */ u8 ry;
+    /* 0x10 */ u8 mbk;
+} PKeLnsLpT;
+
+void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLpT* p, pppCtrlTable* ctbl);
+void func_00194350(KeLnsLpT* lp, s32 arg1, s32 frame);
+
+void pppKeLnsLpTDraw(pppPObject* pobj, PKeLnsLpT* p, pppCtrlTable* ctbl) {
+    KeLnsLpT* lp;
+    sceVu0FVECTOR t;
+
+    pppKeLnsLpDraw(pobj, p, ctbl);
+    lp = (KeLnsLpT*)&pobj->val[ctbl->useVal[0]];
+    if (p->cdt.time == pobj->time) {
+        lp->unk_C0 = p->rx * 8;
+        lp->unk_C1 = p->ry * 4;
+        lp->lp.mbk = p->mbk;
+    }
+    t[0] = 0.0f;
+    t[1] = 0.0f;
+    t[2] = 0.0f;
+    t[3] = 1.0f;
+    sceVu0ApplyMatrix(t, ppvPObj.next->dmat, t);
+    sceVu0ScaleVector((f32*)lp->unk_B0, t, 1.0f / t[3]);
+    func_00194350(lp, 0, 0);
+}
 
 extern u8 D_00372708; // next lens index
 
