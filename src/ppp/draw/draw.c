@@ -349,9 +349,73 @@ void ops_init_draw_work(void) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_gs2_init);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_otz_init);
+// stores a zero qword with `sq $0` (gcc itself always goes through a register)
+#define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
 
+// a word store gcc can't move (DMA tags are written this way, right after DRAW_SQ_ZERO)
+#define DRAW_SW(dst, val) __asm__ volatile("sw %1,%0" : "=m"(dst) : "r"(val))
+
+// ordering-table entry: a DMA "next" tag; `last` is the last packet linked into it
+typedef struct {
+    /* 0x0 */ u32 tag;
+    /* 0x4 */ u32* next;
+    /* 0x8 */ u32* last;
+    /* 0xC */ u32 pad;
+} DrawOtEnt;
+
+// links packet p (qwc qwords) at priority pri (clamped to 0..max) into ordering table ot
+#define DRAW_OT_INSERT(ot, max, p, qwc, pri)       \
+    {                                              \
+        DrawOtEnt* e;                              \
+        u32* last;                                 \
+        u32* t;                                    \
+                                                   \
+        DRAW_SQ_ZERO(p);                           \
+        DRAW_SW((p)[0], ((qwc) - 1) | 0x20000000); \
+        if (pri < 1) {                             \
+            pri = 0;                               \
+        }                                          \
+        if (pri > (max)) {                         \
+            pri = (max);                           \
+        }                                          \
+        e = &(ot)[pri];                            \
+        last = e->last;                            \
+        t = (u32*)last[1];                         \
+        last[1] = (u32)(p);                        \
+        (p)[1] = (u32)t;                           \
+        e->last = (p);                             \
+    }
+
+// stores a qword through a pointer register
+#define DRAW_SQ(ptr, val) __asm__ volatile("sq %1,0(%0)" : : "r"(ptr), "r"(val) : "memory")
+
+extern u_long128 D_0061E800[];
 extern u_long128 D_0061E8B0[];
+extern u8 D_0061EEA0[];
+
+void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3);
+void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3);
+
+// the three ordering tables (16 + 256 + 16 entries at D_0061EEA0) chained by "next" tags and closed by an end
+// tag, then the two fixed packets linked in
+void op_otz_init(void) {
+    DrawOtEnt* p;
+    s32 i;
+    u_long128 tag;
+
+    p = (DrawOtEnt*)D_0061EEA0;
+    tag = 0x20000000;
+    for (i = 0; i < 0x120; i++) {
+        DRAW_SQ(p, tag);
+        p->next = (u32*)(p + 1);
+        p->last = (u32*)p;
+        p++;
+    }
+    DRAW_SQ(p, tag);
+    p->tag = 0x70000000;
+    func_001AC758((u32*)D_0061E800, 7, 0, 0);
+    func_001AC7A8((u32*)D_0061E8B0, 7, 15, 0);
+}
 
 // sends the packet at D_0061E8B0 on its own (its first tag replaced by an end tag with 6 qwords)
 void func_001AC0A8(void) {
@@ -482,8 +546,6 @@ void func_001AC4C8(DrawUnkAC4C8* arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC4F0);
 
-extern u8 D_0061EEA0[];
-
 void op_ot_draw(void) {
     u8* ot = D_0061EEA0;
 
@@ -493,43 +555,6 @@ void op_ot_draw(void) {
     sceDmaSend(oa_dmagif, ot);
     sceGsSyncPath(0, 0);
 }
-
-// stores a zero qword with `sq $0` (gcc itself always goes through a register)
-#define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
-
-// a word store gcc can't move (DMA tags are written this way, right after DRAW_SQ_ZERO)
-#define DRAW_SW(dst, val) __asm__ volatile("sw %1,%0" : "=m"(dst) : "r"(val))
-
-// ordering-table entry: a DMA "next" tag; `last` is the last packet linked into it
-typedef struct {
-    /* 0x0 */ u32 tag;
-    /* 0x4 */ u32* next;
-    /* 0x8 */ u32* last;
-    /* 0xC */ u32 pad;
-} DrawOtEnt;
-
-// links packet p (qwc qwords) at priority pri (clamped to 0..max) into ordering table ot
-#define DRAW_OT_INSERT(ot, max, p, qwc, pri)       \
-    {                                              \
-        DrawOtEnt* e;                              \
-        u32* last;                                 \
-        u32* t;                                    \
-                                                   \
-        DRAW_SQ_ZERO(p);                           \
-        DRAW_SW((p)[0], ((qwc) - 1) | 0x20000000); \
-        if (pri < 1) {                             \
-            pri = 0;                               \
-        }                                          \
-        if (pri > (max)) {                         \
-            pri = (max);                           \
-        }                                          \
-        e = &(ot)[pri];                            \
-        last = e->last;                            \
-        t = (u32*)last[1];                         \
-        last[1] = (u32)(p);                        \
-        (p)[1] = (u32)t;                           \
-        e->last = (p);                             \
-    }
 
 // ordering table 0 (16 priorities)
 void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3) {
