@@ -1,8 +1,145 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMatrixNoRot", pppRyjMatrixNoRotCalc);
+extern sceVu0FMATRIX D_00615EB0;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMatrixNoRot", func_0019B2A0);
+// v.xyz *= s (hand-written VU0 macro code)
+static inline void vu0ScaleXYZ(f32* v, f32 s) {
+    __asm__ volatile(
+        "qmtc2.ni %1, $vf9\n"
+        "lqc2 $vf10, 0x0(%0)\n"
+        "vmulx.xyz $vf10, $vf10, $vf9x\n"
+        "sqc2 $vf10, 0x0(%0)\n"
+        : : "r"(v), "r"(s));
+}
+
+void pppRyjMatrixNoRotCalc(pppPObject* pobj, void* p, pppCtrlTable* ctbl) {
+    f32* pos = (f32*)&pobj->val[ctbl->useVal[0]];
+    f32* scl = (f32*)&pobj->val[ctbl->useVal[2]];
+
+    sceVu0InversMatrix(ppvPObj.next->cmat, D_00615EB0);
+    vu0ScaleXYZ(ppvPObj.next->cmat[0], scl[0]);
+    vu0ScaleXYZ(ppvPObj.next->cmat[1], scl[1]);
+    vu0ScaleXYZ(ppvPObj.next->cmat[2], scl[2]);
+    ppvPObj.next->cmat[3][0] = pos[0];
+    ppvPObj.next->cmat[3][1] = pos[1];
+    ppvPObj.next->cmat[3][2] = pos[2];
+}
+
+extern sceVu0FVECTOR D_00372710;
+
+// hand-written VU0 code (whole body)
+void func_0019B2A0(sceVu0FVECTOR* a, s32 n, sceVu0FVECTOR* out) {
+    sceVu0FVECTOR tmp[32];
+
+    __asm__ volatile(
+        ".set noreorder\n"
+        "addi $9, $5, -0x1\n"
+        "addi $10, $5, -0x2\n"
+        "lqc2 $vf1, 0x0(%0)\n"
+        "sqc2 $vf0, 0x0($6)\n"
+        "sll $11, $9, 4\n"
+        "add $11, $11, $6\n"
+        "sqc2 $vf0, 0x0($11)\n"
+        "daddu $8, $9, $0\n"
+        "daddu $11, $0, $0\n"
+        "1:\n"
+        "blez $8, 2f\n"
+        "addi $8, $8, -0x1\n"
+        "sll $12, $11, 4\n"
+        "addi $13, $12, 0x10\n"
+        "add $14, $12, $4\n"
+        "add $15, $13, $4\n"
+        "add $16, $13, $29\n"
+        "lqc2 $vf10, 0x0($14)\n"
+        "lqc2 $vf11, 0x0($15)\n"
+        "vsub.xyzw $vf10, $vf11, $vf10\n"
+        "sqc2 $vf10, 0x0($16)\n"
+        "b 1b\n"
+        "addi $11, $11, 0x1\n"
+        "2:\n"
+        "lqc2 $vf10, 0x20($29)\n"
+        "lqc2 $vf11, 0x10($29)\n"
+        "lqc2 $vf12, 0x0($6)\n"
+        "vsub.xyzw $vf10, $vf10, $vf11\n"
+        "vsub.xyzw $vf10, $vf10, $vf12\n"
+        "sqc2 $vf10, 0x10($6)\n"
+        "vaddx.xyzw $vf11, $vf0, $vf1x\n"
+        "sqc2 $vf11, 0x10($29)\n"
+        "daddu $8, $10, $0\n"
+        "addi $8, $8, -0x1\n"
+        "addi $11, $0, 0x1\n"
+        "3:\n"
+        "blez $8, 4f\n"
+        "addi $8, $8, -0x1\n"
+        "sll $12, $11, 4\n"
+        "addi $13, $12, 0x10\n"
+        "addi $14, $13, 0x10\n"
+        "add $15, $12, $29\n"
+        "add $16, $13, $29\n"
+        "add $17, $14, $29\n"
+        "add $18, $13, $6\n"
+        "add $19, $12, $6\n"
+        "lqc2 $vf10, 0x0($15)\n"
+        "lqc2 $vf11, 0x0($16)\n"
+        "lqc2 $vf12, 0x0($17)\n"
+        "lqc2 $vf13, 0x0($19)\n"
+        "vdiv Q, $vf0w, $vf10x\n"
+        "vwaitq\n"
+        "vaddq.x $vf15, $vf0, Q\n"
+        "vdiv Q, $vf0w, $vf10y\n"
+        "vwaitq\n"
+        "vaddq.y $vf15, $vf0, Q\n"
+        "vdiv Q, $vf0w, $vf10z\n"
+        "vwaitq\n"
+        "vaddq.z $vf15, $vf0, Q\n"
+        "vsub.xyzw $vf16, $vf12, $vf11\n"
+        "vmul.xyzw $vf17, $vf13, $vf15\n"
+        "vsub.xyzw $vf17, $vf16, $vf17\n"
+        "sqc2 $vf17, 0x0($18)\n"
+        "vmuly.xyzw $vf18, $vf15, $vf1y\n"
+        "vaddx.xyzw $vf18, $vf18, $vf1x\n"
+        "sqc2 $vf18, 0x0($16)\n"
+        "b 3b\n"
+        "addi $11, $11, 0x1\n"
+        "4:\n"
+        "sll $11, $9, 4\n"
+        "add $11, $11, $6\n"
+        "sll $12, $10, 4\n"
+        "add $12, $12, $6\n"
+        "lqc2 $vf10, 0x0($11)\n"
+        "lqc2 $vf11, 0x0($12)\n"
+        "vsub.xyzw $vf11, $vf11, $vf10\n"
+        "sqc2 $vf11, 0x0($12)\n"
+        "daddu $11, $10, $0\n"
+        "5:\n"
+        "blezl $11, 6f\n"
+        "nop\n"
+        "sll $12, $11, 4\n"
+        "addi $13, $12, 0x10\n"
+        "add $15, $12, $29\n"
+        "add $16, $12, $6\n"
+        "add $17, $13, $6\n"
+        "lqc2 $vf10, 0x0($15)\n"
+        "lqc2 $vf11, 0x0($16)\n"
+        "lqc2 $vf12, 0x0($17)\n"
+        "vsub.xyzw $vf11, $vf11, $vf12\n"
+        "vdiv Q, $vf11x, $vf10x\n"
+        "vwaitq\n"
+        "vaddq.x $vf15, $vf0, Q\n"
+        "vdiv Q, $vf11y, $vf10y\n"
+        "vwaitq\n"
+        "vaddq.y $vf15, $vf0, Q\n"
+        "vdiv Q, $vf11z, $vf10z\n"
+        "vwaitq\n"
+        "vaddq.z $vf15, $vf0, Q\n"
+        "sqc2 $vf15, 0x0($16)\n"
+        "b 5b\n"
+        "addi $11, $11, -0x1\n"
+        "6:\n"
+        ".set reorder\n"
+        : : "r"(D_00372710)
+        : "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$16", "$17", "$18", "$19", "memory");
+}
 
 extern sceVu0FVECTOR D_00372720;
 void func_0019B458(sceVu0FVECTOR dst, sceVu0FVECTOR* a, sceVu0FVECTOR* b, f32 t) {

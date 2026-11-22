@@ -53,4 +53,69 @@ void pppKeBornRnd6Con(pppPObject* pobj, pppCtrlTable* ctbl) {
     v->unk_02 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeBornRnd6", func_0018FBB0);
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ u8 count;
+    /* 0x05 */ char pad_05[3];
+    /* 0x08 */ s32 pdtn;
+    /* 0x0C */ s32 valoff;
+} PKeBornRnd6Line;
+
+typedef struct {
+    /* 0x00 */ f32* prev;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ f32 step;
+} VKeBornRnd6Line;
+
+pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+void func_001AB0F0(f32*, f32*);
+void func_001AB168(f32*, f32*, f32*);
+
+void func_0018FBB0(pppPObject* parent, PKeBornRnd6Line* p, pppCtrlTable* ctbl) {
+    pppPObject* child;
+    pppPDataVal* pdv;
+    f32* pos;
+    VKeBornRnd6Line* v;
+
+    {
+        pppPDataVal* d = &((pppPDataVal*)ppvMng->unk_80)[p->pdtn];
+
+        child = NULL;
+        if (d != NULL) {
+            child = func_00183C10(ppvMng, d);
+            child->ppobj = parent;
+        }
+    }
+    pos = (f32*)&child->val[p->valoff];
+    func_001AB0F0(pos, (f32*)&parent->val[ctbl->useVal[1]]);
+    v = (VKeBornRnd6Line*)&parent->val[ctbl->useVal[0]];
+    if (v->prev == NULL) {
+        v->step = 1.0f / (p->count + 1);
+    } else {
+        sceVu0FVECTOR a;
+        sceVu0FVECTOR d;
+        sceVu0FVECTOR s;
+        f32 n;
+        f32 step;
+
+        sceVu0CopyVector(a, v->prev);
+        sceVu0SubVector(d, pos, a);
+        n = p->count;
+        step = v->step;
+        while (n > 0.0f) {
+            f32* q;
+
+            child = NULL;
+            pdv = &((pppPDataVal*)ppvMng->unk_80)[p->pdtn];
+            if (pdv != NULL) {
+                child = func_00183C10(ppvMng, pdv);
+                child->ppobj = parent;
+            }
+            q = (f32*)&child->val[p->valoff];
+            sceVu0ScaleVector(s, d, step * n);
+            n -= 1.0f;
+            func_001AB168(q, a, s);
+        }
+    }
+    v->prev = pos;
+}

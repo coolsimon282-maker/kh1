@@ -467,11 +467,74 @@ s32 func_00112D88(void) {
     return 1000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112DE0);
+void func_001113A8(s32, sceVu0FVECTOR);
+void func_00104FD0(s32, sceVu0FVECTOR);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112EE8);
+void func_00112DE0(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[4];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[5];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[6];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[7];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(0, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(0, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112FE8);
+void func_00112EE8(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[8];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[9];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[10];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[11];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(1, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(1, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
+
+void func_00112FE8(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[12];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[13];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[14];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[15];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(2, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(2, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
 extern s32 D_002B92F4;
 
 // void func_00104DC8(s32, sceVu0FVECTOR);
@@ -519,43 +582,49 @@ void func_00113130(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113170);
-s32 func_00113170();
-// s32 func_00113170(void) {
-//     if (D_002B2CC4 != 0) {
-//         return 0;
-//     }
-//     D_002B8354 = 1;
-//     func_00105660();
-//     func_00180CE0();
-//     func_00132450();
-//     D_002B933C = 1;
+// func_00105860 (returns a value) is called without a prototype: one more declaration here changes
+// func_00114B50's code.
+void func_00132550();
+void func_00175F58();
+void func_001113E8();
+extern s32 D_0029B410;
+extern s32 D_0029B414;
 
-//     if (D_002979E0 != 0 && D_002979E4 != 0) {
-//         func_00177470(D_002979E0, D_002979E4, D_002B8680 + 1, 100000);
-//     }
+s32 func_00113170(void) {
+    if (D_002B2CC4 != 0) {
+        return 0;
+    }
+    D_002B8354 = 1;
+    func_00105860();
+    func_00180CE0();
+    func_00132550();
+    D_002B933C = 1;
 
-//     func_001009A8();
-//     D_002C1EA8 &= ~0x4;
-//     D_002C1EA8 &= ~0x8000000;
-//     func_001C4FF0(D_002B91E0, 0);
-//     D_002B930C = 0;
-//     D_002B9310 = 0;
-//     D_002B9328 = 0;
-//     func_00114430();
-//     D_002BD8D8 = 0;
+    if (D_0029B410 != 0 && D_0029B414 != 0) {
+        func_00175F58(D_0029B410, D_0029B414, D_002B8680 + 1, 100000);
+    }
 
-//     if (D_002B8364 == 1 || D_002B29C4 == 1) {
-//         func_001113E8();
-//     }
+    func_001009A8();
+    D_002C1EA8 &= ~0x4;
+    D_002C1EA8 &= ~0x8000000;
+    func_001C4FF0(D_002B91E0, 0);
+    D_002B930C = 0;
+    D_002B9310 = 0;
+    D_002B9328 = 0;
+    func_00114430();
+    D_002BD8D8 = 0;
 
-//     D_002B8364 = 0;
-//     func_00111198();
-//     func_001116C8();
-//     func_001ED878(0);
-//     D_002B9314 = 0;
-//     return 4;
-// }
+    if (D_002B8364 == 1 || D_002B29C4 == 1) {
+        func_001113E8();
+    }
+
+    D_002B8364 = 0;
+    func_00111198();
+    func_001116C8();
+    func_001ED878(0);
+    D_002B9314 = 0;
+    return 4;
+}
 
 void* func_001132A0(void) {
     return func_0011ED30(49900, func_00113170);
@@ -900,7 +969,60 @@ void func_00113CA8(void) {
     D_002B9668 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113CB8);
+extern u32 D_00375BC0;
+extern s32 D_002B85C0;
+extern s32 D_002B860C;
+extern s32 D_002A6204;
+extern s32 D_002BD858;
+extern s32 D_002BD85C;
+// func_001336A0 is left without a prototype on purpose: with one more function declaration in this
+// file, func_00114B50 compiles differently (cse hashes symbol addresses).
+
+// include/xblade.h declares this `void func_00113CB8();` but it returns D_002B9668; define it under
+// another C name with the real symbol name.
+s32 func_00113CB8_s32(void) __asm__("func_00113CB8");
+
+s32 func_00113CB8_s32(void) {
+    s32 one;
+
+    if (D_004D2A60 == 0) {
+        one = 1;
+        D_002B9668 = 0;
+        if ((D_002C1EA8 & 1) == one) {
+            D_002B9668 = 2;
+        }
+        if (((D_002C1EA8 >> 4) & 1) == one) {
+            D_002B9668 = 2;
+        }
+        if (((D_00375BC0 >> 1) & 1) == one) {
+            D_002B9668 = one;
+        }
+        if (((D_00375BC0 >> 3) & 1) == one) {
+            D_002B9668 = 3;
+        }
+        if (D_002B966C == one) {
+            D_002B9668 = D_002B966C;
+        }
+        if (D_002BD858 != 0) {
+            D_002B9668 = 4;
+        }
+        if (D_002BD85C != 0) {
+            D_002B9668 = 5;
+        }
+        if (D_002BBDE0 == 5) {
+            D_002B9668 = 7;
+        }
+        if (func_001336A0() != 0) {
+            D_002B9668 = 2;
+        }
+        if (D_002B9668 == 0) {
+            if (D_002B85C0 != 0x80 || D_002B860C != 0 || D_002A6204 != 0) {
+                D_002B9668 = 1;
+            }
+        }
+    }
+    return D_002B9668;
+}
 
 void func_00113E18(void) {
     D_002C1EBC = 1;
@@ -1119,7 +1241,14 @@ void func_00114440(void) {
     func_0011C5C8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
+// include/xblade.h declares this `void func_00114480();`; it is built as returning a value (no tail call).
+s32 func_00114480_s32(void) __asm__("func_00114480");
+
+s32 func_00114480_s32(void) {
+    if (D_002BBDE0 == 3 && D_002B9660 != 0) {
+        func_00113660();
+    }
+}
 
 typedef struct {
     /* 0x00 */ u8 unk_00[0xD0];
