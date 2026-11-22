@@ -133,7 +133,9 @@ u32 func_001EF448(void) {
     return (func_001EF210() / 60) % 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF488);
+u32 func_001EF488(void) {
+    return (f32)(func_001EF210() % 60) * (100.0f / 60.0f);
+}
 
 #ifdef VERSION_FM
 void fm_func_001EE428(void) {
