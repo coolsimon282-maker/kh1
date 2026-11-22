@@ -199,7 +199,7 @@ void func_0010F4A8(u32 arg0) {
 }
 #endif
 
-void func_0010F6F0(void) {
+s32 func_0010F6F0(void) {
     D_004CF580 = D_002C1EB8.s32;
 }
 
@@ -251,7 +251,36 @@ void* func_0010FB68(void) {
     return func_0010FB38(D_002B8678, D_002B8680);
 }
 
+#ifdef VERSION_FM
+typedef struct {
+    u64 unk_00[14];
+} XTailorSave;
+extern XTailorSave D_002BCA00[2];
+extern XTailorSave D_002C5AD0[2];
+void func_0011F4B8(void);
+void func_001BA4A8(void);
+
+void func_0010FB90(void) {
+    s32 i;
+
+    func_0010F6F0();
+    if (D_004D2990) {
+        for (i = 0; i < 2; i++) {
+            D_002C5AD0[i] = D_002BCA00[i];
+        }
+    }
+    func_0011F4B8();
+    for (i = 0; i < 2; i++) {
+        D_002BCA00[i] = D_002C5AD0[i];
+    }
+    if (D_004D2990 != 0) {
+        func_001BA4A8();
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
+#endif
 
 void func_0010FCD0(void) {
     D_004D2990 = 0;
