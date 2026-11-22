@@ -5,7 +5,36 @@
 
 #include "libvu0.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", KeBornRnd2);
+s32 func_001AAF80(void);
+
+// calls func n times with vertices of the model taken from vsf entry vsfNo (random ones if rnd); *idx keeps the
+// position between calls
+void KeBornRnd2(pppPObject* pobj, void* p, void (*func)(pppPObject*, void*, pppSVECTOR*), u16* idx, s16 vsfNo,
+                u8 rnd, u8 n) {
+    pppVsfSt* vsf = &ppvEnv->lpVsf[vsfNo];
+    pppSVECTOR* vert = ppvPObj.next->lpvert;
+    s32 i;
+
+    if (vert == NULL) {
+        vert = ppvEnv->lpModel[(s16)vsf->modelNo].vert;
+    }
+    if (rnd) {
+        i = func_001AAF80() % (s16)vsf->indexN;
+    } else {
+        i = *idx;
+    }
+    while (n) {
+        func(pobj, p, &vert[(u16)vsf->index[i]]);
+        i++;
+        if (rnd) {
+            i = func_001AAF80() % (s16)vsf->indexN;
+        } else if (i >= (s16)vsf->indexN) {
+            i = 0;
+        }
+        n--;
+    }
+    *idx = i;
+}
 
 // reads the u16 at 0x12 of the shape data (a count; maybe its number of frames)
 void func_001A75B0(KeLnsFlr* flr, pppShapeSt* shp) {
