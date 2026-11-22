@@ -232,7 +232,21 @@ INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F4B8);
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F7C0);
 
+#ifdef VERSION_FM
+extern scePad2SocketParam D_002C5A88;
+extern u_long128 D_004E42C0;
+extern s32 D_004E44C0;
+
+void func_0011F8C0(void) {
+    s32* socket = &D_004E44C0;
+
+    sceDbcInit();
+    scePad2Init(0);
+    *socket = scePad2CreateSocket(&D_002C5A88, &D_004E42C0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F8C0);
+#endif
 // void func_0011F8C0(void) {
 //     sceDbcInit();
 //     scePad2Init(0);
