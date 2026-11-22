@@ -6,7 +6,11 @@ typedef struct {
     /* 0x44*/ f32 unk_44;
     /* 0x48*/ char unk_48[0x4];
     /* 0x4C*/ u16 unk_4C;
-    /* 0x4E*/ char unk_4E[0x10];
+    /* 0x4E*/ char unk_4E[0x6];
+    /* 0x54*/ s8 unk_54;
+    /* 0x55*/ char unk_55[0x4];
+    /* 0x59*/ u8 unk_59;
+    /* 0x5A*/ char unk_5A[0x4];
     /* 0x5E*/ u8 unk_5E;
     /* 0x5F*/ u8 unk_5F;
 } XToast;
@@ -200,7 +204,14 @@ XToaster* func_001235B8(XToaster* arg0, XToaster* p) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123620);
+XToaster* func_00123620(XToaster* p) {
+    while ((p = func_001234A0(p)) != NULL) {
+        if (p->unk_006 == 2 || p->unk_006 == 9 || p->unk_006 == 10 || ((s32)(XT_FLAGS(p) >> 37) & 3) == 2) {
+            return p;
+        }
+    }
+    return NULL;
+}
 
 s32 func_00123698(void) {
     s32 n = 0;
@@ -233,7 +244,20 @@ s32 func_00123730(XToaster* arg0) {
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123768);
+s32 func_00123768(XToaster* p) {
+    s32 i;
+    s32 m;
+    if (p->unk_134 == NULL || p->unk_134[6] == 0 || p->unk_006 == 2 || (*(u64*)p & 0x8048) != 0x8000) {
+        return 0;
+    }
+    for (i = 0; i < p->unk_134[6]; i++) {
+        m = 1 << i;
+        if (!(p->unk_3A8 & m)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 static inline s32 xtoaster_inl_001237E8(XToaster* arg0) {
     if (arg0->unk_000 & 0x1000080) {
@@ -366,7 +390,33 @@ INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124420);
 
 INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001245F0);
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124BC8);
+s32 func_0014F658(void*, s32);
+void func_001574B0(s32);
+void func_00170E48(XToaster*);
+void func_0014ED30(XToaster*);
+extern s32 D_00350D80[];
+
+void func_00124BC8(XToaster* p) {
+    s32 i;
+    if (func_001233F8(p)) {
+        func_0014F658(p, 0);
+        for (i = 0; i < 3; i++) {
+            if (((XToaster**)D_002E26A0)[i] == p) {
+                func_001574B0(p->unk_130->unk_4C);
+                if (p->unk_130->unk_54 == 1) {
+                    func_00170E48(p);
+                }
+                ((XToaster**)D_002E26A0)[i] = NULL;
+            }
+        }
+        XT_FLAGS(p) |= 0x200000000;
+        if (!((XT_FLAGS(p) >> 54) & 1)) {
+            XToast* t = p->unk_130;
+            D_00350D80[0] -= t->unk_59;
+        }
+        func_0014ED30(p);
+    }
+}
 
 void func_00124CA0(s32 arg0) {
     XToaster* p = func_00123880(arg0);

@@ -1,13 +1,24 @@
 #include "common.h"
 #include "xnoodle.h"
+#include <stdarg.h>
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x11];
-    /* 0x11 */ s8 unk_11;
+    /* 0x00 */ void (*unk_00)(u16, s32);
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ u16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ u16 unk_0E;
+    /* 0x10 */ u8 unk_10;
+    /* 0x11 */ u8 unk_11;
     /* 0x12 */ u8 unk_12;
-    /* 0x13 */ char unk_13[0xD];
+    /* 0x13 */ u8 unk_13;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ s32 unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
 } XSauce;
 
 u_long128* D_002B7B70;
@@ -35,7 +46,17 @@ extern s32 D_002C2108;
 
 extern u_long128* func_00121C98(s32 arg0, u_long128** arg1);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C2D8);
+u64* func_00106CA8(s32 qwc);
+void func_00106CD0(u64* p, s32 qwc);
+
+void func_0010C2D8(s32 n, u_long128** out) {
+    s32 qwc = n * 3 + 1;
+    u64* p = func_00106CA8(qwc);
+    p[1] = 0x535316;
+    p[0] = (n | 0x8000) | 0x6400000000000000;
+    func_00106CD0(p, qwc);
+    *out = (u_long128*)(p + 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C360);
 
@@ -43,15 +64,119 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C4B8);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C918);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CA30);
+typedef struct {
+    /* 0x0000 */ char unk_0000[0x2];
+    /* 0x0002 */ u16 unk_0002;
+    /* 0x0004 */ f32 unk_0004;
+    /* 0x0008 */ f32 unk_0008;
+    /* 0x000C */ s8 unk_000C;
+    /* 0x000D */ char unk_000D[0x1803];
+    /* 0x1810 */ f32 unk_1810[1];
+} XSauceTbl;
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CAE0);
+s32 func_0010CA30(XSauceTbl* p) {
+    s32 i;
+    if (p->unk_0002 >= 2) {
+        for (i = 0; i < p->unk_0002 - 1; i++) {
+            if (p->unk_1810[i] != 0.0f) {
+                return 0;
+            }
+        }
+    }
+    if (p->unk_1810[p->unk_0002 - 1] != 0.0f && p->unk_0008 == p->unk_0004) {
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CBA0);
+void func_0010CAE0(XSauceTbl* t, XSauce* p) {
+    if (p->unk_28 != 0) {
+        switch (t->unk_000C) {
+        case 0:
+            t->unk_000C = func_0010CA30(t);
+            if (t->unk_000C == 0) {
+                break;
+            }
+        case 1:
+            func_0010F0A0(p->unk_28, p->unk_24);
+            t->unk_000C = 2;
+        case 2:
+            if (func_0010F1C8(p->unk_28, p->unk_24)) {
+                t->unk_000C = 0;
+                p->unk_28 = 0;
+            }
+            break;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CBF8);
+s32 func_0010CBA0(XSauceTbl* p) {
+    s32 i;
+    for (i = 0; i < p->unk_0002; i++) {
+        if (p->unk_1810[i] != 0.0f) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CC80);
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ char unk_02[0x2];
+    /* 0x04 */ u16 unk_04;
+    /* 0x06 */ u16 unk_06;
+    /* 0x08 */ u16 unk_08;
+    /* 0x0A */ u16 unk_0A;
+    /* 0x0C */ char unk_0C[0x4];
+} XSauceKey; /* size = 0x10 */
+
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ char unk_02[0xE];
+    /* 0x10 */ XSauceKey unk_10[1];
+} XSauceKeys;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ XSauceKey* unk_20;
+} XSauceAnim;
+
+void func_0010CBF8(XSauceAnim* p, s32 n) {
+    XSauceKey* k;
+    if (n > 0) {
+        k = &p->unk_20[1];
+        do {
+            if (k->unk_0A < 0x80) {
+                k->unk_0A = k->unk_0A + p->unk_18;
+            } else {
+                k->unk_0A = 0x80;
+            }
+            k++;
+        } while (--n);
+    }
+}
+
+void func_0010CC80(XSauceAnim* p, s32 n) {
+    XSauceKey* k;
+    s32 v;
+    f32 d;
+    p->unk_18 = 0.0f;
+    if (n > 0) {
+        d = p->unk_1C;
+        k = &p->unk_20[1];
+        do {
+            v = k->unk_0A + d;
+            if (v < 0) {
+                k->unk_0A = 0;
+            } else {
+                k->unk_0A = v;
+            }
+            k++;
+        } while (--n);
+    }
+}
 
 s32 func_0010CCD8(void) {
     if (D_002C2108 & 1) {
@@ -62,11 +187,94 @@ s32 func_0010CCD8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CCF0);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CE98);
+typedef struct {
+    /* 0x00 */ char unk_00[0xC];
+    /* 0x0C */ f32 unk_0C;
+} XSauceStep; /* size = 0x10 */
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CF18);
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ char unk_02[0x2];
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 unk_08;
+    /* 0x0C */ char unk_0C[0x4];
+    /* 0x10 */ XSauceStep unk_10[1];
+} XSauceSteps;
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D010);
+void func_0010CCF0(XSauceSteps* p);
+
+s32 func_0010CE98(XSauceSteps* p) {
+    s32 i;
+    f32 sum;
+    func_0010CCF0(p);
+    if (p->unk_08 >= p->unk_04) {
+        return p->unk_00;
+    }
+    sum = 0.0f;
+    for (i = 0; i < p->unk_00; i++) {
+        sum += p->unk_10[i].unk_0C;
+        if (p->unk_08 <= sum) {
+            return i + 1;
+        }
+    }
+    return 1;
+}
+
+void func_0010CF18(XSauce* p, XSauceKeys* k) {
+    s32 lines[32];
+    s32 i;
+    s32 n;
+    s32 start;
+    s32 end;
+    s32 off;
+    s32 j;
+    n = 0;
+    /* lines: index of the last key of each line */
+    for (i = 0; i < k->unk_00 - 1; i++) {
+        if (k->unk_10[i].unk_06 != k->unk_10[i + 1].unk_06) {
+            lines[n++] = i;
+        }
+    }
+    lines[n++] = k->unk_00 - 1;
+    start = 0;
+    for (i = 0; i < n; i++) {
+        end = lines[i];
+        off = p->unk_0C - (((XSauceKey*)k)[end + 1].unk_08 >> 1) - p->unk_08;
+        for (j = start; j < end + 1; j++) {
+            ((XSauceKey*)k)[j + 1].unk_04 += off;
+        }
+        start = end + 1;
+    }
+}
+
+void func_0010D010(XSauce* p, XSauceKeys* k) {
+    s32 lines[32];
+    s32 i;
+    s32 n;
+    s32 start;
+    s32 end;
+    s32 off;
+    s32 j;
+    n = 0;
+    for (i = 0; i < k->unk_00 - 1; i++) {
+        if (k->unk_10[i].unk_06 != k->unk_10[i + 1].unk_06) {
+            lines[n++] = i;
+        }
+    }
+    lines[n++] = k->unk_00 - 1;
+    if (n - 2 >= 2) {
+        start = lines[n - 3] + 1;
+        for (i = n - 2; i < n; i++) {
+            end = lines[i];
+            off = p->unk_0C + (p->unk_0C - p->unk_08) - ((XSauceKey*)k)[end + 1].unk_08 - p->unk_08;
+            for (j = start; j < end + 1; j++) {
+                ((XSauceKey*)k)[j + 1].unk_04 += off;
+            }
+            start = end + 1;
+        }
+    }
+}
+
 
 s32 func_0010D130(char* s) {
     s32 n = 0;
@@ -77,7 +285,28 @@ s32 func_0010D130(char* s) {
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D168);
+int vsprintf(char* buf, const char* fmt, va_list ap);
+
+s32 func_0010D168(char* buf, const char* fmt, ...) {
+    va_list ap;
+    s32 n;
+    char* p;
+    va_start(ap, fmt);
+    vsprintf(buf, fmt, ap);
+    n = 0;
+    p = buf;
+    while (*p) {
+        if (*p == ' ') {
+            *p = 1;
+        } else {
+            *p = *p - 0xF;
+        }
+        p++;
+        n++;
+    }
+    va_end(ap);
+    return n;
+}
 
 s16 func_0010D218(s32* pos, u8* buf) {
     s32 i = *pos;
@@ -97,7 +326,30 @@ void func_0010E230(XSauce* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E270);
+void func_0010E270(XSauce* p) {
+    switch (p->unk_11) {
+    case 1:
+        if (p->unk_00 != NULL) {
+            if (!(u8)(p->unk_13 & 1)) {
+                p->unk_13 |= 1;
+                p->unk_0E++;
+            }
+            p->unk_00(p->unk_0E, p->unk_24);
+        }
+        break;
+    case 0:
+        p->unk_12 = 0;
+        if (p->unk_20 != 0) {
+            func_00121D50(p->unk_20);
+            p->unk_20 = 0;
+        }
+        if (p->unk_00 != NULL) {
+            p->unk_0E++;
+            p->unk_00(p->unk_0E, p->unk_24);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E330);
 
@@ -177,15 +429,64 @@ void func_0010E868(XSauce* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E8A0);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E9A8);
+s32 func_0010E9A8(u8* s) {
+    s32 n = 0;
+    s32 go = 1;
+    s32 i = 0;
+    do {
+        u8 c = s[i];
+        if (c < 0x20) {
+            if (c < 9) {
+                if (c == 0) { go = 0; } else if (c == 4) { go = 0; }
+            } else if (c == 15) {
+                i++;
+                if (s[i] == 1) {
+                    n++;
+                }
+            } else {
+                i++;
+            }
+        }
+        i++;
+    } while (go);
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EA38);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EB50);
+/* statement order found by brute force (scheduling) */
+void func_0010EB50(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
+    p->unk_10 = 1;
+    p->unk_12 = 0;
+    p->unk_00 = 0;
+    p->unk_14 = 0;
+    p->unk_24 = 0;
+    p->unk_11 = 0;
+    p->unk_0E = 0;
+    p->unk_08 = arg0;
+    p->unk_0A = arg1;
+    p->unk_1C = 0;
+    p->unk_04 = arg3;
+    p->unk_13 |= 2;
+    p->unk_20 = 0;
+    p->unk_0C = arg0 + 0x5E;
+    p->unk_18 = arg2;
+    p->unk_28 = 0;
+    func_00106948(&D_002B7FF0);
+    func_0010E330(p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EBE0);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010ED10);
+void func_0010ED10(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    XSauce* s;
+    s = (XSauce*)func_00121C98(0x2C, (u_long128**)&s);
+    func_0010C248();
+    s->unk_13 = 0;
+    s->unk_13 |= 4;
+    func_0010EB50(arg0, arg1, arg2, arg3, s);
+    func_00121D50(s);
+}
 
 typedef struct {
     /* 0x00 */ char unk_00[0x80];
