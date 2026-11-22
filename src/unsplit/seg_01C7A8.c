@@ -1,6 +1,9 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x01C7A8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+void func_0011C868_v(s32, s32, s32, s32, s32) __asm__("func_0011C868");
+extern s32 D_002A0520[];
+extern s32 D_002B9040[];
 typedef struct {
     s32 unk_00;
     s32 unk_04;
@@ -215,11 +218,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D448);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D310);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D588);
+void func_0011D588(void) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
+        func_0011D070(D_002A0520[i], i, (s32)D_002B9040, 0x3FFF);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D5F0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D4B8);
+void func_0011D4B8(s32 a0) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
+        func_0011C868_v(-1, D_002A0520[i], i, -1, a0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D6F0);
 
