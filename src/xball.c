@@ -39,7 +39,20 @@ f32 func_00120AC8(f32);
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_00120B40);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120D38);
+f32 func_00120D38(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+    f32 f;
+    s32 i;
+
+    arg2[3] = 1.0f;
+    sceVu0ApplyMatrix(arg0, arg1, arg2);
+    f = 1.0f / arg0[3];
+    for (i = 0; i < 3; i++) {
+        arg0[i] *= f;
+    }
+    arg0[3] = 1.0f;
+    return f;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_00120DB8);
 
