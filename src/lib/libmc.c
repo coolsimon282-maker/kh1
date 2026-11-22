@@ -369,7 +369,32 @@ void mcDelayThread(u16 arg0) {
     SleepThread();
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcSync);
+s32 sceMcSync(s32 mode, s32* cmd, s32* result) {
+    s32 ret;
+
+    if (mcRunCmdNo == 0) {
+        return -1;
+    }
+    ret = sceSifCheckStatRpc(&mcClientID);
+    if (mode == 0 && ret != 0) {
+        while (sceSifCheckStatRpc(&mcClientID)) {
+            mcDelayThread(0x3C);
+        }
+        ret = 0;
+    }
+    ret = ret == 0;
+    if (cmd != NULL) {
+        *cmd = mcRunCmdNo;
+    }
+    if (ret) {
+        mcRunCmdNo = 0;
+        if (result != NULL) {
+            *result = mcRetVal[0];
+        }
+        SignalSema(semaidRegFunc);
+    }
+    return ret;
+}
 
 #ifdef VERSION_FM
 extern s32* D_00673628;
