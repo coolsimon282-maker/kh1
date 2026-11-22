@@ -759,7 +759,24 @@ s32 func_001CF860(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF8A8);
+extern s32 D_002BC080[];
+extern s32 D_002BC09C;
+extern f32 D_002BC098;
+
+s32 func_001CF8A8(void) {
+    D_002B834C = 1;
+    D_002BC080[0] = 0x80;
+    D_002BC080[1] = 0x80;
+    D_002BC080[2] = 0x80;
+    D_002BC080[3] = 0x40;
+    D_002BC090 = 0x100;
+    D_002BC094 = 0xC0;
+    D_002BC098 = 0.0f;
+    D_002BC09C = 1;
+    D_002BC0A0 = 0;
+    D_002BC0A4 = 0;
+    return 2;
+}
 
 s32 func_001CF918(void) {
     if (D_002B834C == 1) {
