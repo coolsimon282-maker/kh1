@@ -1,5 +1,5 @@
 #ifndef PPP_H
-#define PPP
+#define PPP_H
 
 #include "common.h"
 #include "ppp/pppEnv.h"
