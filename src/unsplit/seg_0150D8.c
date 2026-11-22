@@ -1,14 +1,13 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x0150D8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
-extern s32 D_002A62F0;
-extern s32 D_002B6478;
-void func_00218CA0(s32);
-s32 func_00218C78(void);
-void func_0011AF48(s32, s32, s32, s32*);
-void func_0011A410(void);
 
-void func_00115940(s32, void*);
+typedef struct {
+    u_long128* unk_00;
+    u_long128* unk_04;
+    s16 (*unk_08)[10];
+    u8 unk_0C[0x34];
+} Seg150D8Ent40;
 typedef struct {
     u32 lo : 4;
     u32 hi : 4;
@@ -19,10 +18,63 @@ typedef struct {
     s32 unk_8;
     s32 unk_C;
 } Seg150D8Ent;
+typedef struct {
+    u8 unk_00[0x2C];
+    s32 unk_2C;
+    s32 unk_30;
+    u8 unk_34[4];
+    s16 unk_38;
+    s16 unk_3A;
+    s16 unk_3C;
+    s16 unk_3E;
+    u8 unk_40[0x20];
+    s32 unk_60;
+    u8 unk_64[8];
+    s16 unk_6C;
+    s16 unk_6E;
+    s16 unk_70;
+    s16 unk_72;
+    s16 unk_74;
+    s16 unk_76;
+} Seg150D8Unk78;
+typedef struct {
+    u8 unk_00[0x30];
+    s32 unk_30;
+    u8 unk_34[0xC];
+} Seg150D8Unk40b;
+typedef struct {
+    u8 unk_00[0xB];
+    u8 unk_0B;
+    u8 unk_0C[4];
+    u8 unk_10[4];
+} Seg150D8Unk14;
+typedef struct {
+    Seg150D8Unk14* unk_00;
+    u8 unk_04[0x3C];
+} Seg150D8Unk40;
+extern Seg150D8Ent40 D_004E2450[];
+// sceVu0CopyVector as inline asm (lq/sq through $6, then a nop)
+static inline void Seg150D8_CopyQ(void* v0, void* v1) {
+    __asm__ __volatile__("lq $6,0x0(%1)\n\tsq $6,0x0(%0)\n\tnop" : : "r"(v0), "r"(v1) : "$6", "memory");
+}
+extern s32 D_002A62F0;
+extern s32 D_002B6478;
+void func_00218CA0(s32);
+s32 func_00218C78(void);
+void func_0011AF48(s32, s32, s32, s32*);
+void func_0011A410(void);
+void func_00115940(s32, void*);
 extern Seg150D8Ent D_004761D0[];
 extern Seg150D8Ent* D_004E0420;
 extern s32 D_002C12C4;
 extern s32 D_002BD250[];
+void func_00116368(s32, s32);
+void func_00118060(s32, s32, s32, s32);
+void func_00118378(s32, s32, s32, s32);
+void func_001047C8(void);
+void func_00104528(void);
+extern Seg150D8Unk40b D_004E2430[];
+extern Seg150D8Unk40 D_004E2458[];
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001150D8);
 
@@ -111,7 +163,11 @@ void func_00116020(s32 a0, u32* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00116060);
+void func_00116060(s32 a0, Seg150D8Bits* a1) {
+    if (a1->hi != 7 && a1->hi != 9 && a1->hi != 5) {
+        D_002BD250[D_002C12C4++] = a0;
+    }
+}
 
 void func_001160B0(s32 a0, Seg150D8Bits* a1) {
     if (a1->hi == 9) {
@@ -124,7 +180,6 @@ void func_001160F0(s32 a0, u32* a1) {
         D_002BD250[D_002C12C4++] = a0;
     }
 }
-
 
 void func_00116130(s32 arg0, u32* arg1) {
     if ((*arg1 & 0x106) == 0) {
@@ -188,26 +243,6 @@ void func_00116330(s32 arg0, u32* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00116368);
 
-typedef struct {
-    u8 unk_00[0x2C];
-    s32 unk_2C;
-    s32 unk_30;
-    u8 unk_34[4];
-    s16 unk_38;
-    s16 unk_3A;
-    s16 unk_3C;
-    s16 unk_3E;
-    u8 unk_40[0x20];
-    s32 unk_60;
-    u8 unk_64[8];
-    s16 unk_6C;
-    s16 unk_6E;
-    s16 unk_70;
-    s16 unk_72;
-    s16 unk_74;
-    s16 unk_76;
-} Seg150D8Unk78;
-
 void func_00116628(Seg150D8Unk78* arg0) {
     arg0->unk_30 = 0;
     arg0->unk_38 = 0;
@@ -255,8 +290,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001166E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00117710);
 
-void func_00116368(s32, s32);
-
 void func_00117588(s32 arg0) {
     func_00116368(arg0, 0);
 }
@@ -290,9 +323,6 @@ void func_00118548(u8* a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118590);
 
-void func_00118060(s32, s32, s32, s32);
-void func_00118378(s32, s32, s32, s32);
-
 void func_00118608(s32 arg0) {
     func_00118060(arg0, 3, 0, -1);
 }
@@ -318,9 +348,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001186A8);
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118868);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118B58);
-
-void func_001047C8(void);
-void func_00104528(void);
 
 void func_00118D78(s32 arg0) {
     func_001047C8();
@@ -358,13 +385,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119EF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119FC0);
 
-typedef struct {
-    u8 unk_00[0x30];
-    s32 unk_30;
-    u8 unk_34[0xC];
-} Seg150D8Unk40b;
-extern Seg150D8Unk40b D_004E2430[];
-
 s32 func_0011A068(void) {
     s32 i;
 
@@ -386,25 +406,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A818);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A648);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A758);
+void func_0011A758(s32 a0, s32 a1, u_long128* a2) {
+    Seg150D8Ent40* e = &D_004E2450[a0];
+    Seg150D8_CopyQ(a2, &e->unk_04[e->unk_08[a1][4]]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A9C8);
+void func_0011A9C8(s32 a0, s32 a1, u_long128* a2) {
+    Seg150D8Ent40* e = &D_004E2450[a0];
+    Seg150D8_CopyQ(a2, &e->unk_00[e->unk_08[a1][0]]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A7F8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011AAC8);
-
-typedef struct {
-    u8 unk_00[0xB];
-    u8 unk_0B;
-    u8 unk_0C[4];
-    u8 unk_10[4];
-} Seg150D8Unk14;
-typedef struct {
-    Seg150D8Unk14* unk_00;
-    u8 unk_04[0x3C];
-} Seg150D8Unk40;
-extern Seg150D8Unk40 D_004E2458[];
 
 u8* func_0011AB38(s32 arg0, s32 arg1) {
     return D_004E2458[arg0].unk_00[arg1].unk_10;
