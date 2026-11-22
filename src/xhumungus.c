@@ -138,7 +138,21 @@ s32 func_001C9B88(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9BE0);
+extern f32 D_003C55E0[];
+extern f32 D_003C55E8[];
+
+// reads a scalar f32 global like a struct field (keeps the load above the stack store)
+typedef struct {
+    f32 unk_00;
+} F32Box;
+void func_001C6890(Script*);
+
+s32 func_001C9BE0(Script* arg0) {
+    func_001C6890(arg0);
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_003C55E0[0];
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9C30);
 
