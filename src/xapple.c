@@ -608,8 +608,41 @@ void func_0013B9A8(void) {
     D_00532604 = 2;
 }
 
+#ifdef VERSION_FM
+void func_00155B70(u8*);
+void func_001560C8(u8*);
+void func_00177908(u8*);
+void func_00146BC8(s32);
+void func_00146A68(u8*, s32, void (*)(void), s32);
+
+void func_0013B9B8(s32 arg0, s32 arg1, u8* arg2) {
+    s32* a = (s32*)arg2;
+
+    if (a[2] - a[1] > 0) {
+        func_00155B70(arg2 + a[1]);
+    }
+    if (a[3] - a[2] > 0) {
+        func_001560C8(arg2 + a[2]);
+    }
+    if (a[4] - a[3] > 0) {
+        func_001560C8(arg2 + a[3]);
+    }
+    if (a[6] - a[5] > 0) {
+        func_00177908(arg2 + a[5]);
+    }
+    D_00532604 = 1;
+    if (a[8] - a[7] > 0) {
+        func_00146BC8(-7);
+        func_00146A68(arg2 + a[7], -7, func_0013B9A8, 0);
+    } else {
+        D_00532604 = 2;
+    }
+    D_0053260C = (s32*)(((u32)(arg2 + arg0) + 0x7F) >> 7 << 7);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B9B8);
-s32 func_0013B9B8();
+void func_0013B9B8();
+#endif
 // s32 func_0013B9B8(s32 arg0, s32 arg1, s32 arg2) {
 //     int iVar1;
 //     int iVar2;
