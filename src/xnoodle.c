@@ -41,7 +41,42 @@ u_long128* D_0048ED00;
 
 extern volatile s32 D_00495258;
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A1F8);
+// Hand-written VU0 loop (the original is assembly inside C).
+void func_0010A1F8(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void* arg5, void* arg6) {
+    __asm__ volatile(
+        ".set noreorder\n"
+        "daddu $11, $9, $0\n"
+        "lqc2 $vf4, 0x0($5)\n"
+        "lqc2 $vf5, 0x10($5)\n"
+        "lqc2 $vf6, 0x20($5)\n"
+        "lqc2 $vf7, 0x30($5)\n"
+        "lqc2 $vf24, 0x0($11)\n"
+        "lqc2 $vf25, 0x0($10)\n"
+        "vftoi0.xyzw $vf25, $vf25\n"
+        "1:\n"
+        "lqc2 $vf8, 0x0($6)\n"
+        "vadd.xy $vf8, $vf24, $vf8\n"
+        "vmulax.xyzw ACC, $vf4, $vf8x\n"
+        "vmadday.xyzw ACC, $vf5, $vf8y\n"
+        "vmaddaz.xyzw ACC, $vf6, $vf8z\n"
+        "vmaddw.xyzw $vf12, $vf7, $vf8w\n"
+        "vdiv Q, $vf0w, $vf12w\n"
+        "lqc2 $vf9, 0x0($7)\n"
+        "addi $8, $8, -1\n"
+        "addi $6, $6, 0x10\n"
+        "addi $7, $7, 0x10\n"
+        "sqc2 $vf25, 0x10($4)\n"
+        "vwaitq\n"
+        "vmulq.xyzw $vf15, $vf9, Q\n"
+        "vmulq.xyzw $vf12, $vf12, Q\n"
+        "vftoi4.xyzw $vf13, $vf12\n"
+        "sqc2 $vf15, 0x0($4)\n"
+        "sqc2 $vf13, 0x20($4)\n"
+        "bne $0, $8, 1b\n"
+        "addi $4, $4, 0x30\n"
+        ".set reorder\n"
+        : : : "$4", "$6", "$7", "$8", "$11", "memory");
+}
 
 extern u64 D_002B70B0[];
 extern void* D_00495250;
