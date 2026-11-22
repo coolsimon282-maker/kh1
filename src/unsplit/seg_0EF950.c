@@ -683,45 +683,65 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD100);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD170);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD248);
+s32 func_001FD248(u8 *a0) {
+    return ((*(s32 *)(a0 + 0xB0) - 0x7000) >> 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD258);
+void func_001FD258(u8 *a0, s32 a1) {
+    *(s32 *)(a0 + 0xB0) = ((a1 << 4) + 0x7000);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD268);
+s32 func_001FD268(u8 *a0) {
+    return ((*(s32 *)(a0 + 0xB4) - 0x7000) >> 4);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD278);
+void func_001FD278(u8 *a0, s32 a1) {
+    *(s32 *)(a0 + 0xB4) = ((a1 << 4) + 0x7000);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD288);
+s32 func_001FD288(u8 *a0) {
+    return ((*(u16 *)(a0 + 0xB8) << 16) >> 20);
+}
 
 void func_001FD298(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xB8) = (a1 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2A8);
+s32 func_001FD2A8(u8 *a0) {
+    return ((*(u16 *)(a0 + 0xBA) << 16) >> 20);
+}
 
 void func_001FD2B8(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xBA) = (a1 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2C8);
+s32 func_001FD2C8(u8 *a0) {
+    return ((*(u16 *)(a0 + 0xBE) << 16) >> 20);
+}
 
 void func_001FD2D8(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xBE) = (a1 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD2E8);
+s32 func_001FD2E8(u8 *a0) {
+    return ((*(u16 *)(a0 + 0xC0) << 16) >> 20);
+}
 
 void func_001FD2F8(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xC0) = (a1 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD308);
+s32 func_001FD308(u8 *a0) {
+    return ((*(u16 *)(a0 + 0xC2) << 16) >> 20);
+}
 
 void func_001FD318(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xC2) = (a1 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD328);
+s32 func_001FD328(u8 *a0) {
+    return ((*(u16 *)(a0 + 0xC4) << 16) >> 20);
+}
 
 void func_001FD338(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xC4) = (a1 << 4);
