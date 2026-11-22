@@ -12,6 +12,11 @@ whole files at once (your context is 64k tokens). The owner is learning: explain
 * Useful notes from earlier agents (read when you start a file): `notes/a1.md` (xhumungus: the Script stack,
   overlay structs, patterns) and `notes/a6.md` (xkinetic: the `ScriptVM` overlay).
 
+**Skip these in xhumungus.c** (Claude agents already tried them hard; details in notes/a1.md): func_001CF6C8,
+func_001CF728, func_001D9EA8, func_001D9F08, func_001CC588, func_001CCA88, func_001CC618, func_001CCEF8,
+func_001D0DE0, func_001D0E78, func_001DBA58, func_001D8500, func_001D11C0. `list` shows them among the smallest;
+take the next ones up.
+
 ## Hard rules
 
 1. Never download anything, never push, never change branches, never rewrite history (`--amend`, `reset`,
