@@ -174,7 +174,32 @@ void func_00247108(Monitor* m) {
     s->unk10 &= ~4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247128);
+void func_00247128(Monitor* m, s32* out) {
+    MonitorSub* s = &m->sub[2];
+    MonitorKey* k;
+    f32 r;
+    s32 i;
+    f32 a[4];
+    f32 b[4];
+
+    if (s->unk4 < s->unk8 - 1) {
+        k = (MonitorKey*)(s->unk4 * 32 + s->unkC);
+        r = (f32)s->unk0 / (f32)k->time;
+        for (i = 0; i < 4; i++) {
+            a[i] = k->col[i];
+            b[i] = k[1].col[i];
+            out[i] = a[i] + (b[i] - a[i]) * r;
+        }
+    } else {
+        MonitorKey* e = &((MonitorKey*)s->unkC)[s->unk4];
+
+        for (i = 0; i < 4; i++) {
+            s32* o = &out[i];
+
+            *o = e->col[i];
+        }
+    }
+}
 
 void func_00247218(Monitor* m) {
     m->unk60 |= 0x10;
