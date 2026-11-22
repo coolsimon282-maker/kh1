@@ -380,7 +380,22 @@ s32 func_00182980(void) {
     return sum;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001829D0);
+s32 func_001829D0(s32 arg0) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if ((D_00364130[i].usef & 1) && !(D_00364130[i].usef & 4) && ((ppvmng*)&D_00364130[i])->unk_98 < arg0) {
+            if (*(u16*)&D_00364130[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&D_00364130[i].pEtc->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            D_00364130[i].usef |= 4;
+            return 1;
+        }
+    }
+    return 0;
+}
+
 
 s32 func_00182A78(void) {
     s32 i;
