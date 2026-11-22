@@ -1,6 +1,8 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x0150D8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+void func_001195D8(s32, void*);
+s32 func_001191C8(void*, s32, s32);
 s32 func_001152C8(s32, s32, s32, s32);
 s32 func_001198C8(s32, s32, s32);
 
@@ -92,7 +94,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115408);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115600);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001156F0);
+void func_001156F0(s32 a0, f32* a1) {
+    f32* v = a1 + 4;
+    func_00104CF8(a0, (s32)v);
+    a1[8] = -v[0];
+    a1[9] = -a1[5];
+    a1[10] = -a1[6];
+    a1[11] = 1.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115758);
 
@@ -376,7 +385,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119688);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119710);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119788);
+s32 func_00119788(s32 a0) {
+    u8 buf[0x20];
+    s32 r;
+    func_001047C8();
+    func_001195D8(a0, buf);
+    r = func_001191C8(buf, a0, 11);
+    func_00104528();
+    return r != -1 ? 1 : -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001197E0);
 
@@ -425,7 +442,14 @@ void func_0011A9C8(s32 a0, s32 a1, u_long128* a2) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A7F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011AAC8);
+void func_0011AAC8(s32 a0, f32* a1, s32 a2) {
+    f32* v = a1 + 4;
+    func_0011A758(a2, a0, (u_long128*)v);
+    a1[8] = -v[0];
+    a1[9] = -a1[5];
+    a1[10] = -a1[6];
+    a1[11] = 1.0f;
+}
 
 u8* func_0011AB38(s32 arg0, s32 arg1) {
     return D_004E2458[arg0].unk_00[arg1].unk_10;
