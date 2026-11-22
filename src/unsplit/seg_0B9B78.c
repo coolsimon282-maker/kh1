@@ -2,6 +2,8 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
+s32 func_001BB740(void);
+
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001B9B78);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001B9BB0);
@@ -471,11 +473,20 @@ s32 func_001BE5C8(s32 x) {
     return x + 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE5D0);
+s32 func_001BE5D0(s32 a0) {
+    s32 t0 = func_001BB740();
+    return ((a0 + t0) + 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE600);
+s32 func_001BE600(s32 a0) {
+    s32 t0 = func_001BB740();
+    return ((a0 + (t0 << 1)) + 1);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE630);
+s32 func_001BE630(s32 a0) {
+    s32 t0 = func_001BB740();
+    return ((a0 + (t0 << 1)) + 0xB);
+}
 
 extern s32 D_0037A158;
 
