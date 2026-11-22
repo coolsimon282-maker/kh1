@@ -12,6 +12,7 @@
 #   put <file> <func> <cfile>  replace the function's INCLUDE_ASM line in src/<file>.c with the C in <cfile>
 #                            (again after a failed try: it starts from the last commit of the file)
 #                            (so big files like xhumungus.c never need opening; <cfile> e.g. qwen/work.c)
+#   cfunc <func>             print an already-matched function's C (searches all of src/; shows the file too)
 cd "$(dirname "$0")"
 # git inside WSL: a worktree's .git file holds a Windows path (C:/...) that WSL's git can't follow, so translate it.
 # Read-only use: no index writes (GIT_OPTIONAL_LOCKS=0), file modes ignored.
@@ -23,6 +24,23 @@ replaced() {
   git diff -U0 -- src | awk '/^\+\+\+ b\/src\//{f=substr($2,7); sub(/\.c$/,"",f)} /^-INCLUDE_ASM\(/{n=$0; sub(/^[^,]*, */,"",n); sub(/\).*/,"",n); print n" "f}'
 }
 case "$1" in
+  cfunc)
+    python3 - "$2" <<'PY'
+import glob, re, sys
+fn = sys.argv[1]
+for f in sorted(glob.glob('src/**/*.c', recursive=True)):
+    s = open(f, encoding='utf-8', errors='replace').read()
+    m = re.search(r'^[A-Za-z_][^;{}\n]*\b%s\s*\([^;{}]*\)(?:\s*[^;{}()]+;)*\s*\{' % re.escape(fn), s, re.M)
+    if not m: continue
+    i, depth = s.index('{', m.start()), 0
+    for j in range(i, len(s)):
+        depth += {'{': 1, '}': -1}.get(s[j], 0)
+        if depth == 0: break
+    start = s.rfind('\n#if', 0, m.start()); start = start + 1 if start != -1 and s.count('\n', start, m.start()) <= 1 else m.start()
+    print('// %s (%s)' % (fn, f)); print(s[start:j + 1]); sys.exit(0)
+sys.exit('%s: no C definition found in src/' % fn)
+PY
+    ;;
   near)
     n="${4:-30}"
     l=$(grep -n "INCLUDE_ASM(\"[^\"]*\", $3);" "src/$2.c" | head -1 | cut -d: -f1)

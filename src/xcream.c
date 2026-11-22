@@ -30,7 +30,110 @@ s32 func_001274F8(XCream* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00127560);
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00127960);
+extern s32 D_004F82C0;
+extern s32 D_004F82C4;
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ u8 col0[4];
+    /* 0x10 */ u8 col1[4];
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ u8 col2[4];
+    /* 0x1C */ u8 col3[4];
+    /* 0x20 */ s32 unk_20;
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ s32 unk_34;
+    /* 0x38 */ u64 unk_38;
+    /* 0x40 */ u64 unk_40;
+} XCreamPrm;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XCreamSub;
+
+typedef struct {
+    /* 0x000 */ s32 flags;
+    /* 0x004 */ u8 unk_004[0x114];
+    /* 0x118 */ f32 unk_118;
+    /* 0x11C */ u8 unk_11C[0x30];
+    /* 0x14C */ XCreamSub* unk_14C;
+    /* 0x150 */ u8 unk_150[0xC];
+    /* 0x15C */ s32 unk_15C;
+    /* 0x160 */ u8 unk_160[0x230];
+    /* 0x390 */ s32 unk_390;
+} XCreamObj;
+
+typedef struct {
+    /* 0x00 */ f32 unk_00[4];
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+} XCreamCam;
+
+extern XCreamCam D_002BC0F0;
+f32 func_00135CA0(f32);
+void func_001621E0(s32, sceVu0FVECTOR*, XCreamPrm*, XCreamObj*);
+
+void func_00127960(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
+    XCreamObj* obj = (XCreamObj*)arg0;
+    XCreamPrm prm;
+    s32 i;
+
+    if (obj->flags & 0x100) {
+        prm.col0[0] = 0x80;
+        prm.col0[1] = 0x80;
+        prm.col0[2] = 0x80;
+        prm.col0[3] = 0x80;
+        prm.unk_00 = 0x101;
+        prm.col1[0] = D_002BC0F0.unk_10;
+        prm.col1[1] = D_002BC0F0.unk_14;
+        prm.col1[2] = D_002BC0F0.unk_18;
+        prm.col1[3] = (s32)func_00135CA0(obj->unk_118);
+    } else {
+        prm.col0[0] = 0;
+        prm.col0[1] = 0;
+        prm.unk_00 = 0x101;
+        prm.col0[2] = 0;
+        prm.col1[0] = 0x80;
+        prm.col0[3] = arg2;
+        prm.col1[1] = 0x80;
+        prm.col1[2] = 0x80;
+        prm.col1[3] = 0xFF;
+    }
+    prm.unk_04 = 0;
+    prm.unk_08 = D_004F82C4 + D_004F82C0;
+    D_004F82C0 += 10;
+    prm.unk_20 = 0;
+    prm.unk_28 = obj->unk_390;
+    if (obj->unk_390 & 0x40000000) {
+        prm.unk_28 = -1;
+    }
+    prm.unk_2C = 0;
+    if (obj->unk_14C != NULL && obj->unk_14C->unk_00 != 0 && (obj->flags & 0x4000)) {
+        prm.unk_14 = obj->unk_14C->unk_04;
+        for (i = 0; i < 4; i++) {
+            prm.col2[i] = prm.col0[i];
+            prm.col3[i] = prm.col1[i];
+        }
+    } else {
+        prm.unk_14 = 0;
+    }
+    {
+        u64 tag1 = 0x1000401D0;
+        u64 tag0 = 0x3A0001C0;
+
+        prm.unk_38 = tag0;
+        prm.unk_30 = 0;
+        prm.unk_40 = tag1;
+        prm.unk_34 = 0;
+    }
+    func_001621E0(obj->unk_15C, arg1, &prm, obj);
+}
 
 extern struct {
     f32 x, y, z, w;
