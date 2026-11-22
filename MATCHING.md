@@ -75,8 +75,8 @@ INCLUDE_ASM("...", fm_func_X);
 * **`volatile`**: a global accessed as `lui / addiu %lo / sw 0(reg)` even when used once is declared `volatile`.
 * **Small constant loops** get unrolled by the compiler.
 * **FM-only globals** (names like `D_004D5AF8`) are defined by the build; a plain `extern` is enough.
-* **`.word 0x46000064`** in the assembly is `cvt.w.s`; the compiler always emits `trunc.w.s` for C casts, so
-  those functions can't be matched with plain C. Skip them.
+* **`cvt.w.s`** (shown as `.word 0x46000064` or similar): matchable now. With the FM build's no-nop mode a
+  plain `(s32)f` cast compiles to `cvt.w.s` + `mfc1` (a2 matched pppRandChar/Short/Int this way).
 * **Overlay structs**: when indexing through a field gets folded into the wrong base, declare a local struct
   that lays out the region directly (xkinetic's `ScriptVM`).
 * **Prototypes matter**: a call with no prototype schedules differently; adding `void f(s32);` fixed several.
@@ -94,6 +94,17 @@ INCLUDE_ASM("...", fm_func_X);
   checkout that was set up before then.
 * **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
   FM-address name (`D_00xxxxxx`) for globals it doesn't list.
+* **Aliasing**: `src/ppp/` is now compiled with `-fno-strict-aliasing` (as the original was; since 22 Nov
+  00:30), so reloads after stores of other types come out by themselves there. Elsewhere (e.g. xpotato), go
+  through a union (`typedef union { f32 f; s32 i; } FI;`) or type the pointer field as `s32`.
+* **Hand-written VU0 sequences** (random float, `v.xyz *= s`, sqrt) match as `static inline` helpers with
+  `__asm__ volatile`; templates in notes/a2.md (copies: vu0Rand in pppRandFloat.c, vu0ScaleXYZ in
+  pppKeMatPht.c, vu0Sqrt in pppEiWindFun.c).
+* **include/ppp.h's include guard is fixed** (was `#define PPP`): including it with ppp/pppUtil.h is fine now.
+* **Check the build result properly**: don't trust `| tail -1` of a filtered log; the commit must follow a build
+  whose last line is `build/fm/SLPS_251.98.rom: OK`.
+* **Jump tables**: a `switch` that becomes a jump table needs the file to have a .rodata piece in the FM config;
+  if the link fails for that reason, give up on the function and note it (the coordinator fixes the config).
 * **Scratch files**: the scratchpad folder is shared between agents; use your own subfolder in it.
 
 ## Your notes file

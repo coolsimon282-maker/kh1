@@ -33,7 +33,8 @@ LIB_CC_DIR = f"{TOOLS_DIR}/cc/ee-gcc2.9-991111/bin"
 COMMON_COMPILE_FLAGS = "-O2 -G0 $g"
 
 # $verdef is -DVERSION_JP / -DVERSION_FM / -DVERSION_EU (set per configured version in build_stuff)
-GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS} $in"
+# $cflags: per-file extra compiler flags (src/ppp/ was built without strict aliasing)
+GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS} $cflags $in"
 
 GAME_AS_CMD = f"{GAME_CC_DIR}/ee/bin/as {COMMON_COMPILE_FLAGS} -EL -mabi=eabi"
 # pipefail: without it a C compile error is hidden by the pipe and a half-written .s gets assembled
@@ -265,11 +266,13 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
                     g = ""
                 else:
                     g = "-g"
+                # the effects system (src/ppp/) reloads values after stores of other types: no strict aliasing
+                cflags = "-fno-strict-aliasing" if str(entry.src_paths[0]).startswith("src/ppp/") else ""
                 build(
                     entry.object_path,
                     entry.src_paths,
                     "cc",
-                    variables={"g": g},
+                    variables={"g": g, "cflags": cflags},
                     implicit=implicit,
                 )
         elif isinstance(seg, splat.segtypes.common.databin.CommonSegDatabin):

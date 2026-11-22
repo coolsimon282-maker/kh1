@@ -9,7 +9,28 @@ void pppRyjDrawMatrixWorldDttFrCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     sceVu0CopyVector((f32*)(v + 0x50), ppvParScl);
 }
 
+#ifdef VERSION_FM
+extern sceVu0FMATRIX D_00615EB0;
+
+void pppRyjDrawMatrixWorldDttFrCalc(pppPObject* pobj, s32 param, pppCtrlTable* ctbl) {
+    u8* v = (u8*)&pobj->val[ctbl->useVal[1]];
+    sceVu0FMATRIX m;
+
+    sceVu0UnitMatrix(m);
+    m[3][0] = ((f32*)(v + 0x40))[0];
+    m[3][1] = ((f32*)(v + 0x40))[1];
+    m[3][2] = ((f32*)(v + 0x40))[2];
+    sceVu0MulMatrix(m, D_00615EB0, m);
+    sceVu0ScaleVector(ppvPObj.next->dmat[0], ppvPObj.next->cmat[0], ((f32*)(v + 0x50))[0]);
+    sceVu0ScaleVector(ppvPObj.next->dmat[1], ppvPObj.next->cmat[1], ((f32*)(v + 0x50))[1]);
+    sceVu0ScaleVector(ppvPObj.next->dmat[2], ppvPObj.next->cmat[2], ((f32*)(v + 0x50))[2]);
+    sceVu0ApplyMatrix(ppvPObj.next->dmat[3], m, ppvPObj.next->cmat[3]);
+    sceVu0CopyMatrix((void*)v, ppvPObj.next->dmat);
+    sceVu0MulMatrix(ppvPObj.next->dmat, ppvScreenMatrix, ppvPObj.next->dmat);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", pppRyjDrawMatrixWorldDttFrCalc);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A3F98);
 
