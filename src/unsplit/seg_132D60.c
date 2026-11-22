@@ -194,7 +194,11 @@ s32 func_002348C0(void) {
     return D_0064800C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002348D0);
+extern s32 D_00648010;
+
+s32 func_002348D0(void) {
+    return D_00648010;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002348E0);
 
