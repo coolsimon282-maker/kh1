@@ -975,8 +975,9 @@ extern s32 D_002B860C;
 extern s32 D_002A6204;
 extern s32 D_002BD858;
 extern s32 D_002BD85C;
-// func_001336A0 is left without a prototype on purpose: with one more function declaration in this
-// file, func_00114B50 compiles differently (cse hashes symbol addresses).
+// func_00114B50 compiles differently with another number of function declarations in this file (cse
+// hashes symbol addresses); func_001336A0's prototype keeps the count right since func_00114638 matched.
+s32 func_001336A0(void);
 
 // include/xblade.h declares this `void func_00113CB8();` but it returns D_002B9668; define it under
 // another C name with the real symbol name.
@@ -1288,42 +1289,51 @@ s32 func_001145E8(s32 arg0, XBladeHdr* arg1, s32 arg2, s32 arg3) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00114638);
-// s32 func_00114638(sceVu0FMATRIX arg0, f32 arg1, s32 arg2, s32 arg3) {
-//     f32* temp_16;
-//     sceVu0FVECTOR* temp_2;
-//     s32 temp_4;
-//     s32 ret;
-//     f32* temp_3;
+typedef struct {
+    /* 0x00 */ f32* verts;
+    /* 0x04 */ void* hdr;
+    /* 0x08 */ char unk_08[0x8];
+    /* 0x10 */ sceVu0FMATRIX m;
+    /* 0x50 */ char unk_50[0x30];
+    /* 0x80 */ sceVu0FVECTOR v[8];
+    /* 0x100 */ char unk_100[0x10];
+} XBladeBox; // size = 0x110
 
-//     temp_2 = func_00122430(0x110, 0x80);
-//     temp_3 = arg1 + 0x18;
-//     temp_2[0][1] = *temp_3;
-//     temp_16 = arg1 + *temp_3;
-//     temp_2[0][0] = temp_16;
-//     D_004D2AA8 = temp_2;
-//     ret = 0;
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0x80 / 4, arg0, *D_004D2AA8 + 0x00 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0x90 / 4, arg0, *D_004D2AA8 + 0x10 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xA0 / 4, arg0, *D_004D2AA8 + 0x20 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xB0 / 4, arg0, *D_004D2AA8 + 0x30 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xC0 / 4, arg0, *D_004D2AA8 + 0x40 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xD0 / 4, arg0, *D_004D2AA8 + 0x50 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xE0 / 4, arg0, *D_004D2AA8 + 0x60 / 4);
-//     sceVu0ApplyMatrix(D_004D2AA8 + 0xF0 / 4, arg0, *D_004D2AA8 + 0x70 / 4);
-//     sceVu0MulMatrix(D_004D2AA8 + 0x10 / 4, D_002B84F0, D_00297850);
-//     if (func_0024B800(D_004D2AA8 + 0x10 / 4, D_004D2AA8 + 0x80 / 4) == 0) {
-//         if (arg2 == 40000) {
-//             func_00106A08(&D_002B9690, 40000);
-//         }
-//         temp_4 = D_004D2AAC;
-//         D_004D2AAC++;
-//         func_00108C48(temp_4, arg2, arg0, D_004D2AA8, arg3);
-//         ret = 1;
-//     }
-//     func_001224A0(D_004D2AA8);
-//     return ret;
-// }
+extern void* D_004D9368; // XBladeBox*
+extern u8 D_002BD140[];
+
+s32 func_00114638(sceVu0FVECTOR* m, u8* mdl, s32 id, s32 arg3) {
+    XBladeBox* w;
+    s32 ret;
+
+    w = (XBladeBox*)func_00122048(0x110, 0x80);
+    {
+        s32* hp = (s32*)(mdl + 0x18);
+        s32 o = *hp;
+        D_004D9368 = w;
+        w->hdr = hp;
+        w->verts = (f32*)(mdl + o);
+    }
+    ret = 0;
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[0], m, ((XBladeBox*)D_004D9368)->verts + 0);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[1], m, ((XBladeBox*)D_004D9368)->verts + 4);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[2], m, ((XBladeBox*)D_004D9368)->verts + 8);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[3], m, ((XBladeBox*)D_004D9368)->verts + 12);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[4], m, ((XBladeBox*)D_004D9368)->verts + 16);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[5], m, ((XBladeBox*)D_004D9368)->verts + 20);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[6], m, ((XBladeBox*)D_004D9368)->verts + 24);
+    sceVu0ApplyMatrix(((XBladeBox*)D_004D9368)->v[7], m, ((XBladeBox*)D_004D9368)->verts + 28);
+    sceVu0MulMatrix(((XBladeBox*)D_004D9368)->m, D_002B84F0, D_00297850);
+    if (func_0024EDF0(((XBladeBox*)D_004D9368)->m, ((XBladeBox*)D_004D9368)->v) == 0) {
+        if (id == 40000) {
+            func_00106A08(D_002BD140, 40000);
+        }
+        func_00108DF8(D_004D2AAC++, id, m, ((XBladeBox*)D_004D9368)->verts, arg3);
+        ret = 1;
+    }
+    func_001220B8(D_004D9368);
+    return ret;
+}
 
 void func_00114800(void) {
     D_004D2AAC = 0;
