@@ -1,6 +1,10 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x001970).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern u8 D_002B8C70[];
+void* func_0011EEB8(void*, s32, void*);
+s32 func_00104298(f32*);
+s32 func_00104388(f32*);
 extern s32 D_002A3F28; extern s32 D_002B8678; extern s32 D_002B8680; extern s32 D_002B8684;
 void func_00104528(void); void func_00104678(void);
 s32 func_00103838(void);
@@ -296,7 +300,22 @@ s32 func_00104388(f32* a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104310);
+void func_00104310(s32 n) {
+    u8* r;
+    s32 d;
+    r = func_0011EEB8(D_002B8C70, 0, func_00104388);
+    d = n * 2;
+    if (n == 0) {
+        n = 1;
+    }
+    n *= 2;
+    if (r != NULL) {
+        D_002A6208 = 1;
+        *(s32*)(r + 0x10) = 0;
+        *(f32*)(r + 0x18) = d;
+        *(f32*)(r + 0x14) = 128.0f / n;
+    }
+}
 
 void func_001043A0(s32 arg0, s32* arg1) {
     sceVu0UnitMatrix((sceVu0FVECTOR*)arg1);
