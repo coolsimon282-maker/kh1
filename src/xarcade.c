@@ -53,8 +53,36 @@ extern void func_00233968();
 extern void func_00248530();
 
 #ifdef VERSION_FM
-void func_001090D8(void);
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_001090D8);
+extern u32 D_002BBDE4;
+extern char D_002B6460[];
+extern DiskManager D_0046A688; // disk_Mgr
+extern char* D_002B6478;
+extern s32 D_002BC73C;
+void fm_func_00110068(void);
+KingdomFile* func_00120190(char* filename); // cdvd_FindFile
+
+void func_001090D8(void) {
+    KingdomFile* file;
+
+    D_002BBDE4 = 7;
+    fm_func_00110068();
+    func_0010C010();
+    func_001EF810();
+    func_0022F578(-1);
+    func_0011EAF8(D_002B6460, "host:./kingdom.log");
+
+    file = func_00120190("kingdom.img");
+    if (file != NULL) {
+        D_0046A688.unk_18(file->length);
+    } else {
+        D_0046A688.unk_18(0);
+    }
+    D_002B6478 = D_0046A688.unk_1C();
+    func_00110230(0);
+    D_002BC73C = 0;
+    func_001ED888(NULL);
+    func_0011F7C0();
+}
 #else
 void func_001090D8(void) {
     KingdomFile* file;
