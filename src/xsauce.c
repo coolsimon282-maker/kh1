@@ -64,7 +64,33 @@ s32 func_0010CBA0(XSauceTbl* p) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CBF8);
+typedef struct {
+    /* 0x00 */ char unk_00[0xA];
+    /* 0x0A */ u16 unk_0A;
+    /* 0x0C */ char unk_0C[0x4];
+} XSauceKey; /* size = 0x10 */
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x18];
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ f32 unk_1C;
+    /* 0x20 */ XSauceKey* unk_20;
+} XSauceAnim;
+
+void func_0010CBF8(XSauceAnim* p, s32 n) {
+    XSauceKey* k;
+    if (n > 0) {
+        k = &p->unk_20[1];
+        do {
+            if (k->unk_0A < 0x80) {
+                k->unk_0A = k->unk_0A + p->unk_18;
+            } else {
+                k->unk_0A = 0x80;
+            }
+            k++;
+        } while (--n);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CC80);
 
