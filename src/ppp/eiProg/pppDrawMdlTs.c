@@ -26,6 +26,24 @@ void pppDrawMdlTsCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     v->tu = v->dtu = v->ddtu = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppDrawMdlTs", pppDrawMdlTsCalc);
+void pppDrawMdlTsCalc(pppPObject* pobj, PDrawMdlTs* p, pppCtrlTable* ctbl) {
+    VDrawMdlTs* v = (VDrawMdlTs*)&pobj->val[ctbl->useVal[2]];
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    v->dtu += v->ddtu;
+    v->dtv += v->ddtv;
+    v->tu += v->dtu;
+    v->tv += v->dtv;
+    if (p->cdt.time == pobj->time) {
+        v->tu += p->tu;
+        v->dtu += p->dtu;
+        v->ddtu += p->ddtu;
+        v->tv += p->tv;
+        v->dtv += p->dtv;
+        v->ddtv += p->ddtv;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppDrawMdlTs", pppDrawMdlTsDraw);
