@@ -422,7 +422,17 @@ s32 sceMcGetDir(s32 port, s32 slot, const char* name, u32 mode, s32 maxent, sceM
     return sifServerStat;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", mceStorePwd);
+void mceStorePwd(char* dst) {
+    s32 len;
+
+    if (dst != NULL) {
+        len = strlen((char*)((u32)mcCachedTables | 0x20000000)) < 0x400
+                  ? strlen((char*)((u32)mcCachedTables | 0x20000000))
+                  : 0x3FF;
+        memcpy(dst, (void*)((u32)mcCachedTables | 0x20000000), len);
+        dst[len] = 0;
+    }
+}
 void mceStorePwd();
 
 /**
