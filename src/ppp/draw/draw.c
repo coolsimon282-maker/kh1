@@ -500,7 +500,26 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7A8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7F8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC848);
+// stores a zero qword with `sq $0` (gcc itself always goes through a register)
+#define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
+
+void func_001AC7A8(void* pkt, s32 qwc, s32 pri, s32 arg3);
+
+// GS packet: alpha register + a 2-vertex sprite in colour rgba, inserted in OT 1 at priority 0
+u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
+    *(u64*)(p + 0x10) = 0x41A3400000008001;
+    *(u64*)(p + 0x18) = 0x441E;
+    DRAW_SQ_ZERO(p + 0x20);
+    p[0x20] = alpha;
+    p[0x24] = fix;
+    *(u64*)(p + 0x28) = 0x42;
+    // spread the four colour bytes into the RGBAQ words
+    __asm__ volatile("pextlb %1,$0,%1\n\tpextlh %1,$0,%1\n\tsq %1,%0" : "=m"(*(u_long128*)(p + 0x30)), "+r"(rgba));
+    *(u_long128*)(p + 0x40) = (u_long128)0xFFFFFFFE0000780000007000;
+    *(u_long128*)(p + 0x50) = (u_long128)0xFFFFFFFE0000880000009000;
+    func_001AC7A8(p, 6, 0, 0);
+    return p + 0x60;
+}
 
 extern f32 D_00372800[16]; // fog work
 
