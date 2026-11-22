@@ -392,8 +392,28 @@ void func_00111910(void) {
     D_002B9174 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111920);
-void func_00111920();
+extern volatile s32 D_002BBDF0;
+extern s32 D_004D9250;
+extern s32 D_004D9254;
+extern f32 D_002BBDEC;
+
+// timer task: counts D_002B916C up to D_004D9254 from the elapsed time (D_002BBDEC per tick)
+s32 func_00111920(void) {
+    switch (D_004D29AC) {
+    case 1:
+        return 0;
+    case 2:
+        return 4;
+    case 0:
+        if (D_002B916C < D_004D9254) {
+            D_002B916C = (u32)(D_002BBDF0 - D_004D9250) * D_002BBDEC;
+            return 0;
+        }
+        D_002B916C = D_004D9254;
+        return 4;
+    }
+    return 0;
+}
 
 extern volatile s32 D_002BBDF0;
 extern s32 D_004D9250;
