@@ -452,9 +452,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CF08);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CF30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CFC8);
-
 extern s32 D_0044A820;
+
+s32 func_0023CFC8(void) {
+    return D_0044A820 != 0;
+}
 
 void func_0023CFD8(void) {
     D_0044A820 = 0;
@@ -639,7 +641,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243208);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243278);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002432C8);
+void func_002432C8(void *arg0) {
+    *(u32 *)((u8 *)arg0 + 12) = 0;
+    *(u32 *)((u8 *)arg0 + 8) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002432D8);
 
@@ -711,7 +716,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245090);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245148);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245228);
+s32 func_00245228(void) {
+    return D_00662540 != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245238);
 
@@ -917,7 +924,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002486C8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248738);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248788);
+void func_00248788(void *arg0) {
+    *(u32 *)((u8 *)arg0 + 12) = 0;
+    *(u32 *)((u8 *)arg0 + 8) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248798);
 
@@ -966,7 +976,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002492D0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002492E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249370);
+s32 func_00249370(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+    sceVu0RotMatrixZ(arg0, arg1, arg2[2]);
+    sceVu0RotMatrixX(arg0, arg0, arg2[0]);
+    sceVu0RotMatrixY(arg0, arg0, arg2[1]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002493C0);
 
