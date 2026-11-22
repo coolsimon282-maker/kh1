@@ -2604,7 +2604,19 @@ s32 func_001D8458(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8490);
+u8* func_001234A0(u8*);
+void func_00124CA0(s32);
+
+s32 func_001D8490(void) {
+    u8* p;
+
+    for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        if (((s32)(*(u64*)(p + 0x370) >> 37) & 3) == 2) {
+            func_00124CA0(*(s32*)(p + 4));
+        }
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8500);
 
