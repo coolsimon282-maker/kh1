@@ -49,6 +49,10 @@ LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_I
 # Sony built them with the game compiler (ee-gcc 2.96), not the 991111 one, and libm in IEEE-only mode.
 # The headers are newlib 1.8.2's (include/newlib, include/newlib-private).
 NEWLIB_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -D_IEEE_LIBM -Iinclude/newlib -Iinclude/newlib-private -isystem include/gcc -idirafter include/gcc-991111"
+# src/lib/libgcc: gcc 2.95.3's libgcc2.c / config/fp-bit.c (include/libgcc-2.95.3, with small tconfig.h/tsystem.h
+# stand-ins for the EE target: 32-bit words, little-endian), also built with the game compiler; US_SOFTWARE_GOFAST
+# gives the soft-float routines the names the game calls (dpadd, fptodp, ...).
+LIBGCC_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -DIN_GCC -DIN_LIBGCC2 -DUS_SOFTWARE_GOFAST -Iinclude/libgcc-2.95.3 -Iinclude -Iinclude/libgcc-2.95.3/config -isystem include/gcc"
 
 # Files built WITH strict aliasing (agent a4, 22 Nov: their matched code compiles differently with
 # -fno-strict-aliasing). Every other game file gets -fno-strict-aliasing.
@@ -245,6 +249,12 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
     )
 
     ninja.rule(
+        "libgcccc",
+        description="cc $in",
+        command=f"{LIBGCC_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
+    )
+
+    ninja.rule(
         "newlibcc",
         description="cc $in",
         command=f"{NEWLIB_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
@@ -289,7 +299,9 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             build(entry.object_path, entry.src_paths, rule, implicit=implicit)
         elif isinstance(seg, splat.segtypes.common.c.CommonSegC):
             implicit = asm_dependencies(paths, entry.src_paths[0])
-            if str(entry.src_paths[0]).startswith(("src/lib/libc/", "src/lib/libm/")):
+            if str(entry.src_paths[0]).startswith("src/lib/libgcc/"):
+                build(entry.object_path, entry.src_paths, "libgcccc", implicit=implicit)
+            elif str(entry.src_paths[0]).startswith(("src/lib/libc/", "src/lib/libm/")):
                 build(entry.object_path, entry.src_paths, "newlibcc", implicit=implicit)
             elif any(
                 str(src_path).startswith("src/lib/") for src_path in entry.src_paths

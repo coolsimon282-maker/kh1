@@ -1091,3 +1091,4 @@ mcRetVal                    = 0x00674BC0;
 init_vif_regs               = 0x0046C590; // size:0x20
 _impure_ptr                 = 0x0046A9C8; // size:4
 errno                       = 0x00494028; // size:4
+__thenan_df                 = 0x00492830; // size:0x20
