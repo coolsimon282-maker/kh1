@@ -912,7 +912,28 @@ s32 func_001CF5F0(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF638);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[2];
+    f32 unk_10[4];
+} ScriptMsgG;
+
+s32 func_001CF638(Script* arg0) {
+    ScriptMsgG msg;
+
+    msg.unk_00 = 12;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = arg0->unk_174[arg0->unk_174[3] + 4];
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF6C8);
 
