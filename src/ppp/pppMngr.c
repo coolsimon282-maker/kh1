@@ -253,7 +253,34 @@ void dpd_set_object_tex(ppvmng* pMng) {
     func_00181D30(p, pMng->pEtc->abUseRsd, texpStart, clutpStart);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_shape_data);
+extern pppShapeSt D_00363930[];
+
+s32* dpd_set_shape_data(s32* p, u8* use) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* s;
+    s32 k;
+    s32 j;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        s = (s16*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            pppShapeSt* d = &D_00363930[s[0]];
+            d->shape = (u_long128*)(s + 8);
+            d->nPacketSize = *(s32*)(s + 4);
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_rsd_data);
 
