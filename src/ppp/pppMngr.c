@@ -284,7 +284,35 @@ s32* dpd_set_shape_data(s32* p, u8* use) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_rsd_data);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_vsf_data);
+extern pppVsfSt D_00363D30[];
+
+s32* dpd_set_vsf_data(s32* p, u8* use) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s32* s;
+    s32 k;
+    s32 j;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        s = (s32*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            pppVsfSt* d = &D_00363D30[s[0]];
+            d->modelNo = *(u16*)(s + 1);
+            d->indexN = *(u16*)(s + 2);
+            d->index = (s16*)(s + 3);
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
 
 s32 dpd_set_object_data(ppvmng* pMng) {
     s32* piVar1;
