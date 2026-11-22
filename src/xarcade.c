@@ -206,7 +206,43 @@ void* func_00109B00(void) {
     return func_0011ED30(190000, func_00109AA0);
 }
 
+#ifdef VERSION_FM
+extern f32 D_00495184;
+extern f32 D_00495168;
+extern f32 D_0049516C;
+extern f32 D_002B8344;
+extern u64 D_002B6490[];
+extern u8 D_002B65E0[];
+void func_001099D8(void);
+
+s32 func_00109B28(void) {
+    f32 a;
+    f32 c;
+    switch (D_0048EC08) {
+    case 0:
+        D_0048EC08 = 1;
+        D_00495168 = D_00495184;
+        D_0049516C = 128.0f / D_00495184;
+    case 1:
+        break;
+    default:
+        return 0;
+    }
+    if (!(D_00495184 <= 0.0f)) {
+        func_001099D8();
+        c = (D_00495168 - D_00495184) * D_0049516C;
+        a = D_00495184 * D_0049516C;
+        D_002B6490[33] = (u64)(s32)a << 24 | 0x100808080;
+        D_002B6490[17] = (u64)(s32)c << 24 | 0x100808080;
+        func_00106948(D_002B65E0);
+        D_00495184 -= D_002B8344;
+        return 0;
+    }
+    return 4;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109B28);
+#endif
 s32 func_00109B28();
 
 void* func_00109C50(s32 arg0) {
