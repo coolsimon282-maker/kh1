@@ -2,6 +2,12 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
+extern u8 D_002B8760[];
+void FlushCache(s32);
+void sceGsExecLoadImage(u8 *, s32);
+void sceGsSetDefLoadImage(u8 *, s32, s32, s32, s32, s32, s32, s32);
+void sceGsSyncPath(s32, s32);
+
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106948);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106B58);
@@ -176,7 +182,12 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108FD0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001090E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00109180);
+void func_00109180(s32 a0, s32 a1) {
+    sceGsSetDefLoadImage(D_002B8760, ((a1 << 16) >> 16), 0, 0, 0, 0, 8, 2);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(D_002B8760, a0);
+}
 
 void func_001090E8(s32, s32, s32, s32);
 void func_00109180(s32, s32);
