@@ -295,7 +295,148 @@ void func_0019ED48(sceVu0FMATRIX m0, sceVu0FMATRIX m, PRyjMegaBirth* p, VRyjMega
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirth", pppRyjMegaBirthDraw);
+typedef struct {
+    /* 0x0 */ s16 seq;
+    /* 0x2 */ s16 time;
+    /* 0x4 */ s8 flag;
+    /* 0x5 */ char unk_05[3];
+} MBShpSeq;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ MBShpSeq seq[1];
+} MBShpHdr;
+
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ u16 flags;
+    /* 0x04 */ u8 col[4];
+    /* 0x08 */ u64 unk_08;
+    /* 0x10 */ f32* mat;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ u8 unk_18;
+    /* 0x1C */ void* unk_1C;
+    /* 0x20 */ char unk_20[0x10];
+} MBDrawSt;
+
+extern s32 D_00616224;
+s32 func_001BA340(void* shape, MBDrawSt* st, s32 size);
+s32 func_0019D840(VRyjMegaBirth* v, PRyjMegaBirth* p);
+void func_0019ECE8(sceVu0FMATRIX out, PRyjMegaBirth* p, sceVu0FMATRIX m);
+
+void pppRyjMegaBirthDraw(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl) {
+    VRyjMegaBirth* v = (VRyjMegaBirth*)&pobj->val[ctbl->useVal[2]];
+    u8* c = (u8*)&pobj->val[ctbl->useVal[1]];
+    RyjMegaBirthPt* pt = v->pvParticleData;
+    f32(*wmat)[4][4] = v->pvParticleWmat;
+    f32(*col)[8] = v->pvParticleColor;
+    s32 n = v->nParticle;
+    sceVu0FMATRIX m0;
+    sceVu0FMATRIX m;
+    sceVu0FMATRIX m2;
+    sceVu0FVECTOR ofs;
+    MBDrawSt ds;
+    pppShapeSt* st;
+    MBShpHdr* shp;
+    s32 r0, g0, b0, a0;
+    s32 r, g, b, a;
+    u8* data;
+    s32 i;
+
+    if (!func_0019D840(v, p)) {
+        return;
+    }
+    if (p->shpIdx == 0xFFFF) {
+        return;
+    }
+    func_0019ECE8(m0, p, v->matPar);
+    st = &ppvEnv->lpShape[p->shpIdx];
+    if (p->unk_0F == 0) {
+        ds.flags = 0x80;
+    } else {
+        ds.flags = 0;
+    }
+    if (p->unk_CD == 1) {
+        ds.flags |= 0x10;
+    }
+    if (p->unk_0C) {
+        ds.flags |= 0x800;
+    }
+    if (p->unk_0D) {
+        ds.flags |= 0x400;
+    }
+    if (p->unk_0E) {
+        ds.unk_1C = m2;
+        ofs[0] = p->unk_10[0];
+        ofs[1] = p->unk_10[1];
+        ofs[2] = p->unk_10[2];
+        ofs[3] = 0.0f;
+    } else {
+        ds.unk_1C = NULL;
+    }
+    ds.unk_08 = 0;
+    ds.unk_18 = 0;
+    ds.mat = m[0];
+    shp = (MBShpHdr*)st->shape;
+    r0 = c[0x8];
+    g0 = c[0x9];
+    b0 = c[0xA];
+    a0 = c[0xB];
+    for (i = 0; i < n; i++) {
+        if (pt->life != 0) {
+            func_0019ED48(m0, m, p, v, pt, *wmat, m2, p->unk_0E);
+            if (p->unk_0E) {
+                sceVu0AddVector(m2[3], m2[3], ofs);
+                sceVu0MulMatrix(m2, ppvScreenMatrix, m2);
+            }
+            // (pt->seq << 3) rather than shp->seq[pt->seq]: the target adds shp + index, not index + shp
+            data = (u8*)shp + *(s16*)((u8*)shp + (pt->seq << 3) + 0x10);
+            a = (f32)a0 + (f32)pt->col[3] - pt->fade;
+            r = r0 + pt->col[0];
+            g = g0 + pt->col[1];
+            b = b0 + pt->col[2];
+            if (col != NULL) {
+                r += (s32)(*col)[0];
+                g += (s32)(*col)[1];
+                b += (s32)(*col)[2];
+                a += (s32)(*col)[3];
+            }
+            if (r < 0) {
+                r = 0;
+            } else if (r > 0xFF) {
+                r = 0xFF;
+            }
+            if (g < 0) {
+                g = 0;
+            } else if (g > 0xFF) {
+                g = 0xFF;
+            }
+            if (b < 0) {
+                b = 0;
+            } else if (b > 0xFF) {
+                b = 0xFF;
+            }
+            if (a < 0) {
+                a = 0;
+            } else if (a > 0x7F) {
+                a = 0x7F;
+            }
+            ds.col[0] = r;
+            ds.col[1] = g;
+            ds.col[2] = b;
+            ds.col[3] = a;
+            ds.unk_14 = D_00616224;
+            D_00616224 = func_001BA340(data, &ds, st->nPacketSize);
+        }
+        if (wmat != NULL) {
+            wmat++;
+        }
+        if (col != NULL) {
+            col++;
+        }
+        pt++;
+    }
+}
 
 void pppRyjMegaBirthCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     VRyjMegaBirth* v = (VRyjMegaBirth*)&pobj->val[ctbl->useVal[2]];
