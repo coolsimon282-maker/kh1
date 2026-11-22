@@ -171,8 +171,93 @@ extern s32* D_0053260C;
 extern s32 D_00532610;
 
 #ifdef VERSION_FM
-s32 func_0013AB68(u16* arg0);
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013AB68);
+extern f32 D_0052AD04;
+extern f32 D_0052AD08;
+extern f32 D_0052AD0C;
+extern sceVu0FVECTOR D_0052AD10;
+extern sceVu0FVECTOR D_0052AD20;
+extern sceVu0FVECTOR D_0052AD30;
+extern sceVu0FVECTOR D_0052AD40;
+extern f32 D_0052AD50;
+extern f32 D_002B8344;
+void func_001625C8(sceVu0FMATRIX, sceVu0FMATRIX);
+
+s32 func_0013AB68(u16* arg0) {
+    sceVu0FVECTOR sp0;
+    sceVu0FVECTOR sp10;
+    sceVu0FMATRIX sp20;
+    sceVu0FMATRIX sp60;
+
+    f32 var_f21;
+    f32 ry;
+    f32 s;
+    f32 fVar1;
+    f32 fVar2;
+
+    if (((D_002C1EA8 >> 20) & 1) == 0) {
+        return 4;
+    }
+
+    if (*arg0 & 0x10) {
+        func_001625C8(D_005325E8->unk_D0, sp60);
+        D_002DECF0[3] = 1.0f;
+        D_002DECE0[3] = 1.0f;
+        sceVu0ApplyMatrix(D_0052AD20, sp60, D_002DECE0);
+        sceVu0ApplyMatrix(D_0052AD30, sp60, D_002DECF0);
+        sceVu0SubVector(D_0052AD10, D_00301040, D_0052AD20);
+        D_0052AD08 = func_00120A38(D_0052AD10);
+        sceVu0SubVector(D_0052AD10, D_0052AD30, D_0052AD20);
+        sceVu0Normalize(D_0052AD10, D_0052AD10);
+        sceVu0ScaleVector(D_0052AD10, D_0052AD10, D_0052AD08);
+        sceVu0AddVector(D_0052AD30, D_0052AD10, D_0052AD20);
+        sceVu0SubVector(D_0052AD40, D_0052AD20, D_0052AD30);
+        D_0052AD40[1] = 0.0f;
+        func_001223B0(D_0052AD40, D_0052AD40);
+        D_0052AD08 = D_0052AD40[3];
+        D_0052AD40[3] = 1.0f;
+        sceVu0SubVector(D_0052AD10, D_00301030, D_00301040);
+        D_0052AD0C = func_00120A58(D_0052AD10) - D_0052AD08;
+
+        fVar1 = atan2f(D_0052AD20[0] - D_0052AD30[0], D_0052AD20[2] - D_0052AD30[2]);
+        fVar2 = atan2f(D_00301030[0] - D_00301040[0], D_00301030[2] - D_00301040[2]);
+        D_0052AD04 = func_00120AC8(fVar2 - fVar1);
+
+        if (func_00177D68() < 0.5f) {
+            if (D_0052AD04 < 0.0f) {
+                D_0052AD04 += 2 * PI;
+            } else {
+                D_0052AD04 -= 2 * PI;
+            }
+        }
+        if (func_00177D68() < 0.5f) {
+            D_0052AD04 += 0.5235987306f;
+        } else {
+            D_0052AD04 -= 0.5235987306f;
+        }
+        D_0052AD50 = 40.0f;
+    }
+
+    D_0052AD50 -= D_002B8344;
+    var_f21 = D_0052AD50 / 40.0f;
+    if (var_f21 < 0.0f) {
+        var_f21 = 0.0f;
+    }
+
+    var_f21 = (cosf(var_f21 * PI) + 1.0f) * 0.5f;
+    sceVu0InterVector(sp10, D_00301040, D_0052AD30, var_f21);
+    ry = func_00120AC8(D_0052AD04 * var_f21);
+    sceVu0RotMatrixY(sp20, D_002C1E20, ry);
+    sceVu0ApplyMatrix(D_0052AD10, sp20, D_0052AD40);
+    s = D_0052AD08 + D_0052AD0C * var_f21;
+    sceVu0ScaleVector(D_0052AD10, D_0052AD10, s);
+    sceVu0AddVector(sp0, sp10, D_0052AD10);
+    sp0[3] = 1.0f;
+    sp10[3] = 1.0f;
+    sp0[1] = (D_00301030[1] * var_f21) + (D_0052AD20[1] * (1.0f - var_f21));
+    sceVu0ApplyMatrix(D_002DECE0, D_005325E8->unk_D0, sp0);
+    sceVu0ApplyMatrix(D_002DECF0, D_005325E8->unk_D0, sp10);
+    return 0;
+}
 #else
 s32 func_0013AB68(u16* arg0) {
     sceVu0FVECTOR sp0;
