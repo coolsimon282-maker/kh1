@@ -2,12 +2,22 @@
 #include "xnoodle.h"
 
 typedef struct {
-    /* 0x00 */ char unk_00[0x11];
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s16 unk_08;
+    /* 0x0A */ s16 unk_0A;
+    /* 0x0C */ s16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ u8 unk_10;
     /* 0x11 */ s8 unk_11;
     /* 0x12 */ u8 unk_12;
-    /* 0x13 */ char unk_13[0xD];
+    /* 0x13 */ u8 unk_13;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ f32 unk_18;
+    /* 0x1C */ s32 unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
 } XSauce;
 
 u_long128* D_002B7B70;
@@ -317,7 +327,27 @@ s32 func_0010E9A8(u8* s) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EA38);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EB50);
+/* statement order found by brute force (scheduling) */
+void func_0010EB50(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
+    p->unk_10 = 1;
+    p->unk_12 = 0;
+    p->unk_00 = 0;
+    p->unk_14 = 0;
+    p->unk_24 = 0;
+    p->unk_11 = 0;
+    p->unk_0E = 0;
+    p->unk_08 = arg0;
+    p->unk_0A = arg1;
+    p->unk_1C = 0;
+    p->unk_04 = arg3;
+    p->unk_13 |= 2;
+    p->unk_20 = 0;
+    p->unk_0C = arg0 + 0x5E;
+    p->unk_18 = arg2;
+    p->unk_28 = 0;
+    func_00106948(&D_002B7FF0);
+    func_0010E330(p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EBE0);
 
