@@ -1,6 +1,7 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x006B18).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern f32 D_00494BC0[];
 
 extern u8 D_002B8760[];
 void FlushCache(s32);
@@ -122,7 +123,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107A78);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107B68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107E10);
+void func_00107E10(f32* a0) {
+    sceVu0CopyVector(D_00494BC0, a0 + 4);
+    D_00494BC0[3] = a0[3];
+    sceVu0CopyVector(D_00494BC0 + 4, a0 + 12);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107E60);
 
