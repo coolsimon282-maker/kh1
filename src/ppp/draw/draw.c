@@ -170,7 +170,66 @@ void func_001AAA30(DrawNodeHead* head, s32 pool, f32* arg2, f32* arg3) {
     head->first = node;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAB28);
+typedef struct {
+    /* 0x00 */ DrawNodeHead* head;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ DrawNodeList* freeList;
+    /* 0x10 */ f32* unk_10;
+    /* 0x14 */ f32* unk_14;
+} DrawNodeUpd;
+
+typedef struct {
+    /* 0x00 */ sceVu0FMATRIX m;
+    /* 0x40 */ DrawNode* node;
+    /* 0x44 */ s32 unk_44;
+    /* 0x48 */ DrawNodeList* unk_48;
+    /* 0x4C */ s32 unk_4C;
+} DrawNodeCtx;
+
+void func_001A9C50(DrawNodeCtx*);
+// updates every node of a list (vectors, flags), draws it with func_001A9C50 and frees the ones flagged 0x10
+void func_001AAB28(DrawNodeUpd* u) {
+    DrawNodeCtx ctx;
+    DrawNodeHead* head = u->head;
+    DrawNode* node;
+    DrawNode* cur;
+    s32 bits = 0;
+
+    if (head->flags & 2) {
+        head->flags &= ~2;
+        bits = 0x20;
+    }
+    sceVu0UnitMatrix(ctx.m);
+    ctx.unk_44 = u->unk_04;
+    ctx.unk_48 = u->freeList;
+    ctx.unk_4C = u->unk_08;
+    node = head->first;
+    while (node != NULL) {
+        if (node->flags & 0x200) {
+            func_001AB0F0((f32*)((DrawNodeEntry*)node->unk_40 + node->unk_34)->data, u->unk_10);
+            func_001AB0F0((f32*)(((DrawNodeEntry*)node->unk_40 + node->unk_34)->data + 0x20), u->unk_14);
+        }
+        if (node->flags & 0x100) {
+            node->flags |= bits;
+        }
+        ctx.node = node;
+        func_001A9C50(&ctx);
+        if (node->flags & 0x10) {
+            cur = node;
+            node = cur->next;
+            if (cur->next != NULL) {
+                cur->next->prev = cur->prev;
+            }
+            cur->prev->next = cur->next;
+            func_001AA868(cur);
+            cur->next = u->freeList->free;
+            u->freeList->free = cur;
+        } else {
+            node = node->next;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AAC80);
 
