@@ -204,7 +204,14 @@ XToaster* func_001235B8(XToaster* arg0, XToaster* p) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123620);
+XToaster* func_00123620(XToaster* p) {
+    while ((p = func_001234A0(p)) != NULL) {
+        if (p->unk_006 == 2 || p->unk_006 == 9 || p->unk_006 == 10 || ((s32)(XT_FLAGS(p) >> 37) & 3) == 2) {
+            return p;
+        }
+    }
+    return NULL;
+}
 
 s32 func_00123698(void) {
     s32 n = 0;
