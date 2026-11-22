@@ -67,7 +67,10 @@ void func_0010AE98(XNoodle* arg0) {
     arg0->unk_58 = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010AEB8);
+void func_0010AEB8(f32* arg0) {
+    sceVu0ViewScreenMatrix(D_0048EC90, 512.0f, 1.0f, 1.0f, arg0[12] + 2048.0f, arg0[13] + 2048.0f, 1.0f,
+                           16777000.0f, 2.0f, 4000000.0f);
+}
 
 void func_0010AF38(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0FMATRIX m;
