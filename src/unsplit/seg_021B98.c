@@ -48,7 +48,23 @@ Seg21B98Unk10 *func_00121D00(void) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D60);
+extern u8 D_9A0000[];
+
+Seg21B98Unk10 *func_00121D60(u32 size) {
+    Seg21B98Unk10 *prev = &D_004F45B0.head;
+    Seg21B98Unk10 *n;
+
+    while ((n = prev->unk_10) != NULL) {
+        if ((u32)(n->unk_04 - (prev->unk_04 + prev->unk_08)) >= size) {
+            return prev;
+        }
+        prev = n;
+    }
+    if ((u32)((s32)D_9A0000 - (prev->unk_04 + prev->unk_08)) >= size) {
+        return prev;
+    }
+    return NULL;
+}
 
 Seg21B98Unk10 *func_00121DE0(s32 id, s32 unused) {
     Seg21B98Unk10 *n;
