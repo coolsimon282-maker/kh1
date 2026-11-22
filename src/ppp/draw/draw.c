@@ -2,6 +2,7 @@
 #include "ppp/draw.h"
 #include "libgraph.h"
 #include "eekernel.h"
+#include "ppp.h"
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9280);
 
@@ -419,7 +420,98 @@ void func_001AB470(DrawFreeList* list, u16* next, u16 count) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB4B8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB828);
+typedef struct {
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ void* unk_04;
+    /* 0x08 */ u16 flag;
+    /* 0x0A */ u8 unk_0A;
+    /* 0x0C */ u16 unk_0C;
+    /* 0x0E */ s16 unk_0E;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ u8 col[4];
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ void* dmat;
+    /* 0x24 */ void* unk_24;
+    /* 0x28 */ void* unk_28;
+    /* 0x2C */ void* cmat;
+    /* 0x30 */ void* unk_30;
+    /* 0x34 */ s32 unk_34;
+    /* 0x38 */ pppSVECTOR* lpvert;
+    /* 0x3C */ pppSVECTOR* lpnorm;
+    /* 0x40 */ s32 unk_40;
+    /* 0x44 */ s32 unk_44;
+    /* 0x48 */ char pad[0x18];
+} DrawMdPrm; // parameter block for op1_md_draw (as MdPrm in pppDrawMdl.c)
+
+extern char D_00616240[];
+extern char D_00616140[];
+extern char D_00616100[];
+extern s32 D_00616224;
+s32 op1_md_draw(OMD_H* omd, DrawMdPrm* prm, s32 size);
+
+void func_001AB828(u32 index, u16* col, s32 a2, s32 a3, s32 a4, u8 flags, s32 a6) {
+    pppModelSt* mdl;
+    OMD_H* omd;
+    sceVu0FMATRIX m;
+    DrawMdPrm prm;
+
+    if (index == 0xFFFF) {
+        return;
+    }
+    mdl = &ppvEnv->lpModel[index];
+    omd = mdl->omd;
+    prm.mode = 0;
+    if (flags & 2) {
+        prm.mode = 4;
+        if (!(omd->flag & 1)) {
+            prm.mode |= 8;
+        }
+    } else {
+        if (flags & 1) {
+            prm.mode = 0x80;
+        }
+        if (!(omd->flag & 1)) {
+            prm.mode |= 8;
+        }
+    }
+    if (!(omd->flag & 2)) {
+        prm.mode |= 0x10;
+    }
+    if (flags & 4) {
+        prm.mode |= 0x200;
+    }
+    if (flags & 8) {
+        prm.mode |= 0x100;
+    }
+    if (flags & 0x10) {
+        prm.mode |= 0x2000;
+        prm.unk_30 = m;
+        sceVu0MulMatrix(m, ppvWorldMatrix, ppvPObj.next->cmat);
+    }
+    prm.unk_44 = (flags & 0x20) ? a6 : 0;
+    prm.flag = *(u16*)&omd->alpha;
+    prm.unk_1C = 0;
+    prm.lpvert = ppvPObj.next->lpvert;
+    prm.lpnorm = ppvPObj.next->lpnorm;
+    prm.unk_04 = D_00616240;
+    prm.unk_0E = a2;
+    prm.unk_10 = a3 << 16;
+    prm.unk_14 = a4 << 16;
+    prm.col[0] = col[0] >> 7;
+    prm.col[1] = col[1] >> 7;
+    prm.col[2] = col[2] >> 7;
+    prm.col[3] = col[3] >> 7;
+    prm.dmat = ppvPObj.next->dmat;
+    prm.unk_24 = D_00616140;
+    prm.unk_28 = D_00616100;
+    prm.cmat = ppvPObj.next->cmat;
+    prm.unk_34 = D_00616224;
+    prm.unk_0C = 0;
+    prm.unk_40 = 0;
+    prm.unk_0A = 0;
+    D_00616224 = op1_md_draw(omd, &prm, mdl->nPacketSize);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001ABA80);
 
