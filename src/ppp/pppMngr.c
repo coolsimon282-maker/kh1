@@ -621,7 +621,44 @@ void func_00184E48(ppvmng* pMng) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184E80);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184F60);
+typedef struct {
+    /* 0x00 */ char unk_00[0x54];
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 unk_58;
+    /* 0x5C */ s32 unk_5C;
+    /* 0x60 */ char unk_60[0x14];
+    /* 0x74 */ void* unk_74;
+    /* 0x78 */ char unk_78[0xC];
+    /* 0x84 */ u8 unk_84;
+    /* 0x85 */ u8 unk_85;
+    /* 0x86 */ char unk_86[0x2A];
+    /* 0xB0 */ u64 unk_B0;
+} PppMngT;
+
+s32 func_00184F60(ppvmng* arg0) {
+    PppMngT* m = (PppMngT*)arg0;
+    s32 t;
+
+    ppvMng = arg0;
+    if (ppvUserStopPartF != 0 || (m->unk_B0 & 0xFF0000FF00)) {
+        return 0;
+    }
+    t = m->unk_58;
+    m->unk_5C = t;
+    m->unk_58 = t + 0x1000;
+    if (m->unk_84 != 0) {
+        if (m->unk_85 != 0) {
+            return m->unk_74 == NULL;
+        }
+        if (m->unk_58 > 0x6FFFFFFF) {
+            m->unk_58 = 0x70000000;
+            m->unk_5C = 0x6FFFF000;
+        }
+        return 0;
+    }
+    return m->unk_58 >= m->unk_54;
+}
+
 
 void func_00185000(void) {
 }
