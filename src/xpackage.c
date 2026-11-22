@@ -231,7 +231,26 @@ void func_00247FB8(s32 arg0, s32 arg1, s32 arg2) {
     func_00247DC8(7, arg0, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247FE8);
+void func_0024E1D0(void);
+
+void func_00247FE8(s32 idx) {
+    s32 old40 = D_0046A040;
+    s32 old48 = D_0046A048;
+    XWhiskey* p;
+
+    if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
+        p = XPACKAGE_TABLE[idx];
+        D_0046A038 = (s32)p;
+        D_0046A03C = p->unk_0C;
+        D_0046A040 = p->unk_10;
+        D_0046A044 = p->unk_14;
+        D_0046A048 = p->unk_18;
+        p->munny++;
+        func_0024E1D0();
+        D_0046A040 = old40;
+        D_0046A048 = old48;
+    }
+}
 
 void func_002480A8(void) {
     func_00247FE8(0);
