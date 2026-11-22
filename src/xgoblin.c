@@ -27,7 +27,48 @@ extern u_long128 D_004DDA00;
 extern s32 D_004DDC00;
 
 // Loads several modules
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EAF8);
+extern _VX D_002C1EB8;
+extern s32 D_002C5960;
+extern s32 D_002C1EC8;
+extern char D_0048D1C0[];
+extern char D_0048D1D0[];
+extern char D_0048D1E0[];
+extern char D_0048D1F0[];
+extern char D_0048D200[];
+extern char D_0048D210[];
+extern char D_0048D220[];
+extern char D_0048D230[];
+void func_00120B10(void);
+void func_001209D8(char*);
+void func_0011F8C0(void);
+void func_0024D4B0(void);
+void func_00120BA0(void);
+void func_00122410(void);
+void func_001220E8(void);
+
+void func_0011EAF8(void) {
+    s32 i;
+
+    D_002C5960 = 0;
+    D_002C1EB8.s32 = 0;
+    func_00120B10();
+    func_001209D8(D_0048D1C0);
+    func_001209D8(D_0048D1D0);
+    func_001209D8(D_0048D1E0);
+    for (i = 0; i < 2; i++) {
+        func_001209D8(D_0048D1F0);
+    }
+    func_0011F8C0();
+    func_001209D8(D_0048D200);
+    func_001209D8(D_0048D210);
+    func_001209D8(D_0048D220);
+    func_001209D8(D_0048D230);
+    func_0024D4B0();
+    func_00120BA0();
+    func_00122410();
+    func_001220E8();
+    D_002C1EC8 = 0;
+}
 
 s32 func_0011EBC8(void) {
     func_00122250();
