@@ -3,6 +3,8 @@
 #include "common.h"
 
 extern s32 D_004F2A00[];
+void _sceSifLoadStartModule(s32, s32, s32, s32);
+s32 func_00120930(void);
 
 s32* func_0011FD30(void) {
     return D_004F2A00;
@@ -86,7 +88,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120930);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001209D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120A20);
+void func_00120A20(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 t0 = func_00120930();
+    _sceSifLoadStartModule(t0, a1, a2, a3);
+}
 
 void func_001208B8(void) {
     ((s16*)func_0011ED30(0x2D2A8, func_00120908))[1] = -1;
