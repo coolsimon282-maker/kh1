@@ -1,6 +1,12 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+void func_00159350();
+void func_00159440();
+void func_001595A8();
+void func_00159740();
+void func_00159808();
+void func_0014CEE8();
 extern u8* D_003051EC;
 void func_0015BAD0(u8*, u8*, f32*);
 extern s32 D_002979E8;
@@ -3196,7 +3202,21 @@ s32 func_00155A90(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155AD8);
+s32 func_00155AD8(s32 a, s32 b) {
+    s32 i;
+    u8* base = (u8*)D_00550400 + a * 0x48;
+    u8* e;
+    for (i = 0; i < b; i++) {
+        if (*(s8*)(base + i * 0x48) != a || base[i * 0x48 + 1] != b) {
+            for (i = 0; i < b; i++) {
+                base[i * 0x48] = a;
+                base[i * 0x48 + 1] = b;
+            }
+            return 0;
+        }
+    }
+    return 1;
+}
 
 void func_00155B70(u8* a0) {
     s32 e, o;
@@ -3586,7 +3606,11 @@ s32 func_001598C8(u8* p, s32 a) {
     return *(s32*)(p + 0x70);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001598E0);
+void func_001598E0(void) {
+    func_0014F830(0x1E, 0x18, (s32)func_00159350, 0, (s32)func_00159440, (s32)func_001595A8, (s32)func_0014F828,
+                  (s32)func_001593F8, (s32)func_00159740);
+    func_0014F830(0x1F, 0x19, 0, 0, (s32)func_00159808, (s32)func_0014CEE8, (s32)func_001598C8, (s32)func_001593F8, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159978);
 
@@ -4323,7 +4347,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001680D8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001681B8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00168318);
+s32 func_00168318(u32* p) {
+    switch (*p) {
+    case 0x4A424F4D:
+    case 0x41584554:
+    case 0x454E4F42:
+    case 0x4E544D4D:
+    case 0x4C535255:
+    case 0x564E454D:
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001683B0);
 
