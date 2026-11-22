@@ -57,7 +57,24 @@ s32 op_spr_check(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_file_read);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_file_size);
+extern char D_00489AD8[];
+int printf(const char*, ...);
+void exit(int);
+
+s32 op_file_size(char* name) {
+    char buf[0x400];
+    s32 fd;
+    s32 size;
+
+    fd = sceOpen(name, SCE_RDONLY);
+    if (fd < 0) {
+        printf(D_00489AD8, name);
+        exit(1);
+    }
+    size = sceLseek(fd, 0, SCE_SEEK_END);
+    sceClose(fd);
+    return size;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_oef2_set);
 
