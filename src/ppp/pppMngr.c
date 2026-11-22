@@ -473,7 +473,30 @@ void func_00183A60(PppFuncList* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183AD0);
+typedef struct {
+    /* 0x00 */ char unk_00[0x20];
+    /* 0x20 */ s32 cvoff;
+    /* 0x24 */ s16 unk_24;
+    /* 0x26 */ s16 ctrlTablen;
+    /* 0x28 */ pppCtrlTable ctrlTable[0];
+} PppPDataF;
+
+void func_00183AD0(pppPObject* pobj) {
+    PppPDataF* pdt = (PppPDataF*)pobj->pdtval->pdt;
+    pppCtrlData** cd = (pppCtrlData**)((u8*)pobj + pdt->cvoff);
+    pppCtrlTable* ct;
+    pppProg* prog;
+    s32 i;
+
+    for (i = 0; i < pdt->ctrlTablen; i++) {
+        ct = &pdt->ctrlTable[i];
+        prog = (pppProg*)ct->prog;
+        *cd++ = ct->ctrldt;
+        if (prog != NULL && prog->con2Func != NULL) {
+            ((void (*)(pppPObject*, pppCtrlTable*))prog->con2Func)(pobj, ct);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183B70);
 
