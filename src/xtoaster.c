@@ -2,7 +2,9 @@
 #include "libvu0.h"
 
 typedef struct {
-    /* 0x00*/ char unk_00[0xC];
+    /* 0x00*/ char unk_00[0x4];
+    /* 0x04*/ s32 unk_04;
+    /* 0x08*/ char unk_08[0x4];
     /* 0x0C*/ s32 unk_0C;
     /* 0x10*/ char unk_10[0x34];
     /* 0x44*/ f32 unk_44;
@@ -22,15 +24,24 @@ typedef struct XToaster {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ char unk_004[0x2];
     /* 0x006 */ u8 unk_006;
-    /* 0x007 */ char unk_007[0x29];
+    /* 0x007 */ char unk_007[0x9];
+    /* 0x010 */ sceVu0FVECTOR unk_010;
+    /* 0x020 */ sceVu0FVECTOR unk_020;
     /* 0x030 */ sceVu0FVECTOR unk_030;
     /* 0x040 */ sceVu0FVECTOR unk_040;
-    /* 0x050 */ char unk_050[0x24];
+    /* 0x050 */ sceVu0FVECTOR unk_050;
+    /* 0x060 */ char unk_060[0x14];
     /* 0x074 */ struct XToaster* unk_074;
     /* 0x078 */ s32 unk_078;
     /* 0x07C */ char unk_07C[0x4];
     /* 0x080 */ s32 unk_080;
-    /* 0x084 */ char unk_084[0xAC];
+    /* 0x084 */ char unk_084[0x3C];
+    /* 0x0C0 */ s32 unk_0C0;
+    /* 0x0C4 */ f32 unk_0C4;
+    /* 0x0C8 */ s32 unk_0C8;
+    /* 0x0CC */ f32 unk_0CC;
+    /* 0x0D0 */ char unk_0D0[0x50];
+    /* 0x120 */ sceVu0FVECTOR unk_120;
     /* 0x130 */ XToast* unk_130;
     /* 0x134 */ u8* unk_134;
     /* 0x138 */ s32 unk_138;
@@ -42,16 +53,28 @@ typedef struct XToaster {
     /* 0x154 */ s32 unk_154;
     /* 0x158 */ char unk_158[0x78];
     /* 0x1D0 */ s32 unk_1D0;
-    /* 0x1D4 */ char unk_1D4[0x1A0];
+    /* 0x1D4 */ char unk_1D4[0xCC];
+    /* 0x2A0 */ sceVu0FVECTOR unk_2A0;
+    /* 0x2B0 */ char unk_2B0[0xA0];
+    /* 0x350 */ s32 unk_350[4];
+    /* 0x360 */ char unk_360[0x10];
+    /* 0x370 */ u32 unk_370; /* low half of the u64 flags (XT_FLAGS) */
     /* 0x374 */ s32 unk_374;
     /* 0x378 */ s32 unk_378;
     /* 0x37C */ s32 unk_37C[3];
     /* 0x388 */ s32 unk_388;
-    /* 0x38C */ char unk_38C[0x14];
+    /* 0x38C */ char unk_38C[0x12];
+    /* 0x39E */ u8 unk_39E;
+    /* 0x39F */ char unk_39F[0x1];
     /* 0x3A0 */ s32 unk_3A0;
     /* 0x3A4 */ char unk_3A4[0x4];
     /* 0x3A8 */ s32 unk_3A8;
-    /* 0x3AC */ char unk_3AC[0x64];
+    /* 0x3AC */ char unk_3AC[0x4];
+    /* 0x3B0 */ s32 unk_3B0;
+    /* 0x3B4 */ f32 unk_3B4;
+    /* 0x3B8 */ s32 unk_3B8;
+    /* 0x3BC */ s32 unk_3BC;
+    /* 0x3C0 */ char unk_3C0[0x50];
     /* 0x410 */ f32 unk_410;
     /* 0x414 */ f32 unk_414;
     /* 0x418 */ char unk_418[0x98];
@@ -72,7 +95,7 @@ void func_00162110(s32 arg0, void* arg1);
 void func_00149860(XToaster* arg0);
 void func_00123B20(XToaster* arg0);
 
-#define XT_FLAGS(p) (*(u64*)&(p)->unk_1D4[0x19C])
+#define XT_FLAGS(p) (*(u64*)&(p)->unk_370)
 /* 3 XToaster* slots at 0x2E26A0 (right after the XToaster array) */
 #define XT_SLOTS ((XToaster**)D_002E26A0)
 
@@ -186,7 +209,7 @@ s32 func_001233D0(XToaster* arg0) {
 s32 func_001233F8(XToaster* arg0) {
     s32 ret = 0;
     if (arg0 != NULL) {
-        if ((*(u64*)&arg0->unk_1D4[0x19C] & 0x300000000) == 0x100000000) {
+        if ((XT_FLAGS(arg0) & 0x300000000) == 0x100000000) {
             ret = 1;
         }
     }
@@ -224,9 +247,9 @@ XToaster* func_001234A0(XToaster* p) {
 s64 func_00123518(XToaster* arg0, XToaster* arg1) {
     s64 ret = 0;
     if (!(arg1->unk_000 & 0x200)) {
-        u64 t = (*(u64*)&arg1->unk_1D4[0x19C] >> 37) & 3;
+        u64 t = (XT_FLAGS(arg1) >> 37) & 3;
         if (t != 0) {
-            ret = t != ((*(u64*)&arg0->unk_1D4[0x19C] >> 37) & 3);
+            ret = t != ((XT_FLAGS(arg0) >> 37) & 3);
         }
     }
     return ret;
@@ -460,7 +483,61 @@ void func_00123C80(XToaster* arg0, f32 arg1, f32 arg2) {
     arg0->unk_414 = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123C90);
+typedef struct {
+    /* 0x00 */ u64 unk_00;
+    /* 0x08 */ char unk_08[0x88];
+    /* 0x90 */ XToaster* unk_90;
+} XToasterObj;
+
+f32 func_00120AC8(f32);
+f32 sinf(f32);
+f32 cosf(f32);
+void func_00116660(sceVu0FVECTOR);
+XToasterObj* func_0014A398(XToasterObj*);
+extern sceVu0FVECTOR D_002C58A0;
+
+void func_00123C90(XToaster* p, s32 arg1) {
+    f32* v = (f32*)arg1;
+    XToasterObj* q;
+    f32 a;
+
+    sceVu0CopyVector(p->unk_010, v);
+    p->unk_010[3] = 1.0f;
+    sceVu0CopyVector(p->unk_050, p->unk_010);
+    if (!((XT_FLAGS(p) >> 44) & 1)) {
+        a = func_00120AC8(v[3]);
+        p->unk_030[0] = sinf(a);
+        p->unk_030[1] = 0.0f;
+        p->unk_030[2] = cosf(a);
+        *(f32*)&p->unk_150 = a;
+        p->unk_030[3] = a;
+        sceVu0CopyVector(p->unk_020, p->unk_030);
+    }
+    p->unk_020[3] = 0.0f;
+    p->unk_3B4 = v[1];
+    p->unk_3B0 = 0;
+    p->unk_3B8 = 0;
+    p->unk_3BC = 0;
+    p->unk_0C0 = 0;
+    p->unk_0C4 = 1.0f;
+    p->unk_0C8 = 0;
+    p->unk_0CC = 1.0f;
+    func_00136D38(p);
+    sceVu0CopyVector(p->unk_2A0, p->unk_010);
+    func_00116660(p->unk_2A0);
+    if (!(p->unk_130->unk_04 & 0x40000)) {
+        p->unk_350[0] = p->unk_350[1] = p->unk_350[2] = p->unk_350[3] = 0x80;
+    }
+    p->unk_39E = 0;
+    XT_FLAGS(p) &= ~0x400000000000;
+    sceVu0CopyVector(p->unk_120, D_002C58A0);
+    q = NULL;
+    while ((q = func_0014A398(q)) != NULL) {
+        if (q->unk_90 == p && (*(s32*)&q->unk_00 & 3) == 1) {
+            q->unk_00 &= ~0x10000;
+        }
+    }
+}
 
 void func_00123E48(s32 arg0, s32 arg1) {
     func_00123C90(func_00123880(arg0), arg1);
