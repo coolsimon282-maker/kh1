@@ -5070,7 +5070,22 @@ s32 func_001DE5F0(UnkDE5F0* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE680);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE750);
+void func_001318E8(UnkDE5F0C*, s32, sceVu0FMATRIX);
+void func_00147E08(UnkDE5F0A*, sceVu0FMATRIX);
+
+s32 func_001DE750(UnkDE5F0* arg0) {
+    sceVu0FMATRIX m;
+
+    if ((s32)(*(u64*)D_0038CD00 >> 40) & 1) {
+        return 4;
+    }
+    if (arg0->unk_10->unk_14 & 2) {
+        return 4;
+    }
+    func_001318E8(arg0->unk_14->unk_04, arg0->unk_18, m);
+    func_00147E08(arg0->unk_10, m);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE7C0);
 
