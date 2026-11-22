@@ -226,7 +226,13 @@ void sceVu0TransMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FVECTOR tv) {
 	": : "r" (m0) , "r" (m1), "r" (tv):"$7","$8","$9","memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyVector);
+// The SDK's inline-asm version (below) leaves the last sq out of the jr delay slot with this compiler; the same
+// instructions come out of register variables, which gcc can schedule.
+void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
+    register u_long128 t asm("$6") = *(u_long128*)v1;
+
+    *(u_long128*)v0 = t;
+}
 // void sceVu0CopyVector(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
 //     __asm__ __volatile__("	\n\
 // 	lq	$6,0x0(%1)			\n\
@@ -234,7 +240,17 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyVector);
 // 	": : "r" (v0) , "r" (v1):"$6", "memory");
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0CopyMatrix);
+void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
+    register u_long128 r7 asm("$7") = ((u_long128*)m1)[1];
+    register u_long128 r8 asm("$8") = ((u_long128*)m1)[2];
+    register u_long128 r9 asm("$9") = ((u_long128*)m1)[3];
+    register u_long128 r6 asm("$6") = ((u_long128*)m1)[0];
+
+    ((u_long128*)m0)[1] = r7;
+    ((u_long128*)m0)[2] = r8;
+    ((u_long128*)m0)[3] = r9;
+    ((u_long128*)m0)[0] = r6;
+}
 // void sceVu0CopyMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 //     __asm__ __volatile__("	\n\
 // 	lq    $6,0x0(%1)		\n\
