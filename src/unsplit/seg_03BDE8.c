@@ -1,6 +1,11 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_002979E8;
+void func_00135800(u8*, f32, f32);
+f32 func_00121970(f32);
+void func_001EE8E0(s32, s32);
+void func_001EE768(s32);
 extern u8 D_FE0000[];
 typedef struct { s32 f0; u8 f4[3]; u8 b3x; } S550400h;
 u8* func_001320A8_1(s32) __asm__("func_001320A8");
@@ -521,7 +526,7 @@ s32 func_0015D848(void);
 u8* func_0015DA70(u8*);
 s32 func_0015E8D8(void);
 void func_0015E9C8(u8*, f32*);
-s32 func_0015E840(void);
+void func_0015E840(u8*);
 void func_00182110(s32*);
 u8* func_00130578(s32, s32, f32);
 void func_00140FA8(u8*);
@@ -3346,7 +3351,22 @@ s32 func_00157560(u8* p) {
     return e->unk_04 != p ? 1 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00157AD8);
+void func_00157AD8(s32 i) {
+    Seg551670* e = &D_00551670[i];
+    if (e->unk_00 < 5) {
+        if (e->unk_00 >= 2) {
+            switch (e->unk_01) {
+            case 0:
+                func_001EE8E0(e->unk_02, e->unk_03);
+                break;
+            case 1:
+                func_001EE768(*(s32*)((u8*)e + 0xC));
+                break;
+            }
+        }
+    }
+    e->unk_00 = 0;
+}
 
 void func_00157648(u8* p) {
     func_00157AD8(*(s8*)(*(u8**)(p + 0x6C) + 0xBD));
@@ -3582,7 +3602,17 @@ s32 func_0015A498(u8* p, s32 a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015A520);
+s32 func_0015A520(u8* p, s32 a1) {
+    f32 v[4];
+    if (*(u32*)p & 8) {
+        return 0;
+    }
+    func_001315C0((s32)p, 0x8003, v, 0.0f);
+    func_00147ED8(D_002979E8, a1, 20000, v);
+    func_00135800(p, 0.0f, 8.0f);
+    *(u32*)p |= 0x68;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015A5B8);
 
@@ -3683,7 +3713,20 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B4A8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B550);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B628);
+s32 func_0015B628(u8* a, u8* b) {
+    f32 v[4];
+    f32 r;
+    sceVu0SubVector(v, (f32*)(b + 0x10), (f32*)(a + 0x10));
+    if (*(f32*)(a + 8) + *(f32*)(b + 8) <= __builtin_fabsf(v[1])) {
+        return 0;
+    }
+    r = *(f32*)(a + 4) + *(f32*)(b + 4);
+    *(s32*)&v[1] = 0;
+    if (sceVu0InnerProduct(v, v) < r * r) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B6C0);
 
@@ -3717,7 +3760,28 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015C5D0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015C738);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015C960);
+u8* func_0015C960(u8* p, s32 a1, s32 a2, s32 i) {
+    u8* t = *(u8**)(p + 0x134);
+    u8* e;
+    if (t == NULL) {
+        return NULL;
+    }
+    e = *(u8**)(t + 0x1C) + i * 0x14;
+    for (; i < t[7]; i++, e += 0x14) {
+        s32 bit = 1 << i;
+        if (*(s32*)(p + 0x3AC) & bit) {
+            continue;
+        }
+        if ((e[0] & 0xF) != a1) {
+            continue;
+        }
+        if (a2 >= 0 && (e[0] >> 4) != a2) {
+            continue;
+        }
+        return e;
+    }
+    return NULL;
+}
 
 void func_0015C9F8(u8* p) {
     u8* q = p + 0x20;
@@ -3917,7 +3981,17 @@ void func_0015E820(u8* p) {
     sceVu0CopyVectorXYZ((f32*)(p + 0x3C0), (f32*)(p + 0x30));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E840);
+void func_0015E840(u8* p) {
+    f32 f;
+    if (*(s32*)&D_002E3190 & 0x18000000) {
+        D_00551D74 = 30.0f;
+    }
+    f = func_00121970(D_00551D74);
+    D_00551D74 = f;
+    if (f == 0.0f) {
+        func_0014F658((s32)p, 0x18);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E8D8);
 
