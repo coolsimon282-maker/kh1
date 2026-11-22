@@ -338,7 +338,50 @@ void fm_func_00110068(void) {
 }
 #endif
 
+#ifdef VERSION_FM
+typedef struct {
+    sceGifTag tag;
+    u64 a[13][2];
+    u64 b[13][2];
+    u64 c[5][2];
+} XTailorDrawEnv;
+extern XTailorDrawEnv D_004D8EF0;
+extern u64 D_002BC750[13];
+extern u64 D_002BC7C0[13];
+extern u64 D_002BC830[13];
+
+void func_0010FEC0(void) {
+    s32 i;
+
+    for (i = 0; i < 13; i++) {
+        D_004D8EF0.a[i][0] = D_002BC830[i];
+        D_004D8EF0.a[i][1] = D_002BC750[i];
+        D_004D8EF0.b[i][0] = D_002BC830[i];
+        D_004D8EF0.b[i][1] = D_002BC7C0[i];
+    }
+    SCE_GIF_CLEAR_TAG(&D_004D8EF0.tag);
+    D_004D8EF0.tag.NLOOP = 31;
+    D_004D8EF0.tag.EOP = 1;
+    D_004D8EF0.tag.NREG = 1;
+    D_004D8EF0.tag.REGS0 = 0xE;
+    D_004D8EF0.c[0][0] = 1;
+    D_004D8EF0.c[0][1] = 0x1A;
+    D_004D8EF0.c[1][0] = 1;
+    D_004D8EF0.c[1][1] = 0x46;
+    D_004D8EF0.c[2][0] = 0;
+    D_004D8EF0.c[2][1] = 0x45;
+    D_004D8EF0.c[3][0] = 0;
+    D_004D8EF0.c[3][1] = 0x49;
+    D_004D8EF0.c[4][0] = -4;
+    D_004D8EF0.c[4][1] = 0x44;
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsPutDrawEnv(&D_004D8EF0.tag);
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);
+#endif
 
 #ifdef VERSION_FM
 void fm_func_001101E8(void) {
