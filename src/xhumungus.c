@@ -472,7 +472,14 @@ s32 func_001CE858(Script* arg0) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001CCD30);
+// one 0xB0-byte record of D_006298F0, copied whole
+typedef struct {
+    u64 unk_00[22];
+} Unk6298F0;
+
+Unk6298F0 fm_func_001CCD30(s32 arg0) {
+    return *(Unk6298F0*)D_006298F0[arg0];
+}
 #endif
 
 #ifdef VERSION_FM
