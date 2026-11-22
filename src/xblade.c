@@ -274,7 +274,27 @@ void func_001128D8(s32 arg0) {
     D_002B9310 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001128F0);
+extern s32 D_002A050C;
+extern s32 D_002B868C;
+
+void func_001128F0(s32 arg0) {
+    char str[0x40];
+    s32 one = 1;
+    s32 id;
+
+    if (((D_002C1EA8 >> 13) & 1) != one) {
+        id = D_002BCDAC[D_002BCDA0[arg0].unk_00].unk_00;
+        if (D_002B868C != id) {
+            D_002B930C = one;
+            worldfile_getBinImgName(id);
+            strcpy(str, worldBinImgFile);
+            strcat(str, ".img");
+            D_002A050C = func_00155ED8(0x34, 8);
+            D_002A050C = func_001133E0(D_002A050C, 0x80);
+            func_00120590(str, D_002A050C, (s32 (*)(void))func_001128D8, 0);
+        }
+    }
+}
 // extern s32 D_002A050C;
 // extern s32 D_002B868C;
 // extern s32 D_002B92FC;
