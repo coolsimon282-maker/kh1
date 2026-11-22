@@ -467,7 +467,30 @@ s32 func_00112D88(void) {
     return 1000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112DE0);
+void func_001113A8(s32, sceVu0FVECTOR);
+void func_00104FD0(s32, sceVu0FVECTOR);
+
+void func_00112DE0(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[4];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[5];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[6];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[7];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(0, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(0, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00112EE8);
 
