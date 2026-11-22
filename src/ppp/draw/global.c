@@ -26,7 +26,15 @@ void ops_init_spr(void) {
 void op_num_info(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_alloc);
+s32 op_spr_alloc(s32 size) {
+    s32 i = spr_index;
+    s32 addr = spr_a[i];
+
+    i++;
+    spr_index = i;
+    spr_a[i] = addr + size;
+    return addr;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_rev_alloc);
 
