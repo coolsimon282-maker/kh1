@@ -104,7 +104,16 @@ sceVu0FVECTOR* func_00106CA8(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106CD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106D48);
+void func_00106D48(s32 a0) {
+    s32* p;
+    *(s32*)(D_00494A9C * 16 + D_00494A90) = 0x70000000;
+    p = (s32*)(D_00494A9C * 16 + D_00494A90);
+    p[3] = 0;
+    p[2] = 0;
+    p[1] = 0;
+    D_00494A9C++;
+    func_00106948(a0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106DB0);
 
