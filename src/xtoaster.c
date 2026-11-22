@@ -95,7 +95,9 @@ typedef struct XToaster {
     /* 0x3D0 */ char unk_3D0[0x40];
     /* 0x410 */ f32 unk_410;
     /* 0x414 */ f32 unk_414;
-    /* 0x418 */ char unk_418[0x38];
+    /* 0x418 */ char unk_418[0x28];
+    /* 0x440 */ u64 unk_440;
+    /* 0x448 */ char unk_448[0x8];
     /* 0x450 */ s32 unk_450;
     /* 0x454 */ s32 unk_454;
     /* 0x458 */ f32 unk_458;
@@ -757,7 +759,46 @@ void fm_func_001249D8(void) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00124DD0);
+void func_0012B850(s32);
+void func_00130340(XToaster*, f32, s32);
+void func_00131500(XToaster*);
+void func_00142480(sceVu0FVECTOR, void*, s32, sceVu0FVECTOR);
+s32 func_001236F0(XToaster*);
+extern char D_002C6490[];
+
+void func_00124DD0(void) {
+    sceVu0FVECTOR v;
+    XToaster* p = NULL;
+
+    while ((p = func_001234A0(p)) != NULL) {
+        switch (p->unk_006) {
+        case 3:
+            if (((s32)(XT_FLAGS(p) >> 48) & 1) && !((s32)(p->unk_440 >> 32) & 1)) {
+                func_00124BC8(p);
+            } else {
+                sceVu0CopyVector(v, p->unk_010);
+                if (!func_0014F5C8(p) && func_001236F0(p)) {
+                    v[1] -= (*(f32**)(p->unk_134 + 0x10))[2];
+                    func_00142480(v, D_002C6490, 0, v);
+                }
+                v[3] = p->unk_030[3];
+                func_00124420(p, (s32)v);
+                func_00131500(p);
+                func_00130340(p, 0.0f, 0);
+            }
+            break;
+        case 7:
+            func_00124BC8(p);
+            break;
+        }
+        if ((s32)(XT_FLAGS(p) >> 48) & 1) {
+            if (p->unk_144 != 0) {
+                func_0012B850(p->unk_144);
+                p->unk_144 = 0;
+            }
+        }
+    }
+}
 
 s32 func_00123B50(void);
 void func_001372A0(void);
