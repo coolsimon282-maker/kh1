@@ -1,6 +1,16 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x11AC38).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_003F6FF8[];
+extern u8 D_003F6FD0[];
+extern s32 D_003F6BC8[];
+extern u8 D_003F6BA0[];
+extern u8 D_003F6A40[];
+extern u8 D_003F6AA0[];
+extern u8 D_003F6A10[];
+extern u8 D_003F69E0[];
+extern s32 D_00643758;
+extern s32 D_0064373C;
 extern u8 D_003F6F00[];
 extern u8 D_003F6ED0[];
 extern u8 D_003F6EA0[];
@@ -1084,15 +1094,83 @@ void func_00225988(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002259C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00225A90);
+void func_00225A90(u8 *a0) {
+    u8 *e;
+    func_001F36B8(*(s32 *)(a0 + 0x10));
+    func_0011D598(0x4);
+    D_00643734 = 0;
+    D_0064373C = 0;
+    D_00643758 = 0;
+    func_00223980(D_006436D4, 0, 0);
+    func_00233EF8(0);
+    e = func_001F3A20(D_003F69E0, 0x6);
+    if (e != NULL) {
+        func_001F4690(e, a0);
+        func_001F4058(e, 0x1);
+        func_001F3D58(e, 0x6);
+        func_00224C48(e);
+        func_0020BDA8(0x10);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00225B60);
+void func_00225B60(u8 *a0) {
+    u8 *e;
+    func_001F36B8(*(s32 *)(a0 + 0x10));
+    func_0011D598(0x4);
+    D_00643734 = 0;
+    D_0064373C = 0;
+    D_00643758 = 0;
+    func_00223980(D_006436D4, 0, 0);
+    func_00233EF8(0);
+    e = func_001F3A20(D_003F6A10, 0x6);
+    if (e != NULL) {
+        func_001F4690(e, a0);
+        func_001F4058(e, 0x1);
+        func_001F3D58(e, 0x6);
+        func_00224D68(e);
+        func_0020BDA8(0x10);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00225C30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00225D08);
+void func_00225D08(u8 *a0) {
+    u8 *e;
+    func_001F36B8(*(s32 *)(a0 + 0x10));
+    func_0011D598(0x4);
+    D_00643734 = 0;
+    D_0064373C = 0;
+    D_00643758 = 0;
+    func_00223980(D_006436D4, 0, 0);
+    func_00233EF8(0);
+    e = func_001F3A20(D_003F6AA0, 0x6);
+    if (e != NULL) {
+        func_001F4690(e, a0);
+        func_001F4058(e, 0x1);
+        func_001F3D58(e, 0x6);
+        func_00225150(e);
+        func_0020BDA8(0x10);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00225DD8);
+void func_00225DD8(u8 *a0) {
+    u8 *e;
+    func_001F36B8(*(s32 *)(a0 + 0x10));
+    func_0011D598(0x4);
+    D_00643734 = 0;
+    D_0064373C = 0;
+    D_00643758 = 0;
+    func_00223980(D_006436D4, 0, 0);
+    func_00233EF8(0);
+    e = func_001F3A20(D_003F6A40, 0x6);
+    if (e != NULL) {
+        func_001F4690(e, a0);
+        func_001F4058(e, 0x1);
+        func_001F3D58(e, 0x6);
+        func_00224E88(e);
+        func_0020BDA8(0x10);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00225EA8);
 
@@ -1111,7 +1189,22 @@ void func_00227EF8(s32 a0) {
     func_00207BB0(a0, D_003F6B98[D_006436D4]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00227F90);
+void func_00227F90(u8 *a0) {
+    u8 *e;
+    func_0011D598(0x4);
+    e = func_001F3A20(D_003F6BA0, 0x6);
+    if (e != NULL) {
+        s32 n;
+        func_001F4690(e, a0);
+        func_001F4058(e, 0x1);
+        func_001F3D58(e, 0x6);
+        n = func_001EFD98(D_003F6BC8[D_006436D4]) * 0x170;
+        *(s32 *)(e + 0xB4) -= n;
+        *(s16 *)(e + 0xBA) += n;
+        *(s16 *)(e + 0xC0) += n;
+        func_0020BDA8(0x10);
+    }
+}
 
 void func_00228078(s32 a0) {
     func_001F9010(0x17);
@@ -1360,7 +1453,22 @@ void func_0022B248(s32 a0) {
     func_00207BB0(a0, D_003F6FC8[D_006437C4]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022B2E0);
+void func_0022B2E0(u8 *a0) {
+    u8 *e;
+    func_0011D598(0x4);
+    e = func_001F3A20(D_003F6FD0, 0x6);
+    if (e != NULL) {
+        s32 n;
+        func_001F4690(e, a0);
+        func_001F4058(e, 0x2);
+        func_001F3D58(e, 0x6);
+        n = func_001EFD98(D_003F6FF8[D_006437C4]) * 0x170;
+        *(s32 *)(e + 0xB4) -= n;
+        *(s16 *)(e + 0xBA) += n;
+        *(s16 *)(e + 0xC0) += n;
+        func_0020BDA8(0x10);
+    }
+}
 
 void func_0022B3C8(s32 a0) {
     func_001F9010(0x17);
