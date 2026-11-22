@@ -881,7 +881,25 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E4D50);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E5198);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E5788);
+extern u8 D_006314C8;
+extern s32 D_003DD25C;
+extern s32 D_003DD258;
+void func_001E4D50();
+
+void func_001E5788(s32 x) {
+    D_006314C8 = x;
+    if (D_003DD25C == 3) {
+        D_003DD258 = x - 3;
+        if (x - 3 < 10) {
+            func_0010BB50(D_006303B0, (s32)func_001E4D50);
+            D_003DD264 = 1;
+        }
+    } else {
+        D_003DD258 = x - 4;
+        func_0010BB50(D_006303B0, (s32)func_001E4D50);
+        D_003DD264 = 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E5810);
 
@@ -1877,7 +1895,16 @@ s32 func_001EB9A8(s32 a, s32 b) {
     return (q->bits[a] >> sh) & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB9F8);
+void func_001EB9F8(s32 a, s32 b, s32 on) {
+    s32 sh = 31 - b;
+    A2ObjD94 *q = func_0022F768(1);
+
+    if (on) {
+        q->bits[a] |= 1 << sh;
+    } else {
+        q->bits[a] &= ~(1 << sh);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EBA80);
 
@@ -2076,7 +2103,20 @@ void func_001EC610(s32 s, s32 on) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EC678);
+extern A2Bytes10 D_00490900;
+void func_001BA2A8(s32, u8 *);
+
+s32 func_001EC678(void) {
+    A2Bytes10 buf = D_00490900;
+    u8 *q = func_0022F768(1);
+    u32 i;
+
+    for (i = 0; i < 10; i++) {
+        q[0xAD1 + i] = buf.b[i];
+    }
+    func_001BA2A8(0, q + 0xAD1);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EC6F8);
 
