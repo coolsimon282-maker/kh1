@@ -147,7 +147,66 @@ s32 func_001A55A8(VRyjMegaBirthFilter* v, u8* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A55D8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A5EF8);
+typedef struct {
+    /* 0x00 */ char unk_00[0xB8];
+    /* 0xB8 */ f32 dir[3];
+    /* 0xC4 */ char unk_C4[0x14];
+    /* 0xD8 */ f32 rad;
+    /* 0xDC */ f32 radAdd;
+} PRyjMegaBirthFilterB;
+
+extern sceVu0FMATRIX D_00615F30;
+void func_001A55D8(PRyjMegaBirthFilterB* p, f32* data, u8* color);
+
+// |v.xyz| on VU0 (hand-written macro code)
+static inline f32 vu0Length(f32* v) {
+    f32 len;
+    __asm__ volatile(
+        "lqc2 $vf10, 0(%1)
+"
+        "vmul.xyz $vf10, $vf10, $vf10
+"
+        "vaddx.y $vf10, $vf10, $vf10x
+"
+        "vaddy.z $vf10, $vf10, $vf10y
+"
+        "vsqrt Q, $vf10z
+"
+        "vwaitq
+"
+        "vaddq.x $vf10, $vf0, Q
+"
+        "qmfc2.ni %0, $vf10
+"
+        : "=r"(len) : "r"(v) : "memory");
+    return len;
+}
+
+void func_001A5EF8(void* v, PRyjMegaBirthFilterB* p, f32* data, u8* color) {
+    sceVu0FVECTOR dir;
+    f32 r;
+    f32 d;
+
+    memset(data, 0, 0xA0);
+    if (color != NULL) {
+        memset(color, 0, 0x20);
+    }
+    dir[0] = p->dir[0];
+    dir[1] = p->dir[1];
+    dir[2] = p->dir[2];
+    dir[3] = 1.0f;
+    sceVu0Normalize(&data[4], dir);
+    r = p->rad + p->radAdd;
+    d = r + r;
+    do {
+        data[0] = d * func_001A5500() - r;
+        data[1] = d * func_001A5500() - r;
+        data[2] = d * func_001A5500() - r;
+    } while (r < vu0Length(data));
+    data[3] = 1.0f;
+    sceVu0ApplyMatrix(data, D_00615F30, data);
+    func_001A55D8(p, data, color);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A6040);
 
