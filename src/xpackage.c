@@ -41,7 +41,49 @@ void func_002477A8(XPackageUnk77A8* arg0, s32* arg1) {
     arg1[3] = arg0->unk_00[3];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247808);
+typedef struct {
+    /* 0x00 */ s32 unk_00[4];
+    /* 0x10 */ u8 unk_10[0x10];
+    /* 0x20 */ s32 unk_20[4][4];
+    /* 0x60 */ u64 unk_60;
+} XPackageUnk7808;
+
+void func_00246C80(XPackageUnk7808*, void*);
+void func_00246EA0(XPackageUnk7808*, s32 (*)[4]);
+
+// gets an object's matrix: built by one of two helpers depending on the flags, its own, or its first row repeated
+void func_00247808(XPackageUnk7808* p, s32 (*m)[4]) {
+    s32 i, j;
+    s32 v[4];
+    s32 t[4][4];
+    if ((p->unk_60 & 0xA) == 0xA) {
+        func_00246C80(p, (void*)v);
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                m[i][j] = v[j];
+            }
+        }
+    } else if ((p->unk_60 & 0xC0) == 0xC0) {
+        func_00246EA0(p, t);
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                m[i][j] = t[i][j];
+            }
+        }
+    } else if (*(u32*)&p->unk_60 & 0x20) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                m[i][j] = p->unk_20[i][j];
+            }
+        }
+    } else {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
+                m[i][j] = p->unk_20[0][j];
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_002479A0);
 
