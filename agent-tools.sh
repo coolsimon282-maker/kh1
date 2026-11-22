@@ -13,11 +13,15 @@ case "$1" in
   configure)
     bash wsl-build.sh python3 configure.py -c -v fm 2>&1 | grep -iE 'error|duplicate' ; bash wsl-build.sh ninja 2>&1 | tail -1 ;;
   build)
-    bash wsl-build.sh ninja 2>&1 | grep -vE '^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX' | tail -25 ;;
+    # The last line is always the verdict: the image's own checksum (OK/FAILED), or BUILD FAILED if ninja failed
+    # (then the image on disk is stale and must not be trusted).
+    bash wsl-build.sh bash -c 'ninja > /tmp/agent_build.log 2>&1; s=$?; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" /tmp/agent_build.log | tail -25; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1; else echo "BUILD FAILED"; fi' ;;
   list)
     for f in $(grep -oP '^INCLUDE_ASM\("asm/nonmatchings/[^"]+",\s*\K\w+' "src/$2.c"); do
       p="asm/nonmatchings/$2/$f.s"
-      [ -f "$p" ] && echo "$((16#$(grep -oP 'nonmatching \w+, 0x\K[0-9A-F]+' "$p" | head -1))) $f"
+      [ -f "$p" ] || continue
+      z=$(grep -oP 'nonmatching \w+, 0x\K[0-9A-F]+' "$p" | head -1)
+      [ -n "$z" ] && echo "$((16#$z)) $f"
     done | sort -n ;;
   asm)
     cat "asm/nonmatchings/$2/$3.s" ;;
