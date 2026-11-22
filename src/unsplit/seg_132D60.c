@@ -743,7 +743,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245840);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002458A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002458E0);
+extern u8 D_00662A30[];
+
+void func_002458E0(void) {
+    u8 *p;
+    s32 i;
+
+    p = D_00662A30;
+    goto offset;
+offset:
+    p += 0x4B60;
+    for (i = 9; i >= 0; i--) {
+        *(void **)p = NULL;
+        p -= 0x860;
+    }
+}
 
 void func_00245918(void) {
 
