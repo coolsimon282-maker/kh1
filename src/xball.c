@@ -156,7 +156,19 @@ f32 func_00121340(f32 t, f32* a, f32* b) {
     return (((b1 - b0) * f + b0 * 3.0f) * f + ((a1 - a0) - (b0 + b0 + b1))) * f + a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001213B0);
+f32 func_001213B0(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVECTOR q, sceVu0FVECTOR n) {
+    f32 den = d[2] * n[0] - n[2] * d[0];
+    f32 t;
+
+    if (den == 0.0f) {
+        return nan();
+    }
+    t = (n[0] * (q[2] - p[2]) + n[2] * (p[0] - q[0])) / den;
+    sceVu0ScaleVector(out, d, t);
+    sceVu0AddVector(out, out, p);
+    return t;
+}
+
 
 void func_00121480(f32 arg0, f32 arg1, f32 arg2, f32 arg3, sceVu0FMATRIX arg4, sceVu0FVECTOR arg5) {
     sceVu0DropShadowMatrix(arg4, arg5, arg0, arg1, arg2, 0);
