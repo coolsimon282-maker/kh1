@@ -327,7 +327,19 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_gs2_init);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_otz_init);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC0A8);
+extern u_long128 D_0061E8B0[];
+
+// sends the packet at D_0061E8B0 on its own (its first tag replaced by an end tag with 6 qwords)
+void func_001AC0A8(void) {
+    u_long128 save = D_0061E8B0[0];
+
+    D_0061E8B0[0] = 0x70000006;
+    sceGsSyncPath(0, 0);
+    FlushCache(0);
+    sceDmaSend(oa_dmagif, D_0061E8B0);
+    sceGsSyncPath(0, 0);
+    D_0061E8B0[0] = save;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC120);
 
