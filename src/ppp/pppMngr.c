@@ -183,7 +183,45 @@ s32 func_00181600(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181640);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001817E8);
+void func_001817E8(u8* shp, u16* tim, s16 tex, s16 clut) {
+    s16 dt = 0;
+    s16 dc = 0;
+    s32 n;
+    s16* a;
+    u8* e;
+    s32 t;
+    u32 w;
+
+    if (tex == 0 && clut == 0) {
+        return;
+    }
+    if (tex != 0) {
+        dt = tex - tim[1];
+    }
+    if (clut != 0) {
+        dc = clut - tim[2];
+    }
+    n = *(s16*)(shp + 6);
+    a = (s16*)(shp + 0x10);
+    for (; n > 0; n--) {
+        e = shp + a[0];
+        a += 4;
+        if (tex != 0 && dt != 0) {
+            t = *(u16*)(e + 0x10) & 0x3FFF;
+            if (t >= 0x3800) {
+                *(u32*)(e + 0x10) = (*(u32*)(e + 0x10) & ~0x3FFF) + (t + dt);
+            }
+        }
+        if (clut != 0 && dc != 0) {
+            w = *(u32*)(e + 0x14);
+            t = (w & 0x7FFE0) >> 5;
+            if (t >= 0x3D40) {
+                *(u32*)(e + 0x14) = (w & 0xFFF8001F) + ((t + dc) << 5);
+            }
+        }
+    }
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetUp);
 
