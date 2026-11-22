@@ -333,7 +333,12 @@ s32 func_001CDDB8(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDE20);
+s32 func_001CDE20(Script* arg0) {
+    D_006298F0[arg0->unk_174[arg0->unk_174[3] + 2]][16] = arg0->unk_174[arg0->unk_174[3] + 3];
+    D_006298F0[arg0->unk_174[arg0->unk_174[3] + 2]][17] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 s32 func_001CDE88(Script* arg0) {
     D_006298F4[arg0->unk_174[arg0->unk_174[3] + 3]].unk_00 = arg0->unk_174[arg0->unk_174[3] + 4];
