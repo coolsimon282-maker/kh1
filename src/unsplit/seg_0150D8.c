@@ -118,9 +118,44 @@ void func_00116330(s32 arg0, u32* arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00116368);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00116628);
+typedef struct {
+    u8 unk_00[0x2C];
+    s32 unk_2C;
+    s32 unk_30;
+    u8 unk_34[4];
+    s16 unk_38;
+    s16 unk_3A;
+    s16 unk_3C;
+    s16 unk_3E;
+    u8 unk_40[0x20];
+    s32 unk_60;
+    u8 unk_64[8];
+    s16 unk_6C;
+    s16 unk_6E;
+    s16 unk_70;
+    s16 unk_72;
+    s16 unk_74;
+    s16 unk_76;
+} Seg150D8Unk78;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00116660);
+void func_00116628(Seg150D8Unk78* arg0) {
+    arg0->unk_30 = 0;
+    arg0->unk_38 = 0;
+    arg0->unk_2C = -1;
+    arg0->unk_60 = 0;
+    arg0->unk_76 = -1;
+    arg0->unk_74 = -1;
+    arg0->unk_70 = -1;
+    arg0->unk_6E = -1;
+    arg0->unk_6C = -1;
+    arg0->unk_3E = -1;
+    arg0->unk_3A = -1;
+}
+
+void func_00116660(Seg150D8Unk78* arg0) {
+    func_00116628(arg0);
+    arg0->unk_3C = -1;
+}
 
 s32 func_00116690(u32* arg0) {
     return (*arg0 >> 17) & 1;
