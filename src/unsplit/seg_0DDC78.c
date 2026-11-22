@@ -114,7 +114,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0010);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0078);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E01B8);
+extern s32 D_003DACA0;
+
+void func_001E01B8(void) {
+    s32 *p = &D_003DACA0;
+
+    *p = func_00155ED8(0x3C, 4);
+}
 
 typedef struct {
     u8 pad[0x3070];
@@ -257,9 +263,25 @@ s32 func_001E25C8(void) {
     return ((s32)(*(u64 *)D_0038CD00 >> 50) & 1) ? 4 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E25E8);
+extern s32 D_003DAD38;
+extern s32 D_003DAD3C;
+s32 func_001E0898(void);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E2628);
+s32 func_001E25E8(void) {
+    func_0011ED30(0x2E630, func_001E0898);
+    D_003DAD3C = 0;
+    D_003DAD38 = 1;
+    return 2;
+}
+
+s32 func_001E08D8(void);
+
+s32 func_001E2628(void) {
+    func_0011ED30(0x2E630, func_001E08D8);
+    D_003DAD3C = 0;
+    D_003DAD38 = 1;
+    return 2;
+}
 
 s32 func_001E2668(void) {
     D_003DAD38 = 0;
