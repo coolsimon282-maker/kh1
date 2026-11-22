@@ -24,13 +24,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121F6C);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_001223B0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00122410);
+extern u32* D_004F6EB8;
+extern u32 D_004F6DB8[];
+
+void func_00122410(void) {
+    D_004F6DB8[0] = D_004F6DB8[1] = 0x70000000;
+    D_004F6EB8 = D_004F6DB8;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00122048);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_001220B8);
+void func_001220B8(void) {
+    D_004F6EB8 -= 2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_001220D0);
+void func_001220D0(void) {
+    scePcStop();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_001220E8);
 
