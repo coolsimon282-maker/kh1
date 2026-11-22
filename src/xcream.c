@@ -13,7 +13,19 @@ s32 func_001274C0(XCream* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_001274F8);
+void func_00121EB0(void*);
+
+s32 func_001274F8(XCream* arg0) {
+    sceDmaChan* d = sceDmaGetChan(SCE_DMA_VIF1);
+
+    d->chcr.DIR = 1;
+    d->chcr.MOD = 1;
+    d->chcr.ASP = 0;
+    d->chcr.TTE = 0;
+    sceDmaSend(d, arg0->unk_10);
+    func_00121EB0(arg0->unk_10);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00127560);
 
