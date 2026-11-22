@@ -347,7 +347,37 @@ void func_00182348(s32* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001823B8);
+
+
+void func_001823B8(s32* arg0, u8* use, s16 off) {
+    s32* p;
+    s32 n;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 k;
+    s32 j;
+
+    if (arg0 == NULL) {
+        return;
+    }
+    p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    n = *p++;
+    for (i = 0; i < n;) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            func_001821A8(tim, off);
+        }
+        bits >>= 1;
+    }
+}
+
 
 void func_00182478(s32* arg0) {
     s32* p;
