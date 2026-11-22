@@ -536,11 +536,15 @@ void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3) {
     DRAW_OT_INSERT((DrawOtEnt*)D_0061EEA0, 15, p, qwc, pri);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7A8);
+extern DrawOtEnt D_0061FFA0[];
+
+// ordering table 1 (16 priorities)
+void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3) {
+    DRAW_OT_INSERT(D_0061FFA0, 15, p, qwc, pri);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7F8);
 
-void func_001AC7A8(void* pkt, s32 qwc, s32 pri, s32 arg3);
 
 // GS packet: alpha register + a 2-vertex sprite in colour rgba, inserted in OT 1 at priority 0
 u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
@@ -554,7 +558,7 @@ u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
     __asm__ volatile("pextlb %1,$0,%1\n\tpextlh %1,$0,%1\n\tsq %1,%0" : "=m"(*(u_long128*)(p + 0x30)), "+r"(rgba));
     *(u_long128*)(p + 0x40) = (u_long128)0xFFFFFFFE0000780000007000;
     *(u_long128*)(p + 0x50) = (u_long128)0xFFFFFFFE0000880000009000;
-    func_001AC7A8(p, 6, 0, 0);
+    func_001AC7A8((u32*)p, 6, 0, 0);
     return p + 0x60;
 }
 
