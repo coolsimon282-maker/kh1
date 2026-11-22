@@ -69,27 +69,24 @@ void func_00120DB8(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
 
 
 // nonmatch: extra nops
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120E48);
-// s32 func_00120E48(sceVu0FMATRIX arg0, sceVu0FVECTOR* arg1) {
-//     sceVu0FVECTOR local_40;
-//     s32 i;
+s32 func_00120E48(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
+    sceVu0FVECTOR t;
+    s32 i;
 
-//     for (i = 0; i < 8; i++) {
-//         sceVu0ApplyMatrix(local_40, arg0, arg1[i]);
-//         if (local_40[3] < 1.0f) {
-//             return 0;
-//         }
-//         local_40[0] /= local_40[3];
-//         local_40[1] /= local_40[3];
-//         if (local_40[0] < 0.0f || local_40[0] > 4095.0f) {
-//             return 0;
-//         }
-//         if (local_40[1] < 0.0f || local_40[1] > 4095.0f) {
-//             return 0;
-//         }
-//     }
-//     return 1;
-// }
+    for (i = 0; i < 8; i++) {
+        sceVu0ApplyMatrix(t, m, v[i]);
+        if (t[3] < 1.0f) {
+            return 0;
+        }
+        t[0] /= t[3];
+        t[1] /= t[3];
+        if (t[0] < 0.0f || 4095.0f < t[0] || t[1] < 0.0f || 4095.0f < t[1]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 
 void func_00120F48(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = arg2[0] * arg0;
