@@ -935,7 +935,22 @@ s32 func_001D0970(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D09A8);
+// D_003854E0 seen with a bitfield at 0x3078 (the s32 member keeps the stores ordered against the stack loads)
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3078];
+    /* 0x3078 */ u64 unk_3078_0 : 1;
+    u64 unk_3078_1 : 63;
+    /* 0x3080 */ s32 unk_3080;
+} XGiantMountainB;
+
+s32 func_00104200(s32);
+
+s32 func_001D09A8(Script* arg0) {
+    func_00104200(arg0->unk_174[arg0->unk_174[3] + 4]);
+    ((XGiantMountainB*)&D_003854E0)->unk_3078_0 = 1;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001D0A08(void) {
     func_00104310(16);
