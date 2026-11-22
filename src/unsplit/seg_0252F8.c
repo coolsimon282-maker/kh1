@@ -4,7 +4,17 @@
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_001252F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125B40);
+extern u32 D_002C1EA8;
+void func_001252F8(void);
+
+void func_00125B40(s32 on) {
+    if (on) {
+        D_002C1EA8 |= 0x400000;
+    } else {
+        D_002C1EA8 &= ~0x400000;
+    }
+    func_001252F8();
+}
 
 typedef struct {
     u8 unk_00[0x70];
