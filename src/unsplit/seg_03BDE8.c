@@ -268,7 +268,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142340);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142388);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142470);
+void func_00142470(u8* p, u_long128* v) {
+    *(u_long128*)(p + 0x350) = *v;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142480);
 
@@ -1564,7 +1566,9 @@ s32 func_00167678(u8* p) {
     return *(s32*)(p + 0xC);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00167680);
+s32 func_00167680(u8* p) {
+    return *(s32*)(p + 0xC);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00167688);
 
@@ -1778,7 +1782,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171ED8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171EF0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171F30);
+s32 func_00171F30(void) {
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171F38);
 
@@ -2008,7 +2014,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177908);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176488);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176528);
+s32 func_00176528(u8* p) {
+    return *(s32*)(p + 0xC);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176530);
 
@@ -2030,17 +2038,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176838);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177D68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176898);
+void func_00176898(void) {
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768A0);
+void func_001768A0(void) {
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768A8);
+void func_001768A8(void) {
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768B0);
+void func_001768B0(void) {
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768B8);
+void func_001768B8(void) {
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768C0);
+void func_001768C0(void) {
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768C8);
 
