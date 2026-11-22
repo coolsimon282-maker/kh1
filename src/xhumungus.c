@@ -1663,7 +1663,15 @@ s32 func_001D4DD8(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4E20);
+s32 func_001D4E20(Script* arg0) {
+    XGiantMountainY* g = (XGiantMountainY*)&D_003854E0;
+
+    g->unk_3070_49 = 1;
+    g->unk_308C = arg0->unk_174[arg0->unk_174[3] + 3] + 0x100;
+    g->unk_3090 = arg0->unk_174[arg0->unk_174[3] + 4] + 0xC0;
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001D4E88(void) {
     D_003854E0.unk_3070 &= ~0x2000000000000;
