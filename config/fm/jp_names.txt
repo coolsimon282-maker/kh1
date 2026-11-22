@@ -3667,3 +3667,5 @@ D_0063D050                       = 0x00642DE0;
 // added after the masps2 FM fix: names used by functions unwrapped from VERSION_FM (eu-notes/fm_unwrapped_round1.tsv)
 D_002DEC00                       = 0x002E26A0;
 D_002DED20                       = 0x002E27C8;
+// added after the masps2 FM fix: names used by functions unwrapped from VERSION_FM (eu-notes/fm_unwrapped_round2.tsv)
+D_0048EC08                       = 0x00495188;
