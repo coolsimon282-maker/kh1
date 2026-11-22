@@ -347,7 +347,40 @@ void ops_init_draw_work(void) {
     oa_dmagif = sceDmaGetChan(SCE_DMA_GIF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_gs2_init);
+extern u_long128 D_0061E800[];
+extern u_long128 D_0061E8B0[];
+
+// the two fixed GS register packets (A+D): ZBUF_1, TEST_1, TEX1_1, CLAMP_1, TEXA; they differ only in ZBUF
+void op_gs2_init(void) {
+    u64* p;
+
+    p = (u64*)D_0061E800;
+    p[2] = 0x5000000000008001;
+    p[3] = 0xEEEEE;
+    p[6] = 0x131000070;
+    p[7] = 0x4E;
+    p[12] = 0x7000D;
+    p[13] = 0x47;
+    p[14] = 0x21;
+    p[15] = 0x14;
+    p[18] = 0;
+    p[19] = 8;
+    p[16] = 0x8000000000;
+    p[17] = 0x3B;
+    p = (u64*)D_0061E8B0;
+    p[2] = 0x5000000000008001;
+    p[3] = 0xEEEEE;
+    p[6] = 0x31000070;
+    p[7] = 0x4E;
+    p[12] = 0x7000D;
+    p[13] = 0x47;
+    p[14] = 0x21;
+    p[15] = 0x14;
+    p[18] = 0;
+    p[19] = 8;
+    p[16] = 0x8000000000;
+    p[17] = 0x3B;
+}
 
 // stores a zero qword with `sq $0` (gcc itself always goes through a register)
 #define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
