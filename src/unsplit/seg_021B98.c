@@ -77,7 +77,23 @@ Seg21B98Unk10 *func_00121DE0(s32 id, s32 unused) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121C98);
+s32 func_00121C98(s32 size, s32 *out) {
+    s32 sz = (size + 0x7F) & ~0x7F;
+    Seg21B98Unk10 *n = func_00121D00();
+    Seg21B98Unk10 *prev = func_00121D60(sz);
+    s32 addr = prev->unk_04 + prev->unk_08;
+
+    n->unk_04 = addr;
+    if (out != NULL) {
+        *out = addr;
+    }
+    n->unk_08 = sz;
+    n->unk_0C = out;
+    n->unk_00 = 0;
+    n->unk_10 = prev->unk_10;
+    prev->unk_10 = n;
+    return n->unk_04;
+}
 
 
 void func_00121EB0(s32 arg0, s32 arg1) {
