@@ -397,7 +397,53 @@ _ecossin_02:                        \n\
 	": : :"$7","$8");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixZ);
+void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 rz) {
+    __asm__ __volatile__("
+	.set noreorder
+	mtc1			$0,$f0
+	c.olt.s 		%2,$f0
+	li.s    $f0,1.57079637050628662109e0
+	bc1f    		_RotMatrixZ_01
+	nop
+	add.s   		%2,$f0,%2
+	j				_RotMatrixZ_02
+	li 				$7,1
+	.set reorder
+_RotMatrixZ_01:
+	sub.s   		%2,$f0,%2
+	move			$7,$0
+_RotMatrixZ_02:
+	mfc1    		$8,%2
+	qmtc2.ni   		$8,vf6
+	move			$6,$31
+	jal	_sceVu0ecossin
+	move			$31,$6
+	vmove.xyzw 		vf06,vf05
+	vmove.xyzw 		vf07,vf05
+	vmove.xyzw 		vf09,vf00
+	vsub.xyz 		vf09,vf09,vf09
+	vmr32.xyzw 		vf08,vf09
+	vsub.zw 		vf04,vf04,vf04
+	vaddx.y 		vf06,vf05,vf04
+	vaddy.x 		vf06,vf05,vf04
+	vsubx.x 		vf07,vf05,vf04
+	vaddy.y 		vf07,vf05,vf04
+	li    			$7,4
+	.set noreorder
+_loopRotMatrixZ:
+	lqc2    		vf4,0x0(%1)
+	vmulax.xyzw		ACC,vf6,vf4
+	vmadday.xyzw	ACC,vf7,vf4
+	vmaddaz.xyzw	ACC,vf8,vf4
+	vmaddw.xyzw		vf5,vf9,vf4
+	sqc2    		vf5,0x0(%0)
+	addi    		$7,-1
+	addi    		%1,0x10
+	bne				$0,$7,_loopRotMatrixZ
+	addi    		%0,0x10
+	.set reorder
+	": : "r" (m0) , "r" (m1), "f" (rz):"$6","$7","$8","$f0", "memory");
+}
 // void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 rz) {
 //     __asm__ __volatile__("					\n\
 // 	mtc1			$0,$f0					\n\
