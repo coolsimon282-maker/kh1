@@ -17,7 +17,28 @@ void sceVu0ApplyMatrix(sceVu0FVECTOR v0, sceVu0FMATRIX m0, sceVu0FVECTOR v1) {
 	" : : "r"(v0), "r"(m0), "r"(v1) : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0MulMatrix);
+void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2) {
+    __asm__ __volatile__("          
+	.set noreorder                  
+	lqc2            vf4,0x0(%2)     
+	lqc2            vf5,0x10(%2)    
+	lqc2            vf6,0x20(%2)    
+	lqc2            vf7,0x30(%2)    
+	li              $7,4            
+_loop:                              
+	lqc2            vf8,0x0(%1)     
+	vmulax.xyzw	    ACC,vf4,vf8     
+	vmadday.xyzw    ACC,vf5,vf8     
+	vmaddaz.xyzw	ACC,vf6,vf8     
+	vmaddw.xyzw	    vf9,vf7,vf8     
+	sqc2            vf9,0x0(%0)     
+	addi            $7,-1           
+	addi            %1,0x10         
+	bne             $0,$7,_loop     
+	addi            %0,0x10         
+	.set reorder                    
+	":: "r" (m0), "r" (m2), "r" (m1) : "$7", "memory");
+}
 // void sceVu0MulMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1,sceVu0FMATRIX m2) {
 //     __asm__ __volatile__("          \n\
 // 	lqc2            vf4,0x0(%2)     \n\
@@ -83,7 +104,28 @@ void sceVu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1) {
     ": : "r" (v0) , "r" (v1) : "memory");
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0TransposeMatrix);
+void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
+    register u_long128 r11 asm("$11");
+
+    __asm__ __volatile__("      
+	lq $8,0x0000(%1)            
+	lq $9,0x0010(%1)            
+	lq $10,0x0020(%1)           
+	lq $11,0x0030(%1)           
+	pextlw     $12,$9,$8        
+	pextuw     $13,$9,$8        
+	pextlw     $14,$11,$10      
+	pextuw     $15,$11,$10      
+	pcpyld     $8,$14,$12       
+	pcpyud     $9,$12,$14       
+	pcpyld     $10,$15,$13      
+	pcpyud     $11,$13,$15      
+	sq $8,0x0000(%2)            
+	sq $9,0x0010(%2)            
+	sq $10,0x0020(%2)           
+	": "=r" (r11) : "r" (m1), "r" (m0) : "$8", "$9", "$10", "$12", "$13", "$14", "$15", "memory");
+    ((u_long128*)m0)[3] = r11;
+}
 // void sceVu0TransposeMatrix(sceVu0FMATRIX m0, sceVu0FMATRIX m1) {
 //     __asm__ __volatile__("      \n\
 // 	lq $8,0x0000(%1)            \n\
