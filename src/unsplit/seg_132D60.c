@@ -837,7 +837,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247228);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", fm_func_00247258);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247350);
+extern u8 D_0045FAC0[];
+
+// func_00247350 (src/unsplit/seg_132D60.c)
+void func_00247350(void) {
+    u8* var_2;
+    s32 var_3;
+    volatile u8* tmp = D_0045FAC0;
+    var_3 = 9;
+    var_2 = (u8*)tmp + 0x52B0;
+    do {
+        var_3--;
+        *(void**)var_2 = NULL;
+        var_2 -= 0x930;
+    } while (var_3 >= 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247388);
 
