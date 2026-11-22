@@ -13,7 +13,8 @@
 #                            (again after a failed try: it starts from the last commit of the file)
 #                            (so big files like xhumungus.c never need opening; <cfile> e.g. qwen/work.c)
 #   cfunc <func>             print an already-matched function's C (searches all of src/; shows the file too)
-#   try <file> <func> <cfile>  put + build in one step; on OK prints the exact commit command, otherwise a short diff
+#   quick <file> <func>      fast check of one function without a full build (under a second)
+#   try <file> <func> <cfile>  put + fast check (+ full build to confirm) in one step; on OK prints the exact commit command, otherwise a short diff
 #   giveup <file> <func> <reason...>  put src/<file>.c back as last committed and add "<func>: gave up: <reason>"
 #                            to this checkout's notes file (notes/<checkout name>.md)
 #   next                     the next job from qwen/twins.txt then qwen/queue.txt (skipping matched and given-up
@@ -70,7 +71,11 @@ PY
       exit 1
     fi
     bash "$0" put "$2" "$3" "$4" || exit 1
-    out=$(bash "$0" build); echo "$out" | tail -4
+    # fast check first (under a second: compiles this one file and compares the function); the full build only
+    # runs to confirm when the fast check says it matches
+    q=0; qout=""
+    case "$2" in lib/*) ;; *) qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$? ;; esac
+    if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
     # failed tries per function are counted; the 3rd failure gives up automatically (the local agent kept researching
     # one function for an hour instead of giving up)
     mkdir -p .tries; tf=".tries/$3"
@@ -86,10 +91,12 @@ PY
         echo "GAVE UP AUTOMATICALLY after 3 failed tries: src/$2.c is restored and $3 is noted as given up."
         echo "Do NOT research it further. Run 'wsl -e bash ./agent-tools.sh next' now for the next function."
       else
-        echo "Not matching yet (failed try $t of 3). Differences (target on the left):"
-        bash "$0" diff "$3" 40
+        echo "Not matching yet (failed try $t of 3)."
+        if [ $q -ne 0 ]; then echo "$qout" | tail -45; else echo "The function's own code matches but the whole image does not: check symbol names (D_/func_ addresses), data it defines, and other functions you changed. Differences (target on the left):"; bash "$0" diff "$3" 40; fi
       fi
     fi ;;
+  quick)
+    bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" "${4:-40}" ;;
   giveup)
     f="$2"; fn="$3"; shift 3
     git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { echo "couldn't restore src/$f.c"; exit 1; }
@@ -142,6 +149,7 @@ s = pat.sub(lambda m: c, s, count=1)
 open(f, 'w', encoding='utf-8', newline='\n').write(s)
 print('replaced the INCLUDE_ASM line for %s in %s with %s (%d lines)' % (fn, f, cfile, c.count('\n') + 1))
 PY
+    ps=$?; [ $ps -ne 0 ] && exit $ps
     if [ -n "$others" ]; then echo "WARNING: src/$2.c still has uncommitted C for other functions too: ${others}- a build only passes if ALL of them match. If you gave up on them: git checkout -- src/$2.c, then put this function again."; fi
     ;;
   configure)
