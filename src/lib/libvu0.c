@@ -579,7 +579,54 @@ _loopRotMatrixX:
 // 	": : "r" (m0) , "r" (m1), "f" (rx):"$6","$7","$8","$f0","memory");
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotMatrixY);
+void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 ry) {
+    __asm__ __volatile__("
+	.set noreorder
+	mtc1			$0,$f0
+	c.olt.s 		%2,$f0
+	li.s    $f0,1.57079637050628662109e0
+	bc1f    		_RotMatrixY_01
+	nop
+	add.s   		%2,$f0,%2
+	j				_RotMatrixY_02
+	li 				$7,1
+	.set reorder
+_RotMatrixY_01:
+	sub.s   		%2,$f0,%2
+	move			$7,$0
+_RotMatrixY_02:
+	mfc1    		$8,%2
+	qmtc2.ni   		$8,vf6
+	move			$6,$31
+	jal	_sceVu0ecossin
+	move			$31,$6
+	vmove.xyzw vf06,vf05
+	vmove.xyzw vf07,vf05
+	vmove.xyzw vf08,vf05
+	vmove.xyzw vf09,vf05
+	vaddw.y vf07,vf05,vf00
+	vaddw.w vf09,vf05,vf00
+	vsub.zw vf04,vf04,vf04
+	vsubx.z vf06,vf05,vf04
+	vaddy.x vf06,vf05,vf04
+	vaddx.x vf08,vf05,vf04
+	vaddy.z vf08,vf05,vf04
+	li    			$7,4
+	.set noreorder
+_loopRotMatrixY:
+	lqc2    		vf4,0x0(%1)
+	vmulax.xyzw		ACC,vf6,vf4
+	vmadday.xyzw	ACC,vf7,vf4
+	vmaddaz.xyzw	ACC,vf8,vf4
+	vmaddw.xyzw		vf5,vf9,vf4
+	sqc2    		vf5,0x0(%0)
+	addi    		$7,-1
+	addi    		%1,0x10
+	bne				$0,$7,_loopRotMatrixY
+	addi    		%0,0x10
+	.set reorder
+	": : "r" (m0) , "r" (m1), "f" (ry):"$6","$7","$8","$f0", "memory");
+}
 // void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, f32 ry) {
 //     __asm__ __volatile__("					\n\
 // 	mtc1			$0,$f0					\n\
@@ -939,7 +986,49 @@ s32 sceVu0ClipScreen3(sceVu0FVECTOR v0, sceVu0FVECTOR v1, sceVu0FVECTOR v2) {
 //     return ret;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0ClipAll);
+s32 sceVu0ClipAll(sceVu0FVECTOR minv, sceVu0FVECTOR maxv, sceVu0FMATRIX ms, sceVu0FVECTOR *vm, s32 n) {
+    register s32 ret;
+    __asm__ __volatile__("
+	.set noreorder
+	lqc2		vf8,0x0(%4)
+	lqc2		vf4,0x0(%3)
+	lqc2		vf5,0x10(%3)
+	lqc2		vf6,0x20(%3)
+	lqc2		vf7,0x30(%3)
+	lqc2		vf9,0x0(%1)
+	lqc2		vf10,0x0(%2)
+	lqc2		vf11,0x0(%1)
+	lqc2		vf12,0x0(%2)
+loop_clip_all:
+	vmulax.xyzw		ACC,vf4,vf8
+	vmadday.xyzw	ACC,vf5,vf8
+	vmaddaz.xyzw	ACC,vf6,vf8
+	vmaddw.xyzw		vf8,vf7,vf8
+	vmulw.xyz		vf11,vf9,vf8
+	vmulw.xyz		vf12,vf10,vf8
+	vnop
+	vnop
+	ctc2.ni    	$0,$vi16
+	vsub.xyw	vf11,vf8,vf11
+	vsub.xyw	vf12,vf12,vf8
+	vmove.w		vf11,vf9
+	vmove.w		vf12,vf10
+	vnop
+	addi		%4,0x10
+	lqc2    	vf8,0x0(%4)
+	addi		%5,-1
+	cfc2.ni    	%0,$vi16
+	andi		%0,%0,0xc0
+	beqz		%0,end_clip_all
+	nop
+	bne			$0,%5,loop_clip_all
+	nop
+	addi		%0,$0,1
+end_clip_all:
+	.set reorder
+	":"=&r"(ret): "r" (minv),"r" (maxv),"r" (ms),"r" (vm),"r" (n));
+    return ret;
+}
 // s32 sceVu0ClipAll(sceVu0FVECTOR minv, sceVu0FVECTOR maxv, sceVu0FMATRIX ms, sceVu0FVECTOR *vm, s32 n) {
 //     register s32 ret;
 //     __asm__ __volatile__("			\n\
@@ -991,7 +1080,27 @@ static u32 init_vif_regs[8] __attribute__((aligned (16))) = {
 	0x00000000, // NOP
 };
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVpu0Reset);
+void sceVpu0Reset(void) {
+    DPUT_VIF0_MARK(0);
+    DPUT_VIF0_ERR(0);
+    DPUT_VIF0_FBRST(1); // VIF1 reset
+    __asm__ __volatile__("
+	.set noreorder
+	cfc2.ni	$8, $vi28
+	ori  	$8, $8, 0x0002
+	ctc2.ni	$8, $vi28
+	sync.p
+	.set reorder
+	":::"$8"); /* VU1 reset */
+    {
+        register u_long128 t0 asm("$2") = *(u_long128*)&(init_vif_regs[0]);
+        DPUT_VIF0_FIFO(t0);
+    }
+    {
+        register u_long128 t1 asm("$3") = *(u_long128*)&(init_vif_regs[4]);
+        *(u_long128*)VIF0_FIFO = t1;
+    }
+}
 // void sceVpu0Reset(void) {
 //     static u32 init_vif_regs[8] __attribute__((aligned (16))) = {
 // 	0x01000404, // STCYCL
