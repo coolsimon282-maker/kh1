@@ -232,7 +232,87 @@ void KeLnsArnd_Init(KeLnsArnd* p) {
     p->lp = &ppvDbgTemp;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", func_001A8248);
+// KeLnsShpDraw as filled here
+typedef struct {
+    /* 0x00 */ pppShapeSt* shp;
+    /* 0x04 */ KeLnsFlr* flr;
+    /* 0x08 */ u8 unk_08[8];
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ u8 col[4];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ s16 unk_1E;
+    /* 0x20 */ f32 (*mat)[4];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ u8 unk_30[0x10];
+} KeLnsFlsShpPrm;
+
+typedef struct {
+    /* 0x00 */ KeLnsShp* shp;
+    /* 0x04 */ s32 col;
+    /* 0x08 */ f32 (*mat)[4];
+    /* 0x0C */ f32 scale;
+    /* 0x10 */ u16 len;
+    /* 0x12 */ u16 fadeLen;
+    /* 0x14 */ f32* scl;
+} KeLnsStrArg;
+
+// draws a flare shape along the lens direction (zMat), stretched by len2 / len and faded by len2 / fadeLen
+void func_001A8248(KeLnsStrArg* arg, s32 arg1) {
+    sceVu0FMATRIX m;
+    KeLnsFlsShpPrm prm;
+    KeLnsShp* shp = arg->shp;
+    KeLnsLp* lp = shp->lp;
+    f32 r;
+    f32 t;
+
+    if (lp == (KeLnsLp*)&ppvDbgTemp) {
+        return;
+    }
+    if (shp->shp == NULL) {
+        return;
+    }
+    if (lp->vPow == 0.0f) {
+        return;
+    }
+    sceVu0CopyVector(m[0], lp->zMat[0]);
+    sceVu0CopyVector(m[1], lp->zMat[1]);
+    sceVu0CopyVector(m[2], lp->zMat[2]);
+    sceVu0CopyVector(m[3], lp->mat[3]);
+    r = arg->scale * lp->len2 / arg->len;
+    sceVu0ScaleVector(m[0], m[0], -r);
+    sceVu0ScaleVector(m[1], m[1], r);
+    if (!lp->md) {
+        m[3][0] = ppvWorldMatrix[3][0] + lp->lcPos[0];
+        m[3][1] = ppvWorldMatrix[3][1] + lp->lcPos[1];
+        m[3][2] = ppvWorldMatrix[3][2] + lp->lcPos[2];
+    }
+    sceVu0ScaleVector(m[0], m[0], arg->scl[0]);
+    sceVu0ScaleVector(m[1], m[1], arg->scl[1]);
+    sceVu0ScaleVector(m[2], m[2], arg->scl[2]);
+    sceVu0MulMatrix(m, arg->mat, m);
+    *(s32*)prm.col = arg->col;
+    r = lp->len2 / arg->fadeLen;
+    if (r > 1.0f) {
+        t = 1.0f;
+    } else {
+        t = r;
+    }
+    prm.col[3] = prm.col[3] * lp->vPow * t;
+    prm.shp = shp->shp;
+    prm.flr = &shp->flr;
+    func_001A75C8((KeLnsFlrRef*)&prm);
+    prm.unk_12 = arg1;
+    prm.mat = m;
+    prm.unk_2C = 0;
+    prm.unk_18 = 0;
+    prm.unk_1C = 0;
+    prm.unk_1E = 0;
+    func_001A7668((KeLnsShpDraw*)&prm);
+}
 
 void func_001A84B8(KeLnsCrn* p, pppShapeSt* shp) {
     p->shp = shp;
@@ -254,24 +334,6 @@ typedef struct {
     /* 0x13 */ u8 modeY;
     /* 0x14 */ f32* scl;
 } KeLnsFlsArg;
-
-// KeLnsShpDraw as filled here
-typedef struct {
-    /* 0x00 */ pppShapeSt* shp;
-    /* 0x04 */ KeLnsFlr* flr;
-    /* 0x08 */ u8 unk_08[8];
-    /* 0x10 */ u16 unk_10;
-    /* 0x12 */ u16 unk_12;
-    /* 0x14 */ u8 col[4];
-    /* 0x18 */ s32 unk_18;
-    /* 0x1C */ s16 unk_1C;
-    /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ f32 (*mat)[4];
-    /* 0x24 */ s32 unk_24;
-    /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ u8 unk_30[0x10];
-} KeLnsFlsShpPrm;
 
 // like func_001A8060, but the flare fades and stretches with the lens distance (len2 / len)
 void KeLnsFls_Draw(KeLnsFlsArg* arg, s32 arg1) {
