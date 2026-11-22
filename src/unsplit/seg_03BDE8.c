@@ -1,6 +1,7 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+s32 func_0013F330(u8*, s32);
 void func_00159350();
 void func_00159440();
 void func_001595A8();
@@ -752,7 +753,23 @@ s32 func_0013C6A8(u32 n) {
     return ((Seg3010F8*)D_003010F8)->unk_5CC[n >> 2] & (1 << (n & 3));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C668);
+void func_0013C668(void) {
+    u8 buf[0xF0];
+    s32 i;
+    s32 k;
+    u8* e;
+    for (i = 0; i < 4; i++) {
+        k = *(u8*)(i + (s32)D_003010F8 + 0x48E);
+        if (k != 0xFF) {
+            e = (u8*)D_003010F8 + k * 0x74;
+            func_00141B10_p(k, buf);
+            e += 4;
+            e[1] = buf[0x40];
+            e[3] = buf[0x48];
+            *(s16*)(e + 0x38) = 0;
+        }
+    }
+}
 
 void func_0013C778(u32 a, u32 b, u32 c) {
     ((u8*)D_003010F8)[0x48F] = a < 10 ? a : -1;
@@ -996,7 +1013,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F510);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F618);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F6D0);
+void func_0013F6D0(u8* p, f32* a1) {
+    func_00130398((s32)p, func_0013F330(p, 0x23) | 0x1000000, 8.0f);
+    func_00130578((s32)p, 0x40000000, 0.0f);
+    sceVu0CopyVector(a1, (f32*)(p + 0x30));
+    a1[3] = 0.0f;
+    *(f32*)(p + 0x150) = atan2f(a1[0], a1[2]);
+    *(u32*)p &= ~0x200000;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F770);
 
