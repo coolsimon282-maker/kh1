@@ -351,7 +351,15 @@ void func_0010EB50(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EBE0);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010ED10);
+void func_0010ED10(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    XSauce* s;
+    s = (XSauce*)func_00121C98(0x2C, (u_long128**)&s);
+    func_0010C248();
+    s->unk_13 = 0;
+    s->unk_13 |= 4;
+    func_0010EB50(arg0, arg1, arg2, arg3, s);
+    func_00121D50(s);
+}
 
 typedef struct {
     /* 0x00 */ char unk_00[0x80];
