@@ -403,7 +403,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_001055B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105860);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105960);
+s32 func_00105960(s32 a0, s32 a1) {
+    s32 buf;
+    s32 r = func_00142730(a0, &buf);
+    if (buf == -1) {
+        Seg1970Unk14* p = D_002A6238;
+        p += r;
+        return p->unk_0B == a1;
+    }
+    return func_0011AB60(buf, r) == a1;
+}
 
 s32 func_001059D0(s32 a0) {
     s32 buf;
