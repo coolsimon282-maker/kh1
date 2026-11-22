@@ -55,3 +55,7 @@ really change (build each file both ways and compare the whole object including 
 a1 run 4 (fm-a1): 207f51d is labelled CC130 but is a broken half CF128 (reverted by 4c339ba; b95709d is the real
 CC130); 894e3f1/43c6da8 have scratch paths in their messages; a2e2a82 is func_001CC240 labelled C9DB0 and
 briefly left the size-flicker state (fixed by d02303b). Code at the merge builds OK.
+
+## xblade: func_00114B50 depends on the number of declarations in the file
+a5 (run 5): func_00114B50's code changes with how many functions xblade.c declares; implicitly declared callees
+in a new match broke it (fixed by a real prototype for func_001336A0). Any later xblade match must re-check it.
