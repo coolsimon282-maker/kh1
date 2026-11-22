@@ -53,7 +53,19 @@ void func_00120038(s32* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120040);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001200F8);
+u32 strlen(const char *);
+
+s32 func_001200F8(s32 arg) {
+    char *s = (char *)arg;
+    s32 len = strlen(s);
+    s32 i;
+    s32 h = 0;
+
+    for (i = 0; i < len; i++) {
+        h = (h << 1) ^ ((s[i] << 16) % 0x11021);
+    }
+    return h;
+}
 
 s32 func_00120170(u32 arg0, u32* arg1) {
     u32 b = *arg1;
