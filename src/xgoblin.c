@@ -307,7 +307,61 @@ s32 func_0011F148(XGoblin* arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F1A0);
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F388);
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u16 unk_02;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 unk_20;
+} XGoblinButtons;
+
+extern s32 D_002C5C24;
+extern s32 D_002C5C28;
+extern f32 D_002B8344;
+
+void func_0011F388(XGoblinButtons* p, s32 b) {
+    s32 old = p->unk_04;
+    s32 x;
+    s32 trg;
+    s32 d;
+
+    p->unk_14 = 0;
+    p->unk_10 = 0;
+    p->unk_0C = 0;
+    p->unk_08 = 0;
+    p->unk_04 = b;
+    if (p->unk_00 != 0) {
+        x = old ^ b;
+        trg = x & b;
+        p->unk_0C = x & ~b;
+        p->unk_08 = trg;
+        if (trg != 0) {
+            d = D_002C5C24;
+            p->unk_20 = d;
+            p->unk_1C = d;
+            p->unk_14 = trg;
+            p->unk_10 = trg;
+            return;
+        }
+        if (b != 0) {
+            p->unk_1C = p->unk_1C - D_002B8344;
+            p->unk_20 = p->unk_20 - D_002B8344;
+            if (p->unk_1C <= 0.0f) {
+                p->unk_1C = D_002C5C28;
+                p->unk_10 = b;
+            }
+            if (p->unk_20 <= 0.0f) {
+                p->unk_14 = b;
+                p->unk_20 = 0;
+            }
+        }
+    }
+}
 
 u32 func_0011F478(u32 arg0) {
     u32 i;
