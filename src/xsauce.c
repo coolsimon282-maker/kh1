@@ -69,7 +69,8 @@ typedef struct {
     /* 0x0002 */ u16 unk_0002;
     /* 0x0004 */ f32 unk_0004;
     /* 0x0008 */ f32 unk_0008;
-    /* 0x000C */ char unk_000C[0x1804];
+    /* 0x000C */ s8 unk_000C;
+    /* 0x000D */ char unk_000D[0x1803];
     /* 0x1810 */ f32 unk_1810[1];
 } XSauceTbl;
 
@@ -88,7 +89,26 @@ s32 func_0010CA30(XSauceTbl* p) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CAE0);
+void func_0010CAE0(XSauceTbl* t, XSauce* p) {
+    if (p->unk_28 != 0) {
+        switch (t->unk_000C) {
+        case 0:
+            t->unk_000C = func_0010CA30(t);
+            if (t->unk_000C == 0) {
+                break;
+            }
+        case 1:
+            func_0010F0A0(p->unk_28, p->unk_24);
+            t->unk_000C = 2;
+        case 2:
+            if (func_0010F1C8(p->unk_28, p->unk_24)) {
+                t->unk_000C = 0;
+                p->unk_28 = 0;
+            }
+            break;
+        }
+    }
+}
 
 s32 func_0010CBA0(XSauceTbl* p) {
     s32 i;
