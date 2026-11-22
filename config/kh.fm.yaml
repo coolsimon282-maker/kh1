@@ -513,7 +513,7 @@ segments:
   - [ 0x36e120, data ]
 
   ## .rodata section ##
-  - [ 0x38cc10, rodata ]
+  - [ 0x38cc10, .rodata, xbeginning ] # func_00100550's jump table (jtbl_0048CC10)
   - [ 0x38cc30, .rodata, xporcupine ]
   - [ 0x38cc40, rodata ]
   - [ 0x38cca0, .rodata, xarcade ]

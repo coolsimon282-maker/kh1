@@ -63,7 +63,60 @@ void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/xowl", func_00122988);
+typedef struct {
+    /* 0x00 */ s32 type;
+    /* 0x04 */ u32 flags;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ f32 range;
+    /* 0x10 */ sceVu0FVECTOR pos;
+    /* 0x20 */ sceVu0FVECTOR dir;
+    /* 0x30 */ sceVu0FVECTOR col;
+} XOwlAmb;
+
+extern sceVu0FVECTOR D_002C5C70;
+f32 func_00120A38(sceVu0FVECTOR);
+
+void func_00122988(u8* ctx) {
+    sceVu0FVECTOR v;
+    f32* amb;
+    XOwlAmb* e;
+    s32 i;
+    u32 mask;
+    f32 d;
+
+    amb = (f32*)(ctx + 0x430);
+    mask = 0;
+    sceVu0CopyVector(amb, D_002C5C70);
+    e = (XOwlAmb*)D_002C5C80;
+    for (i = 0; i < 31; i++, e++) {
+        if (e->flags & 0x11) {
+            continue;
+        }
+        switch (e->type) {
+        case 1:
+            sceVu0MulVector(amb, amb, e->col);
+            break;
+        case 2:
+            mask |= 1 << i;
+            break;
+        case 3:
+            mask |= 1 << i;
+            break;
+        case 4:
+            mask |= 1 << i;
+            break;
+        case 5:
+            sceVu0SubVector(v, (f32*)(ctx + 0x10), e->pos);
+            d = func_00120A38(v);
+            if (d < e->range) {
+                sceVu0InterVector(v, e->col, D_002C5C70, cosf(d / e->range * 3.1415928f * 0.5f));
+                sceVu0MulVector(amb, amb, v);
+            }
+            break;
+        }
+    }
+    *(u32*)(ctx + 0x420) = mask;
+}
 
 XOwlEnt* func_00122AF8(s32 arg0, s32 arg1, s32 arg2) {
     XOwlEnt* p = D_002C5C80;
