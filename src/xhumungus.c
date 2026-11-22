@@ -3463,7 +3463,26 @@ void func_001D8F80(void) {
     D_003854E0.unk_3070 &= ~0x4000000000000000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8FB0);
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3070];
+    /* 0x3070 */ u64 unk_3070_0 : 62;
+    u64 unk_3070_62 : 1;
+    u64 unk_3070_63 : 1;
+    /* 0x3078 */ s32 unk_3078[2];
+} XGiantMountainR;
+
+void func_00131F40(s32, void (*)(void));
+
+s32 func_001D8FB0(Script* arg0) {
+    if (fm_func_0011E340(0) == 0) {
+        ((XGiantMountainR*)&D_003854E0)->unk_3070_62 = 1;
+        func_00131F40(arg0->unk_174[arg0->unk_174[3] + 4], func_001D8F80);
+    } else {
+        return 4;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001D9038(void) {
     return ((s32)(*(u64*)D_0038CD00 >> 62) & 1) ? 4 : 2;
