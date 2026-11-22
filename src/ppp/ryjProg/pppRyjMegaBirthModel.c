@@ -11,7 +11,52 @@ typedef struct {
     /* 0x22 */ u16 ushIct;
 } VRyjMegaBirthModel;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthModel", pppRyjMegaBirthModelCalc);
+typedef struct {
+    /* 0x000 */ char unk_00[0x1C];
+    /* 0x01C */ u16 nParticle;
+    /* 0x01E */ char unk_1E[0xB2];
+    /* 0x0D0 */ f32 force[3];
+    /* 0x0DC */ char unk_DC[0x25];
+    /* 0x101 */ u8 bColor;
+    /* 0x102 */ char unk_102[4];
+    /* 0x106 */ u8 bWmat;
+} PRyjMegaBirthModel;
+
+s32 func_001A0F10(VRyjMegaBirthModel* v, PRyjMegaBirthModel* p);
+void func_001A23F0(VRyjMegaBirthModel* v, PRyjMegaBirthModel* p, void* w);
+
+void pppRyjMegaBirthModelCalc(pppPObject* pobj, PRyjMegaBirthModel* p, pppCtrlTable* ctbl) {
+    VRyjMegaBirthModel* v = (VRyjMegaBirthModel*)&pobj->val[ctbl->useVal[2]];
+    void* w = &pobj->val[ctbl->useVal[1]];
+
+    if (v->pvParticleData == NULL) {
+        v->nParticle = p->nParticle;
+        v->pvParticleData = pppDbgAlloc(ppvEnv, v->nParticle * 0xB0);
+        if (v->pvParticleData != NULL) {
+            memset(v->pvParticleData, 0, v->nParticle * 0xB0);
+        }
+        if (p->bWmat) {
+            v->pvParticleWmat = pppDbgAlloc(ppvEnv, v->nParticle * 64);
+            if (v->pvParticleWmat != NULL) {
+                memset(v->pvParticleWmat, 0, v->nParticle * 64);
+            }
+        }
+        if (p->bColor) {
+            v->pvParticleColor = pppDbgAlloc(ppvEnv, v->nParticle * 32);
+            if (v->pvParticleColor != NULL) {
+                memset(v->pvParticleColor, 0, v->nParticle * 32);
+            }
+        }
+        v->vecForce.x = p->force[0];
+        v->vecForce.y = p->force[1];
+        v->vecForce.z = p->force[2];
+        *(s32*)v->unk_0C = 0;
+        sceVu0Normalize((f32*)&v->vecForce, (f32*)&v->vecForce);
+    }
+    if (func_001A0F10(v, p)) {
+        func_001A23F0(v, p, w);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthModel", func_001A26D0);
 
