@@ -1,0 +1,6 @@
+_start                       = 0x00100008; // type:func
+_exit                        = 0x001001C8; // type:func
+func_001F25D8                = 0x001F25D8; // type:func
+func_001F25E0                = 0x001F25E0; // type:func
+func_001F2648                = 0x001F2648; // type:func
+func_001F2650                = 0x001F2650; // type:func

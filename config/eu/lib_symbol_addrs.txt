@@ -1,0 +1,1 @@
+/// SDK libraries: not located in the EU version yet
