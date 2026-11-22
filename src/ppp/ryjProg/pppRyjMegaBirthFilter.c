@@ -14,9 +14,16 @@ sceVu0FVECTOR g_vecCamDir;
 f32 func_001A5500(void);
 
 typedef struct {
-    /* 0x00 */ char unk_00[0xE];
+    /* 0x00 */ char unk_00[0x4];
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ char unk_08[0x4];
+    /* 0x0C */ u8 unk_0C;
+    /* 0x0D */ char unk_0D[0x1];
     /* 0x0E */ u16 nParticle;
-    /* 0x10 */ char unk_10[0x9C];
+    /* 0x10 */ char unk_10[0x84];
+    /* 0x94 */ f32 fZNear;
+    /* 0x98 */ f32 fZFade;
+    /* 0x9C */ char unk_9C[0x10];
     /* 0xAC */ f32 fDist;
     /* 0xB0 */ f32 fFade;
     /* 0xB4 */ u8 bDistFade;
@@ -95,17 +102,23 @@ void pppRyjMegaBirthFilterCalc(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, ppp
     }
 }
 
-void func_001A4F70(void) {
+void func_001A4F70(sceVu0FMATRIX m, PRyjMegaBirthFilterCalc* p, VRyjMegaBirthFilter* v) {
 }
 
 typedef struct {
     /* 0x00 */ f32 pos[4];
-    /* 0x10 */ char unk_10[0x1C];
+    /* 0x10 */ char unk_10[0x14];
+    /* 0x24 */ u16 seq;
+    /* 0x26 */ u16 life;
+    /* 0x28 */ s8 col[4];
     /* 0x2C */ f32 rotZ;
     /* 0x30 */ char unk_30[0x8];
     /* 0x38 */ f32 sclX;
     /* 0x3C */ f32 sclY;
-} RyjMegaBirthFilterPt;
+    /* 0x40 */ char unk_40[0x14];
+    /* 0x54 */ f32 alpha;
+    /* 0x58 */ u64 flags;
+} RyjMegaBirthFilterPt; // size = 0x60
 
 typedef struct {
     /* 0x00 */ char unk_00[0xA4];
@@ -134,7 +147,120 @@ f32 func_001A4F78(void* a0, sceVu0FMATRIX m, RyjMegaBirthFilterObj* obj, void* a
     return z;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", pppRyjMegaBirthFilterDraw);
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ u16 flags;
+    /* 0x04 */ u8 col[4];
+    /* 0x08 */ u64 unk_08;
+    /* 0x10 */ f32* mat;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ u8 unk_18;
+    /* 0x1C */ void* unk_1C;
+    /* 0x20 */ char unk_20[0x10];
+} MBFDrawSt;
+
+extern s32 D_00616224;
+s32 func_001BA340(void* shape, MBFDrawSt* st, s32 size);
+
+void pppRyjMegaBirthFilterDraw(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, pppCtrlTable* ctbl) {
+    VRyjMegaBirthFilter* v = (VRyjMegaBirthFilter*)&pobj->val[ctbl->useVal[2]];
+    u8* c = (u8*)&pobj->val[ctbl->useVal[1]];
+    RyjMegaBirthFilterPt* pt = v->pvParticleData;
+    f32(*col)[8] = v->pvParticleColor;
+    s32 n = v->nParticle;
+    sceVu0FMATRIX m0;
+    sceVu0FMATRIX m;
+    MBFDrawSt ds;
+    pppShapeSt* st;
+    u8* shp;
+    s32 r0, g0, b0, a0;
+    s32 r, g, b, a;
+    u8* data;
+    s32 idx;
+    s32 i;
+    f32 z;
+
+    if (!func_001A4040(v, p)) {
+        return;
+    }
+    if (!v->bActive) {
+        return;
+    }
+    idx = p->shpIdx;
+    if (idx == 0xFFFF) {
+        return;
+    }
+    func_001A4F70(m0, p, v);
+    st = &ppvEnv->lpShape[idx];
+    ds.flags = 0x10;
+    if (p->unk_0C) {
+        ds.flags = 0x810;
+    }
+    ds.unk_1C = NULL;
+    ds.unk_08 = 0;
+    ds.unk_18 = 0;
+    ds.mat = m[0];
+    shp = (u8*)st->shape;
+    r0 = c[0x8];
+    g0 = c[0x9];
+    b0 = c[0xA];
+    a0 = c[0xB];
+    for (i = 0; i < n; i++) {
+        if (pt->life != 0 && !(pt->flags & 0x100)) {
+            z = func_001A4F78(m0, m, (RyjMegaBirthFilterObj*)p, v, pt);
+            if (z < p->fZNear - p->fZFade) {
+                pt->alpha = 0.0f;
+            } else if (z < p->fZNear) {
+                pt->alpha *= 1.0f - (p->fZNear - z) / p->fZFade;
+            }
+            data = shp + *(s16*)(shp + (pt->seq << 3) + 0x10);
+            r = r0 + pt->col[0];
+            g = g0 + pt->col[1];
+            b = b0 + pt->col[2];
+            a = a0 + pt->col[3];
+            if (col != NULL) {
+                r += (s32)(*col)[0];
+                g += (s32)(*col)[1];
+                b += (s32)(*col)[2];
+                a += (s32)(*col)[3];
+            }
+            if (r < 0) {
+                r = 0;
+            } else if (r > 0xFF) {
+                r = 0xFF;
+            }
+            if (g < 0) {
+                g = 0;
+            } else if (g > 0xFF) {
+                g = 0xFF;
+            }
+            if (b < 0) {
+                b = 0;
+            } else if (b > 0xFF) {
+                b = 0xFF;
+            }
+            if (a < 0) {
+                a = 0;
+            } else if (a > 0x7F) {
+                a = 0x7F;
+            }
+            ds.col[3] = a;
+            ds.col[0] = r;
+            ds.col[1] = g;
+            ds.col[2] = b;
+            ds.col[3] = ds.col[3] * pt->alpha * v->fAlphaScale;
+            if (ds.col[3] != 0) {
+                ds.unk_14 = D_00616224;
+                D_00616224 = func_001BA340(data, &ds, st->nPacketSize);
+            }
+        }
+        if (col != NULL) {
+            col++;
+        }
+        pt++;
+    }
+}
+
 
 void pppRyjMegaBirthFilterSta(void) {
     sceVu0SubVector(g_vecCamDir, ppvAt, ppvEye);
