@@ -157,7 +157,17 @@ void func_001214C8(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1) {
     arg0[3][3] = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00121538);
+f32 func_00121538(f32 a, f32 b, f32 c) {
+    f32 d = func_00120AC8(b - a);
+
+    c *= D_002B8344[0];
+    if (c < d) {
+        d = c;
+    } else if (d < -c) {
+        d = -c;
+    }
+    return func_00120AC8(a + d);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_001215A8);
 
