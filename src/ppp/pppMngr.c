@@ -498,7 +498,22 @@ void func_00183AD0(pppPObject* pobj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183B70);
+void func_00183B70(pppPObject* pobj) {
+    PppPDataF* pdt = (PppPDataF*)pobj->pdtval->pdt;
+    pppCtrlData** cd = (pppCtrlData**)((u8*)pobj + pdt->cvoff);
+    pppCtrlTable* ct;
+    pppProg* prog;
+    s32 i;
+
+    for (i = 0; i < pdt->ctrlTablen; i++) {
+        ct = &pdt->ctrlTable[i];
+        prog = (pppProg*)ct->prog;
+        *cd++ = ct->ctrldt;
+        if (prog != NULL && prog->conFunc != NULL) {
+            ((void (*)(pppPObject*, pppCtrlTable*))prog->conFunc)(pobj, ct);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
 
