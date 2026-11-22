@@ -93,6 +93,27 @@ s32 func_0019FD78(RyjPrizeList* l, RyjPrizeSrc* s) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthPrize", func_0019FE58);
+s32 func_0019FE58(RyjPrizeList* l, RyjPrizeSrc* s) {
+    u32 i;
+    RyjPrizeSlot* e;
+
+    if (l->unk_10 == NULL) {
+        return 0;
+    }
+    for (i = 0; i < l->unk_04; i++) {
+        e = &l->unk_10[i];
+        if (e->src == NULL) {
+            e->src = s;
+            e->prize = func_0019FD18(s->unk_04);
+            sceVu0CopyVector(e->pos, e->prize->unk_10);
+            e->pos[0] += s->unk_20;
+            e->pos[1] += s->unk_24;
+            e->pos[2] += s->unk_28;
+            e->pos[3] = 1.0f;
+            break;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthPrize", func_0019FF38);
