@@ -58,9 +58,44 @@ void func_00215A88(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215AF0);
+#ifdef VERSION_FM
+extern s32* D_003F41E8[];
+extern s32 D_003F4200[][9];
+extern void func_00170D60(s32, s32, s32);
 
+void func_00215AF0(s32 arg0, s32 arg1) {
+    s32* p;
+    s32 i;
+    if (arg1 != 4) {
+        p = D_003F41E8[arg1];
+    } else {
+        p = D_003F4200[arg0];
+    }
+    for (i = 0; i < 9; i++) {
+        func_00170D60(arg0, i, p[i]);
+    }
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215AF0);
+#endif
+
+#ifdef VERSION_FM
+extern s32 func_0013C188(s32, s32);
+
+void func_00215B88(void) {
+    s32 i;
+
+    D_00642CC8 = 0;
+    for (i = 0; i < 7; i++) {
+        if (func_0013C188(0, i)) {
+            D_00642CA8[D_00642CC8++] = i;
+        }
+    }
+    D_00642CA8[D_00642CC8++] = 7;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215B88);
+#endif
 
 #ifdef VERSION_FM
 s32 func_00215C48(s32 arg0);
@@ -113,7 +148,43 @@ s32 func_00216758(XWhiskey* arg0) {
 }
 #endif
 
+#ifdef VERSION_FM
+typedef struct {
+    s32* list;
+    s32 count;
+} XPotatoTbl;
+extern XPotatoTbl D_003F40F8[];
+
+void func_002167A0(void) {
+    u8 idx = D_003010F8->unk_48E[D_0063CF3C];
+    s32* list = D_003F40F8[idx].list;
+    s32 count = D_003F40F8[idx].count;
+    s32 i;
+
+    D_003ED718->unk_20[idx] = D_0063CF48;
+    switch ((s32)D_0063CF48) {
+        case 5:
+            break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        default:
+            for (i = 0; i < count; i++) {
+                func_00170D60(idx, list[i], D_003F41E8[D_0063CF48][list[i]]);
+            }
+            break;
+        case 4:
+            for (i = 0; i < count; i++) {
+                func_00170D60(idx, list[i], D_003F4200[idx][list[i]]);
+            }
+            break;
+
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002167A0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002168F8);
 
