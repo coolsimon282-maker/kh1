@@ -1,6 +1,16 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceModel", pppRyjMegaPlaceModelCalc);
+s32 func_0019FE58(void* arg0, void* arg1); // pppRyjMegaBirthPrize
+
+void pppRyjMegaPlaceModelCalc(pppPObject* pobj, void* p, pppCtrlTable* ctbl) {
+    u8* v1 = (u8*)&pobj->val[ctbl->useVal[1]];
+
+    if (*v1 == 0) {
+        if (func_0019FE58(&pobj->val[ctbl->useVal[0]], p)) {
+            *v1 = 1;
+        }
+    }
+}
 
 typedef struct {
     /* 0x0 */ char unk_00[0x4];
