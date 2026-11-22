@@ -638,7 +638,34 @@ INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0DropShadowMatrix);
 //     }
 // }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libvu0", sceVu0RotTransPersN);
+void sceVu0RotTransPersN(sceVu0IVECTOR* v0, sceVu0FMATRIX m0, sceVu0FVECTOR* v1, s32 n, s32 mode) {
+    __asm__ __volatile__("			
+	.set noreorder					
+	lqc2			vf4,0x0(%1)		
+	lqc2			vf5,0x10(%1)	
+	lqc2			vf6,0x20(%1)	
+	lqc2			vf7,0x30(%1)	
+_rotTPN_loop:						
+	lqc2			vf8,0x0(%2)		
+	vmulax.xyzw     ACC, vf4,vf8	
+	vmadday.xyzw    ACC, vf5,vf8	
+	vmaddaz.xyzw	ACC, vf6,vf8	
+	vmaddw.xyzw		vf9,vf7,vf8		
+	vdiv    		Q,vf0w,vf9w		
+	vwaitq							
+	vmulq.xyz		vf9,vf9,Q		
+	beqz			%4,_rotTPN		
+	vftoi4.xyzw		vf10,vf9		
+	vftoi0.zw		vf10,vf9		
+_rotTPN:							
+	sqc2			vf10,0x0(%0)	
+	addi			%3,-1			
+	addi			%2,0x10			
+	bne		$0,%3,_rotTPN_loop		
+	addi			%0,0x10			
+	.set reorder					
+	": : "r" (v0) , "r" (m0) ,"r" (v1), "r" (n) ,"r" (mode):"memory");
+}
 // void sceVu0RotTransPersN(sceVu0IVECTOR* v0, sceVu0FMATRIX m0, sceVu0FVECTOR* v1, s32 n, s32 mode) {
 //     __asm__ __volatile__("			\n\
 // 	lqc2			vf4,0x0(%1)		\n\
