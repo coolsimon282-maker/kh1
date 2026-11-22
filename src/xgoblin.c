@@ -344,7 +344,60 @@ s32 func_0011F148(XGoblin* arg0, s32 arg1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F1A0);
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u8 unk_02;
+    /* 0x03 */ u8 unk_03;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ char unk_14[0x1C];
+    /* 0x30 */ sceVu0FVECTOR unk_30[2];
+    /* 0x50 */ sceVu0FVECTOR unk_50[2];
+} XGoblinPadState; /* size = 0x70 */
+
+extern f32 D_002C5C20;
+
+extern f32 D_002C5980[4];
+f32 func_00120A38(f32*);
+
+s32 func_0011F1A0(XGoblinPadState* out, u8* data) {
+    s32 bits = 0;
+    s32 i;
+    s32 j;
+    f32 f;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 2; j++) {
+            D_002C5980[j] = data[i * 2 + j + 2] - 127.5f;
+            if (D_002C5980[j] > 0.0f) {
+                D_002C5980[j] -= D_002C5C20;
+                if (D_002C5980[j] < 0.0f) {
+                    D_002C5980[j] = 0.0f;
+                } else {
+                    bits |= ((j * 5) ^ 1) << (21 + i * 8 - j);
+                }
+            } else {
+                D_002C5980[j] += D_002C5C20;
+                if (D_002C5980[j] > 0.0f) {
+                    D_002C5980[j] = 0.0f;
+                } else {
+                    bits |= ((j * 5) ^ 4) << (21 + i * 8 - j);
+                }
+            }
+            D_002C5980[j] /= 127.5f - D_002C5C20;
+        }
+        f = func_00120A38(D_002C5980);
+        if (f > 1.0f) {
+            f = 1.0f;
+        }
+        sceVu0Normalize(out->unk_50[i], D_002C5980);
+        out->unk_50[i][3] = 1.0f;
+        sceVu0ScaleVector(out->unk_30[i], out->unk_50[i], f);
+    }
+    return bits;
+}
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
@@ -417,20 +470,6 @@ u32 func_0011F478(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F4B8);
 
-typedef struct {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
-    /* 0x03 */ u8 unk_03;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ char unk_14[0x1C];
-    /* 0x30 */ sceVu0FVECTOR unk_30[2];
-    /* 0x50 */ sceVu0FVECTOR unk_50[2];
-} XGoblinPadState; /* size = 0x70 */
-
-extern f32 D_002C5C20;
 extern s32 D_002C5C2C;
 extern XGoblinPadState D_002C5AD0[2];
 extern XGoblinPadState D_002C5BB0;
