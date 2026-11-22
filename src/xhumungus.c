@@ -3852,7 +3852,40 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAAA8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAB88);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DACC8);
+typedef struct {
+    /* 0x000 */ s32 unk_000;
+    /* 0x004 */ f32* unk_004;
+    /* 0x008 */ f32 unk_008[3];
+    /* 0x014 */ f32 unk_014;
+    /* 0x018 */ f32 unk_018;
+    /* 0x01C */ f32 unk_01C;
+    /* 0x020 */ f32 unk_020;
+    /* 0x024 */ f32 unk_024;
+    /* 0x028 */ f32 unk_028;
+    /* 0x02C */ u8 unk_02C[0x154];
+    /* 0x180 */ s32 top;
+    /* 0x184 */ s32 stack[92];
+    /* 0x2F4 */ u8 unk_2F4[0x34];
+    /* 0x328 */ u64 unk_328_0 : 11;
+    u64 unk_328_11 : 1;
+    u64 unk_328_12 : 52;
+} ScriptQ;
+
+s32 func_001DACC8(Script* arg0) {
+    ScriptQ* x = (ScriptQ*)arg0;
+
+    x->unk_328_11 = 1;
+    x->unk_024 = arg0->unk_174[arg0->unk_174[3] + 1] * 2.0f;
+    x->unk_014 = arg0->unk_174[arg0->unk_174[3] + 2];
+    x->unk_018 = arg0->unk_174[arg0->unk_174[3] + 3];
+    x->unk_01C = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 4;
+    x->unk_008[0] = x->unk_004[4];
+    x->unk_008[1] = x->unk_004[5];
+    x->unk_008[2] = x->unk_004[6];
+    x->unk_028 = 0.0f;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAD58);
 
