@@ -417,7 +417,55 @@ u32 func_0011F478(u32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F4B8);
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F7C0);
+typedef struct {
+    /* 0x00 */ u16 unk_00;
+    /* 0x02 */ u8 unk_02;
+    /* 0x03 */ u8 unk_03;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ char unk_14[0x1C];
+    /* 0x30 */ sceVu0FVECTOR unk_30[2];
+    /* 0x50 */ sceVu0FVECTOR unk_50[2];
+} XGoblinPadState; /* size = 0x70 */
+
+extern f32 D_002C5C20;
+extern s32 D_002C5C2C;
+extern XGoblinPadState D_002C5AD0[2];
+extern XGoblinPadState D_002C5BB0;
+extern sceVu0FVECTOR D_002C58B0;
+extern s32 D_004E4280;
+extern s32 D_004E44F0;
+
+void func_0011F7C0(void) {
+    s32 i;
+    s32 j;
+    XGoblinPadState* e;
+
+    D_002C5C20 = 60.0f;
+    D_002C5C24 = 30;
+    D_002C5C28 = 4;
+    D_002C5C2C = 32;
+    for (i = 0; i < 2; i++) {
+        e = &D_002C5AD0[i];
+        e->unk_10 = 0;
+        e->unk_08 = 0;
+        e->unk_04 = 0;
+        e->unk_00 = 0;
+        e->unk_03 = 0;
+        e->unk_02 = 0;
+        for (j = 0; j < 2; j++) {
+            sceVu0CopyVector(e->unk_30[j], D_002C58B0);
+            sceVu0CopyVector(e->unk_50[j], D_002C58B0);
+        }
+    }
+    D_002C5BB0.unk_10 = 0;
+    D_002C5BB0.unk_08 = 0;
+    D_002C5BB0.unk_04 = 0;
+    D_004E4280 = 0;
+    D_004E44F0 = 0;
+}
 
 #ifdef VERSION_FM
 extern scePad2SocketParam D_002C5A88;
