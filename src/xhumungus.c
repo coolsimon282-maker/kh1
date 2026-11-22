@@ -456,7 +456,12 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001CCD30);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001CCDA8);
+extern UnkB0f D_00629920[];
+
+s32 fm_func_001CCDA8(Script* arg0) {
+    arg0->unk_174[arg0->unk_174[3] + 4] = D_00629920[arg0->unk_174[arg0->unk_174[3] + 4]].unk_00;
+    return 2;
+}
 #endif
 
 #ifdef VERSION_FM
