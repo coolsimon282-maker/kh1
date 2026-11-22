@@ -2,4 +2,6 @@
 
 INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandDownCV", pppRandDownCVCalc);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppRandDownCV", func_0018A4A8);
+s16 func_0018A4A8(s16 a, f32 b) {
+    return a * b - a;
+}
