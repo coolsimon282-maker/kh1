@@ -33,3 +33,9 @@ FM layout at the right address (gen_eu_c.py would do it once the object has .rod
 a3 run 2 committed one function while the build was failing (its `| tail -1` hid it) and reverted it; it also
 amended one commit message. a4 run 2 and a6 run 2 made batch commits (a6 reverted and re-committed singly).
 The fm branch built OK after every merge.
+
+## Strict aliasing in xtoaster / xgoblin?
+a6 (run 3): xgoblin func_0011EEB8 and xtoaster func_00123350 matched in test compiles only with
+-fno-strict-aliasing; committed with a one-member-union read instead. Those files may have been built without
+strict aliasing like src/ppp/. Check: compile every matched function in those files with and without the flag;
+if all are identical, add them to the -fno-strict-aliasing list in configure.py.
