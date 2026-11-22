@@ -877,7 +877,30 @@ s32 func_001F0938(s32 arg0) {
     return D_003E3E50[arg0].unk_00;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0960);
+s32 func_001F0960(s32 arg0) {
+    XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
+    s32 sum = 0;
+    s32 i = 0;
+    u8* p = chr->unk_40;
+    s32 c;
+
+loop:
+    if (i >= 48) {
+        goto end;
+    }
+    i++;
+    c = *p++;
+    if (c == 0) {
+        goto end;
+    }
+    if (c & 0x80) {
+        goto loop;
+    }
+    sum += func_001F08A0(c);
+    goto loop;
+end:
+    return sum;
+}
 
 s32 func_001F0A00(s32 arg0) {
     XTangoUnkE4b* entry = &D_003E3D70[arg0];
