@@ -909,7 +909,29 @@ void func_00183B70(pppPObject* pobj) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDeletePObject);
+void pppDeletePObject(pppPObject* pobj) {
+    pppPDataVal* pdv = pobj->pdtval;
+    PppPDataF* pdt = (PppPDataF*)pdv->pdt;
+    pppCtrlTable* ct;
+    pppProg* prog;
+    s32 i;
+
+    for (i = 0; i < pdt->ctrlTablen; i++) {
+        ct = &pdt->ctrlTable[i];
+        prog = (pppProg*)ct->prog;
+        if (prog != NULL && prog->desFunc != NULL) {
+            ((void (*)(pppPObject*, pppCtrlTable*))prog->desFunc)(pobj, ct);
+        }
+    }
+    pdv->pobjn--;
+    if (pdv->pobjn == 0) {
+        pdv->pobj = NULL;
+    } else if (pdv->pobj == pobj) {
+        pdv->pobj = pobj->next;
+    }
+    pppFree(ppvEnv, pobj);
+}
+
 
 void pppAllFreePObject(ppvmng* pMng) {
     pppPObject* pObj = pMng->unk_74;
