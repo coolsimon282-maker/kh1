@@ -112,8 +112,37 @@ void func_00100118(void) {
 }
 
 #ifdef VERSION_FM
-void func_00100168(void);
-INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100168);
+extern sceDmaChan* D_002A6B84;
+extern s32 D_002A3F44;
+extern s32* D_002BC140;
+extern s32* D_002BC144;
+s32 fm_func_00112FD0(s32 arg0);
+void func_00100168(void) {
+    D_002A6B84 = sceDmaGetChan(SCE_DMA_GIF);
+    D_002B2CC0 = 0;
+    func_00106718();
+    func_00106728();
+    D_002B29C4 = 0;
+    D_00375BC0 &= ~1;
+    D_002B92F8 = 0;
+    D_002A3F44 = 0;
+    D_002B8C90 = 0;
+
+    D_002B8C94 = 0;
+
+    func_00113CA8();
+    func_001139F8();
+    func_00114440();
+    func_00111910();
+    D_002B932C = 0;
+    D_002B9328 = 0;
+    fm_func_00112FD0(0);
+    func_00101560();
+    D_002B85F8 &= ~0x2;
+    D_002BC140 = &D_002B9040;
+    D_002BC144 = &D_002B9040;
+}
+
 #else
 void func_00100168(void) {
     s32 new_var;
