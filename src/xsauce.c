@@ -53,16 +53,31 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C4B8);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C918);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CA30);
-
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CAE0);
-
 typedef struct {
     /* 0x0000 */ char unk_0000[0x2];
     /* 0x0002 */ u16 unk_0002;
-    /* 0x0004 */ char unk_0004[0x180C];
+    /* 0x0004 */ f32 unk_0004;
+    /* 0x0008 */ f32 unk_0008;
+    /* 0x000C */ char unk_000C[0x1804];
     /* 0x1810 */ f32 unk_1810[1];
 } XSauceTbl;
+
+s32 func_0010CA30(XSauceTbl* p) {
+    s32 i;
+    if (p->unk_0002 >= 2) {
+        for (i = 0; i < p->unk_0002 - 1; i++) {
+            if (p->unk_1810[i] != 0.0f) {
+                return 0;
+            }
+        }
+    }
+    if (p->unk_1810[p->unk_0002 - 1] != 0.0f && p->unk_0008 == p->unk_0004) {
+        return 1;
+    }
+    return 0;
+}
+
+INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010CAE0);
 
 s32 func_0010CBA0(XSauceTbl* p) {
     s32 i;
