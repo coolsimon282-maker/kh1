@@ -1063,9 +1063,27 @@ void func_00149740(s32 n) {
     func_001496C8(n, ((Unk3010F8*)((u8*)D_003010F8 + n * 0x74))->unk_036);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149780);
+u8* func_00149780(s32 a) {
+    u8* e = (u8*)D_0054C1B0;
+    s32 i;
+    for (i = 0; i < 3; i++) {
+        if ((*(s32*)e & 1) && *(s32*)(e + 4) == a) {
+            return e;
+        }
+        e += 0x20;
+    }
+    return NULL;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001497C8);
+s32 func_001497C8(s32 a) {
+    s32 i;
+    for (i = 0; i < 3; i++) {
+        if (D_0054C1B0[i * 8 + 4] == a) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149810);
 
