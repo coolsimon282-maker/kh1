@@ -1357,7 +1357,15 @@ s32 func_001D3138(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3198);
+extern s32 D_002BC09C;
+extern f32 D_002BC098;
+
+s32 func_001D3198(Script* arg0) {
+    D_002BC09C = arg0->unk_174[arg0->unk_174[3] + 3];
+    D_002BC098 = arg0->unk_174[arg0->unk_174[3] + 4] * 3.1415928f / 180.0f;
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001D3200(Script* arg0) {
     D_002BC0A0 = arg0->unk_174[arg0->unk_174[3] + 3];
