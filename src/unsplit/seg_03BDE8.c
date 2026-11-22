@@ -1,6 +1,15 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+typedef struct {
+    f32 v[4];
+    f32 w[4];
+    f32 x[4];
+    s16 h30;
+    u8 pad[0xE];
+} Seg3BDE8Loc40;
+void func_00118548(Seg3BDE8Loc40*);
+void func_00118D78(Seg3BDE8Loc40*);
 void func_00144EB0(s32, void*);
 extern s32 D_00350CE8[];
 void func_001560C8(s32);
@@ -3590,7 +3599,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001705C0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001707D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00170D60);
+void func_00170D60(s32 a0, s32 a1, s32 a2) {
+    s32* w = (s32*)func_0022F768(6) + a0;
+    s32 sh = a1 * 2;
+    *w = (*w & ~(s32)(3LL << sh)) | (a2 << sh);
+}
 
 s32 func_00170DD8(s32 a, s32 b) {
     u32* q = (u32*)func_0022F768(6) + a;
