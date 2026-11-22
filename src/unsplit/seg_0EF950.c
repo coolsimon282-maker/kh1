@@ -823,7 +823,14 @@ void func_001FD378(u8 *a0, s32 a1) {
     *(s16 *)(a0 + 0xC8) = (a1 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD388);
+void func_001FD388(u8 *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    *(s16 *)(a0 + 0xBE) = (a1 << 4);
+    *(s16 *)(a0 + 0xC0) = (a2 << 4);
+    *(s16 *)(a0 + 0xC2) = (a3 << 4);
+    *(s16 *)(a0 + 0xC4) = (a4 << 4);
+    *(s16 *)(a0 + 0xC6) = (a5 << 4);
+    *(s16 *)(a0 + 0xC8) = (a6 << 4);
+}
 
 void func_001FD3C0(u8 *a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     *(s16 *)(a0 + 0xBE) = (a1 << 4);
