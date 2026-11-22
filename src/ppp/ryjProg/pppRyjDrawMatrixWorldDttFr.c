@@ -146,4 +146,96 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A4680);
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 shapeNo;
+    /* 0x08 */ u16 speed;
+    /* 0x0A */ char unk_0A[0x6];
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+} PRyjDttFrP;
+
+typedef struct {
+    /* 0x00 */ f32 pos[4];
+    /* 0x10 */ f32 dir[4];
+    /* 0x20 */ u16 wait;
+    /* 0x22 */ u16 seq;
+    /* 0x24 */ u16 seq_now;
+    /* 0x26 */ u16 alive;
+    /* 0x28 */ char unk_28[0x38];
+} PRyjPart;
+
+typedef struct {
+    /* 0x00 */ PRyjPart* parts;
+    /* 0x04 */ u8* w;
+    /* 0x08 */ s32 num;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ u16 cnt;
+} PRyjWork;
+
+typedef struct {
+    /* 0x0 */ s16 ofs;
+    /* 0x2 */ s16 time;
+    /* 0x4 */ s8 flag;
+    /* 0x5 */ char pad[3];
+} RyjShpAnm;
+
+void func_001A4680(PRyjWork*, PRyjDttFrP*, PRyjPart*, s32, u8*);
+
+void func_001A4BC8(PRyjWork* work, PRyjDttFrP* p, s32 arg2) {
+    PRyjPart* part = work->parts;
+    u8* w = work->w;
+    s32 n = work->num;
+    s32 born = 0;
+    s32 i;
+    u8* shp;
+    RyjShpAnm* anm;
+    pppShapeSt* lp;
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    if (p->shapeNo == 0xFFFF) {
+        return;
+    }
+    work->cnt++;
+    for (i = 0; i < n; i++) {
+        if (part->alive) {
+            func_001A4680(work, p, part, arg2, w);
+            lp = ppvEnv->lpShape;
+            lp += p->shapeNo;
+            shp = (u8*)lp->shape;
+            anm = (RyjShpAnm*)(shp + 0x10) + part->seq_now;
+            part->seq_now = part->seq;
+            part->wait += p->speed;
+            if (part->wait >= anm->time) {
+                part->wait -= anm->time;
+                part->seq++;
+                if (part->seq >= *(s16*)(shp + 6)) {
+                    if (anm->flag & 0x80) {
+                        part->seq = 0;
+                        part->wait = 0;
+                    } else {
+                        part->seq--;
+                        part->wait = 0;
+                    }
+                }
+            }
+        } else if (p->unk_12 <= work->cnt && born < p->unk_10) {
+            born++;
+            func_001A4538((s32)work, (PRyjDttFr*)p, (f32*)part, w);
+        }
+        part++;
+        if (w != NULL) {
+            w += 0x20;
+        }
+    }
+    if (born > 0) {
+        work->cnt = 0;
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A4BC8);
+#endif
