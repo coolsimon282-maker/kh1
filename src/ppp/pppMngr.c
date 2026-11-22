@@ -308,7 +308,45 @@ s32* func_00181C20(s32* p, u8* use, s16 tex, s16 clut) {
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181D30);
+void func_00181640(u8*, s16*, s16, s16);
+
+s32* func_00181D30(s32* p, u8* use, s16 tex, s16 clut) {
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 j;
+    s32 k;
+    u8* shp;
+
+    for (i = 0; i < n; i++) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            shp = (u8*)(tim + 8);
+            if (tim[1] == 0) {
+                tim[1] = 0x3800;
+            }
+            if (tim[2] == 0) {
+                tim[2] = 0x3D40;
+            }
+            func_00181640(shp, tim, tex, clut);
+            if (tex != 0) {
+                tim[1] = tex;
+            }
+            if (clut != 0) {
+                tim[2] = clut;
+            }
+        }
+        bits >>= 1;
+    }
+    return p;
+}
+
 
 s32* func_00181C20(s32*, u8*, s16, s16);
 s32* func_00181D30(s32*, u8*, s16, s16);
