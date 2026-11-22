@@ -459,11 +459,29 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7F8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC848);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_init_fog_work);
+extern f32 D_00372800[16]; // fog work
+
+void op_init_fog_work(void) {
+    f32* w = D_00372800;
+
+    w[0] = w[1] = 0.0f;
+    w[2] = 255.0f;
+    w[3] = 0.0f;
+    w[4] = w[5] = 0.0f;
+    w[6] = 255.0f;
+    w[7] = 255.0f;
+    w[8] = 0.8f;
+    w[9] = -32.0f;
+    w[10] = 128.0f;
+    w[11] = 0.0f;
+    w[12] = 0.0f;
+    w[13] = 128.0f;
+    w[14] = 128.0f;
+    w[15] = 0.0f;
+}
 
 extern f32 D_002BC120;
 extern f32 D_002BC124;
-extern f32 D_00372800[2];
 
 void func_001AC978(void) {
     D_00372800[0] = D_002BC120;
