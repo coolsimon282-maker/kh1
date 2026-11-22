@@ -385,7 +385,43 @@ void func_001102A0(void) {
     sceGsSyncVCallback(func_00110038);
 }
 
+#ifdef VERSION_FM
+extern volatile s32 D_004D90F4;
+extern f32 D_002B8344;
+extern f32 D_002B8348;
+extern s32 D_002B8354;
+extern s32 D_002BBE10;
+extern s32 D_002B8C90;
+void func_0010C0E0(void);
+
+void func_001102C0(void) {
+    s32 i;
+
+    func_0010C0E0();
+    D_002B8344 = D_004D90F4 * D_002BBDEC;
+    if (D_004D90F4 < D_002B8354 + 1) {
+        for (i = 0; i < D_002B8354; i++) {
+            func_0010C0E0();
+            D_002B8344 = D_004D90F4 * D_002BBDEC;
+        }
+    }
+    if (D_002BBE10 != 0) {
+        D_002B8344 = D_002BBDEC + D_002BBDEC;
+    }
+    D_002B8344 *= D_002B8348;
+    if (D_002B8C90 != 1) {
+        if (D_002B8344 > 5.0f) {
+            D_002B8344 = 5.0f;
+        }
+    } else {
+        D_002B8344 = 128.0f;
+    }
+    D_004D90F4 = 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_001102C0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110410);
 
