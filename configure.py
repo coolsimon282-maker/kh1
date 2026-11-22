@@ -45,6 +45,19 @@ PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_
 
 LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} {COMMON_COMPILE_FLAGS}"
 
+# Files built WITH strict aliasing (agent a4, 22 Nov: their matched code compiles differently with
+# -fno-strict-aliasing). Every other game file gets -fno-strict-aliasing.
+STRICT_ALIASING_FILES = [
+    "xblade.c",
+    "xbuffalo.c",
+    "xhumungus.c",
+    "xmeowp.c",
+    "xpackage.c",
+    "xtango.c",
+    "xtrumpet.c",
+    "xturtle.c",
+]
+
 NO_G_FILES = [
     "xblade.c",
     "gumi.c",
@@ -266,8 +279,9 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
                     g = ""
                 else:
                     g = "-g"
-                # the effects system (src/ppp/) reloads values after stores of other types: no strict aliasing
-                cflags = "-fno-strict-aliasing" if str(entry.src_paths[0]).startswith("src/ppp/") else ""
+                # Most of the game was built without strict aliasing (values are reloaded after stores of other
+                # types); these files were built with it (matched code changes if the flag is added).
+                cflags = "" if entry.src_paths[0].name in STRICT_ALIASING_FILES else "-fno-strict-aliasing"
                 build(
                     entry.object_path,
                     entry.src_paths,

@@ -94,9 +94,13 @@ INCLUDE_ASM("...", fm_func_X);
   checkout that was set up before then.
 * **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
   FM-address name (`D_00xxxxxx`) for globals it doesn't list.
-* **Aliasing**: `src/ppp/` is now compiled with `-fno-strict-aliasing` (as the original was; since 22 Nov
-  00:30), so reloads after stores of other types come out by themselves there. Elsewhere (e.g. xpotato), go
-  through a union (`typedef union { f32 f; s32 i; } FI;`) or type the pointer field as `s32`.
+* **Aliasing**: every game file is now compiled with `-fno-strict-aliasing` except the ones listed in
+  `STRICT_ALIASING_FILES` in configure.py (xblade, xbuffalo, xhumungus, xmeowp, xpackage, xtango, xtrumpet,
+  xturtle), as the original evidently was (since 22 Nov 00:45). Outside those files, reloads after stores of
+  other types come out by themselves; inside them, use a union (`typedef union { f32 f; s32 i; } FI;`) or type
+  the field as `s32`. Existing union workarounds still match.
+* **Statement-order brute force** works: generate every order of 5-9 statements, compile them all in one sandbox
+  file, compare against the target (a4's cmp.py; see notes/a4.md).
 * **Hand-written VU0 sequences** (random float, `v.xyz *= s`, sqrt) match as `static inline` helpers with
   `__asm__ volatile`; templates in notes/a2.md (copies: vu0Rand in pppRandFloat.c, vu0ScaleXYZ in
   pppKeMatPht.c, vu0Sqrt in pppEiWindFun.c).
