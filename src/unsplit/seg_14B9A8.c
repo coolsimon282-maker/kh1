@@ -2,15 +2,31 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024B9A8);
+extern s32 D_0046A058[];
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024B9C0);
+s32 func_0024B9A8(s32 i) {
+    return D_0046A058[i];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024B9D0);
+extern s32 D_00669A38;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024B9E0);
+s32 func_0024B9C0(void) {
+    return D_00669A38;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024B9F0);
+extern s32 D_00669A3C;
+
+s32 func_0024B9D0(void) {
+    return D_00669A3C;
+}
+
+void func_0024B9E0(s32 x) {
+    D_00669A38 = x;
+}
+
+void func_0024B9F0(s32 x) {
+    D_00669A3C = x;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA00);
 
@@ -44,9 +60,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CE80);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CF00);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CF80);
+extern s32 D_0046A5D8;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CF90);
+s32 func_0024CF80(void) {
+    return D_0046A5D8;
+}
+
+extern s32 D_00669A7C;
+
+s32 func_0024CF90(void) {
+    return D_00669A7C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CFA0);
 
@@ -54,19 +78,35 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D138);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D1C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D408);
+extern s32 D_0046A55C;
+
+s32 func_0024D408(void) {
+    return D_0046A55C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D418);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024A000);
+extern s32 D_0046A53C;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D4A0);
+s32 func_0024A000(void) {
+    return D_0046A53C;
+}
+
+extern s32 D_0046A60C;
+
+s32 func_0024D4A0(void) {
+    return D_0046A60C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D4B0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D5D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D608);
+extern s32 D_0046A618;
+
+s32 func_0024D608(void) {
+    return D_0046A618;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D618);
 
