@@ -276,7 +276,26 @@ void func_00248258(void) {
     func_00248168(7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248270);
+extern s32 D_0046A03C;
+extern s32 D_0046A040;
+extern s32 D_0046A044;
+extern s32 D_0046A048;
+
+void func_00248270(s32* arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 old40, old48, new40, new48;
+
+    old40 = D_0046A040;
+    old48 = D_0046A048;
+    D_0046A03C = arg0[3];
+    new40 = arg0[4];
+    D_0046A044 = arg0[5];
+    new48 = arg0[6];
+    D_0046A040 = new40;
+    D_0046A048 = new48;
+    func_0024AB00(arg1, arg2, arg3);
+    D_0046A040 = old40;
+    D_0046A048 = old48;
+}
 
 void func_00248300() {
     func_0024AB00();
