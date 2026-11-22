@@ -37,8 +37,13 @@ extern s32 D_00642C6C;
 extern s32 D_00642C70;
 void func_0011D598(s32);
 s32 func_001EBEA8(void);
+s32 func_001EFBB8(void);
+s32 func_001EFC68(void);
+void func_001EFD20(s32, s32);
 s32 func_001EFD98(void);
 s32 func_001EFDB8(void);
+void func_001EFEE8(s32);
+void func_001EFFC0(s32);
 void func_001F0118(s32, s32);
 void func_001F0148(s32, s32);
 void func_001F0340(s32, s32);
@@ -79,6 +84,8 @@ void func_001FA840(s32, s32, s32, s32, s32);
 void func_001FA878(s32, s32, s32, s32, s32);
 void func_001FB408(s32, s32, s32, s32, s32, s32, s32, s32);
 void func_001FD720(s32);
+void func_001FD858(void);
+void func_001FDFD0(s32);
 s32 func_001FE1B8(void);
 s32 func_001FE5A0(void);
 void func_001FEFF0(s32, s32, s32, s32, s32, s32, s32, s32);
@@ -137,7 +144,10 @@ s32 func_001EFBA8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFBB8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFBE0);
+void func_001EFBE0(s32 a0, s32 a1) {
+    s32 t0 = func_001EFBB8();
+    func_001EFD20(t0, a1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F0EF0);
 
@@ -167,15 +177,24 @@ s32 func_001EFE88(void) {
     return t0 + 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFEA8);
+void func_001EFEA8(void) {
+    s32 t0 = func_001EFBB8();
+    func_001EFEE8(t0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFEC8);
+void func_001EFEC8(void) {
+    s32 t0 = func_001EFC68();
+    func_001EFEE8(t0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFEE8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFF50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFFA0);
+void func_001EFFA0(void) {
+    s32 t0 = func_001EFBB8();
+    func_001EFFC0(t0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFFC0);
 
@@ -1044,7 +1063,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD858);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FDFD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FE158);
+void func_001FE158(s32 a0) {
+    func_001FD858();
+    func_001FDFD0(a0);
+}
 
 void func_001FE180(void) {
     if (func_001FE1B8() != 0) {
