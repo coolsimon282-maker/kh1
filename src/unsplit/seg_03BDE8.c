@@ -1,6 +1,8 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x03BDE8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern u8* D_003051EC;
+void func_0015BAD0(u8*, u8*, f32*);
 extern s32 D_002979E8;
 void func_00135800(u8*, f32, f32);
 f32 func_00121970(f32);
@@ -512,7 +514,7 @@ s32 func_0014DF60(void);
 s32 func_0014E160(void);
 s32 func_0014E400(void);
 s32 func_0014DD48(void);
-s32 func_00150C18(void);
+void func_00150C18(u8*, f32*);
 void func_00150B70(u8*);
 s32 func_0014DAB8(void);
 void func_00152370(u8*, f32*);
@@ -651,7 +653,15 @@ s32 func_0013C188(s32 n, s32 bit) {
     return (q[0x74] >> bit) & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C148);
+void func_0013C148(s32 i) {
+    u8* e = (u8*)&((D3010F8x*)D_003010F8)->e[0];
+    i = i * 4 + 0xD0;
+    e[6] += D_003051EC[i];
+    e[7] += D_003051EC[i + 1];
+    e[4] += D_003051EC[i + 2];
+    e[3] += D_003051EC[i + 2];
+    e[5] += D_003051EC[i + 3];
+}
 
 void func_0013C1E0(s32 a) {
     ((u8*)D_003010F8)[0x48C] = a;
@@ -962,7 +972,19 @@ void func_0013F450(s32* p) {
     p[0x1CC / 4] |= 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F478);
+s32 func_0013F478(u8* p, f32* a1) {
+    f32 v[4];
+    if (*(f32*)(p + 0x300) == 0.0f || a1[3] == 0.0f) {
+        return 0;
+    }
+    sceVu0SubVector(v, (f32*)(p + 0x2F0), (f32*)(p + 0x10));
+    v[1] = 0.0f;
+    func_001223B0(v, v);
+    if (sceVu0InnerProduct(v, a1) < 0.7f) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F510);
 
@@ -2764,7 +2786,16 @@ void func_00150BF8(s32 a) {
     func_00130398(a, 0xBF, 0.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00150C18);
+void func_00150C18(u8* p, f32* a1) {
+    f32 m[8];
+    u8* q = *(u8**)(p + 0x98);
+    func_0015BAD0(q, *(u8**)(*(u8**)(q + 0x134) + 0x1C) + *(s32*)(*(u8**)(p + 0x148) + 0x140) * 0x14, m);
+    sceVu0SubVector(a1, &m[4], (f32*)(p + 0x10));
+    a1[1] += 120.0f;
+    if (*(s32*)(p + 0x164) == 0xBF) {
+        sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0x130), a1);
+    }
+}
 
 s32 func_00150CB0(u8* p) {
     return *(s32*)(p + 0x70);
