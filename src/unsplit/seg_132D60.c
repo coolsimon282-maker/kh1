@@ -51,7 +51,14 @@ void func_00233670(void) {
     D_00647780 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233680);
+extern s32 D_0064778C;
+extern s32 D_00647790;
+extern s32 D_00647794;
+void func_00233680(s32 arg0, s32 arg1) {
+    D_0064778C = 1;
+    D_00647790 = arg0;
+    D_00647794 = arg1;
+}
 
 extern s32 D_0064778C;
 
