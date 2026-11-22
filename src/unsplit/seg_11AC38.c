@@ -21,7 +21,9 @@ extern s32 D_003F5C18;
 extern s32 D_003F5C1C;
 extern s32 D_003F5C20;
 extern s32 D_003F5C24;
+extern s32 D_003F5C28;
 extern s32 D_003F5C2C;
+extern s32 D_003F6854;
 extern s32 D_003F6E30;
 extern s32 D_003F7A64;
 extern s32 D_003F7E94;
@@ -66,6 +68,7 @@ s32 func_001EC360(void);
 void func_001EFB78(s32);
 void func_001EFCB0(s32, s32);
 void func_001F3840(s32);
+void func_001F9438(s32, s32, s32, s32, s32, s32, s32);
 void func_00205938(s32, s32);
 void func_00205E30(s32, u8 *);
 void func_00206EA8(s32);
@@ -84,6 +87,7 @@ void func_0021FBB8(void);
 void func_002205E0(void);
 void func_002210F8(void);
 void func_00222BA8(void);
+void func_00223508(void);
 void func_0022F818(void);
 void func_00231740(s32, s32, s32, s32);
 void func_00231958(void);
@@ -550,7 +554,10 @@ void func_00223938(s32 a0) {
     D_006436C8 = a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00223948);
+void func_00223948(void) {
+    func_00223508();
+    D_003F5C28 = ((u32)0 < (u32)D_003F6854);
+}
 
 void func_00223978(void) {
 }
@@ -655,7 +662,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00228078);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002280C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002282F8);
+void func_002282F8(void) {
+    func_00109268();
+    *(s32 *)(D_003F34C0 + 0x0) = (*(s32 *)(D_003F34C0 + 0x0) & -3);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00228330);
 
@@ -817,7 +827,9 @@ void func_0022D728(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022D730);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022DA10);
+void func_0022DA10(s32 a0) {
+    func_001F9438(a0, 2, 0x100, 0x90, 0x5F, 0x12, 0x801E4696);
+}
 
 void func_0022DA40(s32 a0) {
     func_00205938(a0, 0x56000000);
@@ -832,7 +844,9 @@ void func_0022DB90(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022DB98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022DE50);
+void func_0022DE50(s32 a0) {
+    func_001F9438(a0, 2, 0x100, 0x90, 0x1CE, 0x12, 0x801E4696);
+}
 
 void func_0022DE80(s32 a0) {
     func_00205938(a0, 0x56000000);
