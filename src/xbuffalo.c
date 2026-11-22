@@ -1,4 +1,5 @@
 #include "common.h"
+#include <stdarg.h>
 
 s32 D_003759C4;
 s32 D_003759C8;
@@ -25,7 +26,9 @@ typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u8 unk_06[0xA];
+    /* 0x06 */ u8 unk_06[2];
+    /* 0x08 */ u8* unk_08;
+    /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ u8 unk_14[0xC];
     /* 0x20 */ void (*unk_20)(void);
@@ -126,7 +129,38 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1BE8);
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1D38);
+typedef union { u_long128 q; s32 w[4]; } XBuffaloQW;
+// takes a free slot from 16 up; arg0 = id (0xFFFF if < 0), then nine words copied into qwords of unk_08
+s32 func_001C1D38(s32 arg0, s32 arg1, ...) {
+    va_list ap;
+    XBuffaloQW t;
+    s32 idx;
+    s32 i;
+
+    if (arg0 < 0) {
+        arg0 = 0xFFFF;
+    }
+    idx = func_001C19F8(1);
+    if (idx < 0) {
+        return -1;
+    }
+    D_0037A16C[idx].unk_00 = 1;
+    D_0037A16C[idx].unk_02 = arg0;
+    t.q = 0;
+    t.w[0] = D_0037A16C[idx].unk_0C;
+    *(u_long128*)(D_0037A16C[idx].unk_08 + 0xD0) = t.q;
+    t.w[0] = arg1;
+    *(u_long128*)(D_0037A16C[idx].unk_08 + 0xF0) = t.q;
+    t.q = 0;
+    va_start(ap, arg1);
+    for (i = 0; i < 8; i++) {
+        t.w[0] = va_arg(ap, s32);
+        *(u_long128*)(D_0037A16C[idx].unk_08 + i * 16 + 0x140) = t.q;
+    }
+    va_end(ap);
+    *(u_long128*)&D_0037A16C[idx].unk_10 = 0;
+    return idx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1E78);
 
