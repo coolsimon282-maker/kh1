@@ -546,6 +546,8 @@ segments:
   - [ 0x38fe80, rodata ]
   - [ 0x390320, .rodata, xkinetic ]
   - [ 0x390340, rodata ]
+  - [ 0x390b10, .rodata, unsplit/seg_0EF950 ] # jump tables of func_001F4570 / func_001F45E0
+  - [ 0x390b70, rodata ]
   - [ 0x390eb0, .rodata, xpotato ]
   - [ 0x390f10, .rodata, xrodent ]
   - [ 0x390f40, rodata ]
