@@ -866,7 +866,35 @@ void init_part_mng(ppvmng* pMng) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183658);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppInitPartRender);
+extern pppEnvSt D_00615E40;
+extern u8 D_00595E40[];
+extern sceVu0FMATRIX D_006161C0;
+extern sceVu0FVECTOR D_00616200;
+extern pppModelSt D_00362730[];
+extern pppShapeSt D_00363930[];
+extern pppVsfSt D_00363D30[];
+void func_00185008(pppMemMng* m, pppEMCB* start, s32 size);
+
+void pppInitPartRender(void) {
+    s32 i;
+
+    initGraphicSystem();
+    ppvUserStopPartF = 0;
+    func_00185008(&D_00615E40.heapMng, (pppEMCB*)D_00595E40, 0x80000);
+    D_00615E40.lpModel = D_00362730;
+    D_00615E40.lpShape = D_00363930;
+    D_00615E40.lpVsf = D_00363D30;
+    ppvEnv = &D_00615E40;
+    ppvHookFuncTbl = NULL;
+    memset(D_00364130, 0, 0xC000);
+    for (i = 255; i >= 0; i--) {
+        D_00364130[i].usef = 0;
+    }
+    sceVu0UnitMatrix(D_006161C0);
+    *(u_long128*)D_00616200 = 0;
+    D_00616200[3] = 1.0f;
+    pppSetPrimPacket(NULL, -1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetPartMatrix);
 
