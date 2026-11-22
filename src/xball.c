@@ -177,7 +177,13 @@ f32 func_001216A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_001216C8);
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001217C0);
+void func_001217C0(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, f32* arg2) {
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        sceVu0ScaleVectorXYZ(arg0[i], arg1[i], arg2[i]);
+    }
+}
 
 void func_00121830(f32* arg0, f32* arg1, f32* arg2) {
     s32 i;
