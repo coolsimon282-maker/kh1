@@ -54,7 +54,19 @@ f32 func_00120D38(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120DB8);
+void func_00120DB8(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
+    sceVu0FVECTOR v[2];
+    s32 i;
+
+    for (i = 0; i < 2; i++) {
+        sceVu0SubVector(v[i], arg0[i + 1], arg0[i]);
+    }
+    v[0][3] = 1.0f;
+    v[1][3] = 1.0f;
+    sceVu0OuterProduct(arg1, v[0], v[1]);
+    func_001223B0(arg1, arg1);
+}
+
 
 // nonmatch: extra nops
 INCLUDE_ASM("asm/nonmatchings/xball", func_00120E48);
