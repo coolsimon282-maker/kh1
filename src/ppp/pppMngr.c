@@ -287,7 +287,30 @@ void func_00182120(s16* tim, s16 off) {
     sceGsExecLoadImage(&li, (u_long128*)(tim + 0x10));
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001821A8);
+void func_001821A8(s16* clut, s16 off) {
+    sceGsLoadImage li;
+    s16 cbp = clut[1];
+
+    if (cbp == 0) {
+        return;
+    }
+    if (cbp >= 0x3D40) {
+        cbp = cbp + off - 0x3D40;
+    }
+    switch (clut[3]) {
+        case 0x13:
+            sceGsSetDefLoadImage(&li, cbp, 1, 0, 0, 0, 16, 16);
+            break;
+        case 0x14:
+            sceGsSetDefLoadImage(&li, cbp, 1, 0, 0, 0, 8, 2);
+            break;
+        default:
+            return;
+    }
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&li, (u_long128*)((u8*)clut + ((s32*)clut)[6] + 0x20));
+}
 
 void func_00182288(s32* arg0, u8* use, s16 off) {
     s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
