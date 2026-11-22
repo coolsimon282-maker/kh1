@@ -482,7 +482,12 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023DA08);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023DD48);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023DFC0);
+void func_0023DD48(void);
+
+// func_0023DFC0 (src/unsplit/seg_132D60.c)
+void func_0023DFC0(void) {
+    func_0023DD48();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023DFD8);
 
