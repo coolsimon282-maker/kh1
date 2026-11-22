@@ -95,7 +95,29 @@ void func_0011EDD0(s32* arg0, s32* arg1, s32 arg2, s32 arg3) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EE10);
+// Finds a free entry (unk_00 == 0) in the pool, searching on from the last one handed out (unk_0C).
+XGoblin* func_0011EE10(XGoblin* g) {
+    u8* p = (u8*)g->unk_0C;
+    u8* base;
+    u8* end;
+    s32 i;
+
+    if (p == NULL) {
+        p = (u8*)g->unk_04;
+    }
+    base = (u8*)g->unk_04;
+    end = base + g->unk_00 * g->unk_02;
+    for (i = 0; i < g->unk_02; i++) {
+        p += g->unk_00;
+        if (p >= end) {
+            p = base;
+        }
+        if (((XGoblin*)p)->unk_00 == 0) {
+            return (XGoblin*)p;
+        }
+    }
+    return NULL;
+}
 
 XGoblin* func_0011EE80(XGoblin* arg0, XGoblin* arg1) {
     XGoblin* pXVar;
