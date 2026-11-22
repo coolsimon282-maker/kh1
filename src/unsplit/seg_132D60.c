@@ -527,7 +527,11 @@ void func_0023CEE8(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CF08);
+void func_0023CF08(void) {
+    if (D_0044A820 == 2) {
+        D_0044A820 = 3;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CF30);
 
