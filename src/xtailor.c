@@ -446,7 +446,33 @@ void func_00110FA8(void) {
     func_F20000(7, 0);
 }
 
+#ifdef VERSION_FM
+extern volatile s32 D_002BBDE0;
+extern s32 D_002A3F44;
+extern s32 D_002B834C;
+extern s32 D_002BBE18;
+void func_001016B8(void);
+s32 func_001EEC00(s32);
+void func_00114430(void);
+void func_00113A40(s32);
+
+void func_00110FC8(void) {
+    if (D_002BBDE0 == 3 && D_002A3F44 == 1) {
+        D_002A3F44 = 0;
+        func_001016B8();
+    }
+    func_001EEC00(9);
+    func_00114430();
+    D_002B834C = 3;
+    D_002BBE18 = 0;
+    func_00110F48();
+    D_002B9030 = 0;
+    D_002B9084 = 1;
+    func_00113A40(0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110FC8);
+#endif
 
 void func_00111050(void) {
     sceCdRead(0, 0, NULL, NULL);
