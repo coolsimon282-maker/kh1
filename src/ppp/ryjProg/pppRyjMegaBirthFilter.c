@@ -18,7 +18,41 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", pppRyjMegaBirt
 void func_001A4F70(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A4F78);
+typedef struct {
+    /* 0x00 */ f32 pos[4];
+    /* 0x10 */ char unk_10[0x1C];
+    /* 0x2C */ f32 rotZ;
+    /* 0x30 */ char unk_30[0x8];
+    /* 0x38 */ f32 sclX;
+    /* 0x3C */ f32 sclY;
+} RyjMegaBirthFilterPt;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0xA4];
+    /* 0xA4 */ f32 unk_A4;
+    /* 0xA8 */ f32 unk_A8;
+} RyjMegaBirthFilterObj;
+
+extern sceVu0FMATRIX D_00615EB0;
+
+f32 func_001A4F78(void* a0, sceVu0FMATRIX m, RyjMegaBirthFilterObj* obj, void* a3, RyjMegaBirthFilterPt* pt) {
+    f32 z;
+
+    sceVu0UnitMatrix(m);
+    m[0][0] = pt->sclX * ppvParScl[0];
+    m[1][1] = pt->sclY * ppvParScl[1];
+    m[2][2] = pt->sclX * ppvParScl[0];
+    if (pt->rotZ != 0.0f) {
+        sceVu0RotMatrixZ(m, m, pt->rotZ * 3.1415926f / 180.0f);
+    }
+    sceVu0CopyVector(m[3], pt->pos);
+    sceVu0ApplyMatrix(m[3], D_00615EB0, m[3]);
+    m[3][1] *= obj->unk_A4;
+    z = m[3][2];
+    m[3][1] += obj->unk_A8;
+    sceVu0MulMatrix(m, ppvScreenMatrix, m);
+    return z;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", pppRyjMegaBirthFilterDraw);
 
