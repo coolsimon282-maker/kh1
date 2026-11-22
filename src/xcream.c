@@ -47,7 +47,19 @@ void func_00127B18(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
     func_001145E8(m, *(s32*)(arg0 + 0x154), D_004F82C4 + D_004F82C0++, &D_002E27F0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xcream", func_00127B98);
+extern sceVu0FVECTOR D_004F82D0[4];
+void func_00127960(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2);
+
+void func_00127B98(u8* arg0, sceVu0FVECTOR* arg1, f32 arg2) {
+    sceVu0FMATRIX m;
+
+    sceVu0MulMatrix(m, D_004F82D0, arg1);
+    if ((s32)(*(u64*)(arg0 + 0x370) >> 39) & 1) {
+        func_00127B18(arg0, m, (s32)arg2);
+    } else {
+        func_00127960(arg0, m, (s32)arg2);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00127C20);
 
