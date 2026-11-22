@@ -215,7 +215,31 @@ f32 func_001216A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     return acosf(func_001215A8(arg0, arg1));
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001216C8);
+void func_00120B40(sceVu0FVECTOR, sceVu0FMATRIX, f32);
+void func_001216C8(sceVu0FVECTOR a, sceVu0FVECTOR b, sceVu0FVECTOR out, f32 t) {
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    sceVu0FVECTOR axis;
+    sceVu0FMATRIX m;
+    f32 ang;
+
+    sceVu0Normalize(v0, a);
+    sceVu0Normalize(v1, b);
+    sceVu0OuterProduct(axis, v0, v1);
+    sceVu0Normalize(axis, axis);
+    ang = func_001216A8(v0, v1);
+    t *= D_002B8344[0];
+    if (t < ang) {
+        ang = t;
+    } else if (ang < -t) {
+        ang = -t;
+    }
+    func_00120B40(axis, m, ang);
+    sceVu0CopyVector(out, v0);
+    out[3] = 0.0f;
+    sceVu0ApplyMatrix(out, m, out);
+}
+
 
 void func_001217C0(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, f32* arg2) {
     s32 i;
