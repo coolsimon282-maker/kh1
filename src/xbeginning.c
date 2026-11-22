@@ -415,8 +415,6 @@ void func_001009D8(void) {
     func_00177748();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100A10);
-
 #ifdef VERSION_FM
 typedef struct {
     /* 0x00 */ f32 unk_00;
@@ -429,7 +427,56 @@ typedef struct {
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 unk_24;
-} XBegCam;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+} XBegCam __attribute__((aligned(8)));
+
+typedef struct {
+    /* 0x00 */ u8 pad00[0x21];
+    /* 0x21 */ u8 unk_21;
+    /* 0x22 */ u8 unk_22;
+    /* 0x23 */ u8 unk_23;
+    /* 0x24 */ u8 unk_24;
+    /* 0x25 */ u8 unk_25;
+    /* 0x26 */ u8 pad26[0x34 - 0x26];
+    /* 0x34 */ f32 unk_34;
+    /* 0x38 */ f32 unk_38;
+    /* 0x3C */ f32 unk_3C;
+    /* 0x40 */ f32 unk_40[16][2];
+} XBegCamSrc;
+extern sceVu0FVECTOR D_002A4060[16];
+extern sceVu0FVECTOR D_002A3F60[16];
+extern f32 D_0029B270;
+extern XBegCam D_002BC0F0;
+extern XBegCam D_002BC0C0;
+
+void func_00100A10(XBegCamSrc* arg0) {
+    s32 i;
+
+    D_002BC0F0.unk_20 = 15000.0f;
+    D_002BC0F0.unk_24 = 20000.0f;
+    for (i = 0; i < 16; i++) {
+        D_002A3F60[i][0] = 0.0f;
+        D_002A3F60[i][1] = 0.0f;
+        D_002A4060[i][0] = arg0->unk_40[i][0] / 16384.0f;
+        D_002A4060[i][1] = arg0->unk_40[i][1] / 16384.0f;
+    }
+    D_0029B270 = arg0->unk_34;
+    D_002BC0F0.unk_00 = arg0->unk_3C;
+    D_002BC0F0.unk_04 = arg0->unk_38;
+    D_002BC0F0.unk_08 = arg0->unk_21;
+    D_002BC0F0.unk_0C = arg0->unk_22;
+    D_002BC0F0.unk_10 = arg0->unk_23;
+    D_002BC0F0.unk_14 = arg0->unk_24;
+    D_002BC0F0.unk_18 = arg0->unk_25;
+    D_002BC0C0 = D_002BC0F0;
+}
+
+#else
+INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100A10);
+#endif
+
+#ifdef VERSION_FM
 extern sceVu0FVECTOR D_002A4060[16];
 extern sceVu0FVECTOR D_0029B310[16];
 extern f32 D_0029B270;
