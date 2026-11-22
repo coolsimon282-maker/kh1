@@ -35,7 +35,17 @@ extern s32 D_002C2108;
 
 extern u_long128* func_00121C98(s32 arg0, u_long128** arg1);
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C2D8);
+u64* func_00106CA8(s32 qwc);
+void func_00106CD0(u64* p, s32 qwc);
+
+void func_0010C2D8(s32 n, u_long128** out) {
+    s32 qwc = n * 3 + 1;
+    u64* p = func_00106CA8(qwc);
+    p[1] = 0x535316;
+    p[0] = (n | 0x8000) | 0x6400000000000000;
+    func_00106CD0(p, qwc);
+    *out = (u_long128*)(p + 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010C360);
 
