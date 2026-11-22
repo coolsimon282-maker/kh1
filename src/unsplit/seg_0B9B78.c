@@ -953,7 +953,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF3E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF548);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF698);
+f32 sinf(f32);
+
+void func_001BF698(f32 *q, f32 *axis, f32 angle) {
+    f32 h = angle * 0.5f;
+    f32 s;
+
+    q[3] = cosf(h);
+    s = sinf(h);
+    q[0] = axis[0] * s;
+    q[1] = axis[1] * s;
+    q[2] = axis[2] * s;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF710);
 
