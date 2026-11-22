@@ -699,7 +699,41 @@ s32 sceMcFlush(s32 fd) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", sceMcSetFileInfo);
+typedef struct {
+    char d[0x40];
+} McTblBytes;
+
+s32 sceMcSetFileInfo(s32 port, s32 slot, const char* name, const char* info, u32 valid) {
+    s32 sifServerStat;
+
+    if (PollSema(semaidRegFunc) < 0) {
+        return sceMcErrSemapho;
+    } else if (mcClientID.serve == NULL) {
+        SignalSema(semaidRegFunc);
+        return sceMcErrUnbind;
+    } else if (name == NULL || *name == '\0') {
+        SignalSema(semaidRegFunc);
+        return sceMcErrNullStr;
+    } else {
+        valid &= 7;
+        mcStatus.port = port;
+        mcStatus.slot = slot;
+        mcStatus.mode = valid;
+        *(McTblBytes*)&mcFileTable = *(McTblBytes*)info;
+        mcStatus.table = &mcFileTable;
+        strncpy(mcStatus.name, name, sizeof(mcStatus.name));
+        mcStatus.unk_413 = '\0';
+        FlushCache(0);
+        sifServerStat =
+            sceSifCallRpc(&mcClientID, sceMcFuncNoFileInfo, 1, &mcStatus, sizeof(mcStatus), &mcRetVal, 4, NULL, NULL);
+        if (sifServerStat == 0) {
+            mcRunCmdNo = sceMcFuncNoFileInfo;
+        } else {
+            SignalSema(semaidRegFunc);
+        }
+        return sifServerStat;
+    }
+}
 
 /**
  * @brief Change the file or directory name
