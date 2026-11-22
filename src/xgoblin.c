@@ -205,8 +205,47 @@ void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
 }
 
 #ifdef VERSION_FM
-s32 func_0011EF58(XGoblin* arg0, s32 arg1);
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011EF58);
+void func_0015F010(void);
+
+s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
+    u32 uVar3;
+
+    s32 sVar5 = 0;
+    XGoblin* pXVar2 = NULL;
+    XGoblin* next = arg0->unk_08;
+
+    while (next != 0) {
+        if ((next->unk_02 & arg1) == arg1) {
+            uVar3 = next->unk_0C(next);
+            func_0015F010();
+            next->unk_00 &= 0xFFEF;
+
+            if (uVar3 & 4) {
+                if (pXVar2 != 0) {
+                    if (pXVar2->unk_08 != next) {
+                        pXVar2 = func_0011EE80(arg0, next);
+                    }
+                    pXVar2->unk_08 = next->unk_08;
+                } else {
+                    arg0->unk_08 = next->unk_08;
+                }
+                next->unk_00 = 0;
+            } else {
+                pXVar2 = next;
+            }
+
+            sVar5++;
+
+            if (uVar3 & 8) {
+                break;
+            }
+        }
+        next = next->unk_08;
+    }
+
+    arg0->unk_0C = NULL;
+    return sVar5;
+}
 #else
 s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
     u32 uVar3;
