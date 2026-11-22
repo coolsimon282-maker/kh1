@@ -54,7 +54,34 @@ void* func_001EDB68(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDBC0);
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDD20);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ u8 rate[4]; // big-endian sample rate
+    /* 0x14 */ u8 unk_14[0xA];
+    /* 0x1E */ u8 unk_1E;
+    /* 0x1F */ u8 unk_1F;
+} XQuackVag;
+
+void* func_001EDD20(XQuackVag* vag, s32 arg1, s32 arg2, s32 arg3) {
+    s32 base = 48000;
+    s32 rate;
+    s32 pitch;
+    u8 e;
+    u8 f;
+
+    rate = vag->rate[0] << 24;
+    rate |= vag->rate[1] << 16;
+    rate |= vag->rate[2] << 8;
+    rate |= vag->rate[3];
+    pitch = (rate << 12) / base;
+    e = vag->unk_1E;
+    f = vag->unk_1F;
+    if (!(D_003DE5B8 & 4)) {
+        func_001EE0B8(0x12, (s32)vag, arg1, arg2, arg3, pitch, e, f);
+        return D_0062D980;
+    }
+    return D_0062D980;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDDC0);
 
