@@ -175,7 +175,28 @@ void *func_0024D8E0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D8F0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D9A0);
+typedef struct {
+    u8 pad[0x10];
+    s32 unk_10;
+} A2Mount;
+extern A2Mount D_0046A688;
+extern u8 D_004919A8[];
+s32 sceUmount(u8 *);
+
+s32 func_0024D9A0(void) {
+    A2Mount *p = &D_0046A688;
+
+    if (p->unk_10 != 0) {
+        s32 r = sceUmount(D_004919A8);
+
+        if (r != 0) {
+            return 1;
+        }
+        p->unk_10 = 0;
+        return r;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D9F0);
 
@@ -195,7 +216,30 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DB78);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DCC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DD98);
+typedef struct {
+    u8 pad[8];
+    s32 unk_08;
+    s32 unk_0C;
+} A2Ent120190;
+extern u8 D_004919C8[];
+A2Ent120190 *func_00120190(u8 *);
+
+s32 func_0024DD98(s32 *out) {
+    s32 r = 0;
+    A2Ent120190 *q;
+
+    if (out != NULL) {
+        *out = 0;
+    }
+    q = func_00120190(D_004919C8);
+    if (q != NULL) {
+        r = q->unk_0C;
+        if (out != NULL) {
+            *out = q->unk_08;
+        }
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DDF8);
 

@@ -23,7 +23,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FE20);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FEC0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FFD0);
+typedef struct {
+    u32 flags;
+    u8 pad[0x2C];
+    s32 unk_30;
+    s32 unk_34;
+} A2Slot;
+extern A2Slot D_004F3230[];
+extern s32 D_002C5C44;
+
+A2Slot *func_0011FFD0(void) {
+    A2Slot *p = D_004F3230;
+    s32 i;
+
+    for (i = 0; i < 16; i++, p++) {
+        if (!(p->flags & 1)) {
+            p->flags |= 1;
+            p->unk_34 = D_002C5C44++;
+            p->unk_30 = -1;
+            return p;
+        }
+    }
+    return NULL;
+}
 
 void func_00120038(s32* arg0) {
     *arg0 = 0;
@@ -55,7 +77,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001201D0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001202C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", fm_func_00120438);
+s32 sceCdDiskReady(s32);
+s32 func_00269DA8(void *, void *);
+
+void fm_func_00120438(void *a, void *b) {
+    while (sceCdDiskReady(1) != 2 || func_00269DA8(a, b) == 0) {
+        func_0011FD40();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001204A0);
 
