@@ -1,6 +1,9 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x001970).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern f32 D_00494A74;
+s32 func_00103C48(void);
+extern f32 D_004948A0[];
 extern s32 D_002A6B84;
 void func_00121EB0(s32);
 void sceDmaSend(s32, s32);
@@ -118,11 +121,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103B68);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103C48);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104110);
+void func_00104110(void) {
+    D_004948A0[0] = D_004948A0[1] = D_004948A0[3] = 0.0f;
+    D_004948A0[2] = D_00494A74;
+    func_0011ED30(0x280A4, func_00103C48);
+}
 
 extern s32 D_002B8C88;
 extern f32 D_00494A70;
-extern f32 D_00494A74;
 
 void func_00104268(f32 arg0, f32 arg1) {
     D_002B8C88 = 1;
@@ -251,7 +257,9 @@ void func_00105C70(s32 arg0, sceVu0FVECTOR arg1) {
     sceVu0CopyVector(arg1, D_002A3F48[arg0]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105C98);
+void func_00105C98(s32 a0, f32* a1) {
+    sceVu0CopyVector(a1, D_002A3F48[((u32)D_002A6238[a0].unk_10 >> 11) & 0xF]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105AE0);
 
