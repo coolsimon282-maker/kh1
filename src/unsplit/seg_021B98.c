@@ -33,7 +33,13 @@ void func_00121EB0(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121D50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121F30);
+void func_00121F30(s32 a0, s32 *a1) {
+    Seg21B98Unk10 *p = func_00121DE0(a0, (s32)a1);
+
+    *a1 = a0;
+    p->unk_0C = a1;
+    p->unk_00 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121F6C);
 
