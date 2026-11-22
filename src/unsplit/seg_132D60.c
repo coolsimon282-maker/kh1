@@ -131,7 +131,14 @@ void func_00233F28(s32 arg0, s32 arg1) {
     D_00647FE0 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233F40);
+extern s32 D_00425C48[];
+
+s32 func_00233F40(s32 arg0, s32 arg1) {
+    s32 *ptr = (s32 *)((s32)&D_00425C48 + (((arg0 * 4) + arg1) * 4));
+    s32 val = *ptr;
+    *ptr = 0;
+    return val;
+}
 
 extern s32 D_00425C48[];
 
