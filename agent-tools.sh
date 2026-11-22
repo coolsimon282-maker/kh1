@@ -16,6 +16,8 @@
 #   try <file> <func> <cfile>  put + build in one step; on OK prints the exact commit command, otherwise a short diff
 #   giveup <file> <func> <reason...>  put src/<file>.c back as last committed and add "<func>: gave up: <reason>"
 #                            to this checkout's notes file (notes/<checkout name>.md)
+#   next                     the next job from qwen/twins.txt then qwen/queue.txt (skipping matched and given-up
+#                            ones), with its assembly and the twin's C (or an m2c draft): everything for one function
 cd "$(dirname "$0")"
 # git inside WSL: a worktree's .git file holds a Windows path (C:/...) that WSL's git can't follow, so translate it.
 # Read-only use: no index writes (GIT_OPTIONAL_LOCKS=0), file modes ignored.
@@ -27,6 +29,30 @@ replaced() {
   git diff -U0 -- src | awk '/^\+\+\+ b\/src\//{f=substr($2,7); sub(/\.c$/,"",f)} /^-INCLUDE_ASM\(/{n=$0; sub(/^[^,]*, */,"",n); sub(/\).*/,"",n); print n" "f}'
 }
 case "$1" in
+  next)
+    python3 - > /tmp/next_job.$$ <<'PY'
+import os, re
+notes = 'notes/%s.md' % os.path.basename(os.getcwd())
+given = open(notes, errors='replace').read() if os.path.exists(notes) else ''
+gave = set(re.findall(r'(\w+)(?: \([^)]*\))?: (?:twin of \w+, )?gave up', given))
+for jobs in ('qwen/twins.txt', 'qwen/queue.txt'):
+    if not os.path.exists(jobs): continue
+    for line in open(jobs, errors='replace'):
+        m = re.match(r'^\s*(\d+)\s+(\w+)\s+(\S+)(?:\s+<-\s+(\w+))?', line)
+        if not m or m.group(2) in gave: continue
+        src = 'src/%s.c' % m.group(3)
+        if os.path.exists(src) and re.search(r'^INCLUDE_ASM\("[^"]+",\s*%s\);' % m.group(2), open(src, errors='replace').read(), re.M):
+            print(m.group(2), m.group(3), m.group(4) or '-', m.group(1)); raise SystemExit
+PY
+    job=$(cat /tmp/next_job.$$); rm -f /tmp/next_job.$$
+    [ -z "$job" ] && { echo "No jobs left in qwen/twins.txt or qwen/queue.txt. Reply that the job list is finished, then stop."; exit 0; }
+    set -- $job
+    echo "NEXT JOB: $1 in src/$2.c ($4 bytes)$( [ "$3" != - ] && echo " - twin of $3: copy the twin's C and change the names/offsets/constants")"
+    echo "== assembly of $1 =="
+    grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
+    if [ "$3" != - ]; then echo "== the twin's matched C =="; bash "$0" cfunc "$3"
+    else echo "== m2c draft (check types against the assembly) =="; bash "$0" m2c "$2" "$1" | grep -v '^\s*$' | head -60; fi
+    echo "== then: write qwen/work.c, and run: wsl -e bash ./agent-tools.sh try $2 $1 qwen/work.c" ;;
   try)
     bash "$0" put "$2" "$3" "$4" || exit 1
     out=$(bash "$0" build); echo "$out" | tail -4
