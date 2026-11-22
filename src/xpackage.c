@@ -174,7 +174,13 @@ s32 func_00247D18(u8* arg0) {
 void func_00247D88(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D90);
+void func_00247D90(void) {
+    s32 i;
+
+    for (i = 7; i >= 0; i--) {
+        XPACKAGE_TABLE[i] = NULL;
+    }
+}
 
 extern s32 D_0046A038;
 extern s32 D_0046A03C;
