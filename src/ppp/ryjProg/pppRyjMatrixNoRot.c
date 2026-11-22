@@ -64,6 +64,45 @@ void func_0019B4D8(RyjMatrixNoRot* p, sceVu0FVECTOR top, sceVu0FVECTOR bottom) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMatrixNoRot", func_0019B5C0);
+void func_0019B5C0(RyjMatrixNoRot* p, s32* x, s32* w, s32* y, s32* h) {
+    s32 th = 0x1000;
+    s32 tx = 0;
+    s32 tw = 0x1000;
+
+    switch (p->unk_16) {
+    case 1:
+        tw = 0x800;
+        break;
+    case 2:
+        tw = 0x400;
+        break;
+    }
+    switch (p->unk_17) {
+    case 1:
+        th = 0x800;
+        break;
+    case 2:
+        th = 0x400;
+        break;
+    }
+    switch (p->unk_18) {
+    case 1:
+        tx = 0x400;
+        tw += 0x400;
+        break;
+    case 2:
+        tx = 0x800;
+        tw += 0x800;
+        break;
+    case 3:
+        tx = 0xC00;
+        tw += 0xC00;
+        break;
+    }
+    *x = tx + 0x10;
+    *w = tw - 0x10;
+    *y = 0x10;
+    *h = th - 0x10;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMatrixNoRot", func_0019B698);
