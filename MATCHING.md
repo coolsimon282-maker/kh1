@@ -95,7 +95,7 @@ INCLUDE_ASM("...", fm_func_X);
 * **Global names**: use the names `config/fm/jp_names.txt` gives where there is one; only fall back to the
   FM-address name (`D_00xxxxxx`) for globals it doesn't list.
 * **Aliasing**: every game file is now compiled with `-fno-strict-aliasing` except the ones listed in
-  `STRICT_ALIASING_FILES` in configure.py (xblade, xbuffalo, xhumungus, xmeowp, xpackage, xtango, xtrumpet,
+  `STRICT_ALIASING_FILES` in configure.py (xblade, xbuffalo, xhumungus, xmeowp, xpackage, xpotato, xtango, xtrumpet,
   xturtle), as the original evidently was (since 22 Nov 00:45). Outside those files, reloads after stores of
   other types come out by themselves; inside them, use a union (`typedef union { f32 f; s32 i; } FI;`) or type
   the field as `s32`. Existing union workarounds still match.

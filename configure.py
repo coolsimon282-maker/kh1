@@ -53,6 +53,7 @@ STRICT_ALIASING_FILES = [
     "xhumungus.c",
     "xmeowp.c",
     "xpackage.c",
+    "xpotato.c",  # added after a3's run 3: its matched functions only match with strict aliasing
     "xtango.c",
     "xtrumpet.c",
     "xturtle.c",
