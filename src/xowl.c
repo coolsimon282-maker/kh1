@@ -85,7 +85,77 @@ void func_00122B70(s32* arg0) {
     *arg0 = 0;
 }
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ s32 type;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ f32 range;
+    /* 0x10 */ sceVu0FVECTOR pos;
+    /* 0x20 */ sceVu0FVECTOR dir;
+    /* 0x30 */ sceVu0FVECTOR unk_30;
+} XOwlLight;
+
+typedef struct {
+    /* 0x000 */ char unk_00[0x420];
+    /* 0x420 */ u32 lightMask;
+} XOwlLit;
+
+extern sceVu0FMATRIX D_002C1E60;
+void func_001223B0(sceVu0FVECTOR, sceVu0FVECTOR);
+
+void func_00122B78(XOwlLit* ctx, sceVu0FVECTOR pos, sceVu0FMATRIX m) {
+    sceVu0FVECTOR v;
+    XOwlLight* e;
+    s32 i;
+    s32 j;
+    s32 k;
+    f32 d;
+
+    k = 0;
+    sceVu0CopyMatrix(m, D_002C1E60);
+    e = (XOwlLight*)D_002C5C80;
+    for (i = 0; i < 31; i++, e++) {
+        if (ctx->lightMask & (1 << i)) {
+            switch (e->type) {
+            case 2:
+                for (j = 0; j < 3; j++) {
+                    m[j][k] = -e->dir[j];
+                }
+                k++;
+                break;
+            case 3:
+                sceVu0SubVector(v, e->pos, pos);
+                func_001223B0(v, v);
+                if (v[3] < e->range) {
+                    sceVu0ScaleVector(v, v, cosf(v[3] / e->range * 3.1415928f * 0.5f));
+                    for (j = 0; j < 3; j++) {
+                        m[j][k] = v[j];
+                    }
+                }
+                k++;
+                break;
+            case 4:
+                sceVu0SubVector(v, e->pos, pos);
+                func_001223B0(v, v);
+                d = -sceVu0InnerProduct(e->dir, v);
+                if (e->range < d) {
+                    sceVu0ScaleVector(v, v, (d - e->range) / (1.0f - e->range));
+                    for (j = 0; j < 3; j++) {
+                        m[j][k] = v[j];
+                    }
+                }
+                k++;
+                break;
+            }
+        }
+    }
+    m[3][3] = 1.0f;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xowl", func_00122B78);
+#endif
 
 extern sceVu0FMATRIX D_002C1E60;
 
