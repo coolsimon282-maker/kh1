@@ -289,7 +289,30 @@ void func_00182120(s16* tim, s16 off) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001821A8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182288);
+void func_00182288(s32* arg0, u8* use, s16 off) {
+    s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
+    s32 n = *p++;
+    s32 i;
+    u8 bits = 0;
+    s16* tim;
+    s32 k;
+    s32 j;
+
+    for (i = 0; i < n;) {
+        j = i & 7;
+        tim = (s16*)*p++;
+        k = i >> 3;
+        i++;
+        if (j == 0) {
+            bits = use[k];
+        }
+        if (bits & 1) {
+            func_00182120(tim, off);
+        }
+        bits >>= 1;
+    }
+}
+
 
 void func_00182348(s32* arg0) {
     s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
