@@ -3018,7 +3018,50 @@ s32 func_001D8250(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8270);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8380);
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+} Unk2C5AD0;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ u8 unk_0C[0x24];
+    /* 0x30 */ s32 unk_30[15];
+    /* 0x6C */ f32 unk_6C;
+} Unk2C5BB0;
+
+extern Unk2C5AD0 D_002C5AD0;
+extern Unk2C5BB0 D_002C5BB0;
+
+s32 func_001D8380(void) {
+    if (!((s32)(*(u64*)D_0038CD00 >> 58) & 1)) {
+        return 4;
+    }
+    D_002C5AD0.unk_04 = 0;
+    D_002C5AD0.unk_08 = 0;
+    D_002C5BB0.unk_04 = 0;
+    D_002C5BB0.unk_08 = 0;
+    D_002C5BB0.unk_30[0] = 0;
+    D_002C5BB0.unk_30[1] = 0;
+    D_002C5BB0.unk_30[2] = 0;
+    D_002C5BB0.unk_30[3] = 0;
+    D_002C5BB0.unk_30[4] = 0;
+    D_002C5BB0.unk_30[5] = 0;
+    D_002C5BB0.unk_30[6] = 0;
+    D_002C5BB0.unk_30[7] = 0;
+    D_002C5BB0.unk_30[8] = 0;
+    D_002C5BB0.unk_30[9] = 0;
+    D_002C5BB0.unk_30[10] = 0;
+    D_002C5BB0.unk_30[11] = 0;
+    D_002C5BB0.unk_30[12] = 0;
+    D_002C5BB0.unk_30[13] = 0;
+    D_002C5BB0.unk_30[14] = 0;
+    D_002C5BB0.unk_6C = 0.0f;
+    return 0;
+}
 
 s32 func_001D8408(void) {
     D_002B9660 = 0;
