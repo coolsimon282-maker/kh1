@@ -52,7 +52,50 @@ void* func_001EDB68(void) {
     return D_0062D980;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xquack", func_001EDBC0);
+typedef struct {
+    /* 0x00 */ s8 active;
+    /* 0x01 */ char unk_01[3];
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ char unk_08[4];
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ char unk_14[0xA0];
+} XQuackVoice; // size = 0xB4
+
+extern XQuackVoice D_0063D640[24];
+
+s32 func_001EDBC0(s32 arg0, s32 arg1, s32 arg2) {
+    XQuackVoice* p;
+    s32 i;
+
+    FlushCache(0);
+    p = D_0063D640;
+    if (arg1 < 0 && arg2 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0) {
+                return 1;
+            }
+        }
+    } else if (arg1 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0 && p->unk_04 == arg2) {
+                return 1;
+            }
+        }
+    } else if (arg2 < 0) {
+        for (i = 0; i < 24; i++, p++) {
+            if (p->active != 0 && p->unk_0C == arg0 && p->unk_10 == arg1) {
+                return 1;
+            }
+        }
+    }
+    for (i = 0; i < 24; i++, p++) {
+        if (p->active != 0 && p->unk_0C == arg0 && p->unk_10 == arg1 && p->unk_04 == arg2) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 typedef struct {
     /* 0x00 */ u8 unk_00[0x10];
