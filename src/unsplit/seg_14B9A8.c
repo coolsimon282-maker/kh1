@@ -120,7 +120,27 @@ void func_0024CE80(u8 *dst, s16 *src) {
     dst[j] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CF00);
+typedef struct {
+    u8 pad[0x34];
+    s8 name[0x2C];
+} A2Ent60;
+typedef struct {
+    u8 pad[0x60];
+    A2Ent60 ent[1];
+} A2ObjBC4E0;
+A2ObjBC4E0 *func_001BC4E0(void);
+extern s32 D_00669A60;
+extern s16 D_00669A40[];
+
+void func_0024CF00(void) {
+    A2Ent60 *e = &func_001BC4E0()->ent[D_00669A60];
+    s32 i;
+
+    for (i = 0; e->name[i] != 0; i++) {
+        e->name[i] = 0;
+    }
+    func_0024CE80((u8 *)e->name, D_00669A40);
+}
 
 extern s32 D_0046A5D8;
 
@@ -343,7 +363,24 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024EDC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024EDF0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024EF88);
+extern u8 *D_002E26A0[];
+void func_00242B68(s32);
+s32 func_0013C2A8(u16);
+void func_00241C60(void *, s32);
+
+void func_0024EF88(void) {
+    s32 i;
+
+    func_00242B68(1);
+    func_00242B68(2);
+    for (i = 0; i < 2; i++) {
+        u8 *o = D_002E26A0[i + 1];
+
+        if (o != NULL) {
+            func_00241C60(o, func_0013C2A8(*(u16 *)(*(u8 **)(o + 0x130) + 0x4C)));
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F008);
 
