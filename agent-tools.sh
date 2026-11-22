@@ -13,6 +13,15 @@
 #                            (again after a failed try: it starts from the last commit of the file)
 #                            (so big files like xhumungus.c never need opening; <cfile> e.g. qwen/work.c)
 cd "$(dirname "$0")"
+# git inside WSL: a worktree's .git file holds a Windows path (C:/...) that WSL's git can't follow, so translate it.
+# Read-only use: no index writes (GIT_OPTIONAL_LOCKS=0), file modes ignored.
+gd=$(sed -n 's/^gitdir: //p' .git 2>/dev/null | sed -E 's#^([A-Za-z]):#/mnt/\L\1#')
+[ -n "$gd" ] && export GIT_DIR="$gd" GIT_WORK_TREE="$PWD"
+export GIT_OPTIONAL_LOCKS=0 GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.filemode GIT_CONFIG_VALUE_0=false
+# functions whose INCLUDE_ASM line is currently replaced by uncommitted C, one "func file" per line
+replaced() {
+  git diff -U0 -- src | awk '/^\+\+\+ b\/src\//{f=substr($2,7); sub(/\.c$/,"",f)} /^-INCLUDE_ASM\(/{n=$0; sub(/^[^,]*, */,"",n); sub(/\).*/,"",n); print n" "f}'
+}
 case "$1" in
   near)
     n="${4:-30}"
@@ -22,6 +31,7 @@ case "$1" in
     s=$((l > n ? l - n : 1)); sed -n "${s},$((l + n))p" "src/$2.c" ;;
   put)
     [ -f "$4" ] || { echo "no file $4"; exit 1; }
+    others=$(replaced | awk -v f="$2" -v fn="$3" '$2 == f && $1 != fn {printf "%s ", $1}')
     python3 - "$2" "$3" "$4" <<'PY'
 import re, subprocess, sys
 f, fn, cfile = 'src/%s.c' % sys.argv[1], sys.argv[2], sys.argv[3]
@@ -42,6 +52,7 @@ s = pat.sub(lambda m: c, s, count=1)
 open(f, 'w', encoding='utf-8', newline='\n').write(s)
 print('replaced the INCLUDE_ASM line for %s in %s with %s (%d lines)' % (fn, f, cfile, c.count('\n') + 1))
 PY
+    [ -n "$others" ] && echo "WARNING: src/$2.c still has uncommitted C for other functions too: ${others}- a build only passes if ALL of them match. If you gave up on them: git checkout -- src/$2.c, then put this function again."
     ;;
   configure)
     bash wsl-build.sh python3 configure.py -c -v fm 2>&1 | grep -iE 'error|duplicate' ; bash wsl-build.sh ninja 2>&1 | tail -1 ;;
@@ -52,7 +63,9 @@ PY
     # the dashboard (kh1-study\dashboard) shows it.
     # Every build also appends "epoch <tab> verdict <tab> functions being worked on" to .agent_build.history
     # (the functions whose INCLUDE_ASM line is currently replaced), for the dashboard's per-agent statistics.
-    funcs=$(git diff -U0 -- src | grep -oP '^-INCLUDE_ASM\("[^"]+",\s*\K\w+' | tr '\n' ' ')
+    funcs=$(replaced | awk '{printf "%s ", $1}')
+    nf=$(echo $funcs | wc -w)
+    [ "$nf" -gt 1 ] && echo "NOTE: this build contains $nf functions in uncommitted C: ${funcs}- it only passes if ALL of them match. Revert any you gave up on (git checkout -- src/<file>.c)."
     FUNCS="$funcs" bash wsl-build.sh bash -c 'ninja > .agent_build.log 2>&1; s=$?; date "+%H:%M:%S" > .agent_build.time; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" .agent_build.log | tail -25; if [ $s -eq 0 ] && sha1sum -c config/fm/checksum.sha1 > .agent_build.v 2>&1; then v=OK; elif [ $s -eq 0 ]; then v=DIFFERS; elif grep -q "checksum did NOT match" .agent_build.log; then v=DIFFERS; else v=ERROR; fi; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1 2>&1 | tee -a .agent_build.log; else echo "BUILD FAILED" | tee -a .agent_build.log; fi; printf "%s\t%s\t%s\n" "$(date +%s)" "$v" "$FUNCS" >> .agent_build.history' ;;
   list)
     for f in $(grep -oP '^INCLUDE_ASM\("asm/nonmatchings/[^"]+",\s*\K\w+' "src/$2.c"); do
