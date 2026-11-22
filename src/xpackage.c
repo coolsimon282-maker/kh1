@@ -3,6 +3,14 @@
 
 XWhiskey* D_00663A28[8];
 
+#ifdef VERSION_FM
+// FM's code reads this table at 0x669A18 (FM's linker puts the definition above somewhere else).
+extern XWhiskey* D_00669A18[8];
+#define XPACKAGE_TABLE D_00669A18
+#else
+#define XPACKAGE_TABLE D_00663A28
+#endif
+
 void func_00247778(s32 arg0, XWhiskey* arg1) {
     if (arg0 > 0) {
         while (arg0 != 0) {
@@ -168,7 +176,28 @@ void func_00247D88(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247D90);
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00247DC8);
+extern s32 D_0046A038;
+extern s32 D_0046A03C;
+extern s32 D_0046A040;
+extern s32 D_0046A044;
+extern s32 D_0046A048;
+
+void func_00247DC8(s32 idx, s32 arg1, s32 arg2, s32 arg3) {
+    XWhiskey* p = XPACKAGE_TABLE[idx];
+    s32 old40, old48, new40, new48;
+
+    old40 = D_0046A040;
+    old48 = D_0046A048;
+    D_0046A03C = p->unk_0C;
+    new40 = p->unk_10;
+    D_0046A044 = p->unk_14;
+    new48 = p->unk_18;
+    D_0046A040 = new40;
+    D_0046A048 = new48;
+    func_0024AB00(arg1, arg2, arg3);
+    D_0046A040 = old40;
+    D_0046A048 = old48;
+}
 
 void func_00247E68(s32 arg0, s32 arg1, s32 arg2) {
     func_00247DC8(0, arg0, arg1, arg2);
@@ -275,11 +304,6 @@ void func_00248240(void) {
 void func_00248258(void) {
     func_00248168(7);
 }
-
-extern s32 D_0046A03C;
-extern s32 D_0046A040;
-extern s32 D_0046A044;
-extern s32 D_0046A048;
 
 void func_00248270(s32* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 old40, old48, new40, new48;
