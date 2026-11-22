@@ -651,7 +651,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242B38);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242B68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242BA0);
+extern struct {
+    char _[0xCF0];
+    s32 field_0CF0;
+} D_00654570;
+
+void func_00242BA0(void) {
+    if (D_00654570.field_0CF0 == 0) {
+        D_00654570.field_0CF0 = 1;
+    }
+}
 
 extern s32 D_00655264;
 
