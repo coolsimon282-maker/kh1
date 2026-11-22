@@ -225,7 +225,18 @@ void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[3] = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001218E0);
+void func_001218E0(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
+    sceVu0FMATRIX m;
+    s32 i;
+
+    for (i = 0; i < 3; i++) {
+        sceVu0Normalize(m[i], arg0[i]);
+    }
+    arg1[0] = atan2f(-m[1][2], m[0][2]);
+    arg1[1] = asinf(-m[2][2]);
+    arg1[2] = atan2f(m[2][1], m[2][0]);
+}
+
 
 f32 func_00121970(f32 arg0) {
     if (arg0 > 0.0f) {
