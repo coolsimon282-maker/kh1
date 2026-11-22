@@ -13,7 +13,87 @@ sceVu0FVECTOR g_vecCamDir;
 
 f32 func_001A5500(void);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", pppRyjMegaBirthFilterCalc);
+typedef struct {
+    /* 0x00 */ char unk_00[0xE];
+    /* 0x0E */ u16 nParticle;
+    /* 0x10 */ char unk_10[0x9C];
+    /* 0xAC */ f32 fDist;
+    /* 0xB0 */ f32 fFade;
+    /* 0xB4 */ u8 bDistFade;
+    /* 0xB5 */ u8 unk_B5;
+    /* 0xB6 */ u8 bColor;
+} PRyjMegaBirthFilterCalc;
+
+extern sceVu0FVECTOR D_003701D0;
+s32 func_001A4040(VRyjMegaBirthFilter* v, PRyjMegaBirthFilterCalc* p);
+void func_001A4BC8(VRyjMegaBirthFilter* v, PRyjMegaBirthFilterCalc* p, void* w);
+
+// |v.xyz| on VU0 (hand-written macro code)
+static inline f32 vu0Length(f32* v) {
+    f32 len;
+    __asm__ volatile(
+        "lqc2 $vf10, 0(%1)
+"
+        "vmul.xyz $vf10, $vf10, $vf10
+"
+        "vaddx.y $vf10, $vf10, $vf10x
+"
+        "vaddy.z $vf10, $vf10, $vf10y
+"
+        "vsqrt Q, $vf10z
+"
+        "vwaitq
+"
+        "vaddq.x $vf10, $vf0, Q
+"
+        "qmfc2.ni %0, $vf10
+"
+        : "=r"(len) : "r"(v) : "memory");
+    return len;
+}
+
+void pppRyjMegaBirthFilterCalc(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, pppCtrlTable* ctbl) {
+    VRyjMegaBirthFilter* v = (VRyjMegaBirthFilter*)&pobj->val[ctbl->useVal[2]];
+    void* w = &pobj->val[ctbl->useVal[1]];
+    sceVu0FVECTOR d;
+    f32 len;
+    f32 f;
+
+    if (v->pvParticleData == NULL) {
+        v->nParticle = p->nParticle;
+        v->pvParticleData = pppDbgAlloc(ppvEnv, v->nParticle * 0x60);
+        if (v->pvParticleData != NULL) {
+            memset(v->pvParticleData, 0, v->nParticle * 0x60);
+        }
+        if (p->bColor) {
+            v->pvParticleColor = pppDbgAlloc(ppvEnv, v->nParticle * 32);
+            if (v->pvParticleColor != NULL) {
+                memset(v->pvParticleColor, 0, v->nParticle * 32);
+            }
+        }
+    }
+    if (!func_001A4040(v, p)) {
+        return;
+    }
+    if (p->bDistFade) {
+        sceVu0SubVector(d, ppvEye, D_003701D0);
+        len = vu0Length(d);
+        if (p->fDist < len) {
+            v->bActive = 0;
+        } else {
+            v->bActive = 1;
+            f = p->fDist - len;
+            if (f < p->fFade) {
+                v->fAlphaScale = f / p->fFade;
+            } else {
+                v->fAlphaScale = 1.0f;
+            }
+        }
+    }
+    if (v->bActive) {
+        func_001A4BC8(v, p, w);
+    }
+}
 
 void func_001A4F70(void) {
 }
@@ -157,30 +237,6 @@ typedef struct {
 
 extern sceVu0FMATRIX D_00615F30;
 void func_001A55D8(PRyjMegaBirthFilterB* p, f32* data, u8* color);
-
-// |v.xyz| on VU0 (hand-written macro code)
-static inline f32 vu0Length(f32* v) {
-    f32 len;
-    __asm__ volatile(
-        "lqc2 $vf10, 0(%1)
-"
-        "vmul.xyz $vf10, $vf10, $vf10
-"
-        "vaddx.y $vf10, $vf10, $vf10x
-"
-        "vaddy.z $vf10, $vf10, $vf10y
-"
-        "vsqrt Q, $vf10z
-"
-        "vwaitq
-"
-        "vaddq.x $vf10, $vf0, Q
-"
-        "qmfc2.ni %0, $vf10
-"
-        : "=r"(len) : "r"(v) : "memory");
-    return len;
-}
 
 void func_001A5EF8(void* v, PRyjMegaBirthFilterB* p, f32* data, u8* color) {
     sceVu0FVECTOR dir;
