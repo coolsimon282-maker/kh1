@@ -1,6 +1,7 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x0EF950).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+u8 *func_001F0BD8(s32);
 extern s32 D_003F3E18[];
 void func_0020FBE0(void);
 void func_0020F3C8(void);
@@ -2079,7 +2080,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020A518);
 void func_0020A6B8(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020A6C0);
+void func_0020A6C0(s32 a0) {
+    u8 *p = func_001F0BD8(a0);
+    u8 *e = D_003F3530 + a0 * 0xD0;
+    u8 *q = *(u8 **)(p + 0x14C);
+    s32 v = 0;
+
+    *(s32 *)(e + 0x50) = -1;
+    if (q != NULL) {
+        v = *(s32 *)(q + 4);
+    }
+    *(s32 *)(e + 0x3C) = v;
+    *(s32 *)(e + 0x70) = 0;
+}
 
 void func_0020A728(s32 a0) {
     u8 *p = D_003F3530 + a0 * 0xD0;
