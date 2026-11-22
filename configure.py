@@ -62,6 +62,7 @@ STRICT_ALIASING_FILES = [
 NO_G_FILES = [
     "xblade.c",
     "gumi.c",
+    "pppKeMvYpEff.c",  # a2: its C matches only without -g (gas leaves the dpdiv/dptoli delay slots empty with -g)
 ]
 
 
