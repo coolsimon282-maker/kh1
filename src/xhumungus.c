@@ -196,9 +196,55 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA090);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA418);
 
+typedef struct {
+    /* 0x000 */ u64 unk_00_0 : 9;
+    u64 unk_00_9 : 1;
+    u64 unk_00_10 : 54;
+    /* 0x008 */ u8 unk_08[0xC];
+    /* 0x014 */ f32 unk_14;
+    /* 0x018 */ u8 unk_18[0x10];
+    /* 0x028 */ f32 unk_28;
+    /* 0x02C */ u8 unk_2C[0x3C];
+    /* 0x068 */ f32 unk_68;
+    /* 0x06C */ u8 unk_6C[0x2C];
+    /* 0x098 */ f32 unk_98;
+    /* 0x09C */ u8 unk_9C[0x90];
+    /* 0x12C */ f32 unk_12C;
+} Unk3C5510;
+
+extern Unk3C5510 D_003C5510;
+extern f32 D_0036266C;
+
+extern f32 D_002B8344;
+
+typedef struct {
+    /* 0x000 */ u64 unk_00_0 : 2;
+    u64 unk_00_2 : 1;
+    u64 unk_00_3 : 1;
+    u64 unk_00_4 : 60;
+    /* 0x008 */ s32 unk_08;
+    /* 0x00C */ f32 unk_0C[5];
+    /* 0x020 */ f32 unk_20[16];
+    /* 0x060 */ f32 unk_60[12];
+    /* 0x090 */ f32 unk_90[36];
+    /* 0x120 */ f32 unk_120[4];
+} Unk3C5510A;
+
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA638);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA720);
+s32 func_001CA720(Script* arg0) {
+    Unk3C5510A* p;
+
+    func_001C6890(arg0);
+    p = (Unk3C5510A*)&D_003C5510;
+    p->unk_00_2 = 1;
+    p->unk_60[0] = p->unk_120[0];
+    p->unk_20[0] = 0.0f;
+    p->unk_0C[0] = arg0->unk_174[arg0->unk_174[3] + 3] * 2.0f;
+    p->unk_90[0] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA7A0);
 
@@ -223,27 +269,6 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB4A0);
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB5C0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB7B8);
-
-typedef struct {
-    /* 0x000 */ u64 unk_00_0 : 9;
-    u64 unk_00_9 : 1;
-    u64 unk_00_10 : 54;
-    /* 0x008 */ u8 unk_08[0xC];
-    /* 0x014 */ f32 unk_14;
-    /* 0x018 */ u8 unk_18[0x10];
-    /* 0x028 */ f32 unk_28;
-    /* 0x02C */ u8 unk_2C[0x3C];
-    /* 0x068 */ f32 unk_68;
-    /* 0x06C */ u8 unk_6C[0x2C];
-    /* 0x098 */ f32 unk_98;
-    /* 0x09C */ u8 unk_9C[0x90];
-    /* 0x12C */ f32 unk_12C;
-} Unk3C5510;
-
-extern Unk3C5510 D_003C5510;
-extern f32 D_0036266C;
-
-extern f32 D_002B8344;
 
 void func_001CB850(void) {
     D_003C5510.unk_28 += D_002B8344;
