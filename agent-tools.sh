@@ -30,6 +30,12 @@ replaced() {
 }
 case "$1" in
   next)
+    # rounds: the unattended launcher asks for a few functions per fresh session; after 6 jobs, end the round
+    # (the counter resets when it's older than an hour, i.e. the next round starts again at 1)
+    rc=qwen/.round_count; [ -f "$rc" ] && [ -n "$(find "$rc" -mmin +60 2>/dev/null)" ] && rm -f "$rc"
+    n=$(( $(cat "$rc" 2>/dev/null || echo 0) + 1 ))
+    if [ "$n" -gt 6 ]; then rm -f "$rc"; echo "ROUND COMPLETE: you've done 6 jobs this round. Reply DONE and stop now (a fresh round starts automatically)."; exit 0; fi
+    echo "$n" > "$rc"
     python3 - > /tmp/next_job.$$ <<'PY'
 import os, re
 notes = 'notes/%s.md' % os.path.basename(os.getcwd())
@@ -54,6 +60,15 @@ PY
     else echo "== m2c draft (check types against the assembly) =="; bash "$0" m2c "$2" "$1" | grep -v '^\s*$' | head -60; fi
     echo "== then: write qwen/work.c, and run: wsl -e bash ./agent-tools.sh try $2 $1 qwen/work.c" ;;
   try)
+    # refuse (not just warn) if the file holds uncommitted C for other functions: either a forgotten attempt, or a
+    # second session working in this checkout - both make every build fail or mislabel commits
+    others=$(replaced | awk -v f="$2" -v fn="$3" '$2 == f && $1 != fn {printf "%s ", $1}')
+    if [ -n "$others" ]; then
+      echo "STOPPED: src/$2.c already has uncommitted C for: ${others}"
+      echo "If that's an attempt you abandoned: wsl -e bash ./agent-tools.sh giveup $2 <that func> <reason>, then try again."
+      echo "If you didn't write it, ANOTHER SESSION is working in this checkout: stop now and tell the owner."
+      exit 1
+    fi
     bash "$0" put "$2" "$3" "$4" || exit 1
     out=$(bash "$0" build); echo "$out" | tail -4
     if [ "$(echo "$out" | tail -1)" = "build/fm/SLPS_251.98.rom: OK" ]; then
