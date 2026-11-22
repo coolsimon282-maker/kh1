@@ -236,22 +236,22 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181C20);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181D30);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_object_tex);
-// void dpd_set_object_tex(ppvmng* pMng) {
-//     int* piVar1;
-//     short clutpStart;
-//     short texpStart;
+s32* func_00181C20(s32*, u8*, s16, s16);
+s32* func_00181D30(s32*, u8*, s16, s16);
 
-//     texpStart = pMng->texpStart;
-//     clutpStart = pMng->clutpStart;
-//     if ((texpStart == 0) && (clutpStart == 0)) {
-//         return;
-//     }
-//     piVar1 = dpd_h_skip_version(pMng->pchDpd);
-//     piVar1 = dpd_h_skip_datainfo(piVar1, 2);
-//     piVar1 = func_00181C20(piVar1, pMng->pEtc->abUseShape, texpStart, clutpStart);
-//     func_00181D30(piVar1, pMng->pEtc->abUseRsd, texpStart, clutpStart);
-// }
+void dpd_set_object_tex(ppvmng* pMng) {
+    s32* p = (s32*)pMng->pchDpd;
+    s16 texpStart = pMng->texpStart;
+    s16 clutpStart = pMng->clutpStart;
+
+    if (texpStart == 0 && clutpStart == 0) {
+        return;
+    }
+    p = dpd_h_skip_version(p);
+    p = dpd_h_skip_datainfo(p, 2);
+    p = func_00181C20(p, pMng->pEtc->abUseShape, texpStart, clutpStart);
+    func_00181D30(p, pMng->pEtc->abUseRsd, texpStart, clutpStart);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", dpd_set_shape_data);
 
@@ -380,9 +380,39 @@ s32 func_00182980(void) {
     return sum;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001829D0);
+s32 func_001829D0(s32 arg0) {
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182A78);
+    for (i = 0; i < 0x100; i++) {
+        if ((D_00364130[i].usef & 1) && !(D_00364130[i].usef & 4) && ((ppvmng*)&D_00364130[i])->unk_98 < arg0) {
+            if (*(u16*)&D_00364130[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&D_00364130[i].pEtc->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            D_00364130[i].usef |= 4;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+s32 func_00182A78(void) {
+    s32 i;
+
+    for (i = 0; i < 0x100; i++) {
+        if ((D_00364130[i].usef & 1) && !(D_00364130[i].usef & 4) && ((ppvmng*)&D_00364130[i])->unk_98 < 0) {
+            if (*(u16*)&D_00364130[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&D_00364130[i].pEtc->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+            }
+            pppAllFreePObject((ppvmng*)&D_00364130[i]);
+            func_00183EC8((ppvmng*)&D_00364130[i]);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182B18);
 
@@ -458,9 +488,47 @@ void func_00183A60(PppFuncList* arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183AD0);
+typedef struct {
+    /* 0x00 */ char unk_00[0x20];
+    /* 0x20 */ s32 cvoff;
+    /* 0x24 */ s16 unk_24;
+    /* 0x26 */ s16 ctrlTablen;
+    /* 0x28 */ pppCtrlTable ctrlTable[0];
+} PppPDataF;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183B70);
+void func_00183AD0(pppPObject* pobj) {
+    PppPDataF* pdt = (PppPDataF*)pobj->pdtval->pdt;
+    pppCtrlData** cd = (pppCtrlData**)((u8*)pobj + pdt->cvoff);
+    pppCtrlTable* ct;
+    pppProg* prog;
+    s32 i;
+
+    for (i = 0; i < pdt->ctrlTablen; i++) {
+        ct = &pdt->ctrlTable[i];
+        prog = (pppProg*)ct->prog;
+        *cd++ = ct->ctrldt;
+        if (prog != NULL && prog->con2Func != NULL) {
+            ((void (*)(pppPObject*, pppCtrlTable*))prog->con2Func)(pobj, ct);
+        }
+    }
+}
+
+void func_00183B70(pppPObject* pobj) {
+    PppPDataF* pdt = (PppPDataF*)pobj->pdtval->pdt;
+    pppCtrlData** cd = (pppCtrlData**)((u8*)pobj + pdt->cvoff);
+    pppCtrlTable* ct;
+    pppProg* prog;
+    s32 i;
+
+    for (i = 0; i < pdt->ctrlTablen; i++) {
+        ct = &pdt->ctrlTable[i];
+        prog = (pppProg*)ct->prog;
+        *cd++ = ct->ctrldt;
+        if (prog != NULL && prog->conFunc != NULL) {
+            ((void (*)(pppPObject*, pppCtrlTable*))prog->conFunc)(pobj, ct);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
 
@@ -540,7 +608,24 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184548);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184728);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184DB0);
+pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+
+void func_00184DB0(ppvmng* m) {
+    s32 i;
+    pppPDataVal* pdv;
+    pppPObject* pobj;
+
+    for (i = 0; i < *(s32*)((u8*)m + 0x68); i++) {
+        pdv = &((pppPDataVal*)m->unk_80)[i];
+        if (pdv->startFrame <= *(s32*)((u8*)m + 0x58)) {
+            pdv->startFrame = 0x7FFFFFFF;
+            pobj = func_00183C10(m, pdv);
+            pdv->pobj = pobj;
+            pobj->appearf = 0;
+        }
+    }
+}
+
 
 void func_00184E48(ppvmng* pMng) {
     ppvMng = pMng;
@@ -551,12 +636,63 @@ void func_00184E48(ppvmng* pMng) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184E80);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184F60);
+typedef struct {
+    /* 0x00 */ char unk_00[0x54];
+    /* 0x54 */ s32 unk_54;
+    /* 0x58 */ s32 unk_58;
+    /* 0x5C */ s32 unk_5C;
+    /* 0x60 */ char unk_60[0x14];
+    /* 0x74 */ void* unk_74;
+    /* 0x78 */ char unk_78[0xC];
+    /* 0x84 */ u8 unk_84;
+    /* 0x85 */ u8 unk_85;
+    /* 0x86 */ char unk_86[0x2A];
+    /* 0xB0 */ u64 unk_B0;
+} PppMngT;
+
+s32 func_00184F60(ppvmng* arg0) {
+    PppMngT* m = (PppMngT*)arg0;
+    s32 t;
+
+    ppvMng = arg0;
+    if (ppvUserStopPartF != 0 || (m->unk_B0 & 0xFF0000FF00)) {
+        return 0;
+    }
+    t = m->unk_58;
+    m->unk_5C = t;
+    m->unk_58 = t + 0x1000;
+    if (m->unk_84 != 0) {
+        if (m->unk_85 != 0) {
+            return m->unk_74 == NULL;
+        }
+        if (m->unk_58 > 0x6FFFFFFF) {
+            m->unk_58 = 0x70000000;
+            m->unk_5C = 0x6FFFF000;
+        }
+        return 0;
+    }
+    return m->unk_58 >= m->unk_54;
+}
+
 
 void func_00185000(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00185008);
+void func_00185008(pppMemMng* m, pppEMCB* start, s32 size) {
+    pppEMCB* b;
+
+    m->effectHeapTop = start;
+    m->lastFreeHeap = NULL;
+    m->effectHeapBottom = (pppEMCB*)((u8*)start + size - 16);
+    start->prev = NULL;
+    start->next = m->effectHeapBottom;
+    start->owner = 0;
+    b = m->effectHeapBottom;
+    b->prev = m->effectHeapTop;
+    b->owner = 1;
+    b->next = NULL;
+    m->allocSize = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAlloc);
 

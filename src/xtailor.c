@@ -199,7 +199,7 @@ void func_0010F4A8(u32 arg0) {
 }
 #endif
 
-void func_0010F6F0(void) {
+s32 func_0010F6F0(void) {
     D_004CF580 = D_002C1EB8.s32;
 }
 
@@ -251,7 +251,36 @@ void* func_0010FB68(void) {
     return func_0010FB38(D_002B8678, D_002B8680);
 }
 
+#ifdef VERSION_FM
+typedef struct {
+    u64 unk_00[14];
+} XTailorSave;
+extern XTailorSave D_002BCA00[2];
+extern XTailorSave D_002C5AD0[2];
+void func_0011F4B8(void);
+void func_001BA4A8(void);
+
+void func_0010FB90(void) {
+    s32 i;
+
+    func_0010F6F0();
+    if (D_004D2990) {
+        for (i = 0; i < 2; i++) {
+            D_002C5AD0[i] = D_002BCA00[i];
+        }
+    }
+    func_0011F4B8();
+    for (i = 0; i < 2; i++) {
+        D_002BCA00[i] = D_002C5AD0[i];
+    }
+    if (D_004D2990 != 0) {
+        func_001BA4A8();
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
+#endif
 
 void func_0010FCD0(void) {
     D_004D2990 = 0;
@@ -309,7 +338,50 @@ void fm_func_00110068(void) {
 }
 #endif
 
+#ifdef VERSION_FM
+typedef struct {
+    sceGifTag tag;
+    u64 a[13][2];
+    u64 b[13][2];
+    u64 c[5][2];
+} XTailorDrawEnv;
+extern XTailorDrawEnv D_004D8EF0;
+extern u64 D_002BC750[13];
+extern u64 D_002BC7C0[13];
+extern u64 D_002BC830[13];
+
+void func_0010FEC0(void) {
+    s32 i;
+
+    for (i = 0; i < 13; i++) {
+        D_004D8EF0.a[i][0] = D_002BC830[i];
+        D_004D8EF0.a[i][1] = D_002BC750[i];
+        D_004D8EF0.b[i][0] = D_002BC830[i];
+        D_004D8EF0.b[i][1] = D_002BC7C0[i];
+    }
+    SCE_GIF_CLEAR_TAG(&D_004D8EF0.tag);
+    D_004D8EF0.tag.NLOOP = 31;
+    D_004D8EF0.tag.EOP = 1;
+    D_004D8EF0.tag.NREG = 1;
+    D_004D8EF0.tag.REGS0 = 0xE;
+    D_004D8EF0.c[0][0] = 1;
+    D_004D8EF0.c[0][1] = 0x1A;
+    D_004D8EF0.c[1][0] = 1;
+    D_004D8EF0.c[1][1] = 0x46;
+    D_004D8EF0.c[2][0] = 0;
+    D_004D8EF0.c[2][1] = 0x45;
+    D_004D8EF0.c[3][0] = 0;
+    D_004D8EF0.c[3][1] = 0x49;
+    D_004D8EF0.c[4][0] = -4;
+    D_004D8EF0.c[4][1] = 0x44;
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsPutDrawEnv(&D_004D8EF0.tag);
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);
+#endif
 
 #ifdef VERSION_FM
 void fm_func_001101E8(void) {
@@ -319,8 +391,51 @@ void fm_func_001101E8(void) {
 }
 #endif
 
+#ifdef VERSION_FM
+extern s32 D_002BBDE8;
+extern volatile s32 D_002B9664;
+extern s32 D_002B9174;
+extern volatile s32 D_002BBDF0;
+extern volatile u32 D_002BBDF4;
+extern volatile u32 D_004D90F0;
+extern volatile s32 D_002B8340;
+extern volatile s32 D_004D90F4;
+s32 func_001115A0(void);
+void func_001115C0(void);
+void func_0010C110(void);
+
+s32 func_00110038(s32 arg0) {
+    if (DGET_GS_CSR() & 0x2000) {
+        D_002BBDE8 = 1;
+    } else {
+        D_002BBDE8 = 0;
+    }
+    if (D_002B9664 == 0 && D_002B9174 == 0) {
+        D_002BBDF0++;
+    }
+    if (D_002BBDF4 < D_004D90F0) {
+        D_002BBDF4++;
+    } else if (func_001115A0() < 3) {
+        if (D_004D90F0 + 60 > D_002BBDF4) {
+            D_002BBDF4++;
+        } else {
+            func_001115C0();
+            D_002BBDF4 = 0;
+        }
+    } else {
+        D_002BBDF4 = D_004D90F0;
+    }
+    D_002B8340++;
+    /* volatile read, plain store (the store sits in the jal delay slot) */
+    *(s32*)&D_004D90F4 = D_004D90F4 + 1;
+    func_0010C110();
+    return 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110038);
 s32 func_00110038(s32);
+#endif
 
 void func_00110150(void) {
     D_002B85C0[3] = 128;
@@ -385,11 +500,67 @@ void func_001102A0(void) {
     sceGsSyncVCallback(func_00110038);
 }
 
+#ifdef VERSION_FM
+extern volatile s32 D_004D90F4;
+extern f32 D_002B8344;
+extern f32 D_002B8348;
+extern s32 D_002B8354;
+extern s32 D_002BBE10;
+extern s32 D_002B8C90;
+void func_0010C0E0(void);
+
+void func_001102C0(void) {
+    s32 i;
+
+    func_0010C0E0();
+    D_002B8344 = D_004D90F4 * D_002BBDEC;
+    if (D_004D90F4 < D_002B8354 + 1) {
+        for (i = 0; i < D_002B8354; i++) {
+            func_0010C0E0();
+            D_002B8344 = D_004D90F4 * D_002BBDEC;
+        }
+    }
+    if (D_002BBE10 != 0) {
+        D_002B8344 = D_002BBDEC + D_002BBDEC;
+    }
+    D_002B8344 *= D_002B8348;
+    if (D_002B8C90 != 1) {
+        if (D_002B8344 > 5.0f) {
+            D_002B8344 = 5.0f;
+        }
+    } else {
+        D_002B8344 = 128.0f;
+    }
+    D_004D90F4 = 0;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_001102C0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110410);
 
+#ifdef VERSION_FM
+extern f32 D_004D90F8;
+void func_00110AE0(void);
+void func_00110410(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
+                   f32, f32, f32, f32, f32, f32, f32, f32);
+
+void func_00110848(f32 arg0) {
+    func_00110AE0();
+    sceVu0CopyMatrix(D_004D2590, D_002B8370);
+    sceVu0CopyMatrix(D_004D2850, D_002B83B0);
+    sceVu0CopyMatrix(D_004D2890, D_002B83F0);
+    sceVu0CopyMatrix(D_004D28D0, D_002B8430);
+    sceVu0CopyMatrix(D_004D2910, D_002B8470);
+    sceVu0CopyMatrix(D_004D25D0, D_002B84B0);
+    func_00110410(D_002B8370, D_002B83B0, D_002B83F0, D_002B8430, D_002B8470, D_002B84B0, arg0, 0.79999996f,
+                  0.8399998546f, 2048.0f, 2048.0f, 1.0f, 16777000.0f, 1.0f, 400000000.0f, D_004D90F8);
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110848);
+#endif
 
 void func_001109A8(void) {
     sceVu0CopyMatrix(D_004D2950, D_002B84F0);
