@@ -282,7 +282,11 @@ f32 func_001AB380(f32 a) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB3A8);
+f32 func_001AB3A8(f32* a) {
+    f32 v[4];
+    __asm__ volatile("lqc2 $vf10,0(%0)\n\tvmul.xyz $vf10,$vf10,$vf10\n\tvmove.xyz $vf9,$vf10\n\tvaddx.y $vf9,$vf9,$vf9x\n\tvaddy.z $vf9,$vf9,$vf9y\n\tvsqrt Q,$vf9z\n\tvwaitq\n\tvaddq.x $vf10,$vf0,Q\n\tsqc2 $vf10,0(%1)" : : "r"(a), "r"(v) : "memory");
+    return v[0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB3E0);
 
