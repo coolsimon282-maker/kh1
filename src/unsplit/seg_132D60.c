@@ -828,7 +828,9 @@ void func_00249D48(s32 *arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249D50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249DA0);
+s32 func_00249DA0(s32 arg0) {
+    return arg0 + 0x10;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249DA8);
 
