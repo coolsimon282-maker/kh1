@@ -9,7 +9,22 @@ typedef struct {
     /* 0x14 */ void* pvLamp;
 } VRyjMegaPlace;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", pppRyjMegaPlaceCalc);
+void pppRyjMegaPlaceCalc(pppPObject* pobj, s32 param, pppCtrlTable* ctbl) {
+    VRyjMegaPlace* v = (VRyjMegaPlace*)&pobj->val[ctbl->useVal[0]];
+
+    if (v->pvShape == NULL && v->unShapeNum != 0) {
+        v->pvShape = pppDbgAlloc(ppvEnv, v->unShapeNum * 32);
+        memset(v->pvShape, 0, v->unShapeNum * 32);
+    }
+    if (v->pvModel == NULL && v->unModelNum != 0) {
+        v->pvModel = pppDbgAlloc(ppvEnv, v->unModelNum * 32);
+        memset(v->pvModel, 0, v->unModelNum * 32);
+    }
+    if (v->pvLamp == NULL && v->unLampNum != 0) {
+        v->pvLamp = pppDbgAlloc(ppvEnv, v->unLampNum * 48);
+        memset(v->pvLamp, 0, v->unLampNum * 48);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlace", func_001A0140);
 
