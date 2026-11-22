@@ -512,11 +512,127 @@ s32 func_0010EEC8(s32 arg0) {
     return func_0010EDC0(arg0, stack) / 24 + 1;
 }
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ char unk_00[0x30];
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ f32 unk_34;
+    /* 0x38 */ char unk_38[0x38];
+    /* 0x70 */ f32 unk_70;
+    /* 0x74 */ f32 unk_74;
+} XSauceScroll;
+
+
+extern f32 D_002B8344;
+extern f32 D_004D5AFC_f __asm__("D_004D5AFC");
+extern u64 D_002BBAF0[];
+extern u8 D_002BBB90[];
+f32 cosf(f32);
+
+
+void func_0010EF00(s32 x, s32 y, XSauceScroll* c) {
+    s32 r;
+
+    D_004D5AFC_f += D_002B8344 * 0.19999999f;
+    if (D_004D5AFC_f > 3.1415928f) {
+        D_004D5AFC_f -= 6.2831855f;
+    }
+    if (D_004D5AFC_f < -3.1415928f) {
+        D_004D5AFC_f += 6.2831855f;
+    }
+    r = cosf(D_004D5AFC_f) * 64.0f + 64.0f;
+    x = x + (c->unk_30 - c->unk_70);
+    y = y + (c->unk_34 - c->unk_74);
+    D_002BBAF0[17] = (u64)(x * 16 - r + 0x7000) | (u64)(y * 16 + 0x7400) << 16 | 0x100000000;
+    D_002BBAF0[19] = (u64)(((x + 40) << 4) - r + 0x7000) | (u64)(((y + 24) << 4) + 0x7400) << 16 | 0x100000000;
+    func_00106948(D_002BBB90);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EF00);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F0A0);
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ void (*unk_08)(s32);
+} XSauceMenu;
+
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+} XSaucePos;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x8];
+    /* 0x08 */ u64 unk_08;
+    /* 0x10 */ u64 unk_10;
+} XSaucePad;
+
+extern XSaucePad D_002C5AD0;
+extern s32 D_002BBBA0;
+extern s32 D_004D5AF8;
+void func_00121D50(s32);
+void func_0011D598(s32);
+
+s32 func_0010F1C8(XSauceMenu* m, void* c) {
+    s32 lim;
+    XSaucePad* pad;
+    XSaucePad* pad2;
+    XSaucePos* pos;
+
+    pad = &D_002C5AD0;
+    if (pad->unk_10 & 0x10100010) {
+        lim = m->unk_00;
+        if (--D_004D5AF8 < lim) {
+            if (pad->unk_08 & 0x10100010) {
+                D_004D5AF8 = m->unk_04;
+                func_0011D598(1);
+            } else {
+                D_004D5AF8++;
+            }
+        } else {
+            func_0011D598(1);
+        }
+    } else if (pad->unk_10 & 0x40400040) {
+        lim = m->unk_04;
+        if (++D_004D5AF8 > lim) {
+            if (pad->unk_08 & 0x40400040) {
+                D_004D5AF8 = m->unk_00;
+                func_0011D598(1);
+            } else {
+                D_004D5AF8--;
+            }
+        } else {
+            func_0011D598(1);
+        }
+    }
+    /* a second pointer to the pad, set inside the if, gives the target's registers */
+    if (D_002BBBA0 == 0) {
+        pad2 = &D_002C5AD0;
+        if ((s32)pad2->unk_08 & 0x4000) {
+            if (D_004D5AF8 != m->unk_04) {
+                func_0011D598(3);
+            }
+            D_004D5AF8 = m->unk_04;
+        }
+    }
+    pos = (XSaucePos*)(D_004D5AF8 * 8 + D_004CF574);
+    func_0010EF00(pos->unk_00, pos->unk_04, c);
+    if (D_002C2108 & 1) {
+        func_0011D598(2);
+        m->unk_08(D_004D5AF8 + 1);
+        func_00121D50(D_004CF574);
+        D_004CF574 = 0;
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F1C8);
+#endif
 
 void func_0010F380(void) {
     if (D_004CF574 != 0) {
