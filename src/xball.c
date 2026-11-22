@@ -21,7 +21,20 @@ s32 func_00120A78(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0RotMatrixY(arg0, arg0, arg2[1]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_00120AC8);
+f32 func_00120AC8(f32 x) {
+    s32 i;
+
+    for (i = 0; i < 0x400; i++) {
+        if (x > PI) {
+            x -= 2 * PI;
+        } else if (x < -PI) {
+            x += 2 * PI;
+        } else {
+            break;
+        }
+    }
+    return x;
+}
 f32 func_00120AC8(f32);
 
 INCLUDE_ASM("asm/nonmatchings/xball", func_00120B40);
