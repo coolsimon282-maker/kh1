@@ -594,7 +594,23 @@ s32 func_001F06E8(void) {
     return i;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001F0730);
+s32 func_001F0730(s32 arg0, s32 arg1) {
+    XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
+    s32 count = 0;
+    s32 i;
+
+    for (i = 0; i < 48; i++) {
+        s32 c = chr->unk_40[i];
+
+        if (c == 0) {
+            break;
+        }
+        if ((c & ~0x80) == arg1) {
+            count++;
+        }
+    }
+    return count;
+}
 
 s32 func_001F07A0(s32 arg0) {
     s32 count = 0;
