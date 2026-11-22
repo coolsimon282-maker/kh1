@@ -187,7 +187,16 @@ void* func_00109C50(s32 arg0) {
     return func_0011ED30(190000, func_00109B28);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109C98);
+void func_00109C98(void) {
+    sceGsSetDefLoadImage(&D_002B8700, 0xE00, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_002B8700, D_002B2CCC);
+    sceGsSetDefLoadImage(&D_002B8760, 0x1400, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(WRITEBACK_DCACHE);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_002B8760, D_002B2CCC + 0x4800);
+}
 
 s32 func_00109D68(void) {
     sceGsStoreImage img;
