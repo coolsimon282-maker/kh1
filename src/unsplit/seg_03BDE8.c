@@ -2301,19 +2301,32 @@ void func_001760B0(s32 a) {
     func_00175D60(D_0035E710, a);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001760D0);
+void func_001760D0(s32 a) {
+    func_00175D60(D_0035FB20, a);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001760F0);
+void func_001760F0(s32 a) {
+    func_00175D60(D_00360F30, a);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176110);
+void func_00176110(s32 a) {
+    func_00175DA8(D_0035E710, a);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176130);
+void func_00176130(s32 a) {
+    func_00175DA8(D_0035FB20, a);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176150);
+void func_00176150(s32 a) {
+    func_00175DA8(D_00360F30, a);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177688);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176190);
+void func_00176190(void) {
+    func_00175E38(D_0035FB20);
+    func_001759E8();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001776C8);
 
@@ -2445,13 +2458,22 @@ void func_001768B8(void) {
 void func_001768C0(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768C8);
+void func_001768C8(u8** p) {
+    if (*p != NULL) {
+        **(u8**)(*p + 0x10) = 1;
+    }
+    *p = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001768E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176920);
+void func_00176920(f32** p) {
+    sceVu0CopyVector(p[1], *(f32**)p[0]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176940);
+void func_00176940(f32** p) {
+    sceVu0CopyVector(p[1], ((f32**)p[0])[2]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176960);
 
@@ -2459,7 +2481,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001769F0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176A18);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176A60);
+void func_00176A60(f32** p) {
+    sceVu0CopyVector(*p, D_002DECE0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176A80);
 
