@@ -15,6 +15,7 @@ extern u8 D_0052AA58[];
 void func_00106790(s32);
 void func_00106880(s32);
 void func_0011A0A0(void);
+void func_0011EEB8(u8 *, s32, s32);
 void func_0011EF58(u8 *, s32);
 void func_0011F148(u8 *, s32);
 void func_0012EBA0(s32, s32, s32, s32, s32);
@@ -668,7 +669,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00138130);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00138258);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001383D8);
+void func_001383D8(s32 a0, s32 a1) {
+    func_0011EEB8(D_0052AA58, a0, a1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00138400);
 
