@@ -27,7 +27,12 @@ void pppRyjMegaPlaceLampCon(pppPObject* pobj, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0E60);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaPlaceLamp", func_001A0EA8);
+f32 func_001A0E60(void);
+
+s8 func_001A0EA8(u8 arg0) {
+    func_001A0E60();
+    return arg0 * 2 * func_001A0E60() - (arg0 >> 1);
+}
 
 typedef struct {
     /* 0x00 */ char unk_00[0x10];
