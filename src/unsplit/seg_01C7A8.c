@@ -1,6 +1,9 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x01C7A8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+void func_0011C7A8_v(s32, s32, s32, s32, s32, s32) __asm__("func_0011C7A8");
+extern s32 D_002C1364;
+extern void (*D_004E3430)(void);
 
 #include "xquack.h"
 
@@ -71,7 +74,11 @@ s32 func_0011CB80(void* arg0) {
     return func_00120438(D_0048D140, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CBA0);
+s32 func_0011CBA0(void) {
+    if (func_001EE090() != 0) return 0;
+    if (D_004E3430 != 0) D_004E3430();
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CBE0);
 
@@ -239,7 +246,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E368);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E480);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E4D0);
+void func_0011E4D0(void) {
+    func_0011C5F0(1, 0, 0x2D0);
+    func_0011C7A8_v(0, 0, 0x3000, 0x1E0, 1, 0xF0);
+    D_002C1364 = 0;
+}
 
 extern s32 D_002C1390;
 
