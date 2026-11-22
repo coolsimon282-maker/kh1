@@ -1,6 +1,11 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x0150D8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_002C12C0;
+void func_00115408(s32, u8*, u8*, s32);
+s32 func_0011C338(void*, s32, s32, void*, s32, void*);
+void func_0011B108(u8*, s32);
+extern f32 D_002C1260[];
 void func_001195D8(s32, void*);
 s32 func_001191C8(void*, s32, s32);
 s32 func_001152C8(s32, s32, s32, s32);
@@ -115,7 +120,14 @@ void func_001158A8(volatile f32* arg0, f32* arg1) {
     __asm__ volatile("nop");
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001158C8);
+void func_001158C8(f32* a0) {
+    func_001158A8(D_002C1260, a0);
+    func_001158A8(D_002C1260 + 12, a0 + 3);
+    func_001158A8(D_002C1260 + 4, a0 + 1);
+    func_001158A8(D_002C1260 + 16, a0 + 4);
+    func_001158A8(D_002C1260 + 8, a0 + 2);
+    func_001158A8(D_002C1260 + 20, a0 + 5);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115940);
 
@@ -305,7 +317,19 @@ void func_00117588(s32 arg0) {
     func_00116368(arg0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001178D0);
+void func_001178D0(u8* a0) {
+    s32 r = 0;
+    *(s32*)(a0 + 0x1C) = 0;
+    func_00116368((s32)a0, 1);
+    if (*(u16*)(a0 + 0x18) != 0) {
+        *(s32**)(a0 + 0x28) = D_002BD250;
+        *(s32*)(a0 + 0x24) = -1;
+        *(s32*)(a0 + 0x1C) += 1;
+        r = 1;
+        *(s32*)(a0 + 0x20) = *(u16*)(a0 + 0x18);
+    }
+    func_0011B108(a0, r);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00117948);
 
@@ -337,7 +361,12 @@ void func_00118548(u8* a0) {
     *(s16*)(a0 + 0x30) = m;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118590);
+void func_00118590(u8* a0, s32 a1) {
+    func_00118378((s32)a0, 5, a1, -1);
+    if (D_002C12C0 != 0 && *(s16*)(a0 + 0x30) != -1 && *(s32*)(a0 + 0x34) == -1) {
+        func_00115408(*(s16*)(a0 + 0x30), a0 + 0x20, a0 + 0x24, 1);
+    }
+}
 
 void func_00118608(s32 arg0) {
     func_00118060(arg0, 3, 0, -1);
@@ -383,7 +412,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001195D8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119688);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119710);
+s32 func_00119710(s32 a0) {
+    u8 buf[0x40];
+    s32 r, r2;
+    func_001195D8(a0, buf);
+    r = func_0011C338(buf, a0, a0 + 0x10, buf + 0x20, -1, buf + 0x30);
+    r2 = func_001191C8(buf, a0, 8);
+    if (r == -1 && r2 == -1) return -1;
+    return 1;
+}
 
 s32 func_00119788(s32 a0) {
     u8 buf[0x20];

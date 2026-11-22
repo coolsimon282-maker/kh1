@@ -1,6 +1,24 @@
 // Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x01C7A8).
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
+extern s32 D_002B8678;
+const char* worldfile_getAbbr(int idx, char* dest);
+typedef struct {
+    char c[10];
+} Seg1C7A8Str10;
+extern Seg1C7A8Str10 D_0048D130;
+extern char D_0048D128[];
+char* strcat(char*, const char*);
+typedef struct {
+    s32 unk_00;
+    u8 unk_04[8];
+    s32 unk_0C;
+    s32 unk_10;
+    u8 unk_14;
+    u8 unk_15[3];
+} Seg1C7A8Ent18;
+extern Seg1C7A8Ent18* D_004E3450;
+void func_0011C850_v(s32, s32, s32) __asm__("func_0011C850");
 void func_0011C868_v(s32, s32, s32, s32, s32) __asm__("func_0011C868");
 extern s32 D_002A0520[];
 extern s32 D_002B9040[];
@@ -111,7 +129,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011C9C0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CA68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011C938);
+void func_0011C938(char* a0) {
+    char buf[16];
+    *(Seg1C7A8Str10*)a0 = D_0048D130;
+    worldfile_getAbbr(D_002B8678, buf);
+    strcat(a0, buf);
+    strcat(a0, D_0048D128);
+}
 
 s32 func_0011CB80(void* arg0) {
     return func_00120438(D_0048D140, arg0);
@@ -261,7 +285,17 @@ void func_0011DB50(s32* a, s32* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DBA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DC28);
+void func_0011DC28(s32* a0, s32* a1, s32* a2) {
+    s32 i;
+    if (D_002BBDE0 != 3) {
+        for (i = 0; i < 4; i++) {
+            if (*a0 == D_002C1310[i] && *a1 < 0x2400 && *a2 < 0x2400) {
+                *a1 = 0x2400;
+                *a2 = 0x2400;
+            }
+        }
+    }
+}
 
 void func_0011DC98(u8* a0) {
     s32 i;
