@@ -96,7 +96,29 @@ s32 func_00247028(Monitor* m) {
     return m->sub[1].unk10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xmonitor", func_00247030);
+void func_00247030(Monitor* m, s32 dt) {
+    MonitorSub* s;
+
+    if ((*(u64*)&m->unk60 & 0x14) == 0x14) {
+        s = &m->sub[2];
+        if (s == NULL) {
+            __assert(D_00491848, 199, D_00491858);
+        }
+        if (s->unk4 < s->unk8 - 1) {
+            s->unk0 += dt;
+            do {
+                s32 t = ((MonitorKey*)s->unkC)[s->unk4].time;
+
+                if (s->unk0 < t) {
+                    return;
+                }
+                s->unk0 -= t;
+                s->unk4++;
+            } while (s->unk4 != s->unk8 - 1);
+            m->sub[2].unk10 |= 4;
+        }
+    }
+}
 
 void func_00247108(Monitor* m) {
     MonitorSub* s = &m->sub[2];
