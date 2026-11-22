@@ -907,7 +907,52 @@ void func_00183B70(pppPObject* pobj) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183C10);
+pppPObject* func_00183C10(ppvmng* m, pppPDataVal* pdv) {
+    PppPDataF* pdt = (PppPDataF*)pdv->pdt;
+    pppPObject* pobj;
+    pppPObject** pp;
+    pppPObject* q;
+    s16 prio;
+
+    pobj = (pppPObject*)pppDbgAlloc((s32)ppvEnv, pdt->cvoff + pdt->ctrlTablen * 4);
+    pobj->appearf = 1;
+    pobj->time = 0;
+    pobj->lpvert = NULL;
+    pobj->lpnorm = NULL;
+    pobj->pdtval = pdv;
+    pobj->loop_in = 0;
+    pobj->loop_start0 = 0;
+    q = m->unk_74;
+    if (q == NULL) {
+        pdv->pobj = pobj;
+        m->unk_74 = pobj;
+        pobj->next = NULL;
+    } else if (pdv->pobj != NULL) {
+        pobj->next = pdv->pobj->next;
+        pdv->pobj->next = pobj;
+    } else {
+        prio = pdt->unk_24;
+        pp = &m->unk_74;
+        do {
+            if (((PppPDataF*)q->pdtval->pdt)->unk_24 >= prio) {
+                pdv->pobj = pobj;
+                *pp = pobj;
+                pobj->next = q;
+                goto end;
+            }
+            pp = &q->next;
+            q = *pp;
+        } while (q != NULL);
+        pdv->pobj = pobj;
+        *pp = pobj;
+        pobj->next = NULL;
+    }
+end:
+    pdv->pobjn++;
+    func_00183B70(pobj);
+    return pobj;
+}
+
 
 void pppDeletePObject(pppPObject* pobj) {
     pppPDataVal* pdv = pobj->pdtval;
