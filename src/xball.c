@@ -67,8 +67,6 @@ void func_00120DB8(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
     func_001223B0(arg1, arg1);
 }
 
-
-// nonmatch: extra nops
 s32 func_00120E48(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
     sceVu0FVECTOR t;
     s32 i;
@@ -86,7 +84,6 @@ s32 func_00120E48(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
     }
     return 1;
 }
-
 
 void func_00120F48(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = arg2[0] * arg0;
@@ -203,7 +200,16 @@ f32 func_00121538(f32 a, f32 b, f32 c) {
     return func_00120AC8(a + d);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xball", func_001215A8);
+#define XB_COS(a, b) (sceVu0InnerProduct(a, b) / (func_00120A38(a) * func_00120A38(b)))
+f32 func_001215A8(sceVu0FVECTOR a, sceVu0FVECTOR b) {
+    if (XB_COS(a, b) < -1.0f) {
+        return -1.0f;
+    }
+    if (1.0f < XB_COS(a, b)) {
+        return 1.0f;
+    }
+    return XB_COS(a, b);
+}
 
 f32 func_001216A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     return acosf(func_001215A8(arg0, arg1));
