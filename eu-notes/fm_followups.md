@@ -39,3 +39,9 @@ a6 (run 3): xgoblin func_0011EEB8 and xtoaster func_00123350 matched in test com
 -fno-strict-aliasing; committed with a one-member-union read instead. Those files may have been built without
 strict aliasing like src/ppp/. Check: compile every matched function in those files with and without the flag;
 if all are identical, add them to the -fno-strict-aliasing list in configure.py.
+
+## GCC 2.96 sometimes compiles a function 4 bytes longer after unrelated edits (xhumungus)
+a1 (run 3): func_001DB7A8 and fm_func_001DC9A0 occasionally fail to fold an array symbol into the address after
+edits elsewhere in xhumungus.c (looks like the compiler reading uninitialised memory). The merged fm built OK at
+01:02. If a later merge suddenly fails with a clean diff in the edited function, compare function sizes in the
+object against a good build (a1's szcmp.sh in scratchpad\a1) and check these two first.
