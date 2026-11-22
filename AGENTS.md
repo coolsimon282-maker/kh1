@@ -32,37 +32,30 @@ take the next ones up.
 ## Commands (PowerShell; run them from the checkout folder; builds take 10-60 s)
 
 ```
-wsl -e bash ./agent-tools.sh build                         # last line must be: build/fm/SLPS_251.98.rom: OK
-wsl -e bash ./agent-tools.sh list xhumungus                # functions left in the file, smallest first (bytes, name)
-wsl -e bash ./agent-tools.sh asm xhumungus func_001D5E48   # its assembly
-wsl -e bash ./agent-tools.sh m2c xhumungus func_001D5E48   # a first draft of C
-wsl -e bash ./agent-tools.sh diff func_001D5E48 60         # original (left) vs yours (right), 60 lines
-wsl -e bash ./agent-tools.sh near xhumungus func_001D5E48  # the 30 lines around it (its neighbours, for style)
-wsl -e bash ./agent-tools.sh put xhumungus func_001D5E48 qwen/work.c   # put your C (in qwen/work.c) in place
-git diff --stat                                            # before committing: only your one file
-git add src/xhumungus.c
-git commit -m "Match func_001D5E48 (xhumungus)"
+wsl -e bash ./agent-tools.sh list unsplit/seg_132D60                 # functions left in a file, smallest first
+wsl -e bash ./agent-tools.sh asm unsplit/seg_132D60 func_00236FD8    # its assembly
+wsl -e bash ./agent-tools.sh m2c unsplit/seg_132D60 func_00236FD8    # a first draft of C
+wsl -e bash ./agent-tools.sh cfunc func_00218BF0                      # an already-matched function's C (twins!)
+wsl -e bash ./agent-tools.sh near unsplit/seg_132D60 func_00236FD8 15 # the lines around it in the file
+wsl -e bash ./agent-tools.sh try unsplit/seg_132D60 func_00236FD8 qwen/work.c
+      # puts your C (qwen/work.c) in place and builds. MATCHED -> it prints the commit command: run it.
+      # Not matching -> it prints the diff (original on the left). Fix qwen/work.c and `try` again.
+wsl -e bash ./agent-tools.sh giveup unsplit/seg_132D60 func_00236FD8 <reason in a few words>
+      # after 3 failed tries: puts the file back and writes the reason into notes/q1.md. Then the next function.
 ```
 
-If the build says `build.ninja` is missing or the toolchain changed, run `wsl -e bash ./agent-tools.sh configure`
-once (about a minute).
+(`build`, `diff <func> 40` and `put <file> <func> qwen/work.c` still exist; `try` does put + build + diff in one go.)
 
 ## The loop
 
-1. `list` the file; take the smallest function not in your notes' give-up list. Skip functions full of VU0
-   instructions (`vadd`, `vmul`, `qmtc2`, `vcallms`, `sqc2`).
-2. `asm` it, `m2c` it, and `near` it (shows how the matched functions around it are written; xhumungus has many
-   very similar ones). To find a type or overlay struct, search for its name (grep), don't open the file.
-3. **Never open src/xhumungus.c with the read tool** (117 KB: half your memory, and every step then takes
-   minutes). Write your C function (plus any prototype it needs, just above it) into the small file
-   `qwen/work.c` (create or overwrite it), then `put xhumungus <func> qwen/work.c`, which replaces that one
-   INCLUDE_ASM line. To try again after a failed build: `git checkout -- src/xhumungus.c`, fix qwen/work.c, `put`
-   again. (xkinetic.c is small: you may edit it directly.)
-4. `build`. OK: go to 6. Compile error: fix. FAILED: `diff` and adjust (table below and MATCHING.md).
-5. After about 6 failed builds: `git checkout -- src/<file>.c`, add a line to `notes/q1.md` (function, what it
-   does, your closest C, what still differs), and take the next function.
-6. `git diff --stat` (only your file), `git add`, `git commit -m "Match <func> (<file>)"`. Tell the owner in one
-   sentence what the function does.
+1. Take the next function from qwen/TASK.md (twins first). Skip functions full of VU0 instructions (`vadd`,
+   `vmul`, `qmtc2`, `vcallms`, `sqc2`).
+2. Twin: `cfunc <twin>` and copy it. Otherwise: `asm` + `m2c`. Write the function (plus any extern/prototype it
+   needs, just above it) into `qwen/work.c`. **Never open a big src file with the read tool**; use `near` with a
+   small number, and grep only `include/` or one file with `-m 5`.
+3. `try`. MATCHED: run the commit command it prints, then the next function.
+4. Not matching: read the diff, fix qwen/work.c, `try` again (table below and MATCHING.md).
+5. After 3 failed tries: `giveup <file> <func> <reason>`, then the next function.
 
 | The diff shows | Try |
 |---|---|

@@ -13,6 +13,9 @@
 #                            (again after a failed try: it starts from the last commit of the file)
 #                            (so big files like xhumungus.c never need opening; <cfile> e.g. qwen/work.c)
 #   cfunc <func>             print an already-matched function's C (searches all of src/; shows the file too)
+#   try <file> <func> <cfile>  put + build in one step; on OK prints the exact commit command, otherwise a short diff
+#   giveup <file> <func> <reason...>  put src/<file>.c back as last committed and add "<func>: gave up: <reason>"
+#                            to this checkout's notes file (notes/<checkout name>.md)
 cd "$(dirname "$0")"
 # git inside WSL: a worktree's .git file holds a Windows path (C:/...) that WSL's git can't follow, so translate it.
 # Read-only use: no index writes (GIT_OPTIONAL_LOCKS=0), file modes ignored.
@@ -24,6 +27,22 @@ replaced() {
   git diff -U0 -- src | awk '/^\+\+\+ b\/src\//{f=substr($2,7); sub(/\.c$/,"",f)} /^-INCLUDE_ASM\(/{n=$0; sub(/^[^,]*, */,"",n); sub(/\).*/,"",n); print n" "f}'
 }
 case "$1" in
+  try)
+    bash "$0" put "$2" "$3" "$4" || exit 1
+    out=$(bash "$0" build); echo "$out" | tail -4
+    if [ "$(echo "$out" | tail -1)" = "build/fm/SLPS_251.98.rom: OK" ]; then
+      echo "MATCHED. Commit it now (PowerShell, in the checkout folder):"
+      echo "  git add src/$2.c; git commit -m \"Match $3 ($2)\""
+    else
+      echo "Not matching yet. Differences (target on the left):"
+      bash "$0" diff "$3" 40
+    fi ;;
+  giveup)
+    f="$2"; fn="$3"; shift 3
+    git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { echo "couldn't restore src/$f.c"; exit 1; }
+    n="notes/$(basename "$PWD").md"; [ "$(basename "$PWD")" = "kh1-decomp" ] && n="notes/main.md"
+    echo "- $fn ($f): gave up: $*" >> "$n"
+    echo "src/$f.c is back to its last commit; noted in $n. Take the next function." ;;
   cfunc)
     python3 - "$2" <<'PY'
 import glob, re, sys
@@ -70,7 +89,7 @@ s = pat.sub(lambda m: c, s, count=1)
 open(f, 'w', encoding='utf-8', newline='\n').write(s)
 print('replaced the INCLUDE_ASM line for %s in %s with %s (%d lines)' % (fn, f, cfile, c.count('\n') + 1))
 PY
-    [ -n "$others" ] && echo "WARNING: src/$2.c still has uncommitted C for other functions too: ${others}- a build only passes if ALL of them match. If you gave up on them: git checkout -- src/$2.c, then put this function again."
+    if [ -n "$others" ]; then echo "WARNING: src/$2.c still has uncommitted C for other functions too: ${others}- a build only passes if ALL of them match. If you gave up on them: git checkout -- src/$2.c, then put this function again."; fi
     ;;
   configure)
     bash wsl-build.sh python3 configure.py -c -v fm 2>&1 | grep -iE 'error|duplicate' ; bash wsl-build.sh ninja 2>&1 | tail -1 ;;
