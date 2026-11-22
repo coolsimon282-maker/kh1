@@ -114,7 +114,12 @@ s32 sceMcEnd(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libmc", _lmcGetClientPtr);
+sceSifClientData* _lmcGetClientPtr(s32** ret, s32** cmd) {
+    *ret = mcRetVal;
+    *cmd = &mcRunCmdNo;
+    mcRetVal[15] = semaidRegFunc;
+    return &mcClientID;
+}
 
 /**
  * @brief Change `mcserv.irx` IOP module thread priority
