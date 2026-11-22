@@ -81,7 +81,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001209D8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120A20);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001208B8);
+void func_001208B8(void) {
+    ((s16*)func_0011ED30(0x2D2A8, func_00120908))[1] = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120AA0);
 
