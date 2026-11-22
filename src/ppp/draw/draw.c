@@ -543,7 +543,12 @@ void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3) {
     DRAW_OT_INSERT(D_0061FFA0, 15, p, qwc, pri);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7F8);
+extern DrawOtEnt D_0061EFA0[];
+
+// ordering table 2 (256 priorities)
+void func_001AC7F8(u32* p, s32 qwc, s32 pri, s32 arg3) {
+    DRAW_OT_INSERT(D_0061EFA0, 255, p, qwc, pri);
+}
 
 
 // GS packet: alpha register + a 2-vertex sprite in colour rgba, inserted in OT 1 at priority 0
