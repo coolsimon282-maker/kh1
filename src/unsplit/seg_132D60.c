@@ -6,7 +6,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0022F808);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232DA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0022F888);
+extern struct {
+    s32 unk0;
+    s32 unk4;
+} D_00425B80;
+
+void func_0022F888(void) {
+    D_00425B80.unk0 = 0x5153484B;
+    D_00425B80.unk4 = 0x01317F14;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232E08);
 
