@@ -26,7 +26,7 @@ typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
     /* 0x04 */ u16 unk_04;
-    /* 0x06 */ u8 unk_06[2];
+    /* 0x06 */ u16 unk_06;
     /* 0x08 */ u8* unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -42,10 +42,57 @@ s32* func_001C1868(void) {
     return &D_0037A16C[D_0037A168].unk_10;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1888);
-
+extern s32 D_0037A164;
 extern s32 D_0037A170;
 extern s32 D_006257D4;
+void func_001BE820(void*, s32);
+
+// sets up the slot table: slot 0, 15 big buffers (0x81C0) and 384 small ones (0x9C0) in D_006257D4
+void func_001C1888(void) {
+    s32 buf;
+    s32 i;
+    s32* p;
+
+    D_003759DC = 1;
+    D_0037A164 = 0;
+    D_0037A168 = 0;
+    buf = D_006257D4;
+    func_001BE820(D_0037A16C, 0x30);
+    D_0037A16C[0].unk_00 = 1;
+    D_0037A16C[0].unk_0C = 0;
+    D_0037A16C[0].unk_02 = 0;
+    D_0037A16C[0].unk_04 = 0;
+    D_0037A16C[0].unk_06 = 0;
+    D_0037A16C[0].unk_08 = (u8*)buf;
+    buf += 0x1C0;
+    for (i = 1; i < 16; i++) {
+        func_001BE820(&D_0037A16C[i], 0x30);
+        D_0037A16C[i].unk_08 = (u8*)buf;
+        buf += 0x81B0;
+        D_0037A16C[i].unk_0C = buf;
+        buf += 0x10;
+        D_0037A16C[i].unk_02 = 0;
+        D_0037A16C[i].unk_04 = 0;
+        D_0037A16C[i].unk_06 = 0;
+        D_0037A16C[i].unk_00 = 0;
+    }
+    for (i = 0; i < 0x180; i++) {
+        func_001BE820(&D_0037A16C[i + 16], 0x30);
+        D_0037A16C[i + 16].unk_08 = (u8*)buf;
+        buf += 0x9B0;
+        D_0037A16C[i + 16].unk_0C = buf;
+        buf += 0x10;
+        D_0037A16C[i + 16].unk_02 = 0;
+        D_0037A16C[i + 16].unk_04 = 0;
+        D_0037A16C[i + 16].unk_06 = 0;
+        D_0037A16C[i + 16].unk_00 = 0;
+    }
+    p = (s32*)D_0037A170;
+    p[0] = (s32)D_0037A16C[0].unk_08;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = -1;
+}
 
 void func_001C1888(void);
 
