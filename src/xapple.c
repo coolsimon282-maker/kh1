@@ -580,7 +580,56 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 //     func_0011EEB8(&D_00532518, 0, &func_0013B480);
 // }
 
+#ifdef VERSION_FM
+extern XAppleBlemish* D_0052AE3C;
+
+s32 func_0013B6E0(void) {
+    XAppleBlemish* var_4;
+
+    if (((D_00375BC0 >> 2) & 1) != 0 || D_00532604 != 4 || func_001EE090() != 0) {
+        return 0;
+    }
+
+    func_0013B578();
+    D_0052AE3C = NULL;
+    var_4 = NULL;
+
+    do {
+        var_4 = func_001234A0(var_4);
+        if (var_4 == NULL) {
+            break;
+        }
+        if (var_4->unk_04.u8[2] == 7) {
+            D_0052AE3C = var_4;
+            break;
+        }
+    } while (TRUE);
+
+    if (D_0052AE3C != NULL) {
+        if ((D_0053260C[2] - D_0053260C[1]) > 0) {
+            func_00131498(D_0052AE3C, (s32)D_0053260C + D_0053260C[1]);
+            func_00130340(D_0052AE3C, 0.0f, 0);
+            D_0052AE3C->unk_00 &= ~0x30;
+        }
+        D_0052AE3C->unk_444 = 0;
+    }
+    if ((((u32)D_002C1EC8 >> 8) % 4) != 1) {
+        if (D_0053260C[3] - D_0053260C[2] > 0) {
+            func_00131498(D_005325E8, (s32)D_0053260C + D_0053260C[2]);
+            func_00130340(D_005325E8, 0.0f, 0);
+        }
+        func_F20000(0, ((D_0053260C[4] - D_0053260C[3]) <= 0) ? NULL : ((s32)D_0053260C + D_0053260C[3]));
+    } else {
+        func_00124BC8(D_0052AE3C);
+        func_00131500(D_005325E8);
+        func_00130340(D_005325E8, 0.0f, (UNK_PTR)0x40000000);
+    }
+    return 1;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B6E0);
+#endif
 
 // s32 func_0013B6E0(void) {
 //     XAppleBlemish* var_4;
