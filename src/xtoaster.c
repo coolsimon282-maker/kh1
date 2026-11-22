@@ -6,16 +6,21 @@ typedef struct {
     /* 0x04*/ s32 unk_04;
     /* 0x08*/ char unk_08[0x4];
     /* 0x0C*/ s32 unk_0C;
-    /* 0x10*/ char unk_10[0x34];
+    /* 0x10*/ char unk_10[0xC];
+    /* 0x1C*/ f32 unk_1C[4];
+    /* 0x2C*/ f32 unk_2C[3];
+    /* 0x38*/ f32 unk_38[3];
     /* 0x44*/ f32 unk_44;
     /* 0x48*/ char unk_48[0x4];
     /* 0x4C*/ u16 unk_4C;
     /* 0x4E*/ u16 unk_4E;
     /* 0x50*/ char unk_50[0x4];
     /* 0x54*/ s8 unk_54;
-    /* 0x55*/ char unk_55[0x4];
+    /* 0x55*/ char unk_55[0x3];
+    /* 0x58*/ u8 unk_58;
     /* 0x59*/ u8 unk_59;
-    /* 0x5A*/ char unk_5A[0x4];
+    /* 0x5A*/ u8 unk_5A;
+    /* 0x5B*/ char unk_5B[0x3];
     /* 0x5E*/ u8 unk_5E;
     /* 0x5F*/ u8 unk_5F;
 } XToast;
@@ -590,7 +595,76 @@ void func_00123ED0(s32 arg0, sceVu0FVECTOR arg1) {
     sceVu0CopyVector(func_00123880(arg0)->unk_040, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123F00);
+void func_00112DE0(sceVu0FVECTOR);
+void func_00112EE8(sceVu0FVECTOR);
+void func_00112FE8(sceVu0FVECTOR);
+void func_0014EAB0(XToaster*, sceVu0FVECTOR);
+void func_0014EB60(XToaster*, sceVu0FVECTOR);
+void func_0014E668(sceVu0FVECTOR, s32, sceVu0FVECTOR, f32, f32);
+f32 atan2f(f32, f32);
+
+void func_00123F00(XToaster* p, f32* v) {
+    XToast* t = p->unk_130;
+    sceVu0FVECTOR w;
+    sceVu0FVECTOR d;
+    f32 x;
+
+    switch (t->unk_54) {
+    case 0:
+        func_00112DE0(v);
+        break;
+    case 1:
+        if (XT_SLOTS[1] == p) {
+            func_00112EE8(v);
+        } else {
+            func_00112FE8(v);
+        }
+        break;
+    default:
+        switch (p->unk_006) {
+        case 4:
+        case 5:
+            v[0] = t->unk_1C[0];
+            v[1] = t->unk_1C[1];
+            v[2] = t->unk_1C[2];
+            v[3] = 0.0f;
+            p->unk_040[0] = t->unk_2C[0];
+            p->unk_040[1] = t->unk_2C[1];
+            p->unk_040[2] = t->unk_2C[2];
+            w[0] = t->unk_38[0];
+            w[1] = t->unk_38[1];
+            w[2] = t->unk_38[2];
+            func_00123E78(*(s32*)p->unk_004, w);
+            break;
+        default:
+            v[0] = t->unk_1C[0];
+            v[1] = t->unk_1C[1];
+            v[2] = t->unk_1C[2];
+            v[3] = t->unk_1C[3];
+            switch (t->unk_5A) {
+            case 2:
+                if (XT_SLOTS[0] != NULL) {
+                    func_0014EAB0(p, v);
+                    sceVu0SubVector(d, XT_SLOTS[0]->unk_010, v);
+                    v[3] = atan2f(d[0], d[2]);
+                }
+                break;
+            case 3:
+                if (XT_SLOTS[0] != NULL) {
+                    func_0014EB60(p, v);
+                    sceVu0SubVector(d, XT_SLOTS[0]->unk_010, v);
+                    v[3] = atan2f(d[0], d[2]);
+                }
+                break;
+            case 4:
+                sceVu0CopyVector(d, v);
+                func_0014E668(d, p->unk_130->unk_58, v, 0.0f, 500.0f);
+                break;
+            }
+        }
+        break;
+    }
+}
 
 s32 func_001499A0(void);
 s32 func_0013C2A8(s32);
