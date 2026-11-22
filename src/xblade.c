@@ -514,7 +514,27 @@ void func_00112EE8(sceVu0FVECTOR dst) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00112FE8);
+void func_00112FE8(sceVu0FVECTOR dst) {
+    if (D_002B92F8 == -1) {
+        D_002B92F8 = func_00112D88();
+    }
+    if (D_002B92F8 < D_002BCDA4) {
+        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[12];
+        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[13];
+        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[14];
+        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[15];
+        if (D_002B9328 != 0) {
+            if (D_002B932C == 1) {
+                func_00112D48(2, dst);
+            }
+        }
+        if (D_002B8364 == 1) {
+            func_001113A8(2, dst);
+        }
+    } else {
+        func_00104FD0(0, dst);
+    }
+}
 extern s32 D_002B92F4;
 
 // void func_00104DC8(s32, sceVu0FVECTOR);
