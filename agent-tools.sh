@@ -71,12 +71,24 @@ PY
     fi
     bash "$0" put "$2" "$3" "$4" || exit 1
     out=$(bash "$0" build); echo "$out" | tail -4
+    # failed tries per function are counted; the 3rd failure gives up automatically (the local agent kept researching
+    # one function for an hour instead of giving up)
+    mkdir -p .tries; tf=".tries/$3"
     if [ "$(echo "$out" | tail -1)" = "build/fm/SLPS_251.98.rom: OK" ]; then
+      rm -f "$tf"
       echo "MATCHED. Commit it now (PowerShell, in the checkout folder):"
       echo "  git add src/$2.c; git commit -m \"Match $3 ($2)\""
     else
-      echo "Not matching yet. Differences (target on the left):"
-      bash "$0" diff "$3" 40
+      t=$(( $(cat "$tf" 2>/dev/null || echo 0) + 1 )); echo "$t" > "$tf"
+      if [ "$t" -ge 3 ]; then
+        rm -f "$tf"
+        bash "$0" giveup "$2" "$3" "3 failed tries (automatic)" >/dev/null
+        echo "GAVE UP AUTOMATICALLY after 3 failed tries: src/$2.c is restored and $3 is noted as given up."
+        echo "Do NOT research it further. Run 'wsl -e bash ./agent-tools.sh next' now for the next function."
+      else
+        echo "Not matching yet (failed try $t of 3). Differences (target on the left):"
+        bash "$0" diff "$3" 40
+      fi
     fi ;;
   giveup)
     f="$2"; fn="$3"; shift 3
