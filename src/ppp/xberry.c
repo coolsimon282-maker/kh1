@@ -244,7 +244,103 @@ void KeLnsCrn_Init(KeLnsCrn* p) {
     p->lp = &ppvDbgTemp;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/xberry", KeLnsFls_Draw);
+typedef struct {
+    /* 0x00 */ KeLnsShp* shp;
+    /* 0x04 */ s32 col;
+    /* 0x08 */ f32 (*mat)[4];
+    /* 0x0C */ f32 scale;
+    /* 0x10 */ u16 len;
+    /* 0x12 */ u8 modeX;
+    /* 0x13 */ u8 modeY;
+    /* 0x14 */ f32* scl;
+} KeLnsFlsArg;
+
+// KeLnsShpDraw as filled here
+typedef struct {
+    /* 0x00 */ pppShapeSt* shp;
+    /* 0x04 */ KeLnsFlr* flr;
+    /* 0x08 */ u8 unk_08[8];
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ u8 col[4];
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s16 unk_1C;
+    /* 0x1E */ s16 unk_1E;
+    /* 0x20 */ f32 (*mat)[4];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ u8 unk_30[0x10];
+} KeLnsFlsShpPrm;
+
+// like func_001A8060, but the flare fades and stretches with the lens distance (len2 / len)
+void KeLnsFls_Draw(KeLnsFlsArg* arg, s32 arg1) {
+    sceVu0FMATRIX m;
+    KeLnsFlsShpPrm prm;
+    KeLnsShp* shp = arg->shp;
+    KeLnsLp* lp = shp->lp;
+    f32 s;
+    f32 r;
+    f32 t;
+
+    if (lp == (KeLnsLp*)&ppvDbgTemp) {
+        return;
+    }
+    if (shp->shp == NULL) {
+        return;
+    }
+    if (lp->vPow == 0.0f) {
+        return;
+    }
+    r = lp->len2 / arg->len;
+    if (r > 1.0f) {
+        t = 0.0f;
+    } else {
+        t = 1.0f - r;
+    }
+    if (lp->md) {
+        sceVu0CopyMatrix(m, lp->mat);
+    } else {
+        sceVu0UnitMatrix(m);
+        m[3][0] = ppvWorldMatrix[3][0] + lp->lcPos[0];
+        m[3][1] = ppvWorldMatrix[3][1] + lp->lcPos[1];
+        m[3][2] = ppvWorldMatrix[3][2] + lp->lcPos[2];
+    }
+    s = arg->scale;
+    m[0][0] = s;
+    switch (arg->modeX) {
+    case 1:
+        m[0][0] = s * t;
+        break;
+    case 2:
+        m[0][0] = r * s + s;
+        break;
+    }
+    m[1][1] = s;
+    switch (arg->modeY) {
+    case 1:
+        m[1][1] = s * t;
+        break;
+    case 2:
+        m[1][1] = r * s + s;
+        break;
+    }
+    sceVu0ScaleVector(m[0], m[0], arg->scl[0]);
+    sceVu0ScaleVector(m[1], m[1], arg->scl[1]);
+    sceVu0MulMatrix(m, arg->mat, m);
+    *(s32*)prm.col = arg->col;
+    prm.col[3] = prm.col[3] * lp->vPow * t;
+    prm.shp = shp->shp;
+    prm.flr = &shp->flr;
+    func_001A75C8((KeLnsFlrRef*)&prm);
+    prm.unk_12 = arg1;
+    prm.mat = m;
+    prm.unk_2C = 0;
+    prm.unk_18 = 0;
+    prm.unk_1C = 0;
+    prm.unk_1E = 0;
+    func_001A7668((KeLnsShpDraw*)&prm);
+}
 
 void KeLnsFls_Init(KeLnsFls* p) {
     p->shp = NULL;
