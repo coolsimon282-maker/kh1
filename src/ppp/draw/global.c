@@ -26,17 +26,41 @@ void ops_init_spr(void) {
 void op_num_info(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_alloc);
+s32 op_spr_alloc(s32 size) {
+    s32 i = spr_index;
+    s32 addr = spr_a[i];
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_rev_alloc);
+    i++;
+    spr_index = i;
+    spr_a[i] = addr + size;
+    return addr;
+}
+
+s32 op_spr_rev_alloc(s32 size) {
+    s32 i = spr_rev_index;
+    s32 addr = spr_rev_a[i];
+
+    i++;
+    spr_rev_index = i;
+    spr_rev_a[i] = addr;
+    return addr - size;
+}
 
 // todo: next two are being compiled as unsigned despite data entries being signed
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_free);
+void op_spr_free(void) {
+    s32 i = spr_index;
+
+    spr_index = i - 1;
+}
 // void op_spr_free(void) {
 //     spr_index--;
 // }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_rev_free);
+void op_spr_rev_free(void) {
+    s32 i = spr_rev_index;
+
+    spr_rev_index = i - 1;
+}
 // void op_spr_rev_free(void) {
 //     spr_rev_index--;
 // }
@@ -57,7 +81,24 @@ s32 op_spr_check(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_file_read);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_file_size);
+extern char D_00489AD8[];
+int printf(const char*, ...);
+void exit(int);
+
+s32 op_file_size(char* name) {
+    char buf[0x400];
+    s32 fd;
+    s32 size;
+
+    fd = sceOpen(name, SCE_RDONLY);
+    if (fd < 0) {
+        printf(D_00489AD8, name);
+        exit(1);
+    }
+    size = sceLseek(fd, 0, SCE_SEEK_END);
+    sceClose(fd);
+    return size;
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_oef2_set);
 

@@ -11,6 +11,8 @@ typedef struct {
 
 sceVu0FVECTOR g_vecCamDir;
 
+f32 func_001A5500(void);
+
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", pppRyjMegaBirthFilterCalc);
 
 void func_001A4F70(void) {
@@ -53,7 +55,10 @@ void pppRyjMegaBirthFilterDes(pppPObject* pobj, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A5500);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjMegaBirthFilter", func_001A5548);
+s8 func_001A5548(u8 a) {
+    f32 r = func_001A5500();
+    return (a * 2) * r - (a >> 1);
+}
 
 s32 func_001A55A8(VRyjMegaBirthFilter* v, u8* arg1) {
     if (v->pvParticleData == NULL) {
