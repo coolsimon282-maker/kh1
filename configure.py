@@ -45,6 +45,11 @@ PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_
 
 LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS}"
 
+# src/lib/libc and src/lib/libm are newlib's own source (newlib 1.8.2; rand.c and signal.c from 1.9.0), unchanged.
+# Sony built them with the game compiler (ee-gcc 2.96), not the 991111 one, and libm in IEEE-only mode.
+# The headers are newlib 1.8.2's (include/newlib, include/newlib-private).
+NEWLIB_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -D_IEEE_LIBM -Iinclude/newlib -Iinclude/newlib-private -isystem include/gcc -idirafter include/gcc-991111"
+
 # Files built WITH strict aliasing (agent a4, 22 Nov: their matched code compiles differently with
 # -fno-strict-aliasing). Every other game file gets -fno-strict-aliasing.
 STRICT_ALIASING_FILES = [
@@ -238,6 +243,12 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
     )
 
     ninja.rule(
+        "newlibcc",
+        description="cc $in",
+        command=f"{NEWLIB_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
+    )
+
+    ninja.rule(
         "ld",
         description="link $out",
         command=f"{CROSS}ld {ld_args}",
@@ -276,7 +287,9 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             build(entry.object_path, entry.src_paths, rule, implicit=implicit)
         elif isinstance(seg, splat.segtypes.common.c.CommonSegC):
             implicit = asm_dependencies(paths, entry.src_paths[0])
-            if any(
+            if str(entry.src_paths[0]).startswith(("src/lib/libc/", "src/lib/libm/")):
+                build(entry.object_path, entry.src_paths, "newlibcc", implicit=implicit)
+            elif any(
                 str(src_path).startswith("src/lib/") for src_path in entry.src_paths
             ):
                 build(entry.object_path, entry.src_paths, "libcc", implicit=implicit)

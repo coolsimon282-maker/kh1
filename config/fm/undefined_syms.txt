@@ -1,2 +1,12 @@
 D_9A0000 = 0x009A0000;
 func_F20000 = 0x00F20000;
+
+/* newlib's own names for these (src/lib/libc is newlib source); FM's symbol list calls them close, write, ... */
+_close = close;
+_write = write;
+_read = read;
+_fstat = fstat;
+_lseek = lseek;
+_kill = kill;
+_getpid = getpid;
+_sbrk = sbrk;
