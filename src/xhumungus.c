@@ -2023,7 +2023,10 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5C68);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5CE8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5D58);
+s32 func_001D5D58(Script* arg0) {
+    arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)(*(u8**)(*(u8**)&func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 4])[1] + 0x6C) + 0x44);
+    return 2;
+}
 
 s32 func_001D5DC8(Script* arg0) {
     f32* q = D_002E26A0[arg0->unk_174[arg0->unk_174[3] + 4]];
