@@ -1121,7 +1121,30 @@ void func_00114440(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xblade", func_00114480);
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_001144C8);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xD0];
+} XBladeD0;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x90];
+} XBlade90;
+
+extern XBladeD0 D_002A6C60[64];
+extern XBladeD0 D_002AA060[64];
+extern XBlade90 D_002AD460[2][64];
+extern XBlade90 D_002B1C60[2][64];
+s32 func_00108A60(s32 idx, s32 type, void* arg2, void* arg3, void* arg4);
+
+void func_001144C8(void) {
+    s32 i;
+
+    D_004D2AAC = 0;
+    D_004D2AB0 = 0;
+    for (i = 0; i < 64; i++) {
+        func_00108A60(i, 1, &D_002A6C60[i], &D_002AD460[0][i], &D_002AD460[1][i]);
+        func_00108A60(i, 5, &D_002AA060[i], &D_002B1C60[0][i], &D_002B1C60[1][i]);
+    }
+}
 
 s32 func_001145B0(XBladeHdr* arg0) {
     s32* offset = &arg0->unk_18;
