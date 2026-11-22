@@ -1629,7 +1629,17 @@ s32 func_001D5378(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D53A8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5420);
+f32* func_0014F370(void*);
+
+s32 func_001D5420(Script* arg0) {
+    void* p = *(void**)&arg0->unk_00[4];
+
+    if (p != NULL) {
+        func_0014F370(p)[2] = arg0->unk_174[arg0->unk_174[3] + 4];
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001D5480(Script* arg0) {
     void* p = *(void**)&arg0->unk_00[4];
