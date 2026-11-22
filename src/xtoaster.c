@@ -6,7 +6,8 @@ typedef struct {
     /* 0x44*/ f32 unk_44;
     /* 0x48*/ char unk_48[0x4];
     /* 0x4C*/ u16 unk_4C;
-    /* 0x4E*/ char unk_4E[0x11];
+    /* 0x4E*/ char unk_4E[0x10];
+    /* 0x5E*/ u8 unk_5E;
     /* 0x5F*/ u8 unk_5F;
 } XToast;
 
@@ -101,7 +102,17 @@ void func_00123340(f32 arg0, XToaster* arg1) {
     arg1->unk_130->unk_44 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_00123350);
+/* Union access = alias set 0: the target reloads unk_130 after the float store, as if built with
+   -fno-strict-aliasing. */
+typedef union {
+    f32 f;
+} XToasterAnyF32;
+
+void func_00123350(XToaster* arg0, f32 arg1, f32 arg2, f32 arg3) {
+    ((XToasterAnyF32*)&arg0->unk_130->unk_44)->f = arg1;
+    arg0->unk_130->unk_5E = (u32)arg2;
+    arg0->unk_130->unk_5F = (u32)arg3;
+}
 
 static inline s32 xtoaster_inl_001233D0(XToaster* arg0) {
     if (arg0->unk_000 & 0x2000000) {
