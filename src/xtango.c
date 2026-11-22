@@ -110,7 +110,16 @@ u32 func_001EF300(void) {
     return func_001EF210() / 60;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF330);
+void func_001EF330(u32* h, u32* m, u32* s, u32* f) {
+    u32 t = func_001EF210();
+
+    *h = t / 216000;
+    t %= 216000;
+    *m = t / 3600;
+    t %= 3600;
+    *s = t / 60;
+    *f = t % 60;
+}
 
 u32 func_001EF3D0(void) {
     return func_001EF210() / 216000;
