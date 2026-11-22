@@ -494,14 +494,51 @@ void op_ot_draw(void) {
     sceGsSyncPath(0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC758);
+// stores a zero qword with `sq $0` (gcc itself always goes through a register)
+#define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
+
+// a word store gcc can't move (DMA tags are written this way, right after DRAW_SQ_ZERO)
+#define DRAW_SW(dst, val) __asm__ volatile("sw %1,%0" : "=m"(dst) : "r"(val))
+
+// ordering-table entry: a DMA "next" tag; `last` is the last packet linked into it
+typedef struct {
+    /* 0x0 */ u32 tag;
+    /* 0x4 */ u32* next;
+    /* 0x8 */ u32* last;
+    /* 0xC */ u32 pad;
+} DrawOtEnt;
+
+// links packet p (qwc qwords) at priority pri (clamped to 0..max) into ordering table ot
+#define DRAW_OT_INSERT(ot, max, p, qwc, pri)       \
+    {                                              \
+        DrawOtEnt* e;                              \
+        u32* last;                                 \
+        u32* t;                                    \
+                                                   \
+        DRAW_SQ_ZERO(p);                           \
+        DRAW_SW((p)[0], ((qwc) - 1) | 0x20000000); \
+        if (pri < 1) {                             \
+            pri = 0;                               \
+        }                                          \
+        if (pri > (max)) {                         \
+            pri = (max);                           \
+        }                                          \
+        e = &(ot)[pri];                            \
+        last = e->last;                            \
+        t = (u32*)last[1];                         \
+        last[1] = (u32)(p);                        \
+        (p)[1] = (u32)t;                           \
+        e->last = (p);                             \
+    }
+
+// ordering table 0 (16 priorities)
+void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3) {
+    DRAW_OT_INSERT((DrawOtEnt*)D_0061EEA0, 15, p, qwc, pri);
+}
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7A8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AC7F8);
-
-// stores a zero qword with `sq $0` (gcc itself always goes through a register)
-#define DRAW_SQ_ZERO(addr) __asm__ volatile("sq $0,%0" : "=m"(*(u_long128*)(addr)))
 
 void func_001AC7A8(void* pkt, s32 qwc, s32 pri, s32 arg3);
 
