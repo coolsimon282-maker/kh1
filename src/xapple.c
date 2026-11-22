@@ -353,7 +353,55 @@ void func_0013B138(void) {
     D_00532604 = 4;
 }
 
+#ifdef VERSION_FM
+extern sceVu0FVECTOR D_0052AE40;
+extern s32 D_0052AE60;
+extern sceVu0FVECTOR D_002C58B0;
+void func_001373F8(XAppleBlemish*, f32);
+void func_00137448(XAppleBlemish*);
+void func_00176310(s32);
+void func_001763A0(s32);
+void func_00131498(XAppleBlemish*, s32);
+void func_001C4D90(s32, s32, s32);
+
+s32 func_0013B1D0(void) {
+    XAppleBlemish* var_17;
+    s32 var_16;
+
+    var_17 = NULL;
+    while ((var_17 = func_001234A0(var_17)) != NULL) {
+        var_16 = var_17->unk_00;
+        if (var_17 == D_005325E8) {
+            var_16 |= 0x30;
+            var_16 &= ~0x2;
+            func_001373F8(var_17, 0.0f);
+            var_17->unk_370 |= 0x10000000000000;
+        } else {
+            var_16 &= ~0x8000;
+            func_00137448(var_17);
+            sceVu0CopyVector(var_17->unk_120, D_002C58B0);
+        }
+        func_00123830(var_17, var_16);
+    }
+    sceVu0CopyVector(D_0052AE40, &D_005325E8->unk_10);
+    D_0052AE40[3] = D_005325E8->unk_3C;
+    func_00123E48(D_005325E8->unk_04.s32, D_002C58B0);
+    func_00176310(D_0052AE60);
+    func_001763A0(0);
+    func_001778A0(1);
+    D_002C1EA8 &= ~0x100000;
+    D_002C1EA8 |= 0x4000;
+    if (((s32)((D_002C1EC8 >> 8) % 4) < 2) && (D_00532608[1].unk_00[1] != D_00532608[1].unk_00[0])) {
+        func_00131498(D_005325E8, (s32)D_00532608 + D_00532608->unk_00[3]);
+        func_001C4D90((s32)D_00532608 + D_00532608[1].unk_00[0], (s32)D_00532608 + D_00532608[1].unk_00[1],
+                      (s32)D_00532608 + D_00532608[1].unk_00[2]);
+    }
+    return 4;
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B1D0);
+#endif
 
 // s32 func_0013B1D0(void) {
 //     XAppleBlemish* var_17;
