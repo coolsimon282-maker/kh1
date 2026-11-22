@@ -31,7 +31,11 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_alloc);
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_rev_alloc);
 
 // todo: next two are being compiled as unsigned despite data entries being signed
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_spr_free);
+void op_spr_free(void) {
+    s32 i = spr_index;
+
+    spr_index = i - 1;
+}
 // void op_spr_free(void) {
 //     spr_index--;
 // }
