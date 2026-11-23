@@ -4382,7 +4382,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162428);
 void func_001624F8(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162500);
+s32 sceDmaGetChan(s32);
+void func_0015F128(void);
+s32 func_00160370();
+extern s32 D_0055C640;
+extern s32 D_0055C644;
+extern u8 D_0055C698[];
+typedef struct { s32 unk_00; u8 pad[0x18C]; } S56A0F0;
+extern S56A0F0 D_0056A0F0[];
+extern s32 D_005739F8[];
+
+void func_00162500(void) {
+    s32 i;
+
+    D_0055C644 = sceDmaGetChan(2);
+    D_0055C640 = sceDmaGetChan(1);
+    func_0015F128();
+    for (i = 0x5F; i >= 0; i--) {
+        D_0056A0F0[i].unk_00 = 0;
+    }
+    for (i = 0x27; i >= 0; i--) {
+        D_005739F8[i] = 0;
+    }
+    memset(D_0055C698, 0, 0xDA58);
+    *(s16*)((u8*)func_0011ED30(0x2E630, func_00160370) + 2) = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001625C8);
 
