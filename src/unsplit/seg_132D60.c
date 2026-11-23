@@ -1406,7 +1406,13 @@ void func_00249888(f32 *arg0, f32 *arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002498A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249900);
+// func_00249900 (src/unsplit/seg_132D60.c)
+void func_00249900(f32 *arg0, f32 *arg1) {
+    sceVu0FVECTOR temp;
+    sceVu0CopyVector(temp, arg0);
+    sceVu0CopyVector(arg0, arg1);
+    sceVu0CopyVector(arg1, temp);
+}
 
 f32 func_00249950(f32 *arg0, f32 fparg0, f32 fparg1) {
     f32 var_f0;
