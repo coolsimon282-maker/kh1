@@ -573,7 +573,22 @@ s32 func_001F2C60(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     return D_0063F74C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F2D68);
+u8 *func_001F18E8_x(u8 *, s32, s32, s32, s32, s32, s32, s32, s32, s32) __asm__("func_001F18E8");
+
+s32 func_001F2D68(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7) {
+    u8 *p;
+    u8 *q;
+    u8 *end;
+    sceDmaSend(sceDmaGetChan(0x2), D_003F2270);
+    p = end = func_00122048(0x400, 0x80);
+    q = (u8 *)(((u32)p & 0xFFFFFFF) | 0x80000000);
+    end = func_001F18E8_x(p + 0x10, 0x1, a0, a1, a2, a3, a4, a5, a6, a7);
+    *(u64 *)p = (((end - p) >> 4) - 1) | 0x70000000;
+    sceDmaSend(sceDmaGetChan(0x2), q);
+    sceGsSyncPath(0, 0);
+    func_001220B8(p);
+    return D_0063F74C;
+}
 
 void func_001F2E98(u8 *a0, u8 *a1) {
     *(s32 *)(a0 + 0x0) = (s32)D_003E9660;
