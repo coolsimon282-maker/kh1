@@ -89,7 +89,14 @@ void func_001110D0(void) {
     D_002B90B0->unk_158 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111158);
+typedef struct { u8 pad[0x10]; f32 f[4][4]; } XTF;
+void func_00111158(void* a_, s32 i) {
+    u8* a = a_;
+    ((XTF*)D_002B90B0)->f[i][0] = *(f32*)(a + 0x10);
+    ((XTF*)D_002B90B0)->f[i][1] = *(f32*)(a + 0x14);
+    ((XTF*)D_002B90B0)->f[i][2] = *(f32*)(a + 0x18);
+    ((XTF*)D_002B90B0)->f[i][3] = *(f32*)(a + 0x3C);
+}
 
 void func_00111198(void) {
     void* p;
