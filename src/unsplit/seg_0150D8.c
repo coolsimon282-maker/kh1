@@ -72,7 +72,7 @@ extern s32 D_002B6478;
 void func_00218CA0(s32);
 s32 func_00218C78(void);
 void func_0011AF48(s32, s32, s32, s32*);
-void func_0011A410(void);
+void func_0011A410(s32);
 void func_00115940(s32, void*);
 extern Seg150D8Ent D_004761D0[];
 extern Seg150D8Ent* D_004E0420;
@@ -538,7 +538,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011AB88);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011AF48);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011AED0);
+void func_0011AED0(s32 a0, s32 a1) {
+    func_0011A410(a0);
+    func_0011AF48(a0, a1, 0, D_002BD250);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B108);
 
