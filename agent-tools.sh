@@ -31,6 +31,11 @@ replaced() {
 }
 case "$1" in
   next)
+    # an attempt left in place (the agent moved on without giving up) would block every later try: clear it here
+    replaced | while read -r lf lfile; do
+      [ -n "$lf" ] && bash "$0" giveup "$lfile" "$lf" "moved on without matching (cleared by next)" >/dev/null && echo "(cleared your unfinished attempt at $lf)"
+    done
+    rm -rf .tries
     # rounds: the unattended launcher asks for a few functions per fresh session; after 6 jobs, end the round
     # (the counter resets when it's older than an hour, i.e. the next round starts again at 1)
     rc=qwen/.round_count; [ -f "$rc" ] && [ -n "$(find "$rc" -mmin +60 2>/dev/null)" ] && rm -f "$rc"
