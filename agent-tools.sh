@@ -126,13 +126,22 @@ PY
       q=0; qout=""
       case "$2" in lib/*) ;; *) qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$? ;; esac
       if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
+      # a give-up used to throw the attempt away. Keep the closest one per function (qwen/attempts/<func>.c and
+      # .score = "<instructions off> <of how many>"): a near-miss is a head start for a stronger model or the permuter
+      if [ -d qwen ] && [ $q -ne 0 ]; then
+        sc=$(echo "$qout" | sed -n 's/^QUICK CHECK: .* differs in \([0-9]*\) of \([0-9]*\) instructions.*/\1 \2/p' | head -1)
+        if [ -n "$sc" ]; then
+          mkdir -p qwen/attempts; old=$(cut -d' ' -f1 "qwen/attempts/$3.score" 2>/dev/null)
+          if [ -z "$old" ] || [ "${sc%% *}" -lt "$old" ]; then cp "$4" "qwen/attempts/$3.c"; echo "$sc $2" > "qwen/attempts/$3.score"; fi
+        fi
+      fi
     fi
     # failed tries per function are counted; the 2nd failure gives up automatically (23 Nov: of 14 logged matches none came on a 3rd try) (the local agent kept researching
     # one function for an hour instead of giving up)
     mkdir -p .tries; tf=".tries/$3"
     [ -f qwen/.job_info ] && echo $(( $(cat qwen/.job_tries 2>/dev/null || echo 0) + 1 )) > qwen/.job_tries
     if [ "$(echo "$out" | tail -1)" = "build/fm/SLPS_251.98.rom: OK" ]; then
-      rm -f "$tf"
+      rm -f "$tf" "qwen/attempts/$3.c" "qwen/attempts/$3.score"
       logtime "$3" matched
       echo "MATCHED. Commit it now (PowerShell, in the checkout folder):"
       echo "  git add src/$2.c; git commit -m \"Match $3 ($2)\""
@@ -154,7 +163,8 @@ PY
     f="$2"; fn="$3"; shift 3
     git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { echo "couldn't restore src/$f.c"; exit 1; }
     n="notes/$(basename "$PWD").md"; [ "$(basename "$PWD")" = "kh1-decomp" ] && n="notes/main.md"
-    echo "- $fn ($f): gave up: $*" >> "$n"
+    best=""; [ -f "qwen/attempts/$fn.score" ] && best=" [closest try: $(cut -d' ' -f1 "qwen/attempts/$fn.score") of $(cut -d' ' -f2 "qwen/attempts/$fn.score") instructions off, kept in qwen/attempts/$fn.c]"
+    echo "- $fn ($f): gave up: $*$best" >> "$n"
     logtime "$fn" "gave up: $*"
     echo "src/$f.c is back to its last commit; noted in $n. Take the next function." ;;
   cfunc)
