@@ -931,7 +931,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEBD0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BECB8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEDD0);
+f32 func_001BEDD0(f32* v) {
+    f32 l = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+
+    if (l == 0.0f) {
+        return l;
+    }
+    v[0] /= l;
+    v[1] /= l;
+    v[2] /= l;
+    return l;
+}
 
 float sqrtf(float);
 
