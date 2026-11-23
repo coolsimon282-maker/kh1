@@ -5832,7 +5832,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017ECF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017EF40);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017EFF8);
+void func_0017D5A0(void);
+void func_0017EFF8(void) {
+    D_00575920[0] = 0;
+    if (D_002DED08 != 9 && D_002DED08 != 2) {
+        if (D_00575894 != NULL) {
+            if (func_001773B0() != 0) {
+                func_00176F08(1, 45.0f);
+            }
+        }
+    } else {
+        func_0017D5A0();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001807B0);
 
