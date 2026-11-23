@@ -10,6 +10,11 @@ m2c refuses a whole context if it contains one old-style (K&R) function definiti
 ("K&R-style function header is not supported"). A few functions in src/ need that form to match, and each one
 left every other function in its file without a first draft (found 23 Nov: all of seg_0EF950). This rewrites such
 headers in the context only (never in src/) to the modern form:  s32 func_001EFBB8(s32 a0) {
+
+Second fix: on the PS2 `long` is 64 bits, but m2c takes it as 32 and rejects the whole context at the first wide
+bitfield ("Width of bitfield pad01 exceeds its type": Sony's eestruct.h has `unsigned long pad01:63`, and u64 is
+a typedef of unsigned long). That left 12 files without drafts, among them seg_03BDE8 (599 functions in
+assembly) and xhumungus (161). In the context `long` becomes `long long`: the same 64-bit type to m2c.
 """
 import re, sys
 p = sys.argv[1]
@@ -34,5 +39,7 @@ def fix(m):
     n += 1
     return '%s(%s) {' % (m.group('head'), ', '.join(types[x] for x in names))
 s2 = KR.sub(fix, s)
+s3 = re.sub(r'blongb(?:s+longb)?(?!s+doubleb)', 'long long', s2)
+if s3 != s2: s2 = s3; n += 1
 if n:
     open(p, 'w', encoding='utf-8').write(s2)
