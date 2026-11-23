@@ -878,7 +878,17 @@ s32 func_0013DAA8(s32 a) {
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013DA88);
+void *func_0013DA88(s32 a) {
+    s32 idx;
+    void *result;
+
+    idx = func_0013DAA8(a);
+    if (idx < 0) {
+        return (void *)0;
+    }
+    result = ((void **)&D_002E26A0)[idx];
+    return result;
+}
 
 s32 func_0013DB30(s32 a) {
     u8* p = (u8*)a;
