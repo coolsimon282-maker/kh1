@@ -2025,7 +2025,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206748);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206B70);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00206E28);
+void func_00206E28(void) {
+    s32 *p = (s32 *)((u8 *)D_003ED718 + 0x30);
+    s32 i = 1;
+loop:
+    i--;
+    *p++ = 0;
+    if (i >= 0) goto loop;
+}
 
 void func_00206E60(s32 n) {
     struct {
@@ -2824,7 +2831,9 @@ void func_00213C90(s32 a0) {
     func_00211698();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00213D00);
+void func_00213D00(void) {
+    if ((u32)D_00641BC4 > (u32)(D_003DE6A0 - 1)) D_00641BC4 = D_003DE6A0 - 1;
+}
 
 void func_00213D30(void) {
     D_00641BC4 = 0;
