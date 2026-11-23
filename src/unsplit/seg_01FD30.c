@@ -119,7 +119,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120438);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120678);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120590);
+void func_00120678();
+char *strcpy(char *, const char *);
+void *func_0011EEB8(void *, s32, s32);
+extern s32 D_004E49E8;
+extern s32 D_004E4520;
+
+s32 func_00120590(char *name, s32 a1, s32 (*a2)(void), s32 a3) {
+    u8 *e = func_0011EEB8(&D_004E49E8, 0, (s32)func_00120678);
+
+    *(s32 *)(e + 0x44) = D_004E4520++;
+    *(s32 *)(e + 0x40) = a3;
+    strcpy((char *)(e + 0x10), name);
+    *(s32 *)(e + 0x38) = a1;
+    *(s32 *)(e + 0x3C) = (s32)a2;
+    D_004E4520 &= 0xFFFF;
+    return *(s32 *)(e + 0x44);
+}
 
 extern u8 D_004E4528[];
 s32 func_0011F0F8(u8 *);
