@@ -146,7 +146,17 @@ void func_001BA2A8(s32 n, u8 *src) {
 void *func_001BA9A8(void);
 u8 func_001BA458(s32 x);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BC480);
+s32 func_001BC480(s32 i) {
+    u8* p = (u8*)func_001BA9A8() + i;
+    s32 c = *p;
+    s32 m = func_001BA458(i);
+
+    if (c < m) {
+        *p += 1;
+        return 1;
+    }
+    return 0;
+}
 
 void func_001BA358(s32 i, s32 add) {
     u8 *p = (u8 *)func_001BA9A8() + i;
