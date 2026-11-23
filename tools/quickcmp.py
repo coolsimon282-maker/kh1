@@ -28,12 +28,12 @@ syms = {}
 for l in run('mips-linux-gnu-nm', '-S', obj).splitlines():
     p = l.split()
     if len(p) == 4: syms[p[3]] = (int(p[0], 16), int(p[1], 16))
-rel = {}; sec = None
+rel = {}; relsym = {}; sec = None
 for l in run('mips-linux-gnu-readelf', '-r', obj).splitlines():
     m = re.match(r"Relocation section '\.rel\.?(\S+)'", l)
     if m: sec = m.group(1); continue
-    m = re.match(r'^([0-9a-f]{8})\s+\S+\s+(R_MIPS_\S+)', l)
-    if m and sec == 'text': rel[int(m.group(1), 16)] = m.group(2)
+    m = re.match(r'^([0-9a-f]{8})\s+\S+\s+(R_MIPS_\S+)(?:\s+[0-9a-f]+\s+(\S+))?', l)
+    if m and sec == 'text': rel[int(m.group(1), 16)] = m.group(2); relsym[int(m.group(1), 16)] = m.group(3)
 text = subprocess.run(['mips-linux-gnu-objcopy', '-O', 'binary', '--only-section=.text', obj, '/dev/stdout'], capture_output=True).stdout
 dis = {}
 for l in run('mips-linux-gnu-objdump', '-d', '-z', '-M', 'no-aliases', obj).splitlines():
@@ -51,6 +51,13 @@ if fn not in syms:
     print('%s is not defined in the compiled file' % fn); sys.exit(2)
 off, sz = syms[fn]
 def mask(w, rt): return w if rt is None else (w & 0xFC000000 if '26' in rt else w & 0xFFFF0000)
+# an unlinked object has no addresses yet: objdump prints a call as "jal 0 <whatever symbol sits at 0>", which reads
+# like a call to the wrong function (it misled the local model, 23 Nov). Show the symbol the linker will fill in.
+def shown_as(a):
+    d = dis.get(a, '-').replace('\t', ' ')
+    if relsym.get(a):
+        d = re.sub(r'\s+[0-9a-f]+ <[^>]*>$', ' ' + relsym[a], d) if '26' in rel[a] else '%s  [%s]' % (d, relsym[a])
+    return d
 n = max(len(tw), sz // 4); bad = 0; out = []
 for i in range(n):
     a = off + i * 4
@@ -58,7 +65,7 @@ for i in range(n):
     t = tw[i] if i < len(tw) else None
     same = mw is not None and t is not None and mask(mw, rel.get(a)) == mask(t, rel.get(a))
     bad += not same
-    out.append('%s %4x  %-44.44s | %s' % ('  ' if same else '!!', i * 4, tt[i] if t is not None else '-', dis.get(a, '-').replace('\t', ' ') if mw is not None else '-'))
+    out.append('%s %4x  %-44.44s | %s' % ('  ' if same else '!!', i * 4, tt[i] if t is not None else '-', shown_as(a) if mw is not None else '-'))
 if bad == 0:
     print('QUICK CHECK: %s matches (%d instructions)' % (fn, n)); sys.exit(0)
 print('QUICK CHECK: %s differs in %d of %d instructions (size: target %#x, yours %#x). target | yours:' % (fn, bad, n, len(tw) * 4, sz))
