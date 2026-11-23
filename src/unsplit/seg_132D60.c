@@ -782,7 +782,13 @@ void func_0023D148(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D1A0);
+void func_0011D7C0(s32);
+void func_0023D1A0(void) {
+    if (D_00651E50[0x1048] == 1) {
+        func_0011D7C0(0x2D);
+        D_00651E50[0x1048] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D1E0);
 
@@ -1035,11 +1041,24 @@ void func_00243168(void *arg0, s32 arg1, s32 arg2) {
     ((s32 *)arg0)[1] = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002431B8);
+typedef struct { s32 a; s32 b; s32 c; } Seg132E12;
+typedef struct { s32 cap; Seg132E12* buf; s32 cnt; s32 rd; } Seg132Q;
+void func_002431B8(Seg132Q* q, Seg132E12* e) {
+    if (q->cnt != q->cap) {
+        q->buf[q->cnt] = *e;
+        q->cnt++;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243208);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243278);
+s32 func_00243278(Seg132Q* q, Seg132E12* e) {
+    if (q->cnt == q->rd) {
+        return 0;
+    }
+    *e = q->buf[q->rd];
+    return 1;
+}
 
 void func_002432C8(void *arg0) {
     *(u32 *)((u8 *)arg0 + 12) = 0;
@@ -1064,14 +1083,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243508);
 
 typedef struct { s32 a; s32 b; f32 c; } Seg132Msg;
 extern u8 D_006561E4[];
-void func_002431B8(u8*, Seg132Msg*);
 void func_00243630(s32 a0, s32 a1) {
     Seg132Msg m;
 
     m.b = a1;
     m.a = a0;
     m.c = 1.0f;
-    func_002431B8(D_006561E4, &m);
+    func_002431B8((Seg132Q*)D_006561E4, (Seg132E12*)&m);
 }
 
 extern s32 D_006561D0;
@@ -1097,14 +1115,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243A20);
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243A90);
 
 extern s32 D_006561D0_w[] __asm__("D_006561D0");
-s32 func_00243278(s32*, s32*);
 s32 func_00243BD8(void) {
     s32 buf[4];
 
     if (D_006561D0_w[0] != 0) {
         return 1;
     }
-    return func_00243278(&D_006561D0_w[5], buf) != 0;
+    return func_00243278((Seg132Q*)&D_006561D0_w[5], (Seg132E12*)buf) != 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243C10);
@@ -1282,7 +1299,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245DA0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245E40);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245F18);
+typedef struct { s32 unk0; u8 pad[0x85C]; } Seg132_662A30;
+extern Seg132_662A30 D_00662A30_e[] __asm__("D_00662A30");
+s32 func_00245F18(void) {
+    s32 i;
+
+    for (i = 0; i < 10; i++) {
+        if (D_00662A30_e[i].unk0 != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 typedef struct { s32 v[4]; } Seg132_668040e;
 extern Seg132_668040e D_00668040_e[] __asm__("D_00668040");
@@ -1430,7 +1458,18 @@ void func_00247468(f32 *arg0, s32 arg1) {
     func_00247228(ret, arg1, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002474A8);
+extern u8 D_0045FAC0_e[] __asm__("D_0045FAC0");
+s32 func_002474A8(void) {
+    s32 p = (s32)D_0045FAC0_e;
+
+    do {
+        if (*(s32*)p != 0) {
+            return 1;
+        }
+        p += 0x930;
+    } while (p < (s32)D_0045FAC0_e + 0x5BE0);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002474E8);
 
@@ -1508,7 +1547,19 @@ void func_00245140(void) {
     D_00669350 = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002485F0);
+s32 func_002485F0(void) {
+    s32 r = 0;
+    s32* p;
+
+    if (D_00669350_w[0] == 1) {
+        p = (s32*)D_00669350_w[1];
+        r = p[8] != 0;
+        if (p[1] != 0) {
+            r |= 2;
+        }
+    }
+    return r;
+}
 
 void func_00248628(void *arg0, s32 arg1, s32 arg2) {
     memset(arg0, 0, 0x10);
@@ -1516,11 +1567,22 @@ void func_00248628(void *arg0, s32 arg1, s32 arg2) {
     ((s32 *)arg0)[1] = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248678);
+void func_00248678(Seg132Q* q, Seg132E12* e) {
+    if (q->cnt != q->cap) {
+        q->buf[q->cnt] = *e;
+        q->cnt++;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002486C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248738);
+s32 func_00248738(Seg132Q* q, Seg132E12* e) {
+    if (q->cnt == q->rd) {
+        return 0;
+    }
+    *e = q->buf[q->rd];
+    return 1;
+}
 
 void func_00248788(void *arg0) {
     *(u32 *)((u8 *)arg0 + 12) = 0;
@@ -1543,7 +1605,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002488A8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002489C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248AC8);
+extern u8 D_00669714[];
+void func_00248AC8(s32 a0, s32 a1) {
+    Seg132Msg m;
+
+    m.b = a1;
+    m.a = a0;
+    m.c = 1.0f;
+    func_00248678((Seg132Q*)D_00669714, (Seg132E12*)&m);
+}
 
 extern s32 D_00669700;
 
