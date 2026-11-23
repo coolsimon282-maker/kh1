@@ -126,7 +126,15 @@ void func_00106D48(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106DB0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106E18);
+extern s32 D_002A6C54;
+extern u8 D_002BC270[];
+void* func_0011F9E8(s32, s32, s32, s32, s32, s32, s32, s32, s32, void*);
+s32 func_00106E18(Seg6B18Task* t) {
+    func_0011F9E8(0x3600, 2, 0, 0, 0, 0x80, D_002A6C50 << 7, D_002A6C50 << 12, D_002A6C54, D_002BC270);
+    iFlushCache(0);
+    sceDmaSend(D_002A6B84, (s32)D_002BC270);
+    return 2;
+}
 
 void func_00106CB0(s32 arg0) {
     if (D_002A6C50 != 0) {
@@ -328,7 +336,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D68);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108FD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001090E8);
+int sceGsSetDefLoadImage_s(u8 *, short, short, short, short, short, short, short) __asm__("sceGsSetDefLoadImage");
+void func_001090E8(s32 a0, s32 a1, s32 a2, s32 a3) {
+    sceGsSetDefLoadImage_s(D_002B8700, a3, a1 / 64, 0x14, 0, 0, a1, a2);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(D_002B8700, a0);
+}
 
 void func_00109180(s32 a0, s32 a1) {
     sceGsSetDefLoadImage(D_002B8760, ((a1 << 16) >> 16), 0, 0, 0, 0, 8, 2);
