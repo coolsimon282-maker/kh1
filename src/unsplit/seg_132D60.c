@@ -374,7 +374,11 @@ s32 func_00236FD0(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236FD8);
+void func_00236FD8(void *arg0, s32 arg1) {
+    s64 val = ((((s32)(arg1 - (s32)(long)arg0) >> 4) - 1) | 0x8000) | ((s64)0x8000 << 45);
+    ((s64 *)arg0)[1] = 0xE;
+    ((s64 *)arg0)[0] = val;
+}
 
 // func_00237008 (src/unsplit/seg_132D60.c)
 u64* func_00237008(u64 arg0, u64 arg1, u64* arg2) {
