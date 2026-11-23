@@ -978,7 +978,25 @@ s32 func_00245228(void) {
     return D_00662540 != 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245238);
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    f32 unkC;
+    s32 unk10;
+} Struct_006627B0;
+
+extern Struct_006627B0 D_006627B0;
+
+void func_00245238(s32 arg0, s32 arg1) {
+    D_006627B0.unk10 = 1;
+    if (D_006627B0.unk8 == 0 || D_006627B0.unk0 != arg0) {
+        D_006627B0.unk0 = arg0;
+        D_006627B0.unk4 = arg1;
+        D_006627B0.unk8 = 1;
+        D_006627B0.unkC = 1.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245280);
 
