@@ -3962,7 +3962,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B268);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B438);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B4A8);
+s32 func_0015B4A8(f32* a, f32* b) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR s;
+
+    s[0] = s[2] = 1.0f / (a[1] + b[1]);
+    s[1] = 1.0f / (a[2] + b[2]);
+    sceVu0SubVector(d, b + 4, a + 4);
+    sceVu0MulVector(d, d, s);
+    return sceVu0InnerProduct(d, d) < 1.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015B550);
 
