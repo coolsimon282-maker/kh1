@@ -203,7 +203,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF7E0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF890);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF940);
+extern f32 *D_0062A430;
+s32 func_001DF940(A2Script *s) {
+    s32 n = s->unk_174[3];
+    f32 *v = D_0062A430;
+    f32 x = s->unk_174[n + 2];
+    f32 y = s->unk_174[n + 3];
+    f32 z = s->unk_174[n + 4];
+    s->unk_174[3] = n - 4;
+    v[2] = z / 100.0f;
+    v[1] = y / 100.0f;
+    v[0] = x / 100.0f;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF9C0);
 
