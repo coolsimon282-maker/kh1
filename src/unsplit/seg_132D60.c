@@ -627,7 +627,24 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002389F0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00238A70);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239368);
+void func_00238A70(void);
+void func_002499F0(void);
+extern u_long128 D_00648230[];
+int sceGsSetDefLoadImage(void *lp, short dbp, short dbw, short dpsm, short x, short y, short w, short h);
+int sceGsExecLoadImage(void *lp, u_long128 *srcaddr);
+int sceGsSyncPath(int mode, u_short timeout);
+void FlushCache(int);
+
+void func_00239368(void) {
+    u_long128 li[6];
+
+    func_00238A70();
+    sceGsSetDefLoadImage(li, 0x3FD8, 1, 0, 0, 0, 0x10, 0x10);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(li, D_00648230);
+    func_002499F0();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002393D8);
 
