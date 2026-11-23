@@ -2,7 +2,22 @@
 // Functions can be matched here like in any other file; the file may be split later.
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0022F808);
+#include "sdk/ee/eetypes.h"
+
+extern u_long128 D_003F2080;
+extern u_long128 D_0040EF80;
+
+void func_0022F808(void) {
+    u_long128 *src = &D_003F2080;
+    u_long128 *dst = &D_0040EF80;
+    s32 count = 0x16C0;
+    do {
+        *dst = *src;
+        src++;
+        dst++;
+        count--;
+    } while (count > 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232DA0);
 
