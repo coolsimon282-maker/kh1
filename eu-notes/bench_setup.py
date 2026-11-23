@@ -5,8 +5,9 @@ the Qwen loop uses), so `agent-tools.sh next` / `try` / `giveup` drive the test.
 Functions: from src/unsplit files (not Qwen's), plain definitions, 7 of 64-128 bytes, 7 of 129-256, 6 of 257-512."""
 import os, re, struct, subprocess, sys, random, collections
 sys.path.insert(0, os.path.dirname(__file__))
+import elf_funcs
 from elf_funcs import elf_functions
-names = elf_functions(r'\wsl.localhost\Ubuntu\home\you\kh1-decomp-build\build\fm\SLPS_251.98.elf')
+names = elf_functions(os.path.join(elf_funcs.WSL_HOME, 'kh1-decomp-build', 'build', 'fm', 'SLPS_251.98.elf'))
 starts = sorted(v for v, n in names.items() if 0x100000 <= v < 0x272c70 and any(x.startswith(('func_', 'fm_func_')) and not x.endswith('.NON_MATCHING') for x in n))
 size = {}
 for a, b in zip(starts, starts[1:]):
