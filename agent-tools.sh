@@ -29,6 +29,17 @@ export GIT_OPTIONAL_LOCKS=0 GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.filemode GI
 replaced() {
   git diff -U0 -- src | awk '/^\+\+\+ b\/src\//{f=substr($2,7); sub(/\.c$/,"",f)} /^-INCLUDE_ASM\(/{n=$0; sub(/^[^,]*, */,"",n); sub(/\).*/,"",n); print n" "f}'
 }
+# Time limit per job for the local agent: `next` notes when it handed a job out (qwen/.job); 12 minutes later any
+# command gives the job up and says so (the agent kept researching one function for 40 minutes instead of giving up).
+if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != configure ] && [ -n "$(find qwen/.job -mmin +12 2>/dev/null)" ]; then
+  read -r jf jfile < qwen/.job; rm -f qwen/.job
+  if grep -q "INCLUDE_ASM(\"[^\"]*\", $jf);" "src/$jfile.c" 2>/dev/null || [ -n "$(replaced)" ]; then
+    bash "$0" giveup "$jfile" "$jf" "time limit (12 minutes)" >/dev/null
+    echo "TIME UP: 12 minutes on $jf - it has been given up automatically. Do not look at it again."
+    echo "Run now: wsl -e bash ./agent-tools.sh next"
+    exit 0
+  fi
+fi
 case "$1" in
   next)
     # an attempt left in place (the agent moved on without giving up) would block every later try: clear it here
@@ -59,6 +70,7 @@ PY
     job=$(cat /tmp/next_job.$$); rm -f /tmp/next_job.$$
     [ -z "$job" ] && { echo "No jobs left in qwen/twins.txt or qwen/queue.txt. Reply that the job list is finished, then stop."; exit 0; }
     set -- $job
+    echo "$1 $2" > qwen/.job
     echo "NEXT JOB: $1 in src/$2.c ($4 bytes)$( [ "$3" != - ] && echo " - twin of $3: copy the twin's C and change the names/offsets/constants")"
     echo "== assembly of $1 =="
     grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
