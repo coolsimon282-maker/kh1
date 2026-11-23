@@ -663,7 +663,14 @@ void func_002408D8(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00240910);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00240978);
+extern void *func_00240910(void);
+
+void func_00240978(void) {
+    void *temp = func_00240910();
+    if (temp != NULL && *(s32 *)((u8 *)temp + 0x9D0) == 0) {
+        *(s32 *)((u8 *)temp + 0x9D0) = 1;
+    }
+}
 
 extern void *func_00240910(void);
 
