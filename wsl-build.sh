@@ -18,7 +18,7 @@ mkdir -p "$DST"
 # Mirror the sources (not generated folders, not git). The game program file comes along; it stays local.
 rsync -a --delete \
   --exclude .git/ --exclude .venv/ --exclude asm/ --exclude assets/ --exclude build/ --exclude expected/ \
-  --exclude build.ninja --exclude .ninja_log --exclude .ninja_deps --exclude .splache   --exclude '/SLPS_*.ld' --exclude '/SCES_*.ld' --exclude '/*.rom' --exclude '/*.d' --exclude permuter_settings.toml   --exclude 'undefined_*_auto.txt' --exclude __pycache__/ --exclude '/.agent_build.*' --exclude /.asm_copied --exclude /.tries/ --exclude /ctx.c \
+  --exclude build.ninja --exclude .ninja_log --exclude .ninja_deps --exclude .splache   --exclude '/SLPS_*.ld' --exclude '/SCES_*.ld' --exclude '/*.rom' --exclude '/*.d' --exclude permuter_settings.toml   --exclude 'undefined_*_auto.txt' --exclude __pycache__/ --exclude '/.agent_build.*' --exclude /.asm_copied --exclude /.tries/ --exclude /.puts/ --exclude /ctx.c \
   "$SRC/" "$DST/"
 cd "$DST"
 [ -d .venv ] || { python3 -m venv .venv && . .venv/bin/activate && pip install -q -U -r requirements.txt colorama watchdog Levenshtein cxxfilt; }
