@@ -1449,7 +1449,21 @@ s32 func_001426A8(f32* p, f32 f) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142730);
+s32 func_00137450(s32);
+s32 func_00142730(u8* p, s32* out) {
+    switch (*(s32*)(p + 0x70)) {
+    case 13:
+        *out = -1;
+        return *(s32*)(*(u8**)(p + 0x148) + 0x5C);
+    case 15:
+    case 16:
+        *out = func_00137450(*(s32*)(*(u8**)(p + 0x148) + 0x94));
+        return *(s32*)(*(u8**)(p + 0x148) + 0x90);
+    default:
+        *out = *(s32*)(p + 0x2CC);
+        return *(u16*)(p + 0x2DC);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001427D0);
 
