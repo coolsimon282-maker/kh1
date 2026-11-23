@@ -864,7 +864,17 @@ void init_part_mng(ppvmng* pMng) {
     pMng->unk_4C = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183658);
+void func_00183658(ppvmng **out) {
+    PppMngU *p = D_00364130;
+    s32 i;
+    for (i = 0; i < 0x100; i++) {
+        if (!(*(u64 *)((u8 *)&p[i] + 0x80) & 0x3000000000000)) {
+            init_part_mng((ppvmng *)&p[i]);
+            *out = (ppvmng *)&p[i];
+            break;
+        }
+    }
+}
 
 extern pppEnvSt D_00615E40;
 extern u8 D_00595E40[];
