@@ -431,7 +431,19 @@ void func_001CC558(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC588);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC618);
+typedef struct { s8 b0[4]; s8 b4[8]; s8 bC[0x1004]; s32 w1010[8]; s8 b1030[4]; } XHumCC618;
+extern XHumCC618 D_003854E0_c6 __asm__("D_003854E0");
+void func_001CC618(void) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        D_003854E0_c6.b0[i] = 0;
+        D_003854E0_c6.w1010[i] = 0;
+    }
+    for (i = 0; i < 8; i++) {
+        D_003854E0_c6.b4[i] = 0;
+        D_003854E0_c6.bC[i] = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC680);
 
@@ -447,11 +459,39 @@ s32 func_001CC930(void) {
     return (D_0038CD00[1] & 1) ? 4 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC950);
+typedef struct { s8 b0[4]; s8 b4[0x100C]; s32 w1010[8]; s8 b1030[4]; } XHumCC950;
+typedef struct { u8 pad[0xB0]; } XHumB0;
+extern XHumB0 D_00629E70_b[] __asm__("D_00629E70");
+extern XHumCC950 D_003854E0_cc __asm__("D_003854E0");
+void func_001CC950(s32 a0, XHumB0* a1) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (&D_00629E70_b[i] == a1) {
+            s8 k = D_003854E0_cc.b1030[i];
+            D_003854E0_cc.b0[i] = 0;
+            D_003854E0_cc.b4[k] = 0;
+            D_003854E0_cc.w1010[k] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC9A8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CCA88);
+typedef struct { u8 b0[4]; s8 b4[0x100C]; s32 w1010[8]; s8 b1030[4]; } XHumCCA88;
+typedef struct { u8 pad[0xB0]; } XHumB0a;
+extern XHumB0a D_00629E70_a[] __asm__("D_00629E70");
+extern XHumCCA88 D_003854E0_a8 __asm__("D_003854E0");
+void func_0010BB10_a(XHumB0a*, s32) __asm__("func_0010BB10");
+void func_001CC950();
+void func_001CCA88(void) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_a8.b0[i] != 0) {
+            func_0010BB10_a(&D_00629E70_a[i], (s32)func_001CC950);
+            D_003854E0_a8.b0[i] = 3;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CCB18);
 
@@ -3337,7 +3377,16 @@ s32 func_001D8490(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8500);
+s32 func_001D8500(void) {
+    u8* p;
+
+    for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        if (func_001239D8(*(s32*)(p + 4)) >= 300 && func_001239D8(*(s32*)(p + 4)) < 351) {
+            func_00124CA0(*(s32*)(p + 4));
+        }
+    }
+    return 2;
+}
 
 void func_00141608(void*, s32);
 
