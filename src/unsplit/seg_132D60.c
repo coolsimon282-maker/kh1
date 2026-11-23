@@ -1294,7 +1294,12 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002493C0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249420);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249518);
+void func_00249518(sceVu0FMATRIX arg0, f32 arg1) {
+    sceVu0UnitMatrix(arg0);
+    arg0[2][2] = arg1;
+    arg0[1][1] = arg1;
+    arg0[0][0] = arg1;
+}
 
 void func_00249558(void *arg0, void *arg1) {
     *(s32 *)arg0 = (*(s32 *)arg1 - 0x7000) >> 4;
