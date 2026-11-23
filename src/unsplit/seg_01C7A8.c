@@ -184,7 +184,19 @@ Seg1C7A8Unk18* func_0011CFA8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D028);
+void func_0011D028(s32 a0, s32 a1) {
+    Seg1C7A8Ent0C *e = D_004E3454;
+    s32 i;
+    for (i = 0; i < D_004E344C; i++, e++) {
+        if (e->unk_00 == 0) {
+            goto found;
+        }
+    }
+found:
+    e->unk_00 = a0;
+    e->unk_04 = a1;
+    e->unk_08 = 2;
+}
 
 void func_0011D080(s32 a0, s32 a1) {
     func_0011C838(a0 < 1000 ? 2 : -8, a0, a1, 0x3FFF, 0x3FFF);
