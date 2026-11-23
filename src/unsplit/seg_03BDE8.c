@@ -4676,7 +4676,12 @@ void func_001628A0(f32 (*m)[4], f32 (*a1)[4], f32* s) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162950);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162978);
+f32 func_00162978(f32* a, f32* b) {
+    sceVu0FVECTOR v;
+
+    sceVu0SubVector(v, a, b);
+    return _sqrtf(sceVu0InnerProduct(v, v));
+}
 
 f32 func_001629B0(f32* a, f32* b) {
     sceVu0FVECTOR t;
