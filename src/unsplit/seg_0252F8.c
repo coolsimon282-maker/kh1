@@ -33,7 +33,26 @@ s32 func_00125B90(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125BB8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125B68);
+extern u32 D_002E3190;
+s32 func_00130030(u8 *);
+s32 func_00125B68(u8 *p) {
+    if (((D_002E3190 >> 8) & 0xFFFF) == 0) {
+        switch (*(s32 *)(p + 0x164)) {
+        case 0x8A:
+        case 0x3D:
+            return 1;
+        case 0xC8:
+        case 0xCA:
+            if (func_00130030(p) != 0) {
+                return 1;
+            }
+            break;
+        default:
+            return 0;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125BE8);
 
