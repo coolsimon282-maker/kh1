@@ -443,7 +443,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236C68);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236D48);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236D98);
+void func_00236D98(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+    sceVu0RotMatrixX(arg0, arg1, arg2[0]);
+    sceVu0RotMatrixY(arg0, arg0, arg2[1]);
+    sceVu0RotMatrixZ(arg0, arg0, arg2[2]);
+}
 
 // func_00236DE8 (src/unsplit/seg_132D60.c)
 void func_00236DE8(f32 (*arg0)[4], f32 fparg0) {
