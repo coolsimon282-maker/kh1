@@ -54,7 +54,36 @@ s32 func_00125B68(u8 *p) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125BE8);
+u8 *func_00130340(u8 *a0, s32 a1, f32 f);
+u8 *func_00130578(u8 *a0, s32 a1, f32 f);
+void func_001333E0(u8 *a0, s32 a1, s32 a2);
+typedef struct {
+    u8 unk_00[0xF0];
+    f32 unk_F0;
+} Seg252F8Unk3051EC;
+extern Seg252F8Unk3051EC *D_003051EC;
+
+void func_00125BE8(u8 *a0, s32 a1) {
+    u8 *p = a0;
+
+    switch (*(s32 *)(p + 0x70)) {
+    case 2:
+        func_00130340(a0, 0x100008A, 8.0f);
+        func_00130578(p, 0x40000006, 0.0f);
+        sceVu0ScaleVector((f32 *)(p + 0x3C0), (f32 *)(p + 0x3C0), D_003051EC->unk_F0);
+        break;
+    case 8:
+        func_00130340(a0, 0x100008A, 8.0f);
+        func_00130578(p, 0x40000075, 8.0f);
+        sceVu0ScaleVector((f32 *)(p + 0x3C0), (f32 *)(p + 0x3C0), D_003051EC->unk_F0);
+        break;
+    default:
+        func_00130340(p, 0x100003D, 8.0f);
+        func_00130578(p, 0x40000000, 0.0f);
+        break;
+    }
+    func_001333E0(p, 0, a1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125CF0);
 

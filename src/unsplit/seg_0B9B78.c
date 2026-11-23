@@ -945,7 +945,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEBD0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BECB8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEDD0);
+f32 func_001BEDD0(f32* v) {
+    f32 l = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+
+    if (l == 0.0f) {
+        return l;
+    }
+    v[0] /= l;
+    v[1] /= l;
+    v[2] /= l;
+    return l;
+}
 
 float sqrtf(float);
 
@@ -1046,7 +1056,14 @@ void func_001BF290(A2Vec4 *v) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF2B0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF360);
+void func_001BF360(f32* d, f32* q) {
+    f32 n = q[3] * q[3] + q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
+
+    d[0] = -q[0] / n;
+    d[1] = -q[1] / n;
+    d[2] = -q[2] / n;
+    d[3] = q[3] / n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF3E8);
 
