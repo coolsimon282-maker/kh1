@@ -41,7 +41,7 @@ wsl -e bash ./agent-tools.sh try unsplit/seg_132D60 func_00236FD8 qwen/work.c
       # puts your C (qwen/work.c) in place and builds. MATCHED -> it prints the commit command: run it.
       # Not matching -> it prints the diff (original on the left). Fix qwen/work.c and `try` again.
 wsl -e bash ./agent-tools.sh giveup unsplit/seg_132D60 func_00236FD8 <reason in a few words>
-      # after 3 failed tries: puts the file back and writes the reason into notes/q1.md. Then the next function.
+      # after 2 failed tries: puts the file back and writes the reason into notes/q1.md. Then the next function.
 ```
 
 (`build`, `diff <func> 40` and `put <file> <func> qwen/work.c` still exist; `try` does put + build + diff in one go.)
@@ -55,7 +55,7 @@ wsl -e bash ./agent-tools.sh giveup unsplit/seg_132D60 func_00236FD8 <reason in 
    small number, and grep only `include/` or one file with `-m 5`.
 3. `try`. MATCHED: run the commit command it prints, then the next function.
 4. Not matching: read the diff, fix qwen/work.c, `try` again (table below and MATCHING.md).
-5. After 3 failed tries: `giveup <file> <func> <reason>`, then the next function.
+5. After 2 failed tries: `giveup <file> <func> <reason>`, then the next function.
 
 | The diff shows | Try |
 |---|---|

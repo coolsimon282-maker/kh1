@@ -56,7 +56,14 @@ def mask(w, rt): return w if rt is None else (w & 0xFC000000 if '26' in rt else 
 def shown_as(a):
     d = dis.get(a, '-').replace('\t', ' ')
     if relsym.get(a):
-        d = re.sub(r'\s+[0-9a-f]+ <[^>]*>$', ' ' + relsym[a], d) if '26' in rel[a] else '%s  [%s]' % (d, relsym[a])
+        name = relsym[a]
+        if name.startswith('.') and '26' in rel[a]:
+            # a call to a function defined in this same file is relocated against the section (".text" + offset);
+            # the offset is in the instruction itself. Show the function's name: "jal .text" read like a wrong
+            # call and made the rented model give a correct attempt up (23 Nov).
+            off = (struct.unpack('<I', text[a:a + 4])[0] & 0x03FFFFFF) << 2
+            name = next((n for n, (ad, sz) in syms.items() if ad == off and not n.startswith('.')), name)
+        d = re.sub(r'\s+[0-9a-f]+ <[^>]*>$', ' ' + name, d) if '26' in rel[a] else '%s  [%s]' % (d, name)
     return d
 n = max(len(tw), sz // 4); bad = 0; out = []
 for i in range(n):
