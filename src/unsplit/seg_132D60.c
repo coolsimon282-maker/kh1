@@ -84,7 +84,13 @@ u8 *func_002330D8(u32 arg0) {
     return &D_003F8330;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233118);
+extern u8 D_003F8350[];
+
+u8 *func_00233118(u32 arg0) {
+    D_003F8350[0xE] = (arg0 / 10) + 0x30;
+    D_003F8350[0xF] = (arg0 % 10) + 0x30;
+    return &D_003F8350;
+}
 
 extern s32 D_00351E10;
 
