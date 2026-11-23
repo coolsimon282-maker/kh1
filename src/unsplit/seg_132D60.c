@@ -554,7 +554,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002393D8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239488);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00235F50);
+s32 func_002448D8(void);                                /* extern */
+s32 func_00245228(void);                                /* extern */
+s32 func_00243BD8(void);                                /* extern */
+s32 func_00245F18(void);                                /* extern */
+s32 func_002474A8(void);                                /* extern */
+s32 func_00235F50(void) {
+    if (func_002448D8() != 0) {
+        return 1;
+    }
+    if (func_00245228() != 0) {
+        return 1;
+    }
+    if (func_00243BD8() != 0) {
+        return 1;
+    }
+    if (func_00245F18() != 0) {
+        return 1;
+    }
+    return func_002474A8() != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239558);
 
