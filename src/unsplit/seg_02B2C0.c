@@ -1247,7 +1247,21 @@ void func_00133578(void (*a0)(s32)) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00133628);
+void func_00133628(void) {
+    u8 *p = D_720000;
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        u8 *e = D_00525368 + i * 0x1C;
+        *(u8 **)(e + 8) = p;
+        *(s32 *)(e + 0) = 0;
+        *(s32 *)(e + 0xC) = 0;
+        *(u32 *)(e + 0x14) = D_00304318[i];
+        p += (D_00304318[i] >> 4) << 4;
+    }
+    func_0011ED30(0x21728, func_001334F8);
+    func_00133520();
+}
 
 s32 func_001336A0(void) {
     return (((u32)D_002E31A8 >> 1) & 0x1);
