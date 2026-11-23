@@ -39,7 +39,7 @@ def fix(m):
     n += 1
     return '%s(%s) {' % (m.group('head'), ', '.join(types[x] for x in names))
 s2 = KR.sub(fix, s)
-s3 = re.sub(r'blongb(?:s+longb)?(?!s+doubleb)', 'long long', s2)
+s3 = re.sub(r'\blong\b(?:\s+long\b)?(?!\s+double\b)', 'long long', s2)
 if s3 != s2: s2 = s3; n += 1
 if n:
     open(p, 'w', encoding='utf-8').write(s2)
