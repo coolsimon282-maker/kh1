@@ -472,7 +472,15 @@ s32 func_00105A30(s32 arg0, s32 arg1, s32 arg2) {
     return func_0011A758(arg0, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00105A70);
+void func_00105A70(s32 arg0, s32 arg1, s32 arg2) {
+    if (arg0 == -1) {
+        func_001047C8();
+        func_00104CF8(arg1, arg2);
+        func_00104528();
+        return;
+    }
+    func_0011A758(arg0, arg1, arg2);
+}
 
 s32 func_00105AD0(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {

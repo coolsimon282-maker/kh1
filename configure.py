@@ -79,6 +79,7 @@ NO_G_FILES = [
     "pppKeMvYpEff.c",  # a2: its C matches only without -g
     "draw.c",          # a4: func_001AADC8 (atan2) matches only without -g
     "pppKeTh.c",       # a5: pppKeThCalc (soft-double calls; as -g leaves their delay slots empty)
+    "pppKeBornPtCmpl.c",  # f3: func_0018FE28 (atan2 twin of draw.c func_001AADC8; soft-double calls)
     "xnoodle.c",       # a5: func_0010C010 (a .loc stops gas filling a delay slot after a volatile store)
 ]
 

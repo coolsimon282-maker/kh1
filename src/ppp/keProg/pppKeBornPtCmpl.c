@@ -20,4 +20,29 @@ void pppKeBornPtCmplCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     ((VKeBornPtCmpl*)&pobj->val[ctbl->useVal[0]])->unk_00 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeBornPtCmpl", func_0018FE28);
+double atan(double);
+s32 func_0018FE28(f32* v, f32* out) {
+    f32 x = v[0];
+    f32 y = v[1];
+    f32 r = x * y;
+
+    if (r > 0.0f) {
+        r = (x > 0.0f) ? 0.0f : -3.1415926f;
+        r += atan(y / x);
+    } else if (r < 0.0f) {
+        r = (y > 0.0f) ? 1.5707963f : -1.5707963f;
+        r -= atan(x / y);
+    } else if (x != 0.0f) {
+        r = (x > 0.0f) ? 0.0f : 3.1415926f;
+    } else {
+        if (y == 0.0f) {
+            return 0;
+        }
+        r = -1.5707963f;
+        if (y > 0.0f) {
+            r = 1.5707963f;
+        }
+    }
+    *out = r;
+    return 1;
+}

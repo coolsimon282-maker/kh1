@@ -126,7 +126,15 @@ void func_00106D48(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106DB0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106E18);
+extern s32 D_002A6C54;
+extern u8 D_002BC270[];
+void* func_0011F9E8(s32, s32, s32, s32, s32, s32, s32, s32, s32, void*);
+s32 func_00106E18(Seg6B18Task* t) {
+    func_0011F9E8(0x3600, 2, 0, 0, 0, 0x80, D_002A6C50 << 7, D_002A6C50 << 12, D_002A6C54, D_002BC270);
+    iFlushCache(0);
+    sceDmaSend(D_002A6B84, (s32)D_002BC270);
+    return 2;
+}
 
 void func_00106CB0(s32 arg0) {
     if (D_002A6C50 != 0) {
@@ -229,7 +237,15 @@ void func_00108900(s32 *a0, s32 a1, s32 *a2, s32 *a3) {
     a0[31] = r[7];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108970);
+typedef struct { s32 v[4]; s32 pad[20]; } E108970;
+typedef struct { E108970 e[1]; } T108970;
+extern s32 D_00486430_a[][4] __asm__("D_00486430");
+void func_00108970(T108970 *a0, s32 a1, s32 a2) {
+    a0->e[a1].v[0] = D_00486430_a[a2][0];
+    a0->e[a1].v[1] = D_00486430_a[a2][1];
+    a0->e[a1].v[2] = D_00486430_a[a2][2];
+    a0->e[a1].v[3] = D_00486430_a[a2][3];
+}
 
 void func_001089D0(sceVu0FVECTOR* arg0) {
     arg0[5][3] = 1.0f;
@@ -240,13 +256,56 @@ void func_001089D0(sceVu0FVECTOR* arg0) {
     arg0[0][3] = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001089F8);
+typedef struct { s32 m[6][4]; } E1089F8;
+typedef struct { E1089F8 e[2]; void *unkC0; } T1089F8;
+typedef struct { u8 pad[0x80]; s32 w[8]; } S1089F8;
+void func_001089F8(T1089F8 *a0, S1089F8 *a1) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
+        a0->e[i].m[3][0] = a1->w[0];
+        a0->e[i].m[3][1] = a1->w[1] + (s32)a1;
+        a0->e[i].m[3][2] = a1->w[2];
+        a0->e[i].m[3][3] = a1->w[3];
+        a0->e[i].m[4][0] = a1->w[4];
+        a0->e[i].m[4][1] = a1->w[5] + (s32)a1;
+        a0->e[i].m[4][2] = a1->w[6];
+        a0->e[i].m[4][3] = a1->w[7];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108A60);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108B60);
+extern s32 D_00351BD0;
+typedef struct { s32 m[6][4]; } E108B60;
+typedef struct { E108B60 e[2]; void *unkC0; } T108B60;
+typedef struct { u8 pad[0x80]; s32 w[8]; } S108B60;
+void func_00108B60(S108B60 *a0, T108B60 *a1) {
+    s32 t = a0->w[0];
+    s32 i = D_00351BD0;
+    a1->unkC0 = a0;
+    a1->e[i].m[3][0] = t;
+    a1->e[i].m[3][1] = a0->w[1] + (s32)a0;
+    a1->e[i].m[3][2] = a0->w[2];
+    a1->e[i].m[3][3] = a0->w[3];
+    a1->e[i].m[4][0] = a0->w[4];
+    a1->e[i].m[4][1] = a0->w[5] + (s32)a0;
+    a1->e[i].m[4][2] = a0->w[6];
+    a1->e[i].m[4][3] = a0->w[7];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108BE8);
+typedef struct { s32 pad[2]; s32 x[16]; s32 y[16]; } T108BE8;
+extern s32 D_002BC170_i[][4] __asm__("D_002BC170");
+void func_00108BE8(s32 a0, s32 (*a1)[4], T108BE8 *a2) {
+    s32 i, j, k;
+    k = 0;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            a2->x[k] = a1[i][j];
+            a2->y[k] = D_002BC170_i[i][j];
+            k++;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108C58);
 
@@ -257,7 +316,17 @@ void func_00108CD0(s32* arg0, s32* arg1) {
     arg0[0x1D] = arg1[3];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108CF8);
+typedef struct { T1089F8 t; s32 pad[3]; } T108CF8;
+typedef struct { u8 a[2][0x90]; u8 b[2][0x90]; } U108CF8;
+extern T108CF8 D_00494D80[];
+extern U108CF8 D_00494F20;
+void func_00108A60(s32, s32, T108CF8*, u8*, u8*);
+void func_00108CF8(void *a0, s32 a1, s32 a2) {
+    D_00494D80[a1].t.unkC0 = a0;
+    func_00108A60(a1, a2, &D_00494D80[a1], D_00494F20.a[a1], D_00494F20.b[a1]);
+    func_001089F8(&D_00494D80[a1].t, a0);
+    func_001089D0(a0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D90);
 
@@ -267,7 +336,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D68);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108FD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001090E8);
+int sceGsSetDefLoadImage_s(u8 *, short, short, short, short, short, short, short) __asm__("sceGsSetDefLoadImage");
+void func_001090E8(s32 a0, s32 a1, s32 a2, s32 a3) {
+    sceGsSetDefLoadImage_s(D_002B8700, a3, a1 / 64, 0x14, 0, 0, a1, a2);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(D_002B8700, a0);
+}
 
 void func_00109180(s32 a0, s32 a1) {
     sceGsSetDefLoadImage(D_002B8760, ((a1 << 16) >> 16), 0, 0, 0, 0, 8, 2);
