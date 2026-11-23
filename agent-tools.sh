@@ -60,6 +60,15 @@ case "$1" in
       [ -n "$lf" ] && bash "$0" giveup "$lfile" "$lf" "moved on without matching (cleared by next)" >/dev/null && echo "(cleared your unfinished attempt at $lf)"
     done
     rm -rf .tries
+    # the previous job ended with neither a match nor a give-up (the session ran out of time or just stopped):
+    # note it as given up, or the same function is handed out again every round (seen 23 Nov, rented model)
+    if [ -f qwen/.job ]; then
+      read -r pj pf < qwen/.job
+      pn="notes/$(basename "$PWD").md"
+      if [ -n "$pj" ] && grep -q "INCLUDE_ASM(\"[^\"]*\", $pj);" "src/$pf.c" 2>/dev/null && ! grep -q "^- $pj (.*): gave up" "$pn" 2>/dev/null; then
+        bash "$0" giveup "$pf" "$pj" "session ended without a result" >/dev/null && echo "(your last job $pj ended without a result: noted as given up)"
+      fi
+    fi
     # rounds: the unattended launcher asks for a few functions per fresh session; after 6 jobs, end the round
     # (the counter resets when it's older than an hour, i.e. the next round starts again at 1)
     rc=qwen/.round_count; [ -f "$rc" ] && [ -n "$(find "$rc" -mmin +60 2>/dev/null)" ] && rm -f "$rc"
