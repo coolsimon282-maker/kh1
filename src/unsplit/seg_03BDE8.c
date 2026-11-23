@@ -5298,7 +5298,33 @@ void func_00171F58(u8* p) {
     *(s32*)(q + 0x60) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171FA0);
+void func_00171FA0(u8* a0) {
+    u8* e;
+    s32 save;
+    s32 n;
+    s32 r;
+
+    if ((u16)(*(u16*)(*(u8**)(a0 + 0x130) + 0x4C) + 0xFFFF) < 2) {
+        e = *(u8**)(a0 + 0x144);
+        save = *(s32*)(e + 0x4C);
+        *(s32*)(e + 0x4C) = -1;
+        n = *(s32*)(a0 + 0x164);
+        switch (n) {
+        case 0:
+        case 1:
+        case 2:
+            r = 1;
+            break;
+        default:
+            r = n == *(s32*)(e + 0x4C);
+            break;
+        }
+        if (r) {
+            *(u64*)(e + 0x38) |= 0x100;
+        }
+        *(s32*)(e + 0x4C) = save;
+    }
+}
 
 void func_00172010(s32 a, u8* p) {
     *(s32*)(p + 0x18) = 0xF;
