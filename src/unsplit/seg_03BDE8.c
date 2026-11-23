@@ -345,7 +345,7 @@ void func_0013F770(void);
 f32 func_0013FD88(u8*, f32);
 void sceVu0ScaleVector(f32*, f32*, f32);
 void func_00140DB8(void);
-void func_0013C458(s32, s32);
+s32 func_0013C458(s32, s32);
 void func_001418B8(s32*);
 void sceVu0ScaleVectorXYZ(f32*, f32*, f32);
 void* func_001471E8(s32, s32);
@@ -737,7 +737,13 @@ s32 func_0013C3F8(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C458);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C548);
+void func_0013C548(s32 a0) {
+    s32 i;
+
+    for (i = 0; i < 10; i++) {
+        func_0013C458(i, a0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C598);
 
