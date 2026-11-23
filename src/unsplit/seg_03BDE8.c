@@ -2514,7 +2514,19 @@ s32 func_0014D180(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D210);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D330);
+s32 func_0014DB20(u8*);
+s32 func_0014D330(u8* a0, s32 a1) {
+    u8* p = a0;
+
+    if (a1 != 0 || func_001443A8(a0) != 0 || (*(s32*)p & 0x1000)) {
+        if (((D_002C1EA8 >> 5) & 1) && func_0014DB20(p) != 0) {
+            *(s32*)p &= ~4;
+            return 8;
+        }
+        return *(s32*)(p + 0x70);
+    }
+    return (*(s32*)p & 0x2000) ? 6 : 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D3C8);
 
