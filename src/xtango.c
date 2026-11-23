@@ -148,7 +148,9 @@ void func_001EF530(void) {
     fm_func_00111B48();
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF530);
+void func_001EF530(void) {
+    fm_func_00111B48();
+}
 #endif
 
 #ifdef VERSION_FM
@@ -156,7 +158,11 @@ void func_001EF5C8(void) {
     fm_func_00111B90();
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
+extern u32 fm_func_00111B90(void);
+
+void func_001EF5C8(void) {
+    fm_func_00111B90();
+}
 #endif
 
 #ifdef VERSION_FM
@@ -164,7 +170,9 @@ void func_001EF668(void) {
     fm_func_00111BE8();
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
+void func_001EF668(void) {
+    fm_func_00111BE8(0);
+}
 #endif
 
 s32 func_001EF708(u32 arg0) {

@@ -73,7 +73,12 @@ void func_00101628(s32 arg0) {
 }
 
 // nonmatch: regswap?
-INCLUDE_ASM("asm/nonmatchings/xporcupine", func_001016B8);
+void func_001016B8(void) {
+    ((s32 (*)(s32))func_0011C6C8)(0);
+    D_0048DE90[0] = -1;
+    D_0048DE90[1] = -1;
+    func_00101580();
+}
 // void func_001016B8() {
 //     func_0011C6C8(0);
 //     D_0048DE90[0] = -1;
