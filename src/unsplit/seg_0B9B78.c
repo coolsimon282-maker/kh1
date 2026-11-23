@@ -501,7 +501,16 @@ extern s32 D_0037A150;
 extern s32 D_0037A154;
 s32 func_00112CB0(void);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB438);
+void func_001BB438(void) {
+    s32 *p = &D_0037A14C;
+    s32 v;
+
+    D_0037A154 = 0;
+    v = func_00112CB0();
+    *p = v;
+    D_0037A150 = v;
+    D_0037A148 = v;
+}
 
 extern s32 D_0037A150;
 extern s32 D_0037A154;
