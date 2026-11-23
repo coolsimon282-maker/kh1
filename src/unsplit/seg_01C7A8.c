@@ -264,7 +264,16 @@ void func_0011D350(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D1F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D448);
+void func_0011D448(void) {
+    Seg1C7A8Ent18 *e = D_004E3450;
+    s32 i;
+    for (i = 0; i < D_004E344C; i++, e++) {
+        if (e->unk_14 != 0 && e->unk_15[1] == 4) {
+            e->unk_14 = 0;
+            func_0011C850(e->unk_0C, e->unk_00, e->unk_10);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D310);
 
@@ -275,7 +284,16 @@ void func_0011D588(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D5F0);
+void func_0011D5F0(void) {
+    Seg1C7A8Ent18 *e = D_004E3450;
+    s32 i;
+    for (i = 0; i < D_004E344C; i++, e++) {
+        if (e->unk_14 != 0 && e->unk_15[1] == 2) {
+            e->unk_14 = 0;
+            func_0011C850(e->unk_0C, e->unk_00, e->unk_10);
+        }
+    }
+}
 
 void func_0011D4B8(s32 a0) {
     s32 i;
