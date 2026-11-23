@@ -1367,7 +1367,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244500);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244670);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002448D8);
+typedef struct { s32 unk_00; char pad04[0xA00 - 4]; } A2Ent2_A00;
+typedef struct { s32 count[4]; A2Ent2_A00 ent[3][5]; } A2Tbl_656510;
+extern A2Tbl_656510 D_00656510_t __asm__("D_00656510");
+
+s32 func_002448D8(void) {
+    s32 i, j;
+    A2Ent2_A00 *row;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < D_00656510_t.count[i]; j++) {
+            row = D_00656510_t.ent[i];
+            if (row[j].unk_00 != 0) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 void func_00244960(void) {
 
