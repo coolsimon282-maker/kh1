@@ -700,7 +700,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242A38);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242B00);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242B38);
+extern void *func_00240910(void);
+
+void func_00242B38(void) {
+    void *temp = func_00240910();
+    if (temp != NULL) {
+        *(s32 *)((u8 *)temp + 0x774) = 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242B68);
 
