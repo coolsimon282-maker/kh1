@@ -1,6 +1,40 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSRandDownCV", pppSRandDownCVCalc);
+typedef struct {
+    pppCDT cdt;
+    s32 index;
+    s8 scale[4];
+    u8 twice;
+} PSRandDownCV;
+
+NOTHROW_FN(s8 func_0018B3D8(s8 a, f32 b));
+NOTHROW_FN(f32 func_0018B408(u8 twice));
+
+void pppSRandDownCVCalc(pppPObject* pobj, PSRandDownCV* p, pppCtrlTable* ctbl) {
+    f32* rv;
+    u8* tgt;
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    if (p->cdt.time != pobj->time) {
+        return;
+    }
+    rv = (f32*)&pobj->val[ctbl->useVal[0]];
+    rv[0] = func_0018B408(p->twice);
+    rv[1] = func_0018B408(p->twice);
+    rv[2] = func_0018B408(p->twice);
+    rv[3] = func_0018B408(p->twice);
+    if (p->index != -1) {
+        tgt = (u8*)&pobj->val[p->index];
+    } else {
+        tgt = (u8*)&ppvDbgTemp;
+    }
+    tgt[0] += func_0018B3D8(p->scale[0], rv[0]);
+    tgt[1] += func_0018B3D8(p->scale[1], rv[1]);
+    tgt[2] += func_0018B3D8(p->scale[2], rv[2]);
+    tgt[3] += func_0018B3D8(p->scale[3], rv[3]);
+}
 
 s8 func_0018B5E8(s16 a, f32 b) {
     f32 f = a;
