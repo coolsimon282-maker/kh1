@@ -1388,7 +1388,31 @@ void func_00245798(void *arg0, s32 arg1, f32 *arg2) {
     sceVu0CopyVector((u8 *)arg0 + 0x10, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002457C8);
+typedef struct { s32 used; s32 age; u8 pad[0x858]; } A2Ent860;
+extern u8 D_00662A30[];
+extern A2Ent860 D_00662A30_a[10] __asm__("D_00662A30");
+
+void *func_002457C8(void) {
+    s32 i;
+    A2Ent860 *best = NULL;
+    s32 m = -1;
+    A2Ent860 *e;
+
+    e = D_00662A30_a;
+    for (i = 0; i < 10; i++, e++) {
+        if (e->used == 0) {
+            return e;
+        }
+    }
+    e = (A2Ent860 *)D_00662A30;
+    for (i = 0; i < 10; i++, e++) {
+        if (m < e->age) {
+            m = e->age;
+            best = e;
+        }
+    }
+    return best;
+}
 
 extern void *func_001315C0(s32, s32, f32 *, f32);
 void func_00245840(s32 arg0, s32 arg1) {
