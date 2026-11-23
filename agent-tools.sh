@@ -29,6 +29,19 @@ export GIT_OPTIONAL_LOCKS=0 GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.filemode GI
 replaced() {
   git diff -U0 -- src | awk '/^\+\+\+ b\/src\//{f=substr($2,7); sub(/\.c$/,"",f)} /^-INCLUDE_ASM\(/{n=$0; sub(/^[^,]*, */,"",n); sub(/\).*/,"",n); print n" "f}'
 }
+# Solve-time log, to compare models: `next` notes the job and its start (qwen/.job_info); when that job is matched or
+# given up, one line goes to qwen/times.tsv (model name from qwen/.model, which the launcher writes).
+logtime() {
+  [ -f qwen/.job_info ] || return 0
+  read -r lf lfile lbytes lstart < qwen/.job_info
+  [ "$lf" = "$1" ] || return 0
+  shift
+  [ -f qwen/times.tsv ] || printf 'finished\tmodel\tfunction\tfile\tbytes\tseconds\ttries\tresult\n' > qwen/times.tsv
+  lm=$(head -1 qwen/.model 2>/dev/null | tr -d '\r'); [ -z "$lm" ] && lm=unknown
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$lm" "$lf" "$lfile" "$lbytes" \
+    "$(( $(date +%s) - lstart ))" "$(cat qwen/.job_tries 2>/dev/null || echo 0)" "$*" >> qwen/times.tsv
+  rm -f qwen/.job_info qwen/.job_tries
+}
 # Time limit per job for the local agent: `next` notes when it handed a job out (qwen/.job); 12 minutes later any
 # command gives the job up and says so (the agent kept researching one function for 40 minutes instead of giving up).
 if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != configure ] && [ -n "$(find qwen/.job -mmin +12 2>/dev/null)" ]; then
@@ -71,6 +84,7 @@ PY
     [ -z "$job" ] && { echo "No jobs left in qwen/twins.txt or qwen/queue.txt. Reply that the job list is finished, then stop."; exit 0; }
     set -- $job
     echo "$1 $2" > qwen/.job
+    echo "$1 $2 $4 $(date +%s)" > qwen/.job_info; rm -f qwen/.job_tries
     echo "NEXT JOB: $1 in src/$2.c ($4 bytes)$( [ "$3" != - ] && echo " - twin of $3: copy the twin's C and change the names/offsets/constants")"
     echo "== assembly of $1 =="
     grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
@@ -96,8 +110,10 @@ PY
     # failed tries per function are counted; the 3rd failure gives up automatically (the local agent kept researching
     # one function for an hour instead of giving up)
     mkdir -p .tries; tf=".tries/$3"
+    [ -f qwen/.job_info ] && echo $(( $(cat qwen/.job_tries 2>/dev/null || echo 0) + 1 )) > qwen/.job_tries
     if [ "$(echo "$out" | tail -1)" = "build/fm/SLPS_251.98.rom: OK" ]; then
       rm -f "$tf"
+      logtime "$3" matched
       echo "MATCHED. Commit it now (PowerShell, in the checkout folder):"
       echo "  git add src/$2.c; git commit -m \"Match $3 ($2)\""
     else
@@ -119,6 +135,7 @@ PY
     git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { echo "couldn't restore src/$f.c"; exit 1; }
     n="notes/$(basename "$PWD").md"; [ "$(basename "$PWD")" = "kh1-decomp" ] && n="notes/main.md"
     echo "- $fn ($f): gave up: $*" >> "$n"
+    logtime "$fn" "gave up: $*"
     echo "src/$f.c is back to its last commit; noted in $n. Take the next function." ;;
   cfunc)
     python3 - "$2" <<'PY'
