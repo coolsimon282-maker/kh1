@@ -64,7 +64,8 @@ case "$1" in
     # (the counter resets when it's older than an hour, i.e. the next round starts again at 1)
     rc=qwen/.round_count; [ -f "$rc" ] && [ -n "$(find "$rc" -mmin +60 2>/dev/null)" ] && rm -f "$rc"
     n=$(( $(cat "$rc" 2>/dev/null || echo 0) + 1 ))
-    if [ "$n" -gt 6 ]; then rm -f "$rc"; echo "ROUND COMPLETE: you've done 6 jobs this round. Reply DONE and stop now (a fresh round starts automatically)."; exit 0; fi
+    rs=$(tr -dc 0-9 < qwen/.round_size 2>/dev/null); [ -z "$rs" ] && rs=6
+    if [ "$n" -gt "$rs" ]; then rm -f "$rc"; echo "ROUND COMPLETE: you've done $rs job(s) this round. Reply DONE and stop now (a fresh round starts automatically)."; exit 0; fi
     echo "$n" > "$rc"
     python3 - > /tmp/next_job.$$ <<'PY'
 import os, re
@@ -90,6 +91,8 @@ PY
     grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
     if [ "$3" != - ]; then echo "== the twin's matched C =="; bash "$0" cfunc "$3"
     else echo "== m2c draft (check types against the assembly) =="; bash "$0" m2c "$2" "$1" | grep -v '^\s*$' | head -60; fi
+    # (with a twin the twin IS the example: only the declarations then)
+    python3 tools/similar.py "$2" "$1" "$( [ "$3" != - ] && echo 0 || echo 3 )" 2>/dev/null
     echo "== then: write qwen/work.c, and run: wsl -e bash ./agent-tools.sh try $2 $1 qwen/work.c" ;;
   try)
     # refuse (not just warn) if the file holds uncommitted C for other functions: either a forgotten attempt, or a
@@ -101,12 +104,20 @@ PY
       echo "If you didn't write it, ANOTHER SESSION is working in this checkout: stop now and tell the owner."
       exit 1
     fi
-    bash "$0" put "$2" "$3" "$4" || exit 1
-    # fast check first (under a second: compiles this one file and compares the function); the full build only
-    # runs to confirm when the fast check says it matches
-    q=0; qout=""
-    case "$2" in lib/*) ;; *) qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$? ;; esac
-    if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
+    mkdir -p .tries
+    h=$(tr -d ' \t\r\n' < "$4" 2>/dev/null | md5sum | cut -c1-32)
+    if grep -qx "$h" ".tries/$3.seen" 2>/dev/null; then
+      # identical to a try that already failed: nothing to build, and it still uses up a try
+      q=1; qout="SAME CODE as a try that already failed - nothing was built. Change the C (types, expression order, a temporary, the prototype of a called function) before trying again."; out="$qout"
+    else
+      echo "$h" >> ".tries/$3.seen"
+      bash "$0" put "$2" "$3" "$4" || exit 1
+      # fast check first (under a second: compiles this one file and compares the function); the full build only
+      # runs to confirm when the fast check says it matches
+      q=0; qout=""
+      case "$2" in lib/*) ;; *) qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$? ;; esac
+      if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
+    fi
     # failed tries per function are counted; the 3rd failure gives up automatically (the local agent kept researching
     # one function for an hour instead of giving up)
     mkdir -p .tries; tf=".tries/$3"
