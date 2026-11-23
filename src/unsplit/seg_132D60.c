@@ -743,7 +743,15 @@ void func_00242B38(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00242B68);
+extern void func_0023D1A0(void);
+extern s32 D_00651E50[];
+
+void func_00242B68(s32 arg0) {
+    D_00651E50[arg0] = 0;
+    if (arg0 == 4) {
+        func_0023D1A0();
+    }
+}
 
 extern struct {
     char _[0xCF0];
