@@ -415,7 +415,11 @@ void func_0021CFC8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021D028);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021D188);
+extern u32 D_003F34E0;
+void func_0021D188(void) {
+    func_0011F9E8(0x3600, 4, 0x13, 0, 0, 0x100, 0x100, 0x1000, D_003F34E0, D_00642EB0);
+    func_0011F9E8(0x3700, 1, 0, 0, 0, 0x10, 0x10, 0x40, D_003F34E0 + 0x10000, D_00642F60);
+}
 
 void func_0021D228(void) {
     *(s32 *)(D_003F34DC + 0x0) = (*(s32 *)(D_003F34DC + 0x0) + 1);
