@@ -363,7 +363,24 @@ s32 func_0012C0E8(u8* a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C180);
+u8* func_00147D18_x(s32 (*)(u8*)) __asm__("func_00147D18");
+u8* func_00121C98_x(s32, u8**) __asm__("func_00121C98");
+u8* func_00147ED8_x(s32, s32, s32, f32*) __asm__("func_00147ED8");
+extern u8 D_002E2FCF[];
+extern s32 D_00350CE0;
+
+void func_0012C180(s32 a0, u8* a1) {
+    u8* t = func_00147D18_x(func_0012C0E8);
+    u8* q;
+    f32* v;
+
+    *(u8**)(t + 0x10) = a1;
+    q = func_00121C98_x(0x40, (u8**)(t + 0x20));
+    v = (f32*)(q + 0x10);
+    func_0012EBA0((s32)a1, 1, -1, 0, (s32)v);
+    sceVu0SubVector((f32*)(q + 0x20), v, (f32*)(a1 + 0x50));
+    *(u8**)(t + 0x14) = func_00147ED8_x(D_00350CE0, D_002E2FCF[a0], 20000, v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C238);
 

@@ -2501,7 +2501,21 @@ void func_0020CF00(u8 *a0) {
     func_0020AB88(v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020CF90);
+void func_001F3840(s32);
+void func_00207618(void);
+
+void func_0020CF90(s32 a0) {
+    if (func_001F4390(a0) && (*(s32 *)(D_00425BC8 + 8) & 8)) {
+        if (!(D_003F34C0 & 3)) {
+            func_001F3840(a0);
+            func_0011D598(3);
+            func_00207618();
+            D_003F34C0 |= 1;
+        } else {
+            func_0011D598(4);
+        }
+    }
+}
 
 void func_0020D030(void) {
     func_001F3A20((s32)D_003F3420, 0);
