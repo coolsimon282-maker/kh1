@@ -9,3 +9,4 @@ unsplit/seg_132D60
 # ppp/keProg/pppKeBornRnd5: func_0018F780   ppp/keProg/pppKeBornPtCmpl: func_0018FE28
 # ppp/keProg/pppKeShpTail3: pppKeShpTail3Calc
 # 22 Nov night: Qwen also has every function of <=32 bytes in any file (kh1-wt/q1/qwen/queue.txt); merge fm-q1 before restarting Claude agents
+# 23 Nov: Qwen has every unmatched function up to 128 bytes in all src/unsplit files (kh1-wt/q1/qwen/queue.txt); merge fm-q1 before starting Claude agents on unsplit files
