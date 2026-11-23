@@ -1301,7 +1301,15 @@ s32 func_001375D8(u8 *a0) {
     return (s32)(*(u64 *)(a0 + 0x440) >> 32) & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001375F0);
+s32 func_001375F0(u8 *arg0) {
+    s32 ret = 0;
+    if (!(*(s32 *)arg0 & 4)) {
+        if ((*(s32 *)(arg0 + 0x88) & 0x20) == 0) {
+            ret = 1;
+        }
+    }
+    return ret;
+}
 
 s32 func_00137618(u8 *a0) {
     s32 r = 0;
