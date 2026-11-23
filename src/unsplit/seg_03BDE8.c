@@ -2514,7 +2514,19 @@ s32 func_0014D180(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D210);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D330);
+s32 func_0014DB20(u8*);
+s32 func_0014D330(u8* a0, s32 a1) {
+    u8* p = a0;
+
+    if (a1 != 0 || func_001443A8(a0) != 0 || (*(s32*)p & 0x1000)) {
+        if (((D_002C1EA8 >> 5) & 1) && func_0014DB20(p) != 0) {
+            *(s32*)p &= ~4;
+            return 8;
+        }
+        return *(s32*)(p + 0x70);
+    }
+    return (*(s32*)p & 0x2000) ? 6 : 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D3C8);
 
@@ -5284,7 +5296,31 @@ void func_00176838(void) {
     func_001838E8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177D68);
+static inline f32 vu0Rand(void) {
+    f32 r;
+    __asm__ volatile(
+        "addi $8, $0, -1\n"
+        "qmtc2.ni $8, $vf2\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vrxor R, $vf2x\n"
+        "vrnext.x $vf1, R\n"
+        "vitof0.x $vf2, $vf2\n"
+        "vadd.x $vf1, $vf1, $vf2\n"
+        "qmfc2.ni %0, $vf1\n"
+        : "=r"(r) : : "$8");
+    return r;
+}
+
+f32 func_00177D68(void) {
+    return vu0Rand();
+}
 
 void func_00176898(void) {
 }
@@ -5742,7 +5778,22 @@ s32 func_0017DBB8(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017DC40);
+s32 func_0017DC40(void) {
+    if (D_0036244C != 0 || D_00362450 != 0) {
+        D_00362434 = D_0036244C;
+        D_00362438 = (u8*)D_00362450;
+        D_0036243C = D_00362454;
+        func_00176F08(9, 0.0f);
+        D_0036244C = 0;
+        D_00362450 = 0;
+        D_00362454 = 0;
+        return 1;
+    }
+    D_0036244C = 0;
+    D_00362450 = 0;
+    D_00362454 = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017DD00);
 
@@ -5762,7 +5813,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017E170);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017E428);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017FED8);
+void func_0017FED8(void) {
+    if (D_00362420 != 0) {
+        D_00362420 = 0;
+        if (D_00575894 != NULL && func_0017DC40() == 0) {
+            if (func_001773B0() != 0) {
+                func_00176F08(1, 30.0f);
+            }
+        }
+    }
+}
 
 void func_0017E7D8(void) {
     if (D_00575894 != NULL) {

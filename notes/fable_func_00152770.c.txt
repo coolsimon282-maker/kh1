@@ -1,0 +1,31 @@
+typedef struct {
+    s32 unk_00;
+    f32 unk_04;
+    f32 unk_08;
+    s32 unk_0C;
+    sceVu0FVECTOR unk_10;
+} Seg3BDE8Probe;
+s32 func_001234A0(s32);
+s32 func_0015BD78(Seg3BDE8Probe*, s32, s32);
+void func_00152770(u8* p) {
+    sceVu0FVECTOR v;
+    Seg3BDE8Probe st;
+    s32 it = 0;
+    u8* q;
+
+    func_001315C0((s32)p, 0x8003, v, 0.0f);
+    func_00147ED8(*(s32*)(p + 0x68), 4, -10000, v);
+    q = func_0014A4A8(p, 0x80000000, func_001477E0(0x13));
+    *(u64*)q = (*(u64*)q & ~0x3000) | 0x40;
+    *(s32*)(q + 8) = *(s32*)(p + 0x68);
+    sceVu0CopyVector((f32*)(q + 0x10), v);
+    st.unk_00 = 1;
+    st.unk_04 = st.unk_08 = *(f32*)(q + 0xC);
+    sceVu0CopyVector(st.unk_10, v);
+    while ((it = func_001234A0(it)) != 0) {
+        if (it != (s32)p && func_0015BD78(&st, it, 0) != 0) {
+            func_001354B8(q, it);
+        }
+    }
+    func_00152730(p);
+}

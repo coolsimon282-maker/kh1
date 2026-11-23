@@ -26,6 +26,7 @@ typedef struct {
 } Seg1C7A8Ent18;
 extern Seg1C7A8Ent18* D_004E3450;
 void func_0011C850_v(s32, s32, s32) __asm__("func_0011C850");
+void func_0011C5F0_v(s32, s32, s32) __asm__("func_0011C5F0");
 void func_0011C868_v(s32, s32, s32, s32, s32) __asm__("func_0011C868");
 extern s32 D_002A0520[];
 extern s32 D_002B9040[];
@@ -421,11 +422,57 @@ void func_0011E5F0(void) {
     func_00101528();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E610);
+extern s32 D_004E3440;
+extern s32 D_004E3438;
+extern s32 D_004E343C;
+void func_0011E610(void) {
+    s32 t = D_002C1EA8 & 1;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E700);
+    if (t == 1) {
+        func_0011C5F0_v(0, 0, 0xF0);
+        if (D_004E3440 == 0) {
+            func_0011C7A8(1, 0x3000, 0x3000, 0, 0, 0x78);
+        } else {
+            func_0011C7A8(1, 0, D_004E3438, D_004E343C, 0, 0x78);
+        }
+        D_002C1364 = 1;
+    } else {
+        func_0011C5F0_v(1, 0, 0xF0);
+        if (D_004E3440 == 0) {
+            func_0011C7A8(0, 0x3000, 0x3000, 0, 0, 0x78);
+        } else {
+            func_0011C7A8(0, 0, D_004E3438, D_004E343C, 0, 0x78);
+        }
+        D_002C1364 = 0;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E758);
+extern s32 D_002BD8D8;
+extern s32 D_004E3444;
+extern void (*D_004E3434)(void);
+void func_0011E700(void) {
+    if (D_002BD8D8 == 0) {
+        func_0011E528();
+    }
+    if (D_004E3444 == 0) {
+        func_0011E610();
+    }
+    if (D_004E3434 != NULL) {
+        D_004E3434();
+    }
+}
+
+void func_0011E758(void) {
+    if (D_002BD8D8 == 0) {
+        func_0011E528();
+    }
+    if (D_004E3444 == 0 && D_002BD8D8 == 0) {
+        func_0011E610();
+    }
+    if (D_004E3434 != NULL) {
+        D_004E3434();
+    }
+}
 
 void fm_func_0011E7C8(s32 arg0, s32 arg1, s32 arg2) {
     func_0011CBE0(0, arg2, D_002C1378, func_0011E700);

@@ -514,7 +514,11 @@ void func_001F1F18(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_001F2630(0, a0, a1, a2, a3, a4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F1F58);
+s32 func_001EFBB8(s32);
+
+void func_001F1F58(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    func_001F1FC8(arg0, arg1, arg2, arg3, func_001EFBB8(arg4), arg5);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F1FC8);
 
