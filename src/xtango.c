@@ -170,7 +170,9 @@ void func_001EF668(void) {
     fm_func_00111BE8();
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
+void func_001EF668(void) {
+    fm_func_00111BE8(0);
+}
 #endif
 
 s32 func_001EF708(u32 arg0) {
