@@ -42,13 +42,13 @@ logtime() {
     "$(( $(date +%s) - lstart ))" "$(cat qwen/.job_tries 2>/dev/null || echo 0)" "$*" >> qwen/times.tsv
   rm -f qwen/.job_info qwen/.job_tries
 }
-# Time limit per job for the local agent: `next` notes when it handed a job out (qwen/.job); 12 minutes later any
+# Time limit per job for the local agent: `next` notes when it handed a job out (qwen/.job); 6 minutes later any
 # command gives the job up and says so (the agent kept researching one function for 40 minutes instead of giving up).
-if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != configure ] && [ -n "$(find qwen/.job -mmin +12 2>/dev/null)" ]; then
+if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != configure ] && [ -n "$(find qwen/.job -mmin +6 2>/dev/null)" ]; then
   read -r jf jfile < qwen/.job; rm -f qwen/.job
   if grep -q "INCLUDE_ASM(\"[^\"]*\", $jf);" "src/$jfile.c" 2>/dev/null || [ -n "$(replaced)" ]; then
-    bash "$0" giveup "$jfile" "$jf" "time limit (12 minutes)" >/dev/null
-    echo "TIME UP: 12 minutes on $jf - it has been given up automatically. Do not look at it again."
+    bash "$0" giveup "$jfile" "$jf" "time limit (6 minutes)" >/dev/null
+    echo "TIME UP: 6 minutes on $jf - it has been given up automatically. Do not look at it again."
     echo "Run now: wsl -e bash ./agent-tools.sh next"
     exit 0
   fi
@@ -127,7 +127,7 @@ PY
       case "$2" in lib/*) ;; *) qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$? ;; esac
       if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
     fi
-    # failed tries per function are counted; the 3rd failure gives up automatically (the local agent kept researching
+    # failed tries per function are counted; the 2nd failure gives up automatically (23 Nov: of 14 logged matches none came on a 3rd try) (the local agent kept researching
     # one function for an hour instead of giving up)
     mkdir -p .tries; tf=".tries/$3"
     [ -f qwen/.job_info ] && echo $(( $(cat qwen/.job_tries 2>/dev/null || echo 0) + 1 )) > qwen/.job_tries
@@ -138,13 +138,13 @@ PY
       echo "  git add src/$2.c; git commit -m \"Match $3 ($2)\""
     else
       t=$(( $(cat "$tf" 2>/dev/null || echo 0) + 1 )); echo "$t" > "$tf"
-      if [ "$t" -ge 3 ]; then
+      if [ "$t" -ge 2 ]; then
         rm -f "$tf"
-        bash "$0" giveup "$2" "$3" "3 failed tries (automatic)" >/dev/null
-        echo "GAVE UP AUTOMATICALLY after 3 failed tries: src/$2.c is restored and $3 is noted as given up."
+        bash "$0" giveup "$2" "$3" "2 failed tries (automatic)" >/dev/null
+        echo "GAVE UP AUTOMATICALLY after 2 failed tries: src/$2.c is restored and $3 is noted as given up."
         echo "Do NOT research it further. Run 'wsl -e bash ./agent-tools.sh next' now for the next function."
       else
-        echo "Not matching yet (failed try $t of 3)."
+        echo "Not matching yet (failed try $t of 2)."
         if [ $q -ne 0 ]; then echo "$qout" | tail -45; else echo "The function's own code matches but the whole image does not: check symbol names (D_/func_ addresses), data it defines, and other functions you changed. Differences (target on the left):"; bash "$0" diff "$3" 40; fi
       fi
     fi ;;
