@@ -6215,7 +6215,15 @@ void func_0017B740(f32* out, f32* in) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017B7E8);
+extern u64 D_002C5BB0;
+extern u8 D_005759A4;
+s32 func_0017B7E8(void) {
+    if ((D_002C5BB0 & 0x300000000000) || (D_00575920[0] != 0 && !(*(s32*)((u8*)D_00362438 + 0x18) & 0x10)) ||
+        func_001770B8() != 0 || D_005759A4 != 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017B860);
 
