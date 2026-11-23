@@ -1200,7 +1200,14 @@ void func_001410D8(s32 a) {
     *(s32 (**)(void))(func_00130578(a, 0x40000006, 0.0f) + 0xC) = (s32 (*)(void))func_00140FA8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141138);
+void func_001406D0();
+void func_00140960();
+void func_00141138(void) {
+    func_0014F830(9, 0x101, (s32)func_0013FD10, (s32)func_0013FD20, (s32)func_001406D0, 0, 0, 0, 0);
+    func_0014F830(0xA, 0x101, (s32)func_0013FD38, (s32)func_0013FD60, (s32)func_00140960, (s32)func_00140EE0,
+                  (s32)func_00140F08, 0, (s32)func_00140F88);
+    func_0014F830(0xB, 0x101, (s32)func_00141018, 0, (s32)func_00141078, (s32)func_0014F778, (s32)func_0014F828, 0, 0);
+}
 
 s32 func_00141200(u8* p, s32 bit) {
     return (*(s32*)(*(u8**)(p + 0x6C) + 0x70) >> bit) & 1;
