@@ -1958,7 +1958,23 @@ u8* func_00148438(u8* p, s32 a1) {
     return q;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001484C8);
+void func_001315C0_f(s32, s32, f32, void*) __asm__("func_001315C0");
+u8* func_001484C8(u8* a0, s32 a1, s32 a2, f32 f) {
+    u8* p = a0;
+    u8* q = func_00148438(a0, a1);
+    f32* v = (f32*)(q + 0x20);
+
+    if (q == NULL) {
+        return NULL;
+    }
+    *(s32*)(q + 8) = a2;
+    q[4] = 1;
+    *(f32*)(q + 0xC) = f;
+    sceVu0CopyVector((f32*)(q + 0x10), D_002C58A0);
+    func_001315C0_f(a1, a2, f, v);
+    sceVu0CopyVector(*(f32**)p, v);
+    return q;
+}
 
 u8* func_00148570(u8* a, s32 b, s32 c) {
     f32 m[16];
