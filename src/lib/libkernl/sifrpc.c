@@ -4,11 +4,21 @@
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/sifrpc", sceSifInitRpc);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/sifrpc", sceSifExitRpc);
+extern int D_0046AE54; /* sifrpc.o's rpc_inited (its data is still in the data segment) */
+void sceSifExitCmd(void);
+
+void sceSifExitRpc(void) {
+    sceSifExitCmd();
+    D_0046AE54 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/sifrpc", _sceRpcGetPacket);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/sifrpc", _sceRpcFreePacket);
+void _sceRpcFreePacket(void* pkt) {
+    int* p = pkt;
+    p[6] = 0;
+    p[4] &= 0xFFFFFFFE;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/sifrpc", _sceRpcGetFPacket);
 
