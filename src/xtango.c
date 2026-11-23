@@ -158,7 +158,11 @@ void func_001EF5C8(void) {
     fm_func_00111B90();
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
+extern u32 fm_func_00111B90(void);
+
+void func_001EF5C8(void) {
+    fm_func_00111B90();
+}
 #endif
 
 #ifdef VERSION_FM
