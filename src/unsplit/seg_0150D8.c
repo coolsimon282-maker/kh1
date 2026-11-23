@@ -499,9 +499,36 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A410);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A728);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A7C0);
+// D_004E2458 seen as tables of u16 rows (the same data as Seg150D8Unk14)
+typedef struct {
+    u16 v[10];
+} Seg150D8Row;
+typedef struct {
+    Seg150D8Row* unk_00;
+    u8 unk_04[0x3C];
+} Seg150D8Rows;
+extern Seg150D8Rows D_004E2458_rows[] __asm__("D_004E2458");
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A818);
+s32 func_0011A7C0(s32 a0, s32 a1, u16* out) {
+    Seg150D8Row* list = D_004E2458_rows[a0].unk_00;
+
+    out[0] = list[a1].v[0];
+    out[1] = list[a1].v[1];
+    out[2] = list[a1].v[2];
+    out[3] = list[a1].v[3];
+    if (out[3] == 0xFFFF) {
+        return 3;
+    }
+    return 4;
+}
+
+void func_0011A818(s32* a0, s32* a1, u16* a2, s32 a3) {
+    s32 x = (s16)D_004E2458_rows[a3].unk_00[a2[0]].v[a2[1]];
+    s32 y = (s16)D_004E2458_rows[a3].unk_00[a2[0]].v[a2[2]];
+
+    *a0 = x;
+    *a1 = y;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A648);
 
