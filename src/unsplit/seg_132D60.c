@@ -717,7 +717,20 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D490);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D528);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D698);
+extern void func_00249A48(void *arg0, s32 arg1);
+extern void *D_00426970;
+extern void *D_0042B790;
+extern void *D_004305B0;
+
+void func_0023D698(s32 arg0) {
+    if (arg0 == 0) {
+        func_00249A48(&D_00426970, 1);
+    } else if (arg0 == 1) {
+        func_00249A48(&D_0042B790, 1);
+    } else {
+        func_00249A48(&D_004305B0, 1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D700);
 
