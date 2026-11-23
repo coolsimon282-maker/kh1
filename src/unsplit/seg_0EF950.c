@@ -1246,7 +1246,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8950);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8BA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F8E18);
+void func_001F8E18(void *arg0) {
+    func_001F86E0(arg0, BF(arg0, 0xBE), BF(arg0, 0xC0), BF(arg0, 0xC2) * *(s16 *)(arg0 + 0xD8) - BF(arg0, 0xC6), BF(arg0, 0xC4) * *(s16 *)(arg0 + 0xCE) - BF(arg0, 0xC8));
+}
 
 void func_001F8E90(u8 *a0) {
     func_001F86E0(a0, BF(a0, 0xBE), 0, BF(a0, 0xC2) * *(s16 *)(a0 + 0xD8) - BF(a0, 0xC6), 0x180);
