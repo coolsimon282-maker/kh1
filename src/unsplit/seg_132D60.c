@@ -993,7 +993,13 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002470D0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247190);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247228);
+void func_00247228(void *arg0, s32 arg1, f32 *arg2) {
+    s32 *p = arg0;
+    p[0x20 / 4] = arg1;
+    p[0x0 / 4] = 1;
+    p[0x4 / 4] = 0;
+    sceVu0CopyVector((f32 *)((char *)arg0 + 0x10), arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", fm_func_00247258);
 
