@@ -53,6 +53,31 @@ typedef float f32;
 
 #define BSS __attribute__ ((section (".bss")))
 
+/* NOTHROW(ret, f); declares f as a function that ee-gcc 2.96 knows "cannot throw".
+ *
+ * The compiler learns that about a function when it compiles the function's body, and uses it for every call
+ * further down in the same file: such calls get a REG_EH_REGION 0 note, and next to them the delay-slot pass
+ * fills a branch slot without annulling (target has bne/beqz + a useful slot where a plain declaration gives
+ * bnel/beqzl). So the original file had the callee's body above the caller. Use this when ours can't yet:
+ * the callee is still INCLUDE_ASM further down, or sits in another file because the split is too fine.
+ *
+ * How: an `extern inline` body is compiled far enough to get the flag but never emitted, and the old-style
+ * double parameter makes inlining fail at every call (argument mode mismatch), so a normal call comes out.
+ * The declaration has no prototype: don't use it for callees taking float arguments. Use it INSTEAD of the
+ * normal prototype, and drop it once the callee's real C definition is above the caller.
+ *
+ * NOTHROW_FN(s8 f(s16 a, f32 b)); does the same WITH a full prototype (needed for float arguments; give the
+ * parameters names). Only for a callee that lives in ANOTHER source file: it compiles an empty weak copy of f
+ * into a section the linker script throws away, and the real f from the other file is linked. (A callee that
+ * is INCLUDE_ASM in this same file would be defined twice: use NOTHROW for that.) */
+#ifdef M2CTX
+#define NOTHROW(ret, name) ret name()
+#define NOTHROW_FN(decl) decl
+#else
+#define NOTHROW(ret, name) extern inline ret name(nothrow_arg_) double nothrow_arg_; {} extern int nothrow_dummy_
+#define NOTHROW_FN(decl) decl __attribute__((weak, section(".nothrow_dup"))); decl {} extern int nothrow_dummy_
+#endif
+
 #include "common_data.h"
 #include "common_funcs.h"
 #include "common_math.h"
