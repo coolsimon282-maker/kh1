@@ -1202,7 +1202,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002498A0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249900);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249950);
+f32 func_00249950(f32 *arg0, f32 fparg0, f32 fparg1) {
+    f32 var_f0;
+    var_f0 = *arg0;
+    if (var_f0 < fparg0) {
+        *arg0 = fparg0;
+        var_f0 = fparg0;
+    }
+    if (fparg1 < var_f0) {
+        *arg0 = fparg1;
+        var_f0 = fparg1;
+    }
+    return var_f0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249988);
 
