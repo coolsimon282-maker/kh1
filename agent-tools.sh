@@ -222,7 +222,7 @@ PY
   asm)
     cat "asm/nonmatchings/$2/$3.s" ;;
   m2c)
-    bash wsl-build.sh bash -c "python3 tools/m2ctx.py 'src/$2.c' >/dev/null && ~/m2c-venv/bin/python ~/m2c/m2c.py -t mipsee-gcc-c --context ctx.c 'asm/nonmatchings/$2/$3.s'" 2>&1 ;;
+    bash wsl-build.sh bash -c "python3 tools/m2ctx.py 'src/$2.c' >/dev/null && python3 tools/ctx_fix.py ctx.c && ~/m2c-venv/bin/python ~/m2c/m2c.py -t mipsee-gcc-c --context ctx.c 'asm/nonmatchings/$2/$3.s'" 2>&1 ;;
   diff)
     KH_VERSION=fm bash wsl-build.sh python3 diff.py -m --format plain "$2" 2>&1 | head -"${3:-120}" ;;
   *)
