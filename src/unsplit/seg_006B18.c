@@ -124,7 +124,14 @@ void func_00106D48(s32 a0) {
     func_00106948(a0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106DB0);
+s32 func_00106DB0(Seg6B18Task* t) {
+    *(volatile u32*)0x10009020 = 0;
+    *(volatile u32*)0x10009030 = t->unk_10 & 0x0FFFFFFF;
+    *(volatile u32*)0x1000E010 = 2;
+    iFlushCache(0);
+    *(volatile u32*)0x10009000 = 0x105;
+    return 2;
+}
 
 extern s32 D_002A6C54;
 extern u8 D_002BC270[];

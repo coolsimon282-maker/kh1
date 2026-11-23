@@ -290,7 +290,16 @@ void func_0010FCE0(void) {
     D_004D2990 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FCF0);
+extern f32 D_002BBDEC;
+extern volatile u32 D_004D90F0;
+
+void func_0010FCF0(void) {
+    if (D_002BBDEC == 1.0f) {
+        D_004D90F0 = 0x14996C4;
+    } else {
+        D_004D90F0 = 0x112A84E;
+    }
+}
 
 void func_0010FD40(s16 w, s16 h) {
     D_004D284C = 0;
@@ -496,7 +505,23 @@ void func_00110230(s32 a0) {
     D_002BBDF4 = a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110240);
+extern f32 D_002B8344;
+extern s32 D_002B8354;
+extern s32 D_002BBE10;
+extern sceVu0FMATRIX D_002B9040;
+extern s32 D_002B2CC4;
+extern s32 D_002B9660;
+
+void func_00110240(void) {
+    D_002BBDF0 = 0;
+    D_002B8340 = 0;
+    D_002BBE10 = 0;
+    D_002B8354 = 0;
+    D_002B8344 = D_002BBDEC;
+    sceVu0UnitMatrix(D_002B9040);
+    D_002B2CC4 = 0;
+    D_002B9660 = 0;
+}
 
 void func_001102A0(void) {
     sceGsSyncVCallback(func_00110038);

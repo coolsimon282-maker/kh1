@@ -4508,7 +4508,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015EEA0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00122250);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015EFC0);
+extern void (*D_00351BC8)(int);
+void iFlushCache(int);
+int func_0015EA98(void);
+
+int func_0015EFC0(int ch) {
+    D_00351BC8 = iFlushCache;
+    func_0015EA98();
+    D_00351BC8 = FlushCache;
+    __asm__ volatile("sync.l\n\tei");
+    return 0;
+}
 
 void func_0015F010(void) {
 }
