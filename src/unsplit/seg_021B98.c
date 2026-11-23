@@ -27,7 +27,24 @@ Seg21B98Unk10* func_00121DE0(s32, s32);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121B98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121AE8);
+extern u8 D_820000[];
+extern Seg21B98Unk10 *D_004F6DB0;
+s32 func_00121B98(void);
+void func_00121AE8(void) {
+    A2NodePool *d = &D_004F45B0;
+    Seg21B98Unk10 *h;
+    s32 i;
+    s32 *p = &d->e[0].unk_04;
+    for (i = 0; i < 0x1FF; i++) {
+        *p = 0; p += 5;
+    }
+    h = &D_004F45B0.head; D_004F6DB0 = h + 1;
+    h->unk_04 = (s32)D_820000;
+    h->unk_0C = 0;
+    h->unk_10 = 0;
+    h->unk_08 = 0;
+    ((s16 *)func_0011ED30(200000, func_00121B98))[1] = -1;
+}
 
 extern Seg21B98Unk10 *D_004F6DB0;
 
