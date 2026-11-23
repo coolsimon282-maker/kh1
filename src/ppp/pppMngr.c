@@ -168,7 +168,31 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001813F0);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001814C8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001815A0);
+typedef struct {
+    char pad[0x86];
+    u16 usef;
+    char pad2[0x28];
+    u8 drawPriority;
+    u8 stop;
+    u8 pad4[5];
+    u8 b7;
+    u64 pad3;
+} MngV15A0;
+extern MngV15A0 D_00364130_v15A0[] __asm__("D_00364130");
+void func_001815A0(s32 a0) {
+    s32 i;
+    for (i = 0; i < 0x100; i++) {
+        if (D_00364130_v15A0[i].usef & 1) {
+            if (a0) {
+                D_00364130_v15A0[i].b7 = 1;
+                D_00364130_v15A0[i].stop |= 0x80;
+            } else {
+                D_00364130_v15A0[i].b7 = 0;
+                D_00364130_v15A0[i].stop &= 0x7F;
+            }
+        }
+    }
+}
 
 s32 func_00181600(s32 arg0) {
     s32 i;
@@ -864,7 +888,17 @@ void init_part_mng(ppvmng* pMng) {
     pMng->unk_4C = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183658);
+void func_00183658(ppvmng **out) {
+    PppMngU *p = D_00364130;
+    s32 i;
+    for (i = 0; i < 0x100; i++) {
+        if (!(*(u64 *)((u8 *)&p[i] + 0x80) & 0x3000000000000)) {
+            init_part_mng((ppvmng *)&p[i]);
+            *out = (ppvmng *)&p[i];
+            break;
+        }
+    }
+}
 
 extern pppEnvSt D_00615E40;
 extern u8 D_00595E40[];

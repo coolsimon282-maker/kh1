@@ -2243,7 +2243,13 @@ void func_00207630(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002076B0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207748);
+typedef struct { u8 pad[0x10]; s32 unk_10; } A2E2C40;
+void func_00200E28(s32, s32, s32, s32, A2E2C40 *);
+void func_00207748(s32 a0, s32 a1, s32 a2, s32 a3) {
+    A2E2C40 *e = &((A2E2C40 *)D_003F2C40)[a0];
+    func_00200E28(2, a1, a2, a3, e);
+    func_001F1FC8(2, e->unk_10, a1 + a3 / 2, a2 + 5, func_001F0EF0(0x2B), 0xF);
+}
 
 void func_002077F0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_00200648(a0, a2, a3, a4, a5, (D_003F2C40 + (((a1 << 2) + a1) << 2)));
