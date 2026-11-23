@@ -50,7 +50,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232E08);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232F88);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232FC8);
+extern u8 D_003F82A8[];
+
+u8 *func_00232FC8(u32 arg0) {
+    D_003F82A8[0xE] = (arg0 / 10) + 0x30;
+    D_003F82A8[0xF] = (arg0 % 10) + 0x30;
+    D_003F82A8[0x1E] = (arg0 / 10) + 0x30;
+    D_003F82A8[0x1F] = (arg0 % 10) + 0x30;
+    return &D_003F82A8;
+}
 
 extern u8 D_003F82D0[];
 
