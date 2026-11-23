@@ -1,6 +1,40 @@
 #include "ppp.h"
 
-INCLUDE_ASM("asm/nonmatchings/ppp/eiProg/pppSRandCV", pppSRandCVCalc);
+typedef struct {
+    pppCDT cdt;
+    s32 index;
+    s8 scale[4];
+    u8 twice;
+} PSRandCV;
+
+NOTHROW_FN(s8 func_0018AFB8(s8 a, f32 b));
+NOTHROW_FN(f32 func_0018AFF0(u8 twice));
+
+void pppSRandCVCalc(pppPObject* pobj, PSRandCV* p, pppCtrlTable* ctbl) {
+    f32* rv;
+    u8* tgt;
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    if (p->cdt.time != pobj->time) {
+        return;
+    }
+    rv = (f32*)&pobj->val[ctbl->useVal[0]];
+    rv[0] = func_0018AFF0(p->twice);
+    rv[1] = func_0018AFF0(p->twice);
+    rv[2] = func_0018AFF0(p->twice);
+    rv[3] = func_0018AFF0(p->twice);
+    if (p->index != -1) {
+        tgt = (u8*)&pobj->val[p->index];
+    } else {
+        tgt = (u8*)&ppvDbgTemp;
+    }
+    tgt[0] += func_0018AFB8(p->scale[0], rv[0]);
+    tgt[1] += func_0018AFB8(p->scale[1], rv[1]);
+    tgt[2] += func_0018AFB8(p->scale[2], rv[2]);
+    tgt[3] += func_0018AFB8(p->scale[3], rv[3]);
+}
 
 s8 func_0018B1C8(s8 a, f32 b) {
     return a * b;

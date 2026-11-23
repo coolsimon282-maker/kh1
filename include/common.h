@@ -64,11 +64,18 @@ typedef float f32;
  * How: an `extern inline` body is compiled far enough to get the flag but never emitted, and the old-style
  * double parameter makes inlining fail at every call (argument mode mismatch), so a normal call comes out.
  * The declaration has no prototype: don't use it for callees taking float arguments. Use it INSTEAD of the
- * normal prototype, and drop it once the callee's real C definition is above the caller. */
+ * normal prototype, and drop it once the callee's real C definition is above the caller.
+ *
+ * NOTHROW_FN(s8 f(s16 a, f32 b)); does the same WITH a full prototype (needed for float arguments; give the
+ * parameters names). Only for a callee that lives in ANOTHER source file: it compiles an empty weak copy of f
+ * into a section the linker script throws away, and the real f from the other file is linked. (A callee that
+ * is INCLUDE_ASM in this same file would be defined twice: use NOTHROW for that.) */
 #ifdef M2CTX
 #define NOTHROW(ret, name) ret name()
+#define NOTHROW_FN(decl) decl
 #else
 #define NOTHROW(ret, name) extern inline ret name(nothrow_arg_) double nothrow_arg_; {} extern int nothrow_dummy_
+#define NOTHROW_FN(decl) decl __attribute__((weak, section(".nothrow_dup"))); decl {} extern int nothrow_dummy_
 #endif
 
 #include "common_data.h"
