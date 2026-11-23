@@ -1114,7 +1114,18 @@ void func_002431B8(Seg132Q* q, Seg132E12* e) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243208);
+s32 func_00243208(Seg132Q* q, Seg132E12* e) {
+    if (q->cnt == q->rd) {
+        return 0;
+    }
+    *e = q->buf[q->rd];
+    q->rd++;
+    if (q->cnt == q->rd) {
+        q->rd = 0;
+        q->cnt = 0;
+    }
+    return 1;
+}
 
 s32 func_00243278(Seg132Q* q, Seg132E12* e) {
     if (q->cnt == q->rd) {
@@ -1665,7 +1676,18 @@ void func_00248678(Seg132Q* q, Seg132E12* e) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002486C8);
+s32 func_002486C8(Seg132Q* q, Seg132E12* e) {
+    if (q->cnt == q->rd) {
+        return 0;
+    }
+    *e = q->buf[q->rd];
+    q->rd++;
+    if (q->cnt == q->rd) {
+        q->rd = 0;
+        q->cnt = 0;
+    }
+    return 1;
+}
 
 s32 func_00248738(Seg132Q* q, Seg132E12* e) {
     if (q->cnt == q->rd) {
@@ -1828,7 +1850,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249618);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249718);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002497B8);
+void func_002497B8(sceVu0FVECTOR v, sceVu0FVECTOR d, f32 s) {
+    sceVu0FVECTOR t;
+    sceVu0FVECTOR u;
+
+    sceVu0CopyVector(t, d);
+    t[3] = 0.0f;
+    sceVu0ScaleVectorXYZ(u, t, s);
+    sceVu0AddVector(v, v, u);
+}
 
 void func_00249820(s32 *dst, s32 *src) {
     s32 i;
