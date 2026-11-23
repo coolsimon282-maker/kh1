@@ -1496,7 +1496,10 @@ s32 func_001E8D40(A2Script *p) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E8DA0);
+s32 func_001E8DA0(A2Script *s) {
+    s32 r; s32 d;
+    d = func_0011E368(s->unk_174[s->unk_174[3] + 3], s->unk_174[s->unk_174[3] + 4]); r = 2; if (d != 0) { d = 4; r = d; } return r;
+}
 
 void func_0011D350(s32, s32);
 
