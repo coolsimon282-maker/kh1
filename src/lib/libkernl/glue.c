@@ -100,7 +100,38 @@ long lseek(int fd, long offset, int whence) {
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/glue", sbrk);
+char* EndOfHeap(void);
+
+void* sbrk(int incr) {
+    int s;
+    int t;
+    char* old;
+    char* p;
+
+    __asm__ volatile("mfc0 %0, $12" : "=r"(s));
+    s &= 0x10000;
+    if (s) {
+        do {
+            __asm__ volatile("di");
+            __asm__ volatile("sync.p");
+            __asm__ volatile("mfc0 %0, $12" : "=r"(t));
+        } while (t & 0x10000);
+    }
+    p = (*(char**)&D_0046AE48) + incr;
+    if (EndOfHeap() < p) {
+        *__errno() = 12;
+        if (s) {
+            __asm__ volatile("ei");
+        }
+        return (void*)0xFFFFFFFF;
+    }
+    old = (*(char**)&D_0046AE48);
+    (*(char**)&D_0046AE48) = p;
+    if (s) {
+        __asm__ volatile("ei");
+    }
+    return old;
+}
 
 int isatty(int fd) {
     return 1;
