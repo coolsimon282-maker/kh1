@@ -21,7 +21,37 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FD60);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FE20);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FEC0);
+s32 func_001EE068(void);
+s32 strncmp(const char *, const char *, u32);
+void func_0011FD60(s32, s32, void *);
+extern s32 D_002C5C3C;
+extern s32 D_002C5C40;
+extern s32 D_004F3208;
+extern char D_00351E10[];
+
+void func_0011FEC0(void) {
+    if (func_001EE068() == 1) {
+        if (D_002C5C3C >= 0x1F) {
+            D_002C1EB8.u8 |= 2;
+        } else {
+            D_002C5C3C++;
+        }
+        return;
+    }
+    if (((D_002C1EB8.s8 & 0xFF) >> 1) & 1) {
+        if (D_002C5C40 > 0) {
+            D_002C5C40--;
+            return;
+        }
+        func_0011FD60(D_004F3208, 1, D_00351E10);
+        if (strncmp(D_00351E10, (char *)D_004F2A00, 0x800) != 0) {
+            D_002C5C40 = 0x3C;
+            return;
+        }
+    }
+    D_002C5C3C = 0;
+    D_002C1EB8.u8 &= ~2;
+}
 
 typedef struct {
     u32 flags;
