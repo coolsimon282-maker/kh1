@@ -2695,7 +2695,21 @@ s32 func_0014D330(u8* a0, s32 a1) {
     return (*(s32*)p & 0x2000) ? 6 : 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D3C8);
+typedef struct { u32 pad:5; u32 b:1; } V2C1EA8;
+typedef struct { u64 pad:7; u64 b:1; } V2DED20;
+void func_0014DCD8_v(void) __asm__("func_0014DCD8");
+void func_0014C530_v(void) __asm__("func_0014C530");
+s32 func_0014D3C8(void) {
+    if (((V2C1EA8*)&D_002C1EA8)->b) {
+        func_0014DCD8_v();
+    } else {
+        u64 t = ((V2DED20*)&D_002DED20)->b;
+        if (t != 0) {
+            func_0014C530_v();
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D428);
 
