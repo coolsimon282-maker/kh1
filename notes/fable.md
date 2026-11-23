@@ -32,3 +32,38 @@ inline helper used in both places.
 
 Tools: scratchpad fable/t.sh (sandbox compile + compare), show.sh (diffs + block RTL + local reg assignment),
 sched.sh + strace.py (sched2 trace).
+
+## 23 Nov: the "bne vs bnel" family and two register rules (11 matched)
+
+Matched: func_001C4788, func_0024F008, func_001016B8, func_00125B68 (permuter queue / cleaned up), func_0011D350,
+func_0011D448, func_0011D5F0, func_0017EFF8, func_0015A348, func_0011E610, func_0011E700, func_0011E758.
+func_00152880 matches too, but only once func_00152770 (2 instructions off, below) is C.
+
+Rules (each confirmed by a match):
+
+1. **Branch-likely next to a call depends on whether the callee's DEFINITION is visible, not on a compiler flag.**
+   A branch that skips over `jal f` comes out plain (`bne`/`beqz`, slot filled non-annulled) when `f` is defined
+   in C earlier in the same file, and likely (`bnel`/`beqzl`) when `f` is only declared (still INCLUDE_ASM, in
+   another file, defined later, or called through an `__asm__("f")` alias).
+   - Target has the plain branch, ours the likely one: call `f` DIRECTLY (not through the alias); if `f` is still
+     assembly in this file, match `f` first. The whole "reorg bne vs bnel" skip list was this.
+   - Target has the likely branch, ours the plain one: hide the definition with the alias declaration.
+2. **A missing `move a0,s0` before a call = the incoming parameter itself is passed on.** If the target saves a0
+   in s0 but still calls `g` with a0 untouched (`jal g` with no argument set-up), write
+   `T f(u8* a0, ...) { u8* p = a0; ... g(a0); ... }` and use `p` everywhere else. The live a0 also changes nearby
+   delay slots (func_0015A348: `beql` + load; func_00152880: the loaded value lands in a1 because v0, v1, a0 are
+   busy). Check the callee's real parameter count in its own assembly: m2c invents extra ones.
+3. **After a call, `lui $2 / lw $3` (target) vs `lui v1 / lw v0` (ours) = the call's return type.** A call whose
+   value is unused still occupies $2 at that point if the callee is declared to return something, so the address
+   temp moves to $3. If the target has the temp in $2, call through a void-returning declaration
+   (`void f_v(...) __asm__("f");`); if it has it in $3, the callee returns a value.
+4. `(x & 1) == 1` is folded to `!= 0`; the target's `li $4,1; andi; bne $3,$4` needs `s32 t = x & 1; if (t == 1)`.
+5. `if (a != 0 || (p->flags & M)) { ... } return p->x;` gives the "jump into the middle, flags reloaded" shape
+   (func_0015A348).
+
+Open: func_00152770 (C in git history of fable-work, see below): everything matches except the order of
+`daddu $5,$29` / `addiu $4,$17,0x10` before the first sceVu0CopyVector (target sets a1 first). sched2 picks by
+LUID there, so the target's a1 set was emitted before the a0 set; plain variables, struct types and statement
+order don't change it. Its one-parameter signature is `void func_00152770(u8*)`.
+
+Tools: scratchpad fable/sdump.sh + ex2.py (compile one function with -dS -dR -dl dumps and split out its part).
