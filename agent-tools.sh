@@ -158,6 +158,11 @@ PY
       fi
     fi ;;
   quick)
+    # the function must be C in the working file: compared while still INCLUDE_ASM it is the original against
+    # itself and "matches" (that fooled a batch commit on 23 Nov)
+    if grep -q "^INCLUDE_ASM(\"[^\"]*\", *$3);" "src/$2.c" 2>/dev/null; then
+      echo "NOT COMPARED: $3 is still INCLUDE_ASM in src/$2.c - your C is not in the file (put it again)."; exit 3
+    fi
     bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" "${4:-40}" ;;
   giveup)
     f="$2"; fn="$3"; shift 3
@@ -193,22 +198,33 @@ PY
   put)
     [ -f "$4" ] || { echo "no file $4"; exit 1; }
     others=$(replaced | awk -v f="$2" -v fn="$3" '$2 == f && $1 != fn {printf "%s ", $1}')
-    python3 - "$2" "$3" "$4" <<'PY'
-import re, subprocess, sys
-f, fn, cfile = 'src/%s.c' % sys.argv[1], sys.argv[2], sys.argv[3]
+    python3 - "$2" "$3" "$4" $others <<'PY'
+import os, re, subprocess, sys
+f, fn, cfile, others = 'src/%s.c' % sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4:]
 s = open(f, encoding='utf-8').read()
-pat = re.compile(r'^INCLUDE_ASM\("[^"]+",\s*%s\);$' % re.escape(fn), re.M)
+def line(name): return re.compile(r'^INCLUDE_ASM\("[^"]+",\s*%s\);$' % re.escape(name), re.M)
+pat = line(fn)
 hits = pat.findall(s)
+os.makedirs('.puts', exist_ok=True)
 if len(hits) == 0:
-    # an earlier attempt is already in place: start again from the file as last committed (every match is
-    # committed straight away, so the only uncommitted change in it is this function's attempt)
+    # an earlier attempt of THIS function is already in place: start again from the file as last committed, and
+    # put back the other functions that were waiting uncommitted in it (their C is remembered in .puts/).
+    # Before 23 Nov those were silently dropped, and batches got committed with names whose C was not in them.
     base = subprocess.run(['git', 'show', 'HEAD:' + f], capture_output=True, text=True).stdout
     if len(pat.findall(base)) == 1:
         s, hits = base, pat.findall(base)
-        print('(an earlier attempt was in place: started again from the last commit of %s)' % f)
+        print('(an earlier attempt of %s was in place: started again from the last commit of %s)' % (fn, f))
+        for o in others:
+            saved = os.path.join('.puts', o + '.c')
+            if os.path.exists(saved) and len(line(o).findall(s)) == 1:
+                oc = open(saved, encoding='utf-8').read()
+                s = line(o).sub(lambda m: oc, s, count=1); print('(kept your uncommitted %s)' % o)
+            else:
+                print('WARNING: your uncommitted C for %s was DROPPED from %s (no saved copy): put it again.' % (o, f))
 if len(hits) != 1:
-    sys.exit('expected exactly one INCLUDE_ASM line for %s in %s, found %d' % (fn, f, len(hits)))
+    sys.exit('expected exactly one INCLUDE_ASM line for %s in %s, found %d (is it already committed as C?)' % (fn, f, len(hits)))
 c = open(cfile, encoding='utf-8').read().replace('\r\n', '\n').rstrip('\n')
+open(os.path.join('.puts', fn + '.c'), 'w', encoding='utf-8', newline='\n').write(c)
 s = pat.sub(lambda m: c, s, count=1)
 open(f, 'w', encoding='utf-8', newline='\n').write(s)
 print('replaced the INCLUDE_ASM line for %s in %s with %s (%d lines)' % (fn, f, cfile, c.count('\n') + 1))
