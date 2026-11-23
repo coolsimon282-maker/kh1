@@ -3352,11 +3352,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154258);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001542F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001543F8);
+void func_00154258(u8*, u8*, f32*);
+void func_001543F8(u8* p, u8* a1) {
+    func_00130340(p, sceVu0InnerProduct((f32*)(p + 0x30), (f32*)(a1 + 0x10)) < 0.0f ? 0x100004E : 0x100004F, 0.0f);
+    func_00130578((s32)p, 0x40000006, 8.0f);
+    func_001373F8(p, 30.0f);
+    func_0014CCE0_f(p, 20.0f);
+    func_00154258(p, a1, (f32*)(p + 0x3C0));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001544A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154548);
+void func_001541A8(u8*, u8*, f32*);
+void func_00154548(u8* p, u8* a1) {
+    sceVu0FVECTOR v;
+
+    func_00130340(p, 0x100006A, 0.0f);
+    func_00130578((s32)p, 0x4000002D, 0.0f);
+    func_001373F8(p, 30.0f);
+    *(f32*)(*(u8**)(p + 0x148) + 0xB0) = 0.0f;
+    sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0xA0), D_002C58B0);
+    func_001541A8(p, a1, v);
+    func_00156260((s32)p, v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001545F0);
 
