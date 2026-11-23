@@ -552,7 +552,35 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239368);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002393D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239488);
+#include "common.h"
+
+extern void func_002452F0(void);
+extern void func_00244B00(void);
+extern void func_002444A0(void);
+extern void func_00243668(void);
+extern void func_002458E0(void);
+extern void func_00246020(void);
+extern void func_00246A60(void);
+extern void func_00247350(void);
+extern void func_00245140(void);
+extern void func_00248B00(void);
+extern void func_00249240(void);
+extern void func_0023CFD8(void);
+
+void func_00239488(void) {
+    func_002452F0();
+    func_00244B00();
+    func_002444A0();
+    func_00243668();
+    func_002458E0();
+    func_00246020();
+    func_00246A60();
+    func_00247350();
+    func_00245140();
+    func_00248B00();
+    func_00249240();
+    func_0023CFD8();
+}
 
 s32 func_002448D8(void);                                /* extern */
 s32 func_00245228(void);                                /* extern */
