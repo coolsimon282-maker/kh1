@@ -1440,6 +1440,22 @@ void func_00249DA8(const char *s1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249DC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249EB8);
+void func_00249EB8(void *arg0, void *arg1) {
+    u8 *src;
+    u8 *dst;
+    int i;
+    s32 offset;
+    src = (u8 *)arg1 + 0x40;
+    offset = *(u32 *)((u8 *)arg1 + 0x18);
+    src += offset;
+    dst = (u8 *)arg0;
+    for (i = 0; i < 64; i++) {
+        if (i < 32) {
+            dst[i] = src[i];
+        } else {
+            dst[i + 0x20] = src[i];
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249F08);
