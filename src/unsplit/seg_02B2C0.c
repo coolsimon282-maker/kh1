@@ -1374,7 +1374,21 @@ f32 func_001348E0(u8 *a0, u8 *a1) {
     return 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00134928);
+typedef struct { u8 pad[8]; u64 lo:44; u32 f:4; } S134928;
+u8 *func_00134928(u8 *a0) {
+    S134928 *p = *(S134928 **)(a0 + 0x3EC);
+
+    if (p != NULL) {
+        if (p->f > 0) {
+            p->f--;
+            p = NULL;
+        } else {
+            *(u8 **)(a0 + 0x3EC) = *(u8 **)((u8 *)p + 0x30);
+            *(u8 **)((u8 *)p + 0x30) = NULL;
+        }
+    }
+    return (u8 *)p;
+}
 
 void func_00134998(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 0x3EC);
