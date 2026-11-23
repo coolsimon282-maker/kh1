@@ -642,7 +642,47 @@ void func_00218D38(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218DD0);
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002190C0);
+NOTHROW(void, func_00218DD0);
+extern s32 D_003F4878[];
+extern s32 D_003F4818[];
+extern s32 D_003F4848[];
+extern s32 D_003F48A8[];
+extern s32* D_003F4A48[];
+extern s32 D_003F4A78[];
+extern s32 D_003F4AA8[][2];
+void func_001F9270(void*, s32, s32, s32, s32, u32);
+void func_00206130(void*, s32, s32, s32, s32, u32);
+void func_001FC308(void*, s32, s32, s32, s32, s32, s32, u32, u32);
+
+void func_002190C0(void* arg0) {
+    s32 i;
+    s32 n;
+    s32* p;
+    s32* q;
+    s32** pp;
+    s32* np;
+
+    func_001F9270(arg0, 0, 0x10, 0x145, 0xF, 0x801EC8C8);
+    for (i = 0; i < 12; i++) {
+        func_001F9438(arg0, D_003F4878[i], D_003F4818[i], D_003F4848[i], D_003F48A8[i], 0xF,
+                      (i == D_00642D28) ? 0x80B4B4B4 : 0x40808080);
+    }
+    if (D_003ED72C == 2) {
+        func_00218DD0(arg0, 0xB0, 0x3D);
+    }
+    pp = D_003F4A48;
+    np = D_003F4A78;
+    for (i = 0; i < 12; i++, np++, pp++) {
+        p = *pp;
+        for (n = *np; n > 0; n--) {
+            func_00206130(arg0, p[0], p[1], p[2], p[3], (i == D_00642D28) ? 0x80F35054 : 0x33F35054);
+            p += 4;
+        }
+    }
+    q = D_003F4AA8[D_00642D28];
+    func_001FC308(arg0, q[0], q[1], 0, 0, 0xA, 0, 0x33F35054, 0x33F35054);
+    func_001FC308(arg0, q[0], q[1] + 0xF, 0, 0, 0xB, 0, 0x33F35054, 0x33F35054);
+}
 
 #ifdef VERSION_FM
 extern s32* D_00425BC8;
