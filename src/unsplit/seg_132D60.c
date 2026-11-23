@@ -1361,7 +1361,23 @@ void func_00249558(void *arg0, void *arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249580);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002495C8);
+// func_002495C8 (src/unsplit/seg_132D60.c)
+void func_002495C8(void *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3) {
+    f32 t, u, v;
+    t = fparg0 * -3.0f;
+    u = fparg0 + fparg0;
+    v = fparg1 * 3.0f;
+    t = t + v;
+    ((f32 *)arg0)[3] = fparg0;
+    ((f32 *)arg0)[2] = fparg2;
+    t = t - (fparg2 + fparg2);
+    u = u - (fparg1 + fparg1);
+    t = t - fparg3;
+    u = u + fparg2;
+    ((f32 *)arg0)[1] = t;
+    u = u + fparg3;
+    ((f32 *)arg0)[0] = u;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249618);
 
