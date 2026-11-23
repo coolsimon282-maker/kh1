@@ -6,10 +6,18 @@ INCLUDE_ASM("asm/nonmatchings/lib/libkernl/cache", _sceSDC);
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/cache", SyncDCache);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/cache", iSyncDCache);
+void _sceSDC(int start, int end);
+
+void iSyncDCache(int start, int end) {
+    _sceSDC(start & 0xFFFFFFC0, end & 0xFFFFFFC0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/cache", _sceIDC);
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/cache", InvalidDCache);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/cache", iInvalidDCache);
+void _sceIDC(int start, int end);
+
+void iInvalidDCache(int start, int end) {
+    _sceIDC(start & 0xFFFFFFC0, end & 0xFFFFFFC0);
+}
