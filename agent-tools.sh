@@ -95,6 +95,9 @@ PY
     set -- $job
     echo "$1 $2" > qwen/.job
     echo "$1 $2 $4 $(date +%s)" > qwen/.job_info; rm -f qwen/.job_tries
+    # start every job with an empty work file: the previous function's C left in it sent the model searching for
+    # that function's symbols in a loop (23 Nov, _localeconv_r after func_00148F08)
+    echo "// work file for $1 (src/$2.c): write this one function here, with the declarations it needs above it" > qwen/work.c
     echo "NEXT JOB: $1 in src/$2.c ($4 bytes)$( [ "$3" != - ] && echo " - twin of $3: copy the twin's C and change the names/offsets/constants")"
     # library code: show the same function from the reference sources (kh1-study/libref: Sony SDK / newlib / libgcc
     # files from the ICO and King's Field IV decompiles, MIT) - usually the original source, give or take SDK version
