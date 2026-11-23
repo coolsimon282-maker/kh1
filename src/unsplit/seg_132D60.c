@@ -19,7 +19,22 @@ void func_0022F808(void) {
     } while (count > 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232DA0);
+#include "sdk/ee/eetypes.h"
+
+extern u_long128 D_0040EF80;
+extern u_long128 D_003F2080;
+
+void func_00232DA0(void) {
+    u_long128 *src = &D_0040EF80;
+    u_long128 *dst = &D_003F2080;
+    s32 count = 0x16C0;
+    do {
+        *dst = *src;
+        src++;
+        dst++;
+        count--;
+    } while (count > 0);
+}
 
 extern struct {
     s32 unk0;
