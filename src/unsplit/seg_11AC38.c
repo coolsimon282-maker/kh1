@@ -1839,7 +1839,20 @@ void func_0022D320(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022D398);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022D400);
+s32 func_001F4338(s32);
+void func_0011D598_v(s32) __asm__("func_0011D598");
+void func_0022D400(s32 a0) {
+    if (func_001F4338(a0) && (*(s32 *)(D_00425BC8 + 8) & 0x8)) {
+        func_001F36B8(a0);
+        func_0011D598_v(0x3);
+        D_006469B8[0] = 1.0f;
+        D_006469B8[1] = 1.0f;
+        D_006469B8[2] = 3.0f;
+        D_006469B8[3] = 5.0f;
+        D_006469B8[4] = 7.0f;
+        D_006469B8[5] = 9.0f;
+    }
+}
 
 s32 func_0022D498(void) {
     if (func_001F40C8() != 0) {
