@@ -1,3 +1,26 @@
+#ifdef VERSION_FM
+// Final Mix links a newer build of this library file: its functions are matched one by one below.
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", supplement_crt0);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", func_0025F3E0);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", func_0025F3F0);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", func_0025F428);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", FindAddress);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", func_0025F478);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", func_0025F4B0);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", func_0025F5B0);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/initsys", _InitSys);
+
+#else
 #include "common.h"
 #include "eekernel.h"
 
@@ -69,3 +92,4 @@ void _InitSys(void) {
     InitExecPS2();
     InitTLBFunctions();
 }
+#endif

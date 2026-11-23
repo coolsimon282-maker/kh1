@@ -1,3 +1,88 @@
+#ifdef VERSION_FM
+// Final Mix links a newer build of this library file: its functions are matched one by one below.
+#include "common.h"
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceFsIobSemaMK);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", new_iob);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", get_iob);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceFs_Rcv_Intr);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceFsSemInit);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceFsWaitS);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceFsSigSema);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", scePowerOffHandler);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceFs_Poff_Intr);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceFsInit);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _fs_version);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceFsReset);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceOpen);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceClose);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceLseek);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceRead);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceWrite);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceIoctl);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceIoctl2);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", _sceCallCode);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceRemove);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceMkdir);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceRmdir);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceFormat);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceAddDrv);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceDelDrv);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceDopen);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceDclose);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceDread);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceGetstat);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceChstat);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceRename);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceChdir);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceSync);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceMount);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceUmount);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceLseek64);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceDevctl);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceSymlink);
+
+INCLUDE_ASM("asm/nonmatchings/lib/libkernl/filestub", sceReadlink);
+
+#else
 #include "common.h"
 #include "eekernel.h"
 #include <sifdev.h>
@@ -1737,3 +1822,4 @@ int sceReadlink(const char* path, char* buf, unsigned int bufsize) {
     DeleteSema(semaid);
     return ret_link;
 }
+#endif
