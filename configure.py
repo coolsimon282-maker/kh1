@@ -81,6 +81,7 @@ NO_G_FILES = [
     "pppKeTh.c",       # a5: pppKeThCalc (soft-double calls; as -g leaves their delay slots empty)
     "pppKeBornPtCmpl.c",  # f3: func_0018FE28 (atan2 twin of draw.c func_001AADC8; soft-double calls)
     "xtailor.c",       # a1: func_00110230 (volatile store in the jr slot: gas fills it only without -g)
+    "seg_006B18.c",    # a1: func_00106DB0 (volatile DMA register store in the jal slot: gas fills it only without -g)
     "xnoodle.c",       # a5: func_0010C010 (a .loc stops gas filling a delay slot after a volatile store)
 ]
 
