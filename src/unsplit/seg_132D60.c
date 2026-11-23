@@ -1777,7 +1777,24 @@ void func_00248B28(Seg132V3* a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248B58);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248E30);
+void func_00248B58(s32);
+
+s32 func_00248E30(void) {
+    Seg132E12 e;
+    s32 r = 0;
+    s32 *d = &D_00669700;
+
+    if (*d == 0) {
+        if (func_002486C8((Seg132Q *)(d + 5), &e) == 0) {
+            return 0;
+        }
+        func_00248B28((Seg132V3 *)&e);
+    } else {
+        r = func_00248738((Seg132Q *)(d + 5), &e) != 0;
+    }
+    func_00248B58(r);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248EA0);
 
