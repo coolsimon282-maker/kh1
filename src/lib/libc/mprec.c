@@ -4,7 +4,15 @@
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _Balloc);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _Bfree);
+#include <reent.h>
+
+void _Bfree(struct _reent *ptr, struct _Bigint *v)
+{
+    if (v) {
+        v->_next = ptr->_freelist[v->_k];
+        ptr->_freelist[v->_k] = v;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _multadd);
 
