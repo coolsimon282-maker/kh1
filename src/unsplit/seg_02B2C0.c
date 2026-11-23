@@ -269,7 +269,25 @@ void func_0012B708(s32 *a0) {
     *a0 = func_00155ED8(*a0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012B738);
+typedef struct { u64 f; u8 pad[0x10]; void *p; u8 pad2[0x730 - 0x1C]; } S4F8310;
+extern S4F8310 D_004F8310[];
+extern u8 D_002E2F20[];
+extern s32 D_00514F10;
+extern u8 D_00524F20[];
+
+void func_0012B738(void) {
+    S4F8310 *p = D_004F8310;
+    s32 i;
+
+    for (i = 0; i < 64; i++, p++) {
+        p->p = D_002E2F20;
+        p->f &= ~1;
+    }
+    for (i = 0; i < 32; i++) {
+        D_00524F20[i] = 0;
+    }
+    D_00514F10 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012B7A8);
 
