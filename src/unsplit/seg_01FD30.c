@@ -121,7 +121,22 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120678);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120590);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001207F8);
+extern u8 D_004E4528[];
+s32 func_0011F0F8(u8 *);
+
+s32 func_001207F8(s32 id) {
+    u8 *p = D_004E4528;
+    s32 i;
+
+    for (i = 0; i < 16; i++, p += 0x4C) {
+        if (func_0011F0F8(p) != 0) {
+            if (id == -1 || id == *(s32 *)(p + 0x44)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 s32 sceCdDiskReady(s32);
 s32 sceCdSeek(u32);

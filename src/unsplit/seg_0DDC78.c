@@ -319,7 +319,22 @@ s32 func_001E0318(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0338);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0498);
+void* func_001EE768(s32 arg0);
+s32 func_001E0498(A2Script *p) {
+    s32 v = p->unk_174[p->unk_174[3] + 4];
+    if (v == -1) {
+        func_001EE768(-1);
+        p->unk_174[3]--;
+        return 2;
+    }
+    {
+        s32 t = D_003DACA0;
+        s32 *tab = (s32 *)(*(s32 *)(t + 4) * 4 + t);
+        func_001EE768(t + tab[v + 2]);
+    }
+    p->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0528);
 
@@ -337,7 +352,19 @@ void func_001E05A8(void *buf) {
     sceGsSyncPath(0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0608);
+extern u8 D_0062F670[];
+void func_F20000(void);
+
+void func_001E0608(void) {
+    sceGsSetDefLoadImage(&D_0062F670, 0xE00, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_0062F670, &func_F20000);
+    sceGsSetDefLoadImage(&D_0062F670, 0x1400, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_0062F670, &func_F20000 + 0x48000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E06C8);
 
@@ -438,7 +465,16 @@ void func_001E1480(void) {
     sceGsExecStoreImage(si, func_F20000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E14E0);
+void func_001E14E0(void) {
+    sceGsSetDefLoadImage(&D_0062F670, 0xE00, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_0062F670, &func_F20000);
+    sceGsSetDefLoadImage(&D_0062F670, 0x1400, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_0062F670, &func_F20000 + 0x48000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E15A0);
 
@@ -1496,7 +1532,10 @@ s32 func_001E8D40(A2Script *p) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E8DA0);
+s32 func_001E8DA0(A2Script *s) {
+    s32 r; s32 d;
+    d = func_0011E368(s->unk_174[s->unk_174[3] + 3], s->unk_174[s->unk_174[3] + 4]); r = 2; if (d != 0) { d = 4; r = d; } return r;
+}
 
 void func_0011D350(s32, s32);
 
@@ -1525,7 +1564,17 @@ s32 func_001E8E68(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E8ED8);
+void func_001E8ED8(s32 a0, s32 a1, s32 x) {
+    D_00631560 = x;
+    if (fm_func_0011E340(0) == 0) {
+        func_00146BC8(-6);
+        func_00146BC8(-7);
+        D_002C1EA8 |= 0x40000;
+        func_0011CC20(-8, D_00631560, func_001E8E38);
+        return;
+    }
+    func_0011ED30(0xC352, func_001E8E68);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E8F68);
 
