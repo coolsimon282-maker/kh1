@@ -146,7 +146,17 @@ void func_001BA2A8(s32 n, u8 *src) {
 void *func_001BA9A8(void);
 u8 func_001BA458(s32 x);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BC480);
+s32 func_001BC480(s32 i) {
+    u8* p = (u8*)func_001BA9A8() + i;
+    s32 c = *p;
+    s32 m = func_001BA458(i);
+
+    if (c < m) {
+        *p += 1;
+        return 1;
+    }
+    return 0;
+}
 
 void func_001BA358(s32 i, s32 add) {
     u8 *p = (u8 *)func_001BA9A8() + i;
@@ -541,7 +551,18 @@ s32 func_001BB4F0(void) {
 
 u32 func_001BB780(u32 a, u32 b);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB500);
+s32 func_001BB500(s32 a0, u32 a1) {
+    s32* p = &D_0037A150;
+    u32 v;
+
+    *p -= a0;
+    v = func_001BB780(*p, a1);
+    *p = v;
+    if (v < D_0037A148) {
+        D_0037A148 = v;
+    }
+    return v;
+}
 
 extern u8 D_00378A48[];
 extern u8 D_00379C78[];

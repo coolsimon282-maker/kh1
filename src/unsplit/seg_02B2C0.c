@@ -403,7 +403,18 @@ void func_0012C880(u8 *a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C8E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012CA38);
+extern s32 D_002E3170[];
+extern u16* D_002E319C;
+extern s32 D_002E31A0;
+void func_0012CA38(void) {
+    s32 i;
+
+    for (i = 7; i >= 0; i--) D_002E3170[i] = 0;
+    D_00524F40 = (s32**)D_002E3170;
+    *D_00524F40 = D_002E2FD8;
+    D_002E319C = (u16*)(D_002E31A0 = 0);
+    D_002E2FD8[3] = 0;
+}
 
 s32 func_0012CA98(void) {
     return ((*(s32 *)((u8 *)D_003010F8 + 0x874) >> 1) ^ 1) & 1;

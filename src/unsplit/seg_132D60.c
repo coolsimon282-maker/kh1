@@ -311,7 +311,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234668);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234730);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002347E0);
+typedef struct { s32 type; s32 serial; s32 arg[6]; } Ent2347;
+extern Ent2347 D_Ent2347[] __asm__("D_006477B0");
+extern s32 D_00647FB8;
+extern s32 D_00647FC0;
+s32 func_002347E0(s32 a0) {
+    s32 s;
+    D_Ent2347[D_00647FB8].type = 0xD;
+    D_Ent2347[D_00647FB8].serial = D_00647FC0;
+    D_Ent2347[D_00647FB8].arg[0] = a0;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
 extern s32 D_00647FEC;
 
