@@ -1039,7 +1039,14 @@ void func_00113E38(void) {
     D_004D2A60 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113E68);
+void func_00113E68(void) {
+    /* the target loads the 1 once into a1 and stores it from there; CSE turns every plain form into two loads */
+    register s32 one asm("$5") = 1;
+
+    D_002B9664 = one;
+    D_002B8354 = 0;
+    func_0011D598(6, one);
+}
 
 static const char padding[] = "\0\0"; // TODO likely file split
 
@@ -1361,6 +1368,9 @@ typedef struct {
     /* 0x04 */ u8 unk_04[0xC];
 } XBlade3044D8; // size = 0x10
 
+// Not a real symbol: func_00114B50 below changes its code with the identifiers declared before this point (cse hashes
+// symbol-name pointers, rule F1); since func_00113E68 matched it needs one more here.
+extern s32 xblade_cse_pad;
 extern XBladePkt D_004D9380[2];
 extern XBladePkt D_004D9420[][2];
 typedef struct {
