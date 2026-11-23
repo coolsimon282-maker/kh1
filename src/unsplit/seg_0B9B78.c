@@ -1032,7 +1032,14 @@ void func_001BF290(A2Vec4 *v) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF2B0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF360);
+void func_001BF360(f32* d, f32* q) {
+    f32 n = q[3] * q[3] + q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
+
+    d[0] = -q[0] / n;
+    d[1] = -q[1] / n;
+    d[2] = -q[2] / n;
+    d[3] = q[3] / n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF3E8);
 

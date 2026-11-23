@@ -4357,7 +4357,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001627E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162808);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162818);
+void func_00162818(void) {
+    __asm__ volatile(
+        ".set noreorder\n"
+        "1:\n"
+        "\tbc2f\t2f\n"
+        "\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n"
+        "\tj\t1b\n"
+        "\tnop\n\tnop\n"
+        "2:\n"
+        ".set reorder\n");
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162848);
 
