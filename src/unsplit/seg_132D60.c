@@ -40,7 +40,13 @@ void func_00233158(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233168);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002335D8);
+extern s32 D_00425BC0[];
+extern void func_F20000(s32, s32);
+
+void func_002335D8(s32 arg0) {
+    func_00120438((const char *)D_00425BC0[arg0], (void *)func_F20000);
+    func_F20000(0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233610);
 
