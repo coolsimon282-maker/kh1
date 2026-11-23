@@ -1202,7 +1202,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244188);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244298);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002444A0);
+typedef struct { char pad0[0x10]; s32 unk_10; char pad14[0xA00 - 0x14]; } A2Ent_A00;
+extern A2Ent_A00 D_00656510[3][5];
+
+void func_002444A0(void) {
+    s32 i, j;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 5; j++) {
+            D_00656510[i][j].unk_10 = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244500);
 
@@ -1393,7 +1403,17 @@ s32* func_00245F58(a0)
     return D_00668040_e[i].v;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245F90);
+typedef struct { s32 used; f32 f; s32 a; s32 b; } A2Slot10;
+
+void func_00245F90(s32 arg0, s32 arg1) {
+    A2Slot10 *s = (A2Slot10 *)func_00245F58(arg1);
+    if (s->used == 0) {
+        s->a = arg0; //P
+        s->b = arg1; //P
+        s->used = 1; //P
+        s->f = 1.0f; //P
+    }
+}
 
 extern s32 *func_00245F58();
 
