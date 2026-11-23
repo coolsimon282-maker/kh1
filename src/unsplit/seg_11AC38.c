@@ -369,7 +369,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C780);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C9A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021CB00);
+void func_00206130(s32, s32, s32, s32, s32, s32);
+
+void func_0021CB00(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    s32 counter = arg3;
+    s32 acc = arg2;
+    if (counter > 0) {
+        do {
+            counter--;
+            func_00206130(arg0, arg1, acc, 0xC8, 2, 0x40202020);
+            acc += arg4;
+        } while (counter > 0);
+    }
+}
 
 void func_0021CB88(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_0021CBC8(a0, a1, a2, a3, a4, 0x80461E00);
