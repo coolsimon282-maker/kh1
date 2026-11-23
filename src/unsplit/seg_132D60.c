@@ -477,9 +477,15 @@ void func_00236928(s32 arg0) {
     ptr[0] = (ptr[0] * 69069.0f + 1.0f) * 0x1.0p-32f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236970);
+f32 func_00236970(u32 *p) {
+    *p = (u64)*p * 0x41C64E6D + 0x3039;
+    return *p * (1.0f / 4294967296.0f);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002369E8);
+f32 func_002369E8(u32 a) {
+    a = (u64)a * 0x41C64E6D + 0x3039;
+    return a * (1.0f / 4294967296.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236A58);
 
@@ -568,7 +574,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237318);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237548);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237600);
+typedef struct { s32 shift; u8 *buf; } A2Tbl;
+
+void func_00237600(void *arg0) {
+    A2Tbl *t = arg0;
+    s32 n = 1 << t->shift;
+    u8 *p = t->buf;
+    s32 i;
+    for (i = 0; i < n; i++) {
+        memset(p, 0, 8);
+        p += 8;
+    }
+}
 
 extern void func_00237600(void *arg0);
 
@@ -1036,7 +1053,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241A38);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241B60);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241C00);
+u8 *func_00241B60(s32, s32);
+
+void func_00241C00(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    u8 *p = func_00241B60(3, arg4);
+    *(s32 *)(p + 0xA88) = arg0;
+    *(s32 *)(p + 0xA8C) = arg1;
+    *(s32 *)(p + 0xA90) = arg2;
+    *(s32 *)(p + 0xA94) = arg3;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241C60);
 
@@ -1654,7 +1679,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247CF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248010);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", fm_func_002480D8);
+extern u8 D_00669320[];
+extern s32 D_00669388[];
+
+void fm_func_002480D8(void) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
+        func_002474E8(D_00669388[i], D_00669320, 0, 0, 1.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248140);
 
@@ -1852,7 +1885,13 @@ s32 func_00249370(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0RotMatrixY(arg0, arg0, arg2[1]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002493C0);
+void func_002493C0(sceVu0FMATRIX out, sceVu0FVECTOR tv, sceVu0FVECTOR rot) {
+    sceVu0FMATRIX m;
+
+    sceVu0UnitMatrix(m);
+    func_00249370(m, m, rot);
+    sceVu0TransMatrix(out, m, tv);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249420);
 
@@ -1929,7 +1968,14 @@ void func_00249888(f32 *arg0, f32 *arg1) {
     sceVu0CopyVector(arg0, (f32 *)((u8 *)arg1 + 0x10));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002498A0);
+void func_002498A0(f32 *v) {
+    if (*v < 3.1415926f) {
+        *v += 6.2831853f;
+    }
+    if (*v > 3.1415926f) {
+        *v += -6.2831853f;
+    }
+}
 
 // func_00249900 (src/unsplit/seg_132D60.c)
 void func_00249900(f32 *arg0, f32 *arg1) {
@@ -1953,7 +1999,13 @@ f32 func_00249950(f32 *arg0, f32 fparg0, f32 fparg1) {
     return var_f0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249988);
+void func_00249988(sceVu0FVECTOR out, sceVu0FVECTOR a, sceVu0FVECTOR b, f32 t) {
+    sceVu0FVECTOR d;
+
+    sceVu0SubVector(d, b, a);
+    sceVu0ScaleVectorXYZ(d, d, t);
+    sceVu0AddVector(out, a, d);
+}
 
 void func_002499F0(void) {
     u64 buf[6];
