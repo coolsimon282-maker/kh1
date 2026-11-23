@@ -96,6 +96,9 @@ PY
     echo "$1 $2" > qwen/.job
     echo "$1 $2 $4 $(date +%s)" > qwen/.job_info; rm -f qwen/.job_tries
     echo "NEXT JOB: $1 in src/$2.c ($4 bytes)$( [ "$3" != - ] && echo " - twin of $3: copy the twin's C and change the names/offsets/constants")"
+    # library code: show the same function from the reference sources (kh1-study/libref: Sony SDK / newlib / libgcc
+    # files from the ICO and King's Field IV decompiles, MIT) - usually the original source, give or take SDK version
+    case "$2" in lib/*) python3 tools/libref.py "$1" ;; esac
     echo "== assembly of $1 =="
     grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
     if [ "$3" != - ]; then echo "== the twin's matched C =="; bash "$0" cfunc "$3"
@@ -124,7 +127,7 @@ PY
       # fast check first (under a second: compiles this one file and compares the function); the full build only
       # runs to confirm when the fast check says it matches
       q=0; qout=""
-      case "$2" in lib/*) ;; *) qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$? ;; esac
+      qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$?   # (library files too since 23 Nov: quickcmp knows their compilers)
       if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
       # a give-up used to throw the attempt away. Keep the closest one per function (qwen/attempts/<func>.c and
       # .score = "<instructions off> <of how many>"): a near-miss is a head start for a stronger model or the permuter

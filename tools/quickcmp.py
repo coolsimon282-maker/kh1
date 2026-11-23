@@ -15,14 +15,32 @@ cf = '' if base in lst('STRICT_ALIASING_FILES') else '-fno-strict-aliasing'
 os.makedirs('/tmp/qc', exist_ok=True); obj = '/tmp/qc/%d.o' % os.getpid()
 cc = ['tools/cc/ee-gcc2.96/bin/ee-gcc', '-c', '-B', 'tools/cc/ee-gcc2.96/bin/ee-', '-Iinclude', '-isystem', 'include/sdk/ee',
       '-isystem', 'include/gcc', '-DVERSION_FM', '-O2', '-G0'] + ([g] if g else []) + ([cf] if cf else []) + ['src/%s.c' % f, '-S', '-o', '-']
-p1 = subprocess.run(cc, capture_output=True)
-if p1.returncode:
-    print(p1.stderr.decode(errors='replace')[-1500:]); print('COMPILE ERROR'); sys.exit(2)
-p2 = subprocess.run(['python3', 'tools/masps2.py'], input=p1.stdout, capture_output=True, env=dict(os.environ, MASPS2_NO_NOPS='1'))
-open(obj + '.s', 'wb').write(p2.stdout)
-p3 = subprocess.run(['tools/cc/ee-gcc2.96/ee/bin/as', '-O2', '-G0'] + ([g] if g else []) + ['-EL', '-mabi=eabi', obj + '.s', '-o', obj], capture_output=True)
-if p3.returncode:
-    print(p3.stderr.decode(errors='replace')[-800:]); print('COMPILE ERROR'); sys.exit(2)
+# Library files are built differently (see the libcc / newlibcc / libgcccc rules in configure.py): straight to an
+# object, no masps2 step, and Sony's own libraries with the older 991111 compiler.
+G296 = ['tools/cc/ee-gcc2.96/bin/ee-gcc', '-c', '-B', 'tools/cc/ee-gcc2.96/bin/ee-', '-O2', '-G0']
+libcc = None
+if f.startswith('lib/libgcc/'):
+    libcc = G296 + ['-DIN_GCC', '-DIN_LIBGCC2', '-DUS_SOFTWARE_GOFAST', '-Iinclude/libgcc-2.95.3', '-Iinclude',
+                    '-Iinclude/libgcc-2.95.3/config', '-isystem', 'include/gcc']
+elif f.startswith(('lib/libc/', 'lib/libm/')):
+    libcc = G296 + ['-D_IEEE_LIBM', '-Iinclude/newlib', '-Iinclude/newlib-private', '-isystem', 'include/gcc',
+                    '-idirafter', 'include/gcc-991111']
+elif f.startswith('lib/'):
+    libcc = ['tools/cc/ee-gcc2.9-991111/bin/ee-gcc', '-c', '-isystem', 'include/gcc-991111', '-Iinclude', '-isystem',
+             'include/sdk/ee', '-isystem', 'include/gcc', '-DVERSION_FM', '-O2', '-G0']
+if libcc:
+    p1 = subprocess.run(libcc + ['src/%s.c' % f, '-o', obj], capture_output=True)
+    if p1.returncode:
+        print(p1.stderr.decode(errors='replace')[-1500:]); print('COMPILE ERROR'); sys.exit(2)
+else:
+    p1 = subprocess.run(cc, capture_output=True)
+    if p1.returncode:
+        print(p1.stderr.decode(errors='replace')[-1500:]); print('COMPILE ERROR'); sys.exit(2)
+    p2 = subprocess.run(['python3', 'tools/masps2.py'], input=p1.stdout, capture_output=True, env=dict(os.environ, MASPS2_NO_NOPS='1'))
+    open(obj + '.s', 'wb').write(p2.stdout)
+    p3 = subprocess.run(['tools/cc/ee-gcc2.96/ee/bin/as', '-O2', '-G0'] + ([g] if g else []) + ['-EL', '-mabi=eabi', obj + '.s', '-o', obj], capture_output=True)
+    if p3.returncode:
+        print(p3.stderr.decode(errors='replace')[-800:]); print('COMPILE ERROR'); sys.exit(2)
 run = lambda *a: subprocess.run(a, capture_output=True, text=True).stdout
 syms = {}
 for l in run('mips-linux-gnu-nm', '-S', obj).splitlines():
