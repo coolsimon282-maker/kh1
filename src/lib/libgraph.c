@@ -173,11 +173,110 @@ int sceGsSyncV(int mode) {
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsSyncPath);
 
+extern char D_00492B30[];
+extern char D_00492C50[];
+
+/* R5900 opcodes with no C spelling.  Defined in this member. */
+#define SYNC() __asm__ __volatile__("sync" : : : "memory")
+
+typedef unsigned int u128_t __attribute__((mode(TI)));
+
+typedef struct { /* field names derived */
+    unsigned long long nloop : 15;
+    unsigned long long eop : 1;
+    unsigned long long pad1 : 30;
+    unsigned long long pre : 1;
+    unsigned long long prim : 11;
+    unsigned long long flg : 2;
+    unsigned long long nreg : 4;
+    unsigned long long regs0 : 4;
+    unsigned long long regs1 : 60;
+} GifTag; /* derived name */
+
+/* sceGsSetDefLoadImage: its switch jump table is in the data segment (blocked until that rodata is C). */
 INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsSetDefLoadImage);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsSetDefStoreImage);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsExecLoadImage);
+
+
+
+typedef struct {          /* field names derived */
+    unsigned int h0;      /* 0x0 */
+    unsigned int h1;      /* 0x4 */
+    unsigned int h2;      /* 0x8 */
+    unsigned int h3;      /* 0xC */
+    GifTag gif;           /* 0x10 */
+    long long bitbltbuf;  /* 0x20 */
+    long long abitbltbuf; /* 0x28 */
+    long long trxpos;     /* 0x30 */
+    long long atrxpos;    /* 0x38 */
+    long long trxreg;     /* 0x40 */
+    long long atrxreg;    /* 0x48 */
+    long long finish;     /* 0x50 */
+    long long afinish;    /* 0x58 */
+    long long trxdir;     /* 0x60 */
+    long long atrxdir;    /* 0x68 */
+} StoreImage;             /* derived name */
+
+int sceGsSetDefStoreImage(StoreImage *di, short sbp, short sbw, short spsm, short ssax, short ssay,
+                          short rrw, short rrh)
+{
+    di->h0 = 0;
+    di->h1 = 0x06008000;
+    di->h2 = 0x13000000;
+    di->h3 = 0x50000006;
+    *(u128_t *)&di->gif = 0;
+    di->gif.nloop = 5;
+    di->gif.eop = 1;
+    di->gif.nreg = 1;
+    di->gif.regs0 = 0xE;
+    di->bitbltbuf = (long long)sbp | ((long long)sbw << 16) | ((long long)spsm << 24);
+    di->abitbltbuf = 0x50;
+    di->trxpos = (long long)ssax | ((long long)ssay << 16);
+    di->atrxpos = 0x51;
+    di->trxreg = (long long)rrw | ((long long)rrh << 32);
+    di->atrxreg = 0x52;
+    di->finish = 0;
+    di->afinish = 0x61;
+    di->trxdir = 1;
+    di->atrxdir = 0x53;
+    SYNC();
+    return 7;
+}
+
+
+int sceGsExecLoadImage(void *pkt, void *img)
+{
+    unsigned int i = 0;
+
+    while (*D2_CHCR & 0x100) {
+        if (i++ > 0x1000000) {
+            scePrintf(D_00492C50);
+            return -1;
+        }
+    }
+    *D2_QWC = 6;
+    if (((unsigned int)pkt & 0x70000000) == 0x70000000) {
+        *D2_MADR = ((unsigned int)pkt & 0x0FFFFFFF) | 0x80000000;
+    } else {
+        *D2_MADR = (unsigned int)pkt & 0x0FFFFFFF;
+    }
+    *D2_CHCR = 0x101;
+    while (*D2_CHCR & 0x100) {
+        if (i++ > 0x1000000) {
+            scePrintf(D_00492C50);
+            return -1;
+        }
+    }
+    *D2_QWC = (int)(*(long *)((char *)pkt + 0x50) & 0x7FFF);
+    if (((unsigned int)img & 0x70000000) == 0x70000000) {
+        *D2_MADR = ((unsigned int)img & 0x0FFFFFFF) | 0x80000000;
+    } else {
+        *D2_MADR = (unsigned int)img & 0x0FFFFFFF;
+    }
+    *D2_CHCR = 0x101;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsExecStoreImage);
 
