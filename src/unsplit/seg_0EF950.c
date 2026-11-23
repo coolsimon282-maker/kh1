@@ -2516,7 +2516,17 @@ void func_0020D2A0(void) {
     D_002BC140 = D_00640E30;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020D2F8);
+s32 func_0020D2F8(void) {
+    if (func_001F40C8() != 0 || (*(s32 *)D_003ED728 != 0)) {
+        func_002336F8();
+        func_002365E0();
+        func_001F82B0();
+        func_0020B998();
+        return 0;
+    }
+    func_0020D2A0();
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020D360);
 
