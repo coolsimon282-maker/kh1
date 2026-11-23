@@ -2,6 +2,19 @@
 // Data this file owns is still in the data segments: declare it extern here, do not define it.
 #include "common.h"
 
+/* R5900 opcodes with no C spelling. COP0 Status ($12) bit 16 = interrupts enabled. */
+#define EI() __asm__ __volatile__(".word 0x42000038" : : : "memory")
+#define MFC0_STATUS(dst) __asm__ __volatile__("mfc0 %0, $12" : "=r"(dst))
+#define COP0_STATUS_EIE 0x10000
+
+/* DIntr: the reference C (do { di; sync.p } while (Status.EIE)) gives the right code from cc1, but the original
+   was assembled with a newer gas (2.10) that moves "move $2,$4" into the last jr's delay slot; ee-as 991111 doesn't. */
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/diei", DIntr);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/diei", EIntr);
+int EIntr(void) {
+    int eie;
+    MFC0_STATUS(eie);
+    eie &= COP0_STATUS_EIE;
+    EI();
+    return eie != 0;
+}
