@@ -89,8 +89,8 @@ NOTHROW(void, func_00247108);
 NOTHROW(void, func_00247218);
 NOTHROW(void, func_00246C60);
 NOTHROW(void, func_00246C28);
-void func_00246E80(u8*);
-void func_00246FF0(u8*);
+NOTHROW(void, func_00246E80);
+NOTHROW(void, func_00246FF0);
 void func_002479A0(u8* p) {
     if (*(u32*)(p + 0x60) & 4) {
         func_00247108(p);
@@ -108,7 +108,7 @@ void func_002479A0(u8* p) {
 
 NOTHROW(void, func_00247238);
 NOTHROW(void, func_00246C48);
-void func_00247010(u8*);
+NOTHROW(void, func_00247010);
 void func_00247A30(u8* p) {
     if (*(u32*)(p + 0x60) & 4) {
         func_00247238(p);
