@@ -1201,7 +1201,24 @@ void func_00243690(Seg132V3* a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002436C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243A20);
+void func_002436C0(s32);
+
+s32 func_00243A20(void) {
+    Seg132E12 e;
+    s32 r = 0;
+    s32 *d = &D_006561D0;
+
+    if (*d == 0) {
+        if (func_00243208((Seg132Q *)(d + 5), &e) == 0) {
+            return 0;
+        }
+        func_00243690((Seg132V3 *)&e);
+    } else {
+        r = func_00243278((Seg132Q *)(d + 5), &e) != 0;
+    }
+    func_002436C0(r);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243A90);
 
