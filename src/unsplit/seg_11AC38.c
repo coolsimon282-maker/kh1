@@ -716,7 +716,15 @@ s32 func_00221428(s32 a0) {
     return D_003F6360[a0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00221440);
+void func_00221440(s32 arg0) {
+    if (func_001F42B8(arg0) && (*(s32 *)(D_00425BC8 + 8) & 0x4000)) {
+        func_001F3758(*(s32 *)(arg0 + 0xC));
+        func_0011D598(3);
+    }
+    func_0021B820();
+    func_0021CCD0(arg0, *(s32 *)(arg0 + 0x24));
+    func_0021AF38(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002214A8);
 
