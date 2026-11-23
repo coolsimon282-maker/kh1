@@ -245,7 +245,35 @@ void *func_0024D8E0(void) {
     return D_0046A660;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D8F0);
+typedef struct {
+    u8 pad[4];
+    s32 (*unk_04)(void);
+    s32 (*unk_08)(void);
+    u8 padC[4];
+    s32 unk_10;
+} A2MountF;
+extern A2MountF D_0046A688_f __asm__("D_0046A688");
+extern char D_00491998[];
+extern char D_004919A8_c[] __asm__("D_004919A8");
+int sprintf(char*, const char*, ...);
+int sceMount(const char* fsdevname, const char* blkdevname, int flag, void* arg, int arglen);
+
+s32 func_0024D8F0(void) {
+    A2MountF *p = &D_0046A688_f;
+    char buf[0x80];
+
+    if (p->unk_10 == 0) {
+        s32 a = p->unk_04();
+        s32 r;
+        sprintf(buf, D_00491998, a, p->unk_08());
+        r = sceMount(D_004919A8_c, buf, 0, 0, 0);
+        if (r < 0) {
+            return (r == -5) ? -1 : 1;
+        }
+        p->unk_10 = 1;
+    }
+    return 0;
+}
 
 typedef struct {
     u8 pad[0x10];
