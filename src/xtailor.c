@@ -492,7 +492,9 @@ void func_00110190(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110190);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110230);
+void func_00110230(s32 a0) {
+    D_002BBDF4 = a0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110240);
 
