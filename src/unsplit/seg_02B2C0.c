@@ -662,7 +662,11 @@ void func_00130578(f32 f0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130598);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130648);
+void func_00130648(u8 *a0) {
+    *(s32 *)(a0 + 0x288) = 0;
+    *(f32 *)(a0 + 0x28C) = *(f32 *)(a0 + 0x280);
+    *(s32 *)(a0 + 0x290) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130660);
 

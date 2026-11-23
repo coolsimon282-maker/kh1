@@ -2194,7 +2194,10 @@ void func_00207618(void) {
     func_0020BE10(0x10);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207630);
+void func_002076B0(s32, s32, s32, s32, s32, s32, s32);
+void func_00207630(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    func_002076B0(arg0, arg1, arg2, arg3, arg4, arg5, func_001F0EF0(arg6));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002076B0);
 
