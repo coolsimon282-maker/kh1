@@ -751,7 +751,12 @@ s32 func_00131B08(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00131B50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00131C08);
+void func_00131C08(u8 *arg0, f32 arg1, f32 arg2, f32 arg3) {
+    *(f32 *)(arg0 + 0x290) = arg3;
+    *(f32 *)(arg0 + 0x288) = arg1;
+    *(f32 *)(arg0 + 0x28C) = arg2;
+    *(u64 *)(arg0 + 0x160) = *(u64 *)(arg0 + 0x160) | 0x40;
+}
 
 void func_00131C28(u8 *a0, f32 f0) {
     *(f32 *)(a0 + 0x284) = f0;
