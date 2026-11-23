@@ -3344,7 +3344,17 @@ s32 func_00153300(u8* p, u8* b) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153360);
+typedef struct { u64 lo:44; u32 b:1; } V153360;
+typedef struct { u64 lo:44; u64 b:1; } V153360b;
+s32 func_00152688_r(u8*, s32, s32) __asm__("func_00152688");
+void func_00153360(u8* a0, u8* a1) {
+    func_00152688_r(a0, *(s32*)(a1 + 4), 0x11);
+    ((V153360b*)(a0 + 0x370))->b = 1;
+    *(f32*)(a0 + 0x30) = 0.0f;
+    *(f32*)(a0 + 0x34) = atan2f(*(f32*)(a1 + 0x10), *(f32*)(a1 + 0x18));
+    *(f32*)(a0 + 0x38) = 0.0f;
+    func_00152D50(a0, 3, (f32*)(a1 + 0x10));
+}
 
 void func_001533D0(s32 a, u8* b) {
     sceVu0FVECTOR v;
