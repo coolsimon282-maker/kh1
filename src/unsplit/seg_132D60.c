@@ -48,7 +48,12 @@ void func_0022F888(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232E08);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00232F88);
+extern u8 D_003F8298[];
+u8* func_00232F88(u32 a0) {
+    D_003F8298[0xD] = a0 / 10 + '0';
+    D_003F8298[0xE] = a0 % 10 + '0';
+    return D_003F8298;
+}
 
 extern u8 D_003F82A8[];
 
@@ -441,7 +446,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236A58);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236C68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236D48);
+s32 func_00236D48(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+    sceVu0RotMatrixZ(arg0, arg1, arg2[2]);
+    sceVu0RotMatrixX(arg0, arg0, arg2[0]);
+    sceVu0RotMatrixY(arg0, arg0, arg2[1]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236D98);
 

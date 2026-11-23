@@ -3093,7 +3093,15 @@ void func_001531C0(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153210);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001532C8);
+struct f1_32c8 { u64 lo:42; u32 b:1; };
+s32 func_001532C8(u8* a0) {
+    s32 r = 0;
+    u8* p = *(u8**)(a0 + 4);
+    if (p != NULL && *(u16*)(*(u8**)(p + 0x130) + 0x4C) == 0) {
+        r = !((struct f1_32c8*)(a0 + 8))->b;
+    }
+    return r;
+}
 
 s32 func_00153300(u8* p, u8* b) {
     s32 r = 0;
@@ -4772,7 +4780,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171C80);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171D80);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171E50);
+void func_00157A30_3(u8*, s32, u8*) __asm__("func_00157A30");
+s32 func_00171E50(u8* a0, u8* a1, u8* a2) {
+    u8* p = a0;
+    u8* q = a2;
+    if (q != NULL && p != q && *(u8**)(a1 + 0x98) == q) {
+        func_00157A30_3(a0, 0x1A, a2);
+    }
+}
 
 void func_00171E90(s32 a, u8* p) {
     *(u64*)(p + 0x38) |= 0x10;
