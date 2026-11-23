@@ -1826,7 +1826,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247930);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247B50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247BD0);
+extern s32 D_00669390[];
+extern u8 D_006692C0[];
+extern void func_002474E8(s32 arg0, u8 *arg1, s32 arg2, s32 arg3, f32 arg4);
+extern void func_002476A0(void *arg0);
+extern void func_00247930(void *arg0);
+
+void func_00247BD0(void *arg0) {
+    s32 *ptr = &D_00669390;
+    s32 counter = 7;
+
+    do {
+        s32 val = *ptr;
+        ptr++;
+        counter--;
+        func_002474E8(val, D_006692C0, *(s32 *)((u8 *)arg0 + 0x24), *(s32 *)((u8 *)arg0 + 0x28), 1.0f);
+    } while (counter >= 0);
+
+    func_002476A0(arg0);
+    func_00247930(arg0);
+}
 
 extern void func_002474E8(s32 arg0, u8 *arg1, s32 arg2, s32 arg3, f32 arg4);
 extern void func_002476A0(void *arg0);
