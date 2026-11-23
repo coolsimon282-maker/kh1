@@ -315,7 +315,18 @@ s32 func_00104298(f32* a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104200);
+void func_00104200(s32 n) {
+    u8* r;
+    D_002A6208 = 1;
+    r = func_0011EEB8(D_002B8C70, 0, func_00104298);
+    if (r != NULL) {
+        *(f32*)(r + 0x10) = n * 2;
+        if (n == 0) {
+            n = 1;
+        }
+        *(f32*)(r + 0x14) = 128.0f / (n * 2);
+    }
+}
 
 s32 func_00104388(f32* a0) {
     f32 f = a0[4] + D_002B8344;
