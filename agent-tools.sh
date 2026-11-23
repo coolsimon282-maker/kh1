@@ -102,6 +102,9 @@ PY
     # library code: show the same function from the reference sources (kh1-study/libref: Sony SDK / newlib / libgcc
     # files from the ICO and King's Field IV decompiles, MIT) - usually the original source, give or take SDK version
     case "$2" in lib/*) python3 tools/libref.py "$1" ;; esac
+    # the layout changed (e.g. fm was merged with new C files) and this checkout has not been re-split yet: the
+    # function's assembly file is missing until a build does that (23 Nov: the model went hunting for it instead)
+    [ -f "asm/nonmatchings/$2/$1.s" ] || { echo "(the layout changed: re-splitting this checkout first, a few minutes)"; bash "$0" build > /dev/null 2>&1; }
     echo "== assembly of $1 =="
     grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
     if [ "$3" != - ]; then echo "== the twin's matched C =="; bash "$0" cfunc "$3"
