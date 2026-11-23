@@ -1350,7 +1350,11 @@ void func_001376E8(u8 *a0, f32 *a1) {
     *(f32 *)(a0 + 0x150) = atan2f(a1[0], a1[2]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00137718);
+s32 func_00137718(u8* a0) {
+    if (*(s32*)a0 & 4) return 0;
+    if (*(f32*)(a0 + 0x2C) == 0.0f) return 0;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00137748);
 
