@@ -518,7 +518,7 @@ s32 func_0014CA38(void);
 s32 func_0014C5C8(void);
 void func_0014DC08(u8*);
 s32 func_0014DF60(void);
-s32 func_0014E160(void);
+void func_0014E160(u8*, f32*);
 s32 func_0014E400(void);
 s32 func_0014DD48(void);
 void func_00150C18(u8*, f32*);
@@ -3231,7 +3231,63 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014DD48);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014DF60);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014E160);
+void func_0014E160(u8* p, f32* v) {
+    f32 len;
+    f32 s;
+    f32 y;
+    f32 t;
+    f32 u;
+    f32 w;
+    u8* r;
+
+    len = func_00120A58_f((f32*)(p + 0x3C0));
+    if (0.0f < *(f32*)(p + 0x2C)) {
+        sceVu0ScaleVector(v, (f32*)(p + 0x20), D_002B8344 * 0.6f);
+        v[1] = 0.0f;
+        sceVu0AddVector((f32*)(p + 0x3C0), (f32*)(p + 0x3C0), v);
+    }
+    sceVu0CopyVector(v, (f32*)(p + 0x3C0));
+    v[1] = 0.0f;
+    func_001223B0(v, v);
+    if (v[3] > *(f32*)(p + 0x2C)) {
+        if (*(f32*)(p + 0x2C) < len) {
+            v[3] = len * 0.93f;
+        } else {
+            v[3] = *(f32*)(p + 0x2C);
+        }
+    }
+    sceVu0ScaleVector(v, v, v[3]);
+    *(f32*)(p + 0x3C0) = v[0];
+    *(f32*)(p + 0x3C8) = v[2];
+    y = *(f32*)(p + 0x3C4);
+    t = *(f32*)(p + 0x24);
+    if (y < t) {
+        u = y + D_002B8344 * 0.35f;
+        *(f32*)(p + 0x3C4) = u;
+        if (t < u) {
+            *(f32*)(p + 0x3C4) = t;
+        }
+    } else if (t < y) {
+        u = y - D_002B8344 * 0.35f;
+        *(f32*)(p + 0x3C4) = u;
+        if (u < t) {
+            *(f32*)(p + 0x3C4) = t;
+        }
+    }
+    sceVu0ScaleVector(v, (f32*)(p + 0x3C0), D_002B8344);
+    w = *(f32*)(p + 0x24);
+    *(f32*)(p + 0x24) = 0.0f;
+    *(f32*)(p + 0x3CC) = w;
+    r = (u8*)func_0014DAB8();
+    if (r != NULL && 0.0f < v[1] && *(f32*)(r + 8) < *(f32*)(p + 0x14) + v[1]) {
+        v[1] = *(f32*)(r + 8) - *(f32*)(p + 0x14);
+    }
+    if (func_0012C8E8(p)) {
+        func_00147410(0x42D4, *(s32*)(p + 4) + 1, (s32)p);
+    } else {
+        func_00147278(0x42D4, *(s32*)(p + 4) + 1, 0x3C);
+    }
+}
 
 void func_0014E3A0(u8* p) {
     sceVu0ScaleVector((f32*)(p + 0x3C0), (f32*)(p + 0x3C0), 0.7f);
