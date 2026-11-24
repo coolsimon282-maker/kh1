@@ -203,7 +203,18 @@ s32 func_001DF2A8(A2Script *s) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF310);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF3A8);
+s32 func_001DF3A8(A2Script *p) {
+    A2Obj1760 *a = func_001760F0(p->unk_174[p->unk_174[3] + 1]);
+
+    if (a != NULL) {
+        s32 *r = *(s32 **)((u8 *)a + 4);
+        r[0] = (f32)p->unk_174[p->unk_174[3] + 2] / 360.0f * 65535.0f;
+        r[1] = (f32)p->unk_174[p->unk_174[3] + 3] / 360.0f * 65535.0f;
+        r[2] = (f32)p->unk_174[p->unk_174[3] + 4] / 360.0f * 65535.0f;
+    }
+    p->unk_174[3] -= 4;
+    return 2;
+}
 
 s32 func_001DF4A0(A2Script *p) {
     A2Obj1760 *q = func_001760F0(p->unk_174[p->unk_174[3] + 1]);
