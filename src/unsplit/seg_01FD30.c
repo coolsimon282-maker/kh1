@@ -17,7 +17,22 @@ void func_0011FD40(void) {
     func_001102C0();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FD60);
+s32 sceCdDiskReady(s32);
+s32 sceCdRead(u32, u32, void *, void *);
+s32 sceCdSync(s32);
+s32 sceCdGetError(void);
+extern u8 D_002C5C38[];
+
+void func_0011FD60(s32 lsn, s32 sectors, void *buf) {
+    do {
+        while (sceCdDiskReady(1) != 2 || sceCdRead(lsn, sectors, buf, D_002C5C38) == 0) {
+            func_0011FD40();
+        }
+        while (sceCdSync(1) != 0) {
+            func_0011FD40();
+        }
+    } while (sceCdGetError() != 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FE20);
 
