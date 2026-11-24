@@ -3947,7 +3947,15 @@ void func_00154548(u8* p, u8* a1) {
     func_00156260((s32)p, v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001545F0);
+void func_001545F0(u8* p, u8* a1) {
+    func_00130340(p, sceVu0InnerProduct((f32*)(p + 0x30), (f32*)(a1 + 0x10)) < 0.0f ? 0x100004E : 0x100004F, 0.0f);
+    func_00130578((s32)p, 0x40000006, 8.0f);
+    func_001373F8(p, 30.0f);
+    func_0014CCE0_f(p, 20.0f);
+    func_0014F658((s32)p, 0x1F);
+    func_00154258(p, a1, (f32*)(p + 0x3C0));
+    sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0x160), D_002C58B0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001546B8);
 
