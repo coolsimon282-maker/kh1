@@ -540,7 +540,26 @@ void func_001CC950(s32 a0, XHumB0* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC9A8);
+typedef struct { u8 b0[4]; s8 b4[0x100C]; s32 w1010[8]; s8 b1030[4]; } XHumCC9A8;
+extern XHumCC9A8 D_003854E0_c9 __asm__("D_003854E0");
+void func_0010BB10_c9(XHumB0*, s32) __asm__("func_0010BB10");
+
+s32 func_001CC9A8(Script* arg0) {
+    s32 v = arg0->unk_174[arg0->unk_174[3] + 4];
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (v == D_003854E0_c9.b1030[i]) {
+            break;
+        }
+    }
+    if (i < 4 && D_003854E0_c9.b0[i] != 0) {
+        func_0010BB10_c9(&D_00629E70_b[i], (s32)func_001CC950);
+        D_003854E0_c9.b0[i] = 3;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 typedef struct { u8 b0[4]; s8 b4[0x100C]; s32 w1010[8]; s8 b1030[4]; } XHumCCA88;
 typedef struct { u8 pad[0xB0]; } XHumB0a;
