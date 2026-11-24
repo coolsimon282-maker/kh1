@@ -208,7 +208,21 @@ s32 func_001C27D8(s32 arg0) {
     return temp + arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2808);
+void func_001C2808(s32 arg0, s32 arg1, void* arg2) {
+    u8* base = func_0022F768(2);
+
+    switch (arg1) {
+    case 1:
+        *(u8*)(base + arg0) = *(u8*)arg2;
+        break;
+    case 2:
+        *(u16*)(base + arg0) = *(u16*)arg2;
+        break;
+    case 4:
+        *(s32*)(base + arg0) = *(s32*)arg2;
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C28B8);
 
