@@ -5452,7 +5452,19 @@ void func_00171460(u8* p, s32 b) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171498);
+s32 func_00133000_p(u8*, s32) __asm__("func_00133000");
+s32 func_00171498(u8* a0, s32 a1) {
+    switch (*(s32*)(a0 + 0x70)) {
+    case 0:
+    case 8:
+    case 0x18:
+        if (func_00133000_p(a0, a1) == 0) {
+            break;
+        }
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001714F0);
 
