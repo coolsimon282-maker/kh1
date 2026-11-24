@@ -2030,7 +2030,67 @@ s32 func_0022D498(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022D4D8);
+void func_001F3E90(u8 *, u8 *);
+void func_001F3E20(u8 *, u8 *);
+extern u8 D_003F74D0[];
+extern u8 D_003F74A0[];
+extern u8 D_003F73B0[];
+extern u8 D_003F73E0[];
+extern u8 D_003F7410[];
+extern u8 D_003F7440[];
+extern u8 D_003F7470[];
+
+void func_0022D4D8(s32 a0) {
+    u8 *e[7];
+    s32 i;
+    u8 *t;
+
+    func_001F3110(a0);
+    if ((e[0] = func_001F3A20(D_003F74D0, 0x30)) != NULL) {
+        func_001F3D58(e[0], 0);
+        if ((e[1] = func_001F3A20(D_003F74A0, 0x2E)) != NULL) {
+            func_001F3E90(e[0], e[1]);
+            func_001F3E20(e[1], e[0]);
+            func_001F3D58(e[1], 0x2F);
+            if ((e[2] = func_001F3A20(D_003F73B0, 0x30)) != NULL) {
+                func_001F3E90(e[1], e[2]);
+                func_001F3E20(e[2], e[1]);
+                func_001F3D58(e[2], 0x31);
+                if ((e[3] = func_001F3A20(D_003F73E0, 0x30)) != NULL) {
+                    func_001F3E90(e[2], e[3]);
+                    func_001F3E20(e[3], e[2]);
+                    func_001F3D58(e[3], 0x31);
+                    *(f32 *)(e[3] + 0xA0) = 1.0f;
+                    if ((e[4] = func_001F3A20(D_003F7410, 0x30)) != NULL) {
+                        func_001F3E90(e[3], e[4]);
+                        func_001F3E20(e[4], e[3]);
+                        func_001F3D58(e[4], 0x31);
+                        *(f32 *)(e[4] + 0xA0) = 2.0f;
+                        if ((e[5] = func_001F3A20(D_003F7440, 0x30)) != NULL) {
+                            func_001F3E90(e[4], e[5]);
+                            func_001F3E20(e[5], e[4]);
+                            func_001F3D58(e[5], 0x31);
+                            *(f32 *)(e[5] + 0xA0) = 3.0f;
+                            if ((e[6] = func_001F3A20(D_003F7470, 0x30)) != NULL) {
+                                func_001F3E90(e[5], e[6]);
+                                func_001F3E20(e[6], e[5]);
+                                func_001F3D58(e[6], 0x31);
+                                t = e[0];
+                                *(f32 *)(e[6] + 0xA0) = 4.0f;
+                                func_001F3DC0(t);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    D_003F34A4 = 1;
+    for (i = 5; i >= 0; i--) {
+        D_006469B8[i] = 0;
+    }
+    *(s16 *)((u8 *)func_0011ED30(0x2BFE9, func_0022D498) + 2) = a0;
+}
 
 void func_0022D728(void) {
 }
