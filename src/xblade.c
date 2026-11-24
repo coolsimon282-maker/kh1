@@ -806,76 +806,90 @@ extern s32 D_004D2A84;
 extern s32 D_004D2A88;
 extern s32 D_004D2AA4;
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113710);
-// void func_00113710(void) {
-//     switch (D_004D2A80) {
-//         default:
-//         case 0:
-//             return;
-//         case 1:
-//             switch (D_004D2A84) {
-//                 case 0:
-//                     if (D_004D2A88 < 2) {
-//                         D_004D2A98 += 50;
-//                         D_004D2A9C += 15;
-//                         D_004D2AA0 += 25;
-//                         break;
-//                     }
-//                     D_004D2A84 = 1;
-//                 case 1:
-//                     if (D_004D2A88 < 5) {
-//                         D_004D2A8C += 25;
-//                         D_004D2A90 += 2;
-//                         D_004D2A94 -= 68;
-//                         D_004D2A98 += 9;
-//                         D_004D2A9C += 15;
-//                         D_004D2AA0 += 25;
-//                         break;
-//                     }
-//                     D_004D2A84 = 2;
-//                 case 2:
-//                     D_004D2AA4 = 0;
-//                     func_00113618();
-//                     break;
-//             }
-//             break;
-//         case 2:
-//             switch (D_004D2A84) {
-//                 case 0:
-//                     if (D_004D2A88 < 2) {
-//                         D_004D2A98 -= 14;
-//                         D_004D2A9C -= 15;
-//                         D_004D2AA0 -= 25;
-//                         break;
-//                     }
-//                     D_004D2A84 = 1;
-//                 case 1:
-//                     if (D_004D2A88 < 5) {
-//                         D_004D2A8C -= 25;
-//                         D_004D2A90 -= 2;
-//                         D_004D2A94 += 68;
-//                         D_004D2A98 -= 33;
-//                         D_004D2A9C -= 15;
-//                         D_004D2AA0 -= 25;
-//                         break;
-//                     }
-//                     D_004D2A84 = 2;
-//                 case 2:
-//                     func_001136C8(0);
+#ifdef VERSION_FM
+NOTHROW(int, func_00113410);
+extern s32 D_004D9340;
+extern s32 D_004D9344;
+extern s32 D_004D9348;
+extern s32 D_004D9364;
+void func_00113710(void) {
+    switch (D_004D9340) {
+        default:
+        case 0:
+            return;
+        case 1:
+            switch (D_004D9344) {
+                case 0:
+                    if (D_004D9348 < 2) {
+                        D_004D2A8C += 0;
+                        D_004D2A90 += 0;
+                        D_004D2A94 += 0;
+                        D_004D2A98 += 50;
+                        D_004D2A9C += 15;
+                        D_004D2AA0 += 25;
+                        break;
+                    }
+                    D_004D9344 = 1;
+                case 1:
+                    if (D_004D9348 < 5) {
+                        D_004D2A8C += 25;
+                        D_004D2A90 += 2;
+                        D_004D2A94 -= 68;
+                        D_004D2A98 += 9;
+                        D_004D2A9C += 15;
+                        D_004D2AA0 += 25;
+                        break;
+                    }
+                    D_004D9344 = 2;
+                case 2:
+                    D_004D9364 = 0;
+                    func_00113618();
+                    break;
+            }
+            break;
+        case 2:
+            switch (D_004D9344) {
+                case 0:
+                    if (D_004D9348 < 2) {
+                        D_004D2A8C -= 0;
+                        D_004D2A90 -= 0;
+                        D_004D2A94 -= 0;
+                        D_004D2A98 -= 14;
+                        D_004D2A9C -= 15;
+                        D_004D2AA0 -= 25;
+                        break;
+                    }
+                    D_004D9344 = 1;
+                case 1:
+                    if (D_004D9348 < 5) {
+                        D_004D2A8C -= 25;
+                        D_004D2A90 -= 2;
+                        D_004D2A94 += 68;
+                        D_004D2A98 -= 33;
+                        D_004D2A9C -= 15;
+                        D_004D2AA0 -= 25;
+                        break;
+                    }
+                    D_004D9344 = 2;
+                case 2:
+                    func_001136C8(0);
 
-//                     if (D_002B9668 == 2) {
-//                         func_00113A10(0);
-//                     } else {
-//                         func_00113A40(0);
-//                     }
-//                     D_004D2A80 = 0;
-//                     return;
-//             }
-//             break;
-//     }
-//     func_00113410();
-//     D_004D2A88++;
-// }
+                    if (D_002B9668 == 2) {
+                        func_00113A10(0);
+                    } else {
+                        func_00113A40(0);
+                    }
+                    D_004D9340 = 0;
+                    return;
+            }
+            break;
+    }
+    func_00113410();
+    D_004D9348++;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/xblade", func_00113710);
+#endif
 
 void func_001139F8(void) {
     D_004D2A68 = 0;
