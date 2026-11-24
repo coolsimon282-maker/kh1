@@ -1689,7 +1689,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00135ED0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136428);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001366D8);
+void func_00135DF0(u8 *, f32 *);
+void func_00136428(u8 *, s32, s32, f32 *, f32);
+void func_001366D8(u8 *a0, s32 a1, f32 *a2) {
+    f32 buf[4];
+    f32 f;
+    f = func_00135CA0(*(f32 *)(a0 + 0x118));
+    func_00135DF0(a0, buf);
+    sceVu0MulVector(buf, buf, a2);
+    func_00136428(a0, ~(1 << (a1 - 1)), *(s32 *)(a0 + 0x394), buf, f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136768);
 
