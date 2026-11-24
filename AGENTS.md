@@ -20,7 +20,7 @@ take the next ones up.
 
 ## Recording the work
 
-Everything here feeds a future PS2 decompiler model: read `DATASET.md` (short). Always work through
+Every attempt is kept for reviewing and improving the work: read `DATASET.md` (short). Always work through
 `agent-tools.sh` so each attempt is recorded; give `giveup` a precise reason; note tricks with `lesson`.
 
 ## Hard rules

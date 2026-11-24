@@ -1,8 +1,10 @@
 # Recording the work: instructions for every worker and coordinator
 
-The owner intends to train a PS2-specific decompiler later: a model that is given a function's assembly and writes
-C that compiles to the same bytes. Everything done in this project is raw material for it, and for Claude to read
-back when looking for ways to work better. **A failed attempt with its reason is as valuable as a match.** So the
+Every attempt is kept so the owner and Claude can read the work back and improve how it is done: which tries are
+wasted, what each worker was given before it failed, which rules should go into MATCHING.md and the job packets.
+Output written by Claude (agents a*/f* and coordinating sessions) is for that review only and is not used to train
+any model. A future PS2 decompiler model would be trained only on the local/open models' attempts (Qwen: q*, r*) and
+on pairs made by compiling open-source C with the same compilers. **A failed attempt with its reason is as valuable as a match.** So the
 rule is: nothing useful is thrown away, and what you learn is written down where a program can find it.
 
 The data lives in `kh1-study\dataset\` (outside the repository: never committed, never published). Its layout is
@@ -51,9 +53,8 @@ your notes so the tool can be extended.
 
 ## For whoever coordinates (a Claude session)
 
-- Run `python kh1-study\dataset\collect.py` at the end of each working session and before any clean-up: it copies
-  the agents' session transcripts (Claude Code deletes old ones), their work files, the build histories, the
-  notes, and OpenCode's session database (Qwen's reasoning) into the dataset.
+- Run `python kh1-study\dataset\collect.py` at the end of each working session: it copies the work files, the
+  build histories, the notes, and OpenCode's session database (Qwen's sessions) into the dataset folder.
 - When you change the tools, keep the logging: a new command that compiles or compares must call
   `tools/logattempt.py`; anything a worker reads must go through `agent-tools.sh` so `tools/logcall.py` sees it.
 - When you set up a new game or compiler, keep the same record shapes and fill in `game`, `platform`, `compiler`,

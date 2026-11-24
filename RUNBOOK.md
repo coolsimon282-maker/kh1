@@ -124,6 +124,5 @@ the coordinator's next job; agents then get the small functions there.
 
 ## Recording the work (24 Nov)
 
-Every attempt, tool call and lesson is kept in `kh1-study\dataset` for a future PS2 decompiler model and for
-reviewing how the workers work. The rules for workers and coordinators are in `DATASET.md`; read it before
+Every attempt, tool call and lesson is kept in `kh1-study\dataset` for reviewing how the workers work. The rules for workers and coordinators are in `DATASET.md`; read it before
 starting, and point every new worker at it.
