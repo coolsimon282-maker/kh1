@@ -2679,7 +2679,30 @@ void func_0014CB38(void) {
     func_0014F830(0x15, 5, (s32)func_0014C400, (s32)func_0014C428, (s32)func_0014C6C0, (s32)func_0014C850, (s32)func_0014CA38, (s32)func_0014C5C8, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014CB90);
+/* four dummy declarations keep func_001560F8 (far below) scheduling as before (rule F1) */
+extern int flip_dummy_0;
+extern int flip_dummy_1;
+extern int flip_dummy_2;
+extern int flip_dummy_3;
+s32 func_00130340_x(s32, s32, f32) __asm__("func_00130340");
+typedef struct { u32 pad:9; u32 b9:1; } V14CB90;
+s32 func_0014CB90_def(s32 p) __asm__("func_0014CB90");
+s32 func_0014CB90_def(s32 p) {
+    s32 r;
+
+    if (*(s32*)p & 0x2000) {
+        *(s32*)(p + 0x3D0) = 0xAB;
+    } else if (((V14CB90*)&D_002DED20)->b9) {
+        *(s32*)(p + 0x3D0) = 5;
+    } else {
+        *(s32*)(p + 0x3D0) = 0;
+    }
+    r = func_00130340_x(p, (*(s32*)(p + 0x3D0) + 4) | 0x10000, 0.0f);
+    func_0014F658(p, 1);
+    *(f32*)(p + 0x3B0) = 0.0f;
+    *(f32*)(*(u8**)(p + 0x148) + 0x100) = 0.0f;
+    return r;
+}
 
 void func_0014CC38(u8* p) {
     *(s32*)(p + 0x3B0) = 0;
