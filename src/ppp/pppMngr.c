@@ -1327,7 +1327,48 @@ void func_00184298(PppMngS* m, s32* data, s32 arg2) {
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184298);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001843E0);
+void func_001843E0(s32 b, s32 progs) {
+    s32 *t1;
+    s32 *t2;
+    s32 n1;
+    s32 n2;
+    s32 *pd;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 *e;
+
+    b += 0x110;
+    t1 = (s32 *)(b + *(s32 *)(b + 8));
+    t2 = (s32 *)(b + *(s32 *)(b + 0xC));
+    n1 = *t1++;
+    n2 = *t2++;
+    pd = (s32 *)(b + 0x10);
+
+    if (*pd == 0) {
+        return;
+    }
+    for (;;) {
+        *pd = b + *pd;
+        for (i = 0; i < *(s16 *)((u8 *)pd + 0x26); i++) {
+            e = pd + 10 + i * 4;
+            e[0] = progs + e[0] * 0x28;
+            e[2] = b + e[2];
+            e[3] = b + e[3];
+        }
+        if (*(s32 *)*pd == 0) {
+            *pd = 0;
+            break;
+        }
+        pd = (s32 *)*pd;
+    }
+    for (j = 0; j < n1; j++) {
+        t1[j] = progs + t1[j] * 0x28;
+    }
+    for (k = 0; k < n2; k++) {
+        t2[k] += b;
+    }
+}
 
 void func_00184500(pppEnvSt* env, s32* src, void* heap, s32 size) {
     ppvEnv = env;
