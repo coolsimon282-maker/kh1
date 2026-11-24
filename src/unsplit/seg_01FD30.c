@@ -4,7 +4,7 @@
 
 extern s32 D_004F2A00[];
 void _sceSifLoadStartModule(s32, s32, s32, s32);
-s32 func_00120930(void);
+s32 func_00120930();
 
 s32* func_0011FD30(void) {
     return D_004F2A00;
@@ -242,7 +242,35 @@ s32 func_00120908(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120930);
+typedef struct {
+    u64 a;
+    u8 b;
+} A2Str9;
+extern A2Str9 D_0048D278; /* "cdrom0:\\" */
+extern char D_004E4500[];
+extern char D_0048B549[];
+char *strcat(char *, const char *);
+int strlen(const char *);
+
+s32 func_00120930(name)
+    const char *name;
+{
+    s32 i;
+    s32 n;
+
+    ((A2Str9 *)D_004E4500)->a = D_0048D278.a;
+    ((A2Str9 *)D_004E4500)->b = D_0048D278.b;
+    strcat(D_004E4500, name);
+    n = strlen(D_004E4500);
+    for (i = 8; i < n; i++) {
+        s32 c = D_004E4500[i];
+        if (*(D_0048B549 + c) & 2) {
+            c -= 0x20;
+        }
+        D_004E4500[i] = c;
+    }
+    return (s32)D_004E4500;
+}
 
 s32 sceSifLoadModule(const char *, s32, const char *);
 
