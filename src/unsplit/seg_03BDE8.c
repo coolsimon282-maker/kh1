@@ -3780,7 +3780,19 @@ void func_00156BA0(s32 a) {
     *func_00156628(a) &= ~0x10000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001566D8);
+s32 func_001566D8(f32* a0, f32* a1) {
+    s32 i;
+    f32* d = a0 + 3;
+    f32* p = a0;
+    for (i = 0; i < 6; i++) {
+        if (sceVu0InnerProduct(p, a1) - *d < 0.0f) {
+            return 0;
+        }
+        p += 4;
+        d += 4;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00156768);
 
