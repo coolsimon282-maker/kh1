@@ -2766,7 +2766,87 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020F530);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020FBE0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020FC58);
+s32 func_001BC578(void);
+s32 func_001BC590(s32);
+void func_001F3758(s32);
+s32 func_001F3758_v(s32) __asm__("func_001F3758");
+void func_001FD858_a(s32) __asm__("func_001FD858");
+s32 func_001BA268(s32);
+void func_0020E090(s32, s32, s32, s32, s32, s32);
+void func_001F8F30(void);
+extern s32 D_00641B98;
+
+void func_0020FC58(u8 *a0) {
+    s32 buf[192];
+    s32 n;
+    s32 i;
+    u8 *p;
+    s32 sel;
+    s32 j;
+    s32 flag;
+    s32 y;
+    s32 c;
+    s32 idx;
+    s32 v;
+
+    n = func_001BC578();
+    D_00641B98 = 0;
+    for (i = 0; i < n; i++) {
+        if (func_001BC590(i)) {
+            buf[D_00641B98] = i;
+            D_00641B98++;
+        }
+    }
+    if (D_00641B98 == 0) {
+        return;
+    }
+    func_001FD5E0((u8 *)a0, D_00641B98);
+    func_001FD610((u8 *)a0, 8);
+    func_001FD688((u8 *)a0);
+    if (func_001F42B8((s32)a0)) {
+        if (*(s32 *)(D_00425BC8 + 0x8) & 0x4000) {
+            func_001F3758((s32)a0);
+            func_0011D598(3);
+            D_00641224 = 0;
+        } else {
+            func_001FD858_a((s32)a0);
+            func_0020BD18((s32)a0, 8);
+            D_0064126C = *(s16 *)(a0 + 0xD0) >> 4;
+            D_00641270 = *(s16 *)(a0 + 0xD2) >> 4;
+            idx = buf[func_001FD548((u8 *)a0)];
+            p = *(u8 **)(a0 + 0x10);
+            if (p != NULL) {
+                *(s32 *)(p + 0x40) = func_001BA268(idx);
+            }
+            if (func_001FE570((s32)a0)) {
+                func_001F3758_v((s32)a0);
+                D_00641224 = 0;
+            }
+        }
+    }
+    func_00202FC0((SObj *)a0);
+    i = 0;
+    sel = func_001FD518((u8 *)a0);
+    j = func_001FD618((u8 *)a0);
+    y = func_001FD590((SObj *)a0);
+    flag = *(s32 *)(a0 + 0x28);
+    func_001F8EE0((u8 *)a0);
+    if (j < D_00641B98) do {
+        v = buf[j];
+        c = 2;
+        if (flag) {
+            c = (i == sel);
+        }
+        func_0020E090((s32)a0, c, 0, y, 0xA6, v);
+        y += 0x1C;
+        i++;
+        j++;
+        if (i >= 9) {
+            break;
+        }
+    } while (j < D_00641B98);
+    func_001F8F30();
+}
 
 void func_0020FEA0(u8 *a0) {
     u32 t = D_003DE6A0;
