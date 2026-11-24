@@ -460,7 +460,7 @@ void func_0014A908(s32, s32, s32);
 s32 func_0014A398(s32);
 s32 func_00134928(u8*);
 void func_001350D0(s32);
-s32 func_0013C9E0(s32);
+s32 func_0013C9E0();
 void func_00243630(s32, s32);
 void func_001525F0(u8*);
 void func_00124BC8(u8*);
@@ -864,7 +864,35 @@ s32 func_0013C968(s32 a0, u32 a1) {
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C9E0);
+typedef struct { u8 pad[0x21]; u8 n; u8 slot[0x52]; } E74y;
+typedef struct { s32 h; E74y e[10]; u8 pad48C[0xD]; u8 inv[1]; } D3010F8y;
+u8* func_00147A88(s32);
+s32 func_0013C9E0(a0, a1)
+    s32 a0;
+    u32 a1;
+{
+    s32 i;
+
+    if (a0 & 0x400) {
+        return 0xFF;
+    }
+    if (a1 < 10) {
+        E74y* e = &((D3010F8y*)D_003010F8)->e[a1];
+        if (func_00147A88(a0)[2] == 0) {
+            for (i = 0; i < e->n; i++) {
+                if (e->slot[i] == 0) {
+                    e->slot[i] = a0;
+                    return a1;
+                }
+            }
+        }
+    }
+    if (((D3010F8y*)D_003010F8)->inv[a0] < 99) {
+        ((D3010F8y*)D_003010F8)->inv[a0]++;
+        return 0xC;
+    }
+    return 0xFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CAE8);
 
