@@ -468,7 +468,93 @@ u32 func_0011F478(u32 arg0) {
     return uVar3;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F4B8);
+#include "libvib.h"
+
+extern XGoblinPadState D_002C5AD0[2];
+extern XGoblinPadState D_002C5BB0;
+extern sceVu0FVECTOR D_002C58B0;
+extern s32 D_004E4280;
+extern s32 D_004E44F0;
+extern s32 D_004E44C0;
+extern u8 D_004E44C8[][20];
+extern s16 D_002C597A;
+extern u8 D_002C5A80[];
+s32 func_00218C08(void);
+void func_0011FEC0(void);
+
+void func_0011F4B8(void) {
+    u8 buf[0x100];
+    u32 vib;
+    u32 hi;
+    s32 i;
+    XGoblinPadState* e;
+    s32* sock;
+    s32 conn;
+    s32 btn;
+
+    if ((D_002C1EB8.u8 >> 3) & 3) {
+        return;
+    }
+    D_002C1EB8.u8 &= 0xFE;
+    for (i = 0; i < 1; i++) {
+        e = &D_002C5AD0[i ^ D_004E4280];
+        D_002C5AD0[0].unk_04 += 0;
+        sock = &D_004E44C0 + i;
+
+        conn = 0;
+        btn = 0;
+        while (scePad2GetState(*sock) == 1) {
+            if (e->unk_00 == 0 && scePad2GetButtonProfile(*sock, D_004E44C8[i]) < 0) {
+                goto next;
+            }
+            if (scePad2Read(*sock, buf) < 0) {
+                goto next;
+            }
+            btn = (buf[0] | buf[1] << 8) ^ 0xFFFF;
+            if ((D_004E44C8[i][2] & 0xF) == 0xF) {
+                btn |= func_0011F1A0(e, buf);
+            }
+            if (func_00218C08() == 0 && !(D_002C597A & 1)) {
+                hi = e->unk_03 << 1;
+                vib = ((u32)(s8)e->unk_02 >> 31) | hi;
+                sceVibSetActParam(*sock, 1, D_002C5A80, 2, (u8*)&vib);
+            }
+            e->unk_03 = 0;
+            conn = 1;
+            e->unk_02 = 0;
+            break;
+        }
+    next:
+        func_0011F388((XGoblinButtons*)e, btn);
+        e->unk_00 = conn;
+    }
+    if (D_002C5AD0[D_004E4280].unk_00 != 1) {
+        if (D_004E44F0 >= 31) {
+            D_002C1EB8.u8 |= 1;
+        } else {
+            D_004E44F0++;
+        }
+    } else {
+        D_004E44F0 = 0;
+    }
+    if (((u32)D_002C5960 >> 2) & 1) {
+
+        D_002C5BB0.unk_00 = 0;
+        sceVu0CopyVector(D_002C5BB0.unk_30[0], D_002C58B0);
+        sceVu0CopyVector(D_002C5BB0.unk_30[1], D_002C58B0);
+        sceVu0CopyVector(D_002C5BB0.unk_50[0], D_002C58B0);
+        sceVu0CopyVector(D_002C5BB0.unk_50[1], D_002C58B0);
+        func_0011F388((XGoblinButtons*)&D_002C5BB0, 0);
+    } else {
+        sceVu0CopyVector(D_002C5BB0.unk_30[0], D_002C5AD0[0].unk_30[0]);
+        sceVu0CopyVector(D_002C5BB0.unk_30[1], D_002C5AD0[0].unk_30[1]);
+        sceVu0CopyVector(D_002C5BB0.unk_50[0], D_002C5AD0[0].unk_50[0]);
+        sceVu0CopyVector(D_002C5BB0.unk_50[1], D_002C5AD0[0].unk_50[1]);
+        func_0011F388((XGoblinButtons*)&D_002C5BB0, func_0011F478(D_002C5AD0[0].unk_04));
+        D_002C5BB0.unk_00 = 1;
+    }
+    func_0011FEC0();
+}
 
 extern s32 D_002C5C2C;
 extern XGoblinPadState D_002C5AD0[2];

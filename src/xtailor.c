@@ -214,7 +214,121 @@ void func_0010F720(u32 arg0) {
     }
 }
 
+#ifdef VERSION_FM
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+} XTailor5AD0;
+extern volatile XTailor5AD0 D_002C5AD0_t __asm__("D_002C5AD0");
+extern s32 D_002BBD40;
+extern s32 D_002C1EB8_w __asm__("D_002C1EB8");
+extern s32 D_002B6484;
+extern volatile s32 D_002B9664;
+void func_00113A40(s32);
+void func_001220D0(void);
+void func_0011DE90(void);
+
+static inline u32 xt_bit(u32 x, s32 n) {
+    return (x >> n) & 1;
+}
+
+s32 func_0010F768(void) {
+    volatile s32 loop;
+    s32 saved;
+    u32 mask;
+    s32 res;
+    s32 started;
+    u32 cur;
+    u32 a;
+    u32 b;
+    u32 on1;
+    u32 off1;
+    u32 on2;
+    u32 off2;
+
+    if (D_002BBD40 == 0 && D_002B6484 == 1) {
+        D_002C1EB8_w = 0;
+        return 0;
+    }
+    D_004D5B0C = 0;
+    loop = 1;
+    started = 0;
+    res = 0;
+    mask = 0;
+    saved = D_002B9664;
+    do {
+        cur = D_002C1EB8.s32;
+        a = D_004CF580 ^ cur;
+        b = D_004CF588 ^ cur;
+        on1 = a & cur;
+        off1 = a & ~cur;
+        on2 = b & cur;
+        off2 = b & ~cur;
+        if (xt_bit(on1, 0) == 1) {
+            mask |= 1;
+            res = 1;
+            func_0010F720(mask);
+        }
+        if (xt_bit(off1, 0) == 1) {
+            mask &= ~1;
+            func_0010F720(mask);
+        }
+        if (xt_bit(on1, 1) == 1) {
+            mask |= 2;
+            res = 1;
+            func_0010F720(mask);
+        }
+        if (xt_bit(off1, 1) == 1) {
+            mask &= ~2;
+            func_0010F720(mask);
+        }
+        if (xt_bit(on2, 2) == 1) {
+            mask |= 4;
+            res = 1;
+            func_0010F720(mask);
+        }
+        if (xt_bit(off2, 2) == 1) {
+            mask &= ~4;
+            func_0010F720(mask);
+        }
+        if (started == 0 && mask != 0) {
+            started = 1;
+            func_00113A40(mask);
+        }
+        if (started == 1 && mask == 0) {
+            func_00113A40(0);
+        }
+        if (mask != 0) {
+            D_002B9664 = 1;
+            func_0010FB90();
+            func_001220D0();
+            func_0010F708();
+            if (func_00110EA8() != 0) {
+                func_00110FA8();
+            }
+            func_0011DE90();
+            func_001102C0();
+            if ((mask & 4) && (D_002C5AD0_t.unk_08 & 0x2000)) {
+                func_0011D598(2);
+                if (D_004D5B0C == 0) {
+                    D_004D5B0C = 1;
+                    func_0010F720(mask);
+                } else {
+                    D_002C1EB8.u8 &= 0xFB;
+                }
+            }
+        } else {
+            D_002B9664 = 0;
+            loop = 0;
+        }
+    } while (loop);
+    D_002B9664 = saved;
+    return res;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F768);
+#endif
 
 void func_0010FA30(s32* arg0) {
     s32* p = arg0 + 4;
