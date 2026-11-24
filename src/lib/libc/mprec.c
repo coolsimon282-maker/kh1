@@ -159,7 +159,50 @@ INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", __mdiff);
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _ulp);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _b2d);
+#include <reent.h>
+
+typedef union {
+    double d;
+    struct {
+        unsigned int lo;
+        unsigned int hi;
+    } words;
+} MpDouble;
+
+#define word0(d) (d).words.hi
+#define word1(d) (d).words.lo
+
+extern int _hi0bits(unsigned int);
+
+double _b2d(struct _Bigint *a, int *e)
+{
+    unsigned int *xa, *xa0, w, y, z;
+    int k;
+    MpDouble d;
+
+    xa0 = a->_x;
+    xa = xa0 + a->_wds;
+    y = *--xa;
+    k = _hi0bits(y);
+    *e = 32 - k;
+    if (k < 11) {
+        word0(d) = 0x3FF00000 | y >> (11 - k);
+        w = xa > xa0 ? *--xa : 0;
+        word1(d) = y << (21 + k) | w >> (11 - k);
+    } else {
+        z = xa > xa0 ? *--xa : 0;
+        k -= 11;
+        if (k != 0) {
+            word0(d) = 0x3FF00000 | y << k | z >> (32 - k);
+            y = xa > xa0 ? *--xa : 0;
+            word1(d) = z << k | y >> (32 - k);
+        } else {
+            word0(d) = 0x3FF00000 | y;
+            word1(d) = z;
+        }
+    }
+    return d.d;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _d2b);
 
