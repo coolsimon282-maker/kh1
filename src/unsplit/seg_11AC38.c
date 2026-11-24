@@ -923,7 +923,69 @@ void func_00221648(void) {
     func_00207210(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00221660);
+s32 func_001FE9A8(s32, s32, s32);
+s32 func_001EF530(s32);
+s32 func_001EF5C8(s32);
+s32 func_001EF668(s32);
+s32 func_0021B860(s32, s32, s32, s32, s32, s32);
+void func_0011D598_v(s32) __asm__("func_0011D598");
+
+void func_00221660(s32 a0) {
+    s32 i;
+    s32 y;
+    s32 t;
+    s32 n;
+    s32 r;
+    s32 c;
+
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 8) & 0x4000) {
+            func_001F3758(a0);
+            func_0011D598(3);
+        } else {
+            if (func_001FE9A8(a0, 0, D_00643678)) {
+                func_0011D598_v(1);
+                *(s16 *)(a0 + 0xDA) = *(u16 *)(a0 + 0x24) << 4;
+            }
+            D_00643694 = *(s32 *)(a0 + 0x24);
+        }
+    }
+    func_00203788(a0, 0x174, 0x28, 0x1E6, 0x80C8C8C8);
+    func_0021B820();
+    func_0021CB88(a0, 0xB0, 8, 0x140, 5);
+    func_0021C9A0(a0, 0x10, 0x48);
+    func_0021CB00(a0, 0x20, 0x6C, 9, 0x1E);
+    func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
+    y = 0x90;
+    n = D_00643694 + 1;
+    for (i = 0; i < n; i++) {
+        func_001F94F0(a0, 0, 0x27, y, func_0021B800_x(i + 0x41), 0xF, 0x80461E00);
+        y += 0x1E;
+    }
+    func_00206130(a0, 0x11F, 0x5E, 0x14, 2, 0x80202020);
+    func_00206130(a0, 0x1C5, 0x5E, 0x14, 2, 0x80202020);
+    func_001F94F0(a0, 2, 0x17C, 0x56, func_00221390_x(1), 0xF, 0x80461E00);
+    r = func_001EB5F0(D_00643694 + 0xF, 0);
+    D_003E8E08[0] = r;
+    func_001F94F0(a0, 0, 0x12E, 0x92, func_0021B800_x(r != -1 ? 0x46 : 0x47), 0xF, 0x80461E00);
+    func_0021B860(a0, 0x17A, 0x8C, 0, 0, 0x27);
+    t = 0xCC;
+    y = t;
+    n = D_00643694 + 1;
+    for (i = 0; i < 5; i++) {
+        t = func_001EB5F0(n, i);
+        c = 0x3A;
+        D_003E8E08[0] = i + 1;
+        if (t != -1) {
+            D_003E8E08[1] = func_001EF530(t);
+            D_003E8E08[2] = func_001EF5C8(t);
+            D_003E8E08[3] = func_001EF668(t);
+            c = 0x39;
+        }
+        func_001F94F0(a0, 0, 0x11F, y, func_0021B800_x(c), 0xF, 0x80461E00);
+        y += 0x1E;
+    }
+}
 
 void func_00221980(void) {
     func_00207210(1);
