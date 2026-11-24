@@ -2363,7 +2363,30 @@ void func_001EC0B0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EC0D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EC1A0);
+typedef struct {
+    u8 pad[0xAD0];
+    u32 flags;
+} A2FlagsAD0;
+
+s32 func_001EC1A0(A2Stk *p) {
+    A2FlagsAD0 *q = func_0022F768(1);
+
+    switch (p->stk[p->n]) {
+    case 0:
+        p->stk[p->n] = *(u8 *)&q->flags & 1;
+        break;
+    case 1:
+        p->stk[p->n] = (q->flags >> 1) & 1;
+        break;
+    case 2:
+        p->stk[p->n] = (q->flags >> 2) & 1;
+        break;
+    case 3:
+        p->stk[p->n] = (q->flags >> 3) & 1;
+        break;
+    }
+    return 2;
+}
 
 typedef struct {
     u8 pad[0xDC8];
