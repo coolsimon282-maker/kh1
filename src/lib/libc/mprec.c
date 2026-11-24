@@ -52,4 +52,20 @@ INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _d2b);
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _ratio);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _mprec_log10);
+extern double D_00491FE0[];
+
+static double dpmul(double a, double b);
+
+double _mprec_log10(int dig)
+{
+    double v = 1.0;
+
+    if (dig < 24) {
+        return D_00491FE0[dig];
+    }
+    while (dig > 0) {
+        v = dpmul(v, 10.0);
+        dig--;
+    }
+    return v;
+}
