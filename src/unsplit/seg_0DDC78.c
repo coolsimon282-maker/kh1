@@ -1092,7 +1092,17 @@ void func_001E6E08(s32 x) {
     D_003DD258 = x;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E6E20);
+s32 func_001E6C90(void);
+
+void func_001E6E20(void) {
+    func_0010EDA0(D_00630510, D_003DCEB0, (s32)func_001E6DE0);
+    D_006305C0[0] = 1;
+    D_006305C0[1] = 2;
+    D_006305C0[2] = (s32)func_001E6E08;
+    func_0010F3B8(D_006305C0, D_00630510, 1);
+    func_0011ED30(0xC350, func_001E6C90);
+    D_003DD28C = 1;
+}
 
 extern u8 D_00630460[];
 
