@@ -3027,7 +3027,31 @@ void func_0014EE78(s32 n) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014EC60);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014ED30);
+typedef struct { s32 flags; s32 pad[3]; s32 mask; s32 pad2; } V14ED30a;
+typedef struct { s32 pad[2]; f32 a; f32 b; s32 pad2[2]; } V14ED30b;
+extern V14ED30a D_0054F438[];
+extern s32 D_0054F448;
+extern V14ED30b D_0054F450[];
+void func_0014EC60(u8);
+void func_0014ED30(u8* p) {
+    s32 i;
+
+    if ((s32)(*(u64*)(p + 0x370) >> 51) & 1) {
+        if ((*(u8**)(p + 0x130))[0x58] != 0) {
+            if (!(D_0054F438[(*(u8**)(p + 0x130))[0x58]].flags & 1)) {
+                func_001421D0(*(s32*)(p + 4), 1);
+            }
+            func_0014EC60((*(u8**)(p + 0x130))[0x58]);
+        } else {
+            func_001421D0(*(s32*)(p + 4), 1);
+        }
+    }
+    for (i = 0; i < 31; i++) {
+        if ((D_0054F448 >> i) & 1) {
+            D_0054F450[i].b = D_0054F450[i].a;
+        }
+    }
+}
 
 s32 func_0014EE08(f32* a, f32* b, u8* c) {
     return b[0] >= *(f32*)(c + 0x10) && a[0] <= *(f32*)(c + 0x20) && b[1] >= *(f32*)(c + 0x14) && a[1] <= *(f32*)(c + 0x24) && b[2] >= *(f32*)(c + 0x18) && a[2] <= *(f32*)(c + 0x28);
