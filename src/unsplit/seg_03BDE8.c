@@ -1811,7 +1811,19 @@ void func_00146600(u8* p, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146678);
+void func_00146678(u8* a, void* f) {
+    void (*cb)(u8*, s32) = f;
+    s32 p;
+
+    while ((p = func_00134928(a)) != 0) {
+        if (!((D_002C1EA8 >> 20) & 1)) {
+            if (*(s32*)(p + 8) > 0 || *(s32*)(p + 4) == D_002E26A0) {
+                cb(a, p);
+            }
+        }
+        func_001350D0(p);
+    }
+}
 
 void func_00146718(u8* p) {
     func_00146678(p, func_00146600);
