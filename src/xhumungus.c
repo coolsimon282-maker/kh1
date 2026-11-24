@@ -2189,7 +2189,22 @@ s32 func_001D3200(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3240);
+double sqrt(double);
+extern s32 D_003888C4[];
+
+s32 func_001D3240(Script* arg0) {
+    f32 x1 = arg0->unk_174[arg0->unk_174[3] + 1];
+    f32 z1 = arg0->unk_174[arg0->unk_174[3] + 2];
+    f32 x2 = arg0->unk_174[arg0->unk_174[3] + 3];
+    f32 z2 = arg0->unk_174[arg0->unk_174[3] + 4];
+    f32 d = sqrt((x2 - x1) * (x2 - x1) + (z2 - z1) * (z2 - z1));
+
+    if (arg0->unk_174[36] >= 0x900) {
+        D_003888C4[arg0->unk_174[36]] = d;
+    }
+    arg0->unk_174[3] -= 5;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3300);
 
