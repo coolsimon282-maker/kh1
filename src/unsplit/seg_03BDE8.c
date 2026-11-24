@@ -1867,7 +1867,36 @@ void func_00146BC8(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146998);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146A68);
+extern u8 D_00531F70[];
+void func_00146998(void);
+typedef struct { s32 id; s32 ptr; } V146A68;
+extern V146A68 D_00531B70_v[] __asm__("D_00531B70");
+s32 func_00146A68(u8* a0, s32 a1, s32 a2, s32 a3) {
+    s32 i;
+    u8* q;
+
+    for (i = 0; i < 0x80; i++) {
+        if (D_00531B70_v[i].id == a1 && D_00531B70_v[i].ptr == (s32)a0) {
+            ((void (*)(s32))a2)(a3);
+            return 1;
+        }
+    }
+    for (i = 0; i < 0x80; i++) {
+        if (D_00531B70_v[i].ptr == 0) {
+            D_00531B70_v[i].id = a1;
+            D_00531B70_v[i].ptr = (s32)a0;
+            break;
+        }
+    }
+    q = func_0011EEB8(D_00531F70, 0, (s32)func_00146998);
+    *(s32*)(q + 0x1C) = a3;
+    *(s16*)(q + 0x10) = a1;
+    *(u8**)(q + 0x14) = a0;
+    *(s32*)(q + 0x18) = a2;
+    *(s16*)(q + 0x12) = 0;
+    D_00532B80++;
+    return 1;
+}
 
 s32 func_00146B90(u8* a, s32 b, s32 c, s32 d) {
     if ((D_002C1EA8 >> 18) & 1) {
