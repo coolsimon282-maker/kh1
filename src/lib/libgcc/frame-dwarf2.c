@@ -417,4 +417,61 @@ byte *decode_stack_op(byte *buf, struct frame_state_ops *state) {
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", execute_cfa_insn);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", __frame_state_for);
+struct frame_state {
+    void *cfa;
+    void *eh_ptr;
+    long cfa_offset;
+    long base_offset;
+    char pad18[0x3F8 - 0x18];
+    unsigned short cfa_reg;
+    unsigned short retaddr_column;
+    char pad3FC[0x478 - 0x3FC];
+};
+
+struct frame_state_internal {
+    struct frame_state s;
+    long saved_state;
+};
+
+void *memset(void *, int, size_t);
+void *memcpy(void *, const void *, size_t);
+void *execute_cfa_insn(void *p, struct frame_state_internal *state, struct cie_info *info, void **pc);
+
+struct frame_state *__frame_state_for(void *pc_target, struct frame_state *state_in) {
+    fde *f;
+    void *insn, *end, *pc;
+    struct cie_info info;
+    struct frame_state_internal state;
+
+    f = find_fde(pc_target);
+    if (f == 0)
+        return 0;
+
+    insn = extract_cie_info(f, &info);
+    if (insn == 0)
+        return 0;
+
+    memset(&state, 0, sizeof(state));
+    state.s.retaddr_column = info.ra_regno;
+    state.s.eh_ptr = info.eh_ptr;
+
+    end = next_fde((fde *)get_cie(f));
+    while (insn < end)
+        insn = execute_cfa_insn(insn, &state, &info, 0);
+
+    insn = ((fde *)f) + 1;
+
+    if (info.augmentation[0] == 'z') {
+        int i;
+        insn = decode_uleb128(insn, &i);
+        insn += i;
+    }
+
+    end = next_fde(f);
+    pc = f->pc_begin;
+    while (insn < end && pc <= pc_target)
+        insn = execute_cfa_insn(insn, &state, &info, &pc);
+
+    memcpy(state_in, &state.s, sizeof(state.s));
+    return state_in;
+}
