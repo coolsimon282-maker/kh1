@@ -1646,7 +1646,32 @@ void func_00145008(u8* a0, s32 a1) {
     func_00144EB0(v, buf);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001452E0);
+extern f32 D_00306840;
+void func_00150DE0_v(s32) __asm__("func_00150DE0");
+void func_001452E0(s32 a0, s32 a1) {
+    f32 t = a1;
+    Unk52EB58* e;
+
+    D_00531B64 = a0;
+    D_00306840 = t;
+    e = D_0052EB58;
+    if (a0 != 0) {
+        for (; e != NULL; e = e->next) {
+            if (e->unk_16 < 2) {
+                e->unk_16 = 4;
+                e->unk_18 = t;
+            }
+        }
+    } else {
+        for (; e != NULL; e = e->next) {
+            if (e->unk_16 == 4) {
+                e->unk_16 = 5;
+                e->unk_18 = t;
+            }
+        }
+    }
+    func_00150DE0_v(a0);
+}
 
 void func_00145398(void) {
     Unk52EB58* p;
