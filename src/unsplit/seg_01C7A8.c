@@ -577,7 +577,25 @@ void func_0011E528(void) {
     D_002C1390 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E360);
+extern s32 D_002B9314;
+extern s32 D_002BD8DC;
+
+void func_0011E360(void) {
+    if (D_002B9314 == 0) {
+        if (D_002C1390 == 0 && D_002BD8B8[0] != D_002BD8B8[1]) {
+            s32 t = D_002C1EA8 & 1;
+
+            if (t == 1) {
+                if (D_002BD8DC == 0) {
+                    func_0011E480();
+                }
+            } else if (D_002BD8DC == 1) {
+                func_0011E4D0();
+            }
+        }
+        D_002BD8DC = D_002C1EA8 & 1;
+    }
+}
 
 void func_0011E5F0(void) {
     func_0011C9A0();
