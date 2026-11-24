@@ -7425,7 +7425,77 @@ void func_00179690(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00179700);
+typedef struct {
+    u64 unk_00;
+    u64 unk_08;
+    u8 pad10[0x34];
+    f32 f44;
+} Pad5BB0w;
+extern volatile Pad5BB0w D_002C5BB0_w __asm__("D_002C5BB0");
+extern f32 D_00575820;
+extern f32 D_00575824;
+extern s32 D_00575828;
+extern f32 D_003624E0[4];
+extern f32 D_003624F0[4];
+extern f32 D_00362500;
+void func_00125010(f32);
+void func_0012FC58(void);
+s32 func_001375D8(u8*);
+float sinf(float);
+float cosf(float);
+
+void func_00179700(void) {
+    f32 t;
+    f32 a;
+
+    if (D_00575890 & 2) {
+        D_00575820 = 0.0f;
+        D_00575824 = D_005758C0;
+        func_00125010(53.0f);
+        D_003624E0[1] = D_00362500;
+        D_00575828 = 0;
+        func_0012FC58();
+        D_00575890 &= ~2;
+    }
+    if (0.0f < D_00575824) {
+        t = D_00575824 - D_002B8344;
+        D_00575824 = t;
+        if (t <= D_005758C0 * 0.59999999f) {
+            if (D_00575828 == 0) {
+                if (0.0f < t) {
+                    *(f32*)(D_00575894 + 0x64) = -1.0f / t;
+                } else {
+                    *(f32*)(D_00575894 + 0x64) = -1.0f;
+                }
+                D_00575828 = 1;
+            }
+        }
+        if (D_00575824 <= 0.0f) {
+            *(s32*)D_00575894 &= ~1;
+            D_00575824 = 0.0f;
+        }
+    }
+    sceVu0ApplyMatrix(D_005758D0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_003624E0);
+    D_003624F0[1] = D_00362500 + sinf(D_00575820) * 100.0f;
+    D_003624F0[2] = D_003624E0[2] - cosf(D_00575820) * 100.0f;
+    sceVu0ApplyMatrix(D_005758E0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_003624F0);
+    sceVu0CopyVector(D_00362680, D_00362660);
+    D_00362680[1] = func_001250D0(D_005758D0, D_005758E0);
+    a = D_00575820 + D_002C5BB0_w.f44 * 0.052359872f * D_002B8344;
+    D_00575820 = a;
+    if (1.0471975f < a) {
+        D_00575820 = 1.0471975f;
+    } else if (a < -1.3962633f) {
+        D_00575820 = -1.3962633f;
+    }
+    if ((D_002C5BB0_w.unk_08 & 0x8200) || !func_00177358(D_00575894) || func_001375D8(D_00575894)) {
+        if (D_00362434 == 0 && D_00362438 == NULL) {
+            func_00176F08(1, 30.0f);
+        } else {
+            func_00176F08(9, 0.0f);
+        }
+    }
+}
 
 typedef struct {
     s32 unk_00;
