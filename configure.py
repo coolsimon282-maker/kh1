@@ -84,6 +84,7 @@ NO_G_FILES = [
     "seg_006B18.c",    # a1: func_00106DB0 (volatile DMA register store in the jal slot: gas fills it only without -g)
     "xnoodle.c",       # a5: func_0010C010 (a .loc stops gas filling a delay slot after a volatile store)
     "pppKeBornRnd5.c",  # a3: func_0018F780 (third atan2 twin; soft-double calls)
+    "xarcade.c",       # a1: func_00109468 (volatile store in the jal slot: gas fills it only without -g)
 ]
 
 
