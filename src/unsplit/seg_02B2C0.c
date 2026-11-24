@@ -1994,7 +1994,16 @@ void func_00139170(u8 *a0, u64 *a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00139240);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00139408);
+f32 func_00177D68(void);
+void func_00139240(u8*, s32, s32, f32, f32, f32);
+void func_00139408(u8* a0, s32 a1) {
+    u8* g = D_003051EC;
+    f32 lo = *(u16*)(g + 0x14);
+    f32 hi = *(u16*)(g + 0x16);
+    f32 t = lo + (hi - lo) * *(f32*)(*(u8**)(a0 + 0x6C) + 0xC4);
+    f32 s = *(f32*)(g + 0x18);
+    func_00139240(a0, a1, 0, t * s, t, func_00177D68() * 30.0f);
+}
 
 void func_001394A8(u8 *a0) {
     func_00130340(a0, 0x1000066, 0.0f);
