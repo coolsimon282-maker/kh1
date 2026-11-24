@@ -53,10 +53,25 @@ if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != confi
     exit 0
   fi
 fi
+# Every call is recorded for the training set (kh1-study/dataset/calls/<workspace>.jsonl: the command, its full
+# output as the worker saw it, exit code and duration; tools/logcall.py). The call runs once more inside this
+# wrapper with KH1_LOGGED set, so calls the tool makes to itself are not recorded twice.
+if [ -z "$KH1_LOGGED" ] && [ -n "$1" ]; then
+  export KH1_LOGGED=1; kt0=$(date +%s.%N); ktmp=$(mktemp)
+  bash "$0" "$@" 2>&1 | tee "$ktmp"; krc=${PIPESTATUS[0]}
+  python3 tools/logcall.py "$krc" "$kt0" "$ktmp" "$@" > /dev/null 2>&1; rm -f "$ktmp"
+  exit $krc
+fi
 # a file argument given as "src/lib/x.c" or "lib/x.c" means "lib/x" (the local model does this now and then; the
 # give-up then failed and left a stray .c.c.tmp file, 24 Nov)
 if [ -n "$2" ]; then f2="${2#src/}"; f2="${f2%.c}"; c1="$1"; shift 2; set -- "$c1" "$f2" "$@"; fi
 case "$1" in
+  lesson)
+    # lesson <file> <func> <what the difference looked like -> what fixed it (or: why it cannot match)>
+    # One line of hard-won knowledge, kept with the function it came from (dataset/lessons/<workspace>.jsonl).
+    f="$2"; fn="$3"; shift 3
+    [ -z "$fn" ] || [ -z "$*" ] && { echo "usage: lesson <file> <func> <symptom -> fix, in one or two sentences>"; exit 1; }
+    echo "lesson noted for $fn ($f): $*" ;;
   next)
     # an attempt left in place (the agent moved on without giving up) would block every later try: clear it here
     replaced | while read -r lf lfile; do

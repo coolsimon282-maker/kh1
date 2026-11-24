@@ -18,6 +18,11 @@ func_001CF728, func_001D9EA8, func_001D9F08, func_001CC588, func_001CCA88, func_
 func_001D0DE0, func_001D0E78, func_001DBA58, func_001D8500, func_001D11C0. `list` shows them among the smallest;
 take the next ones up.
 
+## Recording the work
+
+Everything here feeds a future PS2 decompiler model: read `DATASET.md` (short). Always work through
+`agent-tools.sh` so each attempt is recorded; give `giveup` a precise reason; note tricks with `lesson`.
+
 ## Hard rules
 
 1. Never download anything, never push, never change branches, never rewrite history (`--amend`, `reset`,

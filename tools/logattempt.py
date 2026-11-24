@@ -33,11 +33,20 @@ def main():
     elif rc == '2' or 'COMPILE ERROR' in out: result = 'compile_error'
     else: result = 'differs'
     worker = os.path.basename(here)
+    # how this file is compiled (the same C gives different code under each): which compiler, and its per-file flags
+    conf = open('configure.py', errors='replace').read() if os.path.exists('configure.py') else ''
+    def lst(name):
+        m2 = re.search(name + r'\s*=\s*\[(.*?)\]', conf, re.S); return re.findall(r'"([^"]+)"', m2.group(1)) if m2 else []
+    base = f.split('/')[-1] + '.c'
+    if f.startswith('lib/libgcc/'): comp = {'compiler': 'ee-gcc 2.96', 'rule': 'libgcc', 'flags': '-O2 -G0 -DIN_GCC -DIN_LIBGCC2 -DUS_SOFTWARE_GOFAST'}
+    elif f.startswith(('lib/libc/', 'lib/libm/')): comp = {'compiler': 'ee-gcc 2.96', 'rule': 'newlib', 'flags': '-O2 -G0 -D_IEEE_LIBM'}
+    elif f.startswith('lib/'): comp = {'compiler': 'ee-gcc 2.9-991111', 'rule': 'sony-lib', 'flags': '-O2 -G0'}
+    else: comp = {'compiler': 'ee-gcc 2.96', 'rule': 'game', 'flags': '-O2 -G0' + ('' if base in lst('NO_G_FILES') else ' -g') + ('' if base in lst('STRICT_ALIASING_FILES') else ' -fno-strict-aliasing') + ' (then masps2, no hazard nops)'}
     rec = {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'worker': worker, 'file': f, 'func': fn, 'kind': kind, 'result': result,
            'off': int(m.group(1)) if m and 'differs' in m.group(0) else (0 if result == 'match' else None),
            'of': int(m.group(2)) if m and 'differs' in m.group(0) else (int(m.group(1)) if m else None),
            'head': git('rev-parse', '--short', 'HEAD').strip(), 'attempt': attempt, 'target': target,
-           'output': out[-12000:], 'reason': reason}
+           'output': out[-12000:], 'reason': reason, 'game': 'Kingdom Hearts Final Mix (SLPS-25198)', 'platform': 'PS2 EE (MIPS R5900)', **comp}
     key = hashlib.md5((fn + kind + attempt + result).encode('utf-8', 'replace')).hexdigest()
     last = os.path.join(d, '.last_' + worker)
     try:
