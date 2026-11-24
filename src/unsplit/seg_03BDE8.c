@@ -7659,20 +7659,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017B860);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BA80);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BC90);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BFE8);
-
-void func_0017C110(s32 a0, f32 f) {
-    f32 m[16];
-    f32 v[4];
-    u8* g = D_00362438;
-    func_0017B308(m, g + 0x20, *(s32*)g, a0, *(s32*)(g + 0x18) & 1);
-    func_0017B250(v, m, f);
-    sceVu0SubVector(v, D_00575970, v);
-    func_00120A58(v);
-}
-
 typedef struct { u8 pad[0x18]; u32 b0:1; } G18;
 typedef struct {
     u8 pad00[0x10];
@@ -7687,7 +7673,8 @@ typedef struct {
     u8 pad54[4];
     f32 f58;
     f32 f5C;
-    u8 pad60[5];
+    f32 f60;
+    u8 pad64;
     u8 f65;
     u8 f66;
     u8 pad67[9];
@@ -7698,6 +7685,21 @@ s32 func_0017B4F8(s32*, f32*, f32);
 extern sceVu0FVECTOR D_00575860;
 extern f32 D_003625E4;
 extern f32 D_0048EAE4;
+
+s32 func_0017B860(s32, f32*, f32*, s32*);
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BC90);
+
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017BFE8);
+
+void func_0017C110(s32 a0, f32 f) {
+    f32 m[16];
+    f32 v[4];
+    u8* g = D_00362438;
+    func_0017B308(m, g + 0x20, *(s32*)g, a0, *(s32*)(g + 0x18) & 1);
+    func_0017B250(v, m, f);
+    sceVu0SubVector(v, D_00575970, v);
+    func_00120A58(v);
+}
 
 s32 func_0017C190(void) {
     sceVu0FMATRIX m;
