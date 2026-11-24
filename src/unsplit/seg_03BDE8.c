@@ -7109,7 +7109,54 @@ void func_0017EBD0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017EC00);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017ECF8);
+extern s32 D_003623F0;
+extern f32 D_003623F4;
+extern f32 D_003623F8;
+
+float cosf(float);
+s32 func_0017ECF8_def(void) __asm__("func_0017ECF8");
+s32 func_0017ECF8_def(void) {
+    sceVu0FVECTOR d;
+    f32 t;
+    f32 s;
+
+    if (D_003623F0 != 0) {
+        D_003623F0 = 2;
+        return 0;
+    }
+    if (D_00575894 != NULL) {
+        sceVu0SubVector(d, (f32*)(D_00575894 + 0x10), (f32*)(D_00575894 + 0x490));
+        D_003623F4 = func_00120A38(d) / D_002B8344;
+        d[1] = 0.0f;
+        D_003623F8 = func_00120A38(d) / D_002B8344;
+    }
+    if (!((struct { u32 a:1; u32 b:1; }*)&D_002C1EA8)->b) {
+        if (D_00362458_v[D_002DED08].exit == NULL) {
+            return 0;
+        }
+        func_0017D628();
+        func_0017DE80();
+        D_00362458_v[D_002DED08].exit();
+        if (D_005758C4_f > 0.0f) {
+            t = D_005758C4_f - D_002B8344;
+            D_005758C4_f = t;
+            if (!(0.0f < t)) {
+                D_005758C4_f = 0.0f;
+                sceVu0CopyVector(D_002DECE0, D_005758D0);
+                sceVu0CopyVector(D_002DECF0, D_005758E0);
+            } else {
+            s = t / D_005758C0;
+            s = 1.0f - cosf(s * 3.1415928f * 0.5f);
+            sceVu0InterVector(D_002DECE0, D_005758A0, D_005758D0, s);
+            sceVu0InterVector(D_002DECF0, D_005758B0, D_005758E0, s);
+            }
+        } else {
+            sceVu0CopyVector(D_002DECE0, D_005758D0);
+            sceVu0CopyVector(D_002DECF0, D_005758E0);
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017EF40);
 
