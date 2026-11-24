@@ -1,8 +1,37 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
 // Data this file owns is still in the data segments: declare it extern here, do not define it.
 #include "../../../include/include_asm.h"
+#include <stdlib.h>
+#include <string.h>
+#include <reent.h>
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _Balloc);
+extern void *_calloc_r(struct _reent *, size_t, size_t);
+
+struct _Bigint *_Balloc(struct _reent *ptr, int k)
+{
+    int x;
+    struct _Bigint *rv;
+
+    if (ptr->_freelist == NULL) {
+        ptr->_freelist = (struct _Bigint **)_calloc_r(ptr, sizeof(struct _Bigint *), 16);
+        if (ptr->_freelist == NULL) {
+            return NULL;
+        }
+    }
+
+    if ((rv = ptr->_freelist[k]) != 0) {
+        ptr->_freelist[k] = rv->_next;
+    } else {
+        x = 1 << k;
+        rv = (struct _Bigint *)_calloc_r(ptr, 1, sizeof(struct _Bigint) + (x - 1) * sizeof(rv->_x));
+        if (rv == NULL)
+            return NULL;
+        rv->_k = k;
+        rv->_maxwds = x;
+    }
+    rv->_sign = rv->_wds = 0;
+    return rv;
+}
 
 #include <reent.h>
 
@@ -14,7 +43,40 @@ void _Bfree(struct _reent *ptr, struct _Bigint *v)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _multadd);
+struct _Bigint *_Balloc(struct _reent *ptr, int k);
+void _Bfree(struct _reent *ptr, struct _Bigint *v);
+
+#define Bcopy(x, y) memcpy((char *)&x->_sign, (char *)&y->_sign, y->_wds * sizeof(__Long) + 2 * sizeof(int))
+
+struct _Bigint *_multadd(struct _reent *ptr, struct _Bigint *b, int m, int a)
+{
+    int i, wds;
+    __ULong *x, y;
+    __ULong xi, z;
+    struct _Bigint *b1;
+
+    wds = b->_wds;
+    x = b->_x;
+    i = 0;
+    do {
+        xi = *x;
+        y = (xi & 0xffff) * m + a;
+        z = (xi >> 16) * m + (y >> 16);
+        a = (int)(z >> 16);
+        *x++ = (z << 16) + (y & 0xffff);
+    } while (++i < wds);
+    if (a) {
+        if (wds >= b->_maxwds) {
+            b1 = _Balloc(ptr, b->_k + 1);
+            Bcopy(b1, b);
+            _Bfree(ptr, b);
+            b = b1;
+        }
+        b->_x[wds++] = a;
+        b->_wds = wds;
+    }
+    return b;
+}
 
 #include <reent.h>
 
@@ -46,7 +108,33 @@ struct _Bigint *_s2b(struct _reent *ptr, const char *s, int nd0, int nd, unsigne
     return b;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _hi0bits);
+int _hi0bits(register __ULong x)
+{
+    register int k = 0;
+
+    if (!(x & 0xffff0000)) {
+        k = 16;
+        x <<= 16;
+    }
+    if (!(x & 0xff000000)) {
+        k += 8;
+        x <<= 8;
+    }
+    if (!(x & 0xf0000000)) {
+        k += 4;
+        x <<= 4;
+    }
+    if (!(x & 0xc0000000)) {
+        k += 2;
+        x <<= 2;
+    }
+    if (!(x & 0x80000000)) {
+        k++;
+        if (!(x & 0x40000000))
+            return 32;
+    }
+    return k;
+}
 
 #include <reent.h>
 
@@ -180,7 +268,38 @@ struct _Bigint *_multiply(struct _reent *ptr, struct _Bigint *a, struct _Bigint 
     return c;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _pow5mult);
+extern const int D_00491FD0[3]; /* p05: 5, 25, 125 */
+
+struct _Bigint *_pow5mult(struct _reent *ptr, struct _Bigint *b, int k)
+{
+    struct _Bigint *b1, *p5, *p51;
+    int i;
+
+    if ((i = k & 3) != 0)
+        b = _multadd(ptr, b, D_00491FD0[i - 1], 0);
+
+    if (!(k >>= 2))
+        return b;
+    if (!(p5 = ptr->_p5s)) {
+        p5 = ptr->_p5s = _i2b(ptr, 625);
+        p5->_next = 0;
+    }
+    for (;;) {
+        if (k & 1) {
+            b1 = _multiply(ptr, b, p5);
+            _Bfree(ptr, b);
+            b = b1;
+        }
+        if (!(k >>= 1))
+            break;
+        if (!(p51 = p5->_next)) {
+            p51 = p5->_next = _multiply(ptr, p5, p5);
+            p51->_next = 0;
+        }
+        p5 = p51;
+    }
+    return b;
+}
 
 extern struct _Bigint *_Balloc(struct _reent *ptr, int i);
 void _Bfree(struct _reent *ptr, struct _Bigint *v);
@@ -224,9 +343,81 @@ struct _Bigint *_lshift(struct _reent *ptr, struct _Bigint *b, int k)
     return b1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", __mcmp);
+int __mcmp(struct _Bigint *a, struct _Bigint *b)
+{
+    __ULong *xa, *xa0, *xb, *xb0;
+    int i, j;
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", __mdiff);
+    i = a->_wds;
+    j = b->_wds;
+    if (i -= j)
+        return i;
+    xa0 = a->_x;
+    xa = xa0 + j;
+    xb0 = b->_x;
+    xb = xb0 + j;
+    for (;;) {
+        if (*--xa != *--xb)
+            return *xa < *xb ? -1 : 1;
+        if (xa <= xa0)
+            break;
+    }
+    return 0;
+}
+
+#define Storeinc(a, b, c) (((unsigned short *)a)[1] = (unsigned short)b, ((unsigned short *)a)[0] = (unsigned short)c, a++)
+
+struct _Bigint *__mdiff(struct _reent *ptr, struct _Bigint *a, struct _Bigint *b)
+{
+    struct _Bigint *c;
+    int i, wa, wb;
+    __Long borrow, y;
+    __ULong *xa, *xae, *xb, *xbe, *xc;
+    __Long z;
+
+    i = __mcmp(a, b);
+    if (!i) {
+        c = _Balloc(ptr, 0);
+        c->_wds = 1;
+        c->_x[0] = 0;
+        return c;
+    }
+    if (i < 0) {
+        c = a;
+        a = b;
+        b = c;
+        i = 1;
+    } else
+        i = 0;
+    c = _Balloc(ptr, a->_k);
+    c->_sign = i;
+    wa = a->_wds;
+    xa = a->_x;
+    xae = xa + wa;
+    wb = b->_wds;
+    xb = b->_x;
+    xbe = xb + wb;
+    xc = c->_x;
+    borrow = 0;
+    do {
+        y = (*xa & 0xffff) - (*xb & 0xffff) + borrow;
+        borrow = y >> 16;
+        z = (*xa++ >> 16) - (*xb++ >> 16) + borrow;
+        borrow = z >> 16;
+        Storeinc(xc, z, y);
+    } while (xb < xbe);
+    while (xa < xae) {
+        y = (*xa & 0xffff) + borrow;
+        borrow = y >> 16;
+        z = (*xa++ >> 16) + borrow;
+        borrow = z >> 16;
+        Storeinc(xc, z, y);
+    }
+    while (!*--xc)
+        wa--;
+    c->_wds = wa;
+    return c;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _ulp);
 

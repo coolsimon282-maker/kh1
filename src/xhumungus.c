@@ -1839,9 +1839,132 @@ s32 func_001D25D8(void) {
     return 8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2600);
+typedef struct {
+    u8 unk_00[0x3034];
+    s32 unk_3034;
+    s32 unk_3038;
+} XHumGM;
+void* func_00123880(s32);
+s32 func_001C4640(ScriptMsg*);
+extern XGiantMountain D_003854E0;
+extern Script D_0038D170;
+extern Script D_0039A580;
+extern u8 D_003C3A70[];
+extern s32 D_003C54F0;
+extern u8 D_003A7990[];
+extern s32 D_003B4D90;
+extern s32 D_003A7980;
+extern s32 D_0039A570;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2840);
+s32 func_001D2600(Script* arg0) {
+    ScriptMsgG msg;
+    s32 i;
+    s32 b;
+
+    msg.unk_00 = 0xD;
+    msg.unk_01 = 0;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    if (D_003854E0.unk_316C != 0) {
+        for (i = 0; i < D_003C54F0; i++) {
+            if (func_00123880(*(s32*)(D_003C3A70 + i * 0x350)) != NULL) {
+                msg.unk_04 = *(s32*)(D_003C3A70 + i * 0x350);
+                func_001C4640((ScriptMsg*)&msg);
+            }
+        }
+    } else {
+      b = (s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1;
+      if (b == 1) {
+        if (((XHumGM*)&D_003854E0)->unk_3038 == 0) {
+            for (i = 0; i < D_003B4D90; i++) {
+                if (func_00123880(*(s32*)(D_003A7990 + i * 0x350)) != NULL) {
+                    msg.unk_04 = *(s32*)(D_003A7990 + i * 0x350);
+                    func_001C4640((ScriptMsg*)&msg);
+                }
+            }
+        } else {
+            for (i = 0; i < D_003A7980; i++) {
+                if (func_00123880(*(s32*)((u8*)&D_0039A580 + i * 0x350)) != NULL) {
+                    msg.unk_04 = *(s32*)((u8*)&D_0039A580 + i * 0x350);
+                    func_001C4640((ScriptMsg*)&msg);
+                }
+            }
+        }
+    } else if (((XHumGM*)&D_003854E0)->unk_3034 == 0) {
+        for (i = 0; i < D_0039A570; i++) {
+            if (func_00123880(*(s32*)((u8*)&D_0038D170 + i * 0x350)) != NULL) {
+                msg.unk_04 = *(s32*)((u8*)&D_0038D170 + i * 0x350);
+                func_001C4640((ScriptMsg*)&msg);
+            }
+        }
+    } else {
+        for (i = 0; i < D_003A7980; i++) {
+            if (func_00123880(*(s32*)((u8*)&D_0039A580 + i * 0x350)) != NULL) {
+                msg.unk_04 = *(s32*)((u8*)&D_0039A580 + i * 0x350);
+                func_001C4640((ScriptMsg*)&msg);
+            }
+        }
+    }
+    }
+    return 2;
+}
+
+s32 func_001D2840(Script* arg0) {
+    ScriptMsgG msg;
+    s32 i;
+    s32 b;
+
+    msg.unk_00 = 0xE;
+    msg.unk_01 = 0;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    if (D_003854E0.unk_316C != 0) {
+        for (i = 0; i < D_003C54F0; i++) {
+            if (func_00123880(*(s32*)(D_003C3A70 + i * 0x350)) != NULL) {
+                msg.unk_04 = *(s32*)(D_003C3A70 + i * 0x350);
+                func_001C4640((ScriptMsg*)&msg);
+            }
+        }
+    } else {
+      b = (s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1;
+      if (b == 1) {
+        if (((XHumGM*)&D_003854E0)->unk_3038 == 0) {
+            for (i = 0; i < D_003B4D90; i++) {
+                if (func_00123880(*(s32*)(D_003A7990 + i * 0x350)) != NULL) {
+                    msg.unk_04 = *(s32*)(D_003A7990 + i * 0x350);
+                    func_001C4640((ScriptMsg*)&msg);
+                }
+            }
+        } else {
+            for (i = 0; i < D_003A7980; i++) {
+                if (func_00123880(*(s32*)((u8*)&D_0039A580 + i * 0x350)) != NULL) {
+                    msg.unk_04 = *(s32*)((u8*)&D_0039A580 + i * 0x350);
+                    func_001C4640((ScriptMsg*)&msg);
+                }
+            }
+        }
+    } else if (((XHumGM*)&D_003854E0)->unk_3034 == 0) {
+        for (i = 0; i < D_0039A570; i++) {
+            if (func_00123880(*(s32*)((u8*)&D_0038D170 + i * 0x350)) != NULL) {
+                msg.unk_04 = *(s32*)((u8*)&D_0038D170 + i * 0x350);
+                func_001C4640((ScriptMsg*)&msg);
+            }
+        }
+    } else {
+        for (i = 0; i < D_003A7980; i++) {
+            if (func_00123880(*(s32*)((u8*)&D_0039A580 + i * 0x350)) != NULL) {
+                msg.unk_04 = *(s32*)((u8*)&D_0039A580 + i * 0x350);
+                func_001C4640((ScriptMsg*)&msg);
+            }
+        }
+    }
+    }
+    return 2;
+}
 
 void* func_00123880(s32);
 
