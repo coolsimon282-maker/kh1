@@ -568,7 +568,32 @@ s32 func_00111D98(void) {
     return D_004D29D0 ? 4 : 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111E20);
+typedef struct { s32 a0; s32 a3; s32 a9; s32 a6; s32 u10; s32 u14; s32 a5; s32 u1C; s32 a1; s32 a8; s32 u28; s32 a7; s32 a2; } XT9288v;
+extern XT9288v D_004D9288_v __asm__("D_004D9288");
+#define D D_004D9288_v
+void func_002485B8(s32);
+void func_00111E20(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9) {
+    D.a0 = a0;
+    D.a1 = a1;
+    D_004D9260 = a4;
+    D.a2 = a2;
+    D.a3 = a3;
+    D.a5 = a5;
+    D.a6 = a6;
+    D.a9 = a9;
+    D.a8 = a8;
+    D.u1C = D_002B9170;
+    D.u28 = 0;
+    func_00111C98(0, D_002B916C);
+    func_00111C98(1, D_004D9260);
+    D.a7 = a7;
+    D.u10 = D_002B9170;
+    D.u14 = D_004D29C4;
+    func_002485B8((s32)&D);
+    D_004D29D0 = 0;
+    func_0011ED30(0x280A0, func_00111D98);
+}
+#undef D
 
 void func_00111F00(void) {
     D_004D29D0 = 1;

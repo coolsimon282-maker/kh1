@@ -95,10 +95,16 @@ PY
     set -- $job
     echo "$1 $2" > qwen/.job
     echo "$1 $2 $4 $(date +%s)" > qwen/.job_info; rm -f qwen/.job_tries
+    # start every job with an empty work file: the previous function's C left in it sent the model searching for
+    # that function's symbols in a loop (23 Nov, _localeconv_r after func_00148F08)
+    echo "// work file for $1 (src/$2.c): write this one function here, with the declarations it needs above it" > qwen/work.c
     echo "NEXT JOB: $1 in src/$2.c ($4 bytes)$( [ "$3" != - ] && echo " - twin of $3: copy the twin's C and change the names/offsets/constants")"
     # library code: show the same function from the reference sources (kh1-study/libref: Sony SDK / newlib / libgcc
     # files from the ICO and King's Field IV decompiles, MIT) - usually the original source, give or take SDK version
     case "$2" in lib/*) python3 tools/libref.py "$1" ;; esac
+    # the layout changed (e.g. fm was merged with new C files) and this checkout has not been re-split yet: the
+    # function's assembly file is missing until a build does that (23 Nov: the model went hunting for it instead)
+    [ -f "asm/nonmatchings/$2/$1.s" ] || { echo "(the layout changed: re-splitting this checkout first, a few minutes)"; bash "$0" build > /dev/null 2>&1; }
     echo "== assembly of $1 =="
     grep -vE '^\s*$|^\.|^/\* Generated|glabel|endlabel|nonmatching' "asm/nonmatchings/$2/$1.s" | sed -E 's#^ +/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/ +##'
     if [ "$3" != - ]; then echo "== the twin's matched C =="; bash "$0" cfunc "$3"
@@ -249,7 +255,7 @@ PY
     [ "$nf" -gt 1 ] && echo "NOTE: this build contains $nf functions in uncommitted C: ${funcs}- it only passes if ALL of them match. Revert any you gave up on (git checkout -- src/<file>.c)."
     # a stale split (the layout, symbol lists or configure.py changed since the last configure, e.g. after merging fm)
     # makes every build fail whatever the C says: re-split first (it cost the local agent three whole rounds, 22 Nov)
-    FUNCS="$funcs" bash wsl-build.sh bash -c 'if [ ! -f build.ninja ] || [ -n "$(find config/kh.fm.yaml config/fm configure.py -newer build.ninja -print -quit 2>/dev/null)" ]; then echo "(layout changed since the last configure: re-splitting first, about a minute)"; python3 configure.py -c -v fm > .agent_configure.log 2>&1 || { tail -5 .agent_configure.log; }; fi; ninja > .agent_build.log 2>&1; s=$?; date "+%H:%M:%S" > .agent_build.time; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" .agent_build.log | tail -25; if [ $s -eq 0 ] && sha1sum -c config/fm/checksum.sha1 > .agent_build.v 2>&1; then v=OK; elif [ $s -eq 0 ]; then v=DIFFERS; elif grep -q "checksum did NOT match" .agent_build.log; then v=DIFFERS; else v=ERROR; fi; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1 2>&1 | tee -a .agent_build.log; else echo "BUILD FAILED" | tee -a .agent_build.log; fi; printf "%s\t%s\t%s\n" "$(date +%s)" "$v" "$FUNCS" >> .agent_build.history' ;;
+    FUNCS="$funcs" bash wsl-build.sh bash -c 'if [ ! -f build.ninja ] || [ -n "$(find config/kh.fm.yaml config/fm configure.py -newer build.ninja -print -quit 2>/dev/null)" ] || [ -n "$(python3 tools/missing_asm.py check 2>/dev/null)" ]; then echo "(layout changed since the last configure, or an assembly file is missing: re-splitting first, a few minutes)"; python3 configure.py -c -v fm > .agent_configure.log 2>&1 || { tail -5 .agent_configure.log; }; python3 tools/missing_asm.py baseline 2>/dev/null; fi; ninja > .agent_build.log 2>&1; s=$?; date "+%H:%M:%S" > .agent_build.time; grep -vE "^\[[0-9]+/[0-9]+\] (cc|as) |warning: |In function|At top level|LOAD segment with RWX" .agent_build.log | tail -25; if [ $s -eq 0 ] && sha1sum -c config/fm/checksum.sha1 > .agent_build.v 2>&1; then v=OK; elif [ $s -eq 0 ]; then v=DIFFERS; elif grep -q "checksum did NOT match" .agent_build.log; then v=DIFFERS; else v=ERROR; fi; if [ $s -eq 0 ]; then sha1sum -c config/fm/checksum.sha1 2>&1 | tee -a .agent_build.log; else echo "BUILD FAILED" | tee -a .agent_build.log; fi; printf "%s\t%s\t%s\n" "$(date +%s)" "$v" "$FUNCS" >> .agent_build.history' ;;
   list)
     for f in $(grep -oP '^INCLUDE_ASM\("asm/nonmatchings/[^"]+",\s*\K\w+' "src/$2.c"); do
       p="asm/nonmatchings/$2/$f.s"

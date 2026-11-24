@@ -4,7 +4,12 @@
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/locale", _setlocale_r);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/locale", _localeconv_r);
+extern struct lconv D_00491F88;
+
+struct lconv *_localeconv_r(struct Reent *data)
+{
+    return (struct lconv *)&D_00491F88;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/locale", setlocale);
 
