@@ -497,7 +497,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A0A0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A410);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A728);
+typedef struct { f32 min[4]; f32 max[4]; u8 pad[0x20]; } V11A728;
+extern V11A728 D_004E2430_v[] __asm__("D_004E2430");
+s32 func_0011A728(f32* a0, s32 a1) {
+    if (D_004E2430_v[a1].min[0] <= a0[3] && a0[0] <= D_004E2430_v[a1].max[0] && D_004E2430_v[a1].min[1] <= a0[4] && a0[1] <= D_004E2430_v[a1].max[1] && D_004E2430_v[a1].min[2] <= a0[5] && a0[2] <= D_004E2430_v[a1].max[2]) {
+        return 1;
+    }
+    return 0;
+}
 
 // D_004E2458 seen as tables of u16 rows (the same data as Seg150D8Unk14)
 typedef struct {
