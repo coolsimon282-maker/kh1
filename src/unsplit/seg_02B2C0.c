@@ -886,7 +886,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130898);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130C28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130D20);
+f32 func_0013FE10(void);
+f32 func_00130D20(u8 *a0) {
+    f32 t;
+    s32 k = *(s32 *)(a0 + 0x164);
+    if (k != 0x15 && k != 0x16) return -1.0f;
+    t = func_0013FE10();
+    func_00167698((*(s32 **)(a0 + 0x1D4))[*(s32 *)(a0 + 0x168)]);
+    if (*(s32 *)(a0 + 0x164) == 0x15) t = 1.0f - t;
+    return (t < 0.0f) ? 0.0f : (t > 1.0f) ? 1.0f : t;
+}
 
 f32 func_00130DD0(u8 *a0) {
     f32 r = -1.0f;
