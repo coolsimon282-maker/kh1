@@ -303,7 +303,71 @@ fde *find_fde(void *pc) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", extract_cie_info);
+struct dwarf_cie {
+    uword length;
+    sword CIE_id;
+    byte version;
+    char augmentation[0];
+};
+
+struct cie_info {
+    char *augmentation;
+    void *eh_ptr;
+    int code_align;
+    int data_align;
+    unsigned ra_regno;
+};
+
+union unaligned {
+    void *p;
+    unsigned b2 __attribute__((mode(HI)));
+    unsigned b4 __attribute__((mode(SI)));
+    unsigned b8 __attribute__((mode(DI)));
+} __attribute__((packed));
+
+extern char D_00492850[]; /* "" */
+extern char D_00492858[]; /* "eh" */
+int strcmp(const char *, const char *);
+size_t strlen(const char *);
+
+static inline struct dwarf_cie *get_cie(fde *f) {
+    return (void *)&f->CIE_delta - f->CIE_delta;
+}
+
+static inline void *read_pointer(void *p) {
+    union unaligned *up = p;
+    return up->p;
+}
+
+void *extract_cie_info(fde *f, struct cie_info *c) {
+    void *p;
+    int i;
+
+    c->augmentation = get_cie(f)->augmentation;
+
+    if (strcmp(c->augmentation, D_00492850) != 0 && strcmp(c->augmentation, D_00492858) != 0 &&
+        c->augmentation[0] != 'z')
+        return 0;
+
+    p = c->augmentation + strlen(c->augmentation) + 1;
+
+    if (strcmp(c->augmentation, D_00492858) == 0) {
+        c->eh_ptr = read_pointer(p);
+        p += sizeof(void *);
+    } else
+        c->eh_ptr = 0;
+
+    p = decode_uleb128(p, &c->code_align);
+    p = decode_sleb128(p, &c->data_align);
+    c->ra_regno = *(unsigned char *)p++;
+
+    if (c->augmentation[0] == 'z') {
+        p = decode_uleb128(p, &i);
+        p += i;
+    }
+
+    return p;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", decode_stack_op);
 
