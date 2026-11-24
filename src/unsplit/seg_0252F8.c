@@ -118,7 +118,87 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126C10);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126E80);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126F18);
+extern u32 D_002DED20;
+extern s32 D_002E31B0;
+typedef struct {
+    void (*fn)(u8*, u8*, u8*);
+    u8 pad[0x1C];
+} S126F18;
+extern S126F18 D_00350DA0[];
+void func_00126E80();
+void func_0014C580(u8*);
+s32 func_0013DFB8(u8*, u8*);
+s32 func_001443A8(u8*);
+void func_0014CC88(u8*, f32);
+void func_0013ECF8(u8*, s32*, u8*);
+void func_0013DC10(u8*, s32);
+void func_00137688(u8*, f32);
+f32 func_001376E8(u8*, u8*);
+void func_0015ABD0(u8*);
+
+void func_00126F18(u8* a0, u8* a1, u8* a2) {
+    s32 k;
+    f32 t;
+    s32 s;
+    void (*fn)(u8*, u8*, u8*);
+
+    switch (*(s32*)(a0 + 0x70)) {
+    case 2:
+        func_00126E80();
+        if ((D_002DED20 >> 8) & 1) {
+            if ((D_002E3190 >> 26) & 1) {
+                func_0014C580(a0);
+                return;
+            }
+        }
+        break;
+    case 4:
+        func_00126E80();
+        break;
+    default:
+        fn = D_00350DA0[*(s32*)(a0 + 0x70)].fn;
+        if (fn != NULL) {
+            fn(a0, a1, a2);
+        }
+        break;
+    }
+    if ((D_002E3190 >> 24) & 1) {
+        do {
+            func_0013DFB8(a0, a2);
+        } while (0);
+        return;
+    }
+    if (((D_002E3190 >> 26) & 1) && *(s32*)(a0 + 0x70) == 0 && func_001443A8(a0) == 0) {
+        if (((D_002DED20 >> 4) & 1) && (!((D_002DED20 >> 5) & 1) || *(f32*)(a2 + 0xC) < *(f32*)(*(u8**)(a0 + 0x6C) + 8))) {
+            func_0013ECF8(a0, &D_002E31B0, a2);
+            func_0013DC10(a0, 0x3D);
+            func_00130578(a0, 0x40000000, 0.0f);
+            *(u8*)(*(u8**)(a0 + 0x14C) + 0x29) = 1;
+        } else if ((D_002DED20 >> 5) & 1) {
+            func_00137688(a0, func_001376E8(a0, a2));
+            do {
+                func_0015ABD0(a0);
+            } while (0);
+        }
+        return;
+    }
+    k = *(s32*)a0;
+    if (k & 0x40000) {
+        t = *(f32*)(a0 + 0x3B0);
+        if (*(f32*)(a0 + 0x3B8) <= t + 5.0f || *(s32*)(a0 + 0x70) != 2) {
+            *(s32*)a0 = k & ~0x40000;
+        } else if (k & 0x20000) {
+            if (!(*(s32*)(a1 + 4) & 4)) {
+                *(s32*)a0 = k & ~0x20000;
+            }
+        } else if (t >= 6.0f) {
+            s = *(s32*)(a0 + 0x3D0);
+            func_0014CC88(a0, 5.0f);
+            *(s32*)(a0 + 0x3D0) = s;
+            *(s32*)a0 &= ~0x40000;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_001271B0);
 
