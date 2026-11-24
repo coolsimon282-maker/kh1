@@ -665,7 +665,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F700);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F868);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012FA98);
+typedef struct { u8 pad[0xC]; u16 unkC; u16 unkE; } S2E31A0;
+extern S2E31A0* D_002E31A0_p __asm__("D_002E31A0");
+void func_0012FA98(void) {
+    f32 sp0[4];
+    f32 sp10[4];
+    f32 f;
+    s32* p;
+    S2E31A0* d;
+    s32 v;
+
+    f = func_0012ED88_f((u8*)D_002E26A0, &D_002E31B0, sp0, sp10);
+    p = &D_002E31BC;
+    d = D_002E31A0_p;
+    v = 0;
+    if (d != NULL) {
+        if (f < (f32) d->unkC) {
+            v = 0;
+        } else if (f < (f32) d->unkE) {
+            v = 1;
+        } else {
+            v = 2;
+        }
+        *p = v;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012FB20);
 
