@@ -7046,7 +7046,64 @@ void func_00179690(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00179700);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00179A80);
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+} Pad5BB0;
+extern Pad5BB0 D_002C5BB0_p __asm__("D_002C5BB0");
+extern f32 D_00575830;
+extern f32 D_0057582C;
+extern sceVu0FVECTOR D_00362510;
+
+void func_00179A80(void) {
+    sceVu0FMATRIX m;
+    s32 pad;
+
+    if (D_00575890 & 2) {
+        D_00575890 &= ~2;
+        D_0057582C = 0.0f;
+        D_00575830 = D_005758C0;
+    }
+    if (0.0f < D_00575830) {
+        D_00575830 = D_00575830 - D_002B8344;
+        if (D_00575830 <= 0.0f) {
+            *(s32*)D_00575894 &= ~1;
+            D_00575830 = 0.0f;
+        }
+    }
+    func_001315C0((s32)D_00575894, 0, D_005758D0, 0.5f);
+    sceVu0RotMatrixX(m, D_002C1E20, D_0057582C);
+    sceVu0MulMatrix(m, (sceVu0FVECTOR*)(D_00575894 + 0xD0), m);
+    sceVu0CopyVector(m[3], D_005758D0);
+    m[3][3] = 1.0f;
+    sceVu0ApplyMatrix(D_005758E0, m, D_00362510);
+    D_00362684 = func_001250D0(D_005758D0, D_005758E0);
+    pad = D_002C5BB0_p.unk_04;
+    if (pad & 0x10) {
+        D_0057582C = D_0057582C - D_002B8344 * 0.017453292f;
+        if (D_0057582C < -1.3962633f) {
+            D_0057582C = -1.3962633f;
+        }
+    } else if (pad & 0x40) {
+        D_0057582C = D_0057582C + D_002B8344 * 0.017453292f;
+        if (1.0471975f < D_0057582C) {
+            D_0057582C = 1.0471975f;
+        }
+    } else {
+        if (D_002B8344 * 0.017453292f < D_0057582C) {
+            D_0057582C = D_0057582C - D_002B8344 * 0.017453292f;
+        } else if (D_0057582C < D_002B8344 * -0.017453292f) {
+            D_0057582C = D_0057582C + D_002B8344 * 0.017453292f;
+        } else {
+            D_0057582C = 0.0f;
+        }
+    }
+    if (D_002C5BB0_p.unk_08 & 0x200) {
+        *(s32*)D_00575894 |= 1;
+        func_00176F08(1, 30.0f);
+    }
+}
 
 void func_00179D08(void) {
     memset(D_00575920, 0, 0x20);
