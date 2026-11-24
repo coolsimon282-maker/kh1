@@ -121,3 +121,9 @@ Final Mix code: 1,483 KB. In C: 178 KB (12%), ~1,920 functions (1,125 matched ov
 inside C files: 306 KB (525 functions, mostly the harder ones). Not yet in any file: ~860 KB of game code (about
 3,800 functions, half of them under 100 bytes) plus ~140 KB of Sony libraries. Splitting that code into files is
 the coordinator's next job; agents then get the small functions there.
+
+## Recording the work (24 Nov)
+
+Every attempt, tool call and lesson is kept in `kh1-study\dataset` for a future PS2 decompiler model and for
+reviewing how the workers work. The rules for workers and coordinators are in `DATASET.md`; read it before
+starting, and point every new worker at it.
