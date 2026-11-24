@@ -2021,7 +2021,25 @@ s32 func_001EA888(A2Script *arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA908);
+s32 *func_001E98D0(s32, s32);
+
+s32 func_001EA908(A2Script *p) {
+    A2Msg msg;
+    s32 *q = func_001E98D0((s32)(*(u64 *)((u8 *)p + 0x328) >> 5) & 1, p->unk_174[p->unk_174[3] + 4]);
+
+    if (q != NULL) {
+        msg.unk_00 = 0x23;
+        msg.unk_01 = 0;
+        msg.unk_04 = *q;
+        func_001C4640(&msg);
+        msg.unk_00 = 0x2A;
+        msg.unk_01 = 0;
+        msg.unk_04 = *q;
+        func_001C4640(&msg);
+    }
+    p->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA9C8);
 
