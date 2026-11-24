@@ -85,4 +85,37 @@ INCLUDE_ASM("asm/nonmatchings/lib/libc/vfprintf", _vfprintf_r);
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/vfprintf", cvt);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/vfprintf", exponent);
+#define	to_char(n)	((n) + '0')
+#define	MAXEXP		308
+
+/* newlib's static exponent(); global here while its callers are still asm */
+int
+exponent(p0, exp, fmtch)
+	char *p0;
+	int exp, fmtch;
+{
+	register char *p, *t;
+	char expbuf[MAXEXP];
+
+	p = p0;
+	*p++ = fmtch;
+	if (exp < 0) {
+		exp = -exp;
+		*p++ = '-';
+	}
+	else
+		*p++ = '+';
+	t = expbuf + MAXEXP;
+	if (exp > 9) {
+		do {
+			*--t = to_char(exp % 10);
+		} while ((exp /= 10) > 9);
+		*--t = to_char(exp);
+		for (; t < expbuf + MAXEXP; *p++ = *t++);
+	}
+	else {
+		*p++ = '0';
+		*p++ = to_char(exp);
+	}
+	return (p - p0);
+}
