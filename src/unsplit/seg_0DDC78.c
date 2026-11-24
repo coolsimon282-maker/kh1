@@ -2120,7 +2120,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E99E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9B98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9D00);
+double sqrt(double);
+f32 atan2f(f32, f32);
+
+void func_001E9D00(f32 *out, f32 *a, f32 *b, f32 roll) {
+    f32 dz = a[2] - b[2];
+    f32 dx = a[0] - b[0];
+
+    out[0] = atan2f(-(a[1] - b[1]), sqrt(dz * dz + dx * dx));
+    out[1] = atan2f(a[0] - b[0], a[2] - b[2]);
+    out[2] = roll;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9DC8);
 
