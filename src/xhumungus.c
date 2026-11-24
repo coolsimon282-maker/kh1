@@ -3398,7 +3398,24 @@ s32 func_001D71A0(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7250);
+s32 func_001D7250(void) {
+    ScriptMsgG msg;
+    u8* p;
+
+    msg.unk_00 = 0xD;
+    msg.unk_01 = 0;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        if (((*(u64*)(p + 0x370) >> 37) & 3) == 2) {
+            msg.unk_04 = *(s32*)(p + 4);
+            func_001C4640((ScriptMsg*)&msg);
+        }
+    }
+    return 2;
+}
 
 void func_0013C778(s32, s32, s32);
 
