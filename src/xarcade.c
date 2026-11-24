@@ -177,7 +177,42 @@ void func_00109440(void) {
     func_F20000(0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109468);
+extern s32 D_002B6484;
+extern u32 D_002BCA00_w[] __asm__("D_002BCA00");
+extern s32 D_002BBE08;
+extern s32 D_002B9030;
+s32 func_0010BF98_s(void) __asm__("func_0010BF98");
+s32 func_00110F68_s(void) __asm__("func_00110F68");
+s32 func_001EE090(void);
+void func_00239488(void);
+void func_00178140(s32);
+void func_001220D0(void);
+s32 func_0010FB90_s(void) __asm__("func_0010FB90");
+
+s32 func_00109468(void) {
+
+
+    if (D_002B6484 == 0 && (*(u64 *)D_002BCA00_w & 0xF0900000000) == 0xF0900000000 && (D_002BCA00_w[2] & 0xF09) != 0 &&
+        func_0010BF98_s() == 0 && func_001EE090() == 0) {
+        *(volatile s32 *)&D_002BBE08 = 0;
+        func_001ED888(1);
+        func_00114420();
+        func_00239488();
+        func_00178140(0);
+        func_0010FB90_s();
+        if (D_002B9030 != 0) {
+            do {
+                func_001220D0();
+                func_00110FA8();
+                func_001102C0();
+            } while (func_00110F68_s() != 1);
+            func_00110FC8();
+        }
+        func_001102C0();
+        func_0010FDB8(0);
+    }
+    return *(volatile s32 *)&D_002BBE08;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xarcade", func_00109580);
 
