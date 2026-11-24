@@ -1409,7 +1409,16 @@ void func_001F9418(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_001F9E48(a0, a1, a2, a3, a4, 0x12, a5);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F9438);
+s32 func_001EFBB8(s32);
+s32 func_001F94F0_s(s32, s32, s32, s32, s32, s32, s32) __asm__("func_001F94F0");
+s32 func_001F9438_def(s32, s32, s32, s32, s32, s32, s32) __asm__("func_001F9438");
+
+s32 func_001F9438_def(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    if (a4 == 0) {
+        return a2;
+    }
+    return func_001F94F0_s(a0, a1, a2, a3, func_001EFBB8(a4), a5, a6);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F94F0);
 
