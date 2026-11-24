@@ -131,7 +131,88 @@ s32 func_00215EE8(void* arg0) {
     return func_001F9438(arg0, 0, 174, 12, D_003F4488[D_0063CF40], 17, 0x80C87850);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215F48);
+struct XPotMenu;
+s32 func_001F42B8(struct XPotMenu*);
+void func_001F3758(struct XPotMenu*);
+void func_0020BD18(struct XPotMenu*, s32);
+void func_001FD858(struct XPotMenu*);
+s32 func_001FD518(struct XPotMenu*);
+s32 func_001FE570(struct XPotMenu*);
+void func_001F3D58(struct XPotMenu*, s32);
+void* func_001F4468(struct XPotMenu*);
+void func_001F4690(void*, void*);
+void func_001F3DC0(void*);
+s32 func_0013C288(s32);
+s32 func_00132F88(s32);
+s32 func_001EFBB8_r(s32) __asm__("func_001EFBB8");
+s32 func_001F94F0(struct XPotMenu*, s32, s32, s32, s32, s32, s32);
+extern s32* D_00425BC8;
+void func_0011D598_v(s32) __asm__("func_0011D598");
+void func_00207830_v(s32, s32, s32, s32, s32, s32, s32) __asm__("func_00207830");
+extern u32 D_00642C9C;
+extern s32 D_00642CC8;
+extern s32 D_003F4460;
+extern s32 D_003F4430;
+extern s32 D_003F2C40[][5];
+extern s32 D_003F44C8[];
+
+void func_00215F48(struct XPotMenu* m) {
+    u8* p[2];
+    void* t;
+    s32 sel;
+    s32 i;
+    s32 y;
+    s32 c;
+    s32 r;
+    s32 yy;
+    s32 k;
+
+    if (func_001F42B8(m)) {
+        if (D_00425BC8[2] & 0x4000) {
+            func_001F3758(m);
+            func_0011D598_v(3);
+            D_0063CF04 = 0;
+        } else {
+            func_001FD858(m);
+            func_0020BD18(m, 8);
+            sel = func_001FD518(m);
+            D_0063CF40 = sel;
+            if (func_001FE570(m)) {
+                func_001F3D58(m, 5);
+                func_001F3758(m);
+                D_0063CF04 = 2;
+                D_00642C9C = D_0063CF40;
+                t = func_001F4468(m);
+                p[0] = func_001F3A20(&D_003F4460, 6);
+                if (p[0] != NULL) {
+                    func_001F4690(p[0], t);
+                    *(u16*)(p[0] + 0xCC) = *(u16*)(p[0] + 0xCE) = *(u16*)&D_00642CC8;
+                    *(u16*)(p[0] + 0xD2) = *(u16*)&D_0063CF44 << 4;
+                    p[1] = func_001F3A20(&D_003F4430, 6);
+                    if (p[1] != NULL) {
+                        func_001F4690(p[1], p[0]);
+                        func_001F3DC0(p[0]);
+                    }
+                }
+            }
+        }
+    }
+    sel = func_001FD518(m);
+    for (y = 0, i = 0; i < 3;) {
+        c = (i == sel);
+        func_00207830_v((s32)m, c, 2, 0, y, 0xB4, D_003F44C8[i]);
+        yy = y + 5;
+        y += 0x1C;
+        func_001F9438(m, 0, 0x56, yy, 0x33, 0xF, D_003F2C40[c][4]);
+        k = func_0013C288(i);
+        i++;
+        r = func_00132F88(k);
+        if (r == 0) {
+            r = func_001EFBB8_r(0xD4);
+        }
+        func_001F94F0(m, 0, 0x60, yy, r, 0xF, D_003F2C40[c][4]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
