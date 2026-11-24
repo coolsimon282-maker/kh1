@@ -2411,7 +2411,12 @@ void func_00207630(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     func_002076B0(arg0, arg1, arg2, arg3, arg4, arg5, func_001F0EF0(arg6));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002076B0);
+void func_002076B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+    s32 *temp_16;
+    temp_16 = (s32 *)(D_003F2C40 + (arg0 * 5) * 4);
+    func_00200E28(2, arg2, arg3, arg4, temp_16);
+    func_001F1FC8(arg1, temp_16[4], arg5, arg3 + 5, arg6, 0xF);
+}
 
 typedef struct { u8 pad[0x10]; s32 unk_10; } A2E2C40;
 void func_00200E28(s32, s32, s32, s32, A2E2C40 *);
