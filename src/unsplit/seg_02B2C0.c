@@ -1774,7 +1774,49 @@ void func_00133830(s32 a0, s32 a1) {
     func_001315C0(t0, 0x8006, a1, 0.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00133868);
+typedef struct {
+    u64 w[4];
+} A2Blk32;
+typedef struct A2Node {
+    s32 used;
+    s32 unk_04;
+    u8 pad08[8];
+    A2Blk32 data;
+    u8 pad30[0x20];
+    struct A2Node *prev;
+    struct A2Node *next;
+    u8 pad58[8];
+} A2Node;
+extern A2Node D_00525A40[];
+
+A2Node *func_00133868(u8 *a0, A2Blk32 *src) {
+    A2Node *e = D_00525A40;
+    s32 i;
+
+    for (i = 0; i < 0x20; i++, e++) {
+        if (e->used == 0) {
+            A2Node *p;
+
+            if (*(A2Node **)(a0 + 0x440) == NULL) {
+                *(A2Node **)(a0 + 0x440) = e;
+                e->prev = NULL;
+            } else {
+                p = *(A2Node **)(a0 + 0x440);
+                while (p->next != NULL) {
+                    p = p->next;
+                }
+                p->next = e;
+                e->prev = p;
+            }
+            e->used = 1;
+            e->data = *src;
+            e->next = NULL;
+            e->unk_04 = 0;
+            return e;
+        }
+    }
+    return NULL;
+}
 
 void func_00133920(u8 *a0, u8 *a1) {
     u8 *prev = *(u8 **)(a1 + 0x50);
