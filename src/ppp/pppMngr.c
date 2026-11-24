@@ -145,7 +145,25 @@ void func_001811A8(s32 arg0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181200);
+void func_00181200(s32 arg0) {
+    s32 i;
+    s32 off;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
+
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if ((*(u16 *)(p + 6) & 1) && *(s32 *)(p + 0x14) == arg0) {
+            pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+            if (*(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+            }
+            off += (s32)base;
+            pppAllFreePObject((ppvmng*)off);
+            func_00183E78((void *)off);
+            return;
+        }
+    }
+}
 
 void func_001812B0(void) {
     s32 i;
@@ -162,11 +180,69 @@ void func_001812B0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181340);
+void func_00181340(s32 arg0) {
+    s32 i;
+    s32 off;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001813F0);
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if ((*(u16 *)(p + 6) & 1) && *(s32 *)(p + 0x14) == arg0) {
+            pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+            if (*(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+            }
+            off += (s32)base;
+            pppAllFreePObject((ppvmng*)off);
+            func_00183EC8((ppvmng*)off);
+            return;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001814C8);
+void func_001813F0(s32 arg0, s32 arg1) {
+    s32 i;
+    s32 off;
+    s32 d;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
+
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if (*(u16 *)(p + 6) & 1) {
+            d = *(s32 *)(p + 8) - arg0;
+            if (d >= 0 && d < arg1) {
+                pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+                if (*(u16*)&e->seNo != 0) {
+                    func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+                }
+                pppAllFreePObject((ppvmng*)(off + (s32)base));
+                func_00183E78((void *)(off + (s32)base));
+            }
+        }
+    }
+}
+
+void func_001814C8(s32 arg0, s32 arg1) {
+    s32 i;
+    s32 off;
+    s32 d;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
+
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if (*(u16 *)(p + 6) & 1) {
+            d = *(s32 *)(p + 8) - arg0;
+            if (d >= 0 && d < arg1) {
+                pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+                if (*(u16*)&e->seNo != 0) {
+                    func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+                }
+                pppAllFreePObject((ppvmng*)(off + (s32)base));
+                func_00183EC8((ppvmng*)(off + (s32)base));
+            }
+        }
+    }
+}
 
 typedef struct {
     char pad[0x86];
@@ -1251,7 +1327,48 @@ void func_00184298(PppMngS* m, s32* data, s32 arg2) {
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184298);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001843E0);
+void func_001843E0(s32 b, s32 progs) {
+    s32 *t1;
+    s32 *t2;
+    s32 n1;
+    s32 n2;
+    s32 *pd;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 *e;
+
+    b += 0x110;
+    t1 = (s32 *)(b + *(s32 *)(b + 8));
+    t2 = (s32 *)(b + *(s32 *)(b + 0xC));
+    n1 = *t1++;
+    n2 = *t2++;
+    pd = (s32 *)(b + 0x10);
+
+    if (*pd == 0) {
+        return;
+    }
+    for (;;) {
+        *pd = b + *pd;
+        for (i = 0; i < *(s16 *)((u8 *)pd + 0x26); i++) {
+            e = pd + 10 + i * 4;
+            e[0] = progs + e[0] * 0x28;
+            e[2] = b + e[2];
+            e[3] = b + e[3];
+        }
+        if (*(s32 *)*pd == 0) {
+            *pd = 0;
+            break;
+        }
+        pd = (s32 *)*pd;
+    }
+    for (j = 0; j < n1; j++) {
+        t1[j] = progs + t1[j] * 0x28;
+    }
+    for (k = 0; k < n2; k++) {
+        t2[k] += b;
+    }
+}
 
 void func_00184500(pppEnvSt* env, s32* src, void* heap, s32 size) {
     ppvEnv = env;
