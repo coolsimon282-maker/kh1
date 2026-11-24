@@ -222,7 +222,40 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9EC0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9FE0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA090);
+extern f32 D_002B8344;
+typedef struct {
+    /* 0x000 */ u64 unk_00_0 : 1;
+    u64 unk_00_1 : 1;
+    u64 unk_00_2 : 62;
+    /* 0x008 */ f32 unk_08;
+    /* 0x00C */ u8 unk_0C[0x10];
+    /* 0x01C */ f32 unk_1C;
+    /* 0x020 */ u8 unk_20[0x30];
+    /* 0x050 */ f32 unk_50[4];
+    /* 0x060 */ u8 unk_60[0x20];
+    /* 0x080 */ f32 unk_80[4];
+    /* 0x090 */ u8 unk_90[0x50];
+    /* 0x0E0 */ f32 unk_E0[4];
+} Unk3C5510V;
+extern Unk3C5510V D_003C5510_v __asm__("D_003C5510");
+
+void func_001CA090(void) {
+    Unk3C5510V* p = &D_003C5510_v;
+    f32* a = p->unk_50;
+    f32* b = p->unk_80;
+
+    p->unk_1C += D_002B8344;
+    if (p->unk_08 < p->unk_1C) {
+        p->unk_00_1 = 0;
+        p->unk_1C = p->unk_08;
+    }
+    p->unk_E0[0] = a[0] + (b[0] - a[0]) / p->unk_08 * p->unk_1C;
+    p->unk_E0[1] = a[1] + (b[1] - a[1]) / p->unk_08 * p->unk_1C;
+    p->unk_E0[2] = a[2] + (b[2] - a[2]) / p->unk_08 * p->unk_1C;
+    do {
+        func_001C6A20();
+    } while (0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CA418);
 
