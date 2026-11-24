@@ -93,7 +93,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE6A8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE778);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE848);
+u8 *func_0011EEB8_m(void *, s32, void *) __asm__("func_0011EEB8") __attribute__((malloc));
+s32 *func_001E98D0(s32, s32);
+s32 func_001DE5F0();
+
+s32 func_001DE848(A2Script *p) {
+    A2Obj1760 *a = func_001760F0(p->unk_174[p->unk_174[3] + 2]);
+    s32 *b = func_001E98D0((s32)(*(u64 *)((u8 *)p + 0x328) >> 5) & 1, p->unk_174[p->unk_174[3] + 3]);
+
+    if (a != NULL && b != NULL) {
+        u8 *t = func_0011EEB8_m(D_00624960, 1, func_001DE5F0);
+        *(A2Obj1760 **)(t + 0x10) = a;
+        *(s32 **)(t + 0x14) = b;
+        *(s32 *)(t + 0x18) = p->unk_174[*(volatile s32 *)&p->unk_174[3] + 4];
+    }
+    p->unk_174[3] -= 3;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE910);
 
