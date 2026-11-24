@@ -118,7 +118,82 @@ s32 op_file_size(char* name) {
     return size;
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_oef2_set);
+extern char D_00489AF0[];
+/* the first five loops store through a named temporary, the last one directly: that is what gives the target's registers */
+void exit(int);
+int printf(const char*, ...);
+void op_oef2_set(void* a0, void* a1) {
+    u8* o = a0;
+    u8* h = a1;
+    s32 val;
+    s32* src;
+    u8* dst;
+    s32 i;
+
+    if ((u32)h & 0xF) {
+        printf(D_00489AF0);
+        exit(1);
+    }
+    if (*(u16*)(h + 0x42) != 0) {
+        src = (s32*)(*(s32*)(h + 0x4) + (u32)h);
+        dst = (u8*)(*(s32*)(o + 0x4) + (u32)o);
+        for (i = 0; i < *(u16*)(h + 0x42); i++, src++, dst += 0x4) {
+            if (*src != 0) {
+                val = *src + (s32)h;
+                *(s32*)(dst + 0x0) = val;
+            }
+        }
+    }
+    if (*(u16*)(h + 0x44) != 0) {
+        src = (s32*)(*(s32*)(h + 0x8) + (u32)h);
+        dst = (u8*)(*(s32*)(o + 0x8) + (u32)o);
+        for (i = 0; i < *(u16*)(h + 0x44); i++, src++, dst += 0x20) {
+            if (*src != 0) {
+                val = *src + (s32)h;
+                *(s32*)(dst + 0x14) = val;
+            }
+        }
+    }
+    if (*(u16*)(h + 0x46) != 0) {
+        src = (s32*)(*(s32*)(h + 0xC) + (u32)h);
+        dst = (u8*)(*(s32*)(o + 0xC) + (u32)o);
+        for (i = 0; i < *(u16*)(h + 0x46); i++, src++, dst += 0x10) {
+            if (*src != 0) {
+                val = *src + (s32)h;
+                *(s32*)(dst + 0x4) = val;
+            }
+        }
+    }
+    if (*(u16*)(h + 0x48) != 0) {
+        src = (s32*)(*(s32*)(h + 0x10) + (u32)h);
+        dst = (u8*)(*(s32*)(o + 0x10) + (u32)o);
+        for (i = 0; i < *(u16*)(h + 0x48); i++, src++, dst += 0x4) {
+            if (*src != 0) {
+                val = *src + (s32)h;
+                *(s32*)(dst + 0x0) = val;
+            }
+        }
+    }
+    if (*(u16*)(h + 0x50) != 0) {
+        src = (s32*)(*(s32*)(h + 0x20) + (u32)h);
+        dst = (u8*)(*(s32*)(o + 0x20) + (u32)o);
+        for (i = 0; i < *(u16*)(h + 0x50); i++, src++, dst += 0x4) {
+            if (*src != 0) {
+                val = *src + (s32)h;
+                *(s32*)(dst + 0x0) = val;
+            }
+        }
+    }
+    if (*(u16*)(h + 0x52) != 0) {
+        src = (s32*)(*(s32*)(h + 0x24) + (u32)h);
+        dst = (u8*)(*(s32*)(o + 0x24) + (u32)o);
+        for (i = 0; i < *(u16*)(h + 0x52); i++, src++, dst += 0x4) {
+            if (*src != 0) {
+                *(s32*)(dst + 0x0) = *src + (s32)h;
+            }
+        }
+    }
+}
 
 void op_oef2_set2(u8* p) {
     op_oef2_set(p, p + *(s32*)(p + 0x3C));
