@@ -6153,7 +6153,35 @@ s32 func_00176EE0(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176F08);
+extern sceVu0FVECTOR D_005758A0;
+extern sceVu0FVECTOR D_005758B0;
+extern f32 D_005758C4_f __asm__("D_005758C4");
+typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
+extern V176F08 D_00362458_v[] __asm__("D_00362458");
+void func_00176F08(s32 mode, f32 t) {
+    if (D_002DED08 == 0) {
+        sceVu0CopyVector(D_005758D0, D_002DECE0);
+        sceVu0CopyVector(D_005758E0, D_002DECF0);
+        D_005758C4 = 0;
+        D_00575890 |= 1;
+    } else {
+        if (D_005758C4_f > 0.0f) {
+            sceVu0CopyVector(D_005758A0, D_002DECE0);
+            sceVu0CopyVector(D_005758B0, D_002DECF0);
+        } else {
+            sceVu0CopyVector(D_005758A0, D_005758D0);
+            sceVu0CopyVector(D_005758B0, D_005758E0);
+        }
+        D_005758C4_f = t;
+        D_005758C0 = t;
+        D_00575890 &= ~1;
+    }
+    if (D_00362458_v[D_002DED08].enter != NULL) {
+        D_00362458_v[D_002DED08].enter();
+    }
+    D_002DED08 = mode;
+    D_00575890 |= 2;
+}
 
 s32 func_00177070(void) {
     s32 r = 0;
