@@ -137,6 +137,7 @@ PY
       # runs to confirm when the fast check says it matches
       q=0; qout=""
       qout=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" 40 2>&1); q=$?   # (library files too since 23 Nov: quickcmp knows their compilers)
+      echo "$qout" | python3 tools/logattempt.py "$2" "$3" "$q" try > /dev/null 2>&1
       if [ $q -eq 0 ]; then out=$(bash "$0" build); echo "$out" | tail -4; else out="$qout"; fi
       # a give-up used to throw the attempt away. Keep the closest one per function (qwen/attempts/<func>.c and
       # .score = "<instructions off> <of how many>"): a near-miss is a head start for a stronger model or the permuter
@@ -175,9 +176,13 @@ PY
     if grep -q "^INCLUDE_ASM(\"[^\"]*\", *$3);" "src/$2.c" 2>/dev/null; then
       echo "NOT COMPARED: $3 is still INCLUDE_ASM in src/$2.c - your C is not in the file (put it again)."; exit 3
     fi
-    bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" "${4:-40}" ;;
+    qo=$(bash wsl-build.sh python3 tools/quickcmp.py "$2" "$3" "${4:-40}" 2>&1); qr=$?; echo "$qo"
+    # every attempt is kept for a future training set (kh1-study/dataset/attempts, see tools/logattempt.py)
+    echo "$qo" | python3 tools/logattempt.py "$2" "$3" "$qr" quick > /dev/null 2>&1
+    exit $qr ;;
   giveup)
     f="$2"; fn="$3"; shift 3
+    python3 tools/logattempt.py "$f" "$fn" 1 giveup "$@" < /dev/null > /dev/null 2>&1
     git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { echo "couldn't restore src/$f.c"; exit 1; }
     n="notes/$(basename "$PWD").md"; [ "$(basename "$PWD")" = "kh1-decomp" ] && n="notes/main.md"
     best=""; [ -f "qwen/attempts/$fn.score" ] && best=" [closest try: $(cut -d' ' -f1 "qwen/attempts/$fn.score") of $(cut -d' ' -f2 "qwen/attempts/$fn.score") instructions off, kept in qwen/attempts/$fn.c]"
