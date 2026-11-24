@@ -1,5 +1,105 @@
-// Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
-#include "../../../include/include_asm.h"
+/* ef_atan2.c -- float version of e_atan2.c.
+ * Conversion to float by Ian Lance Taylor, Cygnus Support, ian@cygnus.com.
+ */
 
-INCLUDE_ASM("asm/nonmatchings/lib/libm/ef_atan2", __ieee754_atan2f);
+/*
+ * ====================================================
+ * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+ *
+ * Developed at SunPro, a Sun Microsystems, Inc. business.
+ * Permission to use, copy, modify, and distribute this
+ * software is freely granted, provided that this notice
+ * is preserved.
+ * ====================================================
+ *
+ */
+
+#include "fdlibm.h"
+
+/* The EE single-precision format has no denormals and no Inf/NaN (newlib's fdlibm.h FLT_UWORD macros). */
+#define FLT_UWORD_IS_ZERO(x) ((x)<0x00800000L)
+#define FLT_UWORD_IS_NAN(x) 0
+#define FLT_UWORD_IS_INFINITE(x) 0
+
+/* the constants' .rodata words are still in the asm data segment, so they are spelled as literals here */
+#define tiny ((float)1.0e-30)
+#define zero ((float)0.0)
+#define pi_o_4 ((float)7.8539818525e-01)  /* 0x3f490fdb */
+#define pi_o_2 ((float)1.5707963705e+00)  /* 0x3fc90fdb */
+#define pi ((float)3.1415925026e+00)      /* 0x40490fda */
+#define pi_lo ((float)1.5099578832e-07)   /* 0x34222168 */
+
+/* a real call, not gcc's builtin abs.s (newlib was built with -fno-builtin) */
+float fabsf_call(float) __asm__("fabsf");
+
+#ifdef __STDC__
+	float __ieee754_atan2f(float y, float x)
+#else
+	float __ieee754_atan2f(y,x)
+	float  y,x;
+#endif
+{
+	float z;
+	__int32_t k,m,hx,hy,ix,iy;
+
+	GET_FLOAT_WORD(hx,x);
+	ix = hx&0x7fffffff;
+	GET_FLOAT_WORD(hy,y);
+	iy = hy&0x7fffffff;
+	if(FLT_UWORD_IS_NAN(ix)||
+	   FLT_UWORD_IS_NAN(iy))	/* x or y is NaN */
+	   return x+y;
+	if(hx==0x3f800000) return atanf(y);   /* x=1.0 */
+	m = ((hy>>31)&1)|((hx>>30)&2);	/* 2*sign(x)+sign(y) */
+
+    /* when y = 0 */
+	if(FLT_UWORD_IS_ZERO(iy)) {
+	    switch(m) {
+		case 0:
+		case 1: return y; 	/* atan(+-0,+anything)=+-0 */
+		case 2: return  pi+tiny;/* atan(+0,-anything) = pi */
+		case 3: return -pi-tiny;/* atan(-0,-anything) =-pi */
+	    }
+	}
+    /* when x = 0 */
+	if(FLT_UWORD_IS_ZERO(ix)) return (hy<0)?  -pi_o_2-tiny: pi_o_2+tiny;
+
+    /* when x is INF */
+	if(FLT_UWORD_IS_INFINITE(ix)) {
+	    if(FLT_UWORD_IS_INFINITE(iy)) {
+		switch(m) {
+		    case 0: return  pi_o_4+tiny;/* atan(+INF,+INF) */
+		    case 1: return -pi_o_4-tiny;/* atan(-INF,+INF) */
+		    case 2: return  (float)3.0*pi_o_4+tiny;/*atan(+INF,-INF)*/
+		    case 3: return (float)-3.0*pi_o_4-tiny;/*atan(-INF,-INF)*/
+		}
+	    } else {
+		switch(m) {
+		    case 0: return  zero  ;	/* atan(+...,+INF) */
+		    case 1: return -zero  ;	/* atan(-...,+INF) */
+		    case 2: return  pi+tiny  ;	/* atan(+...,-INF) */
+		    case 3: return -pi-tiny  ;	/* atan(-...,-INF) */
+		}
+	    }
+	}
+    /* when y is INF */
+	if(FLT_UWORD_IS_INFINITE(iy)) return (hy<0)? -pi_o_2-tiny: pi_o_2+tiny;
+
+    /* compute y/x */
+	k = (iy-ix)>>23;
+	if(k > 60) z=pi_o_2+(float)0.5*pi_lo; 	/* |y/x| >  2**60 */
+	else if(hx<0&&k<-60) z=0.0; 	/* |y|/x < -2**60 */
+	else z=atanf(fabsf_call(y/x));	/* safe to do y/x */
+	switch (m) {
+	    case 0: return       z  ;	/* atan(+,+) */
+	    case 1: {
+	    	      __uint32_t zh;
+		      GET_FLOAT_WORD(zh,z);
+		      SET_FLOAT_WORD(z,zh ^ 0x80000000);
+		    }
+		    return       z  ;	/* atan(-,+) */
+	    case 2: return  pi-(z-pi_lo);/* atan(+,-) */
+	    default: /* case 3 */
+	    	    return  (z-pi_lo)-pi;/* atan(-,-) */
+	}
+}
