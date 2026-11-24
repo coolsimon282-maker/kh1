@@ -390,7 +390,36 @@ void func_001047C8(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104850);
+typedef struct {
+    /* 0x00 */ f32 x0;
+    /* 0x04 */ f32 unk_04;
+    /* 0x08 */ f32 sx;
+    /* 0x0C */ s32 nx;
+    /* 0x10 */ u8 unk_10[0x10];
+    /* 0x20 */ f32 z0;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 sz;
+    /* 0x2C */ s32 nz;
+} Grid104850;
+extern Grid104850* D_002A6234;
+
+void func_00104850(f32* pos, s32* out) {
+    f32 x = pos[0];
+    f32 z = pos[2];
+
+    out[0] = (x - D_002A6234->x0) / D_002A6234->sx;
+    out[2] = (z - D_002A6234->z0) / D_002A6234->sz;
+    if (out[0] < 0) {
+        out[0] = 0;
+    } else if (out[0] >= D_002A6234->nx) {
+        out[0] = D_002A6234->nx - 1;
+    }
+    if (out[2] < 0) {
+        out[2] = 0;
+    } else if (out[2] >= D_002A6234->nz) {
+        out[2] = D_002A6234->nz - 1;
+    }
+}
 
 void func_00104908(void) {
     D_002A6318[0] = D_002A6318[1] = D_002A6318[2] = D_002A6308[0] = D_002A6308[1] = D_002A6308[2] = -1;
