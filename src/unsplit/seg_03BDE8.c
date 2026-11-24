@@ -967,7 +967,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013E978);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013EAB0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013ECF8);
+void func_0013ECF8(u8* a0, s32* a1, f32* a2) {
+    if (a1[0] != 0 && (u8*)a1[0] != a0) {
+        func_0012EC60(a1[0], a1[1], a2);
+        sceVu0SubVector(a2, a2, (f32*)(a0 + 0x10));
+        a2[1] = 0.0f;
+        sceVu0Normalize(a2, a2);
+    } else {
+        sceVu0CopyVector(a2, (f32*)(a0 + 0x30));
+    }
+    a2[3] = 0.0f;
+    func_001376E8_2(a0, a2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013ED88);
 
