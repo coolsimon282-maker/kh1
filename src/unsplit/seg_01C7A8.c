@@ -195,7 +195,36 @@ s32 func_0011CBA0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CBE0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CD20);
+typedef struct {
+    s32 off;
+    s32 size;
+} A2Sec;
+void func_001EE2D8(s32, u8 *, s32);
+void func_001EE710(s32, u8 *, s32);
+void func_001EEC58(void);
+void func_001102C0(void);
+
+void func_0011CD20(s32 a0, u8 *a1, void (*cb)(void)) {
+    A2Sec *s;
+    u8 *p0;
+    s32 size0, size1;
+
+    s = (A2Sec *)(a1 + 0x10);
+    p0 = a1 + s->off;
+    size0 = s->size;
+    s = (A2Sec *)(a1 + 0x18);
+    a1 += s->off;
+    size1 = s->size;
+    D_004E3430 = cb;
+    func_001EE1E0(0, 2);
+    func_001EE1E0(2, 2);
+    func_001EE2D8(a0, p0, size0);
+    func_001EE710(a0, a1, size1);
+    func_001EEC58();
+    while (func_001EE090() == 0) {
+        func_001102C0();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CC20);
 
