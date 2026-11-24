@@ -107,7 +107,78 @@ struct _Bigint *_i2b(struct _reent *ptr, int i)
     return b;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _multiply);
+#include <reent.h>
+
+extern struct _Bigint *_Balloc(struct _reent *ptr, int i);
+
+#define Storeinc(p, hi, lo) \
+    (*(unsigned short *)(p) = (unsigned short)(lo), \
+     *(((unsigned short *)(p)) + 1) = (unsigned short)(hi), \
+     (p) = (unsigned int *)((unsigned char *)(p) + 4))
+
+struct _Bigint *_multiply(struct _reent *ptr, struct _Bigint *a, struct _Bigint *b)
+{
+    struct _Bigint *c;
+    int k, wa, wb, wc;
+    unsigned int carry, *x, *xa, *xae, *xb, *xbe, *xc, *xc0, y, z;
+    unsigned int z2;
+
+    if (a->_wds < b->_wds) {
+        c = a;
+        a = b;
+        b = c;
+    }
+    k = a->_k;
+    wa = a->_wds;
+    wb = b->_wds;
+    wc = wa + wb;
+    if (wc > a->_maxwds) {
+        k++;
+    }
+    c = _Balloc(ptr, k);
+    for (x = c->_x, xa = x + wc; x < xa; x++) {
+        *x = 0;
+    }
+    xa = a->_x;
+    xae = xa + wa;
+    xb = b->_x;
+    xbe = xb + wb;
+    xc0 = c->_x;
+    for (; xb < xbe; xb++, xc0++) {
+        if ((y = *xb & 0xFFFF) != 0) {
+            x = xa;
+            xc = xc0;
+            carry = 0;
+            do {
+                z = (*x & 0xFFFF) * y + (*xc & 0xFFFF) + carry;
+                carry = z >> 16;
+                z2 = (*x++ >> 16) * y + (*xc >> 16) + carry;
+                carry = z2 >> 16;
+                Storeinc(xc, z2, z);
+            } while (x < xae);
+            *xc = carry;
+        }
+        if ((y = *xb >> 16) != 0) {
+            x = xa;
+            xc = xc0;
+            carry = 0;
+            z2 = *xc;
+            do {
+                z = (*x & 0xFFFF) * y + (*xc >> 16) + carry;
+                carry = z >> 16;
+                Storeinc(xc, z, z2);
+                z2 = (*x++ >> 16) * y + (*xc & 0xFFFF) + carry;
+                carry = z2 >> 16;
+            } while (x < xae);
+            *xc = z2;
+        }
+    }
+    for (xc0 = c->_x, xc = xc0 + wc; wc > 0 && *--xc == 0; wc--) {
+        ;
+    }
+    c->_wds = wc;
+    return c;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _pow5mult);
 
