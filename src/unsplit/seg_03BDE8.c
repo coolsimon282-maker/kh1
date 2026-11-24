@@ -2396,7 +2396,68 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148FB0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149090);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149170);
+NOTHROW(s32, func_00148FB0);
+NOTHROW(s32, func_00149090);
+
+s32 func_00149170_def(s32, u32) __asm__("func_00149170");
+s32 func_00149170_def(s32 kind, u32 id) {
+    u8* p;
+    u8* e;
+    s32 r;
+    u32 n;
+    s32 v;
+
+    p = func_00147A88(kind);
+    if (((id >> 16) & 0xFF) == 1 && (n = id & 0xFFFF) < 10) {
+        e = (u8*)&((D3010F8x*)D_003010F8)->e[n];
+    } else {
+        e = 0;
+    }
+    r = 0;
+    switch (kind) {
+    case 1:
+    case 2:
+    case 6:
+        if (func_00148FB0(id, *(s16*)(p + 6))) r = 2;
+        break;
+    case 0x8E:
+        if (func_00148FB0(id, 9999)) r = 2;
+        break;
+    case 3:
+    case 7:
+        if (func_00149090(id, *(s16*)(p + 6))) r = 4;
+        break;
+    case 0x8F:
+        r = func_00148FB0(id, 9999) ? 8 : 0;
+        if (func_00149090(id, *(s16*)(p + 6))) r |= 8;
+        break;
+    case 4:
+    case 8:
+    case 0x90:
+        r = func_00148FB0(id, 9999) ? 8 : 0;
+        if (func_00149090(id, 9999)) r |= 8;
+        break;
+    case 0x98:
+        if (e != 0 && e[6] < 100) {
+            e[6] = e[6] + *(s16*)(p + 6) > 100 ? 100 : e[6] + *(s16*)(p + 6);
+            r = 0x10;
+        }
+        break;
+    case 0x99:
+        if (e != 0 && e[7] < 100) {
+            e[7] = e[7] + *(s16*)(p + 6) > 100 ? 100 : e[7] + *(s16*)(p + 6);
+            r = 0x20;
+        }
+        break;
+    case 0x9A:
+        if (e != 0 && e[5] < 100) {
+            e[5] = e[5] + *(s16*)(p + 6) > 100 ? 100 : e[5] + *(s16*)(p + 6);
+            r = 0x40;
+        }
+        break;
+    }
+    return r;
+}
 
 s32 func_001495C8(s32 kind, s32 id) {
     u8 buf[0xF0];
