@@ -7667,7 +7667,74 @@ void func_0017DEE0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017DF08);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017E170);
+typedef struct {
+    sceVu0FVECTOR pos;
+    s32 state;
+    s32 pad14[4];
+    f32 tbl[4];
+    f32 t34;
+    f32 t38;
+    f32 t3C;
+    f32 t40;
+    s32 f44;
+    s32 pad48[2];
+} Cam59B0;
+extern Cam59B0 D_005759B0_s __asm__("D_005759B0");
+
+s32 func_0017E170(s32 idx) {
+    sceVu0FVECTOR r[4];
+    sceVu0FVECTOR prev;
+    sceVu0FVECTOR pos;
+    sceVu0FVECTOR off;
+    sceVu0FMATRIX m;
+    f32 span;
+    f32 base;
+    f32 a;
+    s32 first;
+    s32 i;
+    s32 n;
+
+    first = 1;
+    n = 4;
+    span = D_005759B0_s.tbl[idx];
+    base = D_00362680[1];
+    if (D_005759B0_s.f44 == 0) {
+        for (i = 0; i < 5;) {
+            a = base + span * ((f32)i / (f32)n);
+            i++;
+            sceVu0CopyVector(prev, pos);
+            sceVu0RotMatrixX(m, D_002C1E20, func_00120AC8(D_00362680[0]));
+            sceVu0RotMatrixY(m, m, func_00120AC8(a));
+            sceVu0CopyVector(off, D_002C58A0);
+            off[2] = D_00362680[3];
+            sceVu0ApplyMatrix(off, m, off);
+            sceVu0AddVector(pos, D_005759B0_s.pos, off);
+            pos[3] = 1.0f;
+            if (first) {
+                sceVu0CopyVector(prev, pos);
+                first = 0;
+            } else {
+                sceVu0CopyVector(r[0], prev);
+                sceVu0SubVector(r[1], pos, prev);
+                if (func_00119688(r[0]) != -1) {
+                    return 1;
+                }
+            }
+        }
+    } else {
+        a = base + span;
+        sceVu0RotMatrixX(m, D_002C1E20, func_00120AC8(D_00362680[0]));
+        sceVu0RotMatrixY(m, m, func_00120AC8(a));
+        sceVu0CopyVector(off, D_002C58A0);
+        off[2] = D_00362680[3];
+        sceVu0ApplyMatrix(off, m, off);
+        sceVu0AddVector(pos, D_005759B0_s.pos, off);
+        pos[3] = 1.0f;
+    }
+    sceVu0CopyVector(r[0], D_005759B0_s.pos);
+    sceVu0SubVector(r[1], pos, D_005759B0_s.pos);
+    return func_00119688(r[0]) != -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017E428);
 
