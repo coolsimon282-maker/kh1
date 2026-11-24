@@ -5813,7 +5813,80 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016F7B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016F8B8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016FA10);
+extern f32 D_0035AF48;
+extern f32 D_0035AF44;
+extern sceVu0FVECTOR D_00575020[];
+f32 func_00162A58(f32*);
+s32 func_0012EE70(s32, s32);
+s32 func_0012F040(s32, s32);
+s32 func_0012EAF8(s32);
+
+static inline s32 func_0016FA10_has(s32 e) {
+    s32 i = -1;
+    if (!(D_002C1EA8 & 1)) {
+        return 0;
+    }
+    if (!func_001233F8(e)) {
+        return 0;
+    }
+    while ((i = func_0012EE70(e, i)) >= 0) {
+        if (func_0012F040(e, i)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_0016FA10(u8* p, u8* q, f32* r) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+    s32 e;
+
+    if (*(s32*)(q + 0x38) & 1) {
+        if (*(f32*)(q + 0xEC) <= D_0035AF48) {
+            *(u64*)(q + 0x38) &= ~1;
+        } else {
+            if (*(s32*)(p + 0x70) == 0 && *(f32*)(q + 0xFC) < fabsf(*(f32*)(q + 0xA4))) {
+                if (*(f32*)(q + 0xFC) <= *(f32*)(*(u8**)(q + 4) + 8)) {
+                    *(u64*)(q + 0x38) &= ~1;
+                }
+                sceVu0SubVector(v, D_00575020[*(s32*)q], (f32*)(p + 0x10));
+                v[1] = 0.0f;
+                if (func_00162A58(v) <= *(f32*)(q + 0x30)) {
+                    *(u64*)(q + 0x38) &= ~1;
+                }
+            }
+            if (!(*(s32*)(q + 0x38) & 1)) {
+                (*(s32*)(q + 0x58))++;
+            }
+        }
+    }
+    e = *(s32*)(q + 0x90);
+    if (e == 0) {
+        return;
+    }
+    if (*(s32*)(q + 0x38) & 1) {
+        goto clr;
+    }
+    if (!func_0016FA10_has(e)) {
+        goto clr;
+    }
+    if (func_0012EAF8(*(s32*)(q + 0x90)) == 0) {
+        return;
+    }
+    func_0012EC60(*(s32*)(q + 0x90), *(s32*)(q + 0x94), w);
+    if (r[2] <= func_00162978(w, (f32*)(p + 0x10)) && r[2] <= func_00162978(w, (f32*)(D_0035BD40[0] + 0x10))) {
+        *(s32*)(q + 0x90) = 0;
+    }
+    if (D_0035AF44 <= *(f32*)(q + 0xEC)) {
+        goto clr;
+    }
+    return;
+clr:
+    *(u64*)(q + 0x38) = (*(u64*)(q + 0x38) | 1) & ~0x800;
+    *(s32*)(q + 0x94) = -1;
+    *(s32*)(q + 0x90) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016FC60);
 
