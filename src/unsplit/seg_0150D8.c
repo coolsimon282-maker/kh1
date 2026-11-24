@@ -432,7 +432,39 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119128);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001191C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001195D8);
+void sceVu0AddVector(f32 *, f32 *, f32 *);
+
+void func_001195D8(s32 a0, void *a1) {
+    f32 *a = (f32 *)a0;
+    f32 *o = a1;
+    f32 v[4] __attribute__((aligned(16)));
+    f32 az, vz;
+
+    sceVu0AddVector(v, a, a + 4);
+    if (a[0] < v[0]) {
+        o[0] = a[0];
+        o[3] = v[0];
+    } else {
+        o[3] = a[0];
+        o[0] = v[0];
+    }
+    if (a[1] < v[1]) {
+        o[1] = a[1];
+        o[4] = v[1];
+    } else {
+        o[4] = a[1];
+        o[1] = v[1];
+    }
+    az = a[2];
+    vz = v[2];
+    if (az < vz) {
+        o[2] = az;
+        o[5] = vz;
+    } else {
+        o[5] = az;
+        o[2] = vz;
+    }
+}
 
 s32 func_00119688(u8* p) {
     u8 buf[0x20];
