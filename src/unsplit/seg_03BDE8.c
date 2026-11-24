@@ -7399,7 +7399,93 @@ void func_0017C4C8(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017C550);
+typedef struct { u8 pad[0x18]; u32 b0:1; } G18;
+typedef struct {
+    u8 pad00[0x10];
+    sceVu0FVECTOR v10;
+    u8 pad20[0x10];
+    sceVu0FVECTOR v30;
+    s32 seg40;
+    s32 seg44;
+    f32 t48;
+    f32 t4C;
+    u8 pad50[0xC];
+    f32 f5C;
+    u8 pad60[6];
+    u8 f66;
+    u8 pad67[9];
+} Cam940;
+extern Cam940 D_00575940_c __asm__("D_00575940");
+f32 func_0017C110_f(s32, f32) __asm__("func_0017C110");
+s32 func_0017B4F8(s32*, f32*, f32);
+
+void func_0017C550(void) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    s32 seg;
+    f32 t;
+    u8* g;
+    s32 flag;
+    f32 dir;
+    f32 d0;
+    f32 d;
+    f32 lim;
+    f32 x;
+    s32 ps;
+    f32 pt;
+    u64 pad;
+    s32 on;
+
+    g = D_00362438;
+    if (D_00575940_c.f66 == 3) {
+        return;
+    }
+    flag = ((G18*)g)->b0 != 0;
+    pad = D_002C5BB0 & 0x300000000000;
+    dir = 0.0f;
+    on = 1;
+    if (pad == 0x100000000000) {
+        dir = 1.0f;
+        D_00575940_c.f66 = on;
+    } else if (pad == 0x200000000000) {
+        dir = -1.0f;
+        D_00575940_c.f66 = on;
+    } else {
+        D_00575940_c.f66 = 0;
+    }
+    if (D_00575940_c.f66 != 1) {
+        return;
+    }
+    d = func_001250D0(D_005758D0, D_00575940_c.v30);
+    seg = D_00575940_c.seg40;
+    t = D_00575940_c.t48;
+    d0 = d;
+    func_0017B308(m, g + 0x20, *(s32*)g, seg, flag);
+    lim = func_0017C110_f(seg, t);
+    while (fabsf(func_00120AC8(d - d0)) < D_002B8344 * 0.017453292f) {
+        ps = seg;
+        pt = t;
+        func_0017B250(v, m, pt);
+        d = func_001250D0(v, D_00575970);
+        if (func_0017B4F8(&seg, &t, dir * 10.0f)) {
+            func_0017B308(m, g + 0x20, *(s32*)g, seg, flag);
+        }
+        if (ps == seg && t == pt) {
+            break;
+        }
+    }
+    x = func_0017C110_f(seg, t);
+    if (150.0f < x || (x < 150.0f && lim < x)) {
+        D_00575940_c.seg40 = seg;
+        D_00575940_c.seg44 = seg;
+        D_00575940_c.t48 = t;
+        D_00575940_c.t4C = t;
+        func_0017B308(m, g + 0x20, *(s32*)g, seg, flag);
+        func_0017B250(D_00575940_c.v10, m, t);
+        return;
+    }
+    D_00575940_c.f5C = 30.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017C7F0);
 
