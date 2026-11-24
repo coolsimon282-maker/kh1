@@ -668,7 +668,81 @@ void func_001BB870(s32 x) {
     D_006257D0 = x;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB880);
+typedef struct { u8 pad0[4]; u16 n; u8 pad6[6]; u8 c; u8 padD[0xF63]; } BB880Inv;
+void func_001BAAA8(s32);
+void func_001BE820(void *, s32);
+
+s32 func_001BB880_r(s32 a0) __asm__("func_001BB880");
+s32 func_001BB880_r(s32 a0) {
+    s32 map[16];
+    s32 none;
+    s32 idx[10];
+    BB880Inv *p;
+    BB880Inv *e;
+    s32 i;
+    s32 n;
+    s32 r;
+    s32 t;
+
+    p = func_001BA9D8(0);
+    none = -1;
+    n = 0;
+    for (i = 0; i < 10; i++) {
+        if (p->n == 0) {
+            map[i] = none;
+        } else {
+            map[i] = n++;
+        }
+        p++;
+    }
+    i = func_001BAAD0();
+    if (i >= 0) {
+        if (map[i] >= 0) {
+            func_001BAAA8(map[i]);
+        } else {
+            func_001BAAA8(0);
+        }
+    }
+    p = func_001BA9D8(0);
+    for (i = 0; i < 10; i++) {
+        if (p->n != 0 && p->c != 0) {
+            p->c = map[p->c - 1] + 1;
+        }
+        p++;
+    }
+    if (D_006257D0 != 0) {
+        p = (BB880Inv *)D_006257D0;
+        if (p->n != 0 && p->c != 0) {
+            p->c = map[p->c - 1] + 1;
+        }
+    }
+    p = func_001BA9D8(0);
+    n = 0;
+    for (i = 0; i < 10; i++) {
+        if (p[i].n != 0) {
+            idx[n++] = i;
+        }
+    }
+    for (i = 0; i < 10 && i < n; i++) {
+        if (i != idx[i]) {
+            p[i] = p[idx[i]];
+        }
+    }
+    for (; i < 10; i++) {
+        func_001BE820(&p[i], 0xF70);
+    }
+    p = func_001BA9D8(0);
+    for (i = 0; i < 10; i++) {
+        if (p->c != 0) {
+            t = p->c - 1;
+            if (t == i || ((BB880Inv *)func_001BA9D8(t))->c - 1 != i) {
+                p->c = 0;
+            }
+        }
+        p++;
+    }
+    return map[a0];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BBBD0);
 
