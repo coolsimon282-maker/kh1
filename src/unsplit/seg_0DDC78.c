@@ -1275,7 +1275,24 @@ void func_001E6C68(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E6C90);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E6D20);
+extern u8 D_00630460[];
+extern u8 D_003DCF30[];
+extern u8 D_003DCD70[];
+s32 func_0010BB50_r() __asm__("func_0010BB50");
+
+s32 func_001E6D20(void) {
+    switch (D_003DD258) {
+    case 1:
+        func_0010E230(D_00630460 + 0x80);
+        func_0010EDA0(D_00630460, D_003DCF30, 0);
+        return func_0010BB50_r(D_00630510, func_001E6450);
+    case 2:
+        func_0010E230(D_00630460 + 0x80);
+        func_0010EDA0(D_00630460, D_003DCD70, 0);
+        func_0010BB50(D_00630510, func_001E72A0);
+        break;
+    }
+}
 
 extern u8 D_00630510[];
 void func_0010BB10();
