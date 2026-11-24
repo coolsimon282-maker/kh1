@@ -393,7 +393,31 @@ void func_001EFEC8(void) {
     func_001EFEE8(t0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001EFEE8);
+extern u8 D_003E8D28[];
+
+s32 func_001EFEE8_c(u8* p) __asm__("func_001EFEE8");
+s32 func_001EFEE8_c(u8* p) {
+    s32 n = 1;
+    for (;;) {
+        if (*p < 0x15) {
+            switch (*p) {
+            case 0:
+                return n;
+            case 0x10:
+                p++;
+                n++;
+                break;
+            default:
+                p += D_003E8D28[*p];
+                break;
+            }
+        } else if (*p < 0x20) {
+            p += 2;
+        } else {
+            p++;
+        }
+    }
+}
 
 s32 func_001EFF50(s32 a0) {
     u8 *p = (u8 *)D_003E8E28;
@@ -701,7 +725,23 @@ s32 func_001F3708(u8 *a0, s32 a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F3758);
+s32 func_001F3758_c(u8* p) __asm__("func_001F3758");
+s32 func_001F3758_c(u8* p) {
+    if (p == NULL) return -1;
+    do {
+        switch (*(s32*)(p + 0x8C)) {
+        case 0:
+        case 4:
+        case 5:
+            break;
+        default:
+            func_001F3680(p);
+            break;
+        }
+        p = *(u8**)(p + 0x10);
+    } while (p != NULL);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F37C0);
 
@@ -1133,7 +1173,17 @@ s32 func_001F44A0(s32 a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F44E8);
+s32 func_001F44E8(u8* p, s32 a1) {
+    if (p == NULL) return 0;
+    while (LN(p, 0xC) != NULL) {
+        p = LN(p, 0xC);
+    }
+    do {
+        if (*(s32*)(p + 0x8C) != 0 && *(s32*)(p + 0x60) == a1) return 1;
+        p = LN(p, 0x10);
+    } while (p != NULL);
+    return 0;
+}
 
 s32 func_001F4558(u8 *a0) {
     return *(s32 *)(a0 + 0x7C);
@@ -3942,7 +3992,22 @@ void func_00216078(s32 a0) {
     func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x6B);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002160A8);
+extern u8 D_003F3FF0[];
+extern s32 D_00642C20;
+void func_00214A68(void);
+void func_00214F50(void);
+
+void func_002160A8(s32 a0) {
+    s32 e = func_001F3A20((s32)D_003F3FF0, 0);
+    if (e != 0) {
+        func_001F3E90((u8 *)a0, e);
+        func_001F3E20((u8 *)e, a0);
+    }
+    D_00642C20 = a0;
+    D_00642C24 = 0;
+    func_00214A68();
+    func_00214F50();
+}
 
 void func_00216118(void) {
     if ((u32)D_003DE6A0 < (u32)D_00642C58) {
