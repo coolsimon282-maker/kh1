@@ -2544,7 +2544,13 @@ void func_002081B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00208280);
+extern u32 D_003F2EAC[];
+
+void func_00208280(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+    s32 temp_2;
+    temp_2 = func_001EDD88(D_003F2EAC[arg4], arg5);
+    func_001FC308(arg0, arg1, arg2, arg3, arg3, arg4, 0, temp_2, temp_2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00208310);
 
