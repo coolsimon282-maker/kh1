@@ -3577,7 +3577,12 @@ void func_002114F0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_002083A8(a0, a2 + 6, a3 + 4, 0x12, a5, (u32)v >> 24);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002115E0);
+void func_002115E0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    func_002114F0(a0, a1, a2, a3, a4, a5);
+    if (a5 != 0 && a6 >= 2) {
+        func_00207F80(a0, a1, a2 + a4 + 4, a3, a6);
+    }
+}
 
 extern s32 D_00641BE0[];
 extern s32 D_00641BF0[];
