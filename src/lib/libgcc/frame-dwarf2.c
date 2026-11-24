@@ -369,7 +369,51 @@ void *extract_cie_info(fde *f, struct cie_info *c) {
     return p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", decode_stack_op);
+/* The parts of the EE frame state decode_stack_op writes (the CFA as an expression). */
+struct frame_state_ops {
+    long pad0;
+    long cfa_offset;    /* 0x008 */
+    long base_offset;   /* 0x010 */
+    char pad18[0x3F8 - 0x18];
+    unsigned short cfa_reg; /* 0x3F8 */
+    char pad3FA[0x477 - 0x3FA];
+    char cfa_saved;     /* 0x477 */
+};
+
+byte *decode_stack_op(byte *buf, struct frame_state_ops *state) {
+    unsigned int op = *buf++;
+    int tmp;
+
+    switch (op) {
+    case 0x50 ... 0x6F:
+        state->cfa_reg = op - 0x50;
+        break;
+    case 0x90:
+        buf = decode_sleb128(buf, &tmp);
+        state->cfa_reg = tmp;
+    case 0x70 ... 0x8F:
+        state->cfa_reg = op - 0x70;
+        buf = decode_sleb128(buf, &tmp);
+        state->base_offset = tmp;
+        break;
+    case 0x92:
+        buf = decode_sleb128(buf, &tmp);
+        state->cfa_reg = tmp;
+        buf = decode_sleb128(buf, &tmp);
+        state->base_offset = tmp;
+        break;
+    case 0x06:
+        state->cfa_saved = 1;
+        break;
+    case 0x23:
+        buf = decode_uleb128(buf, &tmp);
+        state->cfa_offset = tmp;
+        break;
+    default:
+        abort();
+    }
+    return buf;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", execute_cfa_insn);
 
