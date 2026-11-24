@@ -4352,7 +4352,34 @@ s32 func_001DBA30(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DBA58);
+typedef struct {
+    u16 kind : 4;
+    u16 sub : 4;
+    u16 hi : 8;
+} DbaBits;
+typedef struct {
+    u64 kind : 4;
+    u64 sub : 4;
+    u64 hi : 8;
+} DbaBits64;
+DbaBits *func_00147778_d(s32) __asm__("func_00147778");
+s32 func_0013C9E0_d(s32, s32) __asm__("func_0013C9E0");
+void func_0013C858_d(s32, s32) __asm__("func_0013C858");
+
+s32 func_001DBA58(Script *arg0) {
+    DbaBits *p = func_00147778_d(arg0->unk_174[arg0->unk_174[3] + 4]);
+
+    switch (p->kind) {
+    case 0:
+        func_0013C9E0_d(((u8 *)p)[1], p->sub);
+        break;
+    case 1:
+        func_0013C858_d(((u8 *)p)[1], p->sub);
+        break;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_00111468(s32, s32);
 
