@@ -132,7 +132,50 @@ size_t count_fdes(fde *this_fde) {
     return count;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", add_fdes);
+typedef struct fde_vector {
+    fde **array;
+    size_t count;
+} fde_vector;
+
+typedef struct fde_accumulator {
+    fde_vector linear;
+    fde_vector erratic;
+} fde_accumulator;
+
+fde **end_fde_sort(fde_accumulator *accu, size_t count);
+
+static inline void fde_insert(fde_accumulator *accu, fde *this_fde) {
+    if (accu->linear.array)
+        accu->linear.array[accu->linear.count++] = this_fde;
+}
+
+static inline int start_fde_sort(fde_accumulator *accu, size_t count) {
+    accu->linear.array = count ? (fde **)malloc(sizeof(fde *) * count) : 0;
+    accu->erratic.array = accu->linear.array ? (fde **)malloc(sizeof(fde *) * count) : 0;
+    accu->linear.count = 0;
+    accu->erratic.count = 0;
+    return accu->linear.array != 0;
+}
+
+void add_fdes(fde *this_fde, fde_accumulator *accu, void **beg_ptr, void **end_ptr) {
+    void *pc_begin = *beg_ptr;
+    void *pc_end = *end_ptr;
+
+    for (; this_fde->length != 0; this_fde = next_fde(this_fde)) {
+        if (this_fde->CIE_delta == 0 || this_fde->pc_begin == 0)
+            continue;
+
+        fde_insert(accu, this_fde);
+
+        if (this_fde->pc_begin < pc_begin)
+            pc_begin = this_fde->pc_begin;
+        if ((char *)this_fde->pc_begin + this_fde->pc_range > (char *)pc_end)
+            pc_end = (char *)this_fde->pc_begin + this_fde->pc_range;
+    }
+
+    *beg_ptr = pc_begin;
+    *end_ptr = pc_end;
+}
 
 fde *search_fdes(fde *this_fde, void *pc) {
     for (; this_fde->length != 0; this_fde = next_fde(this_fde)) {
@@ -144,9 +187,96 @@ fde *search_fdes(fde *this_fde, void *pc) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", frame_init);
+void frame_init(struct object *ob) {
+    size_t count;
+    fde_accumulator accu;
+    void *pc_begin, *pc_end;
+    fde **array;
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", find_fde);
+    if (ob->pc_begin)
+        count = ob->count;
+    else if (ob->fde_array) {
+        fde **p = ob->fde_array;
+        for (count = 0; *p; ++p)
+            count += count_fdes(*p);
+    } else
+        count = count_fdes(ob->fde_begin);
+    ob->count = count;
+
+    if (!start_fde_sort(&accu, count) && ob->pc_begin)
+        return;
+
+    pc_begin = (void *)(uaddr)-1;
+    pc_end = 0;
+
+    if (ob->fde_array) {
+        fde **p = ob->fde_array;
+        for (; *p; ++p)
+            add_fdes(*p, &accu, &pc_begin, &pc_end);
+    } else
+        add_fdes(ob->fde_begin, &accu, &pc_begin, &pc_end);
+
+    array = end_fde_sort(&accu, count);
+    if (array)
+        ob->fde_array = array;
+    ob->pc_begin = pc_begin;
+    ob->pc_end = pc_end;
+}
+
+fde *find_fde(void *pc) {
+    struct object *ob;
+    size_t lo, hi;
+
+    __gthread_mutex_lock(&__sce_eh_sema_id);
+
+    for (ob = D_0066FAD0; ob; ob = ob->next) {
+        if (ob->pc_begin == 0)
+            frame_init(ob);
+        if (pc >= ob->pc_begin && pc < ob->pc_end)
+            break;
+    }
+
+    if (ob == 0) {
+        __gthread_mutex_unlock(&__sce_eh_sema_id);
+        return 0;
+    }
+
+    if (!ob->fde_array || (void *)ob->fde_array == (void *)ob->fde_begin)
+        frame_init(ob);
+
+    if (ob->fde_array && (void *)ob->fde_array != (void *)ob->fde_begin) {
+        __gthread_mutex_unlock(&__sce_eh_sema_id);
+
+        for (lo = 0, hi = ob->count; lo < hi;) {
+            size_t i = (lo + hi) / 2;
+            fde *f = ob->fde_array[i];
+
+            if (pc < f->pc_begin)
+                hi = i;
+            else if ((char *)pc >= (char *)f->pc_begin + f->pc_range)
+                lo = i + 1;
+            else
+                return f;
+        }
+    } else {
+        fde *f;
+
+        if (ob->fde_array) {
+            fde **p = ob->fde_array;
+
+            do {
+                f = search_fdes(*p, pc);
+                if (f)
+                    break;
+                p++;
+            } while (*p);
+        } else
+            f = search_fdes(ob->fde_begin, pc);
+        __gthread_mutex_unlock(&__sce_eh_sema_id);
+        return f;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", extract_cie_info);
 
