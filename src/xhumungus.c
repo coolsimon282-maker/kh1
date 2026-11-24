@@ -442,7 +442,25 @@ void func_001CC558(void) {
     func_0010EDA0(&D_0062A130, D_003C5808, func_001CC530);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC588);
+void func_0010BB50();
+
+typedef struct { u8 b0[4]; s8 b4[0x102C]; u8 b1030[4]; } XHumCC588;
+extern XHumCC588 D_003854E0_58 __asm__("D_003854E0");
+s32 func_001CC588(void) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_58.b0[i] != 0) {
+            break;
+        }
+    }
+    if (i < 4) {
+        return 0;
+    }
+    func_0010BB50(&D_0062A130, func_001CC558);
+    D_003854E0_58.b1030[0] = 0;
+    D_003854E0_58.b0[0] = 2;
+    return 4;
+}
 
 typedef struct { s8 b0[4]; s8 b4[8]; s8 bC[0x1004]; s32 w1010[8]; s8 b1030[4]; } XHumCC618;
 extern XHumCC618 D_003854E0_c6 __asm__("D_003854E0");
