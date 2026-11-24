@@ -335,7 +335,14 @@ void func_00108CF8(void *a0, s32 a1, s32 a2) {
     func_001089D0(a0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D90);
+s32 func_00108D90(Seg6B18Task *t) {
+    *(volatile u32 *)0x10009020 = 0;
+    *(volatile u32 *)0x10009030 = t->unk_10 & 0x0FFFFFFF;
+    *(volatile u32 *)0x1000E010 = 2;
+    iFlushCache(0);
+    *(volatile u32 *)0x10009000 = 0x145;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108DF8);
 
