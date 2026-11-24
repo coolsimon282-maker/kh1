@@ -7383,7 +7383,101 @@ void func_0017C110(s32 a0, f32 f) {
     func_00120A58(v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017C190);
+typedef struct { u8 pad[0x18]; u32 b0:1; } G18;
+typedef struct {
+    u8 pad00[0x10];
+    sceVu0FVECTOR v10;
+    u8 pad20[0x10];
+    sceVu0FVECTOR v30;
+    s32 seg40;
+    s32 seg44;
+    f32 t48;
+    f32 t4C;
+    f32 f50;
+    u8 pad54[8];
+    f32 f5C;
+    u8 pad60[6];
+    u8 f66;
+    u8 pad67[9];
+} Cam940;
+extern Cam940 D_00575940_c __asm__("D_00575940");
+f32 func_0017C110_f(s32, f32) __asm__("func_0017C110");
+s32 func_0017B4F8(s32*, f32*, f32);
+extern sceVu0FVECTOR D_00575860;
+extern f32 D_003625E4;
+extern f32 D_0048EAE4;
+
+s32 func_0017C190(void) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    s32 seg;
+    f32 t;
+    u8* g;
+    s32 flag;
+    f32 d0;
+    f32 d;
+    f32 ip;
+    f32 r;
+    f32 k;
+    s32 ps;
+    f32 pt;
+
+    g = D_00362438;
+    flag = ((G18*)g)->b0 != 0;
+    d0 = func_001250D0(D_005758D0, D_00575940_c.v30);
+    d = d0;
+    if (D_00575940_c.f66 == 2) {
+        sceVu0CopyVector(D_00575860, (f32*)(D_00575894 + 0x30));
+        D_00575860[1] = 0.0f;
+        sceVu0Normalize(D_00575860, D_00575860);
+        D_00575940_c.f66 = 3;
+        D_003625E4 = 0.0f;
+    }
+    sceVu0SubVector(v, D_005758D0, D_00575940_c.v30);
+    v[1] = 0.0f;
+    sceVu0Normalize(v, v);
+    ip = sceVu0InnerProduct(v, D_00575860);
+    if (ip < -1.0f) {
+        r = D_0048EAE4;
+    } else if (-0.89999997615814208984375f < ip) {
+        r = 1.0000002384185791015625f;
+    } else {
+        r = (-1.0f - ip) / -0.0999999940395355224609375f;
+    }
+    if (r < 0.0999999940395355224609375f) {
+        return 0;
+    }
+    k = r * 0.122173037f;
+    seg = D_00575940_c.seg40;
+    t = D_00575940_c.t48;
+    func_0017B308(m, g + 0x20, *(s32*)g, seg, flag);
+    while (fabsf(func_00120AC8(d - d0)) < k * D_002B8344) {
+        ps = seg;
+        pt = t;
+        func_0017B250(v, m, pt);
+        d = func_001250D0(v, D_00575940_c.v30);
+        D_003625E4 += 10.0f;
+        if (func_0017B4F8(&seg, &t, D_00575940_c.f50 * 10.0f)) {
+            func_0017B308(m, g + 0x20, *(s32*)g, seg, flag);
+        }
+        if (ps == seg && t == pt) {
+            return 0;
+        }
+    }
+    if (!(150.0f < func_0017C110_f(seg, t))) {
+        return 0;
+    }
+    D_00575940_c.seg40 = seg;
+    D_00575940_c.seg44 = seg;
+    D_00575940_c.t48 = t;
+    D_00575940_c.t4C = t;
+    func_0017B308(m, g + 0x20, *(s32*)g, seg, flag);
+    func_0017B250(D_00575940_c.v10, m, t);
+    if (*(f32*)(g + 4) < D_003625E4) {
+        return 0;
+    }
+    return 1;
+}
 
 void func_0017C4C8(void) {
     if (D_002C2108 & 0x200) {
@@ -7398,26 +7492,6 @@ void func_0017C4C8(void) {
         }
     }
 }
-
-typedef struct { u8 pad[0x18]; u32 b0:1; } G18;
-typedef struct {
-    u8 pad00[0x10];
-    sceVu0FVECTOR v10;
-    u8 pad20[0x10];
-    sceVu0FVECTOR v30;
-    s32 seg40;
-    s32 seg44;
-    f32 t48;
-    f32 t4C;
-    u8 pad50[0xC];
-    f32 f5C;
-    u8 pad60[6];
-    u8 f66;
-    u8 pad67[9];
-} Cam940;
-extern Cam940 D_00575940_c __asm__("D_00575940");
-f32 func_0017C110_f(s32, f32) __asm__("func_0017C110");
-s32 func_0017B4F8(s32*, f32*, f32);
 
 void func_0017C550(void) {
     sceVu0FMATRIX m;
