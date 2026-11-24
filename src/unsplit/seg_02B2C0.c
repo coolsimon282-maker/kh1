@@ -360,7 +360,74 @@ s32 func_0012BD30(u8 *a0) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012BD98);
+s32 func_00176578(u8* p, u32 a, u32 b, u64 c);
+extern u8* D_0029B410;
+extern s8 D_002E2FB8[];
+extern sceVu0FVECTOR D_002C58A0;
+u8* func_00147ED8_y(u8*, s32, s32, f32*) __asm__("func_00147ED8");
+
+u8* func_0012BD98(u8* a0, s32 a1, u32 a2, f32* a3) {
+    u8* q;
+    s32 k;
+    s32 t;
+    s32 i;
+    s32* s;
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR rot;
+
+    if (D_0029B410 == NULL) {
+        return NULL;
+    }
+    if (*(u16*)(*(u8**)(a0 + 0x130) + 0x4C) < 0x14) {
+        k = D_002E2FB8[*(u16*)(*(u8**)(a0 + 0x130) + 0x4C)];
+    } else {
+        k = 0x10;
+    }
+    if (k < 0) {
+        return NULL;
+    }
+    t = func_00176578(D_0029B410, 1 << a1, a2, 1 << k);
+    q = NULL;
+    if (t >= 0) {
+        switch (a1) {
+        case 0:
+            rot[0] = 0.0f;
+            rot[1] = *(f32*)(a0 + 0x3C);
+            rot[2] = 0.0f;
+            break;
+        case 10:
+        case 11:
+        case 12:
+            rot[0] = 0.0f;
+            rot[1] = *(f32*)(a0 + 0x3C);
+            rot[2] = 0.0f;
+            if (*(s32*)a0 & 0x400000) {
+                a3[1] = *(f32*)(a0 + 0x2D4);
+            }
+            break;
+        default:
+            sceVu0SubVector(m[1], D_002C58A0, (f32*)(a0 + 0xC0));
+            sceVu0OuterProduct(m[2], (f32*)(a0 + 0x30), m[1]);
+            sceVu0Normalize(m[2], m[2]);
+            sceVu0OuterProduct(m[0], m[1], m[2]);
+            sceVu0Normalize(m[0], m[0]);
+            func_001218E0((u8*)m, (s32)rot);
+            break;
+        }
+        q = func_00147ED8_y(D_0029B410, t, 10000, a3);
+        if (q != NULL) {
+            (*(s32**)(q + 4))[0] = (s32)(rot[0] / 6.2831855f * 65536.0f) & 0xFFFF;
+            (*(s32**)(q + 4))[1] = (s32)(rot[1] / 6.2831855f * 65536.0f) & 0xFFFF;
+            (*(s32**)(q + 4))[2] = (s32)(rot[2] / 6.2831855f * 65536.0f) & 0xFFFF;
+            s = (s32*)(a0 + 0x350);
+            for (i = 0; i < 3; i++) {
+                (*(f32**)(q + 0xC))[i] = *s++ * 0.0078125f;
+            }
+            (*(f32**)(q + 0xC))[3] = 1.0f;
+        }
+    }
+    return q;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C010);
 
