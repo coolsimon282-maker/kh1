@@ -696,7 +696,84 @@ s32 func_0012DD38(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012DD70);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012DEA0);
+typedef struct {
+    s32 a;
+    s32 b;
+} S2E31B0;
+typedef struct {
+    u32 a : 8;
+    u32 b : 16;
+    u32 c : 8;
+    S2E31B0 v;
+} S2E3190;
+extern S2E3190 D_002E3190;
+extern S2E31B0 D_002E31B0_s __asm__("D_002E31B0");
+extern s32 D_002E30B8[];
+extern s32 D_00524F58[];
+extern s32 D_002E3160[];
+extern u8 D_00524F68[];
+extern s32 D_002E31A4;
+u8* func_001478C8(s32 i);
+s32 func_0012DD70(u8*);
+s32 func_00218B48(void);
+void func_0012FB20(s32*, s32);
+
+s32 func_0012DEA0(s32* a0, s32 a1) {
+    S2E31B0 v;
+    u8* e;
+    s32 flag;
+    s32 r;
+
+    if (((u32*)a0)[2] & (1 << a1)) {
+        if ((*(u32*)&D_002E3190 >> 25) & 1) {
+            func_0011D598(4);
+        }
+        return 0;
+    }
+    e = func_001478C8(*(u8*)(a1 + (s32)a0 + 0x14));
+    if (*(s8*)(e + 8) > 0) {
+        a0[0x34 / 4] = a1;
+        func_0012DCE0(D_002E2FD8 + *(s8*)(e + 8) * 14);
+        return 0;
+    }
+    flag = 0;
+    if (a0[0] == 4) {
+        if (a0 == D_002E30B8) {
+            v.a = D_00524F58[a1];
+        } else {
+            v.a = D_002E3160[a1];
+        }
+        v.b = 0;
+        a0 = D_00524F40[-1];
+        e = func_001478C8(*(u8*)(a0[0x34 / 4] + (s32)a0 + 0x14));
+    } else if (D_002E31B8 != 0) {
+        v = D_002E31B0_s;
+        flag = 1;
+    } else {
+        v.a = 0;
+        v.b = 0;
+    }
+    r = func_0012DD70(e);
+    if (r != 0) {
+        if (flag && func_00218B48() != 1 && (*(u16*)e & 4)) {
+            if ((u32)(D_002E31B8 - 1) < 2 || D_002E31B8 == 4) {
+                func_0012FB20(&D_002E31B0, 4);
+            }
+        }
+        if (a0[0] == 2) {
+            D_002E31A4 = D_00524F68[a0[3]];
+        }
+        D_002E3190.v = v;
+        D_002E3190.a = e[6];
+        D_002E3190.b = *(s8*)(e + 7);
+        D_002E319C = (u16*)e;
+        while (D_00524F40 != (s32**)D_002E3170) {
+            func_0012DD38();
+        }
+        r = 1;
+    }
+    return r;
+}
 
 s32 func_0012DEA0(s32*, s32);
 extern u16* D_002E319C;
