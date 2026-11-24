@@ -3535,7 +3535,37 @@ s32 func_001D7A48(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D7A68);
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ u8 unk_04[0xC];
+    /* 0x10 */ f32 unk_10[3];
+    /* 0x1C */ u8 unk_1C[4];
+    /* 0x20 */ f32 unk_20[3];
+    /* 0x2C */ u8 unk_2C[4];
+} XHumRec30;
+
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3178];
+    /* 0x3178 */ s32 unk_3178;
+    /* 0x317C */ u8 unk_317C[4];
+    /* 0x3180 */ XHumRec30 unk_3180[1];
+} XGiantMountainR7;
+
+s32 func_001D7A68(Script* arg0) {
+    XGiantMountainR7* g = (XGiantMountainR7*)&D_003854E0;
+    s32 n = g->unk_3178;
+
+    g->unk_3180[n].unk_00 = arg0->unk_174[arg0->unk_174[3] - 2];
+    g->unk_3180[n].unk_10[0] = arg0->unk_174[arg0->unk_174[3] - 1];
+    g->unk_3180[n].unk_10[1] = arg0->unk_174[arg0->unk_174[3]];
+    g->unk_3180[n].unk_10[2] = arg0->unk_174[arg0->unk_174[3] + 1];
+    g->unk_3180[n].unk_20[0] = arg0->unk_174[arg0->unk_174[3] + 2];
+    g->unk_3180[n].unk_20[1] = arg0->unk_174[arg0->unk_174[3] + 3];
+    g->unk_3180[n].unk_20[2] = arg0->unk_174[arg0->unk_174[3] + 4];
+    g->unk_3178++;
+    arg0->unk_174[3] -= 7;
+    return 2;
+}
 
 s32 func_001D7B60(Script* arg0) {
     s32 n = 0;
