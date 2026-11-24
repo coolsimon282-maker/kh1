@@ -2156,7 +2156,66 @@ void func_00247CC8(s32 arg0) {
     func_00249A48((void *)((u8 *)&D_00431F30 + arg0 * 0x1770), 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247CF8);
+typedef struct { u8 pad[8]; s32 unk8; s32 unkC; s32 unk10; s32 unk14; } Seg132_7CF8;
+int sprintf(char *, const char *, ...);
+void func_002475D0(s32 x, s32 y, u8 *col, f32 f, char *s, s32 font);
+extern s32 D_00467408;
+extern char D_004917D8[];
+extern char D_004917F0[];
+extern char D_004917F8[];
+extern char D_00491800[];
+extern char D_00491808[];
+
+void func_00247CF8(Seg132_7CF8 *a0) {
+    char buf[16];
+    u8 col[3];
+
+    col[0] = 0xFF;
+    col[1] = 0xFF;
+    col[2] = 0xFF;
+    switch (a0->unkC) {
+    case 1:
+        sprintf(buf, D_004917F0, a0->unk10);
+        func_002475D0(0x45, 0x16, col, 1.0f, buf, D_00467408);
+        if (a0->unk8 != 0) {
+            sprintf(buf, D_004917F8);
+            func_002475D0(0x54, 0x16, col, 1.0f, buf, D_00467408);
+            sprintf(buf, D_004917F0, a0->unk14);
+            func_002475D0(0x61, 0x16, col, 1.0f, buf, D_00467408);
+        }
+        break;
+    case 2:
+        sprintf(buf, D_004917D8, a0->unk10);
+        func_002475D0(0x45, 0x16, col, 1.0f, buf, D_00467408);
+        if (a0->unk8 != 0) {
+            sprintf(buf, D_004917F8);
+            func_002475D0(0x61, 0x16, col, 1.0f, buf, D_00467408);
+            sprintf(buf, D_004917D8, a0->unk14);
+            func_002475D0(0x6E, 0x16, col, 1.0f, buf, D_00467408);
+        }
+        break;
+    case 3:
+        sprintf(buf, D_00491800, a0->unk10);
+        func_002475D0(0x45, 0x16, col, 1.0f, buf, D_00467408);
+        if (a0->unk8 != 0) {
+            sprintf(buf, D_004917F8);
+            func_002475D0(0x6E, 0x16, col, 1.0f, buf, D_00467408);
+            sprintf(buf, D_00491800, a0->unk14);
+            func_002475D0(0x7B, 0x16, col, 1.0f, buf, D_00467408);
+        }
+        break;
+    case 4:
+        sprintf(buf, D_00491808, a0->unk10);
+        func_002475D0(0x45, 0x16, col, 1.0f, buf, D_00467408);
+        if (a0->unk8 != 0) {
+            sprintf(buf, D_004917F8);
+            func_002475D0(0x7B, 0x16, col, 1.0f, buf, D_00467408);
+            sprintf(buf, D_00491808, a0->unk14);
+            func_002475D0(0x88, 0x16, col, 1.0f, buf, D_00467408);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248010);
 
