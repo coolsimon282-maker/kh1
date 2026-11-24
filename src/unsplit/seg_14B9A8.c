@@ -572,7 +572,35 @@ void func_0024F1D0(s32 a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024F210);
+extern s32 D_002C5C4C;
+extern s32 D_002C5C50;
+extern s32 D_0046A6B0[];
+void func_001560F8(s32, void*);
+
+s32 func_0024F210(s32 a0, s32 a1) {
+    s32 id;
+    s32 n;
+
+    D_0066AAA0 = a0;
+    D_0066AA80 = (void (*)(void))a1;
+    n = D_003010F8->unk_491;
+    id = D_0046A6B0[n];
+    if (D_002C5C4C != 0) {
+        if (n == 1) {
+            id = 0xC000A;
+        } else if (n == 2) {
+            id = 0xC000B;
+        }
+    } else if (D_002C5C50 != 0) {
+        if (n == 1) {
+            id = 0xC0008;
+        } else if (n == 2) {
+            id = 0xC0009;
+        }
+    }
+    func_001560F8(id, func_0024F1D0);
+    return id;
+}
 
 void __assert(s32 a0, s32 a1, s32 a2) {
     fiprintf(*(s32 *)(*(u8 **)&_impure_ptr + 0xC), D_004919E8, a2, a0, a1);
