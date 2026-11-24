@@ -1981,7 +1981,32 @@ s32 func_0022DA58(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022DAA0);
+extern u8 D_003F7540[];
+extern u8 D_003F7510[];
+s32 func_0022DA58(void);
+void func_0022DAA0(s32 a0) {
+    u8 *e[3];
+    u8 *r;
+
+    func_001F3110(a0);
+    D_003F76B4 = 0;
+    if ((e[0] = func_001F3A20(D_003F7570, 1)) != NULL && (e[1] = func_001F3A20(D_003F7540, 1)) != NULL) {
+        func_001F4690(e[1], e[0]);
+        e[2] = r = func_001F3A20(D_003F7510, 1);
+        if (r != NULL) {
+            func_001F4690(e[2], e[1]);
+            r = e[2];
+            *(f32 *)(r + 0xA0) = 16.0f;
+        }
+    } else {
+        r = e[2];
+    }
+    D_003F34A4 = 1;
+    func_0020BBC0(r);
+    func_0020BD18((s32)e[2], 8);
+    func_0020BDA8(0x10);
+    *(s16 *)((u8 *)func_0011ED30(0x2BFE9, func_0022DA58) + 2) = a0;
+}
 
 void func_0022DB90(void) {
 }
