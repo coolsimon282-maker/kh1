@@ -123,7 +123,45 @@ void* func_0011C880(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return func_001EE478(arg0, arg1, arg2, arg3, arg4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011C6C8);
+extern u8 D_004E3818[];
+void func_0011C6C8(s32 a0) {
+    Seg1C7A8Ent18 *p;
+    Seg1C7A8Ent0C *q;
+    Seg1C7A8Pair *r;
+    s32 i;
+    s32 t;
+
+    if (a0 == 0) {
+        D_004E3450 = (Seg1C7A8Ent18 *)D_004E3458;
+        D_004E3454 = (Seg1C7A8Ent0C *)D_004E3818;
+        D_004E344C = 0x28;
+    } else {
+        D_004E3450 = (Seg1C7A8Ent18 *)func_00155ED8(0x10, 1);
+        D_004E3454 = (Seg1C7A8Ent0C *)func_00155ED8(0x11, 1);
+        D_004E344C = 0x80;
+    }
+    p = D_004E3450;
+    q = D_004E3454;
+    i = 0;
+    if (i < D_004E344C) {
+        do {
+            p->unk_14 = 0;
+            p++;
+            q->unk_00 = 0;
+            i++;
+            t = i < D_004E344C;
+            q->unk_04 = 0;
+            q->unk_08 = 0;
+            q++;
+        } while (t);
+    }
+    r = D_004E39F8;
+    for (i = 3; i >= 0; i--) {
+        r->unk_00 = 0;
+        r->unk_04 = 0;
+        r++;
+    }
+}
 
 void func_0011C9A0(void) {
     D_004E3A40 = 0;
