@@ -103,4 +103,103 @@ INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D898)
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019E520);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019E8B0);
+typedef struct {
+    /* 0x00 */ s16 unk_00;
+    /* 0x02 */ s16 time;
+    /* 0x04 */ s8 flag;
+    /* 0x05 */ char unk_05[3];
+} RyjShpSeq;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x6];
+    /* 0x06 */ s16 nseq;
+    /* 0x08 */ char unk_08[0x8];
+    /* 0x10 */ RyjShpSeq seq[1];
+} RyjShpHdr;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x20];
+    /* 0x20 */ u16 wait;
+    /* 0x22 */ u16 seq;
+    /* 0x24 */ u16 seq_now;
+    /* 0x26 */ u16 active;
+    /* 0x28 */ char unk_28[0x38];
+} RyjShpPart;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x50];
+    /* 0x50 */ RyjShpPart* part;
+    /* 0x54 */ u8* wmat;
+    /* 0x58 */ u8* col;
+    /* 0x5C */ s32 nPart;
+    /* 0x60 */ u16 count;
+} RyjShpV;
+
+typedef struct {
+    /* 0x00 */ char unk_00[0x4];
+    /* 0x04 */ s32 shpIdx;
+    /* 0x08 */ u16 speed;
+    /* 0x0A */ char unk_0A[0x14];
+    /* 0x1E */ u16 nBirth;
+    /* 0x20 */ u16 interval;
+} RyjShpP;
+
+void func_0019E520(RyjShpV* v, RyjShpP* p, RyjShpPart* e, void* c, u8* s);
+NOTHROW(void, func_0019D898);
+
+void func_0019E8B0(RyjShpV* v, RyjShpP* p, void* c) {
+    RyjShpPart* e = v->part;
+    u8* t = v->wmat;
+    u8* s = v->col;
+    s32 n = v->nPart;
+    s32 cnt = 0;
+    s32 i;
+
+    if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
+        return;
+    }
+    if (p->shpIdx == 0xFFFF) {
+        return;
+    }
+    v->count++;
+    for (i = 0; i < n; i++) {
+        if (e->active != 0) {
+            pppShapeSt* st;
+            RyjShpHdr* shp;
+            RyjShpSeq* q;
+
+            func_0019E520(v, p, e, c, s);
+            st = &ppvEnv->lpShape[p->shpIdx];
+            shp = (RyjShpHdr*)st->shape;
+            q = &shp->seq[e->seq_now];
+            e->seq_now = e->seq;
+            e->wait += p->speed;
+            if (e->wait >= q->time) {
+                e->wait -= q->time;
+                e->seq++;
+                if (e->seq >= shp->nseq) {
+                    if (q->flag & 0x80) {
+                        e->seq = 0;
+                        e->wait = 0;
+                    } else {
+                        e->wait = 0;
+                        e->seq--;
+                    }
+                }
+            }
+        } else if (p->interval <= v->count && cnt < p->nBirth) {
+            func_0019D898(v, p, c, e, t, s);
+            cnt++;
+        }
+        if (t != NULL) {
+            t += 0x40;
+        }
+        if (s != NULL) {
+            s += 0x20;
+        }
+        e++;
+    }
+    if (cnt > 0) {
+        v->count = 0;
+    }
+}
