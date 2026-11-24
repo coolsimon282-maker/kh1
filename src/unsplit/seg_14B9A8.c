@@ -98,7 +98,33 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C8B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C950);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CDE8);
+void func_0024CDE8(s16* dst, s32 a1) {
+    u8* src = (u8*)a1;
+    s32 i;
+    u32 c;
+
+    for (i = 0; src[i] != 0; i++) {
+        c = src[i];
+        if (c == 1) {
+            c = 0;
+        } else if (c - 0x20 < 0xE0) {
+            c = c - 0x20;
+        } else {
+            if (c == 0x18) {
+                c = src[i + 1];
+                c -= 0x19;
+                c <<= 8;
+            } else {
+                c -= 0x19;
+                c <<= 8;
+                c += src[i + 1];
+            }
+            c += 0xE0;
+            i++;
+        }
+        *dst++ = c;
+    }
+}
 
 void func_0024CE80(u8 *dst, s16 *src) {
     s32 i;
