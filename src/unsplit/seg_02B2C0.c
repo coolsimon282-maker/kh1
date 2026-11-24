@@ -969,7 +969,27 @@ void func_0012F560(u8 *a0) {
     D_0052528C++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F5C0);
+void func_0012F3D0(u8 *);
+
+void func_0012F5C0(u8 *a0) {
+    typedef struct { s16 v[4]; } S8h;
+    s32 *p = &D_00525288;
+
+    if ((*p - (s32)D_00524F80) >> 3 < D_0052528C - 1) {
+        *p += 8;
+        *(S8h *)a0 = *(S8h *)*p;
+        return;
+    }
+    func_0012F3D0(a0);
+    if (*(s32 *)a0 != 0) {
+        func_0012F560(a0);
+        return;
+    }
+    if (*p != (s32)D_00524F80) {
+        *p = (s32)D_00524F80;
+        *(S8h *)a0 = *(S8h *)D_00524F80;
+    }
+}
 
 void func_0012F690(u8 *a0) {
     typedef struct { s16 v[4]; } S8h;
