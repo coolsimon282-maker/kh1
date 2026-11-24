@@ -5058,7 +5058,22 @@ void func_0015E840(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E8D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015E9C8);
+void func_0015E9C8(u8* p, f32* out) {
+    f32 t = *(f32*)(p + 0x3CC);
+
+    if (t < 18.0f) {
+        f32 n;
+        f32 s = t + D_002B8344 * 0.5f;
+        if (s < 18.0f) {
+            n = s;
+        } else {
+            n = 18.0f;
+        }
+        *(f32*)(p + 0x3CC) = n;
+        t = n;
+    }
+    sceVu0ScaleVector(out, (f32*)(p + 0x30), t * D_002B8344);
+}
 
 s32 func_0015EA38(u8* p) {
     return *(s32*)(p + 0x70);
