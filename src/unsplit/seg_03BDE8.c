@@ -813,7 +813,27 @@ void func_0013C7D0(u32 x) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C858);
+/* two dummy declarations keep func_001559A8 (far below) as it was (rule F1) */
+extern int flip_pad_13C858_0;
+extern int flip_pad_13C858_1;
+void func_0013C858(u32 v, u32 id) {
+    u8* p;
+    s32 i;
+
+    if (id < 10) {
+        p = (u8*)&((D3010F8x*)D_003010F8)->e[id] + 0x40;
+    } else {
+        p = (u8*)D_003010F8 + 0x599;
+    }
+    i = 0;
+    while (p[i] != 0) {
+        i++;
+        if (i >= 0x30) {
+            return;
+        }
+    }
+    p[i] = v | 0x80;
+}
 
 s32 func_0013C968(s32 a0, u32 a1) {
     u8* p;
