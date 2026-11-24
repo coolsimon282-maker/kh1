@@ -1251,7 +1251,18 @@ void func_001BF290(A2Vec4 *v) {
     v->w = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF2B0);
+void func_001BF2B0(A2Vec4* d, A2Vec4* a, A2Vec4* b) {
+    f32 t[4];
+
+    t[0] = a->w * b->x + b->w * a->x + (a->y * b->z - a->z * b->y);
+    t[1] = a->w * b->y + b->w * a->y + (a->z * b->x - a->x * b->z);
+    t[2] = a->w * b->z + b->w * a->z + (a->x * b->y - a->y * b->x);
+    t[3] = a->w * b->w - (a->x * b->x + a->y * b->y + a->z * b->z);
+    d->x = t[0];
+    d->y = t[1];
+    d->z = t[2];
+    d->w = t[3];
+}
 
 void func_001BF360(f32* d, f32* q) {
     f32 n = q[3] * q[3] + q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
