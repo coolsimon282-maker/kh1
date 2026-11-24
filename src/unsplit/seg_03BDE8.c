@@ -436,7 +436,7 @@ void func_001358B8(s32, s32);
 s32 func_00158C78(void);
 s32 func_00155A90(void);
 void func_0014CCE0_s(s32) __asm__("func_0014CCE0");
-void func_0014F658(s32, s32);
+s32 func_0014F658(s32, s32);
 void sceVu0SubVector(f32*, f32*, f32*);
 f32 sceVu0InnerProduct(f32*, f32*);
 s32 func_0013DFB8(u8*, s32);
@@ -2991,7 +2991,25 @@ s32 func_0014F5C8(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014F600);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014F658);
+typedef struct { void* a; void (*enter)(s32); void (*exit)(s32); u8 pad[0x14]; } V14F658;
+extern V14F658 D_00350D88_v[] __asm__("D_00350D88");
+s32 func_0014F658(s32 p, s32 st) {
+    s32 old = *(s32*)(p + 0x70);
+
+    if (old != st) {
+        *(s32*)(p + 0x378) = old;
+        *(s32*)(p + 0x70) = st;
+        *(s32*)p |= 0x400;
+        if (D_00350D88_v[old].exit != NULL) {
+            D_00350D88_v[old].exit(p);
+        }
+        if (D_00350D88_v[st].enter != NULL) {
+            D_00350D88_v[st].enter(p);
+        }
+        return 1;
+    }
+    return 0;
+}
 
 void func_0014F6F8(u8* p, f32* v) {
     if (0.0f < v[3]) {
