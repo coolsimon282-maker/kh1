@@ -1699,7 +1699,21 @@ s32 func_001E87B8(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E8800);
+void func_0011E9D8(s32, s32, s32, s32);
+void func_001E8628();
+
+s32 func_001E8800(A2Script *p) {
+    s32 a = (f32)(p->unk_174[p->unk_174[3] + 3] * 0x3000) / 100.0f;
+    s32 b = p->unk_174[p->unk_174[3] + 4] * 8;
+
+    if (fm_func_0011E340(0) == 0) {
+        func_0011E9D8(a, b, (s32)func_001E8628, (s32)func_F20000);
+        D_003854E0.unk_3070 |= (u64)1 << 57;
+        p->unk_174[3] -= 2;
+        return 2;
+    }
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E88E0);
 
