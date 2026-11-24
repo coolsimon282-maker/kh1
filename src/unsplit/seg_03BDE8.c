@@ -1123,7 +1123,78 @@ void func_0013F8A8(s32 a, s32 b, f32* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F910);
+void func_0013F910(u8* p, f32* v) {
+    sceVu0FVECTOR w;
+    f32* q;
+    f32 y;
+    u8* t;
+    f32 c;
+    f32 f;
+    s32 k;
+
+    sceVu0ScaleVector(v, v, v[3] * D_002B8344);
+    if ((*(s32*)(p + 0x2D0) & 0x10) && 0.0f < v[1]) {
+        func_0014F658((s32)p, 0xE);
+        func_0013F6D0(p, (f32*)(p + 0x20));
+        return;
+    }
+    q = (f32*)(p + 0x10);
+    sceVu0AddVector(w, v, q);
+    y = w[1];
+    sceVu0SubVector(w, w, (f32*)(*(u8**)(p + 0x148) + 0x40));
+    w[1] = 0.0f;
+    sceVu0Normalize(w, w);
+    sceVu0ScaleVector(w, w, *(f32*)(*(u8**)(p + 0x148) + 0x50) + *(f32*)(p + 0x2C0));
+    sceVu0AddVector(w, w, (f32*)(*(u8**)(p + 0x148) + 0x40));
+    t = *(u8**)(p + 0x148);
+    if (y < *(f32*)(t + 0x54)) {
+        w[1] = *(f32*)(t + 0x54);
+    } else if (*(f32*)(t + 0x44) < y) {
+        w[1] = *(f32*)(t + 0x44);
+    } else {
+        w[1] = y;
+    }
+    sceVu0SubVector(w, w, q);
+    func_001223B0((f32*)(p + 0x20), w);
+    *(f32*)(p + 0x2C) = *(f32*)(p + 0x2C) * D_002C1EC0;
+    if (*(s32*)p & 4) {
+        return;
+    }
+    if (*(f32*)(p + 0x24) < 0.0f && 1.0f < *(f32*)(p + 0x2C)) {
+        k = 0x1E;
+    } else if (0.0f < *(f32*)(p + 0x24)) {
+        if (7.0f < *(f32*)(p + 0x2C)) {
+            k = 0x1F;
+        } else {
+            k = 0x20;
+        }
+    } else {
+        sceVu0SubVector(w, q, (f32*)(*(u8**)(p + 0x148) + 0x40));
+        c = w[0] * v[2] - w[2] * v[0];
+        if (c < 0.0f) {
+            k = 0x22;
+        } else if (0.0f < c) {
+            k = 0x21;
+        } else {
+            if (*(s32*)(p + 0x1CC) & 0x100000) {
+                return;
+            }
+            if (*(s32*)(p + 0x178) > 0) {
+                return;
+            }
+            k = 0x1B;
+        }
+    }
+    if ((*(s32*)(p + 0x164) == 0x1B || *(s32*)(p + 0x164) == 0x24) && k == 0x1E) {
+        f = 0.0f;
+    } else {
+        f = 8.0f;
+    }
+    if ((s32)(*(u64*)(p + 0x440) >> 33) & 1) {
+        return;
+    }
+    func_00130398((s32)p, func_0013F330(p, k) | 0x40000000, f);
+}
 
 s32 func_0013FBA0(u8* p, s32 a) {
     sceVu0FVECTOR v;
