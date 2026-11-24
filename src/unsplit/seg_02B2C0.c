@@ -196,7 +196,39 @@ void func_0012B440(void) {
 void func_0012B448(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012B450);
+extern s32 D_002BC080[];
+extern s32 D_002BC090;
+extern s32 D_002BC094;
+extern f32 D_002BC098;
+extern s32 D_002BC09C;
+extern s32 D_002BC0A0;
+extern s32 D_002BC0A4;
+f32 func_00120AC8(f32);
+typedef struct {
+    f32 col[4];
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+    s32 unk_1C;
+    f32 unk_20;
+    s32 unk_24;
+} A2Light;
+
+void func_0012B450(A2Light **a0) {
+    A2Light *s = *a0;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        D_002BC080[i] = s->col[i] * 128.0f;
+    }
+    D_002BC090 = s->unk_10;
+    D_002BC094 = s->unk_14;
+    D_002BC098 = func_00120AC8(s->unk_20 / 180.0f * 3.1415928f);
+    D_002BC09C = s->unk_24;
+    D_002BC0A0 = s->unk_18;
+    D_002BC0A4 = s->unk_1C;
+    D_002B834C = 1;
+}
 
 void func_0012B530(void) {
     D_002B834C = 0;
