@@ -226,7 +226,26 @@ void func_001C2808(s32 arg0, s32 arg1, void* arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C28B8);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2AA0);
+s32 func_001C2AA0(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)func_0022F768(1);
+    s32 b2 = (s32)func_0022F768(2);
+
+    arg0->unk_174[36] = arg1;
+    if (arg1 < 0x800) {
+        s32 t = *(s16*)(b1 + arg1);
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = t;
+    } else if (arg1 < 0x900) {
+        s32 t = *(s16*)(arg1 + b1);
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = t;
+    } else {
+        s32 t = *(s16*)(arg1 + b2 - 0xD40);
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = t;
+    }
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2B60);
 
