@@ -22,7 +22,17 @@ INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _hi0bits);
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _lo0bits);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _i2b);
+extern struct _Bigint *_Balloc(struct _reent *ptr, int i);
+
+struct _Bigint *_i2b(struct _reent *ptr, int i)
+{
+    struct _Bigint *b;
+
+    b = _Balloc(ptr, 1);
+    b->_x[0] = i;
+    b->_wds = 1;
+    return b;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _multiply);
 
