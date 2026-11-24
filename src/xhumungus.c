@@ -5355,7 +5355,33 @@ s32 fm_func_001DC868(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDC08);
+extern s32 D_0037A178[];
+
+s32 func_001DDC08(Script* arg0) {
+    s32 v = arg0->unk_174[arg0->unk_174[3] + 3];
+    s32 f;
+    s32 idx;
+    s32 sh;
+
+    if ((u32)v >= 0x80) {
+        arg0->unk_174[3] -= 2;
+        return 2;
+    }
+    f = arg0->unk_174[arg0->unk_174[3] + 4];
+    if ((u32)f >= 2) {
+        arg0->unk_174[3] -= 2;
+        return 2;
+    }
+    idx = v / 32;
+    sh = 31 - v % 32;
+    if (f != 0) {
+        D_0037A178[idx] |= 1 << sh;
+    } else {
+        D_0037A178[idx] &= ~(1 << sh);
+    }
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 #ifdef VERSION_FM
 extern s32 D_0037A178[];
