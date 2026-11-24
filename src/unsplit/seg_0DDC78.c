@@ -45,7 +45,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE290);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE328);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE420);
+s32 func_001DE420(A2Script *p) {
+    A2Obj1760 *q = func_001760D0(p->unk_174[p->unk_174[3] + 1]);
+    s32 n;
+
+    if (q != NULL) {
+        f32 *v = *(f32 **)((u8 *)q + 8);
+        f32 x, y, z;
+        n = p->unk_174[3];
+        x = (f32)p->unk_174[n + 2] / 100.0f;
+        y = (f32)p->unk_174[n + 3] / 100.0f;
+        z = (f32)p->unk_174[n + 4] / 100.0f;
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+    } else {
+        n = p->unk_174[3];
+    }
+    p->unk_174[3] = n - 4;
+    return 2;
+}
 
 s32 func_001DE4E8(A2Script *p) {
     A2Obj1760 *q = func_001760D0(p->unk_174[p->unk_174[3] + 3]);
