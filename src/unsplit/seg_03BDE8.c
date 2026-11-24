@@ -2378,7 +2378,59 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149090);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149170);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001495C8);
+s32 func_001495C8(s32 kind, s32 id) {
+    u8 buf[0xF0];
+    u8* e;
+    s32 a, b;
+    s32 r;
+
+    e = func_00147A88(kind);
+    if (e[2] != 0 && e[2] != 0xC) {
+        return 0;
+    }
+    e = (u8*)&((D3010F8x*)D_003010F8)->e[id];
+    func_00141B10_p(id, buf);
+    r = 0;
+    a = e[1] < *(s32*)(buf + 0x40);
+    b = e[3] < *(s32*)(buf + 0x48);
+    switch (kind) {
+    case 1:
+    case 2:
+    case 6:
+    case 0x8E:
+        r = a | 2;
+        break;
+    case 3:
+    case 7:
+        r = b | 4;
+        break;
+    case 4:
+    case 8:
+    case 0x8F:
+    case 0x90:
+        r = (a | b) | 8;
+        break;
+    case 0x98:
+        r = 0x10;
+        if (e[6] < 100) {
+            r = 0x11;
+        }
+        break;
+    case 0x99:
+        r = 0x20;
+        if (e[7] < 100) {
+            r = 0x21;
+        }
+        break;
+    case 0x9A:
+        r = 0x40;
+        if (e[5] < 100) {
+            r = 0x41;
+        }
+        break;
+    }
+    return r;
+}
 
 void func_00149600(s32 a, s32 b) {
     s32 i = func_0013DAA8(b);
