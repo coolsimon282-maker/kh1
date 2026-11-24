@@ -4555,7 +4555,66 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015C508);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015C5D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015C738);
+u8* func_001234A0(u8*);
+s32 func_00123730(u8*);
+s32 func_0014F600_p(u8*) __asm__("func_0014F600");
+u8* func_0015C738(u8* p, f32* v) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR pos;
+    sceVu0FVECTOR box[2];
+    f32 lim;
+    f32 lo;
+    f32 t;
+    u8* e;
+    u8* c;
+    s32 i;
+
+    if (func_0014F5C8(p) != 0) {
+        return 0;
+    }
+    lim = (v[1] < *(f32*)(p + 0x2C4) * 0.5f) ? *(f32*)(p + 0x2C4) * 0.5f : v[1];
+    lo = 0.0f;
+    if (func_0014F600_p(p) == 0) {
+        lo = -lim;
+    }
+    sceVu0AddVector(pos, (f32*)(p + 0x10), v);
+    e = 0;
+    while ((e = func_001234A0(e)) != 0) {
+        if (e == p || func_00123730(e) == 0) {
+            continue;
+        }
+        c = *(u8**)(*(u8**)(e + 0x134) + 0x14);
+        for (i = 0; i < (*(u8**)(e + 0x134))[5]; i++, c += 0x14) {
+            switch (c[1]) {
+            case 2:
+                func_0015BAD0(e, c, box[0]);
+                sceVu0SubVector(d, pos, box[1]);
+                t = d[1] + box[0][2];
+                if (lo <= t && t < lim) {
+                    d[1] = 0.0f;
+                    if (sceVu0InnerProduct(d, d) < box[0][1] * box[0][1]) {
+                        v[1] -= t;
+                        return e;
+                    }
+                }
+                break;
+            case 3:
+                func_0015BAD0(e, c, box[0]);
+                sceVu0SubVector(d, pos, box[1]);
+                t = d[1] + box[0][2];
+                if (lo <= t && t < lim) {
+                    d[1] = 0.0f;
+                    if (fabsf(d[0]) < box[0][1] && fabsf(d[2]) < box[0][1]) {
+                        v[1] -= t;
+                        return e;
+                    }
+                }
+                break;
+            }
+        }
+    }
+    return 0;
+}
 
 u8* func_0015C960(u8* p, s32 a1, s32 a2, s32 i) {
     u8* t = *(u8**)(p + 0x134);
