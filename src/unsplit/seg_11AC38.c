@@ -359,7 +359,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021BBE0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021BF68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C450);
+void func_0021C450(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 w;
+    s32 x;
+    s32 y;
+
+    if (a3 < 0x4B) {
+        a3 = 0x4B;
+    }
+    w = a3 - 0x4B;
+    x = a1 + 0x19;
+    y = x + w;
+    func_0021B860(a0, a1, a2, 0, 0, 0x18);
+    func_0021B860(a0, x, a2, w, 0, 0x19);
+    func_0021B860(a0, y, a2, 0, 0, 0x1A);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C4F8);
 
