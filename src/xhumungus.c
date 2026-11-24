@@ -5546,7 +5546,25 @@ void func_001DE3E0(UNK_PTR arg0, UNK_PTR arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE3F8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE518);
+void func_00131A30(s32, s32, f32*);
+
+s32 func_001DE518(u8* arg0) {
+    f32 v[4];
+    s32* q;
+
+    if ((s32)(*(u64*)D_0038CD00 >> 40) & 1) {
+        return 4;
+    }
+    if (*(s32*)(*(u8**)(arg0 + 0x10) + 0x14) & 2) {
+        return 4;
+    }
+    func_00131A30(*(s32*)(*(u8**)(arg0 + 0x14) + 4), *(s32*)(arg0 + 0x18), v);
+    q = *(s32**)(*(u8**)(arg0 + 0x10) + 4);
+    q[0] = v[0] * 32768.0f / 3.1415928f;
+    q[1] = v[1] * 32768.0f / 3.1415928f;
+    q[2] = v[2] * 32768.0f / 3.1415928f;
+    return 0;
+}
 
 typedef struct {
     /* 0x00 */ f32* unk_00;
