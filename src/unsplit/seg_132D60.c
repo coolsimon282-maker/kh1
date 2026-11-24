@@ -1437,7 +1437,74 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244B10);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244BE0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244D00);
+typedef struct {
+    u8 pad[0x60];
+    s32 flags;
+    u8 pad64[0x5C];
+} A3Mon;
+extern A3Mon D_0065FD80[5][10];
+extern A3Mon D_00662300[3];
+void func_00247108(A3Mon *);
+void func_00247218(A3Mon *);
+void func_00246C60(A3Mon *);
+void func_00246C28(A3Mon *);
+void func_00246E80(A3Mon *);
+void func_00246FF0(A3Mon *);
+void func_00247AA0_m(A3Mon *) __asm__("func_00247AA0");
+
+void func_00244D00(s32 a0, s32 a1) {
+    s32 i;
+    s32 j;
+    A3Mon *p;
+
+    if (a0) {
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 10; j++) {
+                func_00247108(&D_0065FD80[i][j]);
+                func_00247218(&D_0065FD80[i][j]);
+            }
+        }
+        p = D_00662300;
+        for (i = 0; i < 3; i++, p++) {
+            func_00247108(p);
+            func_00247218(p);
+        }
+    }
+    if (a1) {
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 10; j++) {
+                if (D_0065FD80[i][j].flags & 2) {
+                    func_00246C60(&D_0065FD80[i][j]);
+                    func_00246C28(&D_0065FD80[i][j]);
+                }
+                if (D_0065FD80[i][j].flags & 0x40) {
+                    func_00246E80(&D_0065FD80[i][j]);
+                    func_00246FF0(&D_0065FD80[i][j]);
+                }
+            }
+        }
+        p = D_00662300;
+        for (i = 0; i < 3; i++, p++) {
+            if (p->flags & 2) {
+                func_00246C60(p);
+                func_00246C28(p);
+            }
+            if (p->flags & 0x40) {
+                func_00246E80(p);
+                func_00246FF0(p);
+            }
+        }
+    }
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 10; j++) {
+            func_00247AA0_m(&D_0065FD80[i][j]);
+        }
+    }
+    p = D_00662300;
+    for (i = 0; i < 3; i++, p++) {
+        func_00247AA0_m(p);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244F28);
 
