@@ -2392,12 +2392,52 @@ void func_00148E98(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148F08);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148FB0);
+s32 func_00148FB0(u32 id, s32 x) {
+    u8* p;
+    u32 n;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00149090);
+    p = func_00123880(id);
+    if (p != 0) {
+        if (*(s32*)(*(u8**)(p + 0x6C) + 0x3C) < *(s32*)(*(u8**)(p + 0x6C) + 0x40)) {
+            func_00141468_2(p, x);
+            return 1;
+        }
+    } else if (((id >> 16) & 0xFF) == 1) {
+        n = id & 0xFFFF;
+        if (n < 10) {
+            p = (u8*)&((D3010F8x*)D_003010F8)->e[n];
+            if (p[1] < p[2]) {
+                p[1] = p[1] + x < p[2] ? p[1] + x : p[2];
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
-NOTHROW(s32, func_00148FB0);
-NOTHROW(s32, func_00149090);
+s32 func_00149090(u32 id, s32 x) {
+    u8* p;
+    u32 n;
+
+    p = func_00123880(id);
+    if (p != 0) {
+        if (*(s32*)(*(u8**)(p + 0x6C) + 0x44) < *(s32*)(*(u8**)(p + 0x6C) + 0x48)) {
+            func_00141668_r(p, x);
+            return 1;
+        }
+    } else if (((id >> 16) & 0xFF) == 1) {
+        n = id & 0xFFFF;
+        if (n < 10) {
+            p = (u8*)&((D3010F8x*)D_003010F8)->e[n];
+            if (p[3] < p[4]) {
+                p[3] = p[3] + x < p[4] ? p[3] + x : p[4];
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 
 s32 func_00149170_def(s32, u32) __asm__("func_00149170");
 s32 func_00149170_def(s32 kind, u32 id) {
@@ -6440,6 +6480,12 @@ extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
 typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
 extern V176F08 D_00362458_v[] __asm__("D_00362458");
+/* five dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
+extern int flip_dummy_0;
+extern int flip_dummy_1;
+extern int flip_dummy_2;
+extern int flip_dummy_3;
+extern int flip_dummy_4;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
