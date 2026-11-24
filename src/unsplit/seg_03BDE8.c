@@ -3375,7 +3375,16 @@ void func_00152BA8(u8* p, f32* a1, f32 f) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152C28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152D50);
+typedef struct { f32 a, b, c, d; } V152D50;
+extern V152D50 D_00351930_v[] __asm__("D_00351930");
+void func_00152D50(u8* a0, s32 a1, f32* a2) {
+    f32 v[4];
+
+    *(s32*)(*(u8**)(a0 + 0x144) + 0x20) = a1;
+    sceVu0ScaleVector(v, a2, D_00351930_v[a1].b);
+    v[1] = D_00351930_v[a1].c;
+    func_00152BA8(a0, v, D_00351930_v[a1].d);
+}
 
 void func_00152DC8(u8* p, s32 b) {
     *(s32*)(*(u8**)(p + 0x144) + 4) = 3;
