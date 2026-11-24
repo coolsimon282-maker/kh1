@@ -1480,7 +1480,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00134BA8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00134F80);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00135000);
+void func_00135000(s32 a0_, u8 *a1) {
+    u8 *a0 = (u8 *)a0_;
+    u8 *p = *(u8 **)(a0 + 0x3EC);
+    u16 n;
+    s32 m;
+    if (p == NULL) {
+        *(u8 **)(a0 + 0x3EC) = a1;
+    } else {
+        while (*(u8 **)(p + 0x30) != NULL) {
+            p = *(u8 **)(p + 0x30);
+        }
+        *(u8 **)(p + 0x30) = a1;
+    }
+    *(s32 *)(a0 + 0x3E0) |= *(s32 *)(a1 + 0x28);
+    n = ++*(u16 *)(a0 + 0x3E8);
+    *(s32 *)(a1 + 0x24) = n;
+}
 
 u8 *func_00135070(s32 a0, s32 a1) {
     u8 *p = func_00134F80(D_005267C0, 0x40);
