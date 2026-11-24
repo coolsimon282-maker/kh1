@@ -53,6 +53,9 @@ if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != confi
     exit 0
   fi
 fi
+# a file argument given as "src/lib/x.c" or "lib/x.c" means "lib/x" (the local model does this now and then; the
+# give-up then failed and left a stray .c.c.tmp file, 24 Nov)
+if [ -n "$2" ]; then f2="${2#src/}"; f2="${f2%.c}"; c1="$1"; shift 2; set -- "$c1" "$f2" "$@"; fi
 case "$1" in
   next)
     # an attempt left in place (the agent moved on without giving up) would block every later try: clear it here
