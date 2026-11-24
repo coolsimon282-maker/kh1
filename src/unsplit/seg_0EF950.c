@@ -2659,7 +2659,15 @@ void func_0020BB90(s32 a0, s32 a1) {
     *(f32 *)&D_00641214 = a1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020BBC0);
+void func_0020BBC0(void *arg0) {
+    s32 temp3 = *(s16 *)((u8 *)arg0 + 0xC2) * (*(s16 *)((u8 *)arg0 + 0xDA) + 0x10);
+    s32 temp6 = *(s16 *)((u8 *)arg0 + 0xC4) * *(s16 *)((u8 *)arg0 + 0xD2);
+    s32 r3 = (temp3 < 0) ? temp3 + 0xF : temp3;
+    s32 r6 = (temp6 < 0) ? temp6 + 0xF : temp6;
+    s32 val7 = *(s32 *)((u8 *)arg0 + 0xB0) + (r3 >> 4) + *(s16 *)((u8 *)arg0 + 0xBE) - *(s16 *)((u8 *)arg0 + 0xC6);
+    s32 val5 = *(s32 *)((u8 *)arg0 + 0xB4) + (r6 >> 4) + *(s16 *)((u8 *)arg0 + 0xC0);
+    func_0020BB90((val7 - 0x7000) >> 4, (val5 - 0x7400) >> 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020BC48);
 
