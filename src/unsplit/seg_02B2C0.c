@@ -402,7 +402,75 @@ void func_0012C180(s32 a0, u8* a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C238);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C328);
+void func_0012C238(u8*, s32, u8*);
+s32 func_0013C9E0(s32, s32);
+void func_00121EB0_1(u8*) __asm__("func_00121EB0");
+u8* func_00147ED8_x(s32, s32, s32, f32*) __asm__("func_00147ED8");
+extern s32 D_00350CE0;
+
+s32 func_0012C328(u8* a0) {
+    u8* q = *(u8**)(a0 + 0x20);
+    s32 done;
+    s32 i;
+    u8* e;
+    u8* f;
+    u16 k;
+    f32 v[4];
+
+    if (*(s32*)(q + 0x30) == 0xFFF) {
+        *(s32*)(q + 0x30) = *(s32*)(*(u8**)(a0 + 0x10) + 0x164);
+    }
+    *(f32*)(a0 + 0x1C) -= D_002B8344;
+    if (func_001233F8(*(u8**)(a0 + 0x10)) == 0 || func_001375D8(*(u8**)(a0 + 0x10)) != 0) {
+        done = 1;
+        func_0013C9E0(*(s32*)(q + 0x8), *(u16*)(*(u8**)(*(u8**)(a0 + 0x10) + 0x130) + 0x4C));
+    } else {
+        done = 0;
+        switch (*(s32*)q) {
+        case 0:
+            if (*(f32*)(a0 + 0x1C) < 0.0f) {
+                e = *(u8**)(a0 + 0x10);
+                if (*(s32*)(e + 0x164) == *(s32*)(q + 0x30)) {
+                    k = *(u16*)(*(u8**)(e + 0x130) + 0x4C);
+                    func_001315C0((s32)e, k == 6 ? 0x1D : 0x1C, (s32)v, k == 9 ? 3.0f : 1.0f);
+                    func_00147ED8_x(D_00350CE0, *(s32*)(q + 0x4), 20000, v);
+                }
+                *(s32*)q = 1;
+                *(f32*)(a0 + 0x1C) = 30.0f;
+            }
+            break;
+        case 1:
+            if (*(u8**)(q + 0xC) != NULL &&
+                (func_001233F8(*(u8**)(q + 0xC)) == 0 || ((**(u32**)(*(u8**)(q + 0xC) + 0x6C) >> 2) & 1))) {
+                done = 1;
+                func_0013C9E0(*(s32*)(q + 0x8), *(u16*)(*(u8**)(*(u8**)(a0 + 0x10) + 0x130) + 0x4C));
+            } else if (*(f32*)(a0 + 0x1C) < 0.0f) {
+                done = 1;
+                f = *(u8**)(a0 + 0x10);
+                if (*(u8**)(q + 0xC) != NULL) {
+                    func_0012C238(f, *(s32*)(q + 0x8), *(u8**)(q + 0xC));
+                    f = *(u8**)(a0 + 0x10);
+                } else {
+                    for (i = 0; i < 3; i++) {
+                        if ((&D_002E26A0)[i] != NULL) {
+                            func_0012C238(f, *(s32*)(q + 0x8), (&D_002E26A0)[i]);
+                            f = *(u8**)(a0 + 0x10);
+                        }
+                    }
+                }
+                if (*(u16*)(*(u8**)(f + 0x130) + 0x4C) == 0) {
+                    func_001586A8(0xC);
+                }
+            }
+            break;
+        }
+    }
+    if (done) {
+        func_00121EB0_1(q);
+        return 4;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C560);
 
