@@ -1291,7 +1291,24 @@ s32 func_00141448(s32 a, s32 b, s32 max) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141468);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141668);
+s32 func_00141668_def(u8* a0, s32 a1) __asm__("func_00141668");
+s32 func_00141668_def(u8* a0, s32 a1) {
+    u8* e = *(u8**)(a0 + 0x6C);
+    s32 v;
+
+    if (e == NULL || e == (u8*)D_00304C70) {
+        return 0;
+    }
+    v = func_00141448(*(s32*)(e + 0x44), a1, *(s32*)(e + 0x48));
+    if ((*(s32*)(a0 + 0x88) & 0x20) && func_0013C968(9, *(u16*)(*(u8**)(a0 + 0x130) + 0x4C)) == 0) {
+        v = *(s32*)(e + 0x44) + (s32)((f32)(v - *(s32*)(e + 0x44)) * *(f32*)(D_003051EC + 0x88));
+    }
+    *(s32*)(e + 0x44) = v;
+    if (*(u8**)(e + 0xC8) != NULL) {
+        (*(u8**)(e + 0xC8))[3] = v;
+    }
+    return v;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141608);
 
