@@ -1706,7 +1706,31 @@ u8 *func_001332F0(u8 *a0, s32 a1, s32 a2, s32 a3, u8 *a4, s32 a5, s32 a6) {
     return (u8 *)q;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001333E0);
+typedef struct {
+    s32 used;
+    s32 *data;
+    s32 unk_08;
+    s32 unk_0C;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+} A2Ent1C;
+extern A2Ent1C D_00525368_e[] __asm__("D_00525368");
+void func_001373F8(u8 *, f32);
+
+u8 *func_001333E0(u8 *a0, s32 a1, s32 *a2) {
+    A2Ent1C *e = &D_00525368_e[a1];
+    s32 *d;
+
+    if (e->used != 0) {
+        if (a1 == 3 && a2[0] == (s32)a0 && ((s32)(*(u64 *)(*(u8 **)(a0 + 0x148) + 0x170) >> 38) & 1)) {
+            func_001373F8(a0, 0.0f);
+        }
+        d = e->data;
+        return func_001332F0(a0, a2[0], a2[1], (s32)((u8 *)d + d[2]), (u8 *)d + d[1], e->unk_0C, e->unk_10);
+    }
+    return NULL;
+}
 
 void func_001334B8(u8 *a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     u8 *p = *(u8 **)(a0 + 0x13C);
