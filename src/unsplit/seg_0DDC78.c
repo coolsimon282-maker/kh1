@@ -1715,7 +1715,20 @@ s32 func_001E8800(A2Script *p) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E88E0);
+extern s32 D_003D55DC;
+
+s32 func_001E88E0(A2Script *p) {
+    s32 a = (f32)(p->unk_174[p->unk_174[3] + 3] * 0x3000) / 100.0f;
+    s32 b = p->unk_174[p->unk_174[3] + 4] * 8;
+
+    if (fm_func_0011E340(0) == 0) {
+        func_0011E9D8(a, b, (s32)func_001E8628, D_003D55DC);
+        D_003854E0.unk_3070 |= (u64)1 << 57;
+        p->unk_174[3] -= 2;
+        return 2;
+    }
+    return 4;
+}
 
 s32 func_001E89C0(void) {
     return ((s32)(*(u64 *)D_0038CD00 >> 57) & 1) ? 4 : 2;
