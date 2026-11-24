@@ -935,7 +935,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE110);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE1E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE278);
+extern s32 D_00625640;
+extern s32 D_00625648[];
+void func_001BAAA8(s32);
+
+s32 func_001BE278(void) {
+    s32 v;
+    s32 i;
+
+    if (D_0037A128 != 0) {
+        return -1;
+    }
+    v = func_001BAAD0();
+    if (!(v & 0x80)) {
+        return v + D_00625640;
+    }
+    for (i = 0; i < D_00625640; i++) {
+        if (D_00625648[i] == (v & 0x7F)) {
+            return i;
+        }
+    }
+    func_001BAAA8(0x80);
+    return 0;
+}
 
 extern s32 D_00625640;
 extern s32 D_00625648[];
