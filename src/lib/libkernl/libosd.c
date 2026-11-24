@@ -88,7 +88,7 @@ void InitExecPS2(void) {
     }
 }
 
-void func_0025F780(void* dst, void* src, int size) {
+int func_0025F780(void* dst, void* src, int size) {
     SYSCALL(0x5A);
 }
 
@@ -105,7 +105,29 @@ void func_0025F7C0(int n, void* f) {
     SYSCALL(0x74);
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/libosd", func_0025F7D0);
+char* func_0025F7D0(const char* name, int argc, char** argv) {
+    char** p = D_0046C208;
+    char* s = (char*)p + 0x40;
+    char* ret = s;
+    int len;
+    int i;
+
+    func_0025F7C0(D_0046B6D8.num, D_0046B6D8.func);
+    if (argc >= 16) {
+        argc = 15;
+    }
+    func_0025F780(p++, &s, 4);
+    len = strlen(name) + 1;
+    func_0025F780(s, (void*)name, len);
+    s = s + len;
+    for (i = 0; i < argc; i++) {
+        func_0025F780(p++, &s, 4);
+        len = strlen(argv[i]) + 1;
+        func_0025F780(s, argv[i], len);
+        s += len;
+    }
+    return ret;
+}
 
 void TerminateLibrary(void) {
     func_00260AC0();
