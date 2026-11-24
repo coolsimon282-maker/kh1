@@ -341,7 +341,109 @@ s32 func_0024DD98(s32 *out) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DDF8);
+extern s32 D_0046A614;
+extern s32 D_0046A67C;
+extern s32 D_0046A680;
+extern s32 D_0046A678;
+extern s32 D_0046A6AC;
+extern s32 D_0046A608;
+extern u8* (*D_0046A68C)(void);
+extern char D_004919D8[];
+extern char D_004919E0[];
+extern char D_00491978[];
+u8* func_0011FD30(void);
+int abs(int);
+int memcmp(const void*, const void*, unsigned int);
+int sceSifSearchModuleByName(const char*);
+s32 func_0024DCC8(u8*, u8*);
+void func_0024DB78(s32);
+s32 func_0024D9F0(void);
+s32 func_0024DAA0_r(void) __asm__("func_0024DAA0");
+s32 func_0024DDF8(void) {
+    u8* buf;
+    u8* q;
+    u8* p;
+    u8* s;
+    s32 i;
+    s32 flag;
+    s32 r;
+
+    D_0046A614 = 0;
+    D_0046A680 = 0;
+    D_0046A67C = 0;
+    if (func_0024D4A0() == 0) {
+        return D_0046A67C;
+    }
+    i = 0;
+    D_0046A614 = 10;
+    buf = func_0011FD30();
+    q = D_0046A68C() + 8;
+    for (;; i++) {
+        p = buf + i;
+        if (memcmp(D_004919D8, p, 4) == 0) {
+            break;
+        }
+    }
+    buf = p + 5;
+    q[0] = buf[0];
+    q[1] = buf[1];
+    q[2] = buf[2];
+    q[3] = buf[4];
+    q[4] = buf[5];
+    if (memcmp(q, D_004919E0, 5) == 0) {
+        D_0046A678 = 1;
+    }
+    func_0024D9A0();
+    if (sceSifSearchModuleByName(D_00491978) < 0) {
+        D_0046A67C = 0;
+        D_0046A680 = 3;
+    } else {
+        if (func_0024DCC8(D_004919B0, D_0046A628) != 0) {
+            flag = 1;
+            D_0046A6AC = 1;
+        } else {
+            flag = 0;
+            D_0046A6AC = 0;
+        }
+        D_0046A608 = func_0024DD98(0);
+        D_0046A614 = 20;
+        r = func_0024DAA0_r();
+        r = abs(r);
+        D_0046A614 = 30;
+        switch (r & 0xF) {
+        case 0:
+            func_0024DB78(D_0046A608);
+            if (func_0024D8F0() != 0) {
+                D_0046A67C = 1;
+                if (flag) {
+                    D_0046A67C = 3;
+                    D_0046A680 = 2;
+                }
+            } else if (func_0024D9F0() != 0) {
+                D_0046A67C = 3;
+                func_0024D9A0();
+                D_0046A680 = 2;
+            } else {
+                D_0046A67C = 2;
+            }
+            break;
+        case 1:
+            D_0046A680 = 1;
+            D_0046A67C = 1;
+            break;
+        case 2:
+            D_0046A67C = 1;
+            D_0046A680 = 4;
+            break;
+        default:
+            D_0046A67C = 0;
+            D_0046A680 = 3;
+            break;
+        }
+    }
+    D_0046A614 = 0x82;
+    return D_0046A67C;
+}
 
 extern s32 D_0046A67C;
 
