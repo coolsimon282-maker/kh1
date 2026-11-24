@@ -2054,7 +2054,90 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00205938);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00205B30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00205E30);
+typedef struct {
+    u64 rgba;
+    u64 q;
+    s32 x;
+    s32 y;
+    s32 z;
+    s32 w;
+} A2Vtx;
+typedef struct {
+    u64 tag;
+    u64 regs;
+    u64 prim;
+    u64 unk18;
+    A2Vtx v[4];
+} A2Quad;
+extern u8 D_003F1A70[];
+u32 func_001EDD88(s32, s32);
+s32 func_001F4570(s32);
+s32 func_001F45E0(s32);
+
+void func_00205E30(s32 a0, u8 *a1) {
+    u8 *p;
+    A2Quad *g;
+    u8 *q;
+    s32 s;
+    s32 cx;
+    s32 cy;
+    s32 x0;
+    s32 y0;
+    s32 x1;
+    s32 y1;
+    f32 sx;
+
+    sceDmaSend(sceDmaGetChan(0x2), D_003F1A70);
+    p = func_00122048(0x400, 0x80);
+    q = (u8 *)(((u32)p & 0xFFFFFFF) | 0x80000000);
+    g = (A2Quad *)(p + 0x10);
+    s = *(s32 *)(a0 + 0x90);
+    g->tag = 0x9026400000008001;
+    g->regs = 0x4E4E4E4EE;
+    g->prim = 0x44;
+    g->unk18 = 0x42;
+    g->v[0].rgba = func_001EDD88(*(s32 *)(a1 + 0x0), s);
+    g->v[0].q = 1;
+    g->v[0].x = *(s32 *)(a0 + 0xB0);
+    g->v[0].y = *(s32 *)(a0 + 0xB4);
+    g->v[0].z = 0x100000;
+    g->v[0].w = 0;
+    g->v[1].rgba = func_001EDD88(*(s32 *)(a1 + 0x4), s);
+    g->v[1].q = 1;
+    g->v[1].x = g->v[0].x + *(s16 *)(a0 + 0xB8);
+    g->v[1].y = g->v[0].y;
+    g->v[1].z = 0x100000;
+    g->v[1].w = 0;
+    g->v[2].rgba = func_001EDD88(*(s32 *)(a1 + 0x8), s);
+    g->v[2].q = 1;
+    g->v[2].x = g->v[0].x;
+    g->v[2].y = g->v[0].y + *(s16 *)(a0 + 0xBA);
+    g->v[2].z = 0x100000;
+    g->v[2].w = 0;
+    g->v[3].rgba = func_001EDD88(*(s32 *)(a1 + 0xC), s);
+    g->v[3].q = 1;
+    g->v[3].x = g->v[1].x;
+    g->v[3].y = g->v[2].y;
+    g->v[3].z = 0x100000;
+    g->v[3].w = 0;
+    if (*(s32 *)(a0 + 0x48) & 1) {
+        cx = func_001F4570(a0);
+        cy = func_001F45E0(a0);
+        sx = *(f32 *)(a0 + 0x74);
+        x0 = cx + (g->v[0].x - cx) * sx;
+        y0 = cy + (g->v[0].y - cy) * *(f32 *)(a0 + 0x78);
+        x1 = cx + (g->v[1].x - cx) * sx;
+        y1 = cy + (g->v[2].y - cy) * *(f32 *)(a0 + 0x78);
+        g->v[2].x = g->v[0].x = x0;
+        g->v[1].y = g->v[0].y = y0;
+        g->v[3].x = g->v[1].x = x1;
+        g->v[3].y = g->v[2].y = y1;
+    }
+    *(u64 *)p = ((((u8 *)&g->v[4] - p) >> 4) - 1) | 0x70000000;
+    sceDmaSend(sceDmaGetChan(0x2), q);
+    sceGsSyncPath(0, 0);
+    func_001220B8(p);
+}
 
 void func_00206110(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_00206130(a0, a1, a2, a3, a4, 0x80F04646);
