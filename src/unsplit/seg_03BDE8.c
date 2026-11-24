@@ -7614,9 +7614,11 @@ typedef struct {
     f32 t48;
     f32 t4C;
     f32 f50;
-    u8 pad54[8];
+    u8 pad54[4];
+    f32 f58;
     f32 f5C;
-    u8 pad60[6];
+    u8 pad60[5];
+    u8 f65;
     u8 f66;
     u8 pad67[9];
 } Cam940;
