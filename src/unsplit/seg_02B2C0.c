@@ -659,7 +659,22 @@ void func_0012F560(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F5C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F690);
+void func_0012F690(u8 *a0) {
+    typedef struct { s16 v[4]; } S8h;
+    s32 n = D_0052528C;
+    s32 *p;
+    if (n == 1) {
+        *(s32 *)a0 = 0;
+        return;
+    }
+    p = &D_00525288;
+    if (*p == (s32)D_00524F80) {
+        *p = (s32)D_00524F80 + (n - 1) * 8;
+    } else {
+        *p -= 8;
+    }
+    *(S8h *)a0 = *(S8h *)D_00525288;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F700);
 
