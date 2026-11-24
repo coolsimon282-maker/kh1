@@ -7805,7 +7805,86 @@ void func_0017D208(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017D238);
+extern sceVu0FVECTOR D_00575960;
+void func_0017C8E8(void);
+void func_0017C9A8(void);
+void func_0017CF08(void);
+s32 func_001375D8(u8*);
+
+void func_0017D238(void) {
+    sceVu0FVECTOR v;
+    sceVu0FMATRIX m;
+    u8* g;
+    Cam940* c;
+    f32 k;
+    f32 len;
+
+    g = D_00362438;
+    sceVu0ApplyMatrix(D_00575970, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_00362670);
+    sceVu0SubVector(v, D_00575970, D_005758D0);
+    D_00575970[10] = func_00120A58_f(v);
+    if (D_00575890 & 2) {
+        D_00575890 &= ~2;
+        func_0017B170();
+    }
+    if (D_00575890 & 1) {
+        D_00575890 &= ~1;
+        if (!(D_00575890 & 4)) {
+            func_0017C8E8();
+        }
+    }
+    if (D_00575890 & 4) {
+        D_00575890 &= ~4;
+        D_00575940_c.f65 = 1;
+    }
+    if (D_00575920[0] == 0 || (*(s32*)(g + 0x18) & 0x10)) {
+        func_0017C9A8();
+    } else {
+        func_0017CF08();
+    }
+    c = &D_00575940_c;
+    if (c->f65 != 0) {
+        if (c->f65 == 1) {
+            func_0017BA80(2);
+            c->seg40 = c->seg44;
+            c->t48 = c->t4C;
+            func_0017B308(m, g + 0x20, *(s32*)g, c->seg40, *(s32*)(g + 0x18) & 1);
+            func_0017B250((f32*)c, m, c->t48);
+            sceVu0CopyVector((f32*)((u8*)c + 0x20), D_005758D0);
+            c->f65++;
+            c->f66 = 0;
+        }
+        if (func_0017B7E8() || (*(s32*)(g + 0x18) & 0x20)) {
+            k = D_002B8344 * 8.0f;
+            sceVu0SubVector(v, (f32*)c, (f32*)((u8*)c + 0x20));
+            len = func_00120A38(v);
+            sceVu0Normalize(v, v);
+            sceVu0ScaleVector(v, v, k);
+            sceVu0AddVector((f32*)((u8*)c + 0x20), (f32*)((u8*)c + 0x20), v);
+            if (len < 50.0f) {
+                c->f65 = 0;
+            }
+        }
+        if (*(s32*)(g + 0x18) & 2) {
+            func_0017B740(D_005758D0, D_00575960);
+        } else {
+            sceVu0CopyVector(D_005758D0, D_00575960);
+        }
+    } else {
+        if (*(s32*)(g + 0x18) & 2) {
+            func_0017B740(D_005758D0, (f32*)c);
+        } else {
+            sceVu0CopyVector(D_005758D0, (f32*)c);
+        }
+    }
+    if (D_002C2108 & 0x8000) {
+        if (func_00177358(D_00575894) && !func_001375D8(D_00575894) && !((D_002C1EA8 >> 13) & 1) &&
+            D_00362420 == 0) {
+            func_00176F08(2, D_002B8344);
+            func_0017B200();
+        }
+    }
+}
 
 void func_0017D570(void) {
     if (D_00362438 != NULL) {
