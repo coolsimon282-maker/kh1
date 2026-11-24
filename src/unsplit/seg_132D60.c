@@ -619,7 +619,17 @@ void func_002372E0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237318);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237548);
+void func_00237548(f32 *arg0, f32 *arg1, f32 *arg2, f32 (*arg3)[4]) {
+    f32 sp[12];
+
+    sceVu0ApplyMatrix(&sp[0], arg3, arg0);
+    sceVu0ApplyMatrix(&sp[4], arg3, arg1);
+    sceVu0ApplyMatrix(&sp[8], arg3, arg2);
+    sceVu0DivVectorXYZ(&sp[0], &sp[0], sp[3]);
+    sceVu0DivVectorXYZ(&sp[4], &sp[4], sp[7]);
+    sceVu0DivVectorXYZ(&sp[8], &sp[8], sp[11]);
+    sceVu0ClipScreen3(&sp[0], &sp[4], &sp[8]);
+}
 
 typedef struct { s32 shift; u8 *buf; } A2Tbl;
 
