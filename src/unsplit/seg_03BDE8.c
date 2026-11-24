@@ -4826,7 +4826,17 @@ void func_0015EE78(s32 a, s32 b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015EEA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00122250);
+extern volatile s32 D_002B8340_v __asm__("D_002B8340");
+extern volatile s32 D_00559DB4_v __asm__("D_00559DB4");
+s32 DisableDmac(s32);
+void func_00122250(void) {
+    D_002B8340_v;
+    while (D_00559DB4_v != 0) {
+    }
+    sceGsSyncPath(0, 0);
+    DisableDmac(1);
+    DisableDmac(2);
+}
 
 extern void (*D_00351BC8)(int);
 void iFlushCache(int);
