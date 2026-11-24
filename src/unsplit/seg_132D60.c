@@ -877,7 +877,61 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CA48);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CB30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CC80);
+void func_002479A0(s32);
+void func_00247AA0(s32);
+void func_0023CB30(s32 *);
+extern s32 D_00651BD8[3];
+extern s32 D_00651BE8[3];
+extern f32 D_002B8344;
+
+void func_0023CC80(s32 *a0) {
+    s32 i;
+
+    switch (a0[0]) {
+    case 1:
+        *(f32 *)&a0[1] = 1.0f;
+        for (i = 0; i < 3; i++) {
+            func_002479A0(D_00651BD8[i]);
+        }
+        for (i = 0; i < 3; i++) {
+            func_002479A0(D_00651BE8[i]);
+        }
+        a0[0]++;
+        break;
+    case 2:
+        for (i = 0; i < 3; i++) {
+            func_00247AA0(D_00651BD8[i]);
+        }
+        for (i = 0; i < 3; i++) {
+            func_00247AA0(D_00651BE8[i]);
+        }
+        break;
+    case 3:
+        for (i = 0; i < 3; i++) {
+            func_00247AA0(D_00651BD8[i]);
+        }
+        for (i = 0; i < 3; i++) {
+            func_00247AA0(D_00651BE8[i]);
+        }
+        *(f32 *)&a0[1] = 1.0f;
+        a0[0]++;
+        break;
+    case 4:
+        for (i = 0; i < 3; i++) {
+            func_00247AA0(D_00651BD8[i]);
+        }
+        for (i = 0; i < 3; i++) {
+            func_00247AA0(D_00651BE8[i]);
+        }
+        *(f32 *)&a0[1] -= D_002B8344 * 0.16666666f;
+        if (*(f32 *)&a0[1] <= 0.0f) {
+            *(f32 *)&a0[1] = 0.0f;
+            a0[0] = 0;
+        }
+        break;
+    }
+    func_0023CB30(a0);
+}
 
 extern s32 D_0044A820_a[] __asm__("D_0044A820");
 void func_0023CC80(s32*);
