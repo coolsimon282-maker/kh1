@@ -1500,7 +1500,105 @@ void func_001FACD8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     func_001FA8B0(a0, a1, a2, a3, a4, a5);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FADE0);
+extern s32 D_003E8E00;
+extern s32 D_003F2BD0;
+extern s32 D_003F2BD4;
+typedef struct {
+    u16 pad0;
+    u16 u;
+    u16 v;
+    u8 w;
+    u8 tex;
+} A2Glyph;
+extern s32 D_003E8D00[];
+u32 func_001EDD88(s32, s32);
+s32 func_001F4570(s32);
+s32 func_001F45E0(s32);
+
+void func_001FADE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    u8 *p;
+    u8 *g;
+    u8 *q;
+    A2Glyph *gl;
+    s32 x0;
+    s32 x;
+    s32 y;
+    s32 gw;
+    s32 v;
+    s32 u;
+    u8 tex;
+    s32 adv;
+    s32 t;
+    s32 cx;
+    s32 cy;
+    f32 sx;
+    f32 sy;
+    f32 fx0;
+    f32 fy0;
+    f32 fx1;
+    f32 fy1;
+
+    sceDmaSend(sceDmaGetChan(0x2), D_003F2270);
+    p = func_00122048(0x400, 0x80);
+    g = p + 0x10;
+    q = (u8 *)(((u32)p & 0xFFFFFFF) | 0x80000000);
+    *(u64 *)(g + 0x0) = 0x4000000000000001;
+    *(u64 *)(g + 0x8) = 0xEEEE;
+    *(u64 *)(g + 0x10) = 0;
+    *(u64 *)(g + 0x18) = 0x3F;
+    *(u64 *)(g + 0x20) = 0x4007FF8001300000;
+    *(u64 *)(g + 0x28) = 0x16;
+    *(u64 *)(g + 0x30) = 0x44;
+    *(u64 *)(g + 0x38) = 0x42;
+    *(u64 *)(g + 0x40) = func_001EDD88(a5, *(s32 *)(a0 + 0x90));
+    *(u64 *)(g + 0x48) = 1;
+    *(u64 *)(g + 0x50) = 0x50AB400000008001;
+    *(u64 *)(g + 0x58) = 0x4343E;
+    gl = &((A2Glyph *)D_003E8E28)[a3];
+    y = *(s32 *)(a0 + 0xB4) + (a2 << 4);
+    gw = gl->w << 4;
+    tex = gl->tex;
+    x0 = *(s32 *)(a0 + 0xB0);
+    v = gl->v;
+    u = gl->u;
+    x = x0 + (a1 << 4);
+    t = gw * a4 / 18;
+    adv = (gw + D_003E8E00) * a4 / 18;
+    *(u64 *)(g + 0x60) = ((u64)D_003E8D00[tex >> 4] << 20) | ((u64)(tex & 0xF) << 56) | ((u64)0xFFF0 << 35);
+    *(u64 *)(g + 0x68) = 0x16;
+    *(s32 *)(g + 0x70) = u;
+    *(s32 *)(g + 0x74) = v;
+    *(s32 *)(g + 0x80) = x;
+    *(s32 *)(g + 0x84) = y;
+    *(s32 *)(g + 0x88) = 0x100000;
+    *(s32 *)(g + 0x8C) = 0x8000;
+    *(s32 *)(g + 0x90) = u + gw;
+    *(s32 *)(g + 0x94) = v + 0x120;
+    *(s32 *)(g + 0xA0) = x + t;
+    *(s32 *)(g + 0xA4) = y + (a4 << 4);
+    *(s32 *)(g + 0xA8) = 0x100000;
+    *(s32 *)(g + 0xAC) = 0;
+    if (*(s32 *)(a0 + 0x48) & 1) {
+        cx = func_001F4570(a0);
+        cy = func_001F45E0(a0);
+        sx = *(f32 *)(a0 + 0x74);
+        sy = *(f32 *)(a0 + 0x78);
+        fx0 = cx + (*(s32 *)(g + 0x80) - cx) * sx;
+        fy0 = cy + (*(s32 *)(g + 0x84) - cy) * sy;
+        fx1 = cx + (*(s32 *)(g + 0xA0) - cx) * sx;
+        fy1 = cy + (*(s32 *)(g + 0xA4) - cy) * sy;
+        *(s32 *)(g + 0x80) = fx0;
+        *(s32 *)(g + 0x84) = fy0;
+        *(s32 *)(g + 0xA0) = fx1;
+        *(s32 *)(g + 0xA4) = fy1;
+    }
+    *(u64 *)p = (((g + 0xB0 - p) >> 4) - 1) | 0x70000000;
+    sceDmaSend(sceDmaGetChan(0x2), q);
+    sceGsSyncPath(0, 0);
+    func_001220B8(p);
+    D_003F2BD0 = (x + adv - x0) >> 4;
+    D_003F2BD4 = a2;
+}
 
 void func_001FB140(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     func_001FADE0(a0, a1 - 1, a2 - 1, a3, a4, a6);
