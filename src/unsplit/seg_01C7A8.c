@@ -457,7 +457,30 @@ void func_0011DC98(u8* a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DCF0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DDD0);
+void sceVu0InversMatrix(f32 (*)[4], f32 (*)[4]);
+void sceVu0ApplyMatrix(f32 *, f32 (*)[4], f32 *);
+extern f32 (*D_002BC140)[4];
+extern f32 D_002C1320[];
+extern f32 D_002C1330[];
+extern f32 D_002C1340[];
+extern f32 D_002C1350[];
+extern f32 D_004E3A20[];
+extern f32 D_004E3A30[];
+
+void func_0011DDD0(void) {
+    f32 m[4][4] __attribute__((aligned(16)));
+
+    sceVu0InversMatrix(m, D_002BC140);
+    if (D_002BBDE0 == 3) {
+        sceVu0ApplyMatrix(D_004E3A30, m, D_002C1350);
+        sceVu0ApplyMatrix(D_004E3A20, m, D_002C1340);
+    } else {
+        sceVu0ApplyMatrix(D_004E3A30, m, D_002C1330);
+        sceVu0ApplyMatrix(D_004E3A20, m, D_002C1320);
+        D_004E3A30[2] = 1000.0f;
+        D_004E3A20[2] = 1000.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DE90);
 
