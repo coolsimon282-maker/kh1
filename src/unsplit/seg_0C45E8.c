@@ -23,7 +23,34 @@ A2Ring32 *func_001C45E8(void) {
     return &D_006257E0[r];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4640);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[6];
+} ScriptMsg;
+typedef struct {
+    u64 d[4];
+} A2Msg64;
+extern s32 D_0037A21C[];
+s32 func_00123880(s32);
+
+s32 func_001C4640(ScriptMsg *m) {
+    s32 r;
+    A2Msg64 t;
+
+    if ((D_006277E4 + 1) % 256 == D_006277E0) {
+        return -1;
+    }
+    r = func_00123880(m->unk_04);
+    if (r == 0 && D_0037A21C[*(u8 *)m * 2] != 0) {
+        return r;
+    }
+
+    ((A2Msg64 *)D_006257E0)[D_006277E4] = *(A2Msg64 *)m;
+    D_006277E4 = (D_006277E4 + 1) % 256;
+    return 0;
+}
 
 extern s32 D_006297F0;
 extern s32 D_006297F4;

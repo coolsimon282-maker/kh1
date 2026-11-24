@@ -239,7 +239,24 @@ s32 func_001C32E8(Script* arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3308);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3380);
+s32 *func_001E98D0(s32, s32);
+s32 func_001C3308(s32 *, s32, s32);
+
+s32 func_001C3380(Script *arg0, s32 arg1) {
+    ScriptVM *vm = (ScriptVM *)arg0;
+    s32 a = vm->stack[vm->sp--];
+    s32 b = vm->stack[vm->sp--];
+    s32 *p;
+
+    if (b < 0) {
+        b = 0;
+    } else if (b >= 8) {
+        b = 7;
+    }
+    p = func_001E98D0((s32)(*(u64 *)((u8 *)vm + 0x328) >> 5) & 1, a);
+    func_001C3308(p, b, p[arg1 + 31]);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3430);
 

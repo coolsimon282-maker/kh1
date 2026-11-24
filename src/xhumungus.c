@@ -442,7 +442,25 @@ void func_001CC558(void) {
     func_0010EDA0(&D_0062A130, D_003C5808, func_001CC530);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC588);
+void func_0010BB50();
+
+typedef struct { u8 b0[4]; s8 b4[0x102C]; u8 b1030[4]; } XHumCC588;
+extern XHumCC588 D_003854E0_58 __asm__("D_003854E0");
+s32 func_001CC588(void) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_58.b0[i] != 0) {
+            break;
+        }
+    }
+    if (i < 4) {
+        return 0;
+    }
+    func_0010BB50(&D_0062A130, func_001CC558);
+    D_003854E0_58.b1030[0] = 0;
+    D_003854E0_58.b0[0] = 2;
+    return 4;
+}
 
 typedef struct { s8 b0[4]; s8 b4[8]; s8 bC[0x1004]; s32 w1010[8]; s8 b1030[4]; } XHumCC618;
 extern XHumCC618 D_003854E0_c6 __asm__("D_003854E0");
@@ -813,7 +831,7 @@ typedef struct {
     s32 unk_08[6];
 } ScriptMsg;
 
-void func_001C4640(ScriptMsg*);
+s32 func_001C4640(ScriptMsg*);
 
 s32 func_001CF128(Script* arg0) {
     ScriptMsg msg;
@@ -988,9 +1006,42 @@ s32 func_001CF638(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF6C8);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[2];
+    f32 unk_10[4];
+} ScriptMsgV;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CF728);
+
+s32 func_001CF6C8(Script* arg0) {
+    ScriptMsgV msg;
+
+    msg.unk_00 = 0xF;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    return 2;
+}
+
+s32 func_001CF728(Script* arg0) {
+    ScriptMsgV msg;
+
+    msg.unk_00 = 0x10;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    return 2;
+}
 
 void func_00106578(s32);
 
@@ -3753,9 +3804,32 @@ s32 func_001D9E88(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9EA8);
+s32 func_001D9EA8(Script* arg0) {
+    ScriptMsgV msg;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9F08);
+    msg.unk_00 = 0x28;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    return 2;
+}
+
+s32 func_001D9F08(Script* arg0) {
+    ScriptMsgV msg;
+
+    msg.unk_00 = 0x28;
+    msg.unk_01 = 0;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    return 2;
+}
 
 s32 func_001D9F60(Script* arg0) {
     arg0->unk_174[3]++;
@@ -4278,7 +4352,34 @@ s32 func_001DBA30(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DBA58);
+typedef struct {
+    u16 kind : 4;
+    u16 sub : 4;
+    u16 hi : 8;
+} DbaBits;
+typedef struct {
+    u64 kind : 4;
+    u64 sub : 4;
+    u64 hi : 8;
+} DbaBits64;
+DbaBits *func_00147778_d(s32) __asm__("func_00147778");
+s32 func_0013C9E0_d(s32, s32) __asm__("func_0013C9E0");
+void func_0013C858_d(s32, s32) __asm__("func_0013C858");
+
+s32 func_001DBA58(Script *arg0) {
+    DbaBits *p = func_00147778_d(arg0->unk_174[arg0->unk_174[3] + 4]);
+
+    switch (p->kind) {
+    case 0:
+        func_0013C9E0_d(((u8 *)p)[1], p->sub);
+        break;
+    case 1:
+        func_0013C858_d(((u8 *)p)[1], p->sub);
+        break;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_00111468(s32, s32);
 

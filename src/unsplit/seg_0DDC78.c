@@ -1836,9 +1836,42 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA6B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA760);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA808);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[2];
+    f32 unk_10[4];
+} A2Msg;
+s32 func_001C4640(A2Msg *);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA888);
+s32 func_001EA808(A2Script *arg0) {
+    A2Msg msg;
+
+    msg.unk_00 = 0x23;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32 *)arg0;
+    func_001C4640(&msg);
+    msg.unk_00 = 0x2A;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32 *)arg0;
+    func_001C4640(&msg);
+    return 2;
+}
+
+s32 func_001EA888(A2Script *arg0) {
+    A2Msg msg;
+
+    msg.unk_00 = 0x24;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32 *)arg0;
+    func_001C4640(&msg);
+    msg.unk_00 = 0x2B;
+    msg.unk_01 = 0;
+    msg.unk_04 = *(s32 *)arg0;
+    func_001C4640(&msg);
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA908);
 
