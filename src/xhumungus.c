@@ -738,7 +738,22 @@ s32 func_001CE738(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE758);
+extern s32 D_00388480[];
+s32 func_0010EEC8(s32);
+
+s32 func_001CE758(Script* arg0) {
+    s32 i = arg0->unk_174[arg0->unk_174[3] + 1];
+    s32 idx = arg0->unk_174[arg0->unk_174[3] + 2];
+    s32 a = arg0->unk_174[arg0->unk_174[3] + 3];
+    s32 b = arg0->unk_174[arg0->unk_174[3] + 4];
+    f32 t = func_0010EEC8(D_00388480[idx]);
+
+    D_006298F0[i][16] = t;
+    arg0->unk_174[3] -= 4;
+    D_006298F0[i][12] = a + t * 12.0f;
+    D_006298F0[i][13] = b + D_006298F0[i][17] * 12.0f;
+    return 2;
+}
 
 // Handle score against Riku on Destiny Island
 s32 func_001CE858(Script* arg0) {
