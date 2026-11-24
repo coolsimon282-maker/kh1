@@ -3251,7 +3251,63 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014E5B8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014E668);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014E878);
+typedef struct {
+    u8 id;
+    u8 pad01[15];
+    f32 min[4];
+    f32 max[4];
+} Area350D78;
+typedef struct {
+    u8 pad00[4];
+    u8 count;
+    u8 pad05[11];
+    Area350D78 e[1];
+} Areas350D78;
+extern Areas350D78* D_00350D78;
+f32 func_00177D68(void);
+float sinf(float);
+float cosf(float);
+f32 func_00120AC8(f32);
+s32 func_0012F0F8(f32*, f32*, s32);
+
+s32 func_0014E878(f32* base, s32 id, f32* out, f32 rmin, f32 rmax) {
+    sceVu0FVECTOR v;
+    f32 r;
+    f32 ang;
+    f32 a;
+    s32 i;
+    s32 j;
+    Area350D78* e;
+
+    r = func_00177D68() * (rmax - rmin) + rmin;
+    ang = func_00177D68() * 6.2831855f;
+    for (; rmin <= r; r -= 100.0f) {
+        for (i = 0; i < 18; i++) {
+            a = func_00120AC8(ang + (f32)(i ^ 5) * 0.349065840244293212890625f);
+            v[0] = sinf(a) * r;
+            v[1] = 0.0f;
+            v[2] = cosf(a) * r;
+            v[3] = 1.0f;
+            sceVu0AddVector(out, base, v);
+            if (id == 0) {
+                return 1;
+            }
+            e = D_00350D78->e;
+            for (j = 0; j < D_00350D78->count; j++, e++) {
+                if (e->id == id && out[0] >= e->min[0] && out[0] <= e->max[0] && out[2] >= e->min[2] &&
+                    out[2] <= e->max[2]) {
+                    out[1] = func_00177D68() * (e->max[1] - e->min[1]) + e->min[1] + -100.0f;
+                    if (func_0012F0F8(base, out, 1)) {
+                        out[1] = out[1] - -100.0f;
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    sceVu0CopyVector(out, base);
+    return 0;
+}
 
 void func_0014E668(f32*, s32, f32*, f32, f32);
 void func_0014EAB0(u8* p, f32* out) {
@@ -3269,7 +3325,7 @@ void func_0014EAB0(u8* p, f32* out) {
     func_0014E668(v, *(u8*)(*(u8**)(p + 0x130) + 0x58), out, h + 100.0f, h + 600.0f);
 }
 
-void func_0014E878(f32*, s32, f32*, f32, f32);
+s32 func_0014E878(f32*, s32, f32*, f32, f32);
 void func_0014EB60(u8* p, f32* out) {
     sceVu0FVECTOR v;
     f32 h;
