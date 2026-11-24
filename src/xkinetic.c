@@ -187,7 +187,21 @@ s32 func_001C26F8(Script* arg0, s32 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2728);
+void func_001C2728(s32 arg0, s32 arg1, void* arg2) {
+    u8* base = func_0022F768(2);
+
+    switch (arg1) {
+    case 1:
+        *(u8*)arg2 = *(u8*)(base + arg0);
+        break;
+    case 2:
+        *(u16*)arg2 = *(u16*)(base + arg0);
+        break;
+    case 4:
+        *(s32*)arg2 = *(s32*)(base + arg0);
+        break;
+    }
+}
 
 s32 func_001C27D8(s32 arg0) {
     void* temp = func_0022F768(2); // todo: find proper struct for this argument
