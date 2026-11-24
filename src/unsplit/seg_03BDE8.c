@@ -7338,7 +7338,71 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001784C8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00178890);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00178A98);
+typedef struct {
+    sceVu0FVECTOR p;
+    sceVu0FVECTOR d;
+    f32 len;
+    f32 r;
+    u8 pad28[0x18];
+} Ray178A98;
+extern f32 D_003624C8;
+extern f32 D_003624CC;
+extern f32 D_003624D0;
+extern f32 D_003624D4;
+extern f32 D_005758F8;
+s32 func_00118B58(Ray178A98*);
+s32 func_001770B8_nt2() __asm__("func_001770B8");
+extern inline s32 func_001770B8_nt2(nothrow_arg_) double nothrow_arg_; {}
+
+void func_00178A98(void) {
+    Ray178A98 r;
+    f32 d;
+    f32 ad;
+    f32 k;
+
+    if (fabsf(D_003624C8 - *(f32*)(D_00575894 + 0x3C)) < 0.52359875f && func_001770B8_nt2()) {
+        D_003624D4 += D_002B8344;
+        if (60.0f < D_003624D4) {
+            D_003624D4 = 60.0f;
+            D_003624D0 += D_002B8344;
+            if (90.0f < D_003624D0) {
+                D_003624D0 = 90.0f;
+            }
+        }
+    } else {
+        D_003624D4 = 0.0f;
+        D_003624D0 = 0.0f;
+    }
+    if (D_005758F8 <= 0.0f && 0.0f < D_003624D4) {
+        sceVu0CopyVector(r.d, D_002C58A0);
+        sceVu0CopyVector(r.p, D_005758E0);
+        r.r = 0.0f;
+        r.len = 250.0f;
+        if (func_00118B58(&r) || (sceVu0CopyVector(r.p, D_005758D0), func_00118B58(&r))) {
+            D_003624CC += D_002B8344;
+            if (60.0f < D_003624CC) {
+                D_003624CC = 60.0f;
+            }
+            if (D_003624D0 != 0.0f) {
+                D_003624D0 = 90.0f;
+            }
+        } else {
+            D_003624CC -= D_002B8344 * 0.29999999f;
+            if (D_003624CC < 0.0f) {
+                D_003624CC = 0.0f;
+            }
+        }
+        d = func_00120AC8(*(f32*)(D_00575894 + 0x3C) + 3.1415928f - D_00362680[1]);
+        ad = fabsf(d);
+        k = D_003624CC / 60.0f * 0.02f + D_003624D0 / 90.0f * 0.02f;
+        if (ad < 2.094395f) {
+            D_00362680[1] += d * k;
+        } else {
+            D_00362680[1] += d * k * (1.0f - (ad - 2.094395f) / 1.0471975f);
+        }
+    }
+    D_003624C8 = *(f32*)(D_00575894 + 0x3C);
+}
 
 void func_00178D90(void) {
     f32 v[4];
