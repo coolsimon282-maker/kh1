@@ -2,7 +2,23 @@
 // Data this file owns is still in the data segments: declare it extern here, do not define it.
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/main", __do_global_dtors);
+typedef void (*func_ptr)(void);
+extern func_ptr *D_0046C4DC; /* __do_global_dtors's static p (= __DTOR_LIST__ + 1) */
+extern int D_0046C4E0;       /* its static completed */
+extern int D_0066FAC8;       /* __main's static initialized */
+void __deregister_frame_info(void *begin);
+extern char D_00494040[];
+
+void __do_global_dtors(void) {
+    while (*D_0046C4DC) {
+        D_0046C4DC++;
+        (*(D_0046C4DC - 1))();
+    }
+    if (!D_0046C4E0) {
+        D_0046C4E0 = 1;
+        __deregister_frame_info(D_00494040);
+    }
+}
 
 void __register_frame_info(void *beg, void *end);
 extern void __do_global_dtors(void);
@@ -27,4 +43,11 @@ void __do_global_ctors(void) {
     atexit(__do_global_dtors);
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/main", __main);
+void __main(void) {
+    int *init = &D_0066FAC8;
+
+    if (!*init) {
+        *init = 1;
+        __do_global_ctors();
+    }
+}
