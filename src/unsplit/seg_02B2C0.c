@@ -1899,7 +1899,126 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00135DF0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00135ED0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136428);
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ u8 col0[4];
+    /* 0x10 */ u8 col1[4];
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ u8 col2[4];
+    /* 0x1C */ u8 col3[4];
+    /* 0x20 */ void* unk_20;
+    /* 0x24 */ void* unk_24;
+    /* 0x28 */ s32 unk_28;
+    /* 0x2C */ s32 unk_2C;
+    /* 0x30 */ void* unk_30;
+    /* 0x34 */ void* unk_34;
+    /* 0x38 */ u64 unk_38;
+    /* 0x40 */ u64 unk_40;
+} S136428Prm;
+typedef struct {
+    f32 unk_00[4];
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+} S136428Cam;
+typedef struct {
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    u8 col[4];
+} S136428Sub;
+typedef struct {
+    u64 lo : 10;
+    u32 b : 1;
+} V136428;
+extern S136428Cam D_002BC0F0_c __asm__("D_002BC0F0");
+extern sceVu0FMATRIX D_002DEC20;
+void func_00122B78(void);
+void func_00122DD8(void);
+void func_00135ED0(void);
+void func_00175600(void);
+s32 func_00120E48(sceVu0FMATRIX, f32*);
+void func_001621E0(s32, sceVu0FMATRIX, S136428Prm*, u8*);
+void func_00135A68_f(f32*, f32, f32) __asm__("func_00135A68");
+
+void func_00136428(u8* a0, s32 a1, s32 a2, f32* a3, f32 f) {
+    sceVu0FMATRIX m;
+    S136428Prm prm;
+    f32 buf[32];
+    s32 i;
+    u8* q;
+    S136428Sub* s;
+
+    prm.unk_04 = *(s32*)(a0 + 0x420);
+    prm.unk_08 = -1;
+    prm.unk_30 = func_00122B78;
+    prm.unk_34 = func_00122DD8;
+    prm.col1[0] = D_002BC0F0_c.unk_10;
+    prm.col1[1] = D_002BC0F0_c.unk_14;
+    prm.col1[2] = D_002BC0F0_c.unk_18;
+    prm.col1[3] = (s32)f;
+    prm.unk_00 = 0;
+    switch (*(u16*)(*(u8**)(a0 + 0x130) + 0x4C)) {
+    case 0x23:
+    case 0x204:
+        q = func_001357B8();
+        *(u8**)q = a0;
+        *(s32*)(q + 4) = (s32)(*(f32*)(a0 + 0x48) * 128.0f);
+        prm.unk_24 = q;
+        prm.unk_20 = func_00135ED0;
+        break;
+    case 0x1FB:
+        if (((V136428*)(a0 + 0x160))->b) {
+            a1 |= 4;
+            prm.unk_20 = func_00175600;
+        } else {
+            prm.unk_20 = NULL;
+        }
+        break;
+    default:
+        prm.unk_24 = a0;
+        prm.unk_20 = NULL;
+        break;
+    }
+    prm.unk_28 = a1;
+    prm.unk_2C = a2;
+    for (i = 0; i < 4; i++) {
+        prm.col0[i] = (s32)a3[i];
+    }
+    if (*(s32**)(a0 + 0x14C) != NULL && **(s32**)(a0 + 0x14C) != 0 && (*(s32*)a0 & 0x4000)) {
+        s = *(S136428Sub**)(a0 + 0x14C);
+        prm.unk_14 = s->unk4;
+        for (i = 0; i < 4; i++) {
+            prm.col2[i] = prm.col0[i];
+            prm.col3[i] = s->col[i];
+        }
+    } else {
+        prm.unk_14 = 0;
+    }
+    sceVu0CopyMatrix(m, (f32(*)[4])(a0 + 0xD0));
+    sceVu0CopyVector(m[3], (f32*)(a0 + 0x50));
+    m[3][3] = 1.0f;
+    sceVu0MulMatrix(m, D_002DEC20, m);
+    if (!((s32)(*(u64*)(a0 + 0x370) >> 49) & 1)) {
+        func_00135A68_f(buf, *(f32*)(a0 + 0x410), *(f32*)(a0 + 0x414));
+        if (func_00120E48(m, buf) != 0) {
+            prm.unk_00 |= 0x100;
+        }
+    }
+    if (*(s32*)(*(u8**)(a0 + 0x130) + 4) & 4) {
+        prm.unk_00 |= 0x200;
+    }
+    {
+        u64 tag1 = 0x800D0;
+        u64 tag0 = 0x31000070;
+
+        prm.unk_38 = tag0;
+        prm.unk_40 = tag1;
+    }
+    func_001621E0(*(s32*)(a0 + 0x15C), D_002DEC20, &prm, a0);
+}
 
 void func_00135DF0(u8 *, f32 *);
 void func_00136428(u8 *, s32, s32, f32 *, f32);
