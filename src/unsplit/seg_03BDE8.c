@@ -3657,7 +3657,75 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153418);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153500);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153668);
+typedef struct { u8 b[8]; } V153668;
+void func_00152DC8_v(u8*, s32) __asm__("func_00152DC8");
+void func_00130340_v(u8*, s32, f32) __asm__("func_00130340");
+s32 func_00153668(u8* p, u8* o, s32 msg) {
+    u8* e = *(u8**)(p + 0x144);
+    f32 d;
+    u8* q;
+
+    if (e == NULL) {
+        return 0;
+    }
+    switch (msg) {
+    case -1:
+        switch (*(s32*)(e + 4)) {
+        case 0:
+            if (*(s32*)(p + 0x8C) != 0) {
+                break;
+            }
+            d = *(f32*)(o + 0x14) - *(f32*)(p + 0x14);
+            if (!(-10.0f < d)) {
+                return 0;
+            }
+            if (!(d < 110.0f)) {
+                return 0;
+            }
+            switch (*(s32*)(o + 0x70)) {
+            case 0:
+                func_0012CC38(3, 0x1C);
+                break;
+            case 6:
+            case 0x1C:
+                if (*(s32*)e & 1) {
+                    func_0012CC38(3, 0x1D);
+                }
+                break;
+            }
+            break;
+        case 1:
+        case 2:
+            func_0012CC38(0, 0x1E);
+            break;
+        }
+        break;
+    case 0x1C:
+        func_00152520(p, o);
+        func_0013DFA0((s32*)o);
+        *(s32*)(*(u8**)(p + 0x144) + 4) = 1;
+        *(f32*)(*(u8**)(p + 0x144) + 0x1C) = 12.0f;
+        sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
+        func_0014F658((s32)p, 4);
+        break;
+    case 0x1D:
+        func_00153C50((s32)o, D_002E31B0[0]);
+        break;
+    case 0x1E:
+        func_00130340_v(o, 0x10000BB, 8.0f);
+        func_00130578((s32)o, 0x40000000, 0.0f);
+        q = p + 0x74;
+        *(V153668*)q = *(V153668*)D_002E31B0;
+        func_00152DC8_v(p, 2);
+        if (*(s32*)q != 0) {
+            *(u64*)*(u8**)(p + 0x144) |= 2;
+            func_0012EC60(*(s32*)q, *(s32*)(p + 0x78), (f32*)(*(u8**)(p + 0x144) + 0x30));
+        }
+        func_00152688(p, (s32)o, (*(u16*)(*(u8**)(p + 0x130) + 0x4C) == 0xCC) ? 0x14 : 0x11);
+        break;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001538D8);
 
