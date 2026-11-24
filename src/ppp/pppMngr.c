@@ -180,11 +180,69 @@ void func_001812B0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00181340);
+void func_00181340(s32 arg0) {
+    s32 i;
+    s32 off;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001813F0);
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if ((*(u16 *)(p + 6) & 1) && *(s32 *)(p + 0x14) == arg0) {
+            pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+            if (*(u16*)&e->seNo != 0) {
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+            }
+            off += (s32)base;
+            pppAllFreePObject((ppvmng*)off);
+            func_00183EC8((ppvmng*)off);
+            return;
+        }
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001814C8);
+void func_001813F0(s32 arg0, s32 arg1) {
+    s32 i;
+    s32 off;
+    s32 d;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
+
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if (*(u16 *)(p + 6) & 1) {
+            d = *(s32 *)(p + 8) - arg0;
+            if (d >= 0 && d < arg1) {
+                pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+                if (*(u16*)&e->seNo != 0) {
+                    func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+                }
+                pppAllFreePObject((ppvmng*)(off + (s32)base));
+                func_00183E78((void *)(off + (s32)base));
+            }
+        }
+    }
+}
+
+void func_001814C8(s32 arg0, s32 arg1) {
+    s32 i;
+    s32 off;
+    s32 d;
+    PppMngU *base = D_00364130;
+    u8 *p = (u8 *)base + 0x80;
+
+    for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
+        if (*(u16 *)(p + 6) & 1) {
+            d = *(s32 *)(p + 8) - arg0;
+            if (d >= 0 && d < arg1) {
+                pppPEtcData* e = *(pppPEtcData **)(p + 0xC);
+                if (*(u16*)&e->seNo != 0) {
+                    func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
+                }
+                pppAllFreePObject((ppvmng*)(off + (s32)base));
+                func_00183EC8((ppvmng*)(off + (s32)base));
+            }
+        }
+    }
+}
 
 typedef struct {
     char pad[0x86];
