@@ -741,7 +741,78 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BC530);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BC900);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BCD10);
+typedef struct { u16 a; u16 b; u16 id; u16 c; u16 d; u16 e; } BCD10Ent;
+typedef struct { u8 pad0[4]; u16 n; u8 pad6[0x6A]; BCD10Ent e[320]; } BCD10Inv;
+s32 func_001BE6C8(void);
+s32 func_001BE710(void);
+s32 func_001BE680(void);
+s32 func_001BCD10_r(BCD10Inv *dst, BCD10Inv *src) __asm__("func_001BCD10");
+
+s32 func_001BCD10_r(BCD10Inv *dst, BCD10Inv *src) {
+    s16 cnt[192];
+    s32 i;
+    s32 r;
+    s32 ok;
+    s32 k;
+    s32 c;
+    s32 n8;
+    s32 n4;
+    s32 total;
+    s32 a4;
+    s32 a8;
+
+    for (i = 191; i >= 0; i--) {
+        cnt[i] = 0;
+    }
+    *dst = *src;
+    total = 0;
+    dst->n = 0;
+    n8 = 0;
+    n4 = 0;
+    r = 0;
+    for (i = 0; i < src->n; i++) {
+        if (src->e[i].id != 0) {
+            ok = 1;
+            k = src->e[i].id - 1;
+            a8 = 0;
+            a4 = 0;
+            switch (k) {
+            case 4 ... 8:
+                if (n4 >= func_001BE6C8()) {
+                    ok = 0;
+                    r |= 4;
+                }
+                a4 = 1;
+                break;
+            case 0x3A ... 0x3F:
+                if (n8 >= func_001BE710()) {
+                    ok = 0;
+                    r |= 8;
+                }
+                a8 = 1;
+                break;
+            }
+            c = cnt[k];
+            if (c >= func_001BC590(k)) {
+                ok = 0;
+                r |= 1;
+            }
+            if (total >= func_001BE680()) {
+                ok = 0;
+                r |= 2;
+            }
+            if (ok) {
+                n4 += a4;
+                n8 += a8;
+                total++;
+                cnt[k]++;
+                dst->e[dst->n] = src->e[i];
+                dst->n++;
+            }
+        }
+    }
+    return r;
+}
 
 extern u8 D_00621320[];
 void func_001BA108(void *, s32);
