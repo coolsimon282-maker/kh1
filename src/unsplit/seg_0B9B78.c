@@ -775,7 +775,31 @@ s32 func_001BB880_r(s32 a0) {
     return map[a0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BBBD0);
+typedef struct { s8 x, y, z, w; } A1Dir4;
+extern A1Dir4 D_0037A130[16];
+typedef struct { u16 x : 4; u16 y : 4; u16 z : 4; u16 w : 4; } A1Axes;
+
+void func_001BBBD0(sceVu0FMATRIX m, void* p) {
+    u8* a1 = p;
+    A1Axes f = *(A1Axes*)(a1 + 2);
+
+    m[0][0] = D_0037A130[f.x].x;
+    m[0][1] = D_0037A130[f.x].y;
+    m[0][2] = D_0037A130[f.x].z;
+    m[0][3] = 0.0f;
+    m[1][0] = D_0037A130[f.y].x;
+    m[1][1] = D_0037A130[f.y].y;
+    m[1][2] = D_0037A130[f.y].z;
+    m[1][3] = 0.0f;
+    m[2][0] = D_0037A130[f.z].x;
+    m[2][1] = D_0037A130[f.z].y;
+    m[2][2] = D_0037A130[f.z].z;
+    m[2][3] = 0.0f;
+    m[3][0] = 0.0f;
+    m[3][1] = 0.0f;
+    m[3][2] = 0.0f;
+    m[3][3] = 1.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BBCE0);
 
