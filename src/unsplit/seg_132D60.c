@@ -2025,7 +2025,29 @@ s32 func_00244B10(s32 n, s32 *d) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244BE0);
+extern u8 D_00426820[];
+extern u8 D_004267F0[];
+typedef struct { u8 b[0xC0]; } Mon132_C0;
+extern Mon132_C0 D_0065FD80_m[5][10] __asm__("D_0065FD80");
+extern Mon132_C0 D_00662300_m[3] __asm__("D_00662300");
+void func_00244968(Mon132_C0 *, u8 *, s32, s32);
+
+void func_00244BE0(s32 a0, s32 a1, s32 a2) {
+    s32 x;
+    s32 d[5];
+    s32 k;
+    s32 i;
+
+    k = func_00244B10(a0, d);
+    x = a1;
+    for (i = 0; i < k; i++) {
+        func_00244968(&D_0065FD80_m[i][d[5 - k + i]], D_00426820, x, a2);
+        x += 0xD;
+    }
+    x += 2;
+    func_00244968(&D_00662300_m[0], D_004267F0, x, a2);
+    func_00244968(a0 < 2 ? &D_00662300_m[1] : &D_00662300_m[2], D_004267F0, x, a2);
+}
 
 typedef struct {
     u8 pad[0x60];
