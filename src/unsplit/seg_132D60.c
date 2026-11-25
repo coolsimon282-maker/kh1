@@ -2497,7 +2497,33 @@ void func_00246A70(s32 a0, s32 a1, s32 a2, s32 a3) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246AA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246BC8);
+extern u8 D_00668370_b[] __asm__("D_00668370");
+extern u8 D_0045D6E0[];
+extern u8 D_0045E190[];
+extern u8 D_0045E198[];
+extern u8 D_0045E1A0[];
+extern u8 D_0045E1A8[];
+extern u8 D_0045E1B8[];
+extern u8 D_0045E1C0[];
+extern u8 D_0045E1C8[];
+extern u8 D_0045E1E0[];
+s32 func_00246AA8();
+
+void func_00246BC8(void) {
+    memset(D_00668370_b, 0, 0xAB0);
+    func_00247668(D_0045D6E0);
+    func_00247AE0(D_0045E190, D_00668370_b + 0x20, D_0045D6E0);
+    func_00247AE0(D_0045E198, D_00668370_b + 0xE0, D_0045D6E0);
+    func_00247AE0(D_0045E1A0, D_00668370_b + 0x1A0, D_0045D6E0);
+    func_00247AE0(D_0045E1A8, D_00668370_b + 0x260, D_0045D6E0);
+    func_00247AE0(D_0045E1B8, D_00668370_b + 0x4A0, D_0045D6E0);
+    func_00247AE0(D_0045E1C0, D_00668370_b + 0x560, D_0045D6E0);
+    func_00247AE0(D_0045E1C8, D_00668370_b + 0x620, D_0045D6E0);
+    func_00247AE0(D_0045E1E0, D_00668370_b + 0x9E0, D_0045D6E0);
+    if (func_0011ED60(func_00246AA8) == 0) {
+        func_0011ED30(0x28489, func_00246AA8);
+    }
+}
 
 /* unused: layout only (notes/f1.md F1). Without it (or with 2 or 4) func_00247CC8 stops folding
  * `la $4,D_00431F30($4)`; 1 and 3 keep the file matching (25 Nov). */
