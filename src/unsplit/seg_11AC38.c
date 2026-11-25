@@ -2933,7 +2933,39 @@ void func_0022B630(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022B648);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022B8A0);
+/* unused: layout only (F1): with 0 or 3-7 func_0022FA58 / func_0022FCB8 change; 1, 2, 8 OK, 2 used. */
+extern s32 D_22B8A0_pad1;
+extern s32 D_22B8A0_pad2;
+extern u8 D_003F7000[];
+extern u8 D_003F7030[];
+extern u8 D_003F7060[];
+void func_00109278(void);
+void func_001F4040(u8 *, s32);
+void func_001F40A0(u8 *, s32);
+void func_0022B8A0(s32 a0) {
+    u8 *e[3];
+    if (func_001F42B8(a0)) {
+        func_00109278();
+        func_00233EF8(0);
+        D_006469A4 = 0;
+        D_006437E4 = 0;
+        D_00425C28[0].unk0 = 3;
+        D_00425C28[1].unk0 = 3;
+        if ((e[0] = func_001F3A20(D_003F7060, 6)) != NULL) {
+            func_001F4690(e[0], (u8 *)a0);
+            func_001F4040(e[0], 4);
+            func_001F40A0(e[0], 0x5A000000);
+            if ((e[1] = func_001F3A20(D_003F7030, 6)) != NULL) {
+                func_001F4690(e[1], e[0]);
+                *(s16 *)(e[1] + 0xD2) = *(u16 *)&D_006437C4 * 16;
+                if ((e[2] = func_001F3A20(D_003F7000, 6)) != NULL) {
+                    func_001F4690(e[2], e[1]);
+                    func_001F3DC0(e[1]);
+                }
+            }
+        }
+    }
+}
 
 void func_0022B9A8(s32 a0) {
     func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x192);
@@ -4361,6 +4393,45 @@ s32 func_00231B38(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231B98);
 
+extern s32 D_231EA0_layout0;
+extern s32 D_231EA0_layout1;
+extern s32 D_231EA0_layout2;
+extern s32 D_231EA0_layout3;
+extern s32 D_231EA0_layout4;
+extern s32 D_231EA0_layout5;
+extern s32 D_231EA0_layout6;
+extern s32 D_231EA0_layout7;
+extern s32 D_231EA0_layout8;
+extern s32 D_231EA0_layout9;
+extern s32 D_231EA0_layout10;
+extern s32 D_231EA0_layout11;
+extern s32 D_231EA0_layout12;
+extern s32 D_231EA0_layout13;
+extern s32 D_231EA0_layout14;
+extern s32 D_231EA0_layout15;
+extern s32 D_231EA0_layout16;
+extern s32 D_231EA0_layout17;
+extern s32 D_231EA0_layout18;
+extern s32 D_231EA0_layout19;
+extern s32 D_231EA0_layout20;
+extern s32 D_231EA0_layout21;
+extern s32 D_231EA0_layout22;
+extern s32 D_231EA0_layout23;
+extern s32 D_231EA0_layout24;
+extern s32 D_231EA0_layout25;
+extern s32 D_231EA0_layout26;
+extern s32 D_231EA0_layout27;
+extern s32 D_231EA0_layout28;
+extern s32 D_231EA0_layout29;
+extern s32 D_231EA0_layout30;
+extern s32 D_231EA0_layout31;
+extern s32 D_231EA0_layout32;
+extern s32 D_231EA0_layout33;
+extern s32 D_231EA0_layout34;
+extern s32 D_231EA0_layout35;
+extern s32 D_231EA0_layout36;
+extern s32 D_231EA0_layout37;
+extern s32 D_231EA0_layout38;
 extern u16 D_003F7C48[];
 extern s32 D_0064765C;
 extern s32 D_00647660;
@@ -4396,24 +4467,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used; after func_0021AE28 (with its 10 pads) 3, 5, 7, 12 among 0-17: 5 used; after func_0022DEE0 + func_0022E368 only 17 among 0-33: 17 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
-extern s32 D_231EA0_layout0;
-extern s32 D_231EA0_layout1;
-extern s32 D_231EA0_layout2;
-extern s32 D_231EA0_layout3;
-extern s32 D_231EA0_layout4;
-extern s32 D_231EA0_layout5;
-extern s32 D_231EA0_layout6;
-extern s32 D_231EA0_layout7;
-extern s32 D_231EA0_layout8;
-extern s32 D_231EA0_layout9;
-extern s32 D_231EA0_layout10;
-extern s32 D_231EA0_layout11;
-extern s32 D_231EA0_layout12;
-extern s32 D_231EA0_layout13;
-extern s32 D_231EA0_layout14;
-extern s32 D_231EA0_layout15;
-extern s32 D_231EA0_layout16;
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used; after func_0021AE28 (with its 10 pads) 3, 5, 7, 12 among 0-17: 5 used; after func_0022DEE0 + func_0022E368 only 17 among 0-33: 17 used; after func_0022B8A0 (with its 2 pads) only 39 among 0-52: 39 used (these externs now sit above func_00231CD0, which they also steer). Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
