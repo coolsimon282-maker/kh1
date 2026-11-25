@@ -7805,7 +7805,26 @@ s32 func_001715B0(u8* list, u8* self, f32 r) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171680);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171790);
+void func_0016FC60(u8*, u8*);
+f32 func_0012EC60_f(s32, s32, f32*) __asm__("func_0012EC60");
+void func_00171790(u8* p, u8* q) {
+    func_0016FC60(p, q);
+    if (*(s32*)(q + 0x90) != 0 && *(s32*)(q + 0x94) >= 0) {
+        *(f32*)(q + 0x9C) = func_0012EC60_f(*(s32*)(q + 0x90), *(s32*)(q + 0x94), (f32*)(q + 0xB0));
+        if (((s32)(*(u64*)(q + 0x38) >> 20) & 1) || *(s32*)(p + 0x70) == 8 || *(s32*)(p + 0x70) == 0x18 || *(s32*)(p + 0x70) == 0x19) {
+            *(f32*)(q + 0xB4) += *(f32*)(p + 0x2C4);
+        }
+        sceVu0SubVector((f32*)(q + 0xC0), (f32*)(q + 0xB0), (f32*)(p + 0x10));
+        sceVu0CopyVector((f32*)(q + 0xD0), (f32*)(q + 0xC0));
+        *(f32*)(q + 0xA0) = *(f32*)(q + 0xD4);
+        *(s32*)(q + 0xD4) = 0;
+        *(f32*)(q + 0xCC) = func_00162C20((f32*)(q + 0xC0));
+        *(f32*)(q + 0xDC) = func_00162C20((f32*)(q + 0xD0));
+    } else {
+        *(s32*)(q + 0x90) = 0;
+        *(s32*)(q + 0x94) = -1;
+    }
+}
 
 s32 func_00171890(s32 a, u8* p, s32 n) {
     switch (n) {
