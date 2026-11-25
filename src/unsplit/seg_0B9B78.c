@@ -1045,7 +1045,27 @@ void func_001BE470(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE4D8);
+extern s32 D_00623E30;
+extern u8 D_00623E49[];
+
+void func_001BE4D8(void) {
+    s32 i;
+    u8* p;
+    u8 c;
+
+    for (i = D_00625640 + 1; i < D_00623E30; i++) {
+        p = func_001BA9D8(i - D_00625640 - 1);
+        c = D_00623E49[i * 0x60];
+        if (c != 0) {
+            p[0xC] = c - D_00625640;
+        } else {
+            p[0xC] = 0;
+        }
+        if ((u8)(p[0xC] - 1) >= 10) {
+            p[0xC] = 0;
+        }
+    }
+}
 
 void func_001BD470(void);
 
