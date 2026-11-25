@@ -2394,7 +2394,16 @@ void func_001E97D8(s32 a, s32 b, s32 c, s32 d) {
     q[0xC4 / 4] = y1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9830);
+s32 func_001E9830(double x) {
+    s32 i = x;
+    double d = x - i;
+    if (d >= 0.5) {
+        i++;
+    } else if (d <= -0.5) {
+        i--;
+    }
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E98D0);
 
