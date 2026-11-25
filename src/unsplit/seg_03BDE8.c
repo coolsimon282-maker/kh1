@@ -7911,7 +7911,21 @@ void func_00175708(u8* p, u8* q) {
     D_0035C4A0.w4 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175820);
+s32 func_00175820(f32* a, f32* b, f32* pl, f32* out) {
+    f32 da = func_00162950(a, pl);
+    f32 db = func_00162950(b, pl);
+    f32 t;
+    if (__builtin_fabsf(da - db) < 0x1.000002p-126f) {
+        return 0;
+    }
+    t = -da / (db - da);
+    out[0] = (b[0] - a[0]) * t + a[0];
+    out[1] = (b[1] - a[1]) * t + a[1];
+
+    out[2] = (b[2] - a[2]) * t + a[2];
+    out[3] = 1.0f;
+    return 1;
+}
 
 void func_00176E30(void) {
     *(s16*)((u8*)func_0011ED30(0x222E0, func_00175AF0) + 2) = -1;
