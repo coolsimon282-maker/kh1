@@ -4928,7 +4928,19 @@ void func_001598E0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159978);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159B48);
+typedef struct { s32 unk0; s32 idx; s32 pad[2]; sceVu0FVECTOR v[32]; } S159B48;
+extern S159B48 D_00551740;
+extern f32 D_00551734;
+void func_00159B48(f32* p) {
+    sceVu0FVECTOR t;
+    sceVu0SubVector(t, p, D_00551740.v[D_00551740.idx]);
+    t[3] = func_00120A38(t);
+    if (D_00551734 * 0.03125f <= t[3]) {
+        D_00551740.idx = (D_00551740.idx + 1) % 32;
+        sceVu0CopyVector(D_00551740.v[D_00551740.idx], p);
+        D_00551740.v[D_00551740.idx][3] = t[3];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159C10);
 
@@ -7283,11 +7295,12 @@ extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
 typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
 extern V176F08 D_00362458_v[] __asm__("D_00362458");
-/* four dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
+/* five dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
 extern int flip_dummy_0;
 extern int flip_dummy_1;
 extern int flip_dummy_2;
 extern int flip_dummy_3;
+extern int flip_dummy_4;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
