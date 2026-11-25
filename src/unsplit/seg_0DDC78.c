@@ -2659,7 +2659,15 @@ s32 func_001EBB10(A2Script *p) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EBBA0);
+s32 func_001EBBA0(A2Script *p) {
+    s32 i = p->unk_174[p->unk_174[3] + 3];
+    s32 b = 0x20 - p->unk_174[p->unk_174[3] + 4];
+    u32 *f = func_0022F768(1);
+
+    p->unk_174[3]--;
+    p->unk_174[p->unk_174[3] + 4] = (f[i + 0x365] >> b) & 1;
+    return 2;
+}
 
 typedef struct {
     u8 pad[0xDC0];
