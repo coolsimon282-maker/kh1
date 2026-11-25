@@ -1976,7 +1976,47 @@ s32 func_0023F920(u8 *a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023FAD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023FB90);
+s32 func_0023FB90(u8 *a0, s32 a1) {
+    s32 bufA[4];
+    s32 pos[4];
+    A3Blk tmp;
+    s32 r;
+    s32 n;
+    s32 k;
+    s32 i;
+    s32 m;
+    f32 f;
+
+    r = *(u16 *)(*(u8 **)(*(u8 **)(a0 + 4) + 0x6C) + 0xBE);
+    if (r > 600) {
+        r = 600;
+    }
+    if (r < 0x10F) {
+        return a1;
+    }
+    if (*(s32 *)a0 != 0) {
+        return a1;
+    }
+    func_0023D528(a0, bufA, pos);
+    n = r - 0x10E;
+    k = n / 30;
+    for (i = 0; i < k; i++) {
+        a1 = func_0023D700_f(*(s32 *)(a0 + 0x50), *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+        pos[0] -= 0x1A;
+    }
+    m = n % 30;
+    if (m == 0) {
+        return a1;
+    }
+    {
+        f = m / 30.0f;
+        tmp = **(A3Blk **)(a0 + 0x50);
+        tmp.w[0] = tmp.w[0] + (1.0f - f) * tmp.c;
+        ((s32 *)&tmp)[4] = ((s32 *)&tmp)[4] + (((s32 *)&tmp)[6] - ((s32 *)&tmp)[4]) * f;
+        tmp.c = tmp.c * f;
+        return func_0023D700_f((s32)&tmp, *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+    }
+}
 
 s32 func_002492E8(f32 *, s32);
 s32 func_0023FAD0(u8 *, s32);
