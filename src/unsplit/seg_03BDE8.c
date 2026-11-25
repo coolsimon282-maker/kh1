@@ -7017,7 +7017,33 @@ void func_001676D8(u8* p, f32* v) {
     sceVu0CopyVector(v, (f32*)(p + 0xC0));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001676F8);
+typedef struct { u16 lo; u16 hi; s32 n; f32* tab; } E1676F8;
+f32* func_001676F8(u8* p, u32 key, s32* idx, f32 lo, f32 hi) {
+    E1676F8* e = *(E1676F8**)(p + 0x3C);
+    u32 k0 = key & 0xFFFF;
+    u32 k1 = key >> 16;
+    E1676F8* f;
+    s32 i;
+    while (*(s32*)e != -1) {
+        if (e->hi == k1 && (k0 == 0xFFFF || e->lo == k0)) {
+            f = e;
+            goto found;
+        }
+        e++;
+    }
+    f = NULL;
+found:
+    if (f == NULL) {
+        return NULL;
+    }
+    for (i = *idx; i < f->n; i++) {
+        if (lo <= f->tab[i * 4] && f->tab[i * 4] < hi) {
+            *idx = i;
+            return &f->tab[i * 4];
+        }
+    }
+    return NULL;
+}
 
 u8* func_001677E0(u8* p, u32 key) {
     u8* e = *(u8**)(p + 0x3C);
@@ -9073,6 +9099,8 @@ extern int flip_dummy_8;
 extern int flip_dummy_9;
 extern int flip_dummy_10;
 extern int flip_dummy_11;
+extern int flip_dummy_12;
+extern int flip_dummy_13;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
