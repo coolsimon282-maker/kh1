@@ -1316,7 +1316,21 @@ void func_001BE820(void *dst, s32 n) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE8A8);
+void func_001BE8A8(sceVu0FMATRIX out, sceVu0FVECTOR a1, sceVu0FVECTOR a2, sceVu0FVECTOR a3, f32 *rot) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    sceVu0FVECTOR v2;
+
+    sceVu0UnitMatrix(m);
+    sceVu0RotMatrixX(m, m, rot[0]);
+    sceVu0RotMatrixY(m, m, rot[1]);
+    sceVu0RotMatrixZ(m, m, rot[2]);
+    sceVu0ApplyMatrix(v0, m, a2);
+    sceVu0ApplyMatrix(v1, m, a3);
+    sceVu0ApplyMatrix(v2, m, a1);
+    sceVu0CameraMatrix(out, v2, v0, v1);
+}
 
 void func_001BE988(f32 *dst, f32 *a, f32 *b, s32 num, s32 den) {
     f32 t = (f32)num / (f32)den;
@@ -1342,7 +1356,21 @@ void func_001BE9F0(f32 *v) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEA58);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BEBD0);
+void func_001BEBD0(u8 *a0, u8 *a1, u8 *a2) {
+    sceVu0FMATRIX t;
+    sceVu0FMATRIX r;
+    sceVu0FMATRIX c;
+
+    sceVu0UnitMatrix(t);
+    sceVu0RotMatrix(r, t, (f32 *)(a1 + 0x50));
+    sceVu0MulMatrix((void *)(a0 + 0x40), (void *)(a2 + 0x40), r);
+    sceVu0TransMatrix(t, t, (f32 *)(a1 + 0x40));
+    sceVu0MulMatrix(r, r, t);
+    func_001BE8A8(c, (f32 *)a1, (f32 *)(a1 + 0x10), (f32 *)(a1 + 0x20), (f32 *)(a1 + 0x30));
+    sceVu0MulMatrix((void *)(a0 + 0x80), c, r);
+    sceVu0MulMatrix((void *)(a0 + 0xC0), (void *)a2, (void *)(a0 + 0x80));
+    sceVu0CopyMatrix((void *)a0, (void *)(a2 + 0x80));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BECB8);
 

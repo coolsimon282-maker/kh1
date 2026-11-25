@@ -407,7 +407,35 @@ s32 func_0024D9A0(void) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D9F0);
+extern s32 D_0046A614;
+extern u32 D_0046A608_u __asm__("D_0046A608");
+int sceOpen(const char *filename, int flag, ...);
+long sceLseek64(int fd, long offset, int whence);
+int sceClose(int fd);
+
+s32 func_0024D9F0(void) {
+    s32 *p = &D_0046A614;
+    s32 fd;
+    long sz;
+    s32 r;
+
+    *p = 0x5A;
+    fd = sceOpen(func_0024D8E0(), 1);
+    *p = 0x64;
+    if (fd < 0) {
+        r = 1;
+    } else {
+        sz = sceLseek64(fd, 0, 2);
+        *p = 0x6E;
+        sceClose(fd);
+        *p = 0x78;
+        r = 1;
+        if (D_0046A608_u == sz) {
+            r = 0;
+        }
+    }
+    return r;
+}
 
 void func_0024DAA0(void) {
     sceDevctl(D_004919B0, 0x4807, 0, 0, 0, 0);

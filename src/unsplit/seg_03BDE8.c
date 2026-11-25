@@ -3827,7 +3827,38 @@ void func_00150D70(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00150DE0);
+typedef struct {
+    s32 state;
+    u32 *obj;
+    s32 pad08;
+    f32 unk0C;
+    sceVu0FVECTOR pos;
+    u8 pad20[0x20];
+} V150DE0;
+extern V150DE0 D_0054F750_e[] __asm__("D_0054F750");
+
+void func_00150DE0(s32 on) {
+    V150DE0 *p = D_0054F750_e;
+    s32 i;
+
+    if (on) {
+        for (i = 0; i < 8; i++, p++) {
+            if (p->obj != 0 && p->state == 0) {
+                *p->obj |= 0x30;
+                p->state = 3;
+                p->unk0C = D_00306840;
+                sceVu0CopyVector(p->pos, (f32 *)((u8 *)p->obj + 0x20));
+            }
+        }
+    } else {
+        for (i = 0; i < 8; i++, p++) {
+            if (p->obj != 0 && p->state == 3) {
+                p->state = 4;
+                p->unk0C = D_00306840;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00150EC8);
 
@@ -4472,6 +4503,8 @@ void func_00155EE8(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155EF8);
 
+/* unused: keeps func_001560F8 at its size once func_00150DE0 is C (rule F1) */
+extern s32 D_001560F8_pad0;
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
@@ -4822,7 +4855,38 @@ void func_00159148(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159178);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159258);
+extern u8 *D_005516F0;
+extern sceVu0FVECTOR D_00351A50;
+extern sceVu0FVECTOR D_00351A60;
+extern sceVu0FVECTOR D_00351A70;
+
+/* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was (rule F1) */
+extern s32 D_00159258_pad0;
+s32 func_00159258(void) {
+    s32 e = D_002E26A0;
+    u8 **pp;
+
+    if (!func_001233F8(e)) {
+        return 4;
+    }
+    if (func_0014EFE0(e, 1)) {
+        pp = &D_005516F0;
+        if (0.0f < *(f32 *)(*pp + 0x30)) {
+            *(f32 *)(*pp + 0x30) -= 0.003f;
+            if (*(f32 *)(*pp + 0x30) < 0.0f) {
+                *(f32 *)(*pp + 0x30) = 0.0f;
+            }
+        }
+        sceVu0CopyVector(D_002DECE0, D_00351A50);
+    }
+    if (func_0014EFE0(e, 2)) {
+        sceVu0CopyVector(D_002DECE0, D_00351A60);
+    }
+    if (func_0014EFE0(e, 3)) {
+        sceVu0CopyVector(D_002DECE0, D_00351A70);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159350);
 
@@ -5511,7 +5575,27 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00161A08);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00161DE8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00161F80);
+extern u8 D_0056A0F0_p[] __asm__("D_0056A0F0");
+/* unused: without it func_0016FA10 loses its D_00575020 %lo fold (F1; repeating that extern did not help) */
+extern s32 D_00161F80_dummy_unused;
+void func_00161F80(void) {
+    u8 *e = (u8 *)D_0056A0F0_p;
+    s32 i;
+
+    for (i = 0; i < 0x60; i++, e += 0x190) {
+        if (*(s32 *)e != 0) {
+            func_00121EB0(*(s32 *)(e + 0x154));
+            func_00121EB0(*(s32 *)(e + 0x158));
+            func_00121EB0(*(s32 *)(e + 0x150));
+            if (*(s32 *)(e + 0x15C) != 0) func_00121EB0(*(s32 *)(e + 0x15C));
+            if (*(s32 *)(e + 0x160) != 0) func_00121EB0(*(s32 *)(e + 0x160));
+            if (*(s32 *)(e + 0x164) != 0) func_00121EB0(*(s32 *)(e + 0x164));
+            if (*(s32 *)(e + 0x168) != 0) func_00121EB0(*(s32 *)(e + 0x168));
+            if (*(s32 *)(e + 0x16C) != 0) func_00121EB0(*(s32 *)(e + 0x16C));
+            memset(e, 0, 0x190);
+        }
+    }
+}
 
 void func_00162058(s32 a) {
     func_00161A08(a);

@@ -416,7 +416,11 @@ void func_00108DF8(s32 a0, s32 a1, s32 a2, s32 a3, f32* a4) {
     func_0015ED80(a1, func_00108D90)->unk_10 = (s32)&D_002A6C60[a0].t.e[D_00351BD0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D68);
+void func_00108D68(s32 a0, s32 a1, s32 (*a2)[4]) {
+    s32 *g = &D_00351BD0;
+    func_00108BE8(a0, a2, (T108BE8 *)((u8 (*)[2][0x90])&D_00494F20)[*g][a0]);
+    func_0015ED80(a1, func_00108D90)->unk_10 = (s32)((u8 *)D_00494D80 + (a0 * 0xD0 + *g * 0x60));
+}
 
 extern T108CF8 D_002AA060[];
 extern u8 D_002B1C60[][64][0x90];

@@ -72,7 +72,7 @@ extern char D_0048D140[];
 Seg1C7A8Unk18* func_0011CFA8(s32, s32, s32, s32, s32);
 void* func_001EDD20(void*, s32, s32, s32);
 void func_0011E1C8(void*);
-s32 func_0011E248(void);
+s32 func_0011E248();
 extern s32 D_002C1394;
 extern s32 D_002C1390;
 void func_00101528(void);
@@ -504,7 +504,26 @@ void func_0011DC98(u8* a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DCF0);
+extern s32 D_002C1360;
+extern sceVu0FVECTOR D_004E3A20;
+extern sceVu0FVECTOR D_004E3A30;
+void func_0011DB50(s32 *, s32 *);
+
+static inline f32 Seg1C7A8_Dist(f32 *a, f32 *b) {
+    f32 d;
+    __asm__ volatile("lqc2 $vf6,0x0(%1)\n\tlqc2 $vf4,0x0(%2)\n\tvsub.xyzw $vf5,$vf6,$vf4\n\tvmove.xyzw $vf4,$vf5\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tvsqrt Q,$vf5x\n\tvwaitq\n\tvaddq.x $vf5,$vf0,Q\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(a), "r"(b) : "$2", "memory");
+    return d;
+}
+
+void func_0011DCF0(f32 *p, s32 *a, s32 *b) {
+    f32 r = D_002C1360;
+    f32 d;
+    d = Seg1C7A8_Dist(D_004E3A20, p);
+    *a = 16383.0f - d * d / r;
+    d = Seg1C7A8_Dist(D_004E3A30, p);
+    *b = 16383.0f - d * d / r;
+    func_0011DB50(a, b);
+}
 
 void sceVu0InversMatrix(f32 (*)[4], f32 (*)[4]);
 void sceVu0ApplyMatrix(f32 *, f32 (*)[4], f32 *);
@@ -549,7 +568,47 @@ void func_0011E220(void* arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_0011E1C8(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E248);
+s32 func_00157090(void);
+s32 func_001EDDC0(s32, s32, s32);
+extern s32 D_004E3A18;
+
+s32 func_0011E248(a0)
+    s32 a0;
+{
+    Seg1C7A8Pair *p;
+    s32 i;
+    s32 r;
+
+    if (func_00157090() != 0) {
+        return 8;
+    }
+    if (a0 == 0) {
+        if (D_004E3A18 != 0) {
+            return 9;
+        }
+        r = func_001EDDC0(-1, -1, 0);
+        if (r == 0) {
+            for (i = 3; i >= 0; i--) {
+                D_004E39F8[i].unk_00 = 0;
+            }
+        }
+        return r;
+    }
+    p = D_004E39F8;
+    for (i = 0; i < 4; i++, p++) {
+        if (p->unk_00 == a0) {
+            if (p->unk_04 != 0) {
+                return 9;
+            }
+            r = func_001EDDC0(-1, -1, a0);
+            if (r == 0) {
+                p->unk_00 = 0;
+            }
+            return r;
+        }
+    }
+    return 0;
+}
 
 void fm_func_0011E340(void) {
     D_002C1394 = func_0011E248();

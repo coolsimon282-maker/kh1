@@ -129,13 +129,99 @@ s32 func_001151A8(s32 a0, f32* a1) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115200);
+static inline f32 Seg150D8_Dot(f32 *a, f32 *b) {
+    f32 d;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(a), "r"(b) : "$2", "memory");
+    return d;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001152C8);
+static inline void Seg150D8_ScaleXYZ(f32 *out, f32 *in, f32 s) {
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlw $8,0x0(%2)\n\tqmtc2.ni $8,$vf5\n\tvmulx.xyz $vf4,$vf4,$vf5x\n\tsqc2 $vf4,0x0(%0)" : : "r"(out), "r"(in), "r"(&s) : "$8", "memory");
+}
+
+s32 func_00115200(f32 *a0, f32 *a1, f32 *a2, f32 *a3, f32 *out) {
+    f32 d = Seg150D8_Dot(a3, a1);
+    f32 t;
+    if (0.0f <= d) {
+        return 0;
+    }
+    t = (Seg150D8_Dot(a3, a2) - Seg150D8_Dot(a3, a0)) / d;
+    if (1.0f < t) {
+        return 0;
+    }
+    Seg150D8_ScaleXYZ(out, a1, t);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvadd.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(out), "r"(out), "r"(a0) : "memory");
+    return 1;
+}
+
+void func_00104EB0(s32, f32 *);
+s32 func_00104CF8(s32, s32);
+
+s32 func_001152C8(s32 a0, s32 a1, s32 a2, s32 a3) {
+    f32 *pt = (f32 *)a1;
+    f32 *dir = (f32 *)a2;
+    f32 *out = (f32 *)a3;
+    sceVu0FVECTOR n;
+    sceVu0FVECTOR p;
+    f32 d;
+    f32 t;
+
+    func_00104CF8(a0, (s32)n);
+    d = Seg150D8_Dot(n, dir);
+    if (0.0f <= d) {
+        return 0;
+    }
+    func_00104EB0(a0, p);
+    t = (Seg150D8_Dot(n, p) - Seg150D8_Dot(n, pt)) / d;
+    if (t < 0.0f) {
+        return 0;
+    }
+    if (1.0f < t) {
+        return 0;
+    }
+    Seg150D8_ScaleXYZ(out, dir, t);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvadd.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(out), "r"(out), "r"(pt) : "memory");
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115408);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115600);
+s32 func_00104AE0(s32, sceVu0FVECTOR *);
+extern s32 D_002BD150[];
+extern s32 D_002BD160[];
+
+static inline void Seg150D8_Sub(f32 *out, f32 *a, f32 *b) {
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvsub.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(out), "r"(a), "r"(b) : "memory");
+}
+
+static inline void Seg150D8_Outer(f32 *out, f32 *a, f32 *b) {
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvopmula.xyz ACC,$vf4,$vf5\n\tvopmsub.xyz $vf6,$vf5,$vf4\n\tvsub.w $vf6,$vf6,$vf6\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(out), "r"(a), "r"(b) : "memory");
+}
+
+s32 func_00115600(s32 a0, f32 *pt) {
+    sceVu0FVECTOR d1;
+    sceVu0FVECTOR d2;
+    sceVu0FVECTOR cr;
+    sceVu0FVECTOR v[4];
+    s32 n = func_00104AE0(a0, v);
+    s32 *next;
+    s32 i;
+
+    if (n == 3) {
+        next = D_002BD150;
+    } else {
+        next = D_002BD160;
+    }
+    for (i = 0; i < n; i++) {
+        Seg150D8_Sub(d1, v[next[i]], v[i]);
+        Seg150D8_Sub(d2, pt, v[i]);
+        Seg150D8_Outer(cr, d1, d2);
+        if (cr[1] < 0.0f) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 void func_001156F0(s32 a0, f32* a1) {
     f32* v = a1 + 4;
@@ -384,7 +470,39 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00117DB0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118060);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118230);
+s32 *func_00122048(s32, s32);
+void func_001220B8(void *);
+
+s32 func_00118230(s32 n, f32 *pt, f32 *lim, f32 *out) {
+    s32 *buf = func_00122048(0x800, 4);
+    s32 cnt = 0;
+    s32 best = -1;
+    s32 i;
+    f32 bd;
+    f32 y;
+
+    for (i = 0; i < n; i++) {
+        s32 id = D_002BD250[i];
+        if (func_00115600(id, pt)) {
+            buf[cnt++] = id;
+        }
+    }
+    bd = lim[1];
+    for (i = 0; i < cnt; i++) {
+        f32 dd;
+        func_00115408(buf[i], (u8 *)pt, (u8 *)&y, 0);
+        dd = fabsf(pt[1] - y);
+        if (dd < bd) {
+            out[1] = y;
+            bd = dd;
+            best = buf[i];
+        }
+    }
+    out[0] = pt[0];
+    out[2] = pt[2];
+    func_001220B8(buf);
+    return best;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118378);
 
@@ -438,11 +556,46 @@ void func_00118D78(s32 arg0) {
     func_00104528();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118DB0);
+extern u_long128 D_002BD1E0;
+
+s32 func_00118DB0(f32 *pt, sceVu0FVECTOR *in) {
+    sceVu0FVECTOR cr;
+    sceVu0FVECTOR ref;
+    sceVu0FVECTOR d[4];
+    s32 i;
+    s32 *next = D_002BD160;
+
+    for (i = 0; i < 4; i++) {
+        Seg150D8_Sub(d[i], in[i], pt);
+    }
+    Seg150D8_CopyQ(ref, &D_002BD1E0);
+    for (i = 0; i < 4; i++) {
+        Seg150D8_Outer(cr, d[i], d[next[i]]);
+        if (Seg150D8_Dot(ref, cr) < 0.0f) {
+            return 0;
+        }
+        Seg150D8_CopyQ(ref, cr);
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118EA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119128);
+void func_00104EB0(s32, f32 *);
+s32 func_00104CF8(s32, s32);
+s32 func_00115200_r(s32, s32, f32 *, f32 *, f32 *) __asm__("func_00115200");
+
+s32 func_00119128(s32 a0, s32 a1, s32 a2) {
+    sceVu0FVECTOR w;
+    sceVu0FVECTOR v2;
+    sceVu0FVECTOR v1;
+    func_00104EB0(a0, v1);
+    func_00104CF8(a0, (s32)v2);
+    if (func_00115200_r(a1, a2, v1, v2, w) != 0) {
+        if (func_001198C8(-1, a0, (s32)w) != 0) return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001191C8);
 
@@ -518,9 +671,82 @@ s32 func_00119788(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001197E0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001198C8);
+extern u_long128 D_002C12F0;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119A20);
+s32 func_001198C8(s32 a0, s32 a1, s32 a2) {
+    f32 *pt = (f32 *)a2;
+    sceVu0FVECTOR cr;
+    sceVu0FVECTOR ref;
+    sceVu0FVECTOR v[4];
+    s32 n;
+    s32 *next;
+    s32 i;
+
+    if (a0 == -1) {
+        n = func_00104AE0(a1, v);
+    } else {
+        n = func_0011A7F8(a0, a1, (u_long128 *)v);
+    }
+    if (n == 3) {
+        next = D_002BD150;
+    } else {
+        next = D_002BD160;
+    }
+    for (i = 0; i < n; i++) {
+        Seg150D8_Sub(v[i], v[i], pt);
+    }
+    Seg150D8_CopyQ(ref, &D_002C12F0);
+    for (i = 0; i < n; i++) {
+        Seg150D8_Outer(cr, v[i], v[next[i]]);
+        if (Seg150D8_Dot(ref, cr) < 0.0f) {
+            return 0;
+        }
+        Seg150D8_CopyQ(ref, cr);
+    }
+    return 1;
+}
+
+
+typedef struct {
+    u8 unk_00[0xC];
+    f32 unk_0C;
+    s32 unk_10;
+} Seg150D8Ent6238;
+extern Seg150D8Ent6238 *D_002A6238;
+
+static inline void Seg150D8_Scale(f32 *out, f32 *in, f32 s) {
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlw $8,0x0(%2)\n\tqmtc2.ni $8,$vf5\n\tvmulx.xyzw $vf6,$vf4,$vf5x\n\tsqc2 $vf6,0x0(%0)" : : "r"(out), "r"(in), "r"(&s) : "$8", "memory");
+}
+
+/* plain bc1t next to the call: the callee is "cannot throw" (include/common.h NOTHROW), still asm below */
+s32 func_001198C8_nt() __asm__("func_001198C8");
+extern inline s32 func_001198C8_nt(nothrow_arg_) double nothrow_arg_; { return 0; }
+
+s32 func_00119A20(s32 a0, f32 *a1, f32 *a2, f32 *a3, f32 *a4) {
+    sceVu0FVECTOR t;
+    f32 d;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)
+	lqc2 $vf5,0x0(%2)
+	vmul.xyz $vf5,$vf4,$vf5
+	vaddy.x $vf5,$vf5,$vf5y
+	vaddz.x $vf5,$vf5,$vf5z
+	qmfc2.ni $2,$vf5
+	mtc1 $2,%0" : "=f"(d) : "r"(a2), "r"(a1) : "$2", "memory");
+    d += D_002A6238[a0].unk_0C;
+    if (*a4 < d) {
+        return 0;
+    }
+    if (d < 0.0f) {
+        return 0;
+    }
+    Seg150D8_Scale(t, a1, d);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)
+	lqc2 $vf5,0x0(%2)
+	vsub.xyzw $vf6,$vf4,$vf5
+	sqc2 $vf6,0x0(%0)
+	nop" : : "r"(a3), "r"(a2), "r"(t) : "memory");
+    return func_001198C8_nt(-1, a0, (s32)a3) != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119AD8);
 
@@ -537,9 +763,31 @@ f32 func_00119E80(s32 a0, s32 a1, f32* a2, f32* a3) {
     return d2 + d1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119EF8);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119FC0);
+s32 func_00119EF8(s32 a0, s32 a1, f32 *a2, f32 *a3, f32 *a4, f32 *a5) {
+    sceVu0FVECTOR t;
+    f32 d = func_00119E80(a0, a1, a2, a3);
+    if (*a5 < d) {
+        return 0;
+    }
+    if (d < 0.0f) {
+        return 0;
+    }
+    Seg150D8_Scale(t, a2, d);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvsub.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(a4), "r"(a3), "r"(t) : "memory");
+    return func_001198C8_nt(a0, a1, (s32)a4) != 0;
+}
+s32 func_00119FC0(s32 a0, f32 *a1, f32 *a2, f32 *a3, f32 *a4) {
+    sceVu0FVECTOR t;
+    f32 d;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(a2), "r"(a1) : "$2", "memory");
+    d += D_002A6238[a0].unk_0C;
+    if (*a4 < d) {
+        return 0;
+    }
+    Seg150D8_Scale(t, a1, d);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvsub.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(a3), "r"(a2), "r"(t) : "memory");
+    return func_001198C8(-1, a0, (s32)a3) != 0;
+}
 
 s32 func_0011A068(void) {
     s32 i;
@@ -606,7 +854,20 @@ void func_0011A9C8(s32 a0, s32 a1, u_long128* a2) {
     Seg150D8_CopyQ(a2, &e->unk_00[e->unk_08[a1][0]]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A7F8);
+s32 func_0011A7F8(s32 a0, s32 a1, u_long128 *out) {
+    Seg150D8Ent40 *e = &D_004E2450[a0];
+    s16 *idx = (s16 *)(a1 * 20 + (s32)e->unk_08);
+    u_long128 *v = e->unk_00;
+
+    Seg150D8_CopyQ(out, &v[idx[0]]);
+    Seg150D8_CopyQ(out + 1, &v[idx[1]]);
+    Seg150D8_CopyQ(out + 2, &v[idx[2]]);
+    if (idx[3] == -1) {
+        return 3;
+    }
+    Seg150D8_CopyQ(out + 3, &v[idx[3]]);
+    return 4;
+}
 
 void func_0011AAC8(s32 a0, f32* a1, s32 a2) {
     f32* v = a1 + 4;
@@ -640,7 +901,30 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B220);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B6A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B908);
+s32 func_0011B908(s32 a0, s32 a1, f32 *pt) {
+    sceVu0FVECTOR d1;
+    sceVu0FVECTOR d2;
+    sceVu0FVECTOR cr;
+    sceVu0FVECTOR v[4];
+    s32 n = func_0011A7F8(a0, a1, (u_long128 *)v);
+    s32 *next;
+    s32 i;
+
+    if (n == 3) {
+        next = D_002BD150;
+    } else {
+        next = D_002BD160;
+    }
+    for (i = 0; i < n; i++) {
+        Seg150D8_Sub(d1, v[next[i]], v[i]);
+        Seg150D8_Sub(d2, pt, v[i]);
+        Seg150D8_Outer(cr, d1, d2);
+        if (cr[1] < 0.0f) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B9F8);
 
@@ -648,7 +932,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011BBE8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011BDF8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011BFC8);
+s32 func_0011BFC8(s32 a0, s32 a1, f32 *pt, f32 *dir, f32 *out) {
+    sceVu0FVECTOR n;
+    sceVu0FVECTOR p;
+    f32 d;
+    f32 t;
+
+    func_0011A758(a0, a1, (u_long128 *)n);
+    d = Seg150D8_Dot(n, dir);
+    if (0.0f <= d) {
+        return 0;
+    }
+    func_0011A9C8(a0, a1, (u_long128 *)p);
+    t = (Seg150D8_Dot(n, p) - Seg150D8_Dot(n, pt)) / d;
+    if (t < 0.0f) {
+        return 0;
+    }
+    if (1.0f < t) {
+        return 0;
+    }
+    Seg150D8_ScaleXYZ(out, dir, t);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvadd.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(out), "r"(out), "r"(pt) : "memory");
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011C118);
 

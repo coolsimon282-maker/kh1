@@ -133,7 +133,32 @@ void *func_00120190(s32 a0) {
     return bsearch((void *)func_001200F8(a0), D_004E4A00, D_002C5C30, 0x10, (void *)func_00120170);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001201D0);
+void func_0010BEE8(void);
+void func_0010BF50(void *);
+s32 func_00120040(s32, s32);
+void FlushCache(s32);
+
+void func_001201D0(u8 *r) {
+    u32 n = (u32)(*(s32 *)(r + 0x28) + 0x7FF) >> 11;
+    s32 x;
+
+    do {
+        while (sceCdDiskReady(1) != 2 || sceCdRead(*(s32 *)(r + 0x24), n, *(void **)(r + 0x2C), D_002C5C38) == 0) {
+            func_0010BEE8();
+        }
+        while (sceCdSync(1) != 0) {
+            func_0010BEE8();
+        }
+    } while (sceCdGetError() != 0);
+    if ((*(u32 *)r >> 1) & 1) {
+        FlushCache(0);
+        x = func_00120040(*(s32 *)(r + 0x2C), *(s32 *)(r + 0x28));
+    } else {
+        x = *(s32 *)(r + 0x28);
+    }
+    func_0010BF50(func_001201D0);
+    *(s32 *)(r + 0x30) = x;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001202C0);
 
