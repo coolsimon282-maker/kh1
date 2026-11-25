@@ -178,4 +178,306 @@ static void malloc_extend_top(struct _reent *reent_ptr, INTERNAL_SIZE_T nb)
     max_total_mem = sbrked_mem;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/malloc_r", _malloc_r);
+#define request2size(req) \
+ (((long)((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) < \
+  (long)(MINSIZE + MALLOC_ALIGN_MASK)) ? ((MINSIZE + MALLOC_ALIGN_MASK) & ~(MALLOC_ALIGN_MASK)) : \
+   (((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) & ~(MALLOC_ALIGN_MASK)))
+#define set_inuse_bit_at_offset(p, s) (((mchunkptr)(((char*)(p)) + (s)))->size |= PREV_INUSE)
+#define set_foot(p, s)   (((mchunkptr)((char*)(p) + (s)))->prev_size = (s))
+#define next_bin(b)    ((mbinptr)((char*)(b) + 2 * sizeof(mbinptr)))
+#define prev_bin(b)    ((mbinptr)((char*)(b) - 2 * sizeof(mbinptr)))
+#define last_remainder (bin_at(1))
+#define first(b) ((b)->fd)
+#define last(b)  ((b)->bk)
+#define MAX_SMALLBIN_SIZE   512
+#define SMALLBIN_WIDTH        8
+#define SMALLBIN_WIDTH_BITS   3
+#define MAX_SMALLBIN        (MAX_SMALLBIN_SIZE / SMALLBIN_WIDTH) - 1
+#define smallbin_index(sz)  (((unsigned long)(sz)) >> SMALLBIN_WIDTH_BITS)
+#define is_small_request(nb) (nb < MAX_SMALLBIN_SIZE - SMALLBIN_WIDTH)
+#define bin_index(sz)                                                         \
+(((((unsigned long)(sz)) >> 9) ==    0) ?       (((unsigned long)(sz)) >>  3): \
+ ((((unsigned long)(sz)) >> 9) <=    4) ?  56 + (((unsigned long)(sz)) >>  6): \
+ ((((unsigned long)(sz)) >> 9) <=   20) ?  91 + (((unsigned long)(sz)) >>  9): \
+ ((((unsigned long)(sz)) >> 9) <=   84) ? 110 + (((unsigned long)(sz)) >> 12): \
+ ((((unsigned long)(sz)) >> 9) <=  340) ? 119 + (((unsigned long)(sz)) >> 15): \
+ ((((unsigned long)(sz)) >> 9) <= 1364) ? 124 + (((unsigned long)(sz)) >> 18): \
+                                          126)
+#define BINBLOCKWIDTH     4
+#define binblocks      (bin_at(0)->size)
+#define idx2binblock(ix)    ((unsigned long)1 << (ix / BINBLOCKWIDTH))
+#define mark_binblock(ii)   (binblocks |= idx2binblock(ii))
+#define unlink(P, BK, FD)                                                     \
+{                                                                             \
+  BK = P->bk;                                                                 \
+  FD = P->fd;                                                                 \
+  FD->bk = BK;                                                                \
+  BK->fd = FD;                                                                \
+}
+#define link_last_remainder(P)                                                \
+{                                                                             \
+  last_remainder->fd = last_remainder->bk =  P;                               \
+  P->fd = P->bk = last_remainder;                                             \
+}
+#define clear_last_remainder \
+  (last_remainder->fd = last_remainder->bk = last_remainder)
+#define frontlink(P, S, IDX, BK, FD)                                          \
+{                                                                             \
+  if (S < MAX_SMALLBIN_SIZE)                                                  \
+  {                                                                           \
+    IDX = smallbin_index(S);                                                  \
+    mark_binblock(IDX);                                                       \
+    BK = bin_at(IDX);                                                         \
+    FD = BK->fd;                                                              \
+    P->bk = BK;                                                               \
+    P->fd = FD;                                                               \
+    FD->bk = BK->fd = P;                                                      \
+  }                                                                           \
+  else                                                                        \
+  {                                                                           \
+    IDX = bin_index(S);                                                       \
+    BK = bin_at(IDX);                                                         \
+    FD = BK->fd;                                                              \
+    if (FD == BK) mark_binblock(IDX);                                         \
+    else                                                                      \
+    {                                                                         \
+      while (FD != BK && S < chunksize(FD)) FD = FD->fd;                      \
+      BK = FD->bk;                                                            \
+    }                                                                         \
+    P->bk = BK;                                                               \
+    P->fd = FD;                                                               \
+    FD->bk = BK->fd = P;                                                      \
+  }                                                                           \
+}
+#define long_sub_size_t(x, y)                                \
+        (x < y ? -(long) (y - x) : x - y)
+
+extern void _malloc_lock _PARAMS ((struct _reent *));
+extern void _malloc_unlock _PARAMS ((struct _reent *));
+
+_PTR
+_malloc_r (struct _reent *reent_ptr, size_t bytes)
+{
+  mchunkptr victim;                  /* inspected/selected chunk */
+  INTERNAL_SIZE_T victim_size;       /* its size */
+  int       idx;                     /* index for bin traversal */
+  mbinptr   bin;                     /* associated bin */
+  mchunkptr remainder;               /* remainder from a split */
+  long      remainder_size;          /* its size */
+  int       remainder_index;         /* its bin index */
+  unsigned long block;               /* block traverser bit */
+  int       startidx;                /* first bin of a traversed block */
+  mchunkptr fwd;                     /* misc temp for linking */
+  mchunkptr bck;                     /* misc temp for linking */
+  mbinptr q;                         /* misc temp */
+
+  INTERNAL_SIZE_T nb  = request2size(bytes);  /* padded request size; */
+
+  MALLOC_LOCK;
+
+  /* Check for exact match in a bin */
+
+  if (is_small_request(nb))  /* Faster version for small requests */
+  {
+    idx = smallbin_index(nb);
+
+    /* No traversal or size check necessary for small bins.  */
+
+    q = bin_at(idx);
+    victim = last(q);
+
+    if (victim != q)
+    {
+      victim_size = chunksize(victim);
+      unlink(victim, bck, fwd);
+      set_inuse_bit_at_offset(victim, victim_size);
+      MALLOC_UNLOCK;
+      return chunk2mem(victim);
+    }
+
+    idx += 2; /* Set for bin scan below. We have already scanned 2 bins. */
+
+  }
+  else
+  {
+    idx = bin_index(nb);
+    bin = bin_at(idx);
+
+    for (victim = last(bin); victim != bin; victim = victim->bk)
+    {
+      victim_size = chunksize(victim);
+      remainder_size = long_sub_size_t(victim_size, nb);
+
+      if (remainder_size >= (long)MINSIZE) /* too big */
+      {
+        --idx; /* adjust to rescan below after checking last remainder */
+        break;
+      }
+
+      else if (remainder_size >= 0) /* exact fit */
+      {
+        unlink(victim, bck, fwd);
+        set_inuse_bit_at_offset(victim, victim_size);
+        MALLOC_UNLOCK;
+        return chunk2mem(victim);
+      }
+    }
+
+    ++idx;
+
+  }
+
+  /* Try to use the last split-off remainder */
+
+  if ( (victim = last_remainder->fd) != last_remainder)
+  {
+    victim_size = chunksize(victim);
+    remainder_size = long_sub_size_t(victim_size, nb);
+
+    if (remainder_size >= (long)MINSIZE) /* re-split */
+    {
+      remainder = chunk_at_offset(victim, nb);
+      set_head(victim, nb | PREV_INUSE);
+      link_last_remainder(remainder);
+      set_head(remainder, remainder_size | PREV_INUSE);
+      set_foot(remainder, remainder_size);
+      MALLOC_UNLOCK;
+      return chunk2mem(victim);
+    }
+
+    clear_last_remainder;
+
+    if (remainder_size >= 0)  /* exhaust */
+    {
+      set_inuse_bit_at_offset(victim, victim_size);
+      MALLOC_UNLOCK;
+      return chunk2mem(victim);
+    }
+
+    /* Else place in bin */
+
+    frontlink(victim, victim_size, remainder_index, bck, fwd);
+  }
+
+  /*
+     If there are any possibly nonempty big-enough blocks,
+     search for best fitting chunk by scanning bins in blockwidth units.
+  */
+
+  if ( (block = idx2binblock(idx)) <= binblocks)
+  {
+
+    /* Get to the first marked block */
+
+    if ( (block & binblocks) == 0)
+    {
+      /* force to an even block boundary */
+      idx = (idx & ~(BINBLOCKWIDTH - 1)) + BINBLOCKWIDTH;
+      block <<= 1;
+      while ((block & binblocks) == 0)
+      {
+        idx += BINBLOCKWIDTH;
+        block <<= 1;
+      }
+    }
+
+    /* For each possibly nonempty block ... */
+    for (;;)
+    {
+      startidx = idx;          /* (track incomplete blocks) */
+      q = bin = bin_at(idx);
+
+      /* For each bin in this block ... */
+      do
+      {
+        /* Find and use first big enough chunk ... */
+
+        for (victim = last(bin); victim != bin; victim = victim->bk)
+        {
+          victim_size = chunksize(victim);
+          remainder_size = long_sub_size_t(victim_size, nb);
+
+          if (remainder_size >= (long)MINSIZE) /* split */
+          {
+            remainder = chunk_at_offset(victim, nb);
+            set_head(victim, nb | PREV_INUSE);
+            unlink(victim, bck, fwd);
+            link_last_remainder(remainder);
+            set_head(remainder, remainder_size | PREV_INUSE);
+            set_foot(remainder, remainder_size);
+            MALLOC_UNLOCK;
+            return chunk2mem(victim);
+          }
+
+          else if (remainder_size >= 0)  /* take */
+          {
+            set_inuse_bit_at_offset(victim, victim_size);
+            unlink(victim, bck, fwd);
+            MALLOC_UNLOCK;
+            return chunk2mem(victim);
+          }
+
+        }
+
+       bin = next_bin(bin);
+
+       if (idx < MAX_SMALLBIN)
+         {
+           bin = next_bin(bin);
+           ++idx;
+         }
+      } while ((++idx & (BINBLOCKWIDTH - 1)) != 0);
+
+      /* Clear out the block bit. */
+
+      do   /* Possibly backtrack to try to clear a partial block */
+      {
+        if ((startidx & (BINBLOCKWIDTH - 1)) == 0)
+        {
+          binblocks &= ~block;
+          break;
+        }
+        --startidx;
+       q = prev_bin(q);
+      } while (first(q) == q);
+
+      /* Get to the next possibly nonempty block */
+
+      if ( (block <<= 1) <= binblocks && (block != 0) )
+      {
+        while ((block & binblocks) == 0)
+        {
+          idx += BINBLOCKWIDTH;
+          block <<= 1;
+        }
+      }
+      else
+        break;
+    }
+  }
+
+
+  /* Try to use top chunk */
+
+  /* Require that there be a remainder, ensuring top always exists  */
+  remainder_size = long_sub_size_t(chunksize(top), nb);
+  if (chunksize(top) < nb || remainder_size < (long)MINSIZE)
+  {
+    /* Try to extend */
+    malloc_extend_top(reent_ptr, nb);
+    remainder_size = long_sub_size_t(chunksize(top), nb);
+    if (chunksize(top) < nb || remainder_size < (long)MINSIZE)
+    {
+      MALLOC_UNLOCK;
+      return 0; /* propagate failure */
+    }
+  }
+
+  victim = top;
+  set_head(victim, nb | PREV_INUSE);
+  top = chunk_at_offset(victim, nb);
+  set_head(top, remainder_size | PREV_INUSE);
+  MALLOC_UNLOCK;
+  return chunk2mem(victim);
+
+}
