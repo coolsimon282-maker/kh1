@@ -8340,7 +8340,36 @@ void func_00173478(u8* a0, f32* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001734F8);
+s32 func_001734F8(u8* p, u8* q, s32 m) {
+    s32 r = 0;
+    switch (m) {
+    case 1:
+        switch (*(s32*)(q + 0x174)) {
+        case 0:
+            if (!(*(s32*)(p + 0x160) & 1) && *(s32*)(p + 0x164) != 0xCE) {
+                r = 1;
+            }
+            break;
+        case 1:
+            if (!(*(s32*)(p + 0x160) & 1) && *(s32*)(p + 0x164) != *(s32*)(q + 0x4C)) {
+                r = 1;
+            }
+            break;
+        }
+        break;
+    case 2:
+        r = *(s32*)(q + 0x48) == 0;
+        break;
+    }
+    if (r == 1) {
+        *(s32*)(q + 0x48) = 0;
+        *(u64*)(q + 0x38) = ((*(u64*)(q + 0x38) & ~0x800) | 0x20000) & ~0x200;
+        if (*(s32*)(p + 0x164) == 0xCE || *(s32*)(p + 0x164) == *(s32*)(q + 0x4C)) {
+            func_00130340(p, *(s32*)(q + 0x178), 8.0f);
+        }
+    }
+    return r;
+}
 
 void func_00173610(u8* p, u8* q) {
     sceVu0FVECTOR v;
