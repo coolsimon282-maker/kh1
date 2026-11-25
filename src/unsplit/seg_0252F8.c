@@ -336,4 +336,23 @@ void func_001271B0(u8 *a0, u8 *a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00127340);
+#define D_003051EC ((u32 *)D_003051EC)
+extern f32 D_002E27CC;
+extern f32 D_002E27D0;
+extern f32 D_004F77F0;
+extern f32 D_004F77F4;
+extern s32 D_004F7810;
+float cosf(float);
+s32 func_00147A10(s32);
+
+void func_00127340(void) {
+    D_002E27CC = D_003051EC[2];
+    D_004F77F4 = cosf((D_003051EC[0] >> 1) / 180.0f * 0x1.921fb6p+1f);
+    D_004F77F0 = cosf((D_003051EC[1] >> 1) / 180.0f * 0x1.921fb6p+1f);
+    D_002E27D0 = D_003051EC[3];
+    {
+        s32 *r = &D_004F7810;
+        *r = func_00147A10(0xA9F0);
+    }
+}
+#undef D_003051EC
