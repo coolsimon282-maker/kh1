@@ -5511,7 +5511,27 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00161A08);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00161DE8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00161F80);
+extern u8 D_0056A0F0_p[] __asm__("D_0056A0F0");
+/* unused: without it func_0016FA10 loses its D_00575020 %lo fold (F1; repeating that extern did not help) */
+extern s32 D_00161F80_dummy_unused;
+void func_00161F80(void) {
+    u8 *e = (u8 *)D_0056A0F0_p;
+    s32 i;
+
+    for (i = 0; i < 0x60; i++, e += 0x190) {
+        if (*(s32 *)e != 0) {
+            func_00121EB0(*(s32 *)(e + 0x154));
+            func_00121EB0(*(s32 *)(e + 0x158));
+            func_00121EB0(*(s32 *)(e + 0x150));
+            if (*(s32 *)(e + 0x15C) != 0) func_00121EB0(*(s32 *)(e + 0x15C));
+            if (*(s32 *)(e + 0x160) != 0) func_00121EB0(*(s32 *)(e + 0x160));
+            if (*(s32 *)(e + 0x164) != 0) func_00121EB0(*(s32 *)(e + 0x164));
+            if (*(s32 *)(e + 0x168) != 0) func_00121EB0(*(s32 *)(e + 0x168));
+            if (*(s32 *)(e + 0x16C) != 0) func_00121EB0(*(s32 *)(e + 0x16C));
+            memset(e, 0, 0x190);
+        }
+    }
+}
 
 void func_00162058(s32 a) {
     func_00161A08(a);
