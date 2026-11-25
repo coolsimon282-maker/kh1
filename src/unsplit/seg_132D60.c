@@ -989,7 +989,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C5C8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C7A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C8C8);
+extern void func_0023C7A0(void);
+extern s32 D_00351E10;
+
+typedef struct {
+    /* 0x00 */ u8 pad[0x60];
+    /* 0x60 */ s64 field_60;
+    /* 0x68 */ u8 pad2[0x78];
+    /* 0xE0 */ s64 field_E0;
+} DataStruct;
+
+extern DataStruct D_00650F40;
+extern u8 *D_00651200;
+extern u8 *D_00651204;
+
+s32 func_0023C8C8(void) {
+    func_002370C8(&D_00650F40);
+    D_00650F40.field_E0 = 5;
+    D_00650F40.field_60 = 0x30003;
+    func_00237018(&D_00650F40, 0x16, 1);
+    D_00651204 = (u8 *)&D_00351E10;
+    D_00651200 = (u8 *)&D_00351E10 + 0x10;
+    func_0023C7A0();
+    func_00237018(D_00651204, (s32)(D_00651200 - D_00651204) >> 4, 1);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C968);
 
@@ -1380,6 +1404,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002407B0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00240810);
 
+/* unused: layout only (notes/f1.md F1). After func_0023C8C8 was matched, func_002408D8 lost its folded
+ * `addu $4,$4,D_00651E70` (and the function at 0x2414A8 changed too) without it (q1, 25 Nov). */
+extern s32 D_2408D8_layout0;
 extern u8 D_00651E70;
 extern void func_00240810(void *);
 
