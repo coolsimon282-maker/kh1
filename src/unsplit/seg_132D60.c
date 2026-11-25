@@ -2883,7 +2883,43 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248238);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248380);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248400);
+extern u8 D_00669350_b[] __asm__("D_00669350");
+extern u8 D_00669358[];
+extern u64 D_006692D8;
+extern u64 D_00669308;
+extern u64 D_00669338;
+extern u8 D_004656A0[];
+extern u8 D_00465FD0[];
+extern u8 D_00466180[];
+extern u8 D_004667B0[];
+extern u8 D_00466DE0[];
+extern u8 D_00467350[];
+extern u8 D_00467388[];
+extern u8 D_00467398[];
+extern u8 D_004673C0[];
+extern u8 D_004673E8[];
+extern u8 D_006693B0[];
+s32 func_00248380();
+
+void func_00248400(void) {
+    memset(D_00669350_b, 0, 8);
+    func_00247668(D_004656A0);
+    func_00247668(D_00465FD0);
+    func_00247668(D_00466180);
+    func_00247668(D_004667B0);
+    func_00247668(D_00466DE0);
+    func_00247B60(D_00467350, D_00669358, D_004656A0);
+    func_00247B60(D_00467388, D_00669388, D_00465FD0);
+    func_00247B60(D_00467398, D_00669390, D_00466180);
+    func_00247B60(D_004673C0, D_006693B0, D_004667B0);
+    func_00247B60(D_004673E8, D_006693D0, D_00466DE0);
+    D_006692D8 = 0x0007400621413600;
+    D_00669308 = 0x0207400621413600;
+    D_00669338 = 0x0607400621413600;
+    if (func_0011ED60(func_00248380) == 0) {
+        func_0011ED30(0x28489, func_00248380);
+    }
+}
 
 extern s32 D_00669350_w[] __asm__("D_00669350");
 void func_002485B8(s32 arg0) {
