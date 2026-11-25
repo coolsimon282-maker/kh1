@@ -5444,7 +5444,9 @@ typedef struct {
 
 typedef struct {
     /* 0x0000 */ u8 unk_0000[0x3078];
-    /* 0x3078 */ u64 unk_3078;
+    /* 0x3078 */ u64 unk_3078_0 : 1;
+    u64 unk_3078_1 : 1;
+    u64 unk_3078_2 : 62;
     /* 0x3080 */ u8 unk_3080[0x3E0];
     /* 0x3460 */ f32 unk_3460;
     /* 0x3464 */ f32 unk_3464;
@@ -5461,7 +5463,7 @@ void func_001DA760(void) {
     D_003854E0_a7.unk_3464 += D_002B8344;
     if (D_003854E0_a7.unk_3460 < D_003854E0_a7.unk_3464) {
         D_002BC0F0_r7 = D_003854E0_a7.unk_34A0;
-        D_003854E0_a7.unk_3078 &= ~2;
+        D_003854E0_a7.unk_3078_1 = 0;
         return;
     }
     t = D_003854E0_a7.unk_3464 / D_003854E0_a7.unk_3460;
@@ -5475,11 +5477,37 @@ void func_001DA760(void) {
     D_002BC0F0_r7.v[3] = D_003854E0_a7.unk_3470.v[3] + (D_003854E0_a7.unk_34A0.v[3] - D_003854E0_a7.unk_3470.v[3]) * t;
     if (D_003854E0_a7.unk_3460 < D_003854E0_a7.unk_3464) {
         D_002BC0F0_r7 = D_003854E0_a7.unk_34A0;
-        D_003854E0_a7.unk_3078 &= ~2;
+        D_003854E0_a7.unk_3078_1 = 0;
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DA940);
+s32 func_001DA940(Script* arg0) {
+    D_003854E0_a7.unk_3470 = D_002BC0F0_r7;
+    D_003854E0_a7.unk_34A0 = D_002BC0F0_r7;
+    D_003854E0_a7.unk_3464 = 0.0f;
+    D_003854E0_a7.unk_3460 = arg0->unk_174[arg0->unk_174[3] - 3] * 2.0f;
+    D_003854E0_a7.unk_34A0.a = arg0->unk_174[arg0->unk_174[3] - 2];
+    D_003854E0_a7.unk_34A0.b = arg0->unk_174[arg0->unk_174[3] - 1];
+    D_003854E0_a7.unk_34A0.c = arg0->unk_174[arg0->unk_174[3]];
+    D_003854E0_a7.unk_34A0.v[0] = arg0->unk_174[arg0->unk_174[3] + 2];
+    D_003854E0_a7.unk_34A0.v[1] = arg0->unk_174[arg0->unk_174[3] + 1];
+    D_003854E0_a7.unk_34A0.v[2] = arg0->unk_174[arg0->unk_174[3] + 3];
+    D_003854E0_a7.unk_34A0.v[3] = arg0->unk_174[arg0->unk_174[3] + 4];
+    if (D_003854E0_a7.unk_3460 < 2.0f) {
+        D_002BC0F0_r7.a = D_003854E0_a7.unk_34A0.a;
+        D_002BC0F0_r7.b = D_003854E0_a7.unk_34A0.b;
+        D_002BC0F0_r7.c = D_003854E0_a7.unk_34A0.c;
+        D_002BC0F0_r7.v[0] = D_003854E0_a7.unk_34A0.v[0];
+        D_002BC0F0_r7.v[1] = D_003854E0_a7.unk_34A0.v[1];
+        D_002BC0F0_r7.v[2] = D_003854E0_a7.unk_34A0.v[2];
+        D_002BC0F0_r7.v[3] = D_003854E0_a7.unk_34A0.v[3];
+        D_003854E0_a7.unk_3078_1 = 0;
+    } else {
+        D_003854E0_a7.unk_3078_1 = 1;
+    }
+    arg0->unk_174[3] -= 8;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAAA8);
 
