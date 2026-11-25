@@ -1695,7 +1695,28 @@ void func_00241A10(s32 arg0, u32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241A38);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241B60);
+extern s32 func_0023D490(u8 *);
+extern void func_0023E0B0(s32, s32);
+
+u8 *func_00241B60(s32 a0, s32 a1) {
+    u8 *p;
+    s32 r;
+    s32 *base = D_00651E50;
+    p = (u8 *)D_00651E50 + 0x20 + a0 * 0xD00;
+    base[a0] = 1;
+    *(s32 *)((u8 *)base + a0 * 0xD00 + 0x24) = a1;
+    *(s32 *)(p + 0xA18) = 1;
+    *(s32 *)p = a0;
+    r = func_0023D490(p);
+    *(s32 *)(p + 0x94) = r;
+    *(s32 *)(p + 0x98) = r;
+    *(s32 *)(p + 0xA24) = 0;
+    *(s32 *)(p + 0x770) = 0;
+    *(s32 *)(p + 0x9D0) = 0;
+    *(s32 *)(p + 0x9C) = 0;
+    func_0023E0B0(a0, 1);
+    return p;
+}
 
 u8 *func_00241B60(s32, s32);
 
