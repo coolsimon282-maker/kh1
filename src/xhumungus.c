@@ -2336,7 +2336,38 @@ s32 func_001D13D8(Script* arg0) {
     return ((s32)(*(u64*)((u8*)arg0 + 0x328) >> 1) & 1) ? 4 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D13F8);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001D13F8_f1_pad1;
+extern s32 func_001D13F8_f1_pad2;
+extern s32 func_001D13F8_f1_pad3;
+extern s32 func_001D13F8_f1_pad4;
+
+typedef struct {
+    /* 0x000 */ s32 unk_000;
+    /* 0x004 */ f32* unk_004;
+    /* 0x008 */ f32 unk_008;
+    /* 0x00C */ u8 unk_00C[0x31C];
+    /* 0x328 */ u64 unk_328_0 : 1;
+    u64 unk_328_1 : 1;
+    u64 unk_328_2 : 62;
+} ScriptF13;
+s32 func_001D13F8(Script* arg0) {
+    ScriptMsgG msg;
+    f32* o;
+
+    msg.unk_00 = 4;
+    msg.unk_01 = (u32)(arg0->unk_174[arg0->unk_174[3] + 4] * 2);
+    msg.unk_04 = *(s32*)arg0->unk_00;
+    o = *(f32**)&arg0->unk_00[4];
+    msg.unk_10[0] = arg0->unk_174[arg0->unk_174[3] + 1] - o[4];
+    msg.unk_10[1] = arg0->unk_174[arg0->unk_174[3] + 2] - o[5];
+    msg.unk_10[2] = arg0->unk_174[arg0->unk_174[3] + 3] - o[6];
+    ((ScriptF13*)arg0)->unk_328_1 = 1;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+    arg0->unk_174[3] -= 4;
+    return 2;
+}
 
 s32 func_001D14F0(void) {
     func_00109B00();
