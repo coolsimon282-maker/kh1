@@ -579,7 +579,7 @@ segments:
   - [ 0x392ed0, rodata, lib/libdbc_ro ]
   - [ 0x3930b8, rodata, lib/libpad2_ro ]
   - [ 0x3930e0, rodata, lib/libcdvd_ro ]
-  - [ 0x3932c8, rodata, lib/libm/s_atan_ro ]
+  - [ 0x3932c8, .rodata, lib/libm/s_atan ]
   - [ 0x393378, .rodata, lib/libm/s_ceil ]
   - [ 0x393388, rodata, lib/libm/sf_cos_ro ]
   - [ 0x393390, rodata, lib/libm/e_asin_ro ]
