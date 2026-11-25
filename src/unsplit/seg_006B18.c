@@ -404,14 +404,14 @@ s32 func_00108D90(Seg6B18Task *t) {
 extern T108CF8 D_002A6C60[];
 extern u8 D_002AD460[][64][0x90];
 extern f32 D_002BC190[];
-void func_00108C58(s32, u8*);
+void func_00108C58_d(s32, u8*) __asm__("func_00108C58");   /* fm-a2 callers: declaration-only view of the function a1 defined above */
 
 void func_00108DF8(s32 a0, s32 a1, s32 a2, s32 a3, f32* a4) {
     sceVu0FVECTOR v;
 
     sceVu0MulVector(v, D_002BC190, a4);
     func_00108B60((S108B60*)a3, (T108B60*)&D_002A6C60[a0]);
-    func_00108C58(a2, D_002AD460[D_00351BD0][a0]);
+    func_00108C58_d(a2, D_002AD460[D_00351BD0][a0]);
     func_00108CD0((s32*)D_002AD460[D_00351BD0][a0], (s32*)v);
     func_0015ED80(a1, func_00108D90)->unk_10 = (s32)&D_002A6C60[a0].t.e[D_00351BD0];
 }
@@ -420,11 +420,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D68);
 
 extern T108CF8 D_002AA060[];
 extern u8 D_002B1C60[][64][0x90];
-void func_00108C58(s32, u8*);
+void func_00108C58_d(s32, u8*) __asm__("func_00108C58");
 
 void func_00108FD0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_00108B60((S108B60*)a3, (T108B60*)&D_002AA060[a0]);
-    func_00108C58(a2, D_002B1C60[D_00351BD0][a0]);
+    func_00108C58_d(a2, D_002B1C60[D_00351BD0][a0]);
     func_00108CD0((s32*)D_002B1C60[D_00351BD0][a0], (s32*)a4);
     func_0015ED80(a1, func_00108D90)->unk_10 = (s32)&D_002AA060[a0].t.e[D_00351BD0];
 }

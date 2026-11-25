@@ -1082,6 +1082,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE010);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE110);
 
+extern u8 D_00623E49[];   /* repeated on purpose: keeps fm-a1's func_001BE4D8 matching with fm-a2's functions in this file (a2 rule Q1) */
 s32 func_001BE1E8(s32 a0, s32 a1) {
     if (a0 == 0) {
         a0 = D_006257D0;
