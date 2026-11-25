@@ -799,7 +799,7 @@ s32 func_001CE738(void) {
     return 2;
 }
 
-extern s32 D_00388480[];
+extern void *D_00388480[];   /* same array as above (merge of fm-a1 and fm-a2): pointer type, cast at use */
 s32 func_0010EEC8(s32);
 
 s32 func_001CE758(Script* arg0) {
@@ -807,7 +807,7 @@ s32 func_001CE758(Script* arg0) {
     s32 idx = arg0->unk_174[arg0->unk_174[3] + 2];
     s32 a = arg0->unk_174[arg0->unk_174[3] + 3];
     s32 b = arg0->unk_174[arg0->unk_174[3] + 4];
-    f32 t = func_0010EEC8(D_00388480[idx]);
+    f32 t = func_0010EEC8((s32)D_00388480[idx]);
 
     D_006298F0[i][16] = t;
     arg0->unk_174[3] -= 4;
@@ -3107,8 +3107,6 @@ s32 func_001D5AE8(Script* arg0) {
     return 2;
 }
 
-/* Unused on purpose, like func_001CF970_f1_pad (func_001DB7A8, notes/f1.md F1). */
-extern s32 func_001D5B60_f1_pad;
 
 s32* func_001E98D0(s32, s32);
 
