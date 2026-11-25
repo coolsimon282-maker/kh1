@@ -415,7 +415,54 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00235520);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00235688);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002357F0);
+extern s32 D_00647FB4;
+extern s32 D_00647FC8;
+extern s32 D_00425C10;
+extern s32 D_00425C14;
+extern char *D_00648020;
+extern char D_00425CB0[];
+extern s32 D_00647FB0_a __asm__("D_00647FB0");
+extern s32 (*D_00648034_a)(s32) __asm__("D_00648034");
+extern s32 D_00647FC4_a __asm__("D_00647FC4");
+int sceMcChdir(int, int, const char *, char *);
+int sceMcSync(int, int *, int *);
+
+void func_002357F0(void) {
+    s32 *st = &D_00647FB4;
+
+    switch (*st) {
+    case 0:
+        sceMcChdir(D_00425C10, D_00425C14, D_00648020, D_00425CB0);
+        (*st)++;
+        break;
+    case 1:
+        if (sceMcSync(1, NULL, &D_00647FC8) != 0) {
+            (*st)++;
+        }
+        break;
+    case 2:
+        switch (D_00647FC8) {
+        case 0:
+            D_00648000 = 0;
+            break;
+        case -2:
+            D_00648000 = 1;
+            break;
+        case -4:
+            D_00648000 = 2;
+            break;
+        default:
+            D_00648000 = 3;
+            break;
+        }
+        D_00647FB0_a = 0;
+        D_00647FD8 = D_00647FD4;
+        if (D_00648034_a != NULL) {
+            D_00648034_a(D_00647FC4_a);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00235950);
 
