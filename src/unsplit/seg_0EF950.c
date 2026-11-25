@@ -3081,7 +3081,35 @@ void func_0020BBC0(void *arg0) {
     func_0020BB90((val7 - 0x7000) >> 4, (val5 - 0x7400) >> 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020BC48);
+extern f32 D_006411E4;
+extern s32 D_006411E8;
+extern f32 D_006411EC;
+extern f32 D_006411F0;
+extern f32 D_006411F4;
+extern f32 D_006411F8;
+extern f32 D_00641210_f __asm__("D_00641210");
+extern f32 D_00641214_f __asm__("D_00641214");
+
+/* unused: layout only (notes/f1.md F1). With 0, 1, 2 or 4 of them func_002145D8 or func_00212930 change; 3 and 5
+ * keep the file matching (25 Nov). */
+extern s32 D_20BC48_layout1;
+extern s32 D_20BC48_layout2;
+extern s32 D_20BC48_layout3;
+void func_0020BC48(s32 a0, s32 a1, s32 a2) {
+    if (((a1 - (s32)D_00641210_f + 1) >> 1) == 0 && ((a2 - (s32)D_00641214_f + 1) >> 1) == 0) {
+        D_00641210_f = a1;
+        D_00641214_f = a2;
+        D_006411E0 = 0;
+        return;
+    }
+    D_006411E0 = 1;
+    D_006411E4 = a0;
+    D_006411E8 = 0;
+    D_006411EC = D_00641210_f;
+    D_006411F0 = D_00641214_f;
+    D_006411F4 = a1;
+    D_006411F8 = a2;
+}
 
 void func_0020BC48(s32, s32, s32);
 
