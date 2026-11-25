@@ -3370,7 +3370,15 @@ s32 func_0014D878(u8* p, s32 a) {
     return *(s32*)(p + 0x70);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D890);
+void func_0014D7B8();
+void func_0014D210();
+void func_0014D6B0();
+void func_0014D890(void) {
+    func_0014F830(1, 0x34, 0, 0, (s32)func_0014D7B8, 0, (s32)func_0014D878, (s32)func_00126E80, 0);
+    func_0014F830(2, 0x3D, 0, 0, (s32)func_0014D210, (s32)func_0014CEE8, (s32)func_0014D330, 0, (s32)func_0014D3C8);
+    func_0014F830(3, 5, 0, 0, (s32)func_0014D210, (s32)func_0014D6B0, (s32)func_0014D760, 0, 0);
+    func_0014F830(5, 2, 0, 0, 0, (s32)func_0014D6B0, (s32)func_0014D778, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D988);
 
