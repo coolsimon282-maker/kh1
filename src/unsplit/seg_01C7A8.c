@@ -213,7 +213,47 @@ s32 func_0011CBA0(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CBE0);
+typedef struct {
+    s32 off;
+    s32 size;
+} A2SecCBE0;
+void func_001EE710(s32, u8 *, s32);
+void *func_0011ED30(s32, s32 (*)(void));
+
+void func_0011CBE0(s32 a0, s32 a1_, s32 a2, void (*cb)(void)) {
+    u8 *a1 = (u8 *)a1_;
+    A2SecCBE0 *s;
+    u8 *p0;
+    u8 *p1;
+    s32 size0, size1;
+
+    s = (A2SecCBE0 *)(a1 + 0x10);
+    p0 = a1 + s->off;
+    size0 = s->size;
+    s = (A2SecCBE0 *)(a1 + 0x18);
+    p1 = a1 + s->off;
+    size1 = s->size;
+    D_004E3430 = cb;
+    if (*(s32 *)(p1 + 4) > 0x7547F) {
+        func_001EE1E0(0, 0);
+        func_001EE1E0(1, 0);
+        func_001EE1E0(0, 1);
+        func_001EE1E0(1, 1);
+        D_002BD8B8[0] = -2;
+        D_002BD8B8[1] = -2;
+        if (a0 == 1) {
+            a0 = 0;
+            goto skip;
+        }
+    }
+    D_002BD8B8[a0] = a2;
+    func_001EE1E0(0, a0);
+    func_001EE1E0(1, a0);
+skip:
+    func_001EE518(a0, (s32)p0, size0);
+    func_001EE710(a0, p1, size1);
+    func_0011ED30(10000, func_0011CBA0);
+}
 
 typedef struct {
     s32 off;
