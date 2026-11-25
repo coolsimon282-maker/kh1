@@ -654,7 +654,43 @@ void fm_func_0011E340(void) {
     D_002C1394 = func_0011E248();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E368);
+extern s32 D_004E3A1C;
+s32 func_001EDBC0(s32, s32, s32);
+
+s32 func_0011E368(s32 a0, s32 a1) {
+    Seg1C7A8Ent0C *e = D_004E3454;
+    s32 i;
+    s32 r;
+
+    if (a0 == -1) {
+        if (D_004E3A1C != 0) {
+            return 1;
+        }
+        r = func_001EDBC0(-8, -1, -1);
+        if (r == 0) {
+            s32 n = D_004E344C;
+            for (i = 0; i < n; i++) {
+                e->unk_00 = 0;
+                e->unk_04 = 0;
+            }
+        }
+        return r;
+    }
+    for (i = 0; i < D_004E344C; i++, e++) {
+        if (e->unk_00 == a0 && e->unk_04 == a1) {
+            if (e->unk_08 != 0) {
+                return 1;
+            }
+            r = func_001EDBC0(-8, a0, a1);
+            if (r == 0) {
+                e->unk_00 = 0;
+                e->unk_04 = 0;
+            }
+            return r;
+        }
+    }
+    return 0;
+}
 
 void func_0011E480(void) {
     func_0011C5F0(0, 0, 0x3C0);
