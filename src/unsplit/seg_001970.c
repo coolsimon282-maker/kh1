@@ -508,7 +508,40 @@ void func_00105560(s32 a0, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_001055B8);
+extern Seg1970Unk14* D_002A62B0;
+extern s32 D_002A62D0;
+typedef struct {
+    u8 unk_00[0xB];
+    u8 unk_0B;
+    f32 unk_0C;
+    u32 unk_10_0 : 1;
+    u32 unk_10_1 : 31;
+} Seg1970Unk14B;
+
+void func_001055B8(s32 a0, s32 a1) {
+    s32 i;
+    s32 n;
+    Seg1970Unk14B* p;
+
+    if (D_002A6258 > 0) {
+        p = (Seg1970Unk14B*)D_002A6238;
+        i = D_002A6258;
+        do {
+            if (p->unk_0B == a0) p->unk_10_0 = a1;
+            p++;
+        } while (--i);
+    }
+    if (D_002A3F28 != 0) {
+        n = D_002A62D0;
+        if (n > 0) {
+            p = (Seg1970Unk14B*)D_002A62B0;
+            do {
+                if (p->unk_0B == a0) p->unk_10_0 = a1;
+                p++;
+            } while (--n);
+        }
+    }
+}
 
 extern Seg1970Unk14 *D_002A62B0;
 extern s32 D_002A62D0;
