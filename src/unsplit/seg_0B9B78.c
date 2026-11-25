@@ -1755,4 +1755,31 @@ loop:
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF888);
+void func_001BF888(f32* q, f32 (*m)[4]) {
+    s32 i = 0;
+    s32 j;
+    s32 k;
+    f32 s;
+    f32 t;
+    f32* p;
+
+    if (m[1][1] > m[0][0]) {
+        i = 1;
+    }
+    if (m[i][i] < m[2][2]) {
+        i = 2;
+    }
+    j = (i + 1) % 3;
+    k = (j + 1) % 3;
+    p = (f32*)(i * 4 + (s32)q);
+    s = sqrtf(m[i][i] - m[j][j] - m[k][k] + 1.0f) * 0.5f;
+    *p = s;
+    if (s == 0.0f) {
+        func_001BF290((A2Vec4*)q);
+        return;
+    }
+    t = s * 4.0f;
+    q[j] = (m[i][j] + m[j][i]) / t;
+    q[k] = (m[i][k] + m[k][i]) / t;
+    q[3] = (m[j][k] - m[k][j]) / t;
+}
