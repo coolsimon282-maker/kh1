@@ -4956,7 +4956,25 @@ void func_001545F0(u8* p, u8* a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001546B8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154768);
+void func_00154768(u8* p, u8* q, s32* out) {
+    f32* v = (f32*)(q + 0x10);
+    f32* fw = (f32*)(p + 0x30);
+    f32 a;
+    if (sceVu0InnerProduct(fw, v) < 0.0f) {
+        func_00130340(p, 0x100004C, 0.0f);
+        a = atan2f(-v[0], -*(f32*)(q + 0x18));
+    } else {
+        func_00130340(p, 0x100004D, 0.0f);
+        a = atan2f(v[0], *(f32*)(q + 0x18));
+    }
+    func_00130578((s32)p, 0x40000000, 8.0f);
+    func_001373F8(p, 30.0f);
+    func_00137688((s32)p, a);
+    *(f32*)(p + 0x150) = a;
+    sceVu0CopyVector((f32*)out, fw);
+    out[3] = 0;
+    sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154880);
 
