@@ -457,7 +457,30 @@ void func_001E01F0(void) {
     D_003854E0.unk_3070 &= ~((u64)1 << 52);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0220);
+extern s32 D_00375BC0;
+extern char D_00490820[];
+extern char D_003DAC40[][6];
+s32 fm_func_0011E340(s32);
+s32 func_00155ED8(s32, s32);
+
+s32 func_001E0220(A2Script *p) {
+    char buf[0x200];
+    s32 *q;
+
+    if (!(D_00375BC0 & 1)) {
+        if (fm_func_0011E340(0) == 0) {
+            sprintf(buf, D_00490820, D_003DAC40[p->unk_174[p->unk_174[3] + 3]], p->unk_174[p->unk_174[3] + 4]);
+            q = &D_003DACA0;
+            *q = func_00155ED8(0x3C, 4);
+            func_00120590(buf, *q, (s32 (*)(void))func_001E01F0, 0);
+            D_003854E0.unk_3070 |= (u64)1 << 52;
+        } else {
+            return 4;
+        }
+    }
+    p->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001E0318(void) {
     return ((s32)(*(u64 *)D_0038CD00 >> 52) & 1) ? 4 : 2;
