@@ -2366,7 +2366,46 @@ void func_00229490(u8 *a0) {
     func_0020BDA8(0x10);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002295A0);
+/* unused: layout only (F1): without them func_0022FCB8 loses two `lw D(reg)` folds; 2-8 OK, 4 used. */
+extern s32 D_2295A0_pad1;
+extern s32 D_2295A0_pad2;
+extern s32 D_2295A0_pad3;
+extern s32 D_2295A0_pad4;
+extern s32 D_003F34A8;
+extern s32 D_003F34C4;
+extern s32 D_003F6E24;
+extern s32 D_003F6E2C;
+extern s32 D_00643730_w __asm__("D_00643730");
+void func_0020D530(void);
+s32 func_0020D030_r(void) __asm__("func_0020D030");
+s32 func_0020D2F8(void);
+void func_00229490(u8 *a0);
+
+void func_002295A0(s32 a0, s32 a1) {
+    s32 e;
+    func_001F3110(a0);
+    D_003F34A8 = 1;
+    func_0020D530();
+    D_003F6E24 = 1;
+    D_003F6E2C = a1;
+    if (a1 != 1) {
+        D_00643720[1] = 1;
+        D_00643720[2] = 2;
+        D_00643720[0] = 0;
+        D_00643720[3] = 3;
+        D_00643730_w = 4;
+    } else {
+        D_00643730_w = 3;
+        D_00643720[1] = a1;
+        D_00643720[2] = 3;
+        D_00643720[0] = 0;
+    }
+    func_0011D598(6);
+    e = func_0020D030_r();
+    D_003F34C4 = e;
+    if (e != 0) func_00229490((u8 *)e);
+    *(s16 *)((u8 *)func_0011ED30(0x270FF, func_0020D2F8) + 2) = a0;
+}
 
 void func_00229690(u8 *a0) {
     u8 *e[3];
@@ -4073,7 +4112,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
 extern s32 D_231EA0_layout2;
@@ -4101,13 +4140,6 @@ extern s32 D_231EA0_layout23;
 extern s32 D_231EA0_layout24;
 extern s32 D_231EA0_layout25;
 extern s32 D_231EA0_layout26;
-extern s32 D_231EA0_layout27;
-extern s32 D_231EA0_layout28;
-extern s32 D_231EA0_layout29;
-extern s32 D_231EA0_layout30;
-extern s32 D_231EA0_layout31;
-extern s32 D_231EA0_layout32;
-extern s32 D_231EA0_layout33;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
