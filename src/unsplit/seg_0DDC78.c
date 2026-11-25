@@ -514,7 +514,18 @@ void func_001E0608(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E06C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E07A8);
+extern u8 *D_003DABD0[];
+
+void func_001E07A8(s32 n) {
+    sceGsSetDefLoadImage(&D_0062F670, 0xE00, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_0062F670, D_003DABD0[1] + n * 0x600);
+    sceGsSetDefLoadImage(&D_0062F670, 0x1400, 8, 1, 0, 0, 0x200, 0xC0);
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceGsExecLoadImage(&D_0062F670, D_003DABD0[1] + n * 0x600 + 0x48000);
+}
 
 extern s32 D_003DAD38;
 extern u8 D_003DAE30[];
