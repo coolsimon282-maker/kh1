@@ -452,6 +452,7 @@ int sceClose(int fd);
 s32 func_0024D9F0(void) {
     s32 *p = &D_0046A614;
     s32 fd;
+    s32 k;
     long sz;
     s32 r;
 
@@ -504,7 +505,48 @@ s32 func_0024DB68(void) {
     return D_0046A674;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DB78);
+extern char D_004919B8[];
+int sceIoctl2(int, int, void *, unsigned int, void *, unsigned int);
+int sceDclose(int);
+
+s32 func_0024DB78(s32 size) {
+    A2MountF *m = &D_0046A688_f;
+    s32 *st = &D_0046A674;
+    s32 *p;
+    s32 n = 0;
+    s32 mounted;
+    s32 fd;
+    s32 k;
+    char buf[0x40];
+
+    mounted = m->unk_10;
+    *st = 0;
+    if (mounted != 0) {
+        func_0024D9A0();
+    }
+    p = &D_0046A614;
+    *p = 0x28;
+    sprintf(buf, D_004919B8, m->unk_04(), D_0046A650);
+    fd = sceOpen(buf, 1);
+    if (fd >= 0) {
+        n = sceIoctl2(fd, 0x6803, 0, 0, 0, 0);
+        if (n < 0) {
+            n = 0;
+        }
+        n++;
+        sceDclose(fd);
+    }
+    *p = 0x32;
+    k = ((((u32)(size + 0xFFFFF) >> 20) + 0x7F) >> 7) + 1;
+    if (func_0024DAD0(D_004919B0, k - n) == 0) {
+        *st = -1;
+    }
+    if (mounted != 0) {
+        func_0024D8F0();
+    }
+    *p = 0x50;
+    return *st;
+}
 
 typedef struct {
     u8 stat[0x40];
@@ -519,6 +561,7 @@ s32 strcmp(const char *, const char *);
 s32 func_0024DCC8(u8 *path, u8 *name) {
     Dirent24DCC8 d;
     s32 fd;
+    s32 k;
     s32 n;
     s32 found = 0;
 
@@ -587,7 +630,7 @@ int abs(int);
 int memcmp(const void*, const void*, unsigned int);
 int sceSifSearchModuleByName(const char*);
 s32 func_0024DCC8(u8*, u8*);
-void func_0024DB78(s32);
+s32 func_0024DB78(s32);
 s32 func_0024D9F0(void);
 s32 func_0024DAA0_r(void) __asm__("func_0024DAA0");
 s32 func_0024DDF8(void) {
