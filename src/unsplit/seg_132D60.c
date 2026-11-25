@@ -501,7 +501,22 @@ f32 func_002369E8(u32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236A58);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00236C68);
+extern f32 D_00425CE0[4][4];
+
+void func_00236C68(sceVu0FMATRIX out, sceVu0FVECTOR a1, sceVu0FVECTOR a2, sceVu0FVECTOR a3, f32 *rot) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    sceVu0FVECTOR v2;
+
+    sceVu0RotMatrixX(m, D_00425CE0, rot[0]);
+    sceVu0RotMatrixY(m, m, rot[1]);
+    sceVu0RotMatrixZ(m, m, rot[2]);
+    sceVu0ApplyMatrix(v0, m, a2);
+    sceVu0ApplyMatrix(v1, m, a3);
+    sceVu0ApplyMatrix(v2, m, a1);
+    sceVu0CameraMatrix(out, v2, v0, v1);
+}
 
 s32 func_00236D48(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0RotMatrixZ(arg0, arg1, arg2[2]);
