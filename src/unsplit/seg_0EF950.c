@@ -1756,7 +1756,14 @@ void func_001FD100(s32 a0, s32 a1) {
     func_001FCDC8((a0 + 0xE), (a1 + 6), 0, 0, 0x38, 0, 0x64FFFFFF, 0x64FFFFFF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD170);
+void func_001FD170(s32 a0, s32 a1, s32 a2) {
+    u32 c;
+
+    c = func_001EDD88(0x64323296, a2);
+    func_001FCDC8(a0, a1, 0, 0, 0x39, 0, c, func_001EDD88(0x64323296, a2));
+    c = func_001EDD88(0x64FFFFFF, a2);
+    func_001FCDC8(a0 + 0xE, a1 + 6, 0, 0, 0x38, 0, c, func_001EDD88(0x64FFFFFF, a2));
+}
 
 s32 func_001FD248(u8 *a0) {
     return ((*(s32 *)(a0 + 0xB0) - 0x7000) >> 4);
