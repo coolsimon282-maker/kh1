@@ -3374,7 +3374,21 @@ void func_0020DD38(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DE28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DED8);
+extern s32 D2C40_v[][5] __asm__("D_003F2C40");
+
+void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    s32 *e = D2C40_v[a1];
+    u32 c = e[4];
+    s32 v;
+
+    if (a5 != 0) {
+        v = func_001EF9E0(a5);
+    } else {
+        v = func_001EFBB8(0x97);
+    }
+    func_00201550(a0, 2, 0, a2, a3, a4, a2 + 0x18, (s32)e, v, a6);
+    func_002083A8(a0, a2 + 6, a3 + 4, 0x12, a5, c >> 24);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DFC8);
 
