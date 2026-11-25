@@ -2070,7 +2070,41 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132160);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001323A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132550);
+typedef struct { u8 pad[0xC]; s32 n; u8 *e; u8 pad14[0x4]; s32 x18; u8 pad1c[4]; s32 x20; s32 x24; s32 x28; } V132550;
+extern V132550 D_00525298_w __asm__("D_00525298");
+extern f32 D_00304C40;
+void func_00176838(void);
+void func_0014F1B8(s32);
+void func_00168500(s32);
+s32 func_00142240(s32);
+void func_001245F0(s32);
+void func_0017D9C8(s32);
+void func_0017EB88(void);
+void func_001252F8(void);
+void func_00156C18(s32);
+void func_001590A8(void);
+void func_00132550(void) {
+    s32 i;
+    u8 *e;
+
+    func_00176838();
+    func_0014F1B8(D_00525298_w.x18);
+    func_00168500(D_00525298_w.x24);
+    e = D_00525298_w.e;
+    for (i = 0; i < D_00525298_w.n; i++, e += 0x78) {
+        s32 fl = *(s32 *)(e + 4);
+        if (fl & 2) continue;
+        if (*(s32 *)(e + 8) == 0) continue;
+        if ((fl & 0x10000) && func_00142240(*(s32 *)e) == 1) continue;
+        func_001245F0(*(s32 *)e);
+    }
+    if (D_00525298_w.x20 != 0) func_0017D9C8(D_00525298_w.x20);
+    if (D_002E26A0 != NULL) func_0017EB88();
+    func_001252F8();
+    func_00156C18(D_00525298_w.x28);
+    func_001590A8();
+    D_00304C40 = 30.0f;
+}
 
 void func_00162058_p(u8*) __asm__("func_00162058");
 void func_00132678(u8* a0) {
@@ -2263,6 +2297,9 @@ typedef struct {
     s32 unk_14;
     s32 unk_18;
 } A2Ent1C;
+/* unused: layout only (F1): with func_00132550 in C, func_001333E0 changes unless a declaration sits right
+ * before this alias (1-8 tested OK; pads above func_00132550 or before func_001333E0 do not help). */
+extern s32 D_1333E0_pad1;
 extern A2Ent1C D_00525368_e[] __asm__("D_00525368");
 void func_001373F8(u8 *, f32);
 
