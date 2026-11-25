@@ -2066,7 +2066,34 @@ void func_00244960(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244968);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244A10);
+typedef struct { u8 b[0xC0]; } Mon132_C0a;
+extern Mon132_C0a D_0065FD80_a[5][10] __asm__("D_0065FD80");
+extern Mon132_C0a D_00662300_a[3] __asm__("D_00662300");
+extern s32 D_00662540_w[] __asm__("D_00662540");
+void func_00247A30(Mon132_C0a *);
+
+void func_00244A10(s32 a0, s32 a1) {
+    s32 *d = D_00662540_w;
+    s32 i;
+    s32 j;
+
+    if (d[0] == 0) {
+        d[1] = a1;
+        d[0] = 1;
+        d[5] = a0;
+        for (i = 0; i < 5; i++) {
+            for (j = 0; j < 10; j++) {
+                func_00247A30(&D_0065FD80_a[i][j]);
+            }
+        }
+        for (i = 0; i < 3; i++) {
+            func_00247A30(&D_00662300_a[i]);
+        }
+    } else {
+        d[1] += a1;
+    }
+    d[2] = 0;
+}
 
 extern void* D_00662540;
 
