@@ -45,7 +45,47 @@ void func_0024BA00(s32 a0) {
     D_00669A3C = t0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA28);
+extern s8 D_0046A070[];
+unsigned int strlen(const char *);
+int memcmp(const void *, const void *, unsigned int);
+
+s32 func_0024BA28(s32 a0, s32 a1, s32 a2, void *a3) {
+    s32 *p = (s32 *)a0;
+    s32 nl = strlen((char *)a1);
+    s32 len, w, type, cnt, sz, k;
+
+    for (;;) {
+        len = *p++;
+        if (len == 0) {
+            return -1;
+        }
+        w = (len + 3) / 4;
+        if (nl == len && memcmp(p, (char *)a1, len) == 0) {
+            u8 *src;
+            u8 *d;
+
+            p += w;
+            type = *p++;
+            cnt = *p++;
+            sz = D_0046A070[type];
+            if (a2 >= cnt) {
+                return -1;
+            }
+            src = (u8 *)p + a2 * sz;
+            d = a3;
+            for (k = 0; k < sz; k++) {
+                *d++ = *src++;
+            }
+            return type;
+        }
+        p += w;
+        type = *p++;
+        cnt = *p++;
+        sz = D_0046A070[type];
+        w = (sz * cnt + 3) / 4;
+        p += w;
+    }
+}
 
 s32 func_0024BA28(s32, s32, s32, void *);
 
