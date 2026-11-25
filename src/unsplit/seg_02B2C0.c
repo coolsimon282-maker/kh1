@@ -1156,7 +1156,27 @@ s32 func_0012DD38(void) {
     return *p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012DD70);
+s32 func_00130030(u8 *);
+s32 func_001443A8(u8 *);
+s32 func_0013DB30(u8 *);
+s32 func_0012DD70(u8 *a0) {
+    u8 *p = D_002E26A0;
+
+    if (a0[6] == 0x47) return 1;
+    switch (a0[6]) {
+    case 4:
+    case 5:
+    case 0x37:
+        if (func_00130030(p) || (*(s32 *)p & 0x400)) return 0;
+        break;
+    }
+    if ((a0[6] != 0x64 && func_001443A8(p)) || *(s32 *)(p + 0x70) == 1) return 0;
+    if (func_0013DB30(p)) return 1;
+    if (*(u16 *)(a0 + 6) == 2 && (*(s32 *)(p + 0x164) == 0x3D || *(s32 *)(p + 0x164) == 0x8A)
+        && 14.0f <= *(f32 *)(p + 0x16C)) return 1;
+    if (a0[6] == 0x63 && 12.0f <= *(f32 *)(p + 0x16C)) return 1;
+    return 0;
+}
 
 typedef struct {
     s32 a;
