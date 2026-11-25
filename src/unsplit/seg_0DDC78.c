@@ -179,7 +179,40 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DEC10);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DED08);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DEDD8);
+extern f32 D_002DECF0[];
+extern f32 D_002DECE0[];
+f32 func_001E9E58(f32 *, f32 *);
+void func_001E9D00(f32 *, f32 *, f32 *, f32);
+void func_001E9DC8(f32 *, f32 *, f32 *);
+void sceVu0SubVector(f32 *, f32 *, f32 *);
+void sceVu0AddVector(f32 *, f32 *, f32 *);
+
+s32 func_001DEDD8(u8 *a0) {
+    f32 v[4] __attribute__((aligned(16)));
+    f32 r[4] __attribute__((aligned(16)));
+    f32 w[4] __attribute__((aligned(16)));
+    f32 len;
+    f32 z;
+
+    if (*(s32 *)(*(u8 **)(a0 + 0x10) + 0x14) & 2) {
+        return 4;
+    }
+    len = func_001E9E58(D_002DECF0, D_002DECE0);
+    sceVu0SubVector(v, D_002DECF0, D_002DECE0);
+    v[0] = v[0] / len * *(f32 *)(a0 + 0x1C);
+    v[1] = v[1] / len * *(f32 *)(a0 + 0x1C);
+    v[2] = v[2] / len * *(f32 *)(a0 + 0x1C);
+    z = 0.0f;
+    sceVu0AddVector(v, D_002DECE0, v);
+    func_001E9D00(r, D_002DECF0, D_002DECE0, z);
+    w[0] = *(f32 *)(a0 + 0x20);
+    w[1] = *(f32 *)(a0 + 0x24);
+    w[2] = z;
+    w[3] = 1.0f;
+    func_001E9DC8(v, r, w);
+    sceVu0CopyVector(**(f32 ***)(a0 + 0x10), v);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DEF20);
 
