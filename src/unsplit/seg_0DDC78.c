@@ -564,7 +564,26 @@ s32 func_001E0318(void) {
     return ((s32)(*(u64 *)D_0038CD00 >> 52) & 1) ? 4 : 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0338);
+double ceil(double);
+void func_0011E220(s32, s32, s32, s32);
+
+s32 func_001E0338(A2Script *p) {
+    s32 t = D_003DACA0;
+    s32 a = p->unk_174[p->unk_174[3] + 2];
+    f32 x = (f32)p->unk_174[p->unk_174[3] + 3] / 100.0f;
+    f32 y = (f32)p->unk_174[p->unk_174[3] + 4] / 100.0f;
+    s32 *tab = (s32 *)(*(s32 *)(t + 4) * 4 + t);
+    s32 v = ((s32 *)t)[a + 2];
+    s32 q = t + tab[a + 2];
+
+    if (!(D_00375BC0 & 1)) {
+        func_0011E220(q, v, (s32)ceil(x * 16383.0f), (s32)ceil(y * 16383.0f));
+    }
+    *(u64 *)((u8 *)p + 0x328) |= 4;
+    *(f32 *)((u8 *)p + 0x2F4) = 4.0f;
+    p->unk_174[3] -= 3;
+    return 6;
+}
 
 void* func_001EE768(s32 arg0);
 s32 func_001E0498(A2Script *p) {
