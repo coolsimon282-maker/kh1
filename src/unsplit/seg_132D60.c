@@ -1483,14 +1483,65 @@ s32 *func_0023C228(void) {
     return NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C270);
+typedef struct { s32 a; s32 b; s32 c; s32 d; } V4_C270;
+typedef struct { u8 pad[0x60]; V4_C270 m[4]; V4_C270 n[4]; } Obj_C270;
+extern Obj_C270 D_00651210_o __asm__("D_00651210");
+extern s32 D_00651200_i __asm__("D_00651200");
+extern u8 D_00426850[];
+extern sceVu0FMATRIX D_002DEC20;
+extern f32 D_002B8344;
+void func_0012EC60(s32, s32, f32 *);
+s32 func_00249580(f32 *);
+void func_00237A48(s32 *, sceVu0FMATRIX, f32 *, s32);
+void func_002475E8(s32, u8 *, s32);
+void func_00249558(void *, void *);
+void func_002477A8(u8 *, s32 *);
+s32 func_002388B8(u8 *, s32, s32);
+
+s32 func_0023C270(u8 *e) {
+    s32 w[4];
+    s32 sz[4];
+    sceVu0FVECTOR v;
+    s32 x;
+    s32 y;
+    s32 i;
+    s32 *h = (s32 *)(e + 0xD8);
+
+    if (func_001233F8(h[0]) == 0) {
+        return 1;
+    }
+    if (*(f32 *)(e + 4) == 0.0f) {
+        func_002479A0((s32)(e + 0x10));
+    }
+    *(f32 *)(e + 4) += D_002B8344;
+    func_0012EC60(h[0], h[1], v);
+    if (func_00249580(v) != 0) {
+        return 0;
+    }
+    func_00237A48(w, D_002DEC20, v, 1);
+    func_002475E8((s32)(e + 0x10), (u8 *)&D_00651210_o, (s32)D_00426850);
+    func_00249558(w, w);
+    x = w[0];
+    y = w[1];
+    func_002477A8(e + 0x10, sz);
+    x -= sz[2] / 2;
+    y -= sz[3] / 2;
+    for (i = 0; i < 4; i++) {
+        s32 *p = &D_00651210_o.n[i].b;
+        p[-1] += x * 16;
+        p[0] += y * 16;
+    }
+    D_00651200_i = func_002388B8((u8 *)&D_00651210_o, 1, D_00651200_i);
+    func_00247AA0((s32)(e + 0x10));
+    return 0;
+}
 
 extern u64 D_00650DE0[];
 extern u_long128 *D_00651200;
 extern u_long128 *D_00651204;
 typedef struct { s32 used; u8 pad4[0xDC]; } Ent132_E0s;
 extern Ent132_E0s D_00651310_s[] __asm__("D_00651310");
-void func_0023C270(Ent132_E0s *);
+s32 func_0023C270_e(Ent132_E0s *) __asm__("func_0023C270");
 
 s32 func_0023C400(void) {
     s32 i;
@@ -1502,7 +1553,7 @@ s32 func_0023C400(void) {
     D_00651200 = (u_long128 *)&D_00351E10 + 1;
     for (i = 0; i < 10; i++) {
         if (D_00651310_s[i].used != 0) {
-            func_0023C270(&D_00651310_s[i]);
+            func_0023C270_e(&D_00651310_s[i]);
         }
     }
     func_00237018(D_00651204, D_00651200 - D_00651204, 1);
@@ -3602,6 +3653,11 @@ void func_00247C50(void *arg0) {
     func_002476A0(arg0);
 }
 
+/* unused: layout only (F1, with func_0023C270): 3, 4, 5 of these keep func_00247CC8 folding its address */
+extern s32 D_247CC8_pad1;
+extern s32 D_247CC8_pad2;
+extern s32 D_247CC8_pad3;
+extern s32 D_247CC8_pad4;
 extern void func_00249A48(void *, s32);
 extern u8 D_00431F30[];
 
