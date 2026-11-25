@@ -6054,7 +6054,31 @@ void func_0015D248(u8* p) {
     sceVu0ScaleVector((f32*)(p + 0x3C0), (f32*)(p + 0x200), 1.0f / D_002B8344);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015D2C8);
+s32 func_00105B10(s32, s32);
+s32 func_0015BB88(f32*, u8*, s32);
+f32 func_0015CA50(u8* p);
+s32 func_0015D2C8(u8* p) {
+    sceVu0FVECTOR box;
+    sceVu0FVECTOR v;
+    u8* e;
+    if (func_00105B10(func_00137450(*(s32*)(*(u8**)(p + 0x148) + 0x94)), *(s32*)(*(u8**)(p + 0x148) + 0x90)) != 1) {
+        return 0;
+    }
+    e = 0;
+    func_0015BAD0(p, *(u8**)(*(u8**)(p + 0x134) + 0x14), box);
+    sceVu0ScaleVector(v, (f32*)(p + 0x30), 85.0f);
+    v[1] = -func_0015CA50(p);
+    sceVu0AddVector(v, v, (f32*)(p + 0x10));
+    while ((e = func_001234A0(e)) != 0) {
+        if (e == p) {
+            continue;
+        }
+        if (func_0015BB88(box, e, 0) != 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015D3B8);
 
