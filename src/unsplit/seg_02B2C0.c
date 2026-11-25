@@ -2905,7 +2905,26 @@ s32 func_00138858(s32 a0) {
     return ((u16 *)((u8 *)D_003010F8 + 0x580))[a0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00138870);
+void func_001DE098(s32);
+
+void func_00138870(u8 *a0) {
+    s32 id;
+    u32 n;
+    u16 *p;
+
+    id = *(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C);
+    func_001DE098(id);
+    n = id - 300;
+    if (n < 200) {
+        func_001586A8(7);
+    }
+    if (n < 51) {
+        p = (u16 *)(n * 2 + (u32)D_003010F8 + 0x7D8);
+        if (*p < 9999) {
+            *p += 1;
+        }
+    }
+}
 
 s32 func_001388E8(u8 *a0) {
     return ((*(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C) ^ 0x190) == 0);
