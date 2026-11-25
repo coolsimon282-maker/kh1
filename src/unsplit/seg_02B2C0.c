@@ -1466,7 +1466,35 @@ void func_00130898(u8* a0, u8* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00130C28);
+typedef struct { s32 type; u16 a; u16 b; s32 c; s32 pad; } S130C28;
+s32 func_00164F18(s32, s32, S130C28*, s32);
+void func_00146FF0(u8*, s32, s32, s32);
+void func_00130C28(u8* p, f32 a, f32 b) {
+    S130C28 buf[8];
+    s32 j;
+    s32 n;
+    s32 i;
+    i = func_00164F18(*(s32*)(p + 0x15C), (*(s32**)(p + 0x1D4))[*(s32*)(p + 0x168)], buf, 8);
+    if (i > 0) {
+        j = 0;
+        n = i;
+        do {
+        switch (buf[j].type) {
+        case 0:
+            if (!((D_002C1EA8 >> 8) & 1)) {
+                func_0012C010(p, buf[j].a, buf[j].b);
+            }
+            break;
+        case 1:
+            if (!((D_002C1EA8 >> 10) & 1)) {
+                func_00146FF0(p, buf[j].a, buf[j].b, buf[j].c);
+            }
+            break;
+        }
+            j++;
+        } while (--n != 0);
+    }
+}
 
 f32 func_0013FE10(void);
 f32 func_00130D20(u8 *a0) {
