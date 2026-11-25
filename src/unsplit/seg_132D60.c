@@ -1077,7 +1077,19 @@ void func_0023CF08(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CF30);
+extern s32 D_00449990;
+extern s32 D_0044A800;
+extern s32 D_0044A810;
+extern s32 func_0023CEB0(void);
+
+void func_0023CF30(void) {
+    memset(&D_0044A820, 0, 8);
+    func_00247B60(&D_0044A800, D_00651BD8, &D_00449990);
+    func_00247B60(&D_0044A810, D_00651BE8, &D_00449990);
+    if (func_0011ED60(func_0023CEB0) == 0) {
+        func_0011ED30(0x28489, func_0023CEB0);
+    }
+}
 
 extern s32 D_0044A820;
 
