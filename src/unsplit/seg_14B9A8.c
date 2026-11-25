@@ -470,7 +470,46 @@ s32 func_0024DB68(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DB78);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DCC8);
+typedef struct {
+    u8 stat[0x40];
+    char d_name[256];
+    void *d_private;
+} Dirent24DCC8;
+s32 sceDopen(u8 *);
+s32 sceDread(s32, Dirent24DCC8 *);
+s32 sceDclose(s32);
+s32 strcmp(const char *, const char *);
+
+s32 func_0024DCC8(u8 *path, u8 *name) {
+    Dirent24DCC8 d;
+    s32 fd;
+    s32 n;
+    s32 found = 0;
+
+    fd = sceDopen(path);
+    if (fd < 0) {
+        return 0;
+    }
+    n = 0;
+    while (sceDread(fd, &d) > 0) {
+        n++;
+    }
+    sceDclose(fd);
+    if (n == 0) {
+        return 0;
+    }
+    fd = sceDopen(path);
+    if (fd < 0) {
+        return 0;
+    }
+    while (sceDread(fd, &d) > 0) {
+        if (strcmp(d.d_name, (char *)name) == 0) {
+            found = 1;
+        }
+    }
+    sceDclose(fd);
+    return found;
+}
 
 typedef struct {
     u8 pad[8];
