@@ -1973,7 +1973,29 @@ s32 func_0023D1E0(f32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D208);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D490);
+extern s32 D_00454A20_w[] __asm__("D_00454A20");
+s32 func_0023D490(u8* pp) {
+    s32* p = (s32*)pp;
+    u8* q;
+    s32 c, d;
+    if (p[0] == 4) {
+        s32 r = 0;
+        if (D_00454A20_w[3] >= 25) r = 1;
+        if (D_00454A20_w[2] >= 4) r = 1;
+        if (D_00454A20_w[3] >= 49) r = 2;
+        if (D_00454A20_w[2] >= 7) r = 2;
+        return r;
+    }
+    if (p[0] == 3) return 2;
+    q = *(u8**)(*(u8**)(p + 1) + 0x6C);
+    c = *(s32*)(q + 0x40);
+    if (c >= 37) return 2;
+    d = *(s32*)(q + 0x48);
+    if (d >= 7) return 2;
+    if (c >= 19) return 1;
+    if (d >= 4) return 1;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023D528);
 
