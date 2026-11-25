@@ -4079,7 +4079,29 @@ void func_0013A790(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0013A910);
+extern u8 D_00350D88[];
+extern u32 D_002C1EA8;
+extern u32 D_00301094;
+s32 func_00153D78(u8 *);
+s32 func_0013A910(s32 a0) {
+    u8 *p;
+    u32 v;
+    s32 i;
+
+    if (((u32)D_002E31A8 >> 2) & 1) return 0;
+    p = D_002E26A0;
+    if (!((*(u64 *)(D_00350D88 + *(s32 *)(p + 0x70) * 32) >> 7) & 1)) return 0;
+    v = D_002C1EA8;
+    if ((v >> 16) & 1) return 0;
+    if (*(s32 *)(*(u8 **)(p + 0x6C) + 0x44) < (D_003051EC + a0 * 8)[0x98]) return 0;
+    if (!(v & 1)) return 0;
+    if (D_002B8678 == 3 && D_002B8680 == 0x14) return 1;
+    if (D_00301094 & (1 << a0)) return 0;
+    for (i = 0; i < 3; i++) {
+        if ((&D_002E26A0)[i] == NULL || func_00153D78((&D_002E26A0)[i]) != 0 || func_0012F040((s32)(&D_002E26A0)[i], -1) == 0) return 0;
+    }
+    return 1;
+}
 
 typedef struct { u32 pad:3; u32 b:1; u32 rest:28; f32 f; } V301088;
 extern V301088 D_00301088_v __asm__("D_00301088");
