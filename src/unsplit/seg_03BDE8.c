@@ -568,7 +568,7 @@ u8* func_00147C98_3(s32, s32, s32) __asm__("func_00147C98");
 u8* func_001486D8(u8*, u8*);
 u8* func_00146BD0(s32, s32);
 void func_0011D1E0(s32, s32, u8*, s32);
-void func_00148BC0(void);
+s32 func_00148BC0(u8*);
 u8* func_00121C98(s32, u8*);
 void func_0014CCE0_f(u8*, f32) __asm__("func_0014CCE0");
 u8* func_0014CB90_r(u8*) __asm__("func_0014CB90");
@@ -2809,7 +2809,33 @@ void func_00148B98(u8* p, s32 b, s32 c) {
     func_001487F8_v(*(s32*)(p + 0x68), b, (s32)p, c);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148BC0);
+void func_00148B70_f(u8*, s32, s32, f32) __asm__("func_00148B70");
+extern s32 D_00148BC0_pad2; /* unused: rule F1 (with func_00148BC0) */
+extern s32 D_00148BC0_pad6; /* unused: rule F1 (with func_00148BC0) */
+s32 func_00148BC0(u8* p) {
+    u8* q = *(u8**)(p + 0x20);
+    if (func_001233F8(*(s32*)(p + 0x10)) != 0) {
+        if (!(*(f32*)(p + 0x1C) <= 0.0f)) {
+            goto wait;
+        }
+        switch (q[4]) {
+        case 0:
+            func_00148A40(*(u8**)(p + 0x10), q[5]);
+            break;
+        case 1:
+            func_00148B70_f(*(u8**)(p + 0x10), q[5], *(s32*)(q + 8), *(f32*)(q + 0xC));
+            break;
+        case 2:
+            func_00148B98(*(u8**)(p + 0x10), q[5], *(s32*)(q + 8));
+            break;
+        }
+    }
+    func_00121EB0((s32)q);
+    return 4;
+wait:
+    *(f32*)(p + 0x1C) -= D_002B8344;
+    return 0;
+}
 
 u8* func_00148CB0(s32 a, f32 f) {
     u8* r = func_00147D18((s32)func_00148BC0);
