@@ -242,6 +242,46 @@ void func_001C6720(void) {
     D_003C5510_f.unk_128 = v[1];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C6890);
+void* memset(void*, s32, u32);
+extern sceVu0FVECTOR D_002DECE0;
+extern sceVu0FVECTOR D_002DECF0;
+extern f32 D_002DED00;
+extern f32 D_002DED04;
+f32 func_001E9E58(f32* a, f32* b);
+void func_001E9D00(f32* out, f32* a, f32* b, f32 roll);
+
+void func_001C6890(void) {
+    sceVu0FVECTOR v;
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR r;
+
+    memset(v, 0, 0x10);
+    v[3] = 1.0f;
+    memset(r, 0, 0x10);
+    sceVu0CopyVector(v, D_002DECE0);
+    sceVu0CopyVector(&D_003C5510_f.f[50], D_002DECF0);
+    D_003C5510_f.f[70] = func_001E9E58(v, &D_003C5510_f.f[50]);
+    D_003C5510_f.f[71] = D_002DED00;
+    func_001E9D00(r, &D_003C5510_f.f[50], v, D_002DED04);
+    D_003C5510_f.f[62] = 0.0f;
+    D_003C5510_f.f[63] = 0.0f;
+    D_003C5510_f.f[64] = 1.0f;
+    D_003C5510_f.f[65] = 1.0f;
+    D_003C5510_f.f[66] = 0.0f;
+    D_003C5510_f.f[67] = 1.0f;
+    D_003C5510_f.f[68] = 0.0f;
+    D_003C5510_f.f[69] = 1.0f;
+    sceVu0UnitMatrix(m);
+    sceVu0RotMatrixX(m, m, r[0]);
+    sceVu0RotMatrixY(m, m, r[1]);
+    sceVu0ApplyMatrix(&D_003C5510_f.f[62], m, &D_003C5510_f.f[62]);
+    sceVu0ApplyMatrix(v, m, v);
+    sceVu0CopyVector(&D_003C5510_f.f[54], r);
+    sceVu0UnitMatrix(m);
+    sceVu0RotMatrixX(m, m, r[0]);
+    sceVu0RotMatrixY(m, m, r[1]);
+    sceVu0RotMatrixZ(m, m, r[2]);
+    sceVu0ApplyMatrix(&D_003C5510_f.f[66], m, &D_003C5510_f.f[66]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C6A20);
