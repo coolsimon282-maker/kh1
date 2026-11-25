@@ -3061,7 +3061,39 @@ s32 func_001D2F38(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D2F60);
+typedef struct {
+    /* 0x000 */ s32 unk_000;
+    /* 0x004 */ f32* unk_004;
+    /* 0x008 */ f32 unk_008;
+    /* 0x00C */ u8 unk_00C[0x31C];
+    /* 0x328 */ u64 unk_328_0 : 1;
+    u64 unk_328_1 : 1;
+    u64 unk_328_2 : 62;
+} ScriptF2F;
+
+s32 func_001D2F60(Script* arg0) {
+    ScriptMsgG msg;
+    f32* o;
+    f32* p;
+    s32 k = arg0->unk_174[arg0->unk_174[3] + 3];
+    s32* q = func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 4]);
+
+    if (q != NULL) {
+        msg.unk_00 = 4;
+        o = *(f32**)&arg0->unk_00[4];
+        p = *(f32**)&q[1];
+        msg.unk_01 = (u32)(k * 2);
+        msg.unk_04 = *(s32*)arg0->unk_00;
+        msg.unk_10[0] = p[4] - o[4];
+        msg.unk_10[1] = p[5] - o[5];
+        msg.unk_10[2] = p[6] - o[6];
+        ((ScriptF2F*)arg0)->unk_328_1 = 1;
+        msg.unk_10[3] = 1.0f;
+        func_001C4640((ScriptMsg*)&msg);
+    }
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 void func_001D3080(void) {
     D_003854E0.unk_3070 &= ~0x200000000000;
