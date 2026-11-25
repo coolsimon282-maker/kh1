@@ -3281,7 +3281,35 @@ void func_00137748(u8 *a0) {
     *(s32 *)(a0 + 0x88) = fl & ~4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00137868);
+void func_00141AB8(s32);
+void func_00145240(u8 *);
+void func_00137448(u8 *);
+void func_00135658(u8 *);
+void func_00137868(u8 *a0) {
+    if ((s32)(*(u64 *)(a0 + 0x370) >> 48) & 1) {
+        if (*(u8 **)(a0 + 0x144) != NULL) func_0012B850(*(u8 **)(a0 + 0x144));
+    } else {
+        switch (*(s8 *)(*(u8 **)(a0 + 0x130) + 0x54)) {
+        case 1:
+            break;
+        case 9:
+        case 10:
+            if (*(u8 **)(a0 + 0x144) != NULL) func_00121EB0_1(*(u8 **)(a0 + 0x144));
+            break;
+        default:
+            func_00137230(a0, 0, -2);
+            break;
+        }
+    }
+    if (*(s32 *)(a0 + 0x6C) != 0) func_00141AB8(*(s32 *)(a0 + 0x6C));
+    if (*(s32 *)(a0 + 0x400) != 0) func_00176310(*(s32 *)(a0 + 0x400));
+    if (*(s32 *)(a0 + 0x148) != 0) func_00145240(a0);
+    if (*(s32 *)(a0 + 0x398) != 0) func_00137448(a0);
+    if (*(u8 **)(a0 + 0x14C) != NULL && *(s32 *)(*(u8 **)(a0 + 0x14C) + 0x1C) != 0) {
+        func_00176310(*(s32 *)(*(u8 **)(a0 + 0x14C) + 0x1C));
+    }
+    func_00135658(a0);
+}
 
 void func_00124BC8_u(u8*) __asm__("func_00124BC8");
 void func_00137990(u8* a0) {
