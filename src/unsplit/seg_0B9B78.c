@@ -818,7 +818,31 @@ void func_001BBCE0(sceVu0FMATRIX m, void* p) {
     sceVu0TransMatrix(m, m, v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BBDF0);
+A1Axes func_001BB6D0(s32);
+int abs(int);
+
+A1Axes func_001BBDF0(void* p) {
+    A1Axes s = func_001BB6D0(*(u16*)((u8*)p + 4) - 1);
+    A1Axes* a = (A1Axes*)((u8*)p + 2);
+    A1Axes r;
+    s32 x;
+    s32 y;
+    s32 z;
+
+    x = D_0037A130[a->x].x * s.x;
+    y = D_0037A130[a->x].y * s.x;
+    z = D_0037A130[a->x].z * s.x;
+    x += D_0037A130[a->y].x * s.y;
+    y += D_0037A130[a->y].y * s.y;
+    z += D_0037A130[a->y].z * s.y;
+    x += D_0037A130[a->z].x * s.z;
+    y += D_0037A130[a->z].y * s.z;
+    z += D_0037A130[a->z].z * s.z;
+    r.x = abs(x);
+    r.y = abs(y);
+    r.z = abs(z);
+    return r;
+}
 
 void func_001BBCE0(sceVu0FMATRIX, void *);
 void func_001BBBD0(sceVu0FMATRIX, void *);
