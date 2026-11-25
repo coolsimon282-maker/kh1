@@ -1052,7 +1052,24 @@ s32 func_001BE710(void) {
     return func_001BC590(0x45) ? 6 : 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE758);
+typedef unsigned int u128_stk __attribute__((mode(TI)));
+
+typedef struct {
+    u128_stk stk[16];
+    s32 val[16];
+    s32 cur;
+    u128_stk *top;
+    s32 n;
+} A2Stk;
+
+void func_001BE758(A2Stk *o, s32 a1, u128_stk a2) {
+    s32 n = o->n;
+    o->val[n] = a1;
+    o->stk[n] = a2;
+    o->cur = a1;
+    o->top = &o->stk[o->n];
+    o->n++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE798);
 
