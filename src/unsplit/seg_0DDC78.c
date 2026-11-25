@@ -1914,7 +1914,70 @@ s32 func_001E6038(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E61C0);
+void func_001E61C0(s32 a0, void *a1) {
+    extern s32 D_003DD258;
+    extern s32 D_003DD25C;
+    extern s32 D_003DD27C;
+    extern s32 D_003DD280;
+    extern u8 D_00630460[];
+    extern u8 D_00630510[];
+    extern u8 D_00630300[];
+    extern u8 D_003DC498[];
+    extern u8 D_003DCEF0[];
+    extern void func_0010BB10(void *, s32);
+    extern void func_002329A0(void *, void *, void *);
+    extern void func_001E6578(void);
+    extern void func_001E6580(void);
+    extern void func_001E6BA8(void);
+    extern void func_001E6E20(void);
+    s32 ok = 0;
+    u8 *w = (u8 *)func_0022F768(1);
+
+    switch (D_003DD258) {
+    case 1:
+        func_0010BB10(D_00630460, 0);
+        return;
+    case 2:
+        switch (D_003DD25C) {
+        case 0:
+            if (*(s32 *)(w + 0xAD0) & 1) {
+                ok = 1;
+            }
+            break;
+        case 1:
+            if (*(s32 *)(w + 0xAD0) & 2) {
+                ok = 1;
+            }
+            break;
+        case 2:
+            if (*(s32 *)(w + 0xAD0) & 4) {
+                ok = 1;
+            }
+            break;
+        case 3:
+            if (*(s32 *)(w + 0xAD0) & 8) {
+                ok = 1;
+            }
+            break;
+        }
+        if (ok == 1) {
+            func_002329A0(D_003DC498, func_001E6578, func_001E6580);
+            func_0010BB50(D_00630300, func_001E6BA8);
+            func_0010E230(D_006304E0);
+            func_0010EDA0(D_006304E0 - 0x80, D_003DCEF0, 0);
+            D_003DD284 = ok;
+            D_003DD288 = 60;
+            func_0011ED30(0xC350, func_001E6038);
+            D_003DD280 = 0;
+            D_003DD27C = 0;
+        } else {
+            func_0010E230(D_006304E0);
+            func_0010EDA0(D_006304E0 - 0x80, D_00630FC8, 0);
+            func_0010BB50(D_00630510, func_001E6E20);
+        }
+        break;
+    }
+}
 
 extern u8 D_00630510[];
 void func_001E61C0(s32, void *);
