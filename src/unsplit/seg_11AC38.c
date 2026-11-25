@@ -1274,6 +1274,8 @@ void func_00222B80(void) {
 s32 func_001EBC38(s32);
 extern s32 D_003F5C34;
 
+/* Unused on purpose: keeps fm-f1's func_0022FCB8 matching below this function (layout effect, notes/f1.md F1). */
+extern s32 func_00222BA8_merge_pad;
 void func_00222BA8(void) {
     s32 i;
     D_006436B8 = 0;
@@ -3859,10 +3861,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
 
 /* func_00231EA0 is layout-sensitive (notes/f1.md F1/F24): ee-gcc 2.96 makes several tie decisions in it
  * (combine folding `lhu D_003F7C48(reg)`, two saved-register ties) that depend on how many declarations precede
- * it in the file. The C below is right; these thirteen unused externs are only there to restore the layout that
+ * it in the file. The C below is right; these eight unused externs are only there to restore the layout that
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
- * into fm on 25 Nov, only 13 gave identical code among 0-17: check the code, not just the size). */
+ * into fm on 25 Nov, only 13 gave identical code among 0-17; after
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
 extern s32 D_231EA0_layout2;
@@ -3871,11 +3874,6 @@ extern s32 D_231EA0_layout4;
 extern s32 D_231EA0_layout5;
 extern s32 D_231EA0_layout6;
 extern s32 D_231EA0_layout7;
-extern s32 D_231EA0_layout8;
-extern s32 D_231EA0_layout9;
-extern s32 D_231EA0_layout10;
-extern s32 D_231EA0_layout11;
-extern s32 D_231EA0_layout12;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
