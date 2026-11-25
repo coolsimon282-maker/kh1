@@ -867,7 +867,33 @@ void func_00239558(s32 a0, s32 a1, s32 a2, u8 c) {
                                  ((a2 * 16 + 0x7420) >> 4) - 0x740, func_00147808(*(u16 *)(func_001478C8(a0) + 4)));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239630);
+typedef struct { s32 v[4]; } V4_9630;
+typedef struct { u8 pad[0x60]; V4_9630 m[4]; struct { s32 a; s32 b; s32 c; s32 d; } n[4]; } Obj9630;
+extern Obj9630 D_00648900_o __asm__("D_00648900");
+extern f32 D_00650DD4;
+void func_002475E8(s32, u8 *, s32);
+s32 func_002388B8(u8 *, s32, s32);
+
+void func_00239630(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+    s32 j;
+
+    func_002475E8(a0, (u8 *)&D_00648900_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00648900_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            D_00648900_o.m[i].v[j] = D_00648900_o.m[i].v[j] * f;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        D_00648900_o.m[i].v[3] = D_00648900_o.m[i].v[3] * D_00650DD4;
+    }
+    D_006488F0 = func_002388B8((u8 *)&D_00648900_o, 1, D_006488F0);
+}
 
 void func_00239630(s32, s32, s32, s32, f32);
 
