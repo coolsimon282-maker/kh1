@@ -5828,7 +5828,42 @@ s32 func_001DDCB8(UNK_PTR arg0, s32 idx) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDCE8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DDFA0);
+typedef struct {
+    u8 unk_0000[0x3034];
+    s32 unk_3034;
+    u8 unk_3038[0x118];
+    s32 unk_3150;
+    Script* unk_3154;
+} XHumGMDF;
+
+void func_001DDFA0(s32 a0) {
+    XHumGMDF* g = (XHumGMDF*)&D_003854E0;
+    Script* base;
+    s32 n;
+    s32 i;
+
+    g->unk_3150 = a0;
+    if (g->unk_3034 == 0) {
+        base = &D_0038D170;
+        n = D_0039A570;
+    } else {
+        base = &D_0039A580;
+        n = D_003A7980;
+    }
+    for (i = 0; i < n; i++) {
+        if ((Script*)((u8*)base + i * 0x350) == ((XHumGMDF*)&D_003854E0)->unk_3154) {
+            break;
+        }
+    }
+    if (a0 > 0) {
+        D_00375BC0 &= ~8;
+    }
+    base->unk_174[3]++;
+    base->unk_174[base->unk_174[3] + 4] = 3;
+    base->unk_174[3]++;
+    base->unk_174[base->unk_174[3] + 4] = i;
+    func_001C3380(base, 8);
+}
 
 void func_001DE098(void) {
     D_003854E0.unk_3380++;
