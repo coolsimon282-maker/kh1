@@ -2629,7 +2629,24 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246ED8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002470D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00247190);
+typedef struct { u8 b[0x930]; } Ent247190;
+extern Ent247190 D_0045FAC0_u[] __asm__("D_0045FAC0");
+extern u64 D_00668E20[];
+extern void func_002470D0(Ent247190 *);
+
+s32 func_00247190(void) {
+    s32 i;
+
+    func_002370C8(D_00668E20);
+    D_00668E20[0x1C] = 5;
+    D_00668E20[0xC] = 0x30003;
+    D_00668E20[0xE] = 0x8000000048ULL;
+    func_00237018(D_00668E20, 0x16, 1);
+    for (i = 0; i < 10; i++) {
+        func_002470D0(&D_0045FAC0_u[i]);
+    }
+    return 0;
+}
 
 void func_00247228(void *arg0, s32 arg1, f32 *arg2) {
     s32 *p = arg0;
