@@ -96,7 +96,57 @@ void func_001C4D90(s32 a0, s32 a1, s32 a2) {
     *(s32 *)(D_00375BC0 + 0x0) = (*(s32 *)(D_00375BC0 + 0x0) | 0x4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C6530);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[2];
+    f32 unk_10[4];
+} ScriptMsgG;
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3034];
+    /* 0x3034 */ s32 unk_3034;
+    /* 0x3038 */ u8 unk_3038[0x138];
+    /* 0x3170 */ s32 unk_3170;
+    /* 0x3174 */ s32 unk_3174;
+    /* 0x3178 */ u8 unk_3178[0x2D8];
+    /* 0x3450 */ s32 unk_3450;
+} A1GM6530;
+extern A1GM6530 D_003854E0_65 __asm__("D_003854E0");
+extern u8 D_0038D170[];
+extern u8 D_0039A580[];
+extern volatile s32 D_002B834C;
+void func_001C36A8(void*, s32);
+s32 func_001D71A0(u8*);
+
+s32 func_001C6530(s32 a0, s32 a1) {
+    ScriptMsgG msg;
+    u8* p;
+
+    D_003854E0_65.unk_3170 = a0;
+    D_003854E0_65.unk_3174 = a1;
+    if (D_003854E0_65.unk_3034 == 0) {
+        p = D_0038D170;
+    } else {
+        p = D_0039A580;
+    }
+    D_003854E0_65.unk_3450 = 0;
+    func_001C36A8(p, 10);
+    if (a1 == 1) {
+        func_001D71A0(p);
+        msg.unk_00 = 0x28;
+        msg.unk_01 = 0;
+        msg.unk_10[0] = 0.0f;
+        msg.unk_10[1] = 0.0f;
+        msg.unk_10[2] = 0.0f;
+        msg.unk_10[3] = 1.0f;
+        func_001C4640((ScriptMsg*)&msg);
+        if (D_002B834C == a1) {
+            D_002B834C = 4;
+        }
+    }
+    return D_003854E0_65.unk_3450;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4ED0);
 

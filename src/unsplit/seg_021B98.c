@@ -25,7 +25,34 @@ typedef struct {
 extern A2NodePool D_004F45B0;
 Seg21B98Unk10* func_00121DE0(s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00121B98);
+void func_00121F6C(s32, s32, s32);
+
+s32 func_00121B98(void) {
+    Seg21B98Unk10* prev = &D_004F45B0.head;
+    Seg21B98Unk10* p;
+    u32 moved = 0;
+    s32 dst;
+
+    for (p = prev->unk_10; p != NULL; p = p->unk_10) {
+        p->unk_00++;
+        if (p->unk_0C == NULL) {
+            p->unk_04 = 0;
+            prev->unk_10 = p->unk_10;
+        } else {
+            if (moved <= 0x1FFFF && (u32)p->unk_00 >= 4) {
+                dst = prev->unk_04 + prev->unk_08;
+                if (p->unk_04 - dst > 0) {
+                    func_00121F6C(p->unk_04, dst, p->unk_08);
+                    p->unk_04 = dst;
+                    *p->unk_0C = dst;
+                    moved += p->unk_08;
+                }
+            }
+            prev = p;
+        }
+    }
+    return 0;
+}
 
 extern u8 D_820000[];
 extern Seg21B98Unk10 *D_004F6DB0;

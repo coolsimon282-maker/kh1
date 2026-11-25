@@ -116,7 +116,25 @@ void func_00126BA0(u8 *a, s32 *b, f32 *c) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126C10);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126E80);
+void func_00126E80(a, b, c)
+    u8* a;
+    u8* b;
+    f32* c;
+{
+    if (c[3] > 0.0f) {
+        if (c[3] > 0.7999999523162842f) {
+            c[3] = (*(f32**)(a + 0x6C))[2];
+        } else {
+            c[3] = (*(f32**)(a + 0x6C))[1];
+        }
+    } else {
+        if (c[0] == 0.0f && c[2] == 0.0f) {
+            sceVu0CopyVector(c, (f32*)(a + 0x20));
+        }
+        c[1] = 0.0f;
+        c[3] = 0.0f;
+    }
+}
 
 extern u32 D_002DED20;
 extern s32 D_002E31B0;
