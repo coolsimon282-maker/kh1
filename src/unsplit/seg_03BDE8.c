@@ -1442,7 +1442,29 @@ void func_001412F8(s32 a0, s32 a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00141348);
+extern s32 D_00141348_pad2; /* unused: rule F1 (with func_00141348) */
+s32 func_00141348(u8** p, s32* out) {
+    struct { void* a; s32 n; void* b; s32 m; } s;
+    u8* q;
+    if (func_0013C968(10, 0) > 0 && (*p)[6] == 3 && ((s32)(*(u64*)(*p + 0x370) >> 37) & 3) != 1) {
+        *out = 1;
+        out[1] = *(s32*)(*(u8**)(*p + 0x6C) + 0x3C);
+        out[2] = *(s32*)(*(u8**)(*p + 0x6C) + 0x40);
+        q = *p;
+        if (((struct { u64 a:48; u64 b:16; }*)(q + 0x370))->b & 1) {
+            if (*(s32*)(q + 0x144) != 0) {
+                s.a = p + 1;
+                s.n = 4;
+                s.b = &out;
+                s.m = 4;
+                func_0012BCE0_5(*(s32*)(q + 0x144), 3, 2, &s, 0);
+            }
+        }
+    } else {
+        *out = 0;
+    }
+    return *out;
+}
 
 s32 func_00141448(s32 a, s32 b, s32 max) {
     s32 v = a + b;
@@ -4712,6 +4734,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155878);
 
 typedef struct { u8 pad[0x44]; s32 unk44; } V550400;
 extern s32 D_00146998_pad1; /* unused: rule F1 (with func_00146998) */
+extern s32 D_00141348_pad3; /* unused: rule F1 (with func_00141348) */
 s32 func_001559A8(s32 a0) {
     return ((V550400*)D_00550400)[(a0 - (s32)D_FE0000) / 0x40000].unk44;
 }
