@@ -2340,7 +2340,25 @@ void func_00247CF8(Seg132_7CF8 *a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248010);
+extern char D_00491810[];
+extern char D_00491818[];
+extern s32 D_0046740C;
+
+void func_00248010(Seg132_7CF8 *a0) {
+    char buf[16];
+    u8 col[3];
+    s32 x;
+
+    col[0] = 0xFF;
+    col[1] = 0xFF;
+    col[2] = 0xFF;
+    sprintf(buf, D_00491810, *(s32 *)((u8 *)a0 + 0x1C));
+    func_002475D0(0x45, 0x16, col, 1.0f, buf, D_00467408);
+    x = 0x45;
+    x += strlen(buf) * 13;
+    sprintf(buf, D_00491818);
+    func_002475D0(x + 2, 0x18, col, 1.0f, buf, D_0046740C);
+}
 
 extern u8 D_00669320[];
 extern s32 D_00669388[];
