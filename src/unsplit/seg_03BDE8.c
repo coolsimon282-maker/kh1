@@ -6677,7 +6677,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171B80);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171C80);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171D80);
+void func_00171D80(u8* p, u8* q, s32 c) {
+    func_00124420(p, c);
+    func_00135800(p, 0.0f, 0.0f);
+    func_00135800(p, 1.0f, 30.0f);
+    *(f32*)(*(u8**)(p + 0x130) + 0x18) = 1.0f;
+    func_001373F8(p, 30.0f);
+    *(u64*)(q + 0x38) |= 0x40;
+    *(s32*)(q + 0x58) = 0;
+    *(s32*)(q + 0x60) = 0;
+    if (D_002DED08 == 2) {
+        *(f32*)(q + 0x70) = 600.0f;
+    } else {
+        *(f32*)(q + 0x70) = 240.0f;
+    }
+}
 
 void func_00157A30_3(u8*, s32, u8*) __asm__("func_00157A30");
 s32 func_00171E50(u8* a0, u8* a1, u8* a2) {
