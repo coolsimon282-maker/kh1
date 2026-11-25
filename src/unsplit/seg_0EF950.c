@@ -2977,7 +2977,36 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002099D8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00209B90);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00209D48);
+typedef struct { u8 pad[0xCC]; s32 used; } Ent209D48;
+extern Ent209D48 D_003F3530_e[] __asm__("D_003F3530");
+extern s32 D_003F3870;
+void func_00123318(u8 *, u8 *);
+void func_0020A248(s32);
+
+/* unused: layout only (notes/f1.md F1). 0-3 of them change func_0020DED8 / func_00214290 / func_00212930 /
+ * func_002145D8; 4 keeps the file matching (25 Nov). */
+extern s32 D_209D48_layout1;
+extern s32 D_209D48_layout2;
+extern s32 D_209D48_layout3;
+extern s32 D_209D48_layout4;
+void func_00209D48(void) {
+    s32 i;
+    u8 *e;
+
+    D_003F3870 = 0;
+    for (i = 0; i < 3; i++) {
+        e = func_001F0BD8(i);
+        if (e == NULL) {
+            D_003F3530_e[i].used = 0;
+        } else {
+            D_003F3530_e[i].used = 1;
+            func_00123318(e, (u8 *)&D_003F3530_e[i]);
+            func_0020A248(i);
+            D_003F3870++;
+        }
+    }
+    D_003F3530_e[3].used = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00209E18);
 
