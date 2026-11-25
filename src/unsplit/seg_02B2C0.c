@@ -3405,7 +3405,45 @@ void func_00137A20(u8* a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00137AB8);
+void func_001625C8(f32 (*)[4], f32 (*)[4]);
+void func_00136D38(u8 *);
+void func_00143D20(u8 *, f32 *, s32);
+void func_00137AB8(u8 *a0) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    u8 *p = NULL;
+
+    func_001625C8((f32 (*)[4])(a0 + 0xD0), m);
+    func_00136D38(a0);
+    while ((p = func_001234A0(p)) != NULL) {
+        if (*(u8 **)(p + 0x398) != a0) continue;
+        sceVu0CopyVector(v, (f32 *)(p + 0x10));
+        v[3] = 1.0f;
+        sceVu0ApplyMatrix(v, m, v);
+        v[3] = 1.0f;
+        sceVu0ApplyMatrix(v, (f32 (*)[4])(a0 + 0xD0), v);
+        sceVu0SubVector(v, v, (f32 *)(p + 0x10));
+        if ((u32)(*(u64 *)(p + 0x370) >> 34) & 1) {
+            func_00143D20(p, v, 0);
+            func_00136D38(p);
+        } else {
+            sceVu0AddVector((f32 *)(p + 0x120), (f32 *)(p + 0x120), v);
+        }
+        if ((u32)(p[6] - 9) < 2) {
+            *(s32 *)(p + 0x3C) = 0;
+            sceVu0ApplyMatrix(v, m, (f32 *)(p + 0x30));
+            sceVu0ApplyMatrix(v, (f32 (*)[4])(a0 + 0xD0), v);
+            func_00137688(p, atan2f(v[0], v[2]));
+        } else {
+            s32 k = *(s32 *)(p + 0x70);
+            if (k == 0 || k == 0x28 || k == 0x29) {
+                *(s32 *)(p + 0x2C) = 0;
+                sceVu0ApplyMatrix(v, m, (f32 *)(p + 0x20));
+                sceVu0ApplyMatrix((f32 *)(p + 0x20), (f32 (*)[4])(a0 + 0xD0), v);
+            }
+        }
+    }
+}
 
 typedef struct { u8* unk0; s32 unk4; u8* unk8; u32 b0:1; u32 b1:8; } V3044D8;
 extern V3044D8 D_003044D8_v[] __asm__("D_003044D8");
