@@ -2066,7 +2066,34 @@ void func_00132240(u8 *a0) {
     func_00132220(*(s32 *)(a0 + 0x15C), *(s32 *)(a0 + 0x1D0));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132160);
+/* unused: layout only (F1): without them func_001331D8 / func_001374A8 change; 1-8 OK, 3 used. */
+extern s32 D_132160_pad1;
+extern s32 D_132160_pad2;
+extern s32 D_132160_pad3;
+void func_00162070(u8 *, u8 *, u8 *, u8 *);
+void func_00123C80(u8 *, f32, f32);
+void func_00132160(u8 *a0, s32 *h, s32 *a2) {
+    *(u8 **)(a0 + 0x154) = (u8 *)h + h[1];
+    func_00162070(*(u8 **)(a0 + 0x154), a0 + 0x158, a0 + 0x1D4, a0 + 0x15C);
+    func_001321A0((s32 *)(a0 + 0x1D0), (u8 *)a2);
+    if (h[3] - h[2] > 0) *(u8 **)(a0 + 0x68) = (u8 *)h + h[2];
+    if (h[4] - h[3] > 0) *(u8 **)(a0 + 0x140) = (u8 *)h + h[3];
+    if (h[5] - h[4] > 0) *(u8 **)(a0 + 0x13C) = (u8 *)h + h[4];
+    if (h[6] - h[5] > 0) {
+        f32 *p = (f32 *)((u8 *)h + h[5]);
+        *(f32 **)(a0 + 0x134) = p;
+        func_00123C80(a0, p[3], p[2]);
+    }
+    if (h[7] - h[6] > 0) {
+        *(u8 **)(a0 + 0x138) = (u8 *)h + h[6];
+    } else {
+        *(u8 **)(a0 + 0x138) = NULL;
+    }
+    if (h[9] - h[8] > 0) *(u8 **)(a0 + 0x4A8) = (u8 *)h + h[8];
+    if (a2 != NULL) {
+        func_00167F68(*(u8 **)(a0 + 0x15C), (u8 *)a2 + a2[1]);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001323A0);
 
