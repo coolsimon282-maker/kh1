@@ -2240,7 +2240,17 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001349D0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00134BA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00134F80);
+u8 *func_00134F80(u8 *p, s32 n) {
+    s32 i;
+    for (i = 0; i < n; i++, p += 0x40) {
+        if (!(*(s32 *)p & 1)) {
+            memset(p, 0, 0x40);
+            *(u64 *)p |= 1;
+            return p;
+        }
+    }
+    return NULL;
+}
 
 void func_00135000(s32 a0_, u8 *a1) {
     u8 *a0 = (u8 *)a0_;
