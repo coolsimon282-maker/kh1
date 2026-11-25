@@ -889,7 +889,39 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A490);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A608);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A720);
+typedef struct {
+    s32 unk0;
+    u32 mask;
+    s32 unk8;
+    s32 unkC;
+    s32 n;
+    u8 pad14[0x10];
+    u8 c[1];
+} Seg132_2E3170;
+extern Seg132_2E3170 *D_002E3170[];
+
+void func_0023A720(void) {
+    Seg132_2E3170 **pp = D_002E3170;
+    Seg132_2E3170 *e;
+    s32 i;
+
+    for (; *pp != NULL; pp++) {
+        e = *pp;
+        if (pp[1] == NULL) {
+            for (i = 0; i < e->n; i++) {
+                if (e->mask & (1 << i)) {
+                    e->c[i] = 0x73;
+                } else {
+                    e->c[i] = 0xE6;
+                }
+            }
+        } else {
+            for (i = 0; i < e->n; i++) {
+                e->c[i] = 0x73;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A7E8);
 
