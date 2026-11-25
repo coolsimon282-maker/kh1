@@ -496,7 +496,39 @@ void func_001BAB80(s32 n, u8 *p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BABE8);
+void func_001BABE8(void) {
+    ((u8*)func_001BA9A8())[0x31]++;
+    func_001BA930((u8*)0, 4);
+    func_001BA930((u8*)1, 4);
+    func_001BA930((u8*)2, 4);
+    func_001BA930((u8*)3, 4);
+    func_001BA930((u8*)4, 4);
+    func_001BA930((u8*)5, 4);
+    func_001BA930((u8*)6, 4);
+    func_001BA930((u8*)7, 4);
+    func_001BA930((u8*)8, 4);
+    func_001BA930((u8*)9, 4);
+    func_001BA930((u8*)10, 3);
+    func_001BA930((u8*)11, 2);
+    func_001BA930((u8*)12, 4);
+    func_001BA930((u8*)13, 4);
+    func_001BA930((u8*)14, 4);
+    func_001BA930((u8*)15, 31);
+    func_001BA930((u8*)16, 31);
+    func_001BA930((u8*)17, 31);
+    func_001BA930((u8*)18, 31);
+    func_001BA930((u8*)19, 31);
+    func_001BA930((u8*)20, 31);
+    func_001BA930((u8*)21, 31);
+    func_001BA930((u8*)22, 31);
+    func_001BA930((u8*)23, 31);
+    func_001BA930((u8*)24, 31);
+    func_001BA930((u8*)34, -1);
+    func_001BA930((u8*)35, -1);
+    func_001BA930((u8*)36, -1);
+    func_001BA930((u8*)37, -1);
+    func_001BA930((u8*)38, -1);
+}
 
 typedef struct {
     u8 pad[0x9B38];
