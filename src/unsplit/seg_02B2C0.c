@@ -2855,11 +2855,47 @@ void func_001366D8(u8 *a0, s32 a1, f32 *a2) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136768);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001368E8);
+extern f32 D_002C6450[];
+extern s32 D_002B85F8;
+void func_00128250(u8 *, f32);
+void func_001368E8(u8 *a0) {
+    f32 buf[4];
+    f32 f;
+    f = func_00135CA0(*(f32 *)(a0 + 0x118));
+    func_00122988(a0);
+    func_00135DF0(a0, buf);
+    sceVu0MulVector(buf, buf, D_002C6450);
+    if (buf[3] > 0.0f && func_00135BB0(a0) && (*(s32 *)a0 & 1) && (D_002B85F8 & 1)) {
+        *(u64 *)(a0 + 0x370) |= 0x800000000;
+        if (*(s32 *)(a0 + 0x154) == 0) return;
+        func_00136428(a0, *(s32 *)(a0 + 0x38C), *(s32 *)(a0 + 0x394), buf, f);
+    }
+    if (*(s32 *)a0 & 2) {
+        func_00128250(a0, buf[3] * f * 0x1.0101p-15f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001369E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136AB8);
+extern s32 D_002B8678;
+extern s32 D_002B8680;
+void func_00128250(u8 *, f32);
+void func_00136AB8(u8 *a0) {
+    f32 buf[4];
+    f32 f;
+    f = func_00135CA0(*(f32 *)(a0 + 0x118));
+    func_00122988(a0);
+    func_00135DF0(a0, buf);
+    if (buf[3] > 0.0f && func_00135BB0(a0) && (*(s32 *)a0 & 1)) {
+        *(u64 *)(a0 + 0x370) |= 0x800000000;
+        if (*(s32 *)(a0 + 0x154) == 0) return;
+        func_00136428(a0, *(s32 *)(a0 + 0x38C), *(s32 *)(a0 + 0x394), buf, f);
+    }
+    if (D_002B8678 == 1 && D_002B8680 == 5) return;
+    if (*(s32 *)a0 & 2) {
+        func_00128250(a0, buf[3] * f * 0x1.0101p-15f);
+    }
+}
 
 void func_00120D38(f32 *, void *, f32 *);
 extern u8 D_002DEC60[];
