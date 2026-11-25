@@ -304,17 +304,84 @@ s32 func_00234018(s32 a0, s32 a1, s32 a2) {
     return s;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234098);
+s32 func_00234098(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 2;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_Ent2340[D_00647FB8].arg[4] = a4;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234148);
+s32 func_00234148(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 3;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_Ent2340[D_00647FB8].arg[4] = a4;
+    D_Ent2340[D_00647FB8].arg[5] = a5;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234210);
+s32 func_00234210(s32 a0, s32 a1, s32 a2) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 4;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234290);
+s32 func_00234290(s32 a0, s32 a1, s32 a2) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 5;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234310);
+s32 func_00234310(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 6;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002343A8);
+s32 func_002343A8(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 7;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234440);
 
