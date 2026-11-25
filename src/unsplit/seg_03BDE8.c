@@ -6355,7 +6355,21 @@ s32 func_00170F90(u8* a, u8* b) {
     return *(s32*)(b + 0x4C) == *(s32*)(a + 0x164);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00170FA8);
+/* func_00176F08's table, declared up here: keeps its %lo fold once this function is C (rules F1/Q1) */
+typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
+extern V176F08 D_00362458_v[] __asm__("D_00362458");
+void* func_00122AF8(s32, s32, s32);
+void func_001228C8(s32, void*, f32, s32);
+void func_00170FA8(s32 a0, s32* idx, s32 b, void* c, f32 t) {
+    if (D_00575310[*idx].unk_00 == 0) {
+        D_00575310[*idx].unk_00 = (s32)func_00122AF8(1, 9, 10);
+        if (D_00575310[*idx].unk_00 == 0) {
+            return;
+        }
+    }
+    func_001228C8(D_00575310[*idx].unk_00, c, t, 0);
+    D_00575310[*idx].unk_04 = b;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171078);
 
@@ -7316,8 +7330,6 @@ s32 func_00176EE0(void) {
 extern sceVu0FVECTOR D_005758A0;
 extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
-typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
-extern V176F08 D_00362458_v[] __asm__("D_00362458");
 /* five dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
 extern int flip_dummy_0;
 extern int flip_dummy_1;
