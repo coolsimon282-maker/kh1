@@ -45,7 +45,47 @@ void func_0024BA00(s32 a0) {
     D_00669A3C = t0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA28);
+extern s8 D_0046A070[];
+unsigned int strlen(const char *);
+int memcmp(const void *, const void *, unsigned int);
+
+s32 func_0024BA28(s32 a0, s32 a1, s32 a2, void *a3) {
+    s32 *p = (s32 *)a0;
+    s32 nl = strlen((char *)a1);
+    s32 len, w, type, cnt, sz, k;
+
+    for (;;) {
+        len = *p++;
+        if (len == 0) {
+            return -1;
+        }
+        w = (len + 3) / 4;
+        if (nl == len && memcmp(p, (char *)a1, len) == 0) {
+            u8 *src;
+            u8 *d;
+
+            p += w;
+            type = *p++;
+            cnt = *p++;
+            sz = D_0046A070[type];
+            if (a2 >= cnt) {
+                return -1;
+            }
+            src = (u8 *)p + a2 * sz;
+            d = a3;
+            for (k = 0; k < sz; k++) {
+                *d++ = *src++;
+            }
+            return type;
+        }
+        p += w;
+        type = *p++;
+        cnt = *p++;
+        sz = D_0046A070[type];
+        w = (sz * cnt + 3) / 4;
+        p += w;
+    }
+}
 
 s32 func_0024BA28(s32, s32, s32, void *);
 
@@ -281,7 +321,43 @@ s32 func_0024D4A0(void) {
     return D_0046A60C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D4B0);
+typedef struct {
+    char c[11];
+} S11_D4B0;
+typedef struct {
+    char c[16];
+} S16_D4B0;
+extern S11_D4B0 D_0048B478;
+extern S16_D4B0 D_0048B488;
+extern char D_00491948[];
+extern char D_00491958[];
+extern char D_00491968[];
+extern char D_00491970[];
+extern s32 D_0046A610;
+s32 func_00120A20(char *, s32, char *, s32 *);
+void func_0024D808(void);
+
+s32 func_0024D4B0(void) {
+    S11_D4B0 a = D_0048B478;
+    S16_D4B0 b = D_0048B488;
+    s32 r;
+
+    D_0046A610 = 0;
+    D_0046A60C = 0;
+    func_00120A20(D_00491948, 0, NULL, &r);
+    if (func_00120A20(D_00491958, 0, NULL, &r) < 0) {
+        return 1;
+    }
+    if (func_00120A20(D_00491968, 10, a.c, &r) < 0) {
+        return 1;
+    }
+    if (func_00120A20(D_00491970, 0x12, b.c, &r) < 0) {
+        return 1;
+    }
+    D_0046A60C = 1;
+    func_0024D808();
+    return 0;
+}
 
 extern s32 D_0046A618;
 
@@ -416,6 +492,7 @@ int sceClose(int fd);
 s32 func_0024D9F0(void) {
     s32 *p = &D_0046A614;
     s32 fd;
+    s32 k;
     long sz;
     s32 r;
 
@@ -468,9 +545,90 @@ s32 func_0024DB68(void) {
     return D_0046A674;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DB78);
+extern char D_004919B8[];
+int sceIoctl2(int, int, void *, unsigned int, void *, unsigned int);
+int sceDclose(int);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DCC8);
+s32 func_0024DB78(s32 size) {
+    A2MountF *m = &D_0046A688_f;
+    s32 *st = &D_0046A674;
+    s32 *p;
+    s32 n = 0;
+    s32 mounted;
+    s32 fd;
+    s32 k;
+    char buf[0x40];
+
+    mounted = m->unk_10;
+    *st = 0;
+    if (mounted != 0) {
+        func_0024D9A0();
+    }
+    p = &D_0046A614;
+    *p = 0x28;
+    sprintf(buf, D_004919B8, m->unk_04(), D_0046A650);
+    fd = sceOpen(buf, 1);
+    if (fd >= 0) {
+        n = sceIoctl2(fd, 0x6803, 0, 0, 0, 0);
+        if (n < 0) {
+            n = 0;
+        }
+        n++;
+        sceDclose(fd);
+    }
+    *p = 0x32;
+    k = ((((u32)(size + 0xFFFFF) >> 20) + 0x7F) >> 7) + 1;
+    if (func_0024DAD0(D_004919B0, k - n) == 0) {
+        *st = -1;
+    }
+    if (mounted != 0) {
+        func_0024D8F0();
+    }
+    *p = 0x50;
+    return *st;
+}
+
+typedef struct {
+    u8 stat[0x40];
+    char d_name[256];
+    void *d_private;
+} Dirent24DCC8;
+s32 sceDopen(u8 *);
+s32 sceDread(s32, Dirent24DCC8 *);
+s32 sceDclose(s32);
+s32 strcmp(const char *, const char *);
+
+s32 func_0024DCC8(u8 *path, u8 *name) {
+    Dirent24DCC8 d;
+    s32 fd;
+    s32 k;
+    s32 n;
+    s32 found = 0;
+
+    fd = sceDopen(path);
+    if (fd < 0) {
+        return 0;
+    }
+    n = 0;
+    while (sceDread(fd, &d) > 0) {
+        n++;
+    }
+    sceDclose(fd);
+    if (n == 0) {
+        return 0;
+    }
+    fd = sceDopen(path);
+    if (fd < 0) {
+        return 0;
+    }
+    while (sceDread(fd, &d) > 0) {
+        if (strcmp(d.d_name, (char *)name) == 0) {
+            found = 1;
+        }
+    }
+    sceDclose(fd);
+    return found;
+}
 
 typedef struct {
     u8 pad[8];
@@ -512,7 +670,7 @@ int abs(int);
 int memcmp(const void*, const void*, unsigned int);
 int sceSifSearchModuleByName(const char*);
 s32 func_0024DCC8(u8*, u8*);
-void func_0024DB78(s32);
+s32 func_0024DB78(s32);
 s32 func_0024D9F0(void);
 s32 func_0024DAA0_r(void) __asm__("func_0024DAA0");
 s32 func_0024DDF8(void) {
