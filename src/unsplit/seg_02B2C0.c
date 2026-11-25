@@ -845,7 +845,32 @@ s32 func_0012CF38(u8 *a0, u8 *a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012CF48);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D068);
+extern s32 D_002B8678;
+extern s32 D_002B8680;
+extern u32 D_002DED20;
+void func_0012D068(u8 *a0, u8 *a1) {
+    u8 *b = (u8 *)D_002E2FD8;
+    s32 v;
+
+    if (D_002B8678 == 6 || (D_002B8678 == 0x10 && D_002B8680 == 0x18)) {
+        b[0x14] = 0x62;
+    } else if (((D_002DED20 >> 2) & 1) && func_001233F8(*(u8 **)&D_002E31B0)) {
+        if (((*(u64 *)(*(u8 **)&D_002E31B0 + 0x370) >> 37) & 3) == 2 && *(s32 *)(a0 + 0x164) == 0x6E
+            && (*(s32 *)(*(u8 **)(a0 + 0x14C) + 0x30) & ~0x102)) {
+            b[0x14] = 0x63;
+        } else {
+            b[0x14] = 1;
+        }
+    } else {
+        b[0x14] = 1;
+    }
+    b[0x15] = 0x42;
+    b[0x16] = 0x42;
+    b[0x17] = 0x42;
+    v = ((*(u32 *)a1 >> 4) & 1) ? -2 : -1;
+    *(s32 *)(b + 8) = v;
+    *(s32 *)(b + 4) = v;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D188);
 
