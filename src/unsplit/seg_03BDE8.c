@@ -2135,7 +2135,31 @@ s32 func_00146B90(u8* a, s32 b, s32 c, s32 d) {
     return func_00146A68(a, b, c, d);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146BD0);
+extern s32 D_00533B90;
+u8* func_00146BD0(s32 a, s32 b) {
+    Unk532B90* e;
+    s32 i;
+    if (a <= 0) {
+        return NULL;
+    }
+    if (b > 0) {
+        func_00147338(a, b);
+    } else {
+        b = D_00533B90++;
+    }
+    e = D_00532B90;
+    for (i = 0; i < 0x80; i++, e++) {
+        if (!(e->unk_00 & 1)) {
+            *(u64*)e |= 1;
+            *(u64*)e |= 2;
+            *(u64*)e &= ~4;
+            e->unk_08 = a;
+            e->unk_04 = b;
+            return (u8*)e;
+        }
+    }
+    return NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146C98);
 
@@ -4514,6 +4538,8 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155EF8);
 
 /* unused: keeps func_001560F8 at its size once func_00150DE0 is C (rule F1) */
 extern s32 D_001560F8_pad0;
+/* unused: keeps func_001560F8 at its size once func_00146BD0 is C (rule F1) */
+extern s32 D_00146BD0_padv1;
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
@@ -7330,12 +7356,13 @@ s32 func_00176EE0(void) {
 extern sceVu0FVECTOR D_005758A0;
 extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
-/* five dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
+/* six dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
 extern int flip_dummy_0;
 extern int flip_dummy_1;
 extern int flip_dummy_2;
 extern int flip_dummy_3;
 extern int flip_dummy_4;
+extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
