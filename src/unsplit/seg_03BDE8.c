@@ -1632,7 +1632,36 @@ void func_00142340(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142388);
+/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, then func_00142388): keeps its %lo fold (rules F1/Q1) */
+typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
+extern V176F08 D_00362458_v[] __asm__("D_00362458");
+typedef struct { u8* p; u8 pad[12]; } E142388;
+extern E142388 D_003044E0_e[] __asm__("D_003044E0");
+typedef struct { sceVu0FVECTOR a; sceVu0FVECTOR b; s32 pad[4]; s16 h; s32 i; } S142388;
+s32 func_00142388(f32* pos, s32* out) {
+    S142388 s;
+    s32 j;
+    u8* t;
+    sceVu0CopyVector(s.a, pos);
+    s.a[3] = 1.0f;
+    s.b[0] = 0.0f;
+    s.b[1] = 100000.0f;
+    s.b[2] = 0.0f;
+    s.b[3] = 1.0f;
+    func_00118668(&s);
+    if (s.h >= 0) {
+        if (s.i == -1) {
+            func_00105C98(s.h, out);
+        } else {
+            t = D_003044E0_e[s.i].p;
+            for (j = 0; j < 4; j++) {
+                out[j] = ((s32*)(t + 0x350))[j];
+            }
+        }
+        return func_00105BC0(s.i, s.h);
+    }
+    return 0;
+}
 
 void func_00142470(u8* p, u_long128* v) {
     *(u_long128*)(p + 0x350) = *v;
@@ -3498,9 +3527,6 @@ s32 func_0014D3C8(void) {
     return 0;
 }
 
-/* func_00176F08's table, declared up here (above func_00170FA8, then func_0014D428): keeps its %lo fold (rules F1/Q1) */
-typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
-extern V176F08 D_00362458_v[] __asm__("D_00362458");
 /* repeated: keeps func_0016FA10's D_00575020 %lo fold (rule Q1) */
 extern sceVu0FVECTOR D_00575020[];
 void func_0014D428(u8* p, f32* v, f32 a, f32 b) {
