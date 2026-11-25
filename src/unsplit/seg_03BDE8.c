@@ -7857,7 +7857,37 @@ void func_00173478(u8* a0, f32* a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001734F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00173610);
+void func_00173610(u8* p, u8* q) {
+    sceVu0FVECTOR v;
+    f32 z;
+    u8* r = *(u8**)(*(u8**)(q + 0x170) + 0xC);
+    if (func_00171118(*(s32*)(q + 0x90), -1) == 0) {
+        *(s32*)(q + 0x48) = 0;
+        return;
+    }
+    *(u64*)(q + 0x38) |= 0x100000;
+    func_00171790(p, q);
+    switch (*(s32*)(q + 0x174)) {
+    case 0:
+        break;
+    case 1:
+        z = 0.0f;
+        if (*(f32*)(q + 0x68) <= z) {
+            *(s32*)(q + 0x48) = 0;
+        }
+        *(u64*)(q + 0x38) |= 0x1000;
+        if (*(s32*)(p + 0x70) == 8) {
+            *(u64*)(q + 0x38) |= 0x200;
+        }
+        sceVu0ScaleVectorXYZ(v, (f32*)(q + 0xC0), *(f32*)(r + 0x20));
+        *(f32*)(q + 0x124) = v[1];
+        v[1] = z;
+        *(f32*)(q + 0x12C) = func_00162C20(v);
+        *(f32*)(q + 0x120) = v[0];
+        *(f32*)(q + 0x128) = v[2];
+        break;
+    }
+}
 
 s32 func_00173718(u8* p) {
     s32 v = *(s32*)(p + 0x164);
