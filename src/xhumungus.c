@@ -250,7 +250,46 @@ s32 func_001C9E70(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9EC0);
+typedef struct {
+    /* 0x000 */ u64 unk_00_0 : 1;
+    u64 unk_00_1 : 31;
+    /* 0x004 */ f32 unk_04;
+    /* 0x008 */ u8 unk_08[0x10];
+    /* 0x018 */ f32 unk_18;
+    /* 0x01C */ u8 unk_1C[0x24];
+    /* 0x040 */ f32 unk_40[4];
+    /* 0x050 */ u8 unk_50[0x20];
+    /* 0x070 */ f32 unk_70[4];
+    /* 0x080 */ u8 unk_80[0x50];
+    /* 0x0D0 */ f32 unk_D0[4];
+    /* 0x0E0 */ f32 unk_E0[4];
+    /* 0x0F0 */ u8 unk_F0[0x30];
+    /* 0x120 */ f32 unk_120;
+} Unk3C5510W;
+extern Unk3C5510W D_003C5510_w __asm__("D_003C5510");
+extern f32 D_002B8344;
+void func_001E9FE8(f32*, f32*);
+void func_001E9F18(f32* o, f32* pos, f32* rot, f32 dist);
+
+void func_001C9EC0(void) {
+    Unk3C5510W* p = &D_003C5510_w;
+    f32* a = p->unk_40;
+    f32* b = p->unk_70;
+    f32 o[4];
+    f32 r[4];
+
+    p->unk_18 += D_002B8344;
+    if (p->unk_04 < p->unk_18) {
+        p->unk_18 = p->unk_04;
+        p->unk_00_0 = 0;
+    }
+    func_001E9FE8(r, p->unk_E0);
+    func_001E9F18(o, p->unk_D0, r, p->unk_120);
+    p->unk_D0[0] = a[0] + (b[0] - a[0]) / p->unk_04 * p->unk_18;
+    p->unk_D0[1] = a[1] + (b[1] - a[1]) / p->unk_04 * p->unk_18;
+    p->unk_D0[2] = a[2] + (b[2] - a[2]) / p->unk_04 * p->unk_18;
+    func_001C6A20();
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9FE0);
 
@@ -3097,7 +3136,36 @@ s32 func_001D4FF8(Script* arg0) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xhumungus", fm_func_001D3610);
+typedef struct {
+    u8 unk_00[0x20];
+    u8 unk_20[0x54];
+} Unk3010F8Rec;
+
+typedef struct {
+    u8 unk_00[6];
+    Unk3010F8Rec unk_06[20];
+} Unk3010F8Recs;
+
+s32 fm_func_001D3610(Script* arg0) {
+    s32 n = 0;
+    s32 top = arg0->unk_174[3];
+    s32 v = arg0->unk_174[top + 4];
+    s32 i, j, c;
+
+    for (i = 0; i < 4; i++) {
+        c = D_003010F8->unk_48E[i];
+        if (c < 20) {
+            for (j = 0; j < ((u8*)D_003010F8)[c * 0x74 + 0x25]; j++) {
+                if (((Unk3010F8Recs*)D_003010F8)->unk_06[c].unk_20[j] == v) {
+                    n++;
+                }
+            }
+        }
+    }
+    n += D_003010F8->unk_492[v + 7];
+    arg0->unk_174[arg0->unk_174[3] + 4] = n;
+    return 2;
+}
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5068);
