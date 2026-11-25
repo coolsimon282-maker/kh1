@@ -671,7 +671,34 @@ void func_001E2498(void) {
     D_003854E0.unk_3070 &= ~((u64)1 << 50);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E24C8);
+typedef struct {
+    u32 a;
+    u16 b;
+    u8 c;
+} A2Str7;
+extern A2Str7 D_00490890;
+extern char D_00490898[];
+extern char D_003DACD8[][6];
+char *strcat(char *, const char *);
+int sprintf(char *, const char *, ...);
+s32 func_00120590(char *, s32, s32 (*)(void), s32);
+void func_F20000(void);
+
+s32 func_001E24C8(A2Script *p) {
+    char buf[0x100];
+    char num[0x10];
+
+    ((A2Str7 *)buf)->a = D_00490890.a;
+    ((A2Str7 *)buf)->b = D_00490890.b;
+    ((A2Str7 *)buf)->c = D_00490890.c;
+    strcat(buf, D_003DACD8[p->unk_174[p->unk_174[3] + 3]]);
+    sprintf(num, D_00490898, p->unk_174[p->unk_174[3] + 4]);
+    strcat(buf, num);
+    func_00120590(buf, (s32)func_F20000, (s32 (*)(void))func_001E2498, 0);
+    D_003854E0.unk_3070 |= (u64)1 << 50;
+    p->unk_174[3] -= 2;
+    return 2;
+}
 
 s32 func_001E25C8(void) {
     return ((s32)(*(u64 *)D_0038CD00 >> 50) & 1) ? 4 : 2;
