@@ -160,7 +160,58 @@ void func_001201D0(u8 *r) {
     *(s32 *)(r + 0x30) = x;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_001202C0);
+extern s32 D_004F3200;
+void func_0010BF08(void (*)(), void *);
+extern char D_0048D260[];
+extern s32 D_002C5B44;
+extern void (*D_0046A6A8)(s32);
+int sceOpen(const char *, int, ...);
+int sceLseek(int, int, int);
+int sceRead(int, void *, int);
+int sceClose(int);
+void func_00218CA0(s32);
+
+void func_001202C0(u8 *r) {
+    s32 err = 0;
+    s32 got;
+    s32 left;
+    s32 fd = sceOpen(D_0048D260, 1);
+
+    if (fd < 0 || (D_002C5B44 & 0x2000)) {
+        err = 1;
+    } else {
+        got = 0;
+        sceLseek(fd, *(s32 *)(r + 0x24) << 11, 0);
+        left = *(s32 *)(r + 0x28);
+        while (left > 0) {
+            got = sceRead(fd, *(void **)(r + 0x2C), left);
+            if (got < 0) {
+                err = 1;
+                break;
+            }
+            left -= got;
+        }
+        sceClose(fd);
+        if (err == 0) {
+            if ((*(u32 *)r >> 1) & 1) {
+                FlushCache(0);
+                got = func_00120040(*(s32 *)(r + 0x2C), *(s32 *)(r + 0x28));
+            }
+            *(s32 *)(r + 0x30) = got;
+        }
+    }
+    if (err != 0) {
+        D_0046A6A8(4);
+        D_002C1EB8.u8 |= 4;
+        do {
+            func_0010BEE8();
+        } while (((D_002C1EB8.s8 & 0xFF) >> 2) & 1);
+        func_00218CA0(0);
+        *(s32 *)(r + 0x24) += D_004F3200;
+        func_0010BF08(func_001201D0, r);
+    }
+    func_0010BF50(func_001202C0);
+}
 
 s32 sceCdDiskReady(s32);
 s32 func_00269DA8(void *, void *);
