@@ -545,7 +545,22 @@ s32 func_001BAF70(s32 a0, s32 *a, s32 *b) {
     return func_001BAF08(a) - func_001BAF08(b);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BAFB0);
+typedef struct { s32 v[16]; } A3Blk64;
+void fm_func_001B9B30();
+s32 func_001BAF70_t(s32 a0, s32* a, s32* b) __asm__("func_001BAF70");
+
+s32 func_001BAFB0(s32 i, A3Blk64* src) {
+    u8* b;
+
+    fm_func_001B9B30();
+    b = func_0022F768(4);
+    ((A3Blk64*)(b + 0x9C20))[i] = *src;
+    if (func_001BAF70_t(i, (s32*)src, (s32*)&((A3Blk64*)(b + 0xA420))[i]) > 0) {
+        ((A3Blk64*)(b + 0xA420))[i] = *src;
+        return 1;
+    }
+    return 0;
+}
 
 void fm_func_001B9B30();
 void *func_0022F768(s32);
