@@ -350,7 +350,32 @@ void func_00120AA0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120B10);
+void sceSifInitRpc(unsigned int);
+int sceFsReset(void);
+int sceCdInit(int);
+int sceCdMmode(int);
+int sceSifRebootIop(const char *);
+int sceSifSyncIop(void);
+void fm_func_001101E8(void);
+int *sceCdInitEeCB(int, void *, int);
+extern char D_0048D288[];
+extern u8 D_004F35B0[];
+
+void func_00120B10(void) {
+    sceSifInitRpc(0);
+    sceFsReset();
+    sceCdInit(0);
+    sceCdMmode(2);
+    while (!sceSifRebootIop(D_0048D288)) {
+    }
+    while (!sceSifSyncIop()) {
+    }
+    fm_func_001101E8();
+    sceSifInitRpc(0);
+    sceCdInit(0);
+    sceCdMmode(2);
+    sceCdInitEeCB(0, D_004F35B0, 0x1000);
+}
 
 extern s32 D_004F3208;
 extern u8 D_0048D2A0[];
