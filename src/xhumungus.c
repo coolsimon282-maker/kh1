@@ -3458,7 +3458,36 @@ s32 func_001D6920(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D6968);
+void func_00124CA0(s32);
+typedef struct { s32 id; void* p; u8 pad[0x348]; } XHumE350;
+s32 func_001D6968(Script* arg0) {
+    ScriptX* x = (ScriptX*)arg0;
+    s32 i;
+    XHumE350* p;
+    s32 n;
+
+    func_00124CA0(arg0->unk_174[arg0->unk_174[3] + 4]);
+    x->unk_328_2 = 1;
+    x->unk_2F4 = 2.0f;
+    p = (XHumE350*)&D_0038D170;
+    n = D_0039A570;
+    for (i = 0; i < n; i++) {
+        if (p->id == arg0->unk_174[arg0->unk_174[3] + 4]) {
+            p->p = NULL;
+        }
+        p++;
+    }
+    p = (XHumE350*)&D_0039A580;
+    n = D_003A7980;
+    for (i = 0; i < n; i++) {
+        if (p->id == arg0->unk_174[arg0->unk_174[3] + 4]) {
+            p->p = NULL;
+        }
+        p++;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001D6A78(Script* arg0) {
     ScriptMsg msg;
