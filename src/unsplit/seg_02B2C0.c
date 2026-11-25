@@ -586,7 +586,29 @@ s32 func_0012C328(u8* a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C560);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C698);
+void func_00146C98(u8 *, s32);
+
+void func_0012C698(u8 *a0) {
+    f32 v[4] __attribute__((aligned(16)));
+
+    if ((u8)(a0[0x39E] - 11) < 2) {
+        sceVu0CopyVector(v, (f32 *)(a0 + 0x50));
+        v[1] = *(f32 *)(a0 + 0x2D4);
+        switch (*(s32 *)(a0 + 0x70)) {
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            func_0012BD98(a0, a0[0x39E], 0x80000008, v);
+            func_00146C98(a0, 10);
+            break;
+        case 10:
+        case 13:
+            func_0012BD98(a0, 10, 0x8000008, v);
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C760);
 
