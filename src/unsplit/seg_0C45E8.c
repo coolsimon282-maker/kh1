@@ -150,7 +150,71 @@ s32 func_001C6530(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C4ED0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C5168);
+typedef struct {
+    /* 0x00 */ f32 t;
+    /* 0x04 */ u8 pad4[0xC];
+    /* 0x10 */ f32 v10[4];
+    /* 0x20 */ f32 v20[4];
+    /* 0x30 */ f32 v30[4];
+    /* 0x40 */ f32 v40[4];
+    /* 0x50 */ f32 v50[4];
+    /* 0x60 */ f32 f60;
+} A3Cam380c;
+extern A3Cam380c D_0037A380_c __asm__("D_0037A380");
+typedef struct {
+    /* 0x0000 */ u8 pad[0x3058];
+    /* 0x3058 */ s32 unk_3058;
+    /* 0x305C */ u8 pad305C[0x10];
+    /* 0x306C */ f32* unk_306C;
+    /* 0x3070 */ f32* unk_3070;
+} A3GM5168;
+extern A3GM5168 D_003854E0_51 __asm__("D_003854E0");
+void func_001E9D00(f32* out, f32* a, f32* b, f32 roll);
+void func_001E9FE8(f32*, f32*);
+void func_001E9F18(f32* o, f32* pos, f32* rot, f32 dist);
+f32 func_001E9E58(f32* a, f32* b);
+
+void func_001C5168(void) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR r;
+    sceVu0FMATRIX m;
+
+    switch ((u32)D_003854E0_51.unk_3058) {
+    case 0:
+        break;
+    case 1:
+        D_0037A380_c.v10[0] += D_003854E0_51.unk_306C[4];
+        D_0037A380_c.v10[1] += D_003854E0_51.unk_306C[5];
+        D_0037A380_c.v10[2] += D_003854E0_51.unk_306C[6];
+        break;
+    case 2:
+        D_0037A380_c.v40[1] += D_003854E0_51.unk_306C[15];
+        sceVu0UnitMatrix(m);
+        sceVu0RotMatrixY(m, m, D_003854E0_51.unk_306C[15]);
+        sceVu0ApplyMatrix(D_0037A380_c.v10, m, D_0037A380_c.v10);
+        D_0037A380_c.v10[0] += D_003854E0_51.unk_306C[4];
+        D_0037A380_c.v10[1] += D_003854E0_51.unk_306C[5];
+        D_0037A380_c.v10[2] += D_003854E0_51.unk_306C[6];
+        break;
+    case 3:
+        func_001E9D00(r, &D_003854E0_51.unk_3070[4], &D_003854E0_51.unk_306C[4], D_0037A380_c.v40[2]);
+        D_0037A380_c.v40[1] += r[1];
+        func_001E9FE8(r, D_0037A380_c.v40);
+        func_001E9F18(v, D_0037A380_c.v10, r, D_0037A380_c.f60);
+        v[0] += D_003854E0_51.unk_3070[4];
+        v[1] += D_003854E0_51.unk_3070[5];
+        v[2] += D_003854E0_51.unk_3070[6];
+        sceVu0UnitMatrix(m);
+        sceVu0RotMatrixY(m, m, D_003854E0_51.unk_306C[15]);
+        sceVu0ApplyMatrix(D_0037A380_c.v10, m, D_0037A380_c.v10);
+        D_0037A380_c.v10[0] += D_003854E0_51.unk_306C[4];
+        D_0037A380_c.v10[1] += D_003854E0_51.unk_306C[5];
+        D_0037A380_c.v10[2] += D_003854E0_51.unk_306C[6];
+        D_0037A380_c.f60 = func_001E9E58(v, D_0037A380_c.v10);
+        func_001E9D00(D_0037A380_c.v40, D_0037A380_c.v10, v, D_0037A380_c.v40[2]);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0C45E8", func_001C53C8);
 
