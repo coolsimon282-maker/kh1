@@ -284,7 +284,21 @@ s32 func_001039F8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103A70);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103B68);
+void func_00103B68(sceVu0FMATRIX out, sceVu0FVECTOR a1, sceVu0FVECTOR a2, sceVu0FVECTOR a3, f32 *rot) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    sceVu0FVECTOR v2;
+
+    sceVu0UnitMatrix(m);
+    sceVu0RotMatrixX(m, m, rot[0]);
+    sceVu0RotMatrixY(m, m, rot[1]);
+    sceVu0RotMatrixZ(m, m, rot[2]);
+    sceVu0ApplyMatrix(v0, m, a2);
+    sceVu0ApplyMatrix(v1, m, a3);
+    sceVu0ApplyMatrix(v2, m, a1);
+    sceVu0CameraMatrix(out, v2, v0, v1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103C48);
 
