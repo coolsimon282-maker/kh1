@@ -1439,7 +1439,40 @@ void func_001BEBD0(u8 *a0, u8 *a1, u8 *a2) {
     sceVu0CopyMatrix((void *)a0, (void *)(a2 + 0x80));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BECB8);
+float sqrtf(float);
+
+void func_001BECB8(f32* m, f32* v, s32 flip) {
+    f32 y;
+    f32 s;
+    f32 a;
+    f32 b;
+
+    if (flip) {
+        v[0] = -v[0];
+        v[1] = -v[1];
+        v[2] = -v[2];
+    }
+    y = -v[1];
+    s = sqrtf(1.0f - v[1] * v[1]);
+    a = v[0] / s;
+    b = v[2] / s;
+    m[0] = b;
+    m[1] = 0.0f;
+    m[2] = -a;
+    m[3] = 0.0f;
+    m[4] = a * y;
+    m[5] = s;
+    m[6] = b * y;
+    m[7] = 0.0f;
+    m[8] = v[0];
+    m[9] = v[1];
+    m[10] = v[2];
+    m[11] = 0.0f;
+    m[12] = 0.0f;
+    m[13] = 0.0f;
+    m[14] = 0.0f;
+    m[15] = 1.0f;
+}
 
 f32 func_001BEDD0(f32* v) {
     f32 l = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
