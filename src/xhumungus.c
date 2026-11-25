@@ -3029,7 +3029,37 @@ s32 func_001D42E8(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D43E0);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001D43E0_f1_pad1;
+
+typedef struct { f32 v[4]; } __attribute__((aligned(8))) XHumV4Q;
+extern XHumV4Q D_00490630;
+void func_001315C0(s32, s32, void*, f32);
+void func_0014F9B0(void*, f32*, f32);
+
+s32 func_001D43E0(Script* arg0) {
+    XHumV4Q v = D_00490630;
+    f32 r[4];
+    f32 a[4];
+    f32 c[4];
+    sceVu0FMATRIX m;
+
+    if (*(void**)&arg0->unk_00[4] != NULL) {
+        r[0] = arg0->unk_174[arg0->unk_174[3] + 2] * 3.1415928f / 180.0f;
+        r[1] = arg0->unk_174[arg0->unk_174[3] + 3] * 3.1415928f / 180.0f + *(f32*)(*(u8**)&arg0->unk_00[4] + 0x3C);
+        r[2] = 0.0f;
+        func_001E9FE8(a, r);
+        sceVu0UnitMatrix(m);
+        sceVu0RotMatrixX(m, m, a[0]);
+        sceVu0RotMatrixY(m, m, a[1]);
+        sceVu0ApplyMatrix(v.v, m, v.v);
+        func_001315C0(*(s32*)&arg0->unk_00[4], 0, c, 0.0f);
+        sceVu0AddVector(v.v, c, v.v);
+        func_0014F9B0(*(void**)&arg0->unk_00[4], v.v, arg0->unk_174[arg0->unk_174[3] + 4] * 2.0f);
+    }
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D4540);
 
