@@ -2908,7 +2908,32 @@ void func_00137D40(u32 *a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00137DB0);
+s32 func_001061D8(void);
+u8* func_00148768_r(s32, s32, u8*, s32, f32) __asm__("func_00148768");
+extern s32 D_00350CE0;
+void func_00137DB0(u8* p) {
+    u8* e = *(u8**)(p + 0xB0);
+    if (e != NULL && (*(s32*)(e + 0x14) & 3) != 1) {
+        *(u8**)(p + 0xB0) = NULL;
+    }
+    if (func_001061D8() != 0) {
+        if (*(u8**)(p + 0xB0) != NULL) {
+            func_00176310(*(s32*)(p + 0xB0));
+            *(u8**)(p + 0xB0) = NULL;
+        }
+        return;
+    }
+    if (*(s32*)(p + 0x70) == 8 && (*(u64*)p & 0x8001) == 0x8001 && !(D_002C1EA8 & 0x104000) && func_001061D8() == 0) {
+        if (*(u8**)(p + 0xB0) == NULL) {
+            *(u8**)(p + 0xB0) = func_00148768_r(D_00350CE0, 0x14, p, 0x8003, 0.0f);
+        }
+        return;
+    }
+    if (*(u8**)(p + 0xB0) != NULL) {
+        **(u8**)(*(u8**)(p + 0xB0) + 0x10) = 1;
+        *(u8**)(p + 0xB0) = NULL;
+    }
+}
 
 extern u8* D_00304AD8;
 extern u32 D_002C5960;
