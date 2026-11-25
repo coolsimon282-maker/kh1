@@ -49,7 +49,15 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA28);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BB88);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BBC8);
+s32 func_0024BA28(s32, s32, s32, void *);
+
+void func_0024BBC8(s32 a0, s32 a1, s32 *a2) {
+    s32 v;
+    if (func_0024BA28(a0, a1, 0, &v) < 0) {
+        __asm__ volatile("break 0");
+    }
+    *a2 = v;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BC08);
 
