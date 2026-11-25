@@ -2804,7 +2804,19 @@ s32 func_001D5AE8(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5B60);
+/* Unused on purpose, like func_001CF970_f1_pad (func_001DB7A8, notes/f1.md F1). */
+extern s32 func_001D5B60_f1_pad;
+
+s32* func_001E98D0(s32, s32);
+
+s32 func_001D5B60(Script* arg0) {
+    f32* q = (f32*)func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 4])[1];
+
+    if (q != NULL) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = q[0x3C / 4] * 180.0f / 3.1415928f;
+    }
+    return 2;
+}
 
 s32* func_001E98D0(s32, s32);
 
