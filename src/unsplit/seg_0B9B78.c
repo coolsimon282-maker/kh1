@@ -1078,7 +1078,39 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BD9E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BDB58);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE010);
+typedef struct { u8 a; u8 pad[3]; s32 b; } BE010Ent;
+extern u8 D_00623ED4[][0x60];
+void func_001BD470(void);
+s32 func_001BE110(s32, s32);
+
+s32 func_001BE010(s32 a0) {
+    s32 i;
+    u8* q;
+    u8* p;
+    s32 r;
+    u8* s;
+    s32 j;
+
+    for (i = 0; i < D_00625748; i++) {
+        func_001B9E40(((BE010Ent*)D_00625750)[i].a, ((BE010Ent*)D_00625750)[i].b);
+    }
+    q = (u8*)D_006257D0;
+    p = func_001BA9D8(a0 - D_00625640);
+    s = D_00623ED4[a0];
+    i = 0;
+loop:
+    j = i + 0x50;
+    i++;
+    p[j] = *s;
+    q[j] = *s;
+    s++;
+    if (i < 32) {
+        goto loop;
+    }
+    r = func_001BE110(a0 - D_00625640, (s32)q);
+    func_001BD470();
+    return r + D_00625640;
+}
 
 typedef struct {
     u8 pad[0x24];
