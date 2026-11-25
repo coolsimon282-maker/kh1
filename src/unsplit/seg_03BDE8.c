@@ -1676,9 +1676,6 @@ void func_00142340(void) {
     }
 }
 
-/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, then func_00142388): keeps its %lo fold (rules F1/Q1) */
-typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
-extern V176F08 D_00362458_v[] __asm__("D_00362458");
 typedef struct { u8* p; u8 pad[12]; } E142388;
 extern E142388 D_003044E0_e[] __asm__("D_003044E0");
 typedef struct { sceVu0FVECTOR a; sceVu0FVECTOR b; s32 pad[4]; s16 h; s32 i; } S142388;
@@ -3540,6 +3537,7 @@ extern int flip_dummy_0;
 extern int flip_dummy_1;
 extern int flip_dummy_2;
 extern int flip_dummy_3;
+extern int flip_dummy_g3539;
 s32 func_00130340_x(s32, s32, f32) __asm__("func_00130340");
 typedef struct { u32 pad:9; u32 b9:1; } V14CB90;
 s32 func_0014CB90_def(s32 p) __asm__("func_0014CB90");
@@ -4489,7 +4487,42 @@ void func_00152DC8(u8* p, s32 b) {
     *(f32*)(*(u8**)(p + 0x144) + 0x1C) = D_00351930[b][0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152E10);
+/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, then func_00142388): keeps its %lo fold (rules F1/Q1) */
+typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
+extern V176F08 D_00362458_v[] __asm__("D_00362458");
+void func_00152C28(u8*, f32*, f32);
+void func_00152D50_f(u8*, s32, f32*, f32) __asm__("func_00152D50");
+extern f32 D_0035193C[][4];
+void func_00152E10(u8* p) {
+    sceVu0FVECTOR v;
+    u8* r;
+    f32 z;
+    s32 n;
+    f32 f;
+    if (*(s32*)(*(u8**)(p + 0x98) + 0x160) & 1) {
+        return;
+    }
+    if (func_00130010(*(u8**)(p + 0x98)) != 0) {
+        return;
+    }
+    z = 0.0f;
+    *(f32*)(*(u8**)(p + 0x144) + 0x1C) -= D_002B8344;
+    if (z < *(f32*)(*(u8**)(p + 0x144) + 0x1C)) {
+        func_001315C0(*(s32*)(p + 0x98), 0x30, v, z);
+        sceVu0SubVector((f32*)(p + 0x120), v, (f32*)(p + 0x10));
+        return;
+    }
+    func_0014F658(*(s32*)(p + 0x98), 0);
+    r = *(u8**)(p + 0x144);
+    n = *(s32*)(r + 0x20);
+    f = D_0035193C[n][0];
+    if ((s32)(*(u64*)r >> 1) & 1) {
+        func_00152C28(p, (f32*)(r + 0x30), f);
+    } else {
+        func_00152D50_f(p, n, (f32*)(*(u8**)(p + 0x98) + 0x30), f);
+    }
+    func_001586A8(0x12);
+}
 
 void func_00152F10(u8* p) {
     sceVu0FVECTOR v;
