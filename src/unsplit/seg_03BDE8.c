@@ -5642,7 +5642,12 @@ void func_001628A0(f32 (*m)[4], f32 (*a1)[4], f32* s) {
     sceVu0DivVectorXYZ(m[2], m[2], s[2]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162950);
+extern sceVu0FVECTOR D_00575020[];
+f32 func_00162950(f32* a, f32* b) {
+    f32 r;
+    __asm__ volatile("lqc2 $vf4,0(%1)\n\tlqc2 $vf5,0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tvaddw.x $vf5,$vf5,$vf5w\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(r) : "r"(a), "r"(b) : "$2");
+    return r;
+}
 
 f32 func_00162978(f32* a, f32* b) {
     sceVu0FVECTOR v;
@@ -5659,9 +5664,17 @@ f32 func_001629B0(f32* a, f32* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001629E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162A58);
+f32 func_00162A58(f32* a) {
+    f32 r;
+    __asm__ volatile("lqc2 $vf4,0(%1)\n\tvmul.xyz $vf4,$vf4,$vf4\n\tvaddy.x $vf4,$vf4,$vf4y\n\tvaddz.x $vf4,$vf4,$vf4z\n\tvsqrt Q,$vf4x\n\tvwaitq\n\tvaddq.x $vf4,$vf0,Q\n\tqmfc2.ni $2,$vf4\n\tmtc1 $2,%0" : "=f"(r) : "r"(a) : "$2");
+    return r;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162A88);
+s32 func_00162A88(f32* a) {
+    s32 r;
+    __asm__ volatile("lqc2 $vf4,0(%1)\n\tvmul.xyz $vf4,$vf4,$vf4\n\tvaddz.x $vf4,$vf4,$vf4z\n\tvsuby.x $vf4,$vf4,$vf4y\n\tvnop\n\tvnop\n\tvnop\n\tvnop\n\tvnop\n\tcfc2.ni %0,$vi17" : "=r"(r) : "r"(a));
+    return r & 0x80;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162AB8);
 

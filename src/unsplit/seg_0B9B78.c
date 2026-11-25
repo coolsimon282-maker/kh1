@@ -327,7 +327,28 @@ f32 func_001BA860(void) {
     return 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BA870);
+extern void *D_003773E0;
+extern void *D_003773E4;
+extern void *D_003773DC;
+extern s32 D_003772D8;
+extern char D_00490008[];
+extern char D_00490018[];
+void func_001C20B8(void);
+void func_00236F18(void);
+
+void func_001BA870(void) {
+    D_003773EC = 1;
+    D_003773DC = func_001BA848;
+    D_003773E0 = func_001BA850;
+    D_003773E4 = func_001BA860;
+    D_003772DC = 2;
+    func_001C20B8();
+    func_00236F18();
+    func_001BA6F8();
+    puts(D_00490008);
+    func_001B9C60(D_00490018);
+    D_003772D8++;
+}
 
 extern s32 D_00621318;
 
@@ -519,13 +540,29 @@ void func_001BB218(s32 i, s32 x) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB260);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB2E0);
+void *func_001BB260();
+typedef struct {
+    u8 pad[0xAC20];
+    u8 f[1];
+} A2BB2E0;
+
+s32 func_001BB2E0(s32 k) {
+    A2BB2E0 *p;
+    fm_func_001B9B30();
+    p = func_0022F768(4);
+    if (p->f[k] == 0) {
+        if (func_001BA958(func_001BB260(k)) >= 3) {
+            p->f[k] = 1;
+        }
+    }
+    return p->f[k];
+}
 
 typedef struct {
     u8 b[11];
 } A2Bytes11;
 extern A2Bytes11 D_004900A8;
-s32 func_001BB2E0(u8);
+s32 func_001BB2E0(s32);
 
 s32 func_001BB370(void) {
     A2Bytes11 buf = D_004900A8;
@@ -1045,7 +1082,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE010);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE110);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE1E8);
+s32 func_001BE1E8(s32 a0, s32 a1) {
+    if (a0 == 0) {
+        a0 = D_006257D0;
+    }
+    func_001BE820((void *)a0, 0xF70);
+    if (!(a1 & 0x80)) {
+        if (a1 < 10) {
+            func_001BCD10(D_006257D0, func_001BA9D8(a1));
+        }
+    } else {
+        func_001BA108((void *)a0, a1 & 0x7F);
+    }
+}
 
 extern s32 D_00625640;
 extern s32 D_00625648[];
@@ -1225,7 +1274,12 @@ void func_001BE758(A2Stk *o, s32 a1, u128_stk a2) {
     o->n++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE798);
+void func_001BE798(A2Stk *o, u128_stk a1) {
+    o->n--;
+    o->stk[o->n - 1] = a1;
+    o->cur = o->val[o->n - 1];
+    o->top = &o->stk[o->n - 1];
+}
 
 typedef struct {
     u8 pad[0x140];

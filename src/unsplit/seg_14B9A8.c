@@ -47,7 +47,15 @@ void func_0024BA00(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BB88);
+s32 func_0024BA28(s32, s32, s32, void *);
+
+void func_0024BB88(s32 a0, s32 a1, f32 *a2) {
+    f32 v;
+    if (func_0024BA28(a0, a1, 0, &v) < 0) {
+        __asm__ volatile("break 0");
+    }
+    *a2 = v;
+}
 
 s32 func_0024BA28(s32, s32, s32, void *);
 
@@ -59,7 +67,19 @@ void func_0024BBC8(s32 a0, s32 a1, s32 *a2) {
     *a2 = v;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BC08);
+typedef struct {
+    void *ptr;
+    s32 id;
+} A2Ent;
+
+void func_0024BC08(s32 a0, A2Ent *e) {
+    while (e->ptr != 0) {
+        if (func_0024BA28(a0, e->id, 0, e->ptr) < 0) {
+            __asm__ volatile("break 0");
+        }
+        e++;
+    }
+}
 
 typedef union {
     u32 w;
@@ -102,7 +122,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BE88);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C460);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C8B8);
+/* rule 3: the target keeps $2 busy after the call (value-returning declaration) */
+s32 func_001FADE0_r(s32, s32, s32, s32, s32, s32) __asm__("func_001FADE0");
+
+void func_0024C8B8(s32 a0, s16 *p, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 i;
+    for (i = 0; p[i] >= 0; i++) {
+        func_001FADE0_r(a0, a2, a3, p[i], a4, a5);
+        a2 += a4;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C950);
 
@@ -190,7 +219,30 @@ s32 func_0024CF90(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CFA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D138);
+s32 func_001F40C8(void);
+void func_001F82B0(void);
+s32 func_001EAFD8(void);
+void func_001BA2A8(s32, s32);
+void func_00114430(void);
+void func_001EFAF0(void);
+extern s16 D_00669A40[];
+extern s32 D_00669A5C;
+extern s32 D_0046A53C;
+
+s32 func_0024D138(void) {
+    if (func_001F40C8()) {
+        func_001F82B0();
+        return 0;
+    }
+    func_0024CE80((u8 *)func_001EAFD8(), D_00669A40);
+    if (D_00669A5C != 0) {
+        func_001BA2A8(0, func_001EAFD8());
+    }
+    D_0046A53C = 1;
+    func_00114430();
+    func_001EFAF0();
+    return 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D1C8);
 
@@ -247,7 +299,30 @@ s32 func_0024D608(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D618);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D808);
+#include "eekernel.h"
+int *sceCdPOffCallback(void (*func)(void *), void *addr);
+void func_0024D618(void *);
+extern u8 D_00669A80[];
+extern u8 D_00494050[];
+extern u8 D_0024D7B0[];
+
+void func_0024D808(void) {
+    struct ThreadParam tp;
+    struct SemaParam sp;
+    s32 sema;
+
+    sp.maxCount = 1;
+    sp.initCount = 0;
+    sp.option = 0;
+    sema = CreateSema(&sp);
+    tp.stackSize = 0x1000;
+    tp.gpReg = D_00494050;
+    tp.entry = func_0024D618;
+    tp.stack = D_00669A80;
+    tp.initPriority = 1;
+    StartThread(CreateThread(&tp), (void *)sema);
+    sceCdPOffCallback((void (*)(void *))D_0024D7B0, (void *)sema);
+}
 
 extern u8 D_0046A620[];
 
@@ -338,7 +413,26 @@ void func_0024DAA0(void) {
     sceDevctl(D_004919B0, 0x4807, 0, 0, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DAD0);
+s32 sceDevctl_r(u8 *, s32, s32, s32, void *, s32) __asm__("sceDevctl");
+extern s32 D_0046A614;
+
+s32 func_0024DAD0(u8 *dev, s32 n) {
+    s32 *p;
+    u32 buf;
+
+    sceDevctl_r(dev, 0x4802, 0, 0, 0, 0);
+    p = &D_0046A614;
+    *p = 0x3C;
+    buf = 0;
+    if (sceDevctl_r(dev, 0x480A, 0, 0, &buf, 4) != 0) {
+        return 0;
+    }
+    *p = 0x46;
+    if ((s32)(buf >> 18) < n) {
+        return 0;
+    }
+    return 1;
+}
 
 extern s32 D_0046A674;
 

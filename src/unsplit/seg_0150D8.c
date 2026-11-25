@@ -111,9 +111,23 @@ void func_001150D8(u8* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115158);
+s32 func_00115158(f32* a0, f32* a1, f32* a2) {
+    sceVu0FVECTOR v;
+    f32 d;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvsub.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(v), "r"(a1), "r"(a0) : "memory");
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(v), "r"(a2) : "$2", "memory");
+    if (0.0f <= d) return 0;
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001151A8);
+s32 func_001151A8(s32 a0, f32* a1) {
+    sceVu0FVECTOR v;
+    f32 d;
+    func_00104CF8(a0, (s32)v);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(v), "r"(a1) : "$2", "memory");
+    if (0.0f <= d) return 0;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00115200);
 
@@ -510,7 +524,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119A20);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119AD8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119E80);
+void func_0011A9C8(s32 a0, s32 a1, u_long128* a2);
+
+f32 func_00119E80(s32 a0, s32 a1, f32* a2, f32* a3) {
+    sceVu0FVECTOR v;
+    f32 d1;
+    f32 d2;
+    func_0011A9C8(a0, a1, (u_long128*)v);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d1) : "r"(a2), "r"(v) : "$2", "memory");
+    d1 = -d1;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d2) : "r"(a3), "r"(a2) : "$2", "memory");
+    return d2 + d1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119EF8);
 

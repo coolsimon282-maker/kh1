@@ -31,7 +31,35 @@ void pppRyjDrawShipolyDes(pppPObject* pobj, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C460);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C618);
+extern f32 D_00372740[4];
+
+void func_0019C618(f32* out, u8* a, u8* b, f32 t) {
+    s32 i = t;
+    f32* v = D_00372740;
+    v[2] = t - (f32)i;
+    a += i * 16;
+    b += i * 16;
+    __asm__ volatile(
+        "lqc2 $vf1,0x0(%1)\n\t"
+        "lqc2 $vf2,0x10(%1)\n\t"
+        "lqc2 $vf3,0x0(%2)\n\t"
+        "lqc2 $vf4,0x10(%2)\n\t"
+        "lqc2 $vf5,0x0(%3)\n\t"
+        "vsub.xyzw $vf10,$vf4,$vf3\n\t"
+        "vmuly.xyzw $vf11,$vf3,$vf5y\n\t"
+        "vmulx.xyzw $vf12,$vf3,$vf5x\n\t"
+        "vsub.xyzw $vf13,$vf2,$vf1\n\t"
+        "vmulz.xyzw $vf10,$vf10,$vf5z\n\t"
+        "vadd.xyzw $vf11,$vf11,$vf4\n\t"
+        "vadd.xyzw $vf10,$vf10,$vf12\n\t"
+        "vsub.xyzw $vf13,$vf13,$vf11\n\t"
+        "vmulz.xyzw $vf10,$vf10,$vf5z\n\t"
+        "vadd.xyzw $vf10,$vf10,$vf13\n\t"
+        "vmulz.xyzw $vf10,$vf10,$vf5z\n\t"
+        "vadd.xyzw $vf10,$vf10,$vf1\n\t"
+        "sqc2 $vf10,0x0(%0)"
+        : : "r"(out), "r"(a), "r"(b), "r"(v) : "memory");
+}
 
 typedef struct {
     /* 0x00 */ char pad_00[0x21];

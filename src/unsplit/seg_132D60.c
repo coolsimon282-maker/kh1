@@ -679,7 +679,25 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237B30);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237D48);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237EC0);
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 n;
+    s32 unk_0C;
+    u_long128 q[1];
+} A2QList;
+
+u_long128* func_00237EC0(A2QList* a0, u_long128* a1) {
+    s32 i;
+    s32 k = 1;
+    for (i = 0; i < a0->n; i++) {
+        a1[k] = a0->q[i];
+        k++;
+    }
+    a1[0] = 0;
+    *(s32*)a1 = (k - 1) | 0x10000000;
+    return a1 + k;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237F20);
 
