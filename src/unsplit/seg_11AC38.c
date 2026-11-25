@@ -331,7 +331,45 @@ void func_0021B4A0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021B4C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021B5C8);
+extern s32 D_003F59A4;
+extern f32 D_003F59B0;
+extern s32 D_003F59B4;
+extern s32 D_003F59B8;
+extern s32 D_006430F4;
+extern s32 D_006430FC;
+extern s32 D_00643104;
+extern s32 D_00643108;
+extern s32 D_0064310C;
+
+/* unused: layout only (notes/f1.md F1). Without it func_00228760 grows by 2 (combine stops folding its
+ * lw D_003F6C90(reg)); 1, 2, 5, 6, 7 of these keep everything matching (25 Nov, with 10 D_231EA0_layout). */
+extern s32 D_21B5C8_layout1;
+void func_0021B5C8(s32 a0, s32 a1, s32 a2, s32 a3, f32 f) {
+    s32 *st = &D_006430F0;
+    s32 s = *st;
+
+    D_006430F4 = -1;
+    D_006430FC = a0;
+    D_003F59B0 = f;
+    D_003F59A4 = 0;
+    D_00643108 = a2;
+    D_0064310C = a3;
+    D_003F59B4 = a2 - 0x100;
+    D_003F59B8 = a3 - 0xC0;
+    D_00643104 = a1;
+    if (s == 0) {
+        *st = 1;
+        D_006430F8 = -1;
+        D_00643100 = 0;
+        *(s32 *)D_003F3504 = 0;
+    } else if (s == 4) {
+        if (D_006430F8 != a0) {
+            *st = 1;
+            D_00643100 = 0;
+            *(s32 *)D_003F3504 = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021B6A0);
 
