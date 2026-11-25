@@ -1307,7 +1307,21 @@ s32 func_0023F688(s32 *arg0, s32 arg1) {
     return arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023F700);
+extern A3V16 D_004915F0;
+
+s32 func_0023F700(u8 *a0, s32 a1) {
+    A3V16 col;
+
+    col = D_004915F0;
+    a1 = func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x30, &col, a1, 0.0f, *(f32 *)(a0 + 0x9E4), *(f32 *)(a0 + 0xA1C));
+    if (*(f32 *)(a0 + 0x9F0) != 0.0f) {
+        s32 *c = (s32 *)&col;
+        c[0] = c[1] = c[2] = *(f32 *)(a0 + 0x9EC);
+        c[3] = 0x80;
+        a1 = func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x30, &col, a1, *(f32 *)(a0 + 0x9E4), *(f32 *)(a0 + 0x9E8), *(f32 *)(a0 + 0xA1C));
+    }
+    return a1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023F7D8);
 
