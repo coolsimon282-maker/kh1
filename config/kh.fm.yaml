@@ -589,7 +589,7 @@ segments:
   - [ 0x3937f0, .rodata, lib/libm/ef_acos ]
   - [ 0x393828, rodata, lib/libm/ef_asin_ro ]
   - [ 0x393880, rodata, lib/libm/ef_fmod_ro ]
-  - [ 0x393890, rodata, lib/libm/ef_pow_ro ]
+  - [ 0x393890, .rodata, lib/libm/ef_pow ]
   - [ 0x393918, rodata, lib/libm/ef_rem_pio2_ro ]
   - [ 0x393cd8, rodata, lib/libm/ef_sqrt_ro ]
   - [ 0x393ce0, .rodata, lib/libm/k_cos ]
