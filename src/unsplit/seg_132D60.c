@@ -2992,7 +2992,21 @@ void func_00248788(void *arg0) {
     *(u32 *)((u8 *)arg0 + 8) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248798);
+extern u8 D_00669620[];
+extern s32 D_00669610;
+
+void func_00248798(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 i;
+    s32 *p;
+
+    func_002475E8(a0, D_00669620, a1);
+    p = (s32 *)(D_00669620 + 0xA4);
+    for (i = 0; i < 4; i++) {
+        p[i * 4 - 1] += a2 * 16;
+        p[i * 4] += a3 * 16;
+    }
+    D_00669610 = func_002388B8(D_00669620, 1, D_00669610);
+}
 
 void func_00248798(s32, s32, s32, s32);                /* extern */
 
