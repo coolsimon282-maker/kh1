@@ -2186,7 +2186,29 @@ f32 func_001E9EC0(f32 *a, f32 *b) {
     return sqrt(dx * dx + dz * dz);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9F18);
+void sceVu0UnitMatrix(f32 (*)[4]);
+void sceVu0RotMatrixX(f32 (*)[4], f32 (*)[4], f32);
+void sceVu0RotMatrixY(f32 (*)[4], f32 (*)[4], f32);
+void sceVu0ApplyMatrix(f32 *, f32 (*)[4], f32 *);
+
+void func_001E9F18(f32 *o, f32 *pos, f32 *rot, f32 dist) {
+    f32 m[4][4] __attribute__((aligned(16)));
+
+    o[0] = 0.0f;
+    o[1] = 0.0f;
+    o[2] = dist;
+    o[3] = 1.0f;
+    sceVu0UnitMatrix(m);
+    sceVu0RotMatrixX(m, m, rot[0]);
+    sceVu0RotMatrixY(m, m, rot[1]);
+    sceVu0ApplyMatrix(o, m, o);
+    o[0] = -o[0];
+    o[1] = -o[1];
+    o[2] = -o[2];
+    o[0] += pos[0];
+    o[1] += pos[1];
+    o[2] += pos[2];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9FE8);
 
