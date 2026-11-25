@@ -3711,9 +3711,57 @@ void func_00211718(void) {
     *(s32 *)(D_003ED728 + 0x0) = (*(s32 *)(D_003ED728 + 0x0) - 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00211738);
+extern s32 D_00641BA8;
+extern s32 D_00641BB0;
+void func_00149F10(s32, void (*)(void));
+void func_001F0B10(void);
+void func_00211738(s32 a0) {
+    if (func_001F4390(a0) != 0 && D_00641C04 == 0) {
+        if (D_00641BE0[D_00641BA8] != D_00641BF0[D_00641BA8]) {
+            D_00641C04 = 1;
+            *(s32 *)D_003ED728 += 1;
+            func_00149F10(D_00641BF0[D_00641BA8], func_00211718);
+            D_00641BE0[D_00641BA8] = D_00641BF0[D_00641BA8];
+        }
+        *(u8 *)(D_00641BB0 + 0x32) = D_00641BF0[D_00641BA8];
+        func_001F0B10();
+        func_001F36B8((u8 *)a0);
+        D_003F34C0 &= ~2;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00211840);
+extern s32 D_00641C00;
+void func_0020A758(u8 *, s32, s32, s32);
+void func_00211840(u8 *a0) {
+    if (D_003F34C0 & 1) {
+        return;
+    }
+    if (D_00641C00 == 0) {
+        return;
+    }
+    switch (D_00641C08) {
+    case 0:
+        *(f32 *)(a0 + 0x24) += D_002B8344;
+        func_0020A758(a0, D_00641BA8, 10, 0x32);
+        return;
+    case 1:
+        func_0020A728(D_00641BA8);
+        *(s32 *)D_003ED728 += 1;
+        D_00641C04 = 1;
+        D_00641C08 = 2;
+        func_00149F10(D_00641BE0[D_00641BA8], func_00211718);
+        return;
+    case 2:
+        if (D_00641C04 == 0) {
+            D_00641C08 = 3;
+        }
+        break;
+    case 3:
+        func_0020A6C0(D_00641BA8);
+        D_00641C08 = 0;
+        break;
+    }
+}
 
 typedef struct {
     s32 a;
@@ -3844,6 +3892,7 @@ extern s32 D_00642418[];
 extern s32 D_00642818[];
 extern s32 D_00642C18;
 
+extern s32 D_f1pad_dhhdefa; /* unused: rule F1 */
 void func_00212930(s32 a0) {
     u8 *p;
     s32 v;
@@ -4120,6 +4169,7 @@ void func_00214130(s32, s32, s32, s32, s32, s32);
 extern s32 D_f1pad_feadghb; /* unused: rule F1 */
 extern s32 D_f1pad_gg; /* unused: rule F1 */
 extern s32 D_f1pad_babdgdg; /* unused: rule F1 */
+extern s32 D_f1pad_h; /* unused: rule F1 */
 void func_00214290(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     s32 *e;
     s32 c;
