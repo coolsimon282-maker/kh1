@@ -493,7 +493,34 @@ s32 func_001E0010(A2Script *s) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E0078);
+typedef struct {
+    u8 pad[0x3070];
+    u64 unk_3070;
+    u64 unk_3078;
+} A2Big3854E0;
+extern A2Big3854E0 D_003854E0;
+
+s32 func_001E0078(A2Script *s) {
+    u8 *p = func_0011EEB8(D_00624960, 0, func_001DE7C0);
+    s32 id;
+    f32 x, y, z, n;
+
+    *(s32 *)(p + 0x2C) = 0xF;
+    id = s->unk_174[s->unk_174[3]];
+    *(s32 *)(p + 0x28) = id;
+    n = (f32)s->unk_174[s->unk_174[3] + 4];
+    x = (f32)s->unk_174[s->unk_174[3] + 1];
+    y = (f32)s->unk_174[s->unk_174[3] + 2];
+    z = (f32)s->unk_174[s->unk_174[3] + 3];
+    *(f32 *)(p + 0x30) = n + n;
+    *(f32 *)(p + 0x40) = (x - 255.0f) / 255.0f / n;
+    *(f32 *)(p + 0x44) = (y - 255.0f) / 255.0f / n;
+    *(f32 *)(p + 0x48) = (z - 255.0f) / 255.0f / n;
+    *(A2Obj1760 **)(p + 0x10) = func_001760F0(id);
+    D_003854E0.unk_3078 |= 8;
+    s->unk_174[3] -= 5;
+    return 2;
+}
 
 extern s32 D_003DACA0;
 
@@ -503,12 +530,6 @@ void func_001E01B8(void) {
     *p = func_00155ED8(0x3C, 4);
 }
 
-typedef struct {
-    u8 pad[0x3070];
-    u64 unk_3070;
-    u64 unk_3078;
-} A2Big3854E0;
-extern A2Big3854E0 D_003854E0;
 
 void func_001E01F0(void) {
     D_003854E0.unk_3070 &= ~((u64)1 << 52);
