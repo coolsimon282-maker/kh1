@@ -708,7 +708,46 @@ void func_0012C698(u8 *a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C760);
+u8 *func_00148968(u8 *, s32, s32);
+void func_0012C760(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x14C);
+    u8 *e = *(u8 **)(s + 0x1C);
+    s32 v;
+
+    if (e != NULL) {
+        s32 m = *(s32 *)(e + 0x14) & 3;
+        if (m != 1) {
+            *(u8 **)(s + 0x1C) = NULL;
+            return;
+        }
+        if ((*(u64 *)a0 & 0xC001) != 0xC001) {
+            func_00176310((s32)e);
+            *(u8 **)(*(u8 **)(a0 + 0x14C) + 0x1C) = NULL;
+            return;
+        }
+        if (!(*(s32 *)(a0 + 0x1CC) & 0x800000)) {
+            **(u8 **)(e + 0x10) = m;
+        }
+        return;
+    }
+    v = *(s32 *)(s + 0x24);
+    if (v < 0) return;
+    if (v & 0x40000000) {
+        *(s32 *)(s + 0x24) = v & ~0x40000000;
+        return;
+    }
+    if (!(*(s32 *)(a0 + 0x1CC) & 0x800000)) return;
+    if (func_001233F8(a0)) {
+        u8 *q;
+        u8 *s2 = *(u8 **)(a0 + 0x14C);
+        q = func_00148968(a0, *(s32 *)(s2 + 0x20), *(s32 *)(s2 + 0x24));
+        *(u8 **)(*(u8 **)(a0 + 0x14C) + 0x1C) = q;
+        if (q != NULL) {
+            *(s32 *)(q + 0x14) &= ~0x20;
+        }
+    }
+    *(s32 *)(*(u8 **)(a0 + 0x14C) + 0x24) = -1;
+}
 
 void func_0012C880(u8 *a0, s32 a1) {
     if (*(s32 *)(*(u8 **)(a0 + 0x14C) + 0x1C)) {
