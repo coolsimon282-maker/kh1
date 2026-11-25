@@ -21,4 +21,11 @@ void _malloc_lock(void) {
     num_threads++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mloc", _malloc_unlock);
+extern int SignalSema(int s);
+
+void _malloc_unlock(void) {
+    if (--num_threads == 0) {
+        curr_thread = -1;
+        SignalSema(__sce_sema_id);
+    }
+}
