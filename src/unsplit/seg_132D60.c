@@ -3095,7 +3095,27 @@ void func_002492D0(f32* v, f32 x, f32 y, f32 z, f32 w) {
     v[2] = w;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002492E8);
+extern s32 D_002C5960;
+
+s32 func_002492E8(struct { f32 unk0; f32 unk4; } *arg0, s32 arg1) {
+    if (arg0->unk4 != 0.0f) {
+        if ((D_002C5960 & 1) == 0) {
+            f32 tmp = (f32)arg1;
+            arg0->unk0 += arg0->unk4 * tmp;
+        }
+        if (arg0->unk0 <= 0.0f) {
+            arg0->unk0 = 0.0f;
+            arg0->unk4 = 0.0f;
+            return 2;
+        }
+        if (arg0->unk0 >= 128.0f) {
+            arg0->unk0 = 128.0f;
+            arg0->unk4 = 0.0f;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 s32 func_00249370(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0RotMatrixZ(arg0, arg1, arg2[2]);
