@@ -3747,7 +3747,42 @@ void func_00138A20(u8 *a0, f32 *a1) {
     sceVu0ScaleVector((f32 *)(a0 + 0x3C0), a1, s);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00138A78);
+f32 func_00177D68(void);
+void func_00138A78(u8 *a0, u64 *a1_) {
+    u8 *a1 = (u8 *)a1_;
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+    u8 *t;
+    u8 *e;
+    s32 n;
+    s32 k;
+    u32 mask;
+    f32 r;
+
+    if (*(s32 *)(a1 + 0x34) == 0 || *(s32 *)(a1 + 0x38) < 0) return;
+    sceVu0RotMatrixY(m, D_002C1E20, atan2f(*(f32 *)(a1 + 0x10), *(f32 *)(a1 + 0x18)));
+    sceVu0RotMatrixX(m, m, func_00177D68() * 3.1415928f - 1.5707964f);
+    v[0] = 0.0f;
+    v[1] = 0.0f;
+    v[2] = 1.0f;
+    v[3] = 1.0f;
+    sceVu0ApplyMatrix(v, m, v);
+    r = func_00177D68();
+    t = *(u8 **)(a0 + 0x134);
+    n = t[6];
+    k = r * n;
+    while (*(u32 *)(a0 + 0x3A8) & (1 << k)) {
+        k = (k + 1) % n;
+    }
+    e = *(u8 **)(t + 0x18) + k * 20;
+    func_001315C0((s32)a0, *(u16 *)(e + 2), (s32)w, *(f32 *)(e + 4));
+    v[0] *= *(f32 *)(e + 0xC);
+    v[1] *= *(f32 *)(e + 0x10);
+    v[2] *= *(f32 *)(e + 0xC);
+    sceVu0AddVector(w, w, v);
+    func_00147ED8_x(*(s32 *)(a1 + 0x34), *(s32 *)(a1 + 0x38), -10000, w);
+}
 
 void func_00138C30(u8 *a0, u64 *a1) {
     sceVu0FVECTOR v;
