@@ -3478,7 +3478,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DFC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020E090);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020E1C0);
+/* unused: rule F1 (with fewer, func_00211840 and func_00212930 change) */
+extern s32 D_lay20E1C0_0;
+extern s32 D_lay20E1C0_1;
+extern s32 D_lay20E1C0_2;
+extern s32 D_lay20E1C0_3;
+extern s32 D_lay20E1C0_4;
+extern s32 D_lay20E1C0_5;
+extern s32 D_lay20E1C0_6;
+extern s32 D_lay20E1C0_7;
+extern s32 D_lay20E1C0_8;
+extern s32 D_lay20E1C0_9;
+extern s32 D_lay20E1C0_10;
+extern s32 D_lay20E1C0_11;
+extern s32 D_lay20E1C0_12;
+void func_0020E1C0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 *e = D2C40_v[a1];
+    u32 c = e[4];
+    s32 v;
+
+    v = func_001BA228(a5);
+    func_00201550(a0, 2, 0, a2, a3, a4, a2 + 0x18, (s32)e, v, 0xF);
+    func_00208280(a0, a2 + 6, a3 + 4, 0x12, 0x2B, c >> 24);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020E280);
 
