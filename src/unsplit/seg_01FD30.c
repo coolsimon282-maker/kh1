@@ -193,9 +193,39 @@ s32 func_00120580(void *name, void *dst) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120438);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120678);
+s32 func_00146878(void);
 
-void func_00120678();
+s32 func_00120678(u8 *a0) {
+    A2Slot *s;
+    void (*cb)(s32, s32, s32);
+
+    if (*(s32 *)(a0 + 0x40) > 0) {
+        (*(s32 *)(a0 + 0x40))--;
+        return 8;
+    }
+    if (func_00146878() == 0) {
+        return 8;
+    }
+    if (*(s32 *)(a0 + 0x40) == 0) {
+        *(A2Slot **)(a0 + 0x48) = func_001204A0((s32)(a0 + 0x10), *(s32 *)(a0 + 0x38));
+    }
+    s = *(A2Slot **)(a0 + 0x48);
+    (*(s32 *)(a0 + 0x40))--;
+    if (s->unk_30 < 0) {
+        return 8;
+    }
+    D_002C5C48 = s->unk_30;
+    FlushCache(0);
+    FlushCache(2);
+    cb = *(void (**)(s32, s32, s32))(a0 + 0x3C);
+    if (cb != NULL) {
+        cb(s->unk_30, *(s32 *)(a0 + 0x44), s->unk_2C);
+    }
+    func_00120038((s32 *)s);
+    return 4;
+}
+
+s32 func_00120678();
 char *strcpy(char *, const char *);
 void *func_0011EEB8(void *, s32, s32);
 extern s32 D_004E49E8;
