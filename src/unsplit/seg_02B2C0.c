@@ -654,7 +654,35 @@ s32 func_0012C328(u8* a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C560);
+extern s32 D_002E31A4;
+void func_0013CAE8(s32, s32);
+typedef struct { u8 pad[0x26]; u8 f[3]; } V12C560;
+void func_0012C560(u8 *a0, u8 *a1, s32 a2) {
+    u8 *t = func_00147D18_x(func_0012C328);
+    u8 *q;
+
+    *(u8 **)(t + 0x10) = a0;
+    *(s32 *)(t + 0x14) = 0;
+    q = func_00121C98_x(0x40, (u8 **)(t + 0x20));
+    *(s32 *)(q + 0x0) = 0;
+    *(s32 *)(q + 0x30) = 0xFFF;
+    *(s32 *)(q + 0x8) = a2;
+    *(u8 **)(q + 0xC) = a1;
+    if (a1 == NULL || a0 == a1) {
+        *(s32 *)(q + 0x4) = 1;
+        *(f32 *)(t + 0x1C) = D_003051EC[*(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C) * 2 + 0x40];
+    } else {
+        *(s32 *)(q + 0x4) = 2;
+        *(f32 *)(t + 0x1C) = D_003051EC[*(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C) * 2 + 0x41];
+    }
+    if (!(a2 & 0x400)) {
+        if (*(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C) == 0) {
+            D_003010F8->unk_000[D_002E31A4 + 0x26] = 0;
+        } else {
+            func_0013CAE8(*(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C), a2);
+        }
+    }
+}
 
 void func_00146C98(u8 *, s32);
 
