@@ -344,7 +344,7 @@ s32 fm_func_002193F0(void);
 void func_0013F770(void);
 f32 func_0013FD88(u8*, f32);
 void sceVu0ScaleVector(f32*, f32*, f32);
-void func_00140DB8(void);
+void func_00140DB8();
 s32 func_0013C458(s32, s32);
 void func_001418B8(s32*);
 void sceVu0ScaleVectorXYZ(f32*, f32*, f32);
@@ -1384,7 +1384,32 @@ void func_00140D50(s32 a, f32* b) {
     sceVu0CopyVector(b, (f32*)(a + 0x30));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00140DB8);
+extern s32 D_00140DB8_pad1; /* unused: rule F1 (with func_00140DB8) */
+extern s32 D_00140DB8_pad3; /* unused: rule F1 (with func_00140DB8) */
+void func_00140DB8(u8* p, f32* v) {
+    f32 z = 0.0f;
+    f32 h;
+    s32 fl = 0;
+    if (v[1] < z) {
+        func_00130398((s32)p, 5, z);
+        func_00130578((s32)p, 6, z);
+        h = 20.0f;
+    } else if (z < v[3]) {
+        func_00130398((s32)p, 5, z);
+        func_00130578((s32)p, 6, z);
+        h = 15.0f;
+    } else {
+        func_00130398((s32)p, 6, 12.0f);
+        h = 5.0f;
+        fl = 0x10000;
+    }
+    v[1] = 0.0f;
+    sceVu0AddVector(v, v, *(f32**)(p + 0x148));
+    sceVu0Normalize(v, v);
+    v[3] = 2.0f;
+    func_0014CC88(p, h);
+    *(s32*)p |= fl;
+}
 
 void func_00140EE0(u8* p, f32* v) {
     sceVu0ScaleVector(v, (f32*)(p + 0x20), D_002B8344);
@@ -1403,8 +1428,9 @@ s32 func_00140F08(u8* p, s32 a1) {
     return r;
 }
 
+void func_00140DB8_0(void) __asm__("func_00140DB8");
 s32 func_00140F88(void) {
-    func_00140DB8();
+    func_00140DB8_0();
     return 0;
 }
 
