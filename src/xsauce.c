@@ -476,7 +476,27 @@ void func_0010EB50(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
     func_0010E330(p);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EBE0);
+void func_0010EA38(s32, u_long128 *, s32);
+
+void func_0010EBE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    u_long128 *b[2];
+
+    b[0] = func_00121C98(0x2C, &b[0]);
+    b[1] = func_00121C98(0x400, &b[1]);
+    func_0010C248();
+    func_0010EA38(a5, b[1], a3);
+    ((XSauce *)b[0])->unk_13 = 0;
+    ((XSauce *)b[0])->unk_13 |= 4;
+    ((XSauce *)b[0])->unk_13 |= 8;
+    func_0010EB50(a0, a1, a4, (s32)b[1], (XSauce *)b[0]);
+    func_0010EA38(a5, b[1], a3 + 1);
+    ((XSauce *)b[0])->unk_13 = 0;
+    ((XSauce *)b[0])->unk_13 |= 4;
+    ((XSauce *)b[0])->unk_13 |= 8;
+    func_0010EB50(a0 + a2, a1, a4, (s32)b[1], (XSauce *)b[0]);
+    func_00121D50((s32)b[1]);
+    func_00121D50((s32)b[0]);
+}
 
 void func_0010ED10(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     XSauce* s;

@@ -213,7 +213,47 @@ s32 func_0011CBA0(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CBE0);
+typedef struct {
+    s32 off;
+    s32 size;
+} A2SecCBE0;
+void func_001EE710(s32, u8 *, s32);
+void *func_0011ED30(s32, s32 (*)(void));
+
+void func_0011CBE0(s32 a0, s32 a1_, s32 a2, void (*cb)(void)) {
+    u8 *a1 = (u8 *)a1_;
+    A2SecCBE0 *s;
+    u8 *p0;
+    u8 *p1;
+    s32 size0, size1;
+
+    s = (A2SecCBE0 *)(a1 + 0x10);
+    p0 = a1 + s->off;
+    size0 = s->size;
+    s = (A2SecCBE0 *)(a1 + 0x18);
+    p1 = a1 + s->off;
+    size1 = s->size;
+    D_004E3430 = cb;
+    if (*(s32 *)(p1 + 4) > 0x7547F) {
+        func_001EE1E0(0, 0);
+        func_001EE1E0(1, 0);
+        func_001EE1E0(0, 1);
+        func_001EE1E0(1, 1);
+        D_002BD8B8[0] = -2;
+        D_002BD8B8[1] = -2;
+        if (a0 == 1) {
+            a0 = 0;
+            goto skip;
+        }
+    }
+    D_002BD8B8[a0] = a2;
+    func_001EE1E0(0, a0);
+    func_001EE1E0(1, a0);
+skip:
+    func_001EE518(a0, (s32)p0, size0);
+    func_001EE710(a0, p1, size1);
+    func_0011ED30(10000, func_0011CBA0);
+}
 
 typedef struct {
     s32 off;
@@ -614,7 +654,43 @@ void fm_func_0011E340(void) {
     D_002C1394 = func_0011E248();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E368);
+extern s32 D_004E3A1C;
+s32 func_001EDBC0(s32, s32, s32);
+
+s32 func_0011E368(s32 a0, s32 a1) {
+    Seg1C7A8Ent0C *e = D_004E3454;
+    s32 i;
+    s32 r;
+
+    if (a0 == -1) {
+        if (D_004E3A1C != 0) {
+            return 1;
+        }
+        r = func_001EDBC0(-8, -1, -1);
+        if (r == 0) {
+            s32 n = D_004E344C;
+            for (i = 0; i < n; i++) {
+                e->unk_00 = 0;
+                e->unk_04 = 0;
+            }
+        }
+        return r;
+    }
+    for (i = 0; i < D_004E344C; i++, e++) {
+        if (e->unk_00 == a0 && e->unk_04 == a1) {
+            if (e->unk_08 != 0) {
+                return 1;
+            }
+            r = func_001EDBC0(-8, a0, a1);
+            if (r == 0) {
+                e->unk_00 = 0;
+                e->unk_04 = 0;
+            }
+            return r;
+        }
+    }
+    return 0;
+}
 
 void func_0011E480(void) {
     func_0011C5F0(0, 0, 0x3C0);
