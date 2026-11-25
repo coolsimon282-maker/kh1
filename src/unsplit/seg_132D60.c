@@ -2559,7 +2559,28 @@ void func_00247228(void *arg0, s32 arg1, f32 *arg2) {
     sceVu0CopyVector((f32 *)((char *)arg0 + 0x10), arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", fm_func_00247258);
+extern u8 D_0045E1F0[];
+extern u8 D_0045FA80[];
+extern u8 D_0045FA88[];
+extern u8 D_0045FA90[];
+extern u8 D_0045FAC0[];
+s32 func_00247190();
+
+void fm_func_00247258(void) {
+    s32 i;
+    u8 *p;
+    func_00247668(D_0045E1F0);
+    p = D_0045FAC0;
+    for (i = 0; i < 10; i++) {
+        func_00247AE0(D_0045FA80, p + 0x30, D_0045E1F0);
+        func_00247AE0(D_0045FA88, p + 0xF0, D_0045E1F0);
+        func_00247AE0(D_0045FA90, p + 0x1B0, D_0045E1F0);
+        p += 0x930;
+    }
+    if (func_0011ED60(func_00247190) == 0) {
+        func_0011ED30(0x28489, func_00247190);
+    }
+}
 
 extern u8 D_0045FAC0[];
 
