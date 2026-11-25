@@ -571,7 +571,29 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CCEF8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CCF78);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD2A8);
+extern s32 D_00389C80;
+extern void *D_00388480[];
+extern u8 D_003C5640[];
+
+typedef struct {
+    /* 0x0000 */ u8 pad[0x10];
+    /* 0x0010 */ u16 tbl[8][256];
+    /* 0x1010 */ s32 cnt[8];
+} XGiantMountainQ;
+
+s32 func_001CD2A8(Script* arg0) {
+    XGiantMountainQ* g = (XGiantMountainQ*)&D_003854E0;
+    s32 k = arg0->unk_174[arg0->unk_174[3] + 3];
+    s32 v = arg0->unk_174[arg0->unk_174[3] + 4];
+
+    arg0->unk_174[3] -= 2;
+    D_002B8000 = v;
+    D_00388480[D_00389C80] = D_003C5640;
+    g->tbl[k][g->cnt[k]] = D_00389C80;
+    g->cnt[k]++;
+    D_00389C80++;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD340);
 
