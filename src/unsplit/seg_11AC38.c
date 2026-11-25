@@ -4097,7 +4097,47 @@ s32 func_00232960(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002329A0);
+extern s32 D_003F7EC8;
+extern s32 D_006476F8;
+extern s32 D_006476FC;
+extern s32 D_00647700;
+extern s32 D_00647704;
+extern s32 D_00647708;
+typedef struct {
+    u8 pad0[0xC];
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+    u8 pad14[4];
+    s16 unk18;
+} D3F7EA0_t;
+extern D3F7EA0_t D_003F7EA0;
+
+
+void func_002329A0(u8 *a0, s32 a1, s32 a2) {
+    s32 x0, y0, w, h, e;
+    func_001F3110((s32)a0);
+    D_003F7EC4 = 1;
+    D_003F7EC8 = 1;
+    D_00647700 = (s32)a0;
+    D_006476F8 = a1;
+    D_006476FC = a2;
+    D_00647704 = (s32)(a0 + 4);
+    D_00647708 = (s32)(a0 + 0x644);
+    x0 = (u32)(*(s32 *)(a0 + 0x664) - 0x7000) >> 4;
+    y0 = (u32)(*(s32 *)(a0 + 0x668) - 0x7400) >> 4;
+    w = ((u32)(*(s32 *)(a0 + 0x66C) - 0x7000) >> 4) - x0 + 1;
+    h = ((u32)(*(s32 *)(a0 + 0x670) - 0x7400) >> 4) - y0 + 1;
+    D_003F7EA0.unk10 = w;
+    D_003F7EA0.unk12 = h;
+    D_003F7EA0.unk18 = w - 0x28;
+    D_003F7EA0.unkC = x0;
+    D_003F7EA0.unkE = y0;
+    e = (s32)func_001F3A20((u8 *)&D_003F7EA0, 0);
+    D_0064770C = e;
+    func_0011ED30(0x2C01A, func_00232960);
+}
 
 void func_00232AA8(void) {
     func_001F3840(D_0064770C);
