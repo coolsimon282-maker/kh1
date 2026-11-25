@@ -1699,7 +1699,67 @@ void func_001E4558(void) {
     func_0010BB10(D_0062F790, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E4578);
+void func_001E4578(void) {
+    extern u8 D_0062F900[];
+    extern u8 D_003DC068[];
+    extern u8 D_003DC0A8[];
+    extern u8 D_003DC0E8[];
+    extern u8 D_003DC1A8[];
+    extern u8 D_003DC128[];
+    extern u8 D_003DC460[];
+    extern u8 *D_003010F8_u __asm__("D_003010F8");
+    extern s32 func_001E4318(void);
+    extern s32 func_0010EDA0_s(void *, void *, s32) __asm__("func_0010EDA0");
+    s32 n;
+    s32 k;
+    s32 t;
+
+    D_003DC488 = 0;
+    D_003DC490 = 1;
+    func_001EA128(D_0062F900, D_003DC468);
+    func_001EA268(D_0062F900, (s32)D_003DC068);
+    t = D_003DC488;
+    k = D_003010F8_u[0x48F];
+    D_003DC488 = t + 1;
+    n = 2;
+    if (k == 1) {
+        func_001EA268(D_0062F900, (s32)(D_003DC068 + 0x40));
+        n = 3;
+        D_003DC488++;
+    } else if (k == 2) {
+        func_001EA268(D_0062F900, (s32)(D_003DC068 + 0x80));
+        n = 3;
+        D_003DC488++;
+    } else if (k == 5) {
+        func_001EA268(D_0062F900, (s32)(D_003DC068 + 0x140));
+        n = 3;
+        D_003DC488++;
+    }
+    if (D_003010F8_u[0x490] == 1) {
+        func_001EA268(D_0062F900, (s32)D_003DC0A8);
+        n++;
+        D_003DC488++;
+    } else if (D_003010F8_u[0x490] == 2) {
+        func_001EA268(D_0062F900, (s32)D_003DC0E8);
+        n++;
+        D_003DC488++;
+    } else if (D_003010F8_u[0x490] == 5) {
+        func_001EA268(D_0062F900, (s32)D_003DC1A8);
+        n++;
+        D_003DC488++;
+    }
+    func_001EA268(D_0062F900, (s32)D_003DC128);
+    D_003DC488++;
+    func_001EA268(D_0062F900, (s32)(D_003DC128 + 0x40));
+    D_003DC488++;
+    func_001EA268(D_0062F900, (s32)D_003DC460);
+    func_0010EDA0_s(D_0062F790, D_0062F900, (s32)func_001E4558);
+    D_0062F8F0[0] = 1;
+    D_0062F8F0[1] = D_003DC488;
+    D_0062F8F0[2] = (s32)func_001E44E0;
+    func_0010F3B8(D_0062F8F0, D_0062F790, n);
+    func_0011ED30(50000, func_001E4318);
+}
 
 void func_001E3600();
 void func_00231740(s32, s32, s32, s32);
