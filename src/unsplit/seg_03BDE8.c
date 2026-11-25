@@ -7821,7 +7821,35 @@ s32 func_001715B0(u8* list, u8* self, f32 r) {
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00171680);
+u8* func_00123558(u8*, u8*);
+s32 func_00123768(u8*);
+s32 func_00171680(u8* p, u8* q) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR e;
+    u8* o = NULL;
+    s32 n = 0;
+    f32 c;
+    sceVu0SubVector(d, (f32*)(q + 0x10), (f32*)(p + 0x10));
+    c = 0.7f;
+    func_00162C20(d);
+    while ((o = func_00123558(p, o)) != NULL) {
+        if (o == q) {
+            continue;
+        }
+        if (((*(u64*)(o + 0x370) >> 37) & 3) != 2) {
+            continue;
+        }
+        if (func_00123768(o) == 0) {
+            continue;
+        }
+        sceVu0SubVector(e, (f32*)(o + 0x10), (f32*)(p + 0x10));
+        func_00162C20(e);
+        if (c < sceVu0InnerProduct(e, d)) {
+            n++;
+        }
+    }
+    return n;
+}
 
 void func_0016FC60(u8*, u8*);
 f32 func_0012EC60_f(s32, s32, f32*) __asm__("func_0012EC60");
