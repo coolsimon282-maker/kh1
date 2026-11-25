@@ -169,7 +169,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107AB8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107A78);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107B68);
+extern s32 D_00351BD0;
+extern u8 D_0046E120[];
+extern u8 D_00472160[];
+extern u8 D_004761A0[];
+extern u8 D_0047A1E0[];
+extern u8 D_0047E220[];
+extern u8 D_00482260[];
+
+void func_00107B68(s32 a0, s32 a1) {
+    Seg6B18Task* t = func_0015ED80(a0, func_00106DB0);
+
+    switch (a1) {
+    case 1:
+        t->unk_10 = (s32)(D_00351BD0 ? D_00472160 : D_0046E120);
+        break;
+    case 0:
+        t->unk_10 = (s32)(D_00351BD0 ? D_0047A1E0 : D_004761A0);
+        break;
+    case 3:
+        t->unk_10 = (s32)(D_00351BD0 ? D_00482260 : D_0047E220);
+        break;
+    }
+}
 
 void func_00107E10(f32* a0) {
     sceVu0CopyVector(D_00494BC0, a0 + 4);
