@@ -7986,9 +7986,36 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00174FC0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001752A0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175600);
-
 typedef struct { s16 h0; u8 b2; u8 b3; s32 w4; } Tag175708;
+void func_0015FA20(s32*);
+extern u64 D_0035C430[2];
+extern u64 D_0035C450[2];
+extern Tag175708 D_0035C4A0;
+extern Tag175708 D_0035C550;
+extern s32 D_005757A0[];
+s32 func_00175600(u8* p) {
+    u8* b;
+    if ((u16)(*(u16*)(p + 0xA) - 3) >= 2) {
+        return 0;
+    }
+    sceDmaSend((void*)sceDmaGetChan(2), &D_0035C4A0);
+    b = (u8*)((u32)&D_0035C550 | 0x20000000);
+    if (*(u16*)(p + 0xA) == 4) {
+        *(u64*)(b + 0x68) = D_0035C430[0];
+        *(u64*)(b + 0x78) = D_0035C430[1];
+    } else {
+        *(u64*)(b + 0x68) = D_0035C450[0];
+        *(u64*)(b + 0x78) = D_0035C450[1];
+    }
+    *(u64*)(b + 0xF0) = (**(u64***)(p + 0x10))[0];
+    *(u64*)(b + 0x100) = (**(u64***)(p + 0x10))[1];
+    sceGsSyncPath(0, 0);
+    func_0015FA20(D_005757A0);
+    sceGsSyncPath(0, 0);
+    sceDmaSend((void*)sceDmaGetChan(2), &D_0035C550);
+    return 0;
+}
+
 extern s32 D_005757A0[];
 extern Seg16 D_00575790;
 extern s32 D_0035C420;
