@@ -5056,7 +5056,26 @@ void func_00159B48(f32* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159C10);
+void func_00159C10(f32* out, f32 t) {
+    s32 i;
+    s32 idx = D_00551740.idx;
+    s32 n;
+    f32 w;
+    for (i = 0; i < 32; i++) {
+        w = D_00551740.v[idx][3];
+        if (w == 0.0f) {
+            sceVu0CopyVector(out, D_00551740.v[idx]);
+            return;
+        }
+        n = (idx + 31) % 32;
+        if (!(w < t)) {
+            sceVu0InterVector(out, D_00551740.v[n], D_00551740.v[idx], t / w);
+            return;
+        }
+        t -= w;
+        idx = n;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159CD8);
 
@@ -7491,7 +7510,7 @@ s32 func_00176EE0(void) {
 extern sceVu0FVECTOR D_005758A0;
 extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
-/* seven dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
+/* nine dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
 extern int flip_dummy_0;
 extern int flip_dummy_1;
 extern int flip_dummy_2;
@@ -7499,6 +7518,8 @@ extern int flip_dummy_3;
 extern int flip_dummy_4;
 extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
 extern int flip_dummy_6;
+extern int flip_dummy_7;
+extern int flip_dummy_8;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
