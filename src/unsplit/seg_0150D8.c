@@ -671,7 +671,40 @@ s32 func_00119788(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001197E0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001198C8);
+extern u_long128 D_002C12F0;
+
+s32 func_001198C8(s32 a0, s32 a1, s32 a2) {
+    f32 *pt = (f32 *)a2;
+    sceVu0FVECTOR cr;
+    sceVu0FVECTOR ref;
+    sceVu0FVECTOR v[4];
+    s32 n;
+    s32 *next;
+    s32 i;
+
+    if (a0 == -1) {
+        n = func_00104AE0(a1, v);
+    } else {
+        n = func_0011A7F8(a0, a1, (u_long128 *)v);
+    }
+    if (n == 3) {
+        next = D_002BD150;
+    } else {
+        next = D_002BD160;
+    }
+    for (i = 0; i < n; i++) {
+        Seg150D8_Sub(v[i], v[i], pt);
+    }
+    Seg150D8_CopyQ(ref, &D_002C12F0);
+    for (i = 0; i < n; i++) {
+        Seg150D8_Outer(cr, v[i], v[next[i]]);
+        if (Seg150D8_Dot(ref, cr) < 0.0f) {
+            return 0;
+        }
+        Seg150D8_CopyQ(ref, cr);
+    }
+    return 1;
+}
 
 
 typedef struct {
