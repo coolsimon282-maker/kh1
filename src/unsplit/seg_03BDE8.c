@@ -66,7 +66,7 @@ void func_0014A1B0_v(s32, s32, s32*) __asm__("func_0014A1B0");
 void func_0014B768(u8*, f32*, f32*);
 s32 func_0014C130(void);
 void func_00118668(void*);
-void func_00151860(void);
+s32 func_00151860(u8*, u8*, s32);
 void func_0013DC10(u8*, s32);
 void sceVu0Normalize(sceVu0FVECTOR v0, sceVu0FVECTOR v1);
 f32 func_00120A38(f32*);
@@ -4309,7 +4309,29 @@ void func_00151808(void) {
     D_0054F950 = func_0014DAB8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00151860);
+extern s32 D_00151860_pad5; /* unused: rule F1 (with func_00151860) */
+s32 func_00151860(u8* p, u8* q, s32 c) {
+    f32 d;
+    switch (c) {
+    case -1:
+        if (*(s32*)(q + 0x70) == 0 && func_0013C6A8(*(s16*)(*(u8**)(p + 0x130) + 0x48)) == 0) {
+            d = *(f32*)(p + 0x14) - *(f32*)(q + 0x14);
+            if (-50.0f < d && d < 20.0f) {
+                func_0012CC38(3, 0x37);
+                if (D_002C1EA8 & 1) {
+                    func_0012CCB0(3);
+                }
+            }
+        }
+        break;
+    case -2:
+        if (*(s32*)(p + 0x144) != 0) {
+            func_00176310(*(s32*)(p + 0x144));
+        }
+        break;
+    }
+    return 0;
+}
 
 void func_00151940(u8* p) {
     u8* q;
@@ -5063,6 +5085,7 @@ extern s32 D_00146BD0_padv1;
 extern s32 D_00154AF8_pad2; /* unused: rule F1 (with func_00154AF8) */
 extern s32 D_00158DF8_pad1; /* unused: rule F1 (with func_00158DF8) */
 extern s32 D_00153D88_pad1; /* unused: rule F1 (with func_00153D88) */
+extern s32 D_00151860_pad3; /* unused: rule F1 (with func_00151860) */
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
