@@ -2141,7 +2141,18 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00228E70);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229088);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229150);
+extern u8 D_003F6D68[];
+s32 func_0010FB68(void);
+void func_0020B3D8(s32, s32, s32);
+
+void func_00229150(s32 a0) {
+    func_00205E30(a0, D_003F6D68);
+    func_00206130(a0, 0, 0x3E, 0x200, 2, 0x8078C850);
+    func_0020CA30(a0, 0, 0x80283212, 0x8050C846);
+    func_001FC308(a0, 0xA0, 0x23, 0, 0x13, 0x14, 0, 0x80399BFF, 0x80399BFF);
+    func_001F9E48(a0, 0, 0xAD, 0x23, func_0010FB68(), 0x13, 0x80399BFF);
+    func_0020B3D8(a0, 0x191, 4);
+}
 
 void func_00229220(s32 a0) {
     func_00205E30(a0, D_003F6DA8);
@@ -3865,7 +3876,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
 extern s32 D_231EA0_layout2;
@@ -3874,6 +3885,8 @@ extern s32 D_231EA0_layout4;
 extern s32 D_231EA0_layout5;
 extern s32 D_231EA0_layout6;
 extern s32 D_231EA0_layout7;
+extern s32 D_231EA0_layout8;
+extern s32 D_231EA0_layout9;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
