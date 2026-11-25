@@ -3093,7 +3093,31 @@ void func_001EB640(s32 a, s32 b, s32 v) {
     ((A2ObjB14 *)func_0022F768(1))->tbl[a][b] = v;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB698);
+typedef struct {
+    u8 pad[0xB10];
+    u32 t[1][5];
+} A2RankB698;
+
+s32 func_001EB698(A2Script *s) {
+    s32 a = s->unk_174[s->unk_174[3] + 2];
+    s32 d = s->unk_174[s->unk_174[3] + 3];
+    u32 v = s->unk_174[s->unk_174[3] + 4];
+    A2RankB698 *r = (A2RankB698 *)((u8 *)func_0022F768(1) + 4);
+    s32 i, j;
+
+    for (i = 0; i < 5; i++) {
+        u32 e = r->t[a][i];
+        if (e == -1 || (d == 0 && e < v) || (d == 1 && v < e)) {
+            for (j = 4; i < j; j--) {
+                r->t[a][j] = r->t[a][j - 1];
+            }
+            r->t[a][i] = v;
+            break;
+        }
+    }
+    s->unk_174[3] -= 3;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB7B0);
 
