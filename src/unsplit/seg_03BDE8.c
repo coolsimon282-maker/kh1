@@ -6232,7 +6232,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015BD78);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015BEB0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015BFF8);
+void func_0015BFF8(u8* a, u8* b, f32* out) {
+    sceVu0FVECTOR d;
+    f32 y;
+    f32 l;
+    f32 r;
+    sceVu0SubVector(d, (f32*)(b + 0x10), (f32*)(a + 0x10));
+    y = __builtin_fabsf(d[1]);
+    d[1] = 0.0f;
+    l = sceVu0InnerProduct(d, d);
+    if (0.0f < l) {
+        if (*(f32*)(b + 8) < y) {
+            y = (y - *(f32*)(b + 8)) / *(f32*)(a + 8);
+            r = _sqrtf(1.0f - y * y) * *(f32*)(a + 4) + *(f32*)(b + 4);
+        } else {
+            r = *(f32*)(a + 4) + *(f32*)(b + 4);
+        }
+        r += 5.0f;
+        l = _sqrtf(l);
+        sceVu0ScaleVector(out, d, (r - l) / l);
+    } else {
+        out[0] = *(f32*)(a + 4) + *(f32*)(b + 4) + 5.0f;
+        out[2] = 0.0f;
+    }
+    out[1] = 0.0f;
+}
 
 void func_0015C128(u8* a, u8* b, f32* out) {
     sceVu0FVECTOR d;
