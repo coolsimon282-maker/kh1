@@ -1987,7 +1987,28 @@ void func_002452F0(void) {
     D_006627B8 = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245300);
+extern u8 D_006626D0[];
+extern s32 D_006626C0;
+void func_002475E8(s32, u8 *, s32);
+s32 func_002388B8(u8 *, s32, s32);
+typedef struct { s32 a; s32 b; s32 c; s32 d; } V4_5300;
+typedef struct { u8 pad[0x60]; V4_5300 m[4]; V4_5300 n[4]; } Obj5300;
+extern Obj5300 D_006626D0_o __asm__("D_006626D0");
+
+void func_00245300(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_006626D0_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_006626D0_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_006626D0_o.m[i].d = D_006626D0_o.m[i].d * f;
+    }
+    D_006626C0 = func_002388B8((u8 *)&D_006626D0_o, 1, D_006626C0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002453E8);
 
@@ -2089,7 +2110,23 @@ void func_00245918(void) {
 
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245920);
+extern s32 D_00662940;
+extern Obj5300 D_00662950_o __asm__("D_00662950");
+
+void func_00245920(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_00662950_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00662950_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_00662950_o.m[i].d = D_00662950_o.m[i].d * f;
+    }
+    D_00662940 = func_002388B8((u8 *)&D_00662950_o, 1, D_00662940);
+}
 
 s32 func_00245A08(s32 n, s32 *d) {
     s32 i;
@@ -2178,7 +2215,23 @@ void func_00246020(void) {
     D_00668040.unk0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246038);
+extern s32 D_00667F50;
+extern Obj5300 D_00667F60_o __asm__("D_00667F60");
+
+void func_00246038(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_00667F60_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00667F60_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_00667F60_o.m[i].d = D_00667F60_o.m[i].d * f;
+    }
+    D_00667F50 = func_002388B8((u8 *)&D_00667F60_o, 1, D_00667F50);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246120);
 
@@ -2211,7 +2264,23 @@ void func_002464F8(s32 *out) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246570);
+extern s32 D_00668280;
+extern Obj5300 D_00668290_o __asm__("D_00668290");
+
+void func_00246570(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_00668290_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00668290_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_00668290_o.m[i].d = D_00668290_o.m[i].d * f;
+    }
+    D_00668280 = func_002388B8((u8 *)&D_00668290_o, 1, D_00668280);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246658);
 
@@ -2273,7 +2342,23 @@ s32 func_00246CF0(s32 n, s32 *d) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246DC0);
+extern s32 D_00668F80;
+extern Obj5300 D_00668F90_o __asm__("D_00668F90");
+
+void func_00246DC0(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_00668F90_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00668F90_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_00668F90_o.m[i].d = D_00668F90_o.m[i].d * f;
+    }
+    D_00668F80 = func_002388B8((u8 *)&D_00668F90_o, 1, D_00668F80);
+}
 
 void func_00246EA8(s32 arg0, s32 arg1) {
     if (arg0 != 0) {
@@ -2349,7 +2434,23 @@ s32 func_002474A8(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002474E8);
+extern s32 D_006691D0;
+extern Obj5300 D_006691E0_o __asm__("D_006691E0");
+
+void func_002474E8(s32 a0, u8 *a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_006691E0_o, (s32)a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_006691E0_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_006691E0_o.m[i].d = D_006691E0_o.m[i].d * f;
+    }
+    D_006691D0 = func_002388B8((u8 *)&D_006691E0_o, 1, D_006691D0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002475D0);
 
