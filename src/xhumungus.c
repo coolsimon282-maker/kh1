@@ -6424,7 +6424,34 @@ void func_001DE3E0(UNK_PTR arg0, UNK_PTR arg1) {
     D_00624554 = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE3F8);
+s32 func_001DE3F8(u8* arg0) {
+    f32 v[4];
+    f32* q;
+    u8* o;
+    u8* d;
+    f32* q2;
+
+    if ((s32)(D_003854E0.unk_3070 >> 40) & 1) {
+        return 4;
+    }
+    if (*(s32*)(*(u8**)(arg0 + 0x10) + 0x14) & 2) {
+        return 4;
+    }
+    func_001315C0(*(s32*)(*(u8**)(arg0 + 0x14) + 4), *(s32*)(arg0 + 0x18), v, *(f32*)(arg0 + 0x1C));
+    d = *(u8**)(arg0 + 0x10);
+    q = *(f32**)d;
+    q[0] = v[0];
+    q[1] = v[1];
+    q[2] = v[2];
+    if ((*(s32*)(arg0 + 0x18) == 0x108C || *(s32*)(arg0 + 0x18) == 0x1097) && !((s32)(D_003854E0.unk_3078 >> 3) & 1)) {
+        o = *(u8**)(*(u8**)(arg0 + 0x14) + 4);
+        q2 = *(f32**)(d + 0xC);
+        q2[0] = o[0x370] * 0.0078125f;
+        q2[1] = o[0x371] * 0.0078125f;
+        q2[2] = o[0x372] * 0.0078125f;
+    }
+    return 0;
+}
 
 void func_00131A30(s32, s32, f32*);
 
