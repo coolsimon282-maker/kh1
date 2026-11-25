@@ -1080,7 +1080,42 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BDB58);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE010);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE110);
+typedef struct {
+    u8 pad[0x24];
+    s32 unk_24;
+    u8 pad28[8];
+} BE110Buf;
+void func_001BD090(s32, BE110Buf*);
+
+s32 func_001BE110(s32 a0, s32 a1) {
+    u8 save[32];
+    BE110Buf buf;
+    u8* p;
+    u8 c;
+    s32 i;
+
+    if (a0 < 10) {
+        if (a1 == 0) {
+            a1 = D_006257D0;
+        }
+        func_001BD090(a1, &buf);
+        p = func_001BA9D8(a0);
+        c = p[0xC];
+        for (i = 0; i < 32; i++) {
+            save[i] = p[0x50 + i];
+        }
+        func_001BCD10((s32)p, (void*)a1);
+        for (i = 0; i < 32; i++) {
+            p[0x50 + i] = save[i];
+        }
+        if (buf.unk_24 != 0) {
+            p[0xC] = c;
+        } else {
+            p[0xC] = 0;
+        }
+        return func_001BB880_r(a0);
+    }
+}
 
 extern u8 D_00623E49[];   /* repeated on purpose: keeps fm-a1's func_001BE4D8 matching with fm-a2's functions in this file (a2 rule Q1) */
 s32 func_001BE1E8(s32 a0, s32 a1) {
