@@ -8413,7 +8413,36 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00174030);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001740E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001741A0);
+s32 func_001741A0(u8* p, u8* q, s32 m) {
+    s32 r = 0;
+    switch (m) {
+    case 1:
+        switch (*(s32*)(q + 0x164)) {
+        case 0:
+            if (!(*(s32*)(p + 0x160) & 1) && *(s32*)(p + 0x164) != 0xCA) {
+                r = 1;
+            }
+            break;
+        case 1:
+            if (!(*(s32*)(p + 0x160) & 1) && *(s32*)(p + 0x164) != *(s32*)(q + 0x4C)) {
+                r = 1;
+            }
+            break;
+        }
+        break;
+    case 2:
+        r = *(s32*)(q + 0x48) == 0;
+        break;
+    }
+    if (r == 1) {
+        *(s32*)(q + 0x48) = 0;
+        *(u64*)(q + 0x38) = (*(u64*)(q + 0x38) & ~0x800) | 0x20000;
+        if (*(s32*)(p + 0x164) == 0xCA || *(s32*)(p + 0x164) == *(s32*)(q + 0x4C)) {
+            func_00130340(p, 0x40000000, 8.0f);
+        }
+    }
+    return r;
+}
 
 s32 func_00171118(s32, s32);
 void func_00171790(u8*, u8*);
