@@ -1527,7 +1527,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023FB90);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023FD58);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023FEB8);
+extern A3V16 D_00491610;
+/* defined under another C name: the callers below declare it as s32 func_0023FEB8(void) */
+s32 func_0023FEB8_d(u8 *a0, s32 a1) __asm__("func_0023FEB8");
+
+s32 func_0023FEB8_d(u8 *a0, s32 a1) {
+    A3V16 col;
+    f32 s;
+
+    col = D_00491610;
+    s = **(f32 **)(a0 + 0xA88) * 0.000174532892f;
+    if (4.71238804f < s) {
+        s = 4.71238804f;
+    }
+    return func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x20, &col, a1, 0.0f, s, *(f32 *)(a0 + 0xA1C));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023FF38);
 
@@ -1545,7 +1559,21 @@ s32 func_00240118(void *arg0, s32 arg1) {
     return arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00240170);
+extern A3V16 D_00491620;
+/* defined under another C name: the callers below declare it as s32 func_00240170(void) */
+s32 func_00240170_d(u8 *a0, s32 a1) __asm__("func_00240170");
+
+s32 func_00240170_d(u8 *a0, s32 a1) {
+    A3V16 col;
+    f32 s;
+
+    col = D_00491620;
+    s = **(f32 **)(a0 + 0xA8C) * 0.000174532892f;
+    if (4.71238804f < s) {
+        s = 4.71238804f;
+    }
+    return func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x30, &col, a1, 0.0f, s, *(f32 *)(a0 + 0xA1C));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002401F0);
 
