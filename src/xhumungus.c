@@ -786,7 +786,31 @@ void func_001CD8E8(s32 a0, XHumB0* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDA00);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001CDA00_f1_pad1;
+extern s32 func_001CDA00_f1_pad2;
+extern s32 func_001CDA00_f1_pad3;
+void func_001CDA00(s32 a0, XHumB0* a1) {
+    s32 i;
+    XHumB0* p;
+    s32 k;
+
+    D_003C5890 = 0;
+    for (i = 0; i < 4; i++) {
+        p = &D_00629E70_b[i];
+        if (p == a1) {
+            k = D_003854E0_d8.b1030[i];
+            if (D_003854E0_d8.w1010[k] == 0) {
+                D_003854E0_d8.b0[i] = 4;
+                D_003854E0_d8.b4[k] = 4;
+            } else {
+                D_003854E0_d8.b0[i] = 2;
+                D_003854E0_d8.b4[k] = 2;
+                func_0010EDA0_d8(p, D_00388480[D_003854E0_d8.tbl[k][a0]], (void (*)())func_001CD8E8);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDB18);
 
@@ -5216,6 +5240,9 @@ s32 func_001DB768(Script* arg0) {
     return 2;
 }
 
+/* Unused on purpose: keeps func_001DB7A8 matching (notes/f1.md F1). */
+extern s32 func_001DB7A8_f1_padb1;
+extern s32 func_001DB7A8_f1_padb2;
 extern s32 D_002BBAD0[];
 extern s32 D_002BBAE0[];
 
