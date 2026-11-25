@@ -3368,7 +3368,37 @@ s32 func_0022EAB8(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022BA18);
+extern u8 D_003F7720[];
+extern u8 D_003F7750[];
+extern s32 D_006469D0;
+extern s32 D_006469D4;
+extern s32 D_006469DC;
+extern s32 D_006469E4;
+extern s32 D_006469EC;
+extern s32 D_006469F4;
+s32 func_0022EAB8(void);
+void func_0022BA18(s32 a0) {
+    u8 *e[2];
+    func_001F3110(a0);
+    if ((e[0] = func_001F3A20(D_003F7750, 0x2C)) != NULL) {
+        if ((e[1] = func_001F3A20(D_003F7720, 0x2D)) != NULL) {
+            func_001F3E90(e[0], e[1]);
+            func_001F3E20(e[1], e[0]);
+            *(s32 *)(e[1] + 0xA0) = 0;
+        }
+    }
+    D_006469DC = 0;
+    D_006469E4 = 0;
+    D_006469EC = 0;
+    D_006469F4 = 0;
+    D_003F7774 = 1;
+    D_006469D0 = 0;
+    D_006469D4 = 0;
+    func_0020B968();
+    func_0020BB90(0x153, 0xA4);
+    func_0020BDA8(0x28);
+    *(s16 *)((u8 *)func_0011ED30(0x2BFE9, func_0022EAB8) + 2) = a0;
+}
 
 void func_0022EBE8(void) {
 }
@@ -4234,9 +4264,51 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
+extern s32 D_231EA0_layout2;
+extern s32 D_231EA0_layout3;
+extern s32 D_231EA0_layout4;
+extern s32 D_231EA0_layout5;
+extern s32 D_231EA0_layout6;
+extern s32 D_231EA0_layout7;
+extern s32 D_231EA0_layout8;
+extern s32 D_231EA0_layout9;
+extern s32 D_231EA0_layout10;
+extern s32 D_231EA0_layout11;
+extern s32 D_231EA0_layout12;
+extern s32 D_231EA0_layout13;
+extern s32 D_231EA0_layout14;
+extern s32 D_231EA0_layout15;
+extern s32 D_231EA0_layout16;
+extern s32 D_231EA0_layout17;
+extern s32 D_231EA0_layout18;
+extern s32 D_231EA0_layout19;
+extern s32 D_231EA0_layout20;
+extern s32 D_231EA0_layout21;
+extern s32 D_231EA0_layout22;
+extern s32 D_231EA0_layout23;
+extern s32 D_231EA0_layout24;
+extern s32 D_231EA0_layout25;
+extern s32 D_231EA0_layout26;
+extern s32 D_231EA0_layout27;
+extern s32 D_231EA0_layout28;
+extern s32 D_231EA0_layout29;
+extern s32 D_231EA0_layout30;
+extern s32 D_231EA0_layout31;
+extern s32 D_231EA0_layout32;
+extern s32 D_231EA0_layout33;
+extern s32 D_231EA0_layout34;
+extern s32 D_231EA0_layout35;
+extern s32 D_231EA0_layout36;
+extern s32 D_231EA0_layout37;
+extern s32 D_231EA0_layout38;
+extern s32 D_231EA0_layout39;
+extern s32 D_231EA0_layout40;
+extern s32 D_231EA0_layout41;
+extern s32 D_231EA0_layout42;
+extern s32 D_231EA0_layout43;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
