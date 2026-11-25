@@ -34,7 +34,39 @@ void func_0011FD60(s32 lsn, s32 sectors, void *buf) {
     } while (sceCdGetError() != 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_0011FE20);
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    s32 unk_0C;
+} A2FileEnt;
+extern s32 D_002C5C30;
+extern A2FileEnt D_004E4A00_e[] __asm__("D_004E4A00");
+extern s32 D_004F3200;
+extern s32 D_004F3208;
+extern char D_0048D240[];
+extern char D_0048D250[];
+s32 func_00120580(void *, void *);
+A2FileEnt *func_00120190_e(char *) __asm__("func_00120190");
+
+void func_0011FE20(void) {
+    A2FileEnt *e;
+
+    func_00120580(D_0048D240, D_004E4A00_e);
+    D_002C5C30 = 0;
+    e = D_004E4A00_e;
+    while (e->unk_08 != 0 || e->unk_0C != 0) {
+        e->unk_08 += D_004F3208;
+        D_002C5C30++;
+        e++;
+        if (D_002C5C30 >= 0xE00) {
+            goto end;
+        }
+    }
+end:
+    e = func_00120190_e(D_0048D250);
+    D_004F3200 = e->unk_08;
+}
 
 s32 func_001EE068(void);
 s32 strncmp(const char *, const char *, u32);
