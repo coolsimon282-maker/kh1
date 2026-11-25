@@ -1637,7 +1637,20 @@ void func_001BF360(f32* d, f32* q) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF3E8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF548);
+void func_001BF548(f32* m, f32* q) {
+    m[0] = 1.0f - 2.0f * (q[1] * q[1] + q[2] * q[2]);
+    m[4] = 2.0f * (q[0] * q[1] - q[3] * q[2]);
+    m[8] = 2.0f * (q[0] * q[2] + q[3] * q[1]);
+    m[1] = 2.0f * (q[0] * q[1] + q[3] * q[2]);
+    m[5] = 1.0f - 2.0f * (q[0] * q[0] + q[2] * q[2]);
+    m[9] = 2.0f * (q[1] * q[2] - q[3] * q[0]);
+    m[2] = 2.0f * (q[0] * q[2] - q[3] * q[1]);
+    m[6] = 2.0f * (q[1] * q[2] + q[3] * q[0]);
+    m[10] = 1.0f - 2.0f * (q[0] * q[0] + q[1] * q[1]);
+    m[3] = 0.0f;
+    m[7] = 0.0f;
+    m[11] = 0.0f;
+}
 
 f32 sinf(f32);
 
