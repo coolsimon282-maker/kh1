@@ -6235,7 +6235,37 @@ void func_0015EA40(void) {
     func_0014F830(0x19, 0xE, (s32)func_0015E7F8, (s32)func_0015E820, (s32)func_0015E8D8, (s32)func_0015E9C8, (s32)func_0015EA38, (s32)func_0015E840, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015EA98);
+typedef struct G15EA98 {
+    u16 unk_00;
+    u16 unk_02;
+    s32 unk_04;
+    struct G15EA98* unk_08;
+    u32 (* volatile unk_0C)(struct G15EA98*);
+} G15EA98;
+extern G15EA98* D_00551D80;
+extern volatile s32 D_00559DB8;
+extern volatile s32 D_00559DB4_v __asm__("D_00559DB4");
+extern s32 D_0015EA98_pad1; /* unused: rule F1 (with func_0015EA98) */
+int func_0015EA98(void) {
+    u32 r;
+    while (sceGsSyncPath(1, 0) != 0) {
+    }
+    while (D_00551D80 != NULL) {
+        D_00559DB8++;
+        r = D_00551D80->unk_0C(D_00551D80);
+        if (!(r & 0x20)) {
+            D_00551D80->unk_00 = 0;
+            D_00551D80 = D_00551D80->unk_08;
+        } else {
+            D_00559DB8--;
+        }
+        if (r & 2) {
+            return 1;
+        }
+    }
+    D_00559DB4_v = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015EB78);
 
@@ -8478,6 +8508,7 @@ extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
 extern int flip_dummy_6;
 extern int flip_dummy_7;
 extern int flip_dummy_8;
+extern int flip_dummy_9;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
