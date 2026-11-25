@@ -1750,7 +1750,42 @@ void func_001330C8(u8 *a0) {
     func_00177908((a0 + *(s32 *)(a0 + 0x8)));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001330E8);
+typedef struct {
+    char *p;
+    s32 a;
+    s32 b;
+} A2SndName;
+typedef struct {
+    s32 used;
+    u8 *data;
+    s32 key;
+    s32 h0;
+    s32 h1;
+    s32 unk_14;
+    void (*cb)(void);
+} A2SndEnt;
+extern A2SndName D_003041F0[][3];
+extern A2SndEnt D_00525368_s[] __asm__("D_00525368");
+s32 func_00147A10(s32);
+
+s32 func_001330E8(s32 a0, s32 a1, u8 *data) {
+    A2SndEnt *e = D_00525368_s;
+    s32 i;
+    s32 r;
+
+    for (i = 0; i < 7; i++, e++) {
+        if (e->key == (s32)data) {
+            break;
+        }
+    }
+    func_001330C8(data);
+    e->data = data;
+    e->h0 = func_00147A10(D_003041F0[i][e->used - 1].a);
+    e->h1 = D_003041F0[i][e->used - 1].b >= 0 ? func_00147A10(D_003041F0[i][e->used - 1].b) : 0;
+    if (e->cb != NULL) {
+        e->cb();
+    }
+}
 
 typedef struct { char* p; s32 a; s32 b; } V3041E4;
 extern V3041E4 D_003041E4[][3];
