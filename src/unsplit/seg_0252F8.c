@@ -158,7 +158,51 @@ void func_00126238(u8 *a0, f32 *n, s32 *c) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126360);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126838);
+typedef struct { s16 id; u8 pad[0x12]; } Rec0252_14;
+extern Rec0252_14 *D_004F7810_r __asm__("D_004F7810");
+extern Rec0252_14 *D_004F7810_r2 __asm__("D_004F7810");
+void func_0012EC60(s32, s32, f32 *);
+
+s32 func_00126838(u8 *a0, s32 *a1, f32 *v) {
+    s32 arr[66];
+    s32 *p;
+    s32 i;
+    Rec0252_14 *q;
+
+    for (i = 15; i < 19; i++) {
+        arr[i] = 0;
+    }
+    if (!(*(u8 *)(*(u8 **)(a0 + 0x14C) + 0x29) < *(u8 *)(*(u8 **)(a0 + 0x6C) + 0xD1))) {
+        arr[16] = 1;
+    }
+    if (a1[0] != 0) {
+        func_0012EC60(a1[0], a1[1], v);
+        sceVu0SubVector(v, v, (f32 *)(a0 + 0x10));
+        if (v[1] < -100.0f) {
+            arr[17] = 1;
+        } else {
+            arr[18] = 1;
+            if (*(s32 *)(a0 + 0x70) == 2 && ((D_002DED20 >> 25) & 1)) {
+                arr[15] = arr[16];
+            }
+        }
+        v[1] = 0.0f;
+    } else {
+        arr[18] = 1;
+    }
+    for (i = 15; i < 19; i++) {
+        if (arr[i] > 0 && D_004F7810_r[i].id != *(s32 *)(a0 + 0x164)) {
+            return i;
+        }
+    }
+    q = &D_004F7810_r2[18];
+    for (i = 18; i >= 15; i--, q--) {
+        if (q->id != *(s32 *)(a0 + 0x164)) {
+            return i;
+        }
+    }
+    return 18;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_001269D8);
 
