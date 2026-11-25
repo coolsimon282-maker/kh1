@@ -967,7 +967,19 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE010);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE110);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE1E8);
+s32 func_001BE1E8(s32 a0, s32 a1) {
+    if (a0 == 0) {
+        a0 = D_006257D0;
+    }
+    func_001BE820((void *)a0, 0xF70);
+    if (!(a1 & 0x80)) {
+        if (a1 < 10) {
+            func_001BCD10(D_006257D0, func_001BA9D8(a1));
+        }
+    } else {
+        func_001BA108((void *)a0, a1 & 0x7F);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE278);
 
