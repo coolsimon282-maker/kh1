@@ -4606,7 +4606,24 @@ s32 func_00153D78(u8* p) {
     return *(s32*)(p + 0x88) & 0x30;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153D88);
+void func_00153D88(u8* p) {
+    if (*(s32*)(p + 0x88) & 0x20) {
+        func_001373F8(p, 30.0f);
+    }
+    *(s32*)(p + 0x88) &= ~0x30;
+    if (*(s32*)(*(u8**)(p + 0x6C) + 0x3C) == 0) {
+        if (func_0013C968(9, *(u16*)(*(u8**)(p + 0x130) + 0x4C)) > 0) {
+            func_00141468_2(p, *(s32*)(*(u8**)(p + 0x6C) + 0x40));
+        } else {
+            func_00141468_2(p, (s32)(*(s32*)(*(u8**)(p + 0x6C) + 0x40) * *(f32*)(D_003051EC + 0x8C)));
+        }
+    }
+    if (*(u8**)(p + 0x400) != 0) {
+        func_00148068(*(u8**)(p + 0x400), 12.0f);
+        *(s32*)(p + 0x400) = 0;
+        func_001358B8((s32)p, 0xC);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153E80);
 
@@ -4916,6 +4933,7 @@ extern s32 D_001560F8_pad0;
 extern s32 D_00146BD0_padv1;
 extern s32 D_00154AF8_pad2; /* unused: rule F1 (with func_00154AF8) */
 extern s32 D_00158DF8_pad1; /* unused: rule F1 (with func_00158DF8) */
+extern s32 D_00153D88_pad1; /* unused: rule F1 (with func_00153D88) */
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
