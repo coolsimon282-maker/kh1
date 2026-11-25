@@ -1084,11 +1084,47 @@ void func_0012EC88(s32 a0, s32 a1) {
     func_0012EC60(a0, 0, a1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012ECA8);
+f32 func_0012ECA8(s32 *a0, f32 *v) {
+    u8 *m = func_0015C960(a0[0], 0, -1, a0[1]);
+
+    if (m != NULL) {
+        m = func_0015C960(a0[0], 2, m[0] >> 4, 0);
+    }
+    if (m == NULL) {
+        u8 *q = *(u8 **)((u8 *)a0[0] + 0x134);
+        if (q != NULL && q[5] != 0) {
+            m = *(u8 **)(q + 0x14);
+        }
+    }
+    if (m == NULL) {
+        sceVu0CopyVector(v, (f32 *)((u8 *)a0[0] + 0x10));
+        return 0.0f;
+    }
+    func_001315C0(a0[0], *(u16 *)(m + 2), (s32)v, *(f32 *)(m + 4));
+    v[1] -= *(f32 *)(m + 8) * *(f32 *)((u8 *)a0[0] + 0x44);
+    return *(f32 *)(m + 0xC);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012ED88);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012EE70);
+s32 func_0012EE70(u8 *a0, s32 a1) {
+    u8 *t = *(u8 **)(a0 + 0x134);
+    s32 i;
+
+    if (a1 < 0) {
+        if (t == NULL || t[7] == 0) return 0;
+        i = 0;
+    } else {
+        if (t == NULL || t[7] == 0) return -1;
+        i = a1 + 1;
+    }
+    for (; i < (*(u8 **)(a0 + 0x134))[7]; i++) {
+        if (!(*(u32 *)(a0 + 0x3AC) & (1 << i)) && (*(u8 *)(*(u8 **)(*(u8 **)(a0 + 0x134) + 0x1C) + i * 0x14) & 0xF) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012EF30);
 
