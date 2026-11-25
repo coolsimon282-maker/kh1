@@ -548,7 +548,7 @@ void func_0017AE48(void);
 void func_0017D238(void);
 f32 func_001250D0(f32*, f32*);
 void func_0011D350(s32, s32);
-s32 func_00157F70(void);
+void func_00157F70();
 s32 func_001581D8(void);
 s32 func_001584C0(void);
 void func_00158068(u8*, s32, f32*);
@@ -4803,7 +4803,27 @@ s32 func_00157DC8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00157EA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00157F70);
+extern f32 D_00351A00[];
+extern f32 D_00351A10[];
+extern u8* D_005516E0;
+extern s32 D_003519E0[];
+typedef struct { f32 f0; f32 f4; f32 f8; f32 fC; s32 unk_10; s32 unk_14; s32 unk_18; } S2BC0F0;
+extern S2BC0F0 D_002BC0F0_s __asm__("D_002BC0F0");
+u8* func_00159EA8_p(u8*, f32*, f32*) __asm__("func_00159EA8");
+void func_00157F70(u8* p) {
+    D_005516E0 = func_00159EA8_p(p, D_00351A00, D_00351A10);
+    *(f32*)(D_005516E0 + 0x30) = 0.5f;
+    *(f32*)(D_005516E0 + 0x34) = 250.0f;
+    *(f32*)(*(u8**)(p + 0x6C) + 0xCC) = 0.20943951f;
+    sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58A0);
+    D_002BC0F0_s.f0 = 10000.0f;
+    D_002BC0F0_s.f4 = 4000.0f;
+    D_002BC0F0_s.f8 = 64.0f;
+    D_002BC0F0_s.fC = 255.0f;
+    D_002BC0F0_s.unk_10 = D_003519E0[0];
+    D_002BC0F0_s.unk_14 = D_003519E0[1];
+    D_002BC0F0_s.unk_18 = D_003519E0[2];
+}
 
 void func_00158050(u8* p) {
     *(f32*)(*(u8**)(p + 0x6C) + 0xCC) = 0.19634955f;
