@@ -4821,7 +4821,25 @@ void func_001541A8(u8* p, u8* a1, f32* out) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154258);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001542F8);
+
+void func_001542F8(u8* p, u8* q) {
+    sceVu0FVECTOR v;
+    f32 d = sceVu0InnerProduct((f32*)(p + 0x30), (f32*)(q + 0x10));
+    switch (*(s32*)(q + 0x20)) {
+    case 1:
+        func_00130340(p, d < 0.0f ? 0x1000049 : 0x100004B, 0.0f);
+        break;
+    case 0:
+    default:
+        func_00130340(p, d < 0.0f ? 0x1000048 : 0x100004A, 0.0f);
+        break;
+    }
+    func_001373F8(p, 30.0f);
+    func_00130578((s32)p, 0x40000000, 8.0f);
+    sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
+    func_001541A8(p, q, v);
+    func_00156260((s32)p, v);
+}
 
 void func_00154258(u8*, u8*, f32*);
 void func_001543F8(u8* p, u8* a1) {
