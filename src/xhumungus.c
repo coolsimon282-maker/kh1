@@ -334,7 +334,27 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB4A0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB5C0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CB7B8);
+typedef struct {
+    u64 unk_00_0 : 6;
+    u64 unk_00_6 : 1;
+    u64 unk_00_7 : 57;
+    s32 unk_08;
+} Unk3C5510Bits6;
+
+s32 func_001CB7B8(Script* arg0) {
+    Unk3C5510A* p;
+
+    func_001C6890(arg0);
+    p = (Unk3C5510A*)&D_003C5510;
+    ((Unk3C5510Bits6*)p)->unk_00_6 = 1;
+    p->unk_60[0] = p->unk_120[0];
+    p->unk_20[0] = 0.0f;
+    p->unk_0C[0] = arg0->unk_174[arg0->unk_174[3] + 2] * 2.0f;
+    *(s32*)&p->unk_20[5] = arg0->unk_174[arg0->unk_174[3] + 3];
+    p->unk_90[0] = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 void func_001CB850(void) {
     D_003C5510.unk_28 += D_002B8344;
