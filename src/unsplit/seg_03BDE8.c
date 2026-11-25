@@ -7142,7 +7142,35 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016F1F0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016F3D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016F548);
+typedef struct N16F548 { s32 a; s32 b; s32 c; s32 d; struct N16F548* next; } N16F548;
+extern N16F548 D_00575528[];
+extern N16F548* D_00575784_n __asm__("D_00575784");
+extern N16F548* D_00575780_n __asm__("D_00575780");
+void func_0016F548(void) {
+    u8** t;
+    N16F548** fl;
+    s32 i;
+    s32 j;
+    t = (u8**)&D_002E26A0;
+    if (func_001233F8((s32)t[1]) != 0 && *(s32**)(t[1] + 0x144) != 0) {
+        func_0016F3D0(t[1], *(s32**)(t[1] + 0x144));
+    }
+    t = (u8**)&D_002E26A0;
+    if (func_001233F8((s32)t[2]) != 0 && *(s32**)(t[2] + 0x144) != 0) {
+        func_0016F3D0(t[2], *(s32**)(t[2] + 0x144));
+    }
+    for (j = 2; j >= 0; j--) {
+        D_00575310[j].unk_00 = 0;
+    }
+    fl = &D_00575784_n;
+    for (i = 0; i < 30; i++) {
+        D_00575528[i].c = 0;
+        *fl = &D_00575528[i];
+        fl = &D_00575528[i].next;
+    }
+    *fl = NULL;
+    D_00575780_n = NULL;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016F640);
 
@@ -8793,7 +8821,6 @@ extern int flip_dummy_4;
 extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
 extern int flip_dummy_6;
 extern int flip_dummy_7;
-extern int flip_dummy_8;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
