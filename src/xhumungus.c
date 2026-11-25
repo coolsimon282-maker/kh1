@@ -790,7 +790,40 @@ s32 func_001CD2A8(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD340);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD4D0);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001CD4D0_f1_pad1;
+extern s32 func_001CD4D0_f1_pad2;
+
+typedef struct { u8 b0[4]; u8 b4[0xC]; u16 tbl[8][256]; s32 w1010[8]; s8 b1030[4]; } XHumCD4D0;
+extern XHumCD4D0 D_003854E0_d4 __asm__("D_003854E0");
+void func_0010EDA0_d4(XHumB0*, void*, void (*)()) __asm__("func_0010EDA0");
+void func_001CD8E8();
+
+s32 func_001CD4D0(Script* arg0) {
+    s32 k;
+    s32 v;
+    s32 i;
+
+    if (D_00375BC0 & 1) {
+        arg0->unk_174[3] -= 2;
+        return 2;
+    }
+    k = arg0->unk_174[arg0->unk_174[3] + 3];
+    v = arg0->unk_174[arg0->unk_174[3] + 4];
+    arg0->unk_174[3] -= 2;
+    D_003854E0_d4.tbl[k][D_003854E0_d4.w1010[k]++] = v;
+    for (i = 0; i < 4; i++) {
+        if (k == D_003854E0_d4.b1030[i]) {
+            break;
+        }
+    }
+    if (i < 4 && D_003854E0_d4.b0[i] == 4) {
+        D_003854E0_d4.b0[i] = 2;
+        D_003854E0_d4.b4[k] = 2;
+        func_0010EDA0_d4(&D_00629E70_b[i], D_00388480[v], func_001CD8E8);
+    }
+    return 2;
+}
 
 typedef struct { u8 b0[4]; u8 b4[0xC]; u16 tbl[8][256]; s32 w1010[8]; s8 b1030[4]; } XHumCD620;
 extern XHumCD620 D_003854E0_d6 __asm__("D_003854E0");
@@ -3135,7 +3168,6 @@ s32 func_001D4FF8(Script* arg0) {
     return 2;
 }
 
-#ifdef VERSION_FM
 typedef struct {
     u8 unk_00[0x20];
     u8 unk_20[0x54];
@@ -3146,6 +3178,7 @@ typedef struct {
     Unk3010F8Rec unk_06[20];
 } Unk3010F8Recs;
 
+#ifdef VERSION_FM
 s32 fm_func_001D3610(Script* arg0) {
     s32 n = 0;
     s32 top = arg0->unk_174[3];
