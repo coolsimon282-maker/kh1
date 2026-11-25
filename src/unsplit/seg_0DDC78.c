@@ -1544,7 +1544,23 @@ void func_001E6C68(void) {
     func_0010BB50(D_00630510, (s32)func_001E72A0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E6C90);
+extern u8 D_006304E0[];
+extern u8 D_003DCD70[];
+
+s32 func_001E6C90(void) {
+    s32 *p = &D_003DD28C;
+    if (*p == 0) {
+        return 4;
+    }
+    if (D_002C2108 & 2) {
+        func_0010E230(D_006304E0);
+        func_0010EDA0(D_006304E0 - 0x80, D_003DCD70, 0);
+        func_0010BB10(D_00630510, (s32)func_001E6C68);
+        *p = 0;
+        return 4;
+    }
+    return 0;
+}
 
 extern u8 D_00630460[];
 extern u8 D_003DCF30[];
@@ -2322,7 +2338,15 @@ void func_001E9D00(f32 *out, f32 *a, f32 *b, f32 roll) {
     out[2] = roll;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9DC8);
+void func_001E9DC8(sceVu0FVECTOR a0, f32 *rot, sceVu0FVECTOR v) {
+    sceVu0FMATRIX m;
+    sceVu0UnitMatrix(m);
+    sceVu0RotMatrixX(m, m, rot[0]);
+    sceVu0RotMatrixY(m, m, rot[1]);
+    sceVu0RotMatrixZ(m, m, rot[2]);
+    sceVu0ApplyMatrix(v, m, v);
+    sceVu0AddVector(a0, a0, v);
+}
 
 double sqrt(double);
 
