@@ -697,7 +697,57 @@ void func_001CC798(s32 arg0) {
     *D_003854E0.unk_3144 = arg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CC7D0);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001CC7D0_f1_pad1;
+extern s32 func_001CC7D0_f1_pad2;
+extern s32 func_001CC7D0_f1_pad3;
+
+typedef struct { u8 pad[0xB0]; } XHumB0c7;
+extern XHumB0c7 D_00629E70_c7[] __asm__("D_00629E70");
+typedef struct {
+    /* 0x0000 */ u8 b0[4];
+    /* 0x0004 */ s8 b4[0x102C];
+    /* 0x1030 */ s8 b1030[4];
+    /* 0x1034 */ s32 w1034[0x80F];
+    /* 0x3070 */ u64 unk_3070_0 : 32;
+    u64 unk_3070_32 : 1;
+    u64 unk_3070_33 : 31;
+    /* 0x3078 */ u8 unk_3078[0xCC];
+    /* 0x3144 */ s32* unk_3144;
+} XHumCC7D0;
+extern XHumCC7D0 D_003854E0_c7 __asm__("D_003854E0");
+typedef struct {
+    /* 0x00 */ s32 unk_00;
+    /* 0x04 */ s32 unk_04;
+    /* 0x08 */ void (*unk_08)(s32);
+} XHumA1E0;
+extern XHumA1E0 D_0062A1E0;
+void func_0010F3B8(XHumA1E0* arg0, XHumB0c7* arg1, s32 arg2);
+
+s32 func_001CC7D0(Script* arg0) {
+    s32 i;
+    s32 v = arg0->unk_174[36];
+
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_c7.b0[i] != 0 && D_003854E0_c7.b1030[i] == arg0->unk_174[arg0->unk_174[3] + 1]) {
+            break;
+        }
+    }
+    if (i >= 4) {
+        return 2;
+    }
+    D_0062A1E0.unk_00 = arg0->unk_174[arg0->unk_174[3] + 2];
+    D_0062A1E0.unk_08 = func_001CC798;
+    D_0062A1E0.unk_04 = arg0->unk_174[arg0->unk_174[3] + 3];
+    if (v >= 0x100) {
+        v -= 0x900;
+        D_003854E0_c7.unk_3144 = &D_003854E0_c7.w1034[v];
+    }
+    func_0010F3B8(&D_0062A1E0, &D_00629E70_c7[i], D_0062A1E0.unk_00);
+    D_003854E0_c7.unk_3070_32 = 1;
+    arg0->unk_174[3] -= 4;
+    return 2;
+}
 
 s32 func_001CC930(void) {
     return (D_0038CD00[1] & 1) ? 4 : 2;
