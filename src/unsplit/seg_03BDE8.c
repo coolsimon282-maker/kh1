@@ -6291,7 +6291,27 @@ int func_0015EA98(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015EB78);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00122110);
+extern s32 D_00351BD0;
+typedef struct { s32 h[4]; s32 e[0x1000]; } T122110a;
+typedef struct { s32 h[4]; s32 e[0x400]; } T122110b;
+extern T122110a D_00551D90_t[2] __asm__("D_00551D90");
+extern T122110b D_00559DC0[2];
+extern void (*D_00351BC8)(int);
+s32 func_0015EB78(void);
+s32 func_0015EEA0(void);
+void func_00122110(void) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
+        func_0011EDD0(D_00551D90_t[i].h, D_00551D90_t[i].e, 0x20, 0x200);
+        func_0011EDD0(D_00559DC0[i].h, D_00559DC0[i].e, 0x20, 0x80);
+    }
+    D_00559DB0 = &D_00551D90_t[0];
+    D_00351BD0 = 0;
+    D_0055BDE0 = &D_00559DC0[0];
+    *(s16*)((u8*)func_0011ED30(40000, func_0015EB78) + 2) = -1;
+    *(s16*)((u8*)func_0011ED30(163000, func_0015EEA0) + 2) = -1;
+    D_00351BC8 = FlushCache;
+}
 
 void func_0015ED80(s32 a, s32 b) {
     func_0011EEB8(D_00559DB0, a, b);
