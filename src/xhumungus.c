@@ -902,7 +902,38 @@ void func_001CD620(s32 a0, XHumB0* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD738);
+typedef struct { u64 d[0x16]; } XHumB0Q;
+extern XHumB0Q D_00629E70_q[] __asm__("D_00629E70");
+extern XHumB0Q D_006298F0_q[] __asm__("D_006298F0");
+typedef struct { u8 b0[4]; u8 b4[0x102C]; s8 b1030[4]; } XHumCD738;
+extern XHumCD738 D_003854E0_d7 __asm__("D_003854E0");
+void func_001CD620();
+
+s32 func_001CD738(Script* arg0) {
+    s32 i;
+    s32 k;
+
+    if (D_00375BC0 & 1) {
+        arg0->unk_174[3]--;
+        return 2;
+    }
+    k = arg0->unk_174[arg0->unk_174[3] + 4];
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_d7.b0[i] == 0) {
+            break;
+        }
+    }
+    if (i >= 4 || D_003854E0_d7.b4[k] != 0) {
+        return 4;
+    }
+    arg0->unk_174[3]--;
+    D_00629E70_q[i] = D_006298F0_q[k];
+    D_003854E0_d7.b1030[i] = k;
+    func_0010BB50(&D_00629E70_q[i], func_001CD620);
+    D_003854E0_d7.b0[i] = 1;
+    D_003854E0_d7.b4[k] = 1;
+    return 2;
+}
 
 /* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
 extern s32 func_001CD8E8_f1_pad1;
@@ -959,7 +990,37 @@ void func_001CDA00(s32 a0, XHumB0* a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDB18);
+typedef struct { u64 d[0x16]; } XHumB0Qb;
+extern XHumB0Qb D_00629E70_qb[] __asm__("D_00629E70");
+extern XHumB0Qb D_006298F0_qb[] __asm__("D_006298F0");
+typedef struct { u8 b0[4]; u8 b4[0x102C]; s8 b1030[4]; } XHumCDB18;
+extern XHumCDB18 D_003854E0_db __asm__("D_003854E0");
+
+s32 func_001CDB18(Script* arg0) {
+    s32 i;
+    s32 k;
+
+    if (D_00375BC0 & 1) {
+        arg0->unk_174[3]--;
+        return 2;
+    }
+    k = arg0->unk_174[arg0->unk_174[3] + 4];
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_db.b0[i] == 0) {
+            break;
+        }
+    }
+    if (i >= 4 || D_003854E0_db.b4[k] != 0) {
+        return 4;
+    }
+    arg0->unk_174[3]--;
+    D_00629E70_qb[i] = D_006298F0_qb[k];
+    D_003854E0_db.b1030[i] = k;
+    func_0010BB50(&D_00629E70_qb[i], func_001CDA00);
+    D_003854E0_db.b0[i] = 1;
+    D_003854E0_db.b4[k] = 1;
+    return 2;
+}
 
 typedef struct {
     s16 unk_00;
