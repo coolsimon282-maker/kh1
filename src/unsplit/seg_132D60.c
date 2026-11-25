@@ -407,9 +407,107 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234910);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234F80);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00235228);
+extern s32 D_00647FB4;
+extern s32 D_00647FC8;
+extern s32 D_00425C10;
+extern s32 D_00425C14;
+extern char D_004913F8[];
+extern s32 D_00425CAC;
+extern void *D_00425CA8;
+extern s32 D_00647FB0_a __asm__("D_00647FB0");
+extern s32 (*D_00648034_a)(s32) __asm__("D_00648034");
+extern s32 D_00647FC4_a __asm__("D_00647FC4");
+int sceMcGetDir(int, int, const char *, unsigned, int, void *);
+int sceMcSync(int, int *, int *);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002353A8);
+void func_00235228(void) {
+    s32 *st = &D_00647FB4;
+    s32 r;
+
+    switch (*st) {
+    case 0:
+        sceMcGetDir(D_00425C10, D_00425C14, D_004913F8, 0, D_00425CAC, D_00425CA8);
+        (*st)++;
+        break;
+    case 1:
+        if (sceMcSync(1, NULL, &D_00647FC8) != 0) {
+            (*st)++;
+        }
+        break;
+    case 2:
+        r = D_00647FC8;
+        if (r >= 0) {
+            D_00425CAC = r;
+            D_00647FF0 = 0;
+        } else if (r == -2) {
+            D_00425CAC = -1;
+            D_00647FF0 = 1;
+        } else if (r == -4) {
+            D_00425CAC = -1;
+            D_00647FF0 = 2;
+        } else {
+            D_00425CAC = -1;
+            D_00647FF0 = 3;
+        }
+        D_00647FB0_a = 0;
+        D_00647FD8 = D_00647FD4;
+        if (D_00648034_a != NULL) {
+            D_00648034_a(D_00647FC4_a);
+        }
+        break;
+    }
+}
+
+extern s32 D_00647FB4;
+extern s32 D_00647FC8;
+extern s32 D_00425C10;
+extern s32 D_00425C14;
+extern char *D_00648020;
+extern s32 D_00425CAC;
+extern void *D_00425CA8;
+extern s32 D_00647FB0_a __asm__("D_00647FB0");
+extern s32 (*D_00648034_a)(s32) __asm__("D_00648034");
+extern s32 D_00647FC4_a __asm__("D_00647FC4");
+int sceMcGetDir(int, int, const char *, unsigned, int, void *);
+int sceMcSync(int, int *, int *);
+
+void func_002353A8(void) {
+    s32 *st = &D_00647FB4;
+    s32 r;
+
+    switch (*st) {
+    case 0:
+        sceMcGetDir(D_00425C10, D_00425C14, D_00648020, 0, D_00425CAC, D_00425CA8);
+        (*st)++;
+        break;
+    case 1:
+        if (sceMcSync(1, NULL, &D_00647FC8) != 0) {
+            (*st)++;
+        }
+        break;
+    case 2:
+        r = D_00647FC8;
+        if (r >= 0) {
+            D_00425CAC = r;
+            D_00647FF4 = 0;
+        } else if (r == -2) {
+            D_00425CAC = -1;
+            D_00647FF4 = 2;
+        } else if (r == -4) {
+            D_00425CAC = -1;
+            D_00647FF4 = 3;
+        } else {
+            D_00425CAC = -1;
+            D_00647FF4 = 4;
+        }
+        D_00647FB0_a = 0;
+        D_00647FD8 = D_00647FD4;
+        if (D_00648034_a != NULL) {
+            D_00648034_a(D_00647FC4_a);
+        }
+        break;
+    }
+}
 
 extern s32 D_00647FB4;
 extern s32 D_00647FC8;
