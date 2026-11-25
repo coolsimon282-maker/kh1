@@ -98,7 +98,7 @@ void sceVu0SubVector(f32 *, f32 *, f32 *);
 f32 sceVu0InnerProduct(f32 *, f32 *);
 void func_001223B0(f32 *, f32 *);
 
-void func_00126108(u8 *a0, f32 *n, f32 *b, s32 *c, f32 d, f32 s) {
+void func_00126108(u8 *a0, f32 *n, f32 *b, f32 d, f32 s, s32 *c) {
     sceVu0FVECTOR v;
     f32 t;
 
@@ -124,7 +124,37 @@ void func_00126108(u8 *a0, f32 *n, f32 *b, s32 *c, f32 d, f32 s) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126238);
+typedef struct { u64 lo : 12; u32 grp : 2; } Bf0252_A;
+typedef struct { u64 lo : 37; u32 grp : 2; } Bf0252_B;
+typedef struct { u64 lo : 10; u32 on : 1; } Bf0252_C;
+f32 func_0012EC60_f(s32, s32, f32 *) __asm__("func_0012EC60");
+s32 func_0012EE70(s32, s32);
+s32 func_00123558(u8 *, s32);
+u8 *func_0014A398(u8 *);
+
+void func_00126238(u8 *a0, f32 *n, s32 *c) {
+    sceVu0FVECTOR v;
+    s32 i;
+    s32 j;
+    u8 *p;
+    f32 f;
+
+    i = 0;
+    while ((i = func_00123558(a0, i)) != 0) {
+        j = -1;
+        while ((j = func_0012EE70(i, j)) >= 0) {
+            f = func_0012EC60_f(i, j, v);
+            func_00126108(a0, n, v, f, 1.0f, c);
+        }
+    }
+    p = NULL;
+    while ((p = func_0014A398(p)) != NULL) {
+        if (((Bf0252_A *)p)->grp != ((Bf0252_B *)(a0 + 0x370))->grp && ((Bf0252_C *)(p + 0x30))->on) {
+            func_00126108(a0, n, (f32 *)(p + 0x10), *(f32 *)(p + 0xC), 0.25f, c);
+        }
+    }
+    n[3] = 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126360);
 
