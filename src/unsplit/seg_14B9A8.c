@@ -257,7 +257,76 @@ s32 func_0024CF90(void) {
     return D_00669A7C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CFA0);
+void func_0024CFA0(s32 a0) {
+    extern s32 D_0046A558;
+    extern s32 D_0046A55C;
+    extern s32 D_0046A560;
+    extern s32 D_00669A64;
+    extern void func_0024C460(s32);
+    extern void func_0024BE88(s32);
+    extern void func_0024C950(s32);
+    extern void func_001F8F30(void);
+    extern void func_0011D598(s32);
+    extern s32 func_001F3840(s32);
+    extern s32 func_001BE010(s32);
+    extern void func_001BE3C0(s32);
+    s32 i;
+
+    func_0024C460(a0);
+    func_0024BE88(a0);
+    func_0024C950(a0);
+    func_001F8F30();
+    if (D_0046A558 != 0 && (func_0024BE58() & 0x2000) && D_0046A55C == 0) {
+        D_0046A55C = 1;
+        func_0011D598(2);
+        func_001F3840(a0);
+        D_0046A5D8 = 0;
+        return;
+    }
+    if (!(func_0024BE58() & 0x2000)) {
+        return;
+    }
+    if (D_0046A55C != 0) {
+        return;
+    }
+    if (D_0046A560 == 0) {
+        return;
+    }
+    i = 0;
+    if (D_00669A40[0] == -1) {
+        goto next;
+    }
+    if (D_00669A40[0] == 0) {
+    next:
+        i++;
+    loop:
+        if (i < 8) {
+            if (D_00669A40[i] == -1) {
+                goto next;
+            }
+            if (D_00669A40[i] == 0) {
+                goto next;
+            }
+        }
+    }
+    if (i == 8) {
+        func_0011D598(4);
+        return;
+    }
+    D_0046A5D8 = 1;
+    D_0046A55C = 1;
+    func_0011D598(2);
+    func_001F3840(a0);
+    if (D_00669A60 < 0) {
+        return;
+    }
+    func_0024CF00();
+    if (D_00669A64 != 0) {
+        D_00669A7C = func_001BE010(D_00669A60);
+        return;
+    }
+    func_001BE3C0(D_00669A60);
+}
 
 s32 func_001F40C8(void);
 void func_001F82B0(void);
