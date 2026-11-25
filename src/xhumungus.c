@@ -4772,7 +4772,30 @@ s32 func_001D8AF0(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8B30);
+s32 func_001D8B30(Script* arg0) {
+    u8* p;
+    s32 found = 0;
+    f32 best = -1.0f;
+    f32 d;
+
+    for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        if ((func_001239D8(*(s32*)(p + 4)) >= 0x12C && func_001239D8(*(s32*)(p + 4)) < 0x15F) ||
+            (func_001239D8(*(s32*)(p + 4)) >= 0x190 && func_001239D8(*(s32*)(p + 4)) < 0x21C)) {
+            if (found == 0) {
+                found = 1;
+                best = func_001E9E58((f32*)(*(u8**)&arg0->unk_00[4] + 0x10), (f32*)(p + 0x10));
+            } else {
+                d = func_001E9E58((f32*)(*(u8**)&arg0->unk_00[4] + 0x10), (f32*)(p + 0x10));
+                if (d < best) {
+                    best = d;
+                }
+            }
+        }
+    }
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = best;
+    return 2;
+}
 
 typedef struct {
     /* 0x00 */ void* unk_00;
