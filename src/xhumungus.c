@@ -2623,7 +2623,32 @@ s32 func_001D41F0(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D42E8);
+/* Unused on purpose: keeps func_001DB7A8 matching (notes/f1.md F1). */
+extern s32 func_001D42E8_f1_pad;
+extern s32 func_001D42E8_f1_pad2;
+
+s32 func_001D42E8(Script* arg0) {
+    ScriptMsg msg;
+    s32* q = func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 4]);
+
+    if (q != NULL) {
+        msg.unk_00 = 6;
+        msg.unk_01 = 0;
+        msg.unk_04 = q[0];
+        func_001C4640(&msg);
+        msg.unk_00 = 10;
+        msg.unk_01 = 0;
+        msg.unk_04 = q[0];
+        func_001C4640(&msg);
+        msg.unk_00 = 0x1B;
+        msg.unk_01 = 0;
+        msg.unk_04 = q[0];
+        func_001C4640(&msg);
+        *(u64*)((u8*)q + 0x328) &= ~0x100;
+    }
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D43E0);
 
