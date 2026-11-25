@@ -356,7 +356,11 @@ s32 func_00108D90(Seg6B18Task *t) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108DF8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D68);
+void func_00108D68(s32 a0, s32 a1, s32 (*a2)[4]) {
+    s32 *g = &D_00351BD0;
+    func_00108BE8(a0, a2, (T108BE8 *)((u8 (*)[2][0x90])&D_00494F20)[*g][a0]);
+    func_0015ED80(a1, func_00108D90)->unk_10 = (s32)((u8 *)D_00494D80 + (a0 * 0xD0 + *g * 0x60));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108FD0);
 
