@@ -314,7 +314,17 @@ void func_00108BE8(s32 a0, s32 (*a1)[4], T108BE8 *a2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108C58);
+void func_00108C58(s32 (*a1)[4], T108BE8 *a2) {
+    s32 i, j, k;
+    k = 0;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            a2->x[k] = a1[i][j];
+            a2->y[k] = D_002BC170_i[i][j];
+            k++;
+        }
+    }
+}
 
 void func_00108CD0(s32* arg0, s32* arg1) {
     arg0[0x1A] = arg1[0];
