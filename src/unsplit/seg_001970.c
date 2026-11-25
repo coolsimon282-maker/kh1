@@ -566,7 +566,32 @@ void func_00104908(void) {
     D_002A6324 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104940);
+s32 func_00104940(f32 *a0, s32 *out) {
+    s32 hi[4];
+    s32 lo[4];
+    s32 n;
+    s32 x, z;
+
+    func_00104850(a0, lo);
+    func_00104850(a0 + 3, hi);
+    if (D_002A6324 == (s32)D_002A6234 && D_002A6308[0] == hi[0] && D_002A6308[2] == hi[2] &&
+        D_002A6318[0] == lo[0] && D_002A6318[2] == lo[2]) {
+        return -1;
+    }
+    n = 0;
+    for (x = lo[0]; x < hi[0] + 1; x++) {
+        for (z = lo[2]; z < hi[2] + 1; z++) {
+            *out++ = x * D_002A6234->nz + z;
+            n++;
+        }
+    }
+    D_002A6308[0] = hi[0];
+    D_002A6308[2] = hi[2];
+    D_002A6318[0] = lo[0];
+    D_002A6318[2] = lo[2];
+    D_002A6324 = (s32)D_002A6234;
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104A90);
 
