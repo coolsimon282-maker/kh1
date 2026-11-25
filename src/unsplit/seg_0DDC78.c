@@ -41,7 +41,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE130);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE1E0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DE290);
+s32 func_001DE290(A2Script *p) {
+    A2Obj1760 *q = func_001760D0(p->unk_174[p->unk_174[3] + 1]);
+    s32 n;
+
+    if (q != NULL) {
+        f32 *v = *(f32 **)q;
+        f32 x, y, z;
+        n = p->unk_174[3];
+        x = (f32)p->unk_174[n + 2];
+        y = (f32)p->unk_174[n + 3];
+        z = (f32)p->unk_174[n + 4];
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+    } else {
+        n = p->unk_174[3];
+    }
+    p->unk_174[3] = n - 4;
+    return 2;
+}
 
 s32 func_001DE328(A2Script *p) {
     A2Obj1760 *a = func_001760D0(p->unk_174[p->unk_174[3] + 1]);
@@ -201,7 +220,26 @@ s32 func_001DF2A8(A2Script *s) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DF310);
+s32 func_001DF310(A2Script *p) {
+    A2Obj1760 *q = func_001760F0(p->unk_174[p->unk_174[3] + 1]);
+    s32 n;
+
+    if (q != NULL) {
+        f32 *v = *(f32 **)q;
+        f32 x, y, z;
+        n = p->unk_174[3];
+        x = (f32)p->unk_174[n + 2];
+        y = (f32)p->unk_174[n + 3];
+        z = (f32)p->unk_174[n + 4];
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+    } else {
+        n = p->unk_174[3];
+    }
+    p->unk_174[3] = n - 4;
+    return 2;
+}
 
 s32 func_001DF3A8(A2Script *p) {
     A2Obj1760 *a = func_001760F0(p->unk_174[p->unk_174[3] + 1]);
@@ -346,7 +384,26 @@ s32 func_001DFAA0(A2Script *s) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001DFB20);
+s32 func_001DFB20(A2Script *p) {
+    A2Obj1760 *q = func_001760B0(p->unk_174[p->unk_174[3] + 1]);
+    s32 n;
+
+    if (q != NULL) {
+        f32 *v = *(f32 **)q;
+        f32 x, y, z;
+        n = p->unk_174[3];
+        x = (f32)p->unk_174[n + 2];
+        y = (f32)p->unk_174[n + 3];
+        z = (f32)p->unk_174[n + 4];
+        v[0] = x;
+        v[1] = y;
+        v[2] = z;
+    } else {
+        n = p->unk_174[3];
+    }
+    p->unk_174[3] = n - 4;
+    return 2;
+}
 
 s32 func_001DFBB8(A2Script *p) {
     A2Obj1760 *a = func_001760B0(p->unk_174[p->unk_174[3] + 1]);
