@@ -962,7 +962,29 @@ s32 *func_0023C228(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C270);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C400);
+extern u64 D_00650DE0[];
+extern u_long128 *D_00651200;
+extern u_long128 *D_00651204;
+typedef struct { s32 used; u8 pad4[0xDC]; } Ent132_E0s;
+extern Ent132_E0s D_00651310_s[] __asm__("D_00651310");
+void func_0023C270(Ent132_E0s *);
+
+s32 func_0023C400(void) {
+    s32 i;
+    func_002370C8(D_00650DE0);
+    D_00650DE0[0x1C] = 5;
+    D_00650DE0[0xC] = 0x30003;
+    func_00237018(D_00650DE0, 0x16, 1);
+    D_00651204 = (u_long128 *)&D_00351E10;
+    D_00651200 = (u_long128 *)&D_00351E10 + 1;
+    for (i = 0; i < 10; i++) {
+        if (D_00651310_s[i].used != 0) {
+            func_0023C270(&D_00651310_s[i]);
+        }
+    }
+    func_00237018(D_00651204, D_00651200 - D_00651204, 1);
+    return 0;
+}
 
 typedef struct { u64 d[0x18]; } Blk132_C0;
 typedef struct { s32 a; s32 b; } Pair132;
