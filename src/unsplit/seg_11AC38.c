@@ -3154,7 +3154,33 @@ s32 func_0022EDC0(s32 a0) {
     return a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022EE08);
+extern s32 D_00646A14;
+extern s32 D_00646A18;
+extern u32 D_003E3D6C;
+extern s32 D_0064763C;
+extern s32 D_00647634;
+extern s32 D_00647638;
+void func_0022EBF8(s32);
+void func_001F0AD0(s32);
+void D598_v(s32) __asm__("func_0011D598");
+
+s32 func_0022EE08(void) {
+    func_0022EBF8(D_00646A14);
+    if (D_00646A18 > 0) {
+        D598_v(8);
+        func_001F0AD0(D_0064763C);
+        if ((u32)D_00646A20 < D_003E3D6C) {
+            { s32 i = D_00647634; *(u8 *)(D_00647638 + i + 0x22) = D_00646A18; }
+        } else {
+            u8 *p = (u8 *)(D_00646A18 + (s32)D_003010F8 + 0x499);
+            *p += D_00646A28;
+        }
+    } else {
+        D598_v(4);
+    }
+    D_00646A28 = 1;
+    return D_00646A18;
+}
 
 void func_0022EEE0(s32 a0) {
     D_00646A20 = a0;
@@ -3928,7 +3954,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
 extern s32 D_231EA0_layout2;
@@ -3939,8 +3965,6 @@ extern s32 D_231EA0_layout6;
 extern s32 D_231EA0_layout7;
 extern s32 D_231EA0_layout8;
 extern s32 D_231EA0_layout9;
-extern s32 D_231EA0_layout10;
-extern s32 D_231EA0_layout11;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
