@@ -341,7 +341,21 @@ u8* func_0012B888(void) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012B930);
+u8 *func_0012B7A8_a(s32) __asm__("func_0012B7A8");
+
+u8 *func_0012B930(u8 *a0, s32 a1) {
+    u8 *r = func_0012B7A8_a(a1);
+    u8 *p;
+
+    *(u64 *)r |= 4;
+    *(s32 *)(r + 0x14) = *(s32 *)(a0 + 0x14);
+    p = a0;
+    while (*(u8 **)(p + 0x720) != NULL) {
+        p = *(u8 **)(p + 0x720);
+    }
+    *(u8 **)(p + 0x720) = r;
+    return r;
+}
 extern u8* D_0052AA70[]; /* repeated on purpose: keeps func_00137EA8 matching (notes/f1.md F1) */
 
 void func_0012B850(u8 *a0) {
