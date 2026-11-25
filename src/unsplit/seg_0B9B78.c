@@ -55,7 +55,37 @@ void func_001B9C60(const char *name) {
     f();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001B9CB0);
+void func_001B9CB0(void) {
+    u8* p = func_0022F768(4);
+
+    if (*(s32*)(p + 0x9B40) == 0) {
+        *(s32*)(p + 0x9B40) = 0x4000;
+    }
+    if (*(s32*)(p + 0x9B44) == 0) {
+        *(s32*)(p + 0x9B44) = 0x8000;
+    }
+    if (*(s32*)(p + 0x9B48) == 0) {
+        *(s32*)(p + 0x9B48) = 0x400;
+    }
+    if (*(s32*)(p + 0x9B4C) == 0) {
+        *(s32*)(p + 0x9B4C) = 0x2000;
+    }
+    if (*(s32*)(p + 0x9B50) == 0) {
+        *(s32*)(p + 0x9B50) = 0x2000;
+    }
+    if (*(s32*)(p + 0x9B54) == 0) {
+        *(s32*)(p + 0x9B54) = 0x2000;
+    }
+    if (*(s32*)(p + 0x9B58) == 0) {
+        *(s32*)(p + 0x9B58) = 0x1000;
+    }
+    if (*(s32*)(p + 0x9B5C) == 0) {
+        *(s32*)(p + 0x9B5C) = 0x1000;
+    }
+    if (*(s32*)(p + 0x9B60) == 0) {
+        *(s32*)(p + 0x9B60) = 0x1000;
+    }
+}
 
 void func_001B9CB0();
 
