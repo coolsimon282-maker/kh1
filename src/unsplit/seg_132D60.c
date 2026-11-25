@@ -869,7 +869,24 @@ void func_00239558(s32 a0, s32 a1, s32 a2, u8 c) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239630);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239778);
+void func_00239630(s32, s32, s32, s32, f32);
+
+void func_00239778(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, f32 f) {
+    if (a0 != 0) {
+        func_002479A0(a1);
+        if (a2 != 0) {
+            func_002479A0(a2);
+        }
+    }
+    func_00247AA0(a1);
+    if (a2 != 0) {
+        func_00247AA0(a2);
+    }
+    func_00239630(a1, a3, a4, a5, f);
+    if (a2 != 0) {
+        func_00239630(a2, a3, a4, a5, f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239860);
 
