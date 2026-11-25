@@ -119,6 +119,7 @@ s32 func_00206370(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 void func_00202678(void *, s32, s32);
 void func_001F5FE0();
 extern f32 D_002B8344;
+extern s32 D_003F2F10[];
 extern s32 D_003E9630[];
 s32 func_001FC330(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 void func_00203A10(void *, s32);
@@ -2841,7 +2842,19 @@ void func_002079C8(s32 a0) {
     func_002078F0(a0, 1, 2, 2, BF(a0, 0xBE), BF(a0, 0xC0), w, BF(a0, 0xBE) + w / 2, 0x2B);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00207A38);
+void func_00207A38(s32 a0) {
+    s32 i;
+    s32 h = BF(a0, 0xC2);
+    s32 w = h - BF(a0, 0xC6);
+    s32 x = BF(a0, 0xBE);
+    s32 y = BF(a0, 0xC0);
+    s32 half = w / 2;
+    s32 sel = func_001FD538((u8 *)a0);
+    for (i = 0; i < 2; i++) {
+        func_002078F0(a0, i == sel, 2, 2, x, y, w, x + half, D_003F2F10[i]);
+        x += h;
+    }
+}
 
 void func_00207B38(s32 a0, s32 a1) {
     func_001F9270(a0, 0, 0x10, 0x32, 0xC, 0x801EC8C8);
@@ -2984,11 +2997,15 @@ void func_00123318(u8 *, u8 *);
 void func_0020A248(s32);
 
 /* unused: layout only (notes/f1.md F1). 0-3 of them change func_0020DED8 / func_00214290 / func_00212930 /
- * func_002145D8; 4 keeps the file matching (25 Nov). */
+ * func_002145D8; 4 keeps the file matching (25 Nov). 8 since func_00207A38 (with one pad above func_00214590). */
 extern s32 D_209D48_layout1;
 extern s32 D_209D48_layout2;
 extern s32 D_209D48_layout3;
 extern s32 D_209D48_layout4;
+extern s32 D_209D48_layout5;
+extern s32 D_209D48_layout6;
+extern s32 D_209D48_layout7;
+extern s32 D_209D48_layout8;
 void func_00209D48(void) {
     s32 i;
     u8 *e;
@@ -4104,6 +4121,8 @@ void func_00214380(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002143E0);
 
+/* unused: rule F1 (with func_00207A38 and the 8 D_209D48_layout externs); its NAME matters too */
+extern s32 D_pad_func_00214590_0;
 void func_00214590(u8 *a0) {
     func_001F9010(0x17);
     func_001F9438((s32)a0, 0, 0xAE, 0xC, *(s32 *)(a0 + 0x24), 0x11, 0x80C87850);
