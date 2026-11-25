@@ -1756,7 +1756,14 @@ void func_001FD100(s32 a0, s32 a1) {
     func_001FCDC8((a0 + 0xE), (a1 + 6), 0, 0, 0x38, 0, 0x64FFFFFF, 0x64FFFFFF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001FD170);
+void func_001FD170(s32 a0, s32 a1, s32 a2) {
+    u32 c;
+
+    c = func_001EDD88(0x64323296, a2);
+    func_001FCDC8(a0, a1, 0, 0, 0x39, 0, c, func_001EDD88(0x64323296, a2));
+    c = func_001EDD88(0x64FFFFFF, a2);
+    func_001FCDC8(a0 + 0xE, a1 + 6, 0, 0, 0x38, 0, c, func_001EDD88(0x64FFFFFF, a2));
+}
 
 s32 func_001FD248(u8 *a0) {
     return ((*(s32 *)(a0 + 0xB0) - 0x7000) >> 4);
@@ -2970,7 +2977,36 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002099D8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00209B90);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00209D48);
+typedef struct { u8 pad[0xCC]; s32 used; } Ent209D48;
+extern Ent209D48 D_003F3530_e[] __asm__("D_003F3530");
+extern s32 D_003F3870;
+void func_00123318(u8 *, u8 *);
+void func_0020A248(s32);
+
+/* unused: layout only (notes/f1.md F1). 0-3 of them change func_0020DED8 / func_00214290 / func_00212930 /
+ * func_002145D8; 4 keeps the file matching (25 Nov). */
+extern s32 D_209D48_layout1;
+extern s32 D_209D48_layout2;
+extern s32 D_209D48_layout3;
+extern s32 D_209D48_layout4;
+void func_00209D48(void) {
+    s32 i;
+    u8 *e;
+
+    D_003F3870 = 0;
+    for (i = 0; i < 3; i++) {
+        e = func_001F0BD8(i);
+        if (e == NULL) {
+            D_003F3530_e[i].used = 0;
+        } else {
+            D_003F3530_e[i].used = 1;
+            func_00123318(e, (u8 *)&D_003F3530_e[i]);
+            func_0020A248(i);
+            D_003F3870++;
+        }
+    }
+    D_003F3530_e[3].used = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00209E18);
 
@@ -3074,7 +3110,35 @@ void func_0020BBC0(void *arg0) {
     func_0020BB90((val7 - 0x7000) >> 4, (val5 - 0x7400) >> 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020BC48);
+extern f32 D_006411E4;
+extern s32 D_006411E8;
+extern f32 D_006411EC;
+extern f32 D_006411F0;
+extern f32 D_006411F4;
+extern f32 D_006411F8;
+extern f32 D_00641210_f __asm__("D_00641210");
+extern f32 D_00641214_f __asm__("D_00641214");
+
+/* unused: layout only (notes/f1.md F1). With 0, 1, 2 or 4 of them func_002145D8 or func_00212930 change; 3 and 5
+ * keep the file matching (25 Nov). */
+extern s32 D_20BC48_layout1;
+extern s32 D_20BC48_layout2;
+extern s32 D_20BC48_layout3;
+void func_0020BC48(s32 a0, s32 a1, s32 a2) {
+    if (((a1 - (s32)D_00641210_f + 1) >> 1) == 0 && ((a2 - (s32)D_00641214_f + 1) >> 1) == 0) {
+        D_00641210_f = a1;
+        D_00641214_f = a2;
+        D_006411E0 = 0;
+        return;
+    }
+    D_006411E0 = 1;
+    D_006411E4 = a0;
+    D_006411E8 = 0;
+    D_006411EC = D_00641210_f;
+    D_006411F0 = D_00641214_f;
+    D_006411F4 = a1;
+    D_006411F8 = a2;
+}
 
 void func_0020BC48(s32, s32, s32);
 
@@ -3339,7 +3403,21 @@ void func_0020DD38(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DE28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DED8);
+extern s32 D2C40_v[][5] __asm__("D_003F2C40");
+
+void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
+    s32 *e = D2C40_v[a1];
+    u32 c = e[4];
+    s32 v;
+
+    if (a5 != 0) {
+        v = func_001EF9E0(a5);
+    } else {
+        v = func_001EFBB8(0x97);
+    }
+    func_00201550(a0, 2, 0, a2, a3, a4, a2 + 0x18, (s32)e, v, a6);
+    func_002083A8(a0, a2 + 6, a3 + 4, 0x12, a5, c >> 24);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DFC8);
 
@@ -4003,7 +4081,21 @@ void func_002140C0(u8 *a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00214130);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00214290);
+void func_00214130(s32, s32, s32, s32, s32, s32);
+
+void func_00214290(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 *e;
+    s32 c;
+
+    func_00214130(a0, a1, a2, a3, a4, a5);
+    e = D2C40_v[a1];
+    a2 += a4;
+    c = e[4];
+    func_002016B0(a0, a2 + 2, a3 + 2, e[0]);
+    a3 += 7;
+    func_001F9438(a0, 0, a2 + 6, a3, 0x51, 0xC, c);
+    func_001FB428(a0, 1, 2, 0, a2 + 0x28, a3, func_001F08A0(a5 & ~0x80), 0xC, c);
+}
 
 void func_00214380(u8 *a0) {
     func_001F9010(0x17);
