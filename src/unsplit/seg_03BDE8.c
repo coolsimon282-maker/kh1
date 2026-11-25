@@ -5422,7 +5422,22 @@ s32 func_00159258(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00159350);
+/* unused: rule F1 (keeps func_00176F08 as it was) */
+extern s32 D_lay159350_0;
+extern s32 D_lay159350_1;
+extern f32 D_00351A80[];
+extern f32 D_00351A90[];
+void func_00159350(u8* p) {
+    f32* v;
+    *(f32*)(*(u8**)(p + 0x6C) + 8) = 6.0f;
+    v = (f32*)(*(u8**)(p + 0x148) + 0x160);
+    sceVu0ScaleVector(v, v, 0.1f);
+    if (p == *(u8**)&D_002E26A0) {
+        D_005516F0 = func_00159EA8_p(p, D_00351A80, D_00351A90);
+        *(f32*)(D_005516F0 + 0x30) = 0.5f;
+        func_0011ED30(0x18894, func_00159258);
+    }
+}
 
 void func_001593F8(s32 a, s32 b, s32 c) {
     if (D_002E3190 == 1) {
