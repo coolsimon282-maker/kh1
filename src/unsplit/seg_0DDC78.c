@@ -656,7 +656,35 @@ void func_001E14E0(void) {
     sceGsExecLoadImage(&D_0062F670, &func_F20000 + 0x48000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E15A0);
+extern s32 D_003DACC0[];
+extern s32 D_003DACD0;
+extern u64 D_003DB028;
+extern u8 D_003DB050[];
+void func_001E05A8(void *);
+
+s32 func_001E15A0(void) {
+    u8 *p;
+    s32 x, y;
+
+    D_003DACC0[3] += D_003DACD0;
+    if (D_003DACC0[3] > 0x80) {
+        D_003DACC0[3] = 0x80;
+    } else if (D_003DACC0[3] < 0) {
+        return 4;
+    }
+    D_003DB028 = (u64)D_003DACC0[0] | ((u64)D_003DACC0[1] << 8) | ((u64)D_003DACC0[2] << 16) | ((u64)D_003DACC0[3] << 24) | ((u64)1 << 32);
+    func_001E1480();
+    p = (u8 *)func_F20000;
+    for (y = 0; y < 0x180; y++) {
+        for (x = 0; x < 0x200; x++) {
+            p[2] = p[0] = p[1];
+            p += 3;
+        }
+    }
+    func_001E14E0();
+    func_001E05A8(D_003DB050);
+    return 0;
+}
 
 void *func_0011ED30(s32, s32 (*func)(void));
 s32 func_001E15A0(void);
