@@ -5097,7 +5097,54 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D93B8);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9720);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D9C28);
+typedef struct {
+    /* 0x000 */ u8 unk_000[0xA80];
+    /* 0xA80 */ u8 unk_A80[10];
+    /* 0xA8A */ u8 unk_A8A[10];
+    /* 0xA94 */ u8 unk_A94[10];
+    /* 0xA9E */ u8 unk_A9E[50];
+} XCursedBlk1;
+
+s32 func_001D9C28(Script* arg0) {
+    XCursedBlk1* p = func_0022F768(1);
+    s32 i;
+
+    switch (arg0->unk_174[arg0->unk_174[3] + 4]) {
+    case 0:
+        for (i = 0; i < 10; i++) {
+            if (p->unk_A80[i] == 0) {
+                arg0->unk_174[arg0->unk_174[3] + 4] = i + 1;
+                break;
+            }
+        }
+        break;
+    case 1:
+        for (i = 0; i < 10; i++) {
+            if (p->unk_A8A[i] == 0) {
+                arg0->unk_174[arg0->unk_174[3] + 4] = i + 1;
+                break;
+            }
+        }
+        break;
+    case 2:
+        for (i = 0; i < 10; i++) {
+            if (p->unk_A94[i] == 0) {
+                arg0->unk_174[arg0->unk_174[3] + 4] = i + 1;
+                break;
+            }
+        }
+        break;
+    case 3:
+        for (i = 0; i < 50; i++) {
+            if (p->unk_A9E[i] == 0) {
+                arg0->unk_174[arg0->unk_174[3] + 4] = i + 1;
+                break;
+            }
+        }
+        break;
+    }
+    return 2;
+}
 
 s32 func_001D9DD0(Script* arg0) {
     func_00156BA0(arg0->unk_174[arg0->unk_174[3] + 4]);
