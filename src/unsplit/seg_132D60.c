@@ -1794,7 +1794,23 @@ void func_00244B00(void) {
     D_00662540 = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244B10);
+s32 func_00244B10(s32 n, s32 *d) {
+    s32 i;
+    s32 r = 5;
+
+    d[0] = n / 10000;
+    d[1] = n % 10000 / 1000;
+    d[2] = n % 1000 / 100;
+    d[3] = n % 100 / 10;
+    d[4] = n % 10;
+    for (i = 0; i < 4; i++) {
+        if (d[i] != 0) {
+            break;
+        }
+        r--;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00244BE0);
 
@@ -2050,7 +2066,23 @@ void func_00245918(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245920);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245A08);
+s32 func_00245A08(s32 n, s32 *d) {
+    s32 i;
+    s32 r = 5;
+
+    d[0] = n / 10000;
+    d[1] = n % 10000 / 1000;
+    d[2] = n % 1000 / 100;
+    d[3] = n % 100 / 10;
+    d[4] = n % 10;
+    for (i = 0; i < 4; i++) {
+        if (d[i] != 0) {
+            break;
+        }
+        r--;
+    }
+    return r;
+}
 
 extern void func_002479A0(s32);
 extern void func_00247AA0(s32);
@@ -2195,7 +2227,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246AA8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246BC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246CF0);
+/* unused: layout only (notes/f1.md F1). Without it (or with 2 or 4) func_00247CC8 stops folding
+ * `la $4,D_00431F30($4)`; 1 and 3 keep the file matching (25 Nov). */
+extern s32 D_246CF0_layout1;
+s32 func_00246CF0(s32 n, s32 *d) {
+    s32 i;
+    s32 r = 5;
+
+    d[0] = n / 10000;
+    d[1] = n % 10000 / 1000;
+    d[2] = n % 1000 / 100;
+    d[3] = n % 100 / 10;
+    d[4] = n % 10;
+    for (i = 0; i < 4; i++) {
+        if (d[i] != 0) {
+            break;
+        }
+        r--;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00246DC0);
 
