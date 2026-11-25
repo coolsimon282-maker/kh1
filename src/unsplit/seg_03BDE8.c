@@ -7397,7 +7397,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00172DF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00172F00);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00173008);
+s32 func_00173008(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x1F) == 0) {
+            return 0;
+        }
+        if (!((s32)(*(s64*)(q + 0x38) >> 2) & 1)) {
+            return 0;
+        }
+        if (*(s32*)(q + 0x90) == 0) {
+            return 0;
+        }
+        return func_0016B670(p, q, c, 1);
+    case 2:
+        *(s32*)(q + 0x170) = c;
+        *(u64*)(q + 0x38) |= 0x800;
+        func_0014F658((s32)p, 0x32);
+        return 1;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001730F0);
 
@@ -8418,7 +8440,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00179EE8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017A510);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017A6C0);
+extern sceVu0FVECTOR D_00362580;
+extern sceVu0FVECTOR D_00362590;
+void func_0017A6C0(void) {
+    sceVu0FVECTOR v;
+    if (D_00575890 & 2) {
+        D_00575890 &= ~2;
+    }
+    sceVu0ApplyMatrix(D_005758E0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_00362590);
+    sceVu0ApplyMatrix(D_005758D0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_00362580);
+    if (func_00177608(v, D_005758E0, D_005758D0) != 0) {
+        sceVu0CopyVector(D_005758D0, v);
+    }
+    D_00362684 = func_001250D0(D_005758D0, D_005758E0);
+    if (func_00177258(D_00575894) == 0) {
+        func_00176F08(1, 30.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017A7B0);
 
