@@ -1952,7 +1952,29 @@ void func_002433E8(s32 x, s32 y, s32 a2, s32 a3, f32 f) {
                                  (((y + D_0045854C) * 16 + 0x7400) >> 4) - 0x740, a2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243508);
+void func_002477A8(u8 *, s32 *);
+u8 *func_00147A88(s32);
+
+void func_00243508(s32 a0, u8 *a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, f32 f) {
+    s32 buf[4];
+    s32 i;
+    s32 n;
+    u8 *q = a1;
+
+    for (i = 0; i < 7; i++) {
+        func_00243380(a0, (s32)a1, a2, a4, a5);
+        a1 += 0xC0;
+    }
+    for (i = 0; i < 2; i++) {
+        func_00243380(a0, (s32)a1, a3, a4, a5);
+        a1 += 0xC0;
+    }
+    if (a6 != 0) {
+        n = func_00147808(*(u16 *)func_00147A88(a6));
+        func_002477A8(q, buf);
+        func_002433E8(a4 + buf[0], a5 + buf[1], n, a7, f);
+    }
+}
 
 typedef struct { s32 a; s32 b; f32 c; } Seg132Msg;
 extern u8 D_006561E4[];
