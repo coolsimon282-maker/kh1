@@ -940,7 +940,35 @@ void func_0023A720(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A7E8);
+/* unused: layout only (F1): keeps func_00245F58 / func_00247CC8 */
+extern s32 D_23A7E8_pad1;
+extern f32 D_002B8344;
+
+void func_0023A7E8(void) {
+    Seg132_2E3170 **pp = D_002E3170;
+    Seg132_2E3170 *e;
+    s32 i;
+    s32 v;
+
+    for (; *pp != NULL; pp++) {
+        e = *pp;
+        if (pp[1] == NULL) {
+            for (i = 0; i < e->n; i++) {
+                if (e->mask & (1 << i)) {
+                    v = e->c[i];
+                    v = v - D_002B8344 * 32.0f;
+                    v = (v < 0x73) ? 0x73 : v;
+                    e->c[i] = v;
+                } else {
+                    v = e->c[i];
+                    v = v + D_002B8344 * 32.0f;
+                    v = (v > 0xE6) ? 0xE6 : v;
+                    e->c[i] = v;
+                }
+            }
+        }
+    }
+}
 
 extern u32 D_002C1EA8;
 
@@ -1576,6 +1604,11 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002416A8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241948);
 
+/* unused: layout only (notes/f1.md F1, with func_0023A7E8): 1, 3, 4, 5 of these keep func_00241A10 folding its store */
+extern s32 D_241A10_pad1;
+extern s32 D_241A10_pad2;
+extern s32 D_241A10_pad3;
+extern s32 D_241A10_pad4;
 extern u32 D_00652888[];
 
 void func_00241A10(s32 arg0, u32 arg1) {
