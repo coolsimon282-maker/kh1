@@ -705,7 +705,20 @@ void func_0011A9C8(s32 a0, s32 a1, u_long128* a2) {
     Seg150D8_CopyQ(a2, &e->unk_00[e->unk_08[a1][0]]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011A7F8);
+s32 func_0011A7F8(s32 a0, s32 a1, u_long128 *out) {
+    Seg150D8Ent40 *e = &D_004E2450[a0];
+    s16 *idx = (s16 *)(a1 * 20 + (s32)e->unk_08);
+    u_long128 *v = e->unk_00;
+
+    Seg150D8_CopyQ(out, &v[idx[0]]);
+    Seg150D8_CopyQ(out + 1, &v[idx[1]]);
+    Seg150D8_CopyQ(out + 2, &v[idx[2]]);
+    if (idx[3] == -1) {
+        return 3;
+    }
+    Seg150D8_CopyQ(out + 3, &v[idx[3]]);
+    return 4;
+}
 
 void func_0011AAC8(s32 a0, f32* a1, s32 a2) {
     f32* v = a1 + 4;
