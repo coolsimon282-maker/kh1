@@ -2616,7 +2616,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB698);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB7B0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB910);
+s32 func_001EB910(A2Script *p) {
+    s32 i = p->unk_174[p->unk_174[3] + 3];
+    s32 j = p->unk_174[p->unk_174[3] + 4] - 1;
+    s32 *f = func_0022F768(1);
+    p->unk_174[3]--;
+    p->unk_174[p->unk_174[3] + 4] = f[i * 5 + j + 0x2C5];
+    return 2;
+}
 
 typedef struct {
     u8 pad[0xD94];
