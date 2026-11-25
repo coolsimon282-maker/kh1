@@ -3058,7 +3058,38 @@ void func_001366D8(u8 *a0, s32 a1, f32 *a2) {
     func_00136428(a0, ~(1 << (a1 - 1)), *(s32 *)(a0 + 0x394), buf, f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136768);
+s32 func_00136428_r(u8 *, s32, s32, f32 *, f32) __asm__("func_00136428");
+void func_0012BCE0_5(u8 *, s32, s32, s32 *, s32) __asm__("func_0012BCE0");
+void func_00128250(u8 *, f32);
+void func_00136768(u8 *a0) {
+    s32 st[2];
+    f32 buf[4];
+    s32 h;
+    f32 f;
+
+    f = func_00135CA0(*(f32 *)(a0 + 0x118));
+    func_00122988(a0);
+    func_00135DF0(a0, buf);
+    sceVu0MulVector(buf, buf, (f32 *)(a0 + 0x430));
+    if (buf[3] <= 0.0f) return;
+    if (func_00135BB0(a0) && (*(s32 *)a0 & 1)) {
+        s32 m = *(s32 *)(a0 + 0x38C);
+        if (*(u16 *)(*(u8 **)(a0 + 0x130) + 0x4C) == 8 && a0[6] == 3 && (*(s32 *)a0 & 0x4000)) {
+            m |= 2;
+        }
+        h = func_00136428_r(a0, m, *(s32 *)(a0 + 0x394), buf, f);
+        if (((u32)(*(u64 *)(a0 + 0x370) >> 48) & 1) && *(u8 **)(a0 + 0x144) != NULL) {
+            st[0] = (s32)&h;
+            st[1] = 4;
+            func_0012BCE0_5(*(u8 **)(a0 + 0x144), 4, 1, st, 0);
+        }
+        *(u64 *)(a0 + 0x370) |= 0x800000000;
+    }
+    if (*(s32 *)a0 & 2) {
+        if (a0 == D_002E26A0 && *((u8 *)D_003010F8 + 0x880) != 0) return;
+        func_00128250(a0, buf[3] * f * 0x1.0101p-15f);
+    }
+}
 
 extern f32 D_002C6450[];
 extern s32 D_002B85F8;
