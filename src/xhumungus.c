@@ -753,7 +753,32 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD340);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD4D0);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD620);
+typedef struct { u8 b0[4]; u8 b4[0xC]; u16 tbl[8][256]; s32 w1010[8]; s8 b1030[4]; } XHumCD620;
+extern XHumCD620 D_003854E0_d6 __asm__("D_003854E0");
+extern s32 D_003C5890;
+void func_0010EDA0_d6(XHumB0*, void*, void (*)()) __asm__("func_0010EDA0");
+void func_001CCB18();
+
+void func_001CD620(s32 a0, XHumB0* a1) {
+    s32 i;
+    XHumB0* p;
+    s32 k;
+
+    D_003C5890 = 0;
+    for (i = 0; i < 4; i++) {
+        p = &D_00629E70_b[i];
+        if (p == a1) {
+            k = D_003854E0_d6.b1030[i];
+            if (D_003854E0_d6.w1010[k] == 0) {
+                func_0010BB10_c9(p, (s32)func_001CC950);
+            } else {
+                D_003854E0_d6.b0[i] = 2;
+                D_003854E0_d6.b4[k] = 2;
+                func_0010EDA0_d6(p, D_00388480[D_003854E0_d6.tbl[k][a0]], func_001CCB18);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CD738);
 
