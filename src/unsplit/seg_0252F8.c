@@ -89,7 +89,40 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125CF0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125DC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126108);
+extern f32 D_004F77F0;
+extern f32 D_004F77F4;
+extern f32 D_002E27CC;
+extern f32 D_002E27D0;
+extern u32 D_002DED20;
+void sceVu0SubVector(f32 *, f32 *, f32 *);
+f32 sceVu0InnerProduct(f32 *, f32 *);
+void func_001223B0(f32 *, f32 *);
+
+void func_00126108(u8 *a0, f32 *n, f32 *b, s32 *c, f32 d, f32 s) {
+    sceVu0FVECTOR v;
+    f32 t;
+
+    sceVu0SubVector(v, b, (f32 *)(a0 + 0x10));
+    v[1] = 0.0f;
+    func_001223B0(v, v);
+    v[3] = v[3] * s - d;
+    t = sceVu0InnerProduct(v, n);
+    if (D_004F77F4 < t) {
+        if (v[3] < D_002E27D0) {
+            c[14]++;
+            if (v[3] < D_002E27CC) {
+                c[13]++;
+            }
+        }
+    } else if (D_004F77F0 < t) {
+        if (v[3] < D_002E27CC) {
+            c[11]++;
+        }
+    }
+    if (D_002DED20 & 1) {
+        c[10] = c[11];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126238);
 
