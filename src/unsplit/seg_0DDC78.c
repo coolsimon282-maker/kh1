@@ -1149,7 +1149,38 @@ void func_001E3DA8(void) {
     func_0010EDA0(D_0062F790, D_003DC390, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E3DD0);
+void func_00232780(void);
+void func_001E3600_nt() __asm__("func_001E3600");
+extern inline void func_001E3600_nt(nothrow_arg_) double nothrow_arg_; {}
+void func_00232640(void *, void *);
+void func_001E3C08();
+void func_001E3C70();
+void func_001E3DA8();
+
+s32 func_001E3DD0(A2Script *s) {
+    u8 *p;
+
+    D_002C1EA8 |= 0xC;
+    func_001E3600_nt();
+    D_003DC48C = 0;
+    func_00232780();
+    func_00232640(func_001E3C08, func_001E3C70);
+    p = D_0062F790;
+    *(f32 *)(p + 0x30) = 80.0f;
+    *(f32 *)(p + 0x34) = 150.0f;
+    *(f32 *)(p + 0x40) = 12.0f;
+    *(f32 *)(p + 0x44) = 1.8f;
+    *(s16 *)(p + 4) = 2;
+    *(s16 *)(p + 6) = 1;
+    *(s16 *)(p + 8) = 17;
+    *(f32 *)(p + 0x1C) = 270.0f;
+    func_0010BB50(p, (s32)func_001E3DA8);
+    func_0011ED30(0xC350, func_001E3B40);
+    func_001E2748();
+    D_003DC474 = D_003DC470 = 0;
+    s->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001E3ED0(void) {
     return ((s32)(*(u64 *)D_0038CD00 >> 46) & 1) ? 4 : 2;
