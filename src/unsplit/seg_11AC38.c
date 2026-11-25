@@ -2203,7 +2203,30 @@ void func_00228E18(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00228E70);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229088);
+extern u8 D_003F6CE0[];
+extern u8 D_003F6CA0[];
+extern u16 D_00643730;
+
+void func_00229088(s32 a0) {
+    u8 *e[2];
+    u8 *p;
+    u16 v;
+    if (func_001F42B8(a0)) {
+        if ((e[0] = func_001F3A20(D_003F6CE0, 6)) != NULL) {
+            func_001F4690(e[0], (u8 *)a0);
+            p = e[0];
+            v = D_00643730;
+            *(u16 *)(p + 0xCE) = v;
+            *(u16 *)(p + 0xCC) = v;
+            *(s16 *)(p + 0xD2) = *(u16 *)&D_006436D0 * 16;
+            if ((e[1] = func_001F3A20(D_003F6CA0, 6)) != NULL) {
+                func_001F4690(e[1], e[0]);
+                func_001F3DC0(e[0]);
+            }
+        }
+    }
+    func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x70);
+}
 
 extern u8 D_003F6D68[];
 s32 func_0010FB68(void);
@@ -3966,7 +3989,27 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0). Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+extern s32 D_231EA0_layout0;
+extern s32 D_231EA0_layout1;
+extern s32 D_231EA0_layout2;
+extern s32 D_231EA0_layout3;
+extern s32 D_231EA0_layout4;
+extern s32 D_231EA0_layout5;
+extern s32 D_231EA0_layout6;
+extern s32 D_231EA0_layout7;
+extern s32 D_231EA0_layout8;
+extern s32 D_231EA0_layout9;
+extern s32 D_231EA0_layout10;
+extern s32 D_231EA0_layout11;
+extern s32 D_231EA0_layout12;
+extern s32 D_231EA0_layout13;
+extern s32 D_231EA0_layout14;
+extern s32 D_231EA0_layout15;
+extern s32 D_231EA0_layout16;
+extern s32 D_231EA0_layout17;
+extern s32 D_231EA0_layout18;
+extern s32 D_231EA0_layout19;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
@@ -4097,7 +4140,47 @@ s32 func_00232960(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002329A0);
+extern s32 D_003F7EC8;
+extern s32 D_006476F8;
+extern s32 D_006476FC;
+extern s32 D_00647700;
+extern s32 D_00647704;
+extern s32 D_00647708;
+typedef struct {
+    u8 pad0[0xC];
+    s16 unkC;
+    s16 unkE;
+    s16 unk10;
+    s16 unk12;
+    u8 pad14[4];
+    s16 unk18;
+} D3F7EA0_t;
+extern D3F7EA0_t D_003F7EA0;
+
+
+void func_002329A0(u8 *a0, s32 a1, s32 a2) {
+    s32 x0, y0, w, h, e;
+    func_001F3110((s32)a0);
+    D_003F7EC4 = 1;
+    D_003F7EC8 = 1;
+    D_00647700 = (s32)a0;
+    D_006476F8 = a1;
+    D_006476FC = a2;
+    D_00647704 = (s32)(a0 + 4);
+    D_00647708 = (s32)(a0 + 0x644);
+    x0 = (u32)(*(s32 *)(a0 + 0x664) - 0x7000) >> 4;
+    y0 = (u32)(*(s32 *)(a0 + 0x668) - 0x7400) >> 4;
+    w = ((u32)(*(s32 *)(a0 + 0x66C) - 0x7000) >> 4) - x0 + 1;
+    h = ((u32)(*(s32 *)(a0 + 0x670) - 0x7400) >> 4) - y0 + 1;
+    D_003F7EA0.unk10 = w;
+    D_003F7EA0.unk12 = h;
+    D_003F7EA0.unk18 = w - 0x28;
+    D_003F7EA0.unkC = x0;
+    D_003F7EA0.unkE = y0;
+    e = (s32)func_001F3A20((u8 *)&D_003F7EA0, 0);
+    D_0064770C = e;
+    func_0011ED30(0x2C01A, func_00232960);
+}
 
 void func_00232AA8(void) {
     func_001F3840(D_0064770C);
