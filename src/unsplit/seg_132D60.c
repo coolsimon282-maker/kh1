@@ -1883,7 +1883,49 @@ s32 func_0023F700(u8 *a0, s32 a1) {
     return a1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023F7D8);
+/* unused: layout only (F1): with 1 or 3 of these func_00241A10 keeps its store fold (2/4 break it) */
+extern s32 D_23F7D8_pad1;
+extern s32 D_00454A20_i __asm__("D_00454A20");
+
+s32 func_0023F7D8(s32 *p, s32 a1) {
+    s32 bufA[4];
+    s32 pos[4];
+    s32 n;
+    s32 d;
+    s32 k;
+    s32 i;
+    s32 step;
+    f32 c;
+
+    if (p[0] == 4) {
+        d = 1;
+        c = 0x1.0c152p-1f;
+        n = D_00454A20_i;
+    } else {
+        c = 0x1.0c152p-1f;
+        d = 1;
+        n = *(s32 *)(*(u8 **)(p[1] + 0x6C) + 0x44);
+        if (n > 20) {
+            n = 20;
+        }
+    }
+    if (c * n <= 0x1.2d97c4p+2f) {
+        return a1;
+    }
+    if (p[0] == 0 || p[0] == 4) {
+        step = 0x1A;
+    } else {
+        step = 0x11;
+    }
+    func_0023D528((u8 *)p, bufA, pos);
+    pos[0] -= 1;
+    k = (n - 9) / d;
+    for (i = 0; i < k; i++) {
+        a1 = func_0023D700_f(p[0x13], p[0x1C], pos[0], pos[1], a1, *(f32 *)((u8 *)p + 0xA1C));
+        pos[0] -= step;
+    }
+    return a1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023F920);
 
