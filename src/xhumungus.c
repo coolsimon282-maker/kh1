@@ -773,7 +773,25 @@ s32 func_001CDF78(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CDFC8);
+/* Unused on purpose: keeps fm_func_001DC9A0 / func_001DDC08 matching (notes/f1.md F1). */
+extern s32 func_001CDFC8_f1_pad1;
+extern XHumCC9A8 D_003854E0_df __asm__("D_003854E0");
+s32 func_001CDFC8(Script* arg0) {
+    s32 i;
+
+    if (D_00375BC0 & 1) {
+        return 2;
+    }
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_df.b0[i] != 0 && D_003854E0_df.b1030[i] != 7) {
+            break;
+        }
+    }
+    if (i < 4 && !((s32)(*(u64*)&arg0->unk_00[0x328] >> 4) & 1)) {
+        return 4;
+    }
+    return 2;
+}
 
 s32 func_001CE060(Script* arg0) {
     u8 val = D_003854E0.unk_01[arg0->unk_174[arg0->unk_174[3] + 4] + 3];
