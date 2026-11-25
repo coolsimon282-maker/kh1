@@ -4423,7 +4423,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154880);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001549B8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154AF8);
+extern s32 D_00154AF8_pad1; /* unused: rule F1 (with func_00154AF8) */
+void func_00154AF8(u8* p, u8* q, f32* r) {
+    sceVu0FVECTOR v;
+
+    func_00130340(p, 0x100006E, 0.0f);
+    func_00130578((s32)p, 0x40000000, 0.0f);
+    func_001373F8(p, 8.0f);
+    (*(u8**)(p + 0x14C))[0x29]--;
+    if (*(s32*)(q + 8) < 0) {
+        sceVu0SubVector(v, D_002C58A0, (f32*)(p + 0x30));
+        v[3] = (f32)(-*(s32*)(q + 8)) * *(f32*)(D_003051EC + 0x1C) * *(f32*)(*(u8**)(p + 0x6C) + 0xC4);
+        func_00156260((s32)p, v);
+    }
+    r[3] = 0.0f;
+}
 
 void func_00154BE0(u8* p, s32 a1, u8* a2) {
     func_00130340(p, 0x100006F, 0.0f);
@@ -4635,6 +4649,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155EF8);
 extern s32 D_001560F8_pad0;
 /* unused: keeps func_001560F8 at its size once func_00146BD0 is C (rule F1) */
 extern s32 D_00146BD0_padv1;
+extern s32 D_00154AF8_pad2; /* unused: rule F1 (with func_00154AF8) */
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
