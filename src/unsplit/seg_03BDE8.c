@@ -6141,7 +6141,27 @@ void func_0015CAC0(u8* p, f32* a1, f32* a2, f32* a3) {
     sceVu0AddVector(a3, a1, v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015CB48);
+void func_0015CAC0(u8*, f32*, f32*, f32*);
+s32 func_0015CB48(u8* p) {
+    sceVu0FVECTOR a;
+    sceVu0FVECTOR b;
+    sceVu0FVECTOR c;
+    f32 r;
+    if (*(u8**)(*(u8**)(p + 0x148) + 0x94) == NULL) {
+        sceVu0CopyVector(a, (f32*)(*(u8**)(p + 0x148) + 0x70));
+        sceVu0CopyVector(b, (f32*)(*(u8**)(p + 0x148) + 0x80));
+        sceVu0CopyVector(c, (f32*)(*(u8**)(p + 0x148) + 0x60));
+    } else {
+        sceVu0ApplyMatrix(a, (sceVu0FVECTOR*)(*(u8**)(*(u8**)(p + 0x148) + 0x94) + 0xD0), (f32*)(*(u8**)(p + 0x148) + 0x70));
+        sceVu0ApplyMatrix(b, (sceVu0FVECTOR*)(*(u8**)(*(u8**)(p + 0x148) + 0x94) + 0xD0), (f32*)(*(u8**)(p + 0x148) + 0x80));
+        sceVu0ApplyMatrix(c, (sceVu0FVECTOR*)(*(u8**)(*(u8**)(p + 0x148) + 0x94) + 0xD0), (f32*)(*(u8**)(p + 0x148) + 0x60));
+    }
+    func_0015CAC0(p, a, b, (f32*)(p + 0x10));
+    r = atan2f(b[2], -b[0]);
+    *(f32*)(p + 0x150) = r;
+    func_00137688((s32)p, r);
+    return c[1] < -0.5f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015CC48);
 
