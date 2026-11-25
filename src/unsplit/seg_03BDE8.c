@@ -8489,7 +8489,32 @@ void func_0017F1A0(void) {
     sceVu0CopyVector(D_00362670, D_00362400);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017F1C8);
+typedef struct { f32 a[3]; f32 b[3]; f32 c; u8 d; u8 e; u8 f; } S17F1C8;
+extern S17F1C8 D_00575870;
+extern f32 D_002DED00;
+S17F1C8* func_0017F1C8(void) {
+
+    D_00575870.a[0] = D_002DECE0[0];
+    D_00575870.a[1] = D_002DECE0[1];
+    D_00575870.a[2] = D_002DECE0[2];
+    D_00575870.b[0] = D_002DECF0[0];
+    D_00575870.b[1] = D_002DECF0[1];
+    D_00575870.b[2] = D_002DECF0[2];
+    D_00575870.c = D_002DED00;
+    D_00575870.d = D_002DED08;
+    if (D_002DED08 == 9) {
+        if (D_00362434 != 0) {
+            D_00575870.e = ((u8*)D_00362434)[0x1C];
+            D_00575870.f = 0;
+        } else if (D_00362438 != NULL) {
+            D_00575870.e = D_00362438[0x1C];
+            D_00575870.f = 1;
+        }
+    } else {
+        D_00575870.e = 0;
+    }
+    return &D_00575870;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001809C8);
 
