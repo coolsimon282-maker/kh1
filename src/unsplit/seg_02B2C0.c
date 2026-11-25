@@ -819,7 +819,42 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D468);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D6C0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D818);
+/* unused: layout only (F1): without them func_001374A8 changes; 1-6 OK, 3 used. */
+extern s32 D_12D818_pad1;
+extern s32 D_12D818_pad2;
+extern s32 D_12D818_pad3;
+extern s32 D_002E3138;
+s32 func_0013DAA8(s32);
+s32 func_0012F040(s32, s32);
+extern s32 D_002E30B8[];
+extern s32 D_00524F58[];
+void func_0012D818(void) {
+    s32 i;
+    u8 **tbl = &D_002E26A0;
+    s32 n = 0;
+    u8 *h = (u8 *)D_002E30B8;
+    u8 *b = h + 0x14;
+    s32 *o = D_00524F58;
+
+    for (i = 0; i < 3; i++) {
+        u8 c = D_003010F8->unk_48E[i];
+        s32 k;
+        u8 *p;
+        if (c == 0xFF) continue;
+        k = func_0013DAA8(c);
+        if (k < 0) continue;
+        p = tbl[k];
+        if (func_0012F040((s32)p, -1) && (*(s32 *)p & 0x8000)) {
+            *o = (s32)p;
+            n++;
+            *b = c + 0x38;
+            o++;
+            b++;
+        }
+    }
+    *(s32 *)(h + 0x10) = n;
+    D_002E3138 = 1;
+}
 
 extern u8 D_002E2FEF;
 s32* func_00122048(s32, s32);
