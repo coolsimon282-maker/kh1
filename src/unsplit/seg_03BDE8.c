@@ -602,7 +602,33 @@ void func_0013BD88(s32* p, s32 a, s32 b) {
     p[3] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013BDA0);
+typedef struct { f32 dur; s32 (*fn)(void); } K13BDA0;
+typedef struct { K13BDA0* cur; s32 n; s32 idx; f32 t; } S13BDA0;
+extern s32 D_0013BDA0_pad2; /* unused: rule F1 (with func_0013BDA0) */
+s32 func_0013BDA0(S13BDA0* s) {
+    K13BDA0* k;
+    f32 z;
+    if (s->idx == 0 && s->t == 0.0f && s->cur->fn != NULL) {
+        s->cur->fn();
+    }
+    s->t += D_002B8344;
+    if (s->cur->dur <= s->t) {
+        z = 0.0f;
+        do {
+            if (s->idx + 1 >= s->n) {
+                return 0;
+            }
+            k = s->cur + 1;
+            if (k->fn != NULL && k->fn() == 0) {
+                return 1;
+            }
+            s->cur = k;
+            s->t = 0.0f;
+            s->idx = s->idx + 1;
+        } while (k->dur <= z);
+    }
+    return 1;
+}
 
 void func_0013BEF0(s32 a) {
     func_00137688(a, func_001376E8(a));
