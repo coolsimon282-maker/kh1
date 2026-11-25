@@ -871,7 +871,31 @@ s32 func_001CE060(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001CE0A0);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001CE0A0_f1_pad1;
+extern s32 func_001CE0A0_f1_pad2;
+typedef struct { u8 pad[0x30]; f32 unk_30; f32 unk_34; u8 unk_38[0x78]; } XHumB0e;
+extern XHumB0e D_00629E70_e[] __asm__("D_00629E70");
+
+s32 func_001CE0A0(Script* arg0) {
+    s32 s = arg0->unk_174[arg0->unk_174[3] + 2];
+    s32 x = arg0->unk_174[arg0->unk_174[3] + 3];
+    s32 y = arg0->unk_174[arg0->unk_174[3] + 4];
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        if (D_003854E0_df.b0[i] == 2 && s == D_003854E0_df.b1030[i]) {
+            break;
+        }
+    }
+    if (i < 4) {
+        XHumB0e* p = &D_00629E70_e[i];
+        p->unk_30 = x;
+        D_00629E70_e[i].unk_34 = y;
+    }
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 s32 func_001CE188(Script* arg0) {
     arg0->unk_174[3]--;
