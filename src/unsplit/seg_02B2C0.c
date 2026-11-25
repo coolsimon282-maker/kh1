@@ -3435,7 +3435,32 @@ void func_00138E58(u8 *a0, u64 *a1) {
     *a1 |= 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00138F28);
+void func_00139408_x(u8 *, u64 *) __asm__("func_00139408");
+void func_00137688(u8 *a0, f32 a);
+f32 atan2f(f32, f32);
+void func_00130578_y(u8 *, s32, f32) __asm__("func_00130578");
+void func_00138F28(u8 *a0, u64 *a1, f32 f) {
+    f32 r;
+    if (func_00130040(a0, 0x4C) == 0) {
+        if (func_00130040(a0, 0x52)) {
+            func_00139408_x(a0, a1);
+        } else {
+            func_00138CA0(a0, a1, f);
+        }
+        return;
+    }
+    if (f < 0.0f) {
+        func_00130340(a0, 0x100004C, 0.0f);
+        r = atan2f(-((f32 *)a1)[4], -((f32 *)a1)[6]);
+    } else {
+        func_00130340(a0, 0x100004D, 0.0f);
+        r = atan2f(((f32 *)a1)[4], ((f32 *)a1)[6]);
+    }
+    *(f32 *)(a0 + 0x150) = r;
+    func_00137688(a0, r);
+    func_00130578_y(a0, 0x40000000, 8.0f);
+    *(s32 *)(a0 + 0x3CC) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00139040);
 
