@@ -248,7 +248,38 @@ void func_00122130(void) {
     func_0012FF80();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_021B98", func_00122588);
+void func_00122588(s32 a0, s32 a1) {
+    extern s32 D_002B8678;
+    extern s32 D_002B8680;
+    extern s32 D_002B8684;
+    extern s32 D_002C5C4C;
+    extern s32 D_002C5C50;
+    extern s32 D_002C5C54;
+    extern void func_00132C70(s32, s32);
+
+    D_002C1EA8 = 0;
+    if (D_002B8678 == 0x10 && (D_002B8680 == 0x1A || D_002B8680 == 0x21 || D_002B8680 == 0x22)) {
+        D_002C1EA8 |= 0x20;
+    }
+    D_002C5C4C = D_002B8678 == 9 || (D_002B8678 == 0x10 && D_002B8680 == 0x15);
+    D_002C5C50 = D_002B8678 == 10 || (D_002B8678 == 0x10 && D_002B8680 == 0x16);
+    D_002C5C54 = D_002B8678 == 0xF && D_002B8684 == 10;
+    func_0012B738();
+    func_00124F38();
+    func_00142030();
+    func_001561B0();
+    func_00132C70(a0, a1);
+    func_00133520();
+    func_00146590();
+    func_00151808();
+    func_001356A8();
+    func_0014C378();
+    func_0012FF80();
+    func_00123108();
+    func_00134718();
+    func_0013BCA8();
+    func_0012EA38();
+}
 
 extern s32 D_00351A48;
 void func_00239488(void);
