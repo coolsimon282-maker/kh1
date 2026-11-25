@@ -899,7 +899,29 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011BBE8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011BDF8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011BFC8);
+s32 func_0011BFC8(s32 a0, s32 a1, f32 *pt, f32 *dir, f32 *out) {
+    sceVu0FVECTOR n;
+    sceVu0FVECTOR p;
+    f32 d;
+    f32 t;
+
+    func_0011A758(a0, a1, (u_long128 *)n);
+    d = Seg150D8_Dot(n, dir);
+    if (0.0f <= d) {
+        return 0;
+    }
+    func_0011A9C8(a0, a1, (u_long128 *)p);
+    t = (Seg150D8_Dot(n, p) - Seg150D8_Dot(n, pt)) / d;
+    if (t < 0.0f) {
+        return 0;
+    }
+    if (1.0f < t) {
+        return 0;
+    }
+    Seg150D8_ScaleXYZ(out, dir, t);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvadd.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(out), "r"(out), "r"(pt) : "memory");
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011C118);
 
