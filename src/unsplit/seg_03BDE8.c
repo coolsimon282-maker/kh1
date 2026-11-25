@@ -6360,7 +6360,41 @@ s32 func_0015F388(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015F488);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015F798);
+extern u32* D_0055C640_c __asm__("D_0055C640");
+extern s32 D_00272DA4[];
+extern s32 D_00272D94[];
+extern s32 D_00272DE4[];
+extern u8 D_00272CF0[];
+void func_0015F798(u8* p) {
+    u8* q = **(u8***)(p + 0x10);
+    s32* src;
+    s32* dst;
+    s32 i;
+    s32 f = q[0x48];
+    if (f & 1) {
+        src = *(s32**)(*(u8**)(q + 0x10) + 4);
+        dst = (s32*)((u32)D_00272DA4 | 0x20000000);
+        for (i = 0; i < 16; i++) {
+            *dst++ = *src++;
+        }
+    } else {
+        dst = (s32*)((u32)D_00272D94 | 0x20000000);
+        dst[0] = *(s32*)(q + 0x20);
+        dst[1] = *(s32*)(q + 0x24);
+        dst[2] = *(s32*)(q + 0x28);
+        dst[3] = *(s32*)(q + 0x2C);
+    }
+    dst = (s32*)((u32)D_00272DE4 | 0x20000000);
+    dst[3] = *(s32*)(q + 0x3C);
+    __asm__ volatile("sync");
+    *D_0055C640_c |= 1;
+    *D_0055C640_c = (*D_0055C640_c & ~0xC) | 4;
+    *D_0055C640_c &= ~0x30;
+    *D_0055C640_c |= 0x40;
+    *D_0055C640_c &= ~0x80;
+    __asm__ volatile("sync");
+    sceDmaSend(D_0055C640_c, D_00272CF0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015F8C8);
 
