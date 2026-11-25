@@ -224,7 +224,48 @@ void func_001C2808(s32 arg0, s32 arg1, void* arg2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C28B8);
+extern s8 D_003C2D30[];
+extern s32 D_0038ACC4[];
+extern s32 D_0038B4C4[];
+
+s32 func_001C28B8(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)func_0022F768(1);
+    s32 b2 = (s32)func_0022F768(2);
+
+    arg0->unk_174[36] = arg1;
+    if (arg1 < 0x800) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s8*)(b1 + arg1);
+    } else if (arg1 < 0x900) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s8*)(b1 + arg1);
+    } else if (arg1 < 0xB00) {
+        arg1 -= 0x900;
+        if ((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1) {
+            arg0->unk_174[3]++;
+            arg0->unk_174[arg0->unk_174[3] + 4] = D_0038B4C4[arg1];
+        } else {
+            arg0->unk_174[3]++;
+            arg0->unk_174[arg0->unk_174[3] + 4] = D_0038ACC4[arg1];
+        }
+    } else if (arg1 < 0xC80) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(u8*)(arg1 + b1 - 0x200);
+    } else if (arg1 < 0xCC0) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = D_003C2D30[arg1];
+    } else if (arg1 < 0xD00) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = D_003C2D30[arg1];
+    } else if (arg1 < 0xD40) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = D_003C2D30[arg1];
+    } else {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s8*)(arg1 + b2 - 0xD40);
+    }
+    return 2;
+}
 
 s32 func_001C2AA0(Script* arg0, s32 arg1) {
     s32 b1 = (s32)func_0022F768(1);
@@ -247,7 +288,35 @@ s32 func_001C2AA0(Script* arg0, s32 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2B60);
+extern s32 D_0038ACC4[];
+extern s32 D_0038B4C4[];
+
+s32 func_001C2B60(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)func_0022F768(1);
+    s32 b2 = (s32)func_0022F768(2);
+
+    arg0->unk_174[36] = arg1;
+    if (arg1 < 0x800) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)(b1 + arg1);
+    } else if (arg1 < 0x900) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)(arg1 + b1);
+    } else if (arg1 < 0xB00) {
+        arg1 -= 0x900;
+        if ((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1) {
+            arg0->unk_174[3]++;
+            arg0->unk_174[arg0->unk_174[3] + 4] = D_0038B4C4[arg1];
+        } else {
+            arg0->unk_174[3]++;
+            arg0->unk_174[arg0->unk_174[3] + 4] = D_0038ACC4[arg1];
+        }
+    } else {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s32*)(arg1 + b2 - 0xD40);
+    }
+    return 2;
+}
 
 s32 func_001C2CA0(void) {
     return 2;
@@ -307,7 +376,69 @@ s32 func_001C3380(Script *arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3430);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C34E0);
+typedef struct {
+    u64 unk_00 : 8;
+    u64 unk_01 : 24;
+    s32 unk_04;
+    s32 unk_08[2];
+    f32 unk_10[4];
+} ScriptMsgK;
+s32 func_001C4640(ScriptMsgK*);
+
+typedef struct {
+    /* 0x000 */ s32 unk_000;
+    /* 0x004 */ u8 unk_004[0x178];
+    /* 0x17C */ s32 unk_17C;
+    /* 0x180 */ u8 unk_180[0x178];
+    /* 0x2F8 */ s32 unk_2F8[8];
+    /* 0x318 */ s32 unk_318;
+    /* 0x31C */ u8 unk_31C[0xC];
+    /* 0x328 */ u64 unk_328;
+} ScriptK;
+
+s32 func_001C34E0(Script* arg0) {
+    ScriptVM* vm = (ScriptVM*)arg0;
+    ScriptMsgK msg;
+    s32 a = vm->stack[vm->sp--];
+    s32 b = vm->stack[vm->sp--];
+    ScriptK* p;
+    s32 j;
+    s32 t;
+
+    if (b < 0) {
+        b = 0;
+    } else if (b >= 8) {
+        b = 7;
+    }
+    p = (ScriptK*)func_001E98D0((s32)(*(u64*)((u8*)vm + 0x328) >> 5) & 1, a);
+    if (p == (ScriptK*)arg0) {
+        return 6;
+    }
+    p->unk_2F8[b] = -1;
+    if (b != p->unk_318) {
+        return 2;
+    }
+    for (j = b + 1; j < 8; j++) {
+        if (p->unk_2F8[j] != -1) {
+            p->unk_17C = p->unk_2F8[j];
+            p->unk_318 = j;
+            break;
+        }
+    }
+    t = *(s32*)&p->unk_328 & 1;
+    if (t == 1) {
+        msg.unk_00 = 0x12;
+        msg.unk_01 = 0;
+        msg.unk_10[3] = 1.0f;
+        msg.unk_10[0] = 0.0f;
+        msg.unk_10[1] = 0.0f;
+        msg.unk_04 = p->unk_000;
+        msg.unk_10[2] = 0.0f;
+        func_001C4640(&msg);
+        p->unk_328 &= ~1;
+    }
+    return 2;
+}
 
 s32 func_001C3670(s32 arg0, s32 arg1) {
     return ((s8*)(arg0 + arg1 * 4))[3];
