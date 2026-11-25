@@ -2050,7 +2050,30 @@ void func_00145240(u8* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001452A0);
+void func_001452A0(u8* p) {
+    u8* q = *(u8**)(*(u8**)(p + 0x148) + 0x154);
+    s32 m;
+    if (q == NULL) {
+        return;
+    }
+    m = *(s32*)(q + 0x14) & 3;
+    if (m != 1) {
+        *(s32*)(*(u8**)(p + 0x148) + 0x154) = 0;
+        return;
+    }
+    if (!(*(s32*)p & 1)) {
+        func_00176310((s32)q);
+        *(s32*)(*(u8**)(p + 0x148) + 0x154) = 0;
+        func_0011D1F8(0xA8, *(s32*)(p + 4) + 1, 0x3C);
+        return;
+    }
+    *(f32*)(*(u8**)(p + 0x148) + 0x158) = func_00121970(*(f32*)(*(u8**)(p + 0x148) + 0x158));
+    if (!(*(f32*)(*(u8**)(p + 0x148) + 0x158) <= 0.0f) && !(D_002C1EA8 & 0x104000)) {
+        return;
+    }
+    **(u8**)(*(u8**)(*(u8**)(p + 0x148) + 0x154) + 0x10) = m;
+    func_0011D1F8(0xA8, *(s32*)(p + 4) + 1, 0x78);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001453A8);
 
