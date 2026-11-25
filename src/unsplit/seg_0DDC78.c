@@ -2762,7 +2762,15 @@ s32 func_001EBD48(A2Script *p) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EBDE0);
+s32 func_001EBDE0(A2Script *p) {
+    s32 k = p->unk_174[p->unk_174[3] + 4];
+    s32 q = k / 8;
+    s32 b = 7 - (k - q * 8);
+    s32 f = (s32)func_0022F768(1);
+
+    p->unk_174[p->unk_174[3] + 4] = (*(u8 *)(q + f + 0xDC0) >> b) & 1;
+    return 2;
+}
 
 typedef struct {
     u8 pad[0xDC4];
@@ -2899,7 +2907,17 @@ s32 func_001EC258(s32 i) {
     return (q->bits[idx] >> sh) & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EC2C0);
+void func_001EC2C0(s32 k, s32 set) {
+    s32 q = k / 8;
+    s32 b = 7 - (k - q * 8);
+    s32 f = (s32)func_0022F768(1);
+
+    if (set) {
+        *(u8 *)(q + f + 0xDC8) |= 1 << b;
+    } else {
+        *(u8 *)(q + f + 0xDC8) &= ~(1 << b);
+    }
+}
 
 void *func_0022F768(s32);
 
