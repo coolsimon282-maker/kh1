@@ -2344,7 +2344,16 @@ u8* func_00147D18(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00147D50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00147E08);
+/* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was; with it func_00176F08 needs one flip_dummy less (rule F1) */
+extern s32 D_00147E08_pad0;
+void func_00147E08(u8* a, f32* m) {
+    f32 v[4];
+    func_001218E0(m, v);
+    (*(u32**)(a + 4))[0] = (u16)(s32)((v[0] / 6.2831855f) * 65536.0f);
+    (*(u32**)(a + 4))[1] = (u16)(s32)((v[1] / 6.2831855f) * 65536.0f);
+    (*(u32**)(a + 4))[2] = (u16)(s32)((v[2] / 6.2831855f) * 65536.0f);
+    sceVu0CopyVector(*(f32**)a, m + 12);
+}
 
 u8* func_00147ED8(s32 a, s32 b, s32 c, f32* v) {
     u8* r = func_00147C98(a, b, c, v);
@@ -7274,12 +7283,11 @@ extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
 typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
 extern V176F08 D_00362458_v[] __asm__("D_00362458");
-/* five dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
+/* four dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
 extern int flip_dummy_0;
 extern int flip_dummy_1;
 extern int flip_dummy_2;
 extern int flip_dummy_3;
-extern int flip_dummy_4;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
