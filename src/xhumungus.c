@@ -6188,7 +6188,47 @@ s32 func_001DE5F0(UnkDE5F0* arg0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE680);
+typedef struct {
+    /* 0x00 */ u8 unk_00[0xC];
+    /* 0x0C */ f32* unk_0C;
+    /* 0x10 */ u8 unk_10[4];
+    /* 0x14 */ s32 unk_14;
+} UnkDE680A;
+
+typedef struct {
+    /* 0x00 */ u8 unk_00[0x10];
+    /* 0x10 */ UnkDE680A* unk_10;
+    /* 0x14 */ u8 unk_14[0x1C];
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ u8 unk_34[0xC];
+    /* 0x40 */ f32 unk_40[3];
+} UnkDE680;
+
+s32 func_001DE680(UnkDE680* arg0) {
+    if ((s32)(*(u64*)D_0038CD00 >> 40) & 1) {
+        return 4;
+    }
+    if (arg0->unk_10->unk_14 & 2) {
+        return 4;
+    }
+    arg0->unk_30 -= D_002B8344;
+    if (arg0->unk_30 < 0.0f) {
+        return 4;
+    }
+    arg0->unk_10->unk_0C[0] += arg0->unk_40[0];
+    arg0->unk_10->unk_0C[1] += arg0->unk_40[1];
+    arg0->unk_10->unk_0C[2] += arg0->unk_40[2];
+    if (arg0->unk_10->unk_0C[0] < 0.0f) {
+        arg0->unk_10->unk_0C[0] = 0.0f;
+    }
+    if (arg0->unk_10->unk_0C[1] < 0.0f) {
+        arg0->unk_10->unk_0C[1] = 0.0f;
+    }
+    if (arg0->unk_10->unk_0C[2] < 0.0f) {
+        arg0->unk_10->unk_0C[2] = 0.0f;
+    }
+    return 0;
+}
 
 void func_001318E8(UnkDE5F0C*, s32, sceVu0FMATRIX);
 void func_00147E08(UnkDE5F0A*, sceVu0FMATRIX);
