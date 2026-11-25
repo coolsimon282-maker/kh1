@@ -960,7 +960,31 @@ void func_00239D20(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, f32 f
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239E30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A318);
+/* unused: layout only (notes/f1.md F1): without them func_00245F58 changes; 1-4 all OK */
+extern s32 D_23A318_pad1;
+extern s32 D_23A318_pad2;
+extern u64 D_00648630[];
+extern u_long128 *D_006488F0_p __asm__("D_006488F0");
+extern u_long128 *D_006488F4;
+void func_0023BB98(s32, s32, s32, s32, u8 *, s32, s32, f32);
+void func_00239E30(s32, s32, s32, s32, u8 *, s32, s32, f32);
+
+void func_0023A318(s32 a0, s32 a1, s32 a2, s32 a3, u8 *a4, s32 a5, s32 a6, f32 f) {
+    func_002370C8(D_00648630);
+    D_00648630[0x1C] = 5;
+    D_00648630[0xC] = 0x30003;
+    func_00237018(D_00648630, 0x16, 1);
+    D_006488F4 = (u_long128 *)&D_00351E10;
+    D_006488F0_p = (u_long128 *)&D_00351E10 + 1;
+    if (a0 == 0 && *(s32 *)(a4 + 0x1C4) == 0) {
+        func_0023BB98(0, a1, a2, a3, a4, a5, a6, f);
+    } else {
+        func_00239E30(a0, a1, a2, a3, a4, a5, a6, f);
+    }
+    if (f != 0.0f) {
+        func_00237018(D_006488F4, D_006488F0_p - D_006488F4, 1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A490);
 
