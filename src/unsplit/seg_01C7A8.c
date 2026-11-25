@@ -504,7 +504,26 @@ void func_0011DC98(u8* a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DCF0);
+extern s32 D_002C1360;
+extern sceVu0FVECTOR D_004E3A20;
+extern sceVu0FVECTOR D_004E3A30;
+void func_0011DB50(s32 *, s32 *);
+
+static inline f32 Seg1C7A8_Dist(f32 *a, f32 *b) {
+    f32 d;
+    __asm__ volatile("lqc2 $vf6,0x0(%1)\n\tlqc2 $vf4,0x0(%2)\n\tvsub.xyzw $vf5,$vf6,$vf4\n\tvmove.xyzw $vf4,$vf5\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tvsqrt Q,$vf5x\n\tvwaitq\n\tvaddq.x $vf5,$vf0,Q\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(a), "r"(b) : "$2", "memory");
+    return d;
+}
+
+void func_0011DCF0(f32 *p, s32 *a, s32 *b) {
+    f32 r = D_002C1360;
+    f32 d;
+    d = Seg1C7A8_Dist(D_004E3A20, p);
+    *a = 16383.0f - d * d / r;
+    d = Seg1C7A8_Dist(D_004E3A30, p);
+    *b = 16383.0f - d * d / r;
+    func_0011DB50(a, b);
+}
 
 void sceVu0InversMatrix(f32 (*)[4], f32 (*)[4]);
 void sceVu0ApplyMatrix(f32 *, f32 (*)[4], f32 *);
