@@ -264,7 +264,30 @@ s32 func_0024D608(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D618);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D808);
+#include "eekernel.h"
+int *sceCdPOffCallback(void (*func)(void *), void *addr);
+void func_0024D618(void *);
+extern u8 D_00669A80[];
+extern u8 D_00494050[];
+extern u8 D_0024D7B0[];
+
+void func_0024D808(void) {
+    struct ThreadParam tp;
+    struct SemaParam sp;
+    s32 sema;
+
+    sp.maxCount = 1;
+    sp.initCount = 0;
+    sp.option = 0;
+    sema = CreateSema(&sp);
+    tp.stackSize = 0x1000;
+    tp.gpReg = D_00494050;
+    tp.entry = func_0024D618;
+    tp.stack = D_00669A80;
+    tp.initPriority = 1;
+    StartThread(CreateThread(&tp), (void *)sema);
+    sceCdPOffCallback((void (*)(void *))D_0024D7B0, (void *)sema);
+}
 
 extern u8 D_0046A620[];
 
