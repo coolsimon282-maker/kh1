@@ -3258,4 +3258,13 @@ void func_00249EB8(void *arg0, void *arg1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00249F08);
+#include "sdk/ee/eestruct.h"
+u8 *func_00249F08(u8 *p, s32 tbp, s32 psm, s32 cbp, s32 csa, s32 cld) {
+    sceGsTex0 *t = (sceGsTex0 *)(p + 0x28);
+    t->TBP0 = tbp;
+    t->PSM = psm;
+    t->CBP = cbp;
+    t->CSA = csa;
+    t->CLD = cld;
+    return p + 0x10;
+}
