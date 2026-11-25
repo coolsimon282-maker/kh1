@@ -582,7 +582,7 @@ segments:
   - [ 0x3932c8, .rodata, lib/libm/s_atan ]
   - [ 0x393378, .rodata, lib/libm/s_ceil ]
   - [ 0x393388, rodata, lib/libm/sf_cos_ro ]
-  - [ 0x393390, rodata, lib/libm/e_asin_ro ]
+  - [ 0x393390, .rodata, lib/libm/e_asin ]
   - [ 0x3934e0, .rodata, lib/libm/e_atan2 ]
   - [ 0x393590, .rodata, lib/libm/e_rem_pio2 ]
   - [ 0x3937e0, .rodata, lib/libm/e_sqrt ]
