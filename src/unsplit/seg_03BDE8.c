@@ -4489,7 +4489,37 @@ void func_00151CD0(u8* p) {
     func_00124BC8(p);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00151D20);
+void func_00147138(u8*, s32);
+extern s32 D_00151D20_pad1; /* unused: rule F1 (with func_00151D20) */
+void func_00151D20(u8* p) {
+    sceVu0FVECTOR v;
+    s32* d = *(s32**)(p + 0x144);
+    u8* m;
+    s32 n;
+    f32 c = 15.0f;
+    while ((m = (u8*)func_00134928(p)) != NULL) {
+        n = *(s32*)(m + 8);
+        func_00147138(p, 4);
+        if (n > 0) {
+            *d += n;
+            if (*d >= 7) {
+                func_00145008(p, 0);
+                func_00151CD0(p);
+            } else {
+                sceVu0CopyVector(v, (f32*)(m + 0x10));
+                if (__builtin_fabsf(v[0]) > __builtin_fabsf(v[2])) {
+                    v[2] = 0.0f;
+                } else {
+                    v[0] = 0.0f;
+                }
+                sceVu0Normalize(v, v);
+                v[3] = c;
+                func_00156260((s32)p, v);
+            }
+        }
+        func_001350D0((s32)m);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00151E28);
 
