@@ -3827,7 +3827,108 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231CD0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231EA0);
+/* func_00231EA0 is layout-sensitive (notes/f1.md F1/F24): ee-gcc 2.96 makes several tie decisions in it
+ * (combine folding `lhu D_003F7C48(reg)`, two saved-register ties) that depend on how many declarations precede
+ * it in the file. The C below is right; these nine unused externs are only there to restore the layout that
+ * gives the original code. If an edit above this point makes the function differ again, change their number
+ * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan). */
+extern s32 D_231EA0_layout0;
+extern s32 D_231EA0_layout1;
+extern s32 D_231EA0_layout2;
+extern s32 D_231EA0_layout3;
+extern s32 D_231EA0_layout4;
+extern s32 D_231EA0_layout5;
+extern s32 D_231EA0_layout6;
+extern s32 D_231EA0_layout7;
+extern s32 D_231EA0_layout8;
+extern u16 D_003F7C48[];
+extern s32 D_003F7E98;
+extern s32 D_0064765C;
+extern void (*D_0064764C)(s32);
+extern s32 D_00647660;
+extern void (*D_00647648)(s32);
+extern s32 D_006476F4;
+extern s32 D_00647670[];
+extern s32 D_003F7D30[];
+extern s32 D_003F7D40[];
+extern s32 D_003F7D50[];
+void func_00231CD0(s32);
+s32 func_00231DD0(s32);
+
+void func_00231EA0(u8 *a0) {
+    s32 pos[2];
+    s32 col[4];
+    s32 item;
+    s16 cnt;
+    s32 j;
+    s32 k;
+    s32 y;
+    s32 c;
+    s32 x;
+    s32 e;
+
+    if (D_003F7E98 != 0 && func_001F42B8((s32)a0)) {
+        func_001FD858(a0);
+        func_0020BD18((s32)a0, 8);
+        D_00647654 = func_001FD618(a0);
+        D_00647658 = func_001FD518(a0);
+        D_0064765C = func_001FD548(a0);
+        if (func_001FE5A0(a0)) {
+            func_00231CD0(D_003F7C48[D_0064765C * 3]);
+            if (D_0064764C != NULL) {
+                D_0064764C(D_00647660);
+            }
+        }
+    }
+    item = D_003F7C48[D_0064765C * 3];
+    if (D_00647648 != NULL) {
+        D_00647648(item);
+    }
+    cnt = *(s16 *)(a0 + 0xCC);
+    D_003E8E08[0] = D_006476F4;
+    D_003E8E08[1] = cnt;
+    func_001F9438((s32)a0, 0, 0xA0, 0x2A, 0x1AE, 0xF, 0x80E6E6E6);
+    j = 0;
+    func_00202FC0(a0);
+    k = D_00647654;
+    y = func_001FD590(a0);
+    func_001F8EE0(a0);
+    for (; j < 7 && k < cnt; j++, k++) {
+        if (((u8)D_003F7C48[k * 3 + 2] == 1 && D_00647670[k] != 0) || func_00231DD0(k) != 0) {
+            c = (j == D_00647658) ? 3 : 2;
+        } else {
+            c = j == D_00647658;
+        }
+        func_0020DD38(a0, c, 0x1B, y, 0xCC, D_003F7C48[k * 3]);
+        if (D_00647670[k] != 0) {
+            func_001FC308((s32)a0, 0xBD, y + 7, 0, 0, 0x37, 0, 0x80009100, 0x8027E4D4);
+        }
+        y += 0x1C;
+    }
+    func_001F8F30();
+    x = 0x12F;
+    pos[0] = *(s32 *)(a0 + 0xB0) + 0x1410;
+    pos[1] = *(s32 *)(a0 + 0xB4) + 0xEB0;
+    col[0] = 0x80;
+    col[1] = 0x80;
+    col[2] = 0x80;
+    col[3] = *(s32 *)(a0 + 0x90);
+    for (j = 0; (u32)j < D_003E3D6C && (e = func_001F0BD8(j)) != 0; j++) {
+        func_001FC308((s32)a0, x, 0xDA, 0, 0, 0x15, 0, 0x26E6E6E6, 0x26E6E6E6);
+        func_001FC308((s32)a0, x, 0xDA, 0, 0, 0x16, 0, 0x4C000000, 0x4C000000);
+        func_001FB428((s32)a0, 1, 0, 0, x + 0x21, 0x10D, func_001F0420(*(u8 *)(j + (s32)D_003010F8 + 0x48E), item), 0xF, 0x80808080);
+        pos[0] += D_003F7D40[j];
+        pos[1] += D_003F7D50[j];
+        func_00242EF8(e, D_003F7D30[j], D_003F7D30[j], pos, col);
+        pos[0] = pos[0] - D_003F7D40[j] + 0x300;
+        pos[1] -= D_003F7D50[j];
+        x += 0x30;
+    }
+    func_001FC308((s32)a0, x, 0xDA, 0, 0, 0x15, 0, 0x26E6E6E6, 0x26E6E6E6);
+    func_001FC308((s32)a0, x, 0xDA, 0, 0, 0x16, 0, 0x4C000000, 0x4C000000);
+    func_001FC308((s32)a0, x - 8, 0xE6, 0, 0, 7, 0, 0x80808080, 0x80808080);
+    func_001FB428((s32)a0, 1, 0, 0, x + 0x21, 0x10D, func_001F03A0(item), 0xF, 0x80808080);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00232390);
 
