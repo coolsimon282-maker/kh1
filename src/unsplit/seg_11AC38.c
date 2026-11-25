@@ -863,7 +863,17 @@ s32 func_002204B0(s32 a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002204F0);
+void func_002204F0(void) {
+    s32 i;
+
+    for (i = 0; i < D_00643418; i++) {
+        if (func_00206EE8(D_006433F8[i]) == 0) {
+            func_00207298(0);
+            return;
+        }
+    }
+    func_002072E0(0);
+}
 
 void func_00220580(s32 a0) {
     D_006433F0 = a0;
@@ -3992,7 +4002,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0). After func_00225C30 (q1, 25 Nov): none of 0-47, then 48, 51, 52 among 0-70 (quick check); 51 used. After func_0021D948 (q1): only 16 among 0-70; 16 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0). After func_00225C30 (q1, 25 Nov): none of 0-47, then 48, 51, 52 among 0-70 (quick check); 51 used. After func_0021D948 (q1): only 16 among 0-70; 16 used. After func_002204F0 (q1): none of 0-89, 90 matched; 90 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
 extern s32 D_231EA0_layout2;
@@ -4009,6 +4019,80 @@ extern s32 D_231EA0_layout12;
 extern s32 D_231EA0_layout13;
 extern s32 D_231EA0_layout14;
 extern s32 D_231EA0_layout15;
+extern s32 D_231EA0_layout16;
+extern s32 D_231EA0_layout17;
+extern s32 D_231EA0_layout18;
+extern s32 D_231EA0_layout19;
+extern s32 D_231EA0_layout20;
+extern s32 D_231EA0_layout21;
+extern s32 D_231EA0_layout22;
+extern s32 D_231EA0_layout23;
+extern s32 D_231EA0_layout24;
+extern s32 D_231EA0_layout25;
+extern s32 D_231EA0_layout26;
+extern s32 D_231EA0_layout27;
+extern s32 D_231EA0_layout28;
+extern s32 D_231EA0_layout29;
+extern s32 D_231EA0_layout30;
+extern s32 D_231EA0_layout31;
+extern s32 D_231EA0_layout32;
+extern s32 D_231EA0_layout33;
+extern s32 D_231EA0_layout34;
+extern s32 D_231EA0_layout35;
+extern s32 D_231EA0_layout36;
+extern s32 D_231EA0_layout37;
+extern s32 D_231EA0_layout38;
+extern s32 D_231EA0_layout39;
+extern s32 D_231EA0_layout40;
+extern s32 D_231EA0_layout41;
+extern s32 D_231EA0_layout42;
+extern s32 D_231EA0_layout43;
+extern s32 D_231EA0_layout44;
+extern s32 D_231EA0_layout45;
+extern s32 D_231EA0_layout46;
+extern s32 D_231EA0_layout47;
+extern s32 D_231EA0_layout48;
+extern s32 D_231EA0_layout49;
+extern s32 D_231EA0_layout50;
+extern s32 D_231EA0_layout51;
+extern s32 D_231EA0_layout52;
+extern s32 D_231EA0_layout53;
+extern s32 D_231EA0_layout54;
+extern s32 D_231EA0_layout55;
+extern s32 D_231EA0_layout56;
+extern s32 D_231EA0_layout57;
+extern s32 D_231EA0_layout58;
+extern s32 D_231EA0_layout59;
+extern s32 D_231EA0_layout60;
+extern s32 D_231EA0_layout61;
+extern s32 D_231EA0_layout62;
+extern s32 D_231EA0_layout63;
+extern s32 D_231EA0_layout64;
+extern s32 D_231EA0_layout65;
+extern s32 D_231EA0_layout66;
+extern s32 D_231EA0_layout67;
+extern s32 D_231EA0_layout68;
+extern s32 D_231EA0_layout69;
+extern s32 D_231EA0_layout70;
+extern s32 D_231EA0_layout71;
+extern s32 D_231EA0_layout72;
+extern s32 D_231EA0_layout73;
+extern s32 D_231EA0_layout74;
+extern s32 D_231EA0_layout75;
+extern s32 D_231EA0_layout76;
+extern s32 D_231EA0_layout77;
+extern s32 D_231EA0_layout78;
+extern s32 D_231EA0_layout79;
+extern s32 D_231EA0_layout80;
+extern s32 D_231EA0_layout81;
+extern s32 D_231EA0_layout82;
+extern s32 D_231EA0_layout83;
+extern s32 D_231EA0_layout84;
+extern s32 D_231EA0_layout85;
+extern s32 D_231EA0_layout86;
+extern s32 D_231EA0_layout87;
+extern s32 D_231EA0_layout88;
+extern s32 D_231EA0_layout89;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
