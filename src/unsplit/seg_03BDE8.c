@@ -6778,7 +6778,27 @@ void func_00162500(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001625C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001626F0);
+void func_001626F0(f32* s, f32* r, f32* t, sceVu0FVECTOR* m) {
+    s32 i;
+
+    sceVu0UnitMatrix(m);
+    for (i = 0; i < 3; i++) {
+        m[i][i] = s[i];
+    }
+
+    if (r[0] != 0.0f) {
+        sceVu0RotMatrixX(m, m, r[0]);
+    }
+    if (r[1] != 0.0f) {
+        sceVu0RotMatrixY(m, m, r[1]);
+    }
+    if (r[2] != 0.0f) {
+        sceVu0RotMatrixZ(m, m, r[2]);
+    }
+    m[3][0] = t[0];
+    m[3][1] = t[1];
+    m[3][2] = t[2];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001627D0);
 
