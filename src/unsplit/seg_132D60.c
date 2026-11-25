@@ -210,7 +210,40 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233AC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233D08);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233DB0);
+typedef struct { s32 a; s32 id; u8 pad[0x18]; } Q132_20;
+extern Q132_20 D_006477B0_q[] __asm__("D_006477B0");
+extern s32 D_00647FB8;
+extern s32 D_00647FBC;
+extern s32 D_00647FB0_q __asm__("D_00647FB0");
+extern s32 D_00647FC4_q __asm__("D_00647FC4");
+void func_002365E0(void);
+int sceGsSyncV(int);
+
+void func_00233DB0(s32 id) {
+    s32 i;
+
+    if (id != 0) {
+    again:
+        for (i = D_00647FBC; i != D_00647FB8; i++, i &= 0x3F) {
+            if (D_006477B0_q[i].id == id) {
+                func_002365E0();
+                sceGsSyncV(0);
+                goto again;
+            }
+        }
+        if (D_00647FB0_q != 0 && D_00647FC4_q == id) {
+            do {
+                func_002365E0();
+                sceGsSyncV(0);
+            } while (D_00647FB0_q != 0);
+        }
+    } else {
+        while (D_00647FB8 != D_00647FBC || D_00647FB0_q != 0) {
+            func_002365E0();
+            sceGsSyncV(0);
+        }
+    }
+}
 
 extern s32 D_006477A8;
 
@@ -3653,11 +3686,6 @@ void func_00247C50(void *arg0) {
     func_002476A0(arg0);
 }
 
-/* unused: layout only (F1, with func_0023C270): 3, 4, 5 of these keep func_00247CC8 folding its address */
-extern s32 D_247CC8_pad1;
-extern s32 D_247CC8_pad2;
-extern s32 D_247CC8_pad3;
-extern s32 D_247CC8_pad4;
 extern void func_00249A48(void *, s32);
 extern u8 D_00431F30[];
 
