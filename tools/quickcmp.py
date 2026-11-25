@@ -17,7 +17,9 @@ cc = ['tools/cc/ee-gcc2.96/bin/ee-gcc', '-c', '-B', 'tools/cc/ee-gcc2.96/bin/ee-
       '-isystem', 'include/gcc', '-DVERSION_FM', '-O2', '-G0'] + ([g] if g else []) + ([cf] if cf else []) + ['src/%s.c' % f, '-S', '-o', '-']
 # Library files are built differently (see the libcc / newlibcc / libgcccc rules in configure.py): straight to an
 # object, no masps2 step, and Sony's own libraries with the older 991111 compiler.
-G296 = ['tools/cc/ee-gcc2.96/bin/ee-gcc', '-c', '-B', 'tools/cc/ee-gcc2.96/bin/ee-', '-O2', '-G0']
+# -g as in configure.py's NEWLIB/LIBGCC rules (Sony built these with -g: the assembler then leaves the jal
+# delay slots it would otherwise fill)
+G296 = ['tools/cc/ee-gcc2.96/bin/ee-gcc', '-c', '-B', 'tools/cc/ee-gcc2.96/bin/ee-', '-O2', '-G0', '-g']
 libcc = None
 if f.startswith('lib/libgcc/'):
     libcc = G296 + ['-DIN_GCC', '-DIN_LIBGCC2', '-DUS_SOFTWARE_GOFAST', '-Iinclude/libgcc-2.95.3', '-Iinclude',

@@ -48,11 +48,13 @@ LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_I
 # src/lib/libc and src/lib/libm are newlib's own source (newlib 1.8.2; rand.c and signal.c from 1.9.0), unchanged.
 # Sony built them with the game compiler (ee-gcc 2.96), not the 991111 one, and libm in IEEE-only mode.
 # The headers are newlib 1.8.2's (include/newlib, include/newlib-private).
-NEWLIB_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -D_IEEE_LIBM -Iinclude/newlib -Iinclude/newlib-private -isystem include/gcc -idirafter include/gcc-991111"
+# -g (here and for libgcc): Sony built both with it; the assembler then does not fill jal delay slots itself
+# (cos, sin, __fixunssfdi ... only match so; every other lib file compiles to the same code either way, 25 Nov).
+NEWLIB_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -g -D_IEEE_LIBM -Iinclude/newlib -Iinclude/newlib-private -isystem include/gcc -idirafter include/gcc-991111"
 # src/lib/libgcc: gcc 2.95.3's libgcc2.c / config/fp-bit.c (include/libgcc-2.95.3, with small tconfig.h/tsystem.h
 # stand-ins for the EE target: 32-bit words, little-endian), also built with the game compiler; US_SOFTWARE_GOFAST
 # gives the soft-float routines the names the game calls (dpadd, fptodp, ...).
-LIBGCC_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -DIN_GCC -DIN_LIBGCC2 -DUS_SOFTWARE_GOFAST -Iinclude/libgcc-2.95.3 -Iinclude -Iinclude/libgcc-2.95.3/config -isystem include/gcc"
+LIBGCC_COMPILE_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- -O2 -G0 -g -DIN_GCC -DIN_LIBGCC2 -DUS_SOFTWARE_GOFAST -Iinclude/libgcc-2.95.3 -Iinclude -Iinclude/libgcc-2.95.3/config -isystem include/gcc"
 
 # Files built WITH strict aliasing (agent a4, 22 Nov: their matched code compiles differently with
 # -fno-strict-aliasing). Every other game file gets -fno-strict-aliasing.
