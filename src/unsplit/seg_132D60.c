@@ -1771,7 +1771,16 @@ s32 func_00243BD8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243C10);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243D18);
+void func_00243C10(s32 arg0, s32 arg1, s32 arg2, s32 arg3, f32 arg4, s32 arg5);
+void func_00247AA0(s32);
+
+void func_00243D18(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 fparg0, s32 arg5) {
+    if (arg0 != 0) {
+        func_002479A0(arg1);
+    }
+    func_00247AA0(arg1);
+    func_00243C10(arg1, arg2, arg3, arg4, fparg0, arg5);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243DA0);
 
