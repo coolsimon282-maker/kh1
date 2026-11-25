@@ -6264,7 +6264,19 @@ s32 func_001DD9B0(void) {
 
 #ifdef VERSION_FM
 s32 func_001DD9D0(void);
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DD9D0);
+typedef struct { s32 v[55]; } XHumDD9D0;
+extern XHumDD9D0 D_004906D0;
+void func_001BA358(s32 i, s32 add);
+
+s32 func_001DD9D0(void) {
+    XHumDD9D0 t = D_004906D0;
+    u32 i;
+
+    for (i = 0; i < 55; i++) {
+        func_001BA358(t.v[i], 99);
+    }
+    return 2;
+}
 #else
 s32 func_001DD9D0(void) {
     s32 i, j = 0;
