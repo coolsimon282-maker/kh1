@@ -3168,7 +3168,33 @@ s32 fm_func_001D3610(Script* arg0) {
 }
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D5068);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001D5068_f1_pad1;
+extern s32 func_001D5068_f1_pad2;
+
+s32 func_001D5068(Script* arg0) {
+    s32 n = 0;
+    s32 top = arg0->unk_174[3];
+    s32 v = arg0->unk_174[top + 4];
+    s32 i, j, c;
+
+    for (i = 0; i < 4; i++) {
+        if (i == 3) {
+            break;
+        }
+        c = D_003010F8->unk_48E[i];
+        if (c < 20) {
+            for (j = 0; j < ((u8*)D_003010F8)[c * 0x74 + 0x25]; j++) {
+                if (((Unk3010F8Recs*)D_003010F8)->unk_06[c].unk_20[j] == v) {
+                    n++;
+                }
+            }
+        }
+    }
+    n += D_003010F8->unk_492[v + 7];
+    arg0->unk_174[arg0->unk_174[3] + 4] = n;
+    return 2;
+}
 
 s32 func_001D5128(Script* arg0) {
     arg0->unk_174[arg0->unk_174[3] + 4] = D_003010F8->unk_492[arg0->unk_174[arg0->unk_174[3] + 4] + 7];
