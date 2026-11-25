@@ -4237,7 +4237,49 @@ s32 func_0013A430(u8 *a0, u8 *a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0013A440);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0013A670);
+typedef struct { s32 k; u8 *p; } E13A670;
+u8 *func_001235B8(u8 *, u8 *);
+void qsort(void *, s32, s32, void *);
+f32 func_00120A38(f32 *);
+u8 *func_0013A670(u8 *a0, s32 *a1, f32 maxd, f32 maxr) {
+    sceVu0FVECTOR v;
+    E13A670 *buf;
+    E13A670 *o;
+    u8 *p = NULL;
+    s32 n;
+    s32 k;
+
+    buf = (E13A670 *)func_00122048(0x300, 4);
+    o = buf;
+    while ((p = func_001235B8(a0, p)) != NULL) {
+        u8 *q = *(u8 **)(p + 0x6C);
+        s32 d = *(s32 *)(q + 0x40);
+        f32 r;
+        if (d <= 0) continue;
+        r = (f32)*(s32 *)(q + 0x3C) / (f32)d;
+        if (maxr < r) continue;
+        sceVu0SubVector(v, (f32 *)(p + 0x10), (f32 *)(a0 + 0x10));
+        if (maxd < func_00120A38(v)) continue;
+        o->p = p;
+        o->k = r * 100.0f;
+        o++;
+    }
+    n = o - buf;
+    qsort(buf, n, 8, (void *)func_0013A430);
+    if (n > 0) p = buf[0].p;
+    k = func_00177D68() * 100.0f;
+    k -= a1[0];
+    if (k >= 0) {
+        k -= a1[1];
+        if (k >= 0 && n >= 3) {
+            p = buf[2].p;
+        } else if (n >= 2) {
+            p = buf[1].p;
+        }
+    }
+    func_001220B8((s32 *)buf);
+    return p;
+}
 
 s32 func_00123858(void *);
 s32 func_0013C2A8(s32);
