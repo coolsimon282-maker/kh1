@@ -820,6 +820,7 @@ void func_00220808(s32 a0) {
     func_0021B800(D_003F61E0[a0 / 3] + 8);
 }
 
+extern s32 D_00643720[];   /* repeated on purpose: keeps func_00228760 matching with fm-a2's func_00220848 and fm-f1 together (a2 rule Q1) */
 void func_00220848(s32 a0) {
     if (func_001F42B8(a0) && (*(s32 *)(D_00425BC8 + 8) & 0x4000)) {
         func_001F3758(*(s32 *)(D_00643428 + 0x10));
@@ -3838,9 +3839,10 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
 
 /* func_00231EA0 is layout-sensitive (notes/f1.md F1/F24): ee-gcc 2.96 makes several tie decisions in it
  * (combine folding `lhu D_003F7C48(reg)`, two saved-register ties) that depend on how many declarations precede
- * it in the file. The C below is right; these nine unused externs are only there to restore the layout that
+ * it in the file. The C below is right; these thirteen unused externs are only there to restore the layout that
  * gives the original code. If an edit above this point makes the function differ again, change their number
- * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan). */
+ * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
+ * into fm on 25 Nov, only 13 gave identical code among 0-17: check the code, not just the size). */
 extern s32 D_231EA0_layout0;
 extern s32 D_231EA0_layout1;
 extern s32 D_231EA0_layout2;
@@ -3850,6 +3852,10 @@ extern s32 D_231EA0_layout5;
 extern s32 D_231EA0_layout6;
 extern s32 D_231EA0_layout7;
 extern s32 D_231EA0_layout8;
+extern s32 D_231EA0_layout9;
+extern s32 D_231EA0_layout10;
+extern s32 D_231EA0_layout11;
+extern s32 D_231EA0_layout12;
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
