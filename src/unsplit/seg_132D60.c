@@ -3272,7 +3272,42 @@ void func_00245AD8(s32 arg0, s32 arg1) {
     func_00247AA0(arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245B08);
+extern u_long128 *D_00662940_p __asm__("D_00662940");
+extern u_long128 *D_00662944;
+void func_00249558(void *, void *);
+
+void func_00245B08(s32 a0, u8 *e) {
+    s32 d[5];
+    s32 w[4];
+    s32 i;
+    s32 k;
+    s32 x;
+    s32 y;
+    u8 *p;
+
+    p = e + 0xE0;
+    for (i = 0; i < 10; i++) {
+        func_00245AD8(a0, (s32)p);
+        p += 0xC0;
+    }
+    func_00245AD8(a0, (s32)(e + 0x20));
+    if (func_00249580((f32 *)(e + 0x10)) != 0) {
+        return;
+    }
+    k = func_00245A08(*(s32 *)(e + 8), d);
+    func_00237A48(w, D_002DEC20, (f32 *)(e + 0x10), 1);
+    func_00249558(w, w);
+    x = w[0] -= (k * 16 + 9) / 2;
+    y = w[1] -= 0x14;
+    D_00662944 = (u_long128 *)&D_00351E10;
+    D_00662940_p = (u_long128 *)&D_00351E10 + 1;
+    for (i = 0; i < k; i++) {
+        func_00245920((s32)(e + 0xE0 + d[5 - k + i] * 0xC0), (s32)D_00426820, x, y, 1.0f);
+        x += 0xD;
+    }
+    func_00245920((s32)(e + 0x20), (s32)D_004267F0, x + 2, y, 1.0f);
+    func_00237018(D_00662944, D_00662940_p - D_00662944, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245CD0);
 
