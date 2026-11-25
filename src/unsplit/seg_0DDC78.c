@@ -2599,7 +2599,15 @@ s32 func_001EB318(s32 i) {
     return (q->bits[idx] >> sh) & 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB380);
+s32 func_001EB380(A2Script *p) {
+    s32 k = p->unk_174[p->unk_174[3] + 4];
+    s32 q = k / 8;
+    s32 b = 7 - (k - q * 8);
+
+    *(u8 *)(q + (s32)func_0022F768(1) + 0xB03) |= 1 << b;
+    p->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EB418);
 
@@ -2699,7 +2707,16 @@ s32 func_001EBC38(s32 i) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EBCA0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EBD48);
+s32 func_001EBD48(A2Script *p) {
+    s32 k = p->unk_174[p->unk_174[3] + 4];
+    s32 q = k / 8;
+    s32 b = 7 - (k - q * 8);
+
+    q += 0xDC0;
+    ((u8 *)func_0022F768(1))[q] |= 1 << b;
+    p->unk_174[3]--;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EBDE0);
 
