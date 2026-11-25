@@ -1918,9 +1918,60 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0DE0);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0E78);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D0F10);
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001D0F10_f1_pad1;
+extern s32 func_001D0F10_f1_pad2;
+extern s32 func_001D0F10_f1_pad3;
+extern s32 func_001D0F10_f1_pad4;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D1068);
+extern char D_003C58E0[][256];
+extern void* D_003DABD0_p[] __asm__("D_003DABD0");
+s32 func_001D0DE0(void);
+s32 func_001D0E78(void);
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3070];
+    /* 0x3070 */ u64 unk_3070_0 : 33;
+    u64 unk_3070_33 : 1;
+    u64 unk_3070_34 : 1;
+    u64 unk_3070_35 : 29;
+    /* 0x3078 */ s32 unk_3078;
+} XGiantMountain0F10;
+extern XGiantMountain0F10 D_003854E0_0f10 __asm__("D_003854E0");
+s32 func_001D0F10(Script* arg0) {
+    switch (arg0->unk_174[arg0->unk_174[3] + 3]) {
+    case 1:
+        D_003DABD0_p[0] = (void*)func_00155ED8(0x34, 4);
+        func_00120590(D_003C58E0[arg0->unk_174[arg0->unk_174[3] + 4]], (s32)D_003DABD0_p[arg0->unk_174[arg0->unk_174[3] + 3] - 1], func_001D0DE0, 0);
+        D_003854E0_0f10.unk_3070_33 = 1;
+        break;
+    case 2:
+        D_003DABD0_p[1] = (void*)func_00155ED8(0x38, 4);
+        func_00120590(D_003C58E0[arg0->unk_174[arg0->unk_174[3] + 4]], (s32)D_003DABD0_p[arg0->unk_174[arg0->unk_174[3] + 3] - 1], func_001D0E78, 0);
+        D_003854E0_0f10.unk_3070_34 = 1;
+        break;
+    }
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
+
+extern char D_003D97E0[][256];
+
+s32 func_001D1068(Script* arg0) {
+    switch (arg0->unk_174[arg0->unk_174[3] + 3]) {
+    case 1:
+        D_003DABD0_p[0] = (void*)func_00155ED8(0x34, 4);
+        func_00120590(D_003D97E0[arg0->unk_174[arg0->unk_174[3] + 4]], (s32)D_003DABD0_p[arg0->unk_174[arg0->unk_174[3] + 3] - 1], func_001D0DE0, 0);
+        D_003854E0_0f10.unk_3070_33 = 1;
+        break;
+    case 2:
+        D_003DABD0_p[1] = (void*)func_00155ED8(0x38, 4);
+        func_00120590(D_003D97E0[arg0->unk_174[arg0->unk_174[3] + 4]], (s32)D_003DABD0_p[arg0->unk_174[arg0->unk_174[3] + 3] - 1], func_001D0E78, 0);
+        D_003854E0_0f10.unk_3070_34 = 1;
+        break;
+    }
+    arg0->unk_174[3] -= 2;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D11C0);
 
