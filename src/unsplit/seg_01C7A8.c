@@ -680,7 +680,33 @@ void func_0011E8A0(s32 arg0, s32 arg1, s32 arg2) {
     func_0011CBE0(1, arg2, D_002C137C, func_0011E7F8);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011E8D0);
+extern s32 D_002C136C;
+void func_0011CA68_nt() __asm__("func_0011CA68");
+extern inline void func_0011CA68_nt(nothrow_arg_) double nothrow_arg_; {}
+extern s32 D_004E3434_i __asm__("D_004E3434");
+extern s32 D_002C1378_a[] __asm__("D_002C1378");
+
+void func_0011E8D0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    char buf[0x40];
+
+    D_004E3434_i = a3;
+    D_004E3438 = a1;
+    D_004E343C = a2;
+    D_004E3440 = a0;
+    D_004E3444 = a4;
+    D_004E3448 = a5;
+    if (D_002C136C != D_002C1378_a[1] && D_002C1378_a[1] != 0) {
+        if (D_002C136C == -2) {
+            func_0011C7D8(0);
+        } else {
+            func_0011C5F0(1, 0, 0x64);
+        }
+        func_0011CA68_nt(D_002C1378_a[1], buf);
+        func_00120590(buf, D_004E3448, (s32 (*)(void))func_0011E8A0, 0);
+        return;
+    }
+    func_0011E7F8();
+}
 
 void func_0011E7C8(s32 arg0, s32 arg1) {
     func_0011E8D0(0, 0x3000, 0, arg0, 0, arg1);
