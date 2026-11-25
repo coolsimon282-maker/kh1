@@ -515,7 +515,7 @@ u8* func_001499A0(u8*);
 s32 func_0014C6C0(void);
 s32 func_0014C850(void);
 s32 func_0014CA38(void);
-s32 func_0014C5C8(void);
+void func_0014C5C8(u8*, u8*, f32*);
 void func_0014DC08(u8*);
 s32 func_0014DF60(void);
 void func_0014E160(u8*, f32*);
@@ -3520,7 +3520,25 @@ void func_0014C580(u8* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014C5C8);
+void func_0014C5C8(u8* p, u8* pad, f32* v) {
+    f32 z = 0.0f;
+    u8* o;
+    s32 m;
+    if (v[0] == z && v[1] == z && v[2] == z) {
+        sceVu0CopyVector(v, (f32*)(p + 0x30));
+        v[3] = z;
+    }
+    o = *(u8**)(p + 0x148);
+    if (0.0f < *(f32*)(o + 0x100)) {
+        *(f32*)(o + 0x100) -= D_002B8344;
+        return;
+    }
+    m = *(s32*)(pad + 4);
+    if (((s32)(*(u64*)(o + 0x100) >> 32) & 1) ? (m & 0x10) : (m & 4)) {
+        return;
+    }
+    func_0014C448(p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014C6C0);
 
@@ -8987,6 +9005,8 @@ extern int flip_dummy_6;
 extern int flip_dummy_7;
 extern int flip_dummy_8;
 extern int flip_dummy_9;
+extern int flip_dummy_10;
+extern int flip_dummy_11;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
