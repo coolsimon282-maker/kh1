@@ -1205,7 +1205,31 @@ void func_00239778(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, f32 f) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239860);
+void func_00239860(s32 a0, s32 a1, s32 x, s32 y, f32 f, s32 a5, s32 col, s32 a7) {
+    s32 i;
+    s32 j;
+
+    func_002475E8(a0, (u8 *)&D_00648900_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00648900_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            if (a7 != 0 || j != 3) {
+                D_00648900_o.m[i].v[j] = ((s32 *)col)[j];
+            }
+            if (a5 != 0) {
+                D_00648900_o.m[i].v[j] = D_00648900_o.m[i].v[j] * f;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        D_00648900_o.m[i].v[3] = D_00648900_o.m[i].v[3] * D_00650DD4;
+    }
+    D_006488F0 = func_002388B8((u8 *)&D_00648900_o, 1, D_006488F0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002399F0);
 
@@ -1228,7 +1252,31 @@ void func_00239A80(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, f32 f
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00239B90);
+void func_00239B90(s32 a0, s32 a1, s32 x, s32 y, f32 f, s32 a5, s32 col, s32 a7) {
+    s32 i;
+    s32 j;
+
+    func_002475E8(a0, (u8 *)&D_00648900_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00648900_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            if (a7 != 0 || j != 3) {
+                D_00648900_o.m[i].v[j] = ((s32 *)col)[i * 4 + j];
+            }
+            if (a5 != 0) {
+                D_00648900_o.m[i].v[j] = D_00648900_o.m[i].v[j] * f;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        D_00648900_o.m[i].v[3] = D_00648900_o.m[i].v[3] * D_00650DD4;
+    }
+    D_006488F0 = func_002388B8((u8 *)&D_00648900_o, 1, D_006488F0);
+}
 
 void func_00239B90(s32, s32, s32, s32, f32, s32, s32, s32);
 
