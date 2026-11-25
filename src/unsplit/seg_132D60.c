@@ -934,7 +934,35 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C270);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C400);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C4D8);
+typedef struct { u64 d[0x18]; } Blk132_C0;
+typedef struct { s32 a; s32 b; } Pair132;
+typedef struct {
+    s32 used;
+    s32 unk4;
+    s32 unk8;
+    s32 padC;
+    Blk132_C0 blk;
+    s32 unkD0;
+    s32 unkD4;
+    Pair132 pair;
+} Ent132_E0;
+extern Blk132_C0 *D_00651300;
+extern Ent132_E0 D_00651310_e[] __asm__("D_00651310");
+
+s32 func_0023C4D8(Pair132 *a0, s32 a1, s32 a2, s32 a3) {
+    Ent132_E0 *e = (Ent132_E0 *)func_0023C228();
+    s32 r = -1;
+    if (e != NULL) {
+        Blk132_C0 *s = D_00651300;
+        e->unk8 = a1;
+        e->blk = *s;
+        e->unkD0 = a2;
+        e->unkD4 = a3;
+        r = e - D_00651310_e;
+        e->pair = *a0;
+    }
+    return r;
+}
 
 extern s32 D_00651310[];
 
