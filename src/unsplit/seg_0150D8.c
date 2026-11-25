@@ -470,7 +470,39 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00117DB0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118060);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118230);
+s32 *func_00122048(s32, s32);
+void func_001220B8(void *);
+
+s32 func_00118230(s32 n, f32 *pt, f32 *lim, f32 *out) {
+    s32 *buf = func_00122048(0x800, 4);
+    s32 cnt = 0;
+    s32 best = -1;
+    s32 i;
+    f32 bd;
+    f32 y;
+
+    for (i = 0; i < n; i++) {
+        s32 id = D_002BD250[i];
+        if (func_00115600(id, pt)) {
+            buf[cnt++] = id;
+        }
+    }
+    bd = lim[1];
+    for (i = 0; i < cnt; i++) {
+        f32 dd;
+        func_00115408(buf[i], (u8 *)pt, (u8 *)&y, 0);
+        dd = fabsf(pt[1] - y);
+        if (dd < bd) {
+            out[1] = y;
+            bd = dd;
+            best = buf[i];
+        }
+    }
+    out[0] = pt[0];
+    out[2] = pt[2];
+    func_001220B8(buf);
+    return best;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00118378);
 
