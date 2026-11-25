@@ -3531,7 +3531,41 @@ s32 func_0020F260(s32 a0) {
     return ((t0 << 8) | a0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020F290);
+extern s32 D_f1pad_gbhbabdc; /* unused: rule F1 */
+void func_0020F290(u32 *a, s32 l, s32 r) {
+    s32 i;
+    s32 j;
+    u32 x;
+    u32 t;
+
+top:
+        i = l;
+        x = func_0020F260(a[(l + r) / 2]);
+        j = r;
+        for (;;) {
+            while (func_0020F260(a[i]) < x) {
+                i++;
+            }
+            while (x < func_0020F260(a[j])) {
+                j--;
+            }
+            if (i >= j) {
+                break;
+            }
+            t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+            i++;
+            j--;
+        }
+        if (l < i - 1) {
+            func_0020F290(a, l, i - 1);
+        }
+        if (j + 1 < r) {
+            l = j + 1;
+            goto top;
+        }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020F3C8);
 
@@ -4208,6 +4242,7 @@ extern s32 D_00642C78[];
 extern s32 D_00642C48;
 extern s32 D_00642C88;
 
+extern s32 D_f1pad_hhbghcch; /* unused: rule F1 */
 void func_00213FB0(void) {
     if (D_00642C28 >= 0) {
         func_00213E50((void *)((u8 *)D_00642C30 + 0x40), 0,
@@ -4269,6 +4304,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002143E0);
 
 /* unused: rule F1 (with func_00207A38 and the 8 D_209D48_layout externs); its NAME matters too */
 extern s32 D_pad_func_00214590_0;
+extern s32 D_f1pad_gbcgabbd; /* unused: rule F1 */
+extern s32 D_f1pad_g; /* unused: rule F1 */
+extern s32 D_f1pad_beabbcd; /* unused: rule F1 */
 void func_00214590(u8 *a0) {
     func_001F9010(0x17);
     func_001F9438((s32)a0, 0, 0xAE, 0xC, *(s32 *)(a0 + 0x24), 0x11, 0x80C87850);
