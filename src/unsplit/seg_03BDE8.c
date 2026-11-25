@@ -2845,7 +2845,37 @@ s32 func_00148A40(u8* p, s32 b) {
     return func_00148968((s32)p, *(s32*)(p + 0x68), b);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148A60);
+u8* func_00148A60(u8* p, s32 m) {
+    sceVu0FMATRIX mtx;
+    u8* r = func_00147C98_3(*(s32*)(p + 0x68), m, 20000);
+    u8* e;
+    s32 k;
+    if (r != NULL) {
+        **(u8***)(r + 0x18) = p;
+        k = func_001765F8((s32)r);
+        if (k >= 0) {
+            if (*(s32*)(p + 0x88) & 1) {
+                func_001318E8((s32)p, k & ~0x10000, (f32*)mtx);
+                func_00147E08(r, (f32*)mtx);
+                return r;
+            }
+            e = func_00148570(r, (s32)p, k);
+            if (e != NULL) {
+                if (m & 0x800) {
+                    *(s16*)(e + 6) = -1;
+                }
+                if (m & 0x1000) {
+                    *(u64*)e |= 1;
+                }
+            }
+        } else if (m & 0x800) {
+            e = func_00148438(r, (s32)p);
+            *(s16*)(e + 6) = -1;
+            e[4] = 0;
+        }
+    }
+    return r;
+}
 
 void func_00148B70(u8 *a0, s32 a1, s32 a2) {
     func_00148768_v(*(s32 *)(a0 + 0x68), a1, a0, a2);
