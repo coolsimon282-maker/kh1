@@ -280,7 +280,32 @@ void func_001089F8(T1089F8 *a0, S1089F8 *a1) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108A60);
+extern s32 D_0046BE90[];
+void func_00108A60_t(s32, s32, T1089F8*, u8*, u8*) __asm__("func_00108A60");
+
+// declared later in the file with a T108CF8* (defined after this point), so defined under an alias
+void func_00108A60_t(s32 a0, s32 a1, T1089F8* a2, u8* a3, u8* a4) {
+    s32* q = (s32*)D_0048C630;
+    s32* r = (s32*)D_0048C690;
+    s32 i;
+
+    a2->e[0].m[2][0] = q[8];
+    a2->e[0].m[2][1] = q[9];
+    a2->e[0].m[2][2] = q[10];
+    a2->e[0].m[2][3] = q[11];
+    a2->e[1].m[2][0] = r[8];
+    a2->e[1].m[2][1] = r[9];
+    a2->e[1].m[2][2] = r[10];
+    a2->e[1].m[2][3] = r[11];
+    func_00108900(a2->e[0].m[0], a0, (s32*)a3, (s32*)a4);
+    for (i = 0; i < 2; i++) {
+        func_00108970((T108970*)a2, i, a1);
+        a2->e[i].m[5][0] = D_0046BE90[0];
+        a2->e[i].m[5][1] = D_0046BE90[1];
+        a2->e[i].m[5][2] = D_0046BE90[2];
+        a2->e[i].m[5][3] = D_0046BE90[3];
+    }
+}
 
 extern s32 D_00351BD0;
 typedef struct { s32 m[6][4]; } E108B60;
