@@ -120,7 +120,7 @@ void func_0011EEB8(u8 *, s32, s32);
 void func_0011EF58(u8 *, s32);
 void func_0011F148(u8 *, s32);
 s32 func_00123880();
-void func_0012EBA0(s32, s32, s32, s32, s32);
+f32 func_0012EBA0(s32, s32, s32, s32, s32);
 void func_0012EC60(s32, s32, s32);
 u8 *func_001302D0(u8 *, u32, f32, f32);
 u8 *func_00130340(u8 *, s32, f32);
@@ -970,7 +970,31 @@ s32 func_0012EB08(s32* a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012EBA0);
+u8 *func_0015C960(s32, s32, s32, s32);
+
+f32 func_0012EBA0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    u8 *o = (u8 *)a0;
+    f32 *v = (f32 *)a4;
+    u8 *m = func_0015C960(a0, a1, a2, a3);
+    f32 r;
+
+    if (m == NULL) {
+        u8 *q = *(u8 **)(o + 0x134);
+        if (q != NULL && q[5] != 0) {
+            m = *(u8 **)(q + 0x14);
+        }
+    }
+    if (m == NULL) {
+        sceVu0CopyVector(v, (f32 *)(o + 0x10));
+        r = 0.0f;
+    } else {
+        func_001315C0(a0, *(u16 *)(m + 2), a4, *(f32 *)(m + 4));
+        v[1] -= *(f32 *)(m + 8) * *(f32 *)(o + 0x44);
+        r = *(f32 *)(m + 0xC) * *(f32 *)(o + 0x40);
+    }
+    v[3] = 1.0f;
+    return r;
+}
 
 void func_0012EC60(s32 a0, s32 a1, s32 a2) {
     func_0012EBA0(a0, 0, -1, a1, a2);
@@ -2408,7 +2432,30 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001369E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136AB8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00136BC0);
+void func_00120D38(f32 *, void *, f32 *);
+extern u8 D_002DEC60[];
+void func_00135D38_nt() __asm__("func_00135D38");
+extern inline void func_00135D38_nt(nothrow_arg_) double nothrow_arg_; {}
+
+s32 func_00136BC0(u8 *a0) {
+    u8 *o = *(u8 **)(a0 + 0x10);
+    u64 f = *(u64 *)(o + 0x370);
+
+    if ((s32)(f >> 33) & 1) {
+        return 4;
+    }
+    *(u64 *)(o + 0x370) = f & ~((u64)8 << 32);
+    *(f32 *)(o + 0x1C) = 1.0f;
+    func_00120D38((f32 *)(o + 0x110), D_002DEC60, (f32 *)(o + 0x100));
+    *(f32 *)(o + 0x11C) = 1.0f;
+    if ((s32)(*(u64 *)(o + 0x370) >> 34) & 1) {
+        if (*(s32 *)(o + 0x154) != 0 && !((D_002C1EA8 >> 6) & 1)) {
+            func_00135D38_nt(o);
+            (*(void (**)(u8 *))(a0 + 0x14))(o);
+        }
+    }
+    return 0;
+}
 
 s32 func_00136C98(void) {
     func_0011EF58(D_0052A100, 0);
