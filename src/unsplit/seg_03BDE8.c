@@ -8778,7 +8778,32 @@ void func_00178D90(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00178E10);
+typedef struct {
+    s32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+} P178E10;
+extern P178E10 D_002C5BB0_q __asm__("D_002C5BB0");
+extern f32 D_005758C4_f __asm__("D_005758C4");
+extern f32 D_0057590C;
+s32 func_001375D8(u8*);
+void func_00178E10(void) {
+    if (func_001375D8(D_00575894) != 0) {
+        return;
+    }
+    if (0.0f < D_005758C4_f) {
+        return;
+    }
+    if (0.0f < D_0057590C) {
+        return;
+    }
+    if (D_002C5BB0_q.unk_04 & 0x1000) {
+        D_00362680[1] = func_00120AC8(D_00362680[1] + D_002B8344 * 0x1.1df468p-5f);
+    }
+    if (D_002C5BB0_q.unk_04 & 0x2000) {
+        D_00362680[1] = func_00120AC8(D_00362680[1] - D_002B8344 * 0x1.1df468p-5f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00178EF8);
 
