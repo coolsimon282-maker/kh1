@@ -47,7 +47,15 @@ void func_0024BA00(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BA28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BB88);
+s32 func_0024BA28(s32, s32, s32, void *);
+
+void func_0024BB88(s32 a0, s32 a1, f32 *a2) {
+    f32 v;
+    if (func_0024BA28(a0, a1, 0, &v) < 0) {
+        __asm__ volatile("break 0");
+    }
+    *a2 = v;
+}
 
 s32 func_0024BA28(s32, s32, s32, void *);
 
@@ -59,7 +67,19 @@ void func_0024BBC8(s32 a0, s32 a1, s32 *a2) {
     *a2 = v;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BC08);
+typedef struct {
+    void *ptr;
+    s32 id;
+} A2Ent;
+
+void func_0024BC08(s32 a0, A2Ent *e) {
+    while (e->ptr != 0) {
+        if (func_0024BA28(a0, e->id, 0, e->ptr) < 0) {
+            __asm__ volatile("break 0");
+        }
+        e++;
+    }
+}
 
 typedef union {
     u32 w;
