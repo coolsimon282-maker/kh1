@@ -385,7 +385,50 @@ void func_0012BA48(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012BA98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012BBC8);
+void func_0012BA30_3(u8 *, s32, s32) __asm__("func_0012BA30");
+void func_0012BA48_p(u8 *) __asm__("func_0012BA48");
+void func_0013CF28(u8 *, s32);
+void func_0012BBC8_5(u8 *, s32, s32, s32 *, s32) __asm__("func_0012BBC8");
+void func_0012BBC8_5(u8 *a0, s32 a1, s32 n, s32 *list, s32 a4) {
+    u8 buf[0x400];
+    s32 old;
+    s32 *h;
+    s32 x;
+    s32 y;
+    s32 *p;
+    s32 **c;
+
+    if (a1 == 0) return;
+    old = D_00514F10;
+    D_00514F10 = (s32)a0;
+    if (n > 0) {
+        s32 *q = list;
+        s32 i = n;
+        do {
+            i--;
+            func_0012BA30_3(a0, q[0], q[1]);
+            q += 2;
+        } while (i != 0);
+    }
+    h = (s32 *)(a0 + 8);
+    x = h[0];
+    y = h[1];
+    h[0] = *(s32 *)(a0 + 4) + a1 * 2;
+    h[1] = (s32)buf;
+    c = (s32 **)(a0 + 0xC);
+    p = *c;
+    *p++ = 0; *c = p;
+    p[0] = 0; *c = p + 1;
+    p[1] = 0; *c = p + 2;
+    p[2] = 0; *c = p + 3;
+    func_0012BA48_p(a0);
+    h[0] = x;
+    h[1] = y;
+    if (a4 != 0) {
+        func_0013CF28((u8 *)h, a4);
+    }
+    D_00514F10 = old;
+}
 
 void func_0012BCE0(u8 *a0, s32 a1) {
     func_0012BBC8(a0, ((u16 *)(a0 + 0x724))[a1]);
