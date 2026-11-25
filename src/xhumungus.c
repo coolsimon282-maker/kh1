@@ -1594,7 +1594,45 @@ void func_001D0670(void) {
     p[14] += g->unk_30A0[2];
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D06F0);
+/* Unused on purpose: keeps func_001DB7A8 matching (notes/f1.md F1). */
+extern s32 func_001D06F0_f1_pad1;
+extern s32 func_001D06F0_f1_pad2;
+extern s32 func_001D06F0_f1_pad3;
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3070];
+    /* 0x3070 */ u64 unk_3070_0 : 43;
+    u64 unk_3070_43 : 1;
+    u64 unk_3070_44 : 20;
+    /* 0x3078 */ s32 unk_3078;
+} XGiantMountain06F0;
+
+s32 func_001D06F0(Script* arg0) {
+    XGiantMountainF* g = (XGiantMountainF*)&D_003854E0;
+    f32* p;
+    f32 r;
+    f32 gr;
+    f32 b;
+
+    g->unk_3098 = arg0->unk_174[arg0->unk_174[3]];
+    p = g->unk_30AC[g->unk_3098];
+    g->unk_309C = arg0->unk_174[arg0->unk_174[3] + 4];
+    r = arg0->unk_174[arg0->unk_174[3] + 1] / 255.0f;
+    gr = arg0->unk_174[arg0->unk_174[3] + 2] / 255.0f;
+    b = arg0->unk_174[arg0->unk_174[3] + 3] / 255.0f;
+    g->unk_30A0[0] = (r - p[12]) / g->unk_309C;
+    g->unk_30A0[1] = (gr - p[13]) / g->unk_309C;
+    g->unk_30A0[2] = (b - p[14]) / g->unk_309C;
+    if (g->unk_309C == 0) {
+        p[12] = r;
+        p[13] = gr;
+        p[14] = b;
+        p[15] = 1.0f;
+    } else {
+        ((XGiantMountain06F0*)g)->unk_3070_43 = 1;
+    }
+    arg0->unk_174[3] -= 5;
+    return 2;
+}
 
 s32 func_001D0828(Script* arg0) {
     ((f32*)D_0038CD3C[arg0->unk_174[arg0->unk_174[3] + 3]])[3] = arg0->unk_174[arg0->unk_174[3] + 4];
