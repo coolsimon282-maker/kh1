@@ -488,13 +488,29 @@ void func_001BB218(s32 i, s32 x) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB260);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BB2E0);
+void *func_001BB260();
+typedef struct {
+    u8 pad[0xAC20];
+    u8 f[1];
+} A2BB2E0;
+
+s32 func_001BB2E0(s32 k) {
+    A2BB2E0 *p;
+    fm_func_001B9B30();
+    p = func_0022F768(4);
+    if (p->f[k] == 0) {
+        if (func_001BA958(func_001BB260(k)) >= 3) {
+            p->f[k] = 1;
+        }
+    }
+    return p->f[k];
+}
 
 typedef struct {
     u8 b[11];
 } A2Bytes11;
 extern A2Bytes11 D_004900A8;
-s32 func_001BB2E0(u8);
+s32 func_001BB2E0(s32);
 
 s32 func_001BB370(void) {
     A2Bytes11 buf = D_004900A8;
