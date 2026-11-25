@@ -378,7 +378,26 @@ void func_0024DAA0(void) {
     sceDevctl(D_004919B0, 0x4807, 0, 0, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024DAD0);
+s32 sceDevctl_r(u8 *, s32, s32, s32, void *, s32) __asm__("sceDevctl");
+extern s32 D_0046A614;
+
+s32 func_0024DAD0(u8 *dev, s32 n) {
+    s32 *p;
+    u32 buf;
+
+    sceDevctl_r(dev, 0x4802, 0, 0, 0, 0);
+    p = &D_0046A614;
+    *p = 0x3C;
+    buf = 0;
+    if (sceDevctl_r(dev, 0x480A, 0, 0, &buf, 4) != 0) {
+        return 0;
+    }
+    *p = 0x46;
+    if ((s32)(buf >> 18) < n) {
+        return 0;
+    }
+    return 1;
+}
 
 extern s32 D_0046A674;
 
