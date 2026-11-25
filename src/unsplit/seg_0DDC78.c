@@ -2855,7 +2855,38 @@ void func_001E9F18(f32 *o, f32 *pos, f32 *rot, f32 dist) {
     o[2] += pos[2];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E9FE8);
+void func_001E9FE8(f32 *d, f32 *s) {
+    d[0] = s[0];
+    d[1] = s[1];
+    d[2] = s[2];
+    for (;;) {
+        if (d[0] > 3.1415928f) {
+            d[0] -= 6.2831855f;
+        } else if (d[0] < -3.1415928f) {
+            d[0] += 6.2831855f;
+        } else {
+            break;
+        }
+    }
+    for (;;) {
+        if (d[1] > 3.1415928f) {
+            d[1] -= 6.2831855f;
+        } else if (d[1] < -3.1415928f) {
+            d[1] += 6.2831855f;
+        } else {
+            break;
+        }
+    }
+    for (;;) {
+        if (d[2] > 3.1415928f) {
+            d[2] -= 6.2831855f;
+        } else if (d[2] < -3.1415928f) {
+            d[2] += 6.2831855f;
+        } else {
+            break;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001EA128);
 
