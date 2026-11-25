@@ -9478,7 +9478,24 @@ void func_0017EBD0(void) {
     D_00362454 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0017EC00);
+extern sceVu0FVECTOR D_00362630;
+extern sceVu0FVECTOR D_00362620;
+void func_0017EC00(void) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    if (D_00575894 == NULL) {
+        return;
+    }
+    sceVu0ApplyMatrix(D_005758E0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_00362630);
+    D_00362684 = func_00120AC8(*(f32*)(D_00575894 + 0x3C) + 0x1.921fb6p+1f);
+    sceVu0RotMatrixY(m, D_002C1E20, D_00362684);
+    sceVu0ApplyMatrix(v, m, D_00362620);
+    sceVu0AddVector(D_005758D0, D_005758E0, v);
+    sceVu0CopyVector(D_002DECE0, D_005758D0);
+    sceVu0CopyVector(D_002DECF0, D_005758E0);
+    func_00176F08(1, 30.0f);
+    D_005758C4 = 0;
+}
 
 extern s32 D_003623F0;
 extern f32 D_003623F4;
