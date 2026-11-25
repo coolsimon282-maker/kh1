@@ -4290,7 +4290,17 @@ void func_002145D8(s32 a0) {
     func_00209340_c(a0, 2, buf);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002148D0);
+s32 func_001F92B0_s(s32, s32, s32, s32, s32, s32) __asm__("func_001F92B0");
+extern s32 D_00642C2C;
+s32 func_001F0938(s32);
+void func_002148D0(s32 a0) {
+    s32 n;
+    func_001F92B0_s(a0, 0, 0x10, func_001EF938(D_00642C2C), 0xF, 0x801EC8C8);
+    func_001F9438(a0, 0, 0x10, 0x22, 0x51, 0xE, 0x80E6E6E6);
+    n = func_001FB428(a0, 0, 0, 0, 0x10, 0x36, func_001F0A00(D_00642C2C), 0xE, 0x806464EC);
+    n = func_001F9438_s((void *)a0, 0, n + 2, 0x36, 0x54, 0xE, 0x596464EC);
+    func_001FB428(a0, 0, 0, 0, n + 2, 0x36, func_001F0938(D_00642C2C), 0xE, 0x596464EC);
+}
 
 void func_002149F0(s32 a0) {
     s32 v = *(s32 *)(a0 + 0x24);
