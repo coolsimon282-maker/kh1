@@ -466,7 +466,45 @@ double _b2d(struct _Bigint *a, int *e)
     return d.d;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _d2b);
+extern int _lo0bits(unsigned int *y);
+
+struct _Bigint *_d2b(struct _reent *ptr, double dd, int *e, int *bits)
+{
+    struct _Bigint *b;
+    int de, i, k;
+    unsigned int *x, y, z;
+    MpDouble d;
+
+    d.d = dd;
+    b = _Balloc(ptr, 1);
+    x = b->_x;
+    z = word0(d) & 0xFFFFF;
+    word0(d) &= 0x7FFFFFFF;
+    if ((de = (int)(word0(d) >> 20)) != 0)
+        z |= 0x100000;
+    if (word1(d)) {
+        y = word1(d);
+        if ((k = _lo0bits(&y)) != 0) {
+            x[0] = y | z << (32 - k);
+            z >>= k;
+        } else
+            x[0] = y;
+        i = b->_wds = (x[1] = z) ? 2 : 1;
+    } else {
+        k = _lo0bits(&z);
+        x[0] = z;
+        i = b->_wds = 1;
+        k += 32;
+    }
+    if (de) {
+        *e = de - 1023 - (53 - 1) + k;
+        *bits = 53 - k;
+    } else {
+        *e = de - 1023 - (53 - 1) + 1 + k;
+        *bits = 32 * i - _hi0bits(x[i - 1]);
+    }
+    return b;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _ratio);
 
