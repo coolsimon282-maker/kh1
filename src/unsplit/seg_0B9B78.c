@@ -1697,6 +1697,30 @@ void func_001BF698(f32 *q, f32 *axis, f32 angle) {
     q[2] = axis[2] * s;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF710);
+f32 acosf(f32);
+
+void func_001BF710(f32* o, f32* a, f32* b, f32 t) {
+    f32 th = acosf(a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3]);
+    f32 s = sinf(th);
+    f32 s1 = sinf(th * (1.0f - t));
+    f32 s2 = sinf(th * t);
+    s32 i;
+
+    if (s > -0.01f && s < 0.01f) {
+        o[0] = a[0];
+        o[1] = a[1];
+        o[2] = a[2];
+        o[3] = a[3];
+        return;
+    }
+    s = 1.0f / s;
+    i = 0;
+loop:
+    o[i] = (a[i] * s1 + b[i] * s2) * s;
+    i++;
+    if (i < 4) {
+        goto loop;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BF888);
