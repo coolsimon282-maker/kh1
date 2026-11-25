@@ -505,7 +505,7 @@ s32 func_00144D08(void);
 void func_00152880(u8*);
 void func_00153BB0(u8*, f32*);
 void func_0015DE88(u8*);
-s32 func_0015DEF8(void);
+void func_0015DEF8(u8*, f32*);
 s32 func_0015DFF8(void);
 u8* func_0015E0A8(u8*, f32*);
 void pppInitPartRender(void);
@@ -6230,7 +6230,24 @@ void func_0015DE88(u8* a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015DEF8);
+void func_001223B0(f32*, f32*);
+extern s32 D_0015DEF8_pad1; /* unused: rule F1 (with func_0015DEF8) */
+void func_0015DEF8(u8* p, f32* out) {
+    sceVu0FVECTOR a;
+    sceVu0FVECTOR b;
+    sceVu0OuterProduct(a, (f32*)(p + 0xC0), (f32*)(p + 0x20));
+    sceVu0Normalize(a, a);
+    sceVu0OuterProduct(b, a, (f32*)(p + 0xC0));
+    sceVu0Normalize(b, b);
+    sceVu0ScaleVectorXYZ(b, b, D_002B8344 * 0.5f);
+    sceVu0AddVector(b, b, (f32*)(*(u8**)(p + 0x148) + 0x110));
+    func_001223B0(b, b);
+    if (16.0f < b[3]) {
+        b[3] = 16.0f;
+    }
+    sceVu0ScaleVector((f32*)(*(u8**)(p + 0x148) + 0x110), b, b[3]);
+    sceVu0ScaleVector(out, (f32*)(*(u8**)(p + 0x148) + 0x110), D_002B8344);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015DFF8);
 
@@ -8847,6 +8864,8 @@ extern int flip_dummy_4;
 extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
 extern int flip_dummy_6;
 extern int flip_dummy_7;
+extern int flip_dummy_8;
+extern int flip_dummy_9;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
