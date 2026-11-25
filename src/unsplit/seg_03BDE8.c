@@ -735,7 +735,29 @@ s32 func_0013C3F8(s32 a) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013C458);
+void func_0015B268(s32);
+s32 func_0013C458(s32 i, s32 add) {
+    u8* e = (u8*)&((D3010F8x*)D_003010F8)->e[i];
+    u16* t = (u16*)func_0013C3F8(i);
+    s32 lv = 1;
+    s32 first = 1;
+    s32 x = add + *(s32*)(e + 0x3C);
+    if (x > 999999) {
+        x = 999999;
+    }
+    *(s32*)(e + 0x3C) = x;
+    while (lv < 100 && (x -= *t++) >= 0) {
+        lv++;
+        if (e[0] < lv) {
+            func_0015B268(i);
+            if (first) {
+                func_0015B438(i);
+                first = 0;
+            }
+        }
+    }
+    return *(s32*)(e + 0x3C);
+}
 
 void func_0013C548(s32 a0) {
     s32 i;
@@ -8371,7 +8393,6 @@ extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
 extern int flip_dummy_6;
 extern int flip_dummy_7;
 extern int flip_dummy_8;
-extern int flip_dummy_9;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
