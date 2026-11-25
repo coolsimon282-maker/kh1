@@ -534,7 +534,47 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001197E0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_001198C8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119A20);
+
+typedef struct {
+    u8 unk_00[0xC];
+    f32 unk_0C;
+    s32 unk_10;
+} Seg150D8Ent6238;
+extern Seg150D8Ent6238 *D_002A6238;
+
+static inline void Seg150D8_Scale(f32 *out, f32 *in, f32 s) {
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlw $8,0x0(%2)\n\tqmtc2.ni $8,$vf5\n\tvmulx.xyzw $vf6,$vf4,$vf5x\n\tsqc2 $vf6,0x0(%0)" : : "r"(out), "r"(in), "r"(&s) : "$8", "memory");
+}
+
+/* plain bc1t next to the call: the callee is "cannot throw" (include/common.h NOTHROW), still asm below */
+s32 func_001198C8_nt() __asm__("func_001198C8");
+extern inline s32 func_001198C8_nt(nothrow_arg_) double nothrow_arg_; { return 0; }
+
+s32 func_00119A20(s32 a0, f32 *a1, f32 *a2, f32 *a3, f32 *a4) {
+    sceVu0FVECTOR t;
+    f32 d;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)
+	lqc2 $vf5,0x0(%2)
+	vmul.xyz $vf5,$vf4,$vf5
+	vaddy.x $vf5,$vf5,$vf5y
+	vaddz.x $vf5,$vf5,$vf5z
+	qmfc2.ni $2,$vf5
+	mtc1 $2,%0" : "=f"(d) : "r"(a2), "r"(a1) : "$2", "memory");
+    d += D_002A6238[a0].unk_0C;
+    if (*a4 < d) {
+        return 0;
+    }
+    if (d < 0.0f) {
+        return 0;
+    }
+    Seg150D8_Scale(t, a1, d);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)
+	lqc2 $vf5,0x0(%2)
+	vsub.xyzw $vf6,$vf4,$vf5
+	sqc2 $vf6,0x0(%0)
+	nop" : : "r"(a3), "r"(a2), "r"(t) : "memory");
+    return func_001198C8_nt(-1, a0, (s32)a3) != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119AD8);
 
@@ -552,18 +592,6 @@ f32 func_00119E80(s32 a0, s32 a1, f32* a2, f32* a3) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119EF8);
-
-typedef struct {
-    u8 unk_00[0xC];
-    f32 unk_0C;
-    s32 unk_10;
-} Seg150D8Ent6238;
-extern Seg150D8Ent6238 *D_002A6238;
-
-static inline void Seg150D8_Scale(f32 *out, f32 *in, f32 s) {
-    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlw $8,0x0(%2)\n\tqmtc2.ni $8,$vf5\n\tvmulx.xyzw $vf6,$vf4,$vf5x\n\tsqc2 $vf6,0x0(%0)" : : "r"(out), "r"(in), "r"(&s) : "$8", "memory");
-}
-
 s32 func_00119FC0(s32 a0, f32 *a1, f32 *a2, f32 *a3, f32 *a4) {
     sceVu0FVECTOR t;
     f32 d;
