@@ -122,7 +122,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024BE88);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C460);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C8B8);
+/* rule 3: the target keeps $2 busy after the call (value-returning declaration) */
+s32 func_001FADE0_r(s32, s32, s32, s32, s32, s32) __asm__("func_001FADE0");
+
+void func_0024C8B8(s32 a0, s16 *p, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 i;
+    for (i = 0; p[i] >= 0; i++) {
+        func_001FADE0_r(a0, a2, a3, p[i], a4, a5);
+        a2 += a4;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024C950);
 
