@@ -801,7 +801,31 @@ void func_0012C880(u8 *a0, s32 a1) {
     *(s32 *)(*(u8 **)(a0 + 0x14C) + 0x24) = a1 | 0x40000000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012C8E8);
+f32 func_00120A58(f32 *);
+u8 *func_0012BD98_y(u8 *, s32, s32, f32 *) __asm__("func_0012BD98");
+s32 func_0012C8E8(u8 *a0) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+    u8 *q;
+
+    if (*(f32 *)(a0 + 0x2D4) - *(f32 *)(a0 + 0x14) < 50.0f) {
+        sceVu0CopyVector(v, (f32 *)(a0 + 0x10));
+        sceVu0SubVector(w, v, (f32 *)(*(u8 **)(a0 + 0x148) + 0xF0));
+        if (4.0f < func_00120A58((f32 *)(a0 + 0x3C0))) {
+            if (100.0f < func_00120A58(w)) {
+                v[1] = *(f32 *)(a0 + 0x2D4);
+                sceVu0CopyVector((f32 *)(*(u8 **)(a0 + 0x148) + 0xF0), v);
+                q = func_0012BD98_y(a0, 0, 0x8000100, v);
+                if (q == NULL) return 1;
+                **(s32 **)(q + 4) = 0;
+                (*(s32 **)(q + 4))[1] = (u16)(s32)(atan2f(*(f32 *)(a0 + 0x3C0), *(f32 *)(a0 + 0x3C8)) / 6.2831855f * 65536.0f);
+                (*(s32 **)(q + 4))[2] = 0;
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern s32 D_002E3170[];
 extern u16* D_002E319C;
