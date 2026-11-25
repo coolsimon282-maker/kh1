@@ -1089,7 +1089,12 @@ void func_001BE758(A2Stk *o, s32 a1, u128_stk a2) {
     o->n++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BE798);
+void func_001BE798(A2Stk *o, u128_stk a1) {
+    o->n--;
+    o->stk[o->n - 1] = a1;
+    o->cur = o->val[o->n - 1];
+    o->top = &o->stk[o->n - 1];
+}
 
 typedef struct {
     u8 pad[0x140];
