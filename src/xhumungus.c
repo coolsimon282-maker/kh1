@@ -111,7 +111,39 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C8E68);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C9380);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C98D0);
+typedef struct {
+    /* 0x000 */ u64 flags;
+    /* 0x008 */ u8 unk_08[0xB8];
+    /* 0x0C0 */ sceVu0FVECTOR unk_C0;
+    /* 0x0D0 */ sceVu0FVECTOR unk_D0;
+    /* 0x0E0 */ sceVu0FVECTOR unk_E0;
+    /* 0x0F0 */ u8 unk_F0[0x30];
+    /* 0x120 */ f32 unk_120;
+} Unk3C5510D;
+extern Unk3C5510D D_003C5510_d __asm__("D_003C5510");
+void func_001C6890(Script*);
+void func_001C6A20(void);
+f32 func_001E9E58(f32* a, f32* b);
+void func_001E9D00(f32* out, f32* a, f32* b, f32 roll);
+
+s32 func_001C98D0(Script* arg0) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+
+    func_001C6890(arg0);
+    v[0] = arg0->unk_174[arg0->unk_174[3] + 2];
+    v[1] = arg0->unk_174[arg0->unk_174[3] + 3];
+    v[2] = arg0->unk_174[arg0->unk_174[3] + 4];
+    D_003C5510_d.unk_120 = func_001E9E58(v, D_003C5510_d.unk_D0);
+    func_001E9D00(w, D_003C5510_d.unk_D0, v, D_003C5510_d.unk_E0[2]);
+    sceVu0CopyVector(D_003C5510_d.unk_E0, w);
+    func_001C6A20();
+    if ((s32)(D_003C5510_d.flags >> 8) & 1) {
+        sceVu0CopyVector(D_003C5510_d.unk_C0, D_003C5510_d.unk_D0);
+    }
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001C99C8);
 
