@@ -802,7 +802,16 @@ s32 func_001E2678(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0DDC78", func_001E26B8);
+s32 func_001E26B8(A2Script *p) {
+    f32 a = p->unk_174[p->unk_174[3] + 3];
+    f32 b = p->unk_174[p->unk_174[3] + 4];
+
+    D_003DAD44 = b;
+    D_003DAD40 = (a - *(f32 *)&D_003DAD3C) / b;
+    func_0011ED30(50000, func_001E2678);
+    p->unk_174[3] -= 2;
+    return 2;
+}
 
 extern s32 D_002BBBA0;
 
