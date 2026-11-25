@@ -5434,7 +5434,50 @@ s32 func_001DA740(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DA760);
+typedef struct {
+    /* 0x00 */ f32 v[4];
+    /* 0x10 */ s32 a;
+    /* 0x14 */ s32 b;
+    /* 0x18 */ s32 c;
+    /* 0x1C */ s32 d[5];
+} __attribute__((aligned(8))) XHumR30b;
+
+typedef struct {
+    /* 0x0000 */ u8 unk_0000[0x3078];
+    /* 0x3078 */ u64 unk_3078;
+    /* 0x3080 */ u8 unk_3080[0x3E0];
+    /* 0x3460 */ f32 unk_3460;
+    /* 0x3464 */ f32 unk_3464;
+    /* 0x3468 */ u8 unk_3468[8];
+    /* 0x3470 */ XHumR30b unk_3470;
+    /* 0x34A0 */ XHumR30b unk_34A0;
+} XGiantMountainA7;
+extern XGiantMountainA7 D_003854E0_a7 __asm__("D_003854E0");
+extern XHumR30b D_002BC0F0_r7 __asm__("D_002BC0F0");
+
+void func_001DA760(void) {
+    f32 t;
+
+    D_003854E0_a7.unk_3464 += D_002B8344;
+    if (D_003854E0_a7.unk_3460 < D_003854E0_a7.unk_3464) {
+        D_002BC0F0_r7 = D_003854E0_a7.unk_34A0;
+        D_003854E0_a7.unk_3078 &= ~2;
+        return;
+    }
+    t = D_003854E0_a7.unk_3464 / D_003854E0_a7.unk_3460;
+    D_003854E0_a7.unk_3464 += D_002B8344;
+    D_002BC0F0_r7.a = D_003854E0_a7.unk_3470.a + (D_003854E0_a7.unk_34A0.a - D_003854E0_a7.unk_3470.a) * t;
+    D_002BC0F0_r7.b = D_003854E0_a7.unk_3470.b + (D_003854E0_a7.unk_34A0.b - D_003854E0_a7.unk_3470.b) * t;
+    D_002BC0F0_r7.c = D_003854E0_a7.unk_3470.c + (D_003854E0_a7.unk_34A0.c - D_003854E0_a7.unk_3470.c) * t;
+    D_002BC0F0_r7.v[0] = D_003854E0_a7.unk_3470.v[0] + (D_003854E0_a7.unk_34A0.v[0] - D_003854E0_a7.unk_3470.v[0]) * t;
+    D_002BC0F0_r7.v[1] = D_003854E0_a7.unk_3470.v[1] + (D_003854E0_a7.unk_34A0.v[1] - D_003854E0_a7.unk_3470.v[1]) * t;
+    D_002BC0F0_r7.v[2] = D_003854E0_a7.unk_3470.v[2] + (D_003854E0_a7.unk_34A0.v[2] - D_003854E0_a7.unk_3470.v[2]) * t;
+    D_002BC0F0_r7.v[3] = D_003854E0_a7.unk_3470.v[3] + (D_003854E0_a7.unk_34A0.v[3] - D_003854E0_a7.unk_3470.v[3]) * t;
+    if (D_003854E0_a7.unk_3460 < D_003854E0_a7.unk_3464) {
+        D_002BC0F0_r7 = D_003854E0_a7.unk_34A0;
+        D_003854E0_a7.unk_3078 &= ~2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DA940);
 
