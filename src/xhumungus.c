@@ -2353,7 +2353,29 @@ s32 func_001D3498(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3570);
+s32* func_001E98D0(s32, s32);
+
+// object table entry returned by func_001E98D0: +4 points at the object (position at 0x10)
+typedef struct {
+    s32 unk_00;
+    f32* unk_04;
+} XHumObjRef;
+
+s32 func_001D3570(Script* arg0) {
+    XHumObjRef* a = (XHumObjRef*)func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 3]);
+    XHumObjRef* b = (XHumObjRef*)func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 4]);
+    f32 x1 = a->unk_04[4];
+    f32 z1 = a->unk_04[6];
+    f32 x2 = b->unk_04[4];
+    f32 z2 = b->unk_04[6];
+    f32 d = sqrt((x2 - x1) * (x2 - x1) + (z2 - z1) * (z2 - z1));
+
+    if (arg0->unk_174[36] >= 0x900) {
+        D_003888C4[arg0->unk_174[36]] = d;
+    }
+    arg0->unk_174[3] -= 3;
+    return 2;
+}
 
 s32* func_001E98D0(s32, s32);
 
