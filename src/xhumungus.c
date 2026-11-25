@@ -3154,7 +3154,52 @@ s32 func_001D3B00(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D3CF0);
+s32 func_001D3CF0(Script* arg0) {
+    f32 a[4];
+    f32 b[4];
+    f32 r[4];
+    f32 z;
+    f32 ang;
+    f32 d;
+    f32 e;
+    f32 g;
+    s32* q = func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 3]);
+    s32* q2 = func_001E98D0((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1, arg0->unk_174[arg0->unk_174[3] + 4]);
+
+    if (q == NULL || q2 == NULL) {
+        arg0->unk_174[3] -= 1;
+        arg0->unk_174[arg0->unk_174[3] + 4] = 0;
+        return 2;
+    }
+    z = 0.0f;
+    a[0] = ((f32*)q[1])[4];
+    a[1] = ((f32*)q[1])[5];
+    a[2] = ((f32*)q[1])[6];
+    a[3] = 1.0f;
+    b[0] = ((f32*)q2[1])[4];
+    b[1] = ((f32*)q2[1])[5];
+    b[2] = ((f32*)q2[1])[6];
+    b[3] = 1.0f;
+    func_001E9D00(r, b, a, z);
+    ang = ((f32*)q[1])[15] * 180.0f / 3.1415928f;
+    arg0->unk_174[3] -= 1;
+    if (ang < z) {
+        e = ang + 360.0f;
+    } else {
+        e = ang;
+    }
+    d = r[1] * 180.0f / 3.1415928f;
+    if (d < 0.0f) {
+        g = d + 360.0f;
+    } else {
+        g = d;
+    }
+    arg0->unk_174[arg0->unk_174[3] + 4] = g - e;
+    if (arg0->unk_174[arg0->unk_174[3] + 4] < 0) {
+        arg0->unk_174[arg0->unk_174[3] + 4] += 360;
+    }
+    return 2;
+}
 
 #ifdef VERSION_FM
 void func_001E0D68(s32);
