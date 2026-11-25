@@ -5312,7 +5312,28 @@ void func_00156260(s32 a0, f32* a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001562D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001563E0);
+s32 func_001166E8(u8*);
+s32 func_001563E0(u8* p, f32* v) {
+    u8* ray = p + 0x2A0;
+    f32 step = func_001427D0(p, ray);
+    f32 len = v[3] + *(f32*)(p + 0x2C0);
+
+    if (0.0f < len) {
+        do {
+            sceVu0ScaleVector((f32*)(p + 0x2B0), v, (len < step) ? len : step);
+            *(s32*)(p + 0x2B4) = 0;
+            *(f32*)(p + 0x2BC) = 1.0f;
+            *(s32*)(p + 0x2C8) |= 1;
+            func_001166E8(ray);
+            if (!(*(s32*)(p + 0x2D0) & 1)) {
+                return 1;
+            }
+            sceVu0CopyVector((f32*)ray, (f32*)(p + 0x2E0));
+            len -= step;
+        } while (0.0f < len);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001564E0);
 
