@@ -7766,7 +7766,38 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001752A0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175600);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175708);
+typedef struct { s16 h0; u8 b2; u8 b3; s32 w4; } Tag175708;
+extern s32 D_005757A0[];
+extern Seg16 D_00575790;
+extern s32 D_0035C420;
+extern u8* D_0035C424;
+extern s32 D_0035C428;
+extern u8* D_0035C42C;
+extern sceVu0FVECTOR D_0035C440;
+extern sceVu0FVECTOR D_0035C460;
+extern sceVu0FVECTOR D_0035C490;
+extern Tag175708 D_0035C4A0;
+extern Tag175708 D_0035C550;
+void func_00175708(u8* p, u8* q) {
+    u8* r;
+    *(Seg16*)D_005757A0 = *(Seg16*)(q + *(s32*)(q + 8));
+    D_005757A0[2] = (s32)(q + *(s32*)(q + 0x10));
+    D_005757A0[3] = (s32)(q + *(s32*)(q + 0x18));
+    r = q + *(s32*)(q + 0x20);
+    D_0035C420 = *(s32*)r;
+    D_0035C424 = r + *(s32*)(r + 4);
+    D_0035C428 = *(s32*)(r + 8);
+    D_0035C42C = r + *(s32*)(r + 0xC);
+    func_001623F8(p, 0x10, &D_00575790);
+    sceVu0CopyVector(D_0035C440, D_0035C490);
+    sceVu0CopyVector(D_0035C460, D_0035C490);
+    D_0035C4A0.h0 = 10;
+    D_0035C550.h0 = 0x10;
+    D_0035C550.w4 = 0;
+    D_0035C550.b3 = 0x70;
+    D_0035C4A0.b3 = 0x70;
+    D_0035C4A0.w4 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00175820);
 
