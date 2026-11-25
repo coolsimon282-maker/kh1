@@ -4052,7 +4052,21 @@ void func_002140C0(u8 *a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00214130);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00214290);
+void func_00214130(s32, s32, s32, s32, s32, s32);
+
+void func_00214290(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 *e;
+    s32 c;
+
+    func_00214130(a0, a1, a2, a3, a4, a5);
+    e = D2C40_v[a1];
+    a2 += a4;
+    c = e[4];
+    func_002016B0(a0, a2 + 2, a3 + 2, e[0]);
+    a3 += 7;
+    func_001F9438(a0, 0, a2 + 6, a3, 0x51, 0xC, c);
+    func_001FB428(a0, 1, 2, 0, a2 + 0x28, a3, func_001F08A0(a5 & ~0x80), 0xC, c);
+}
 
 void func_00214380(u8 *a0) {
     func_001F9010(0x17);
