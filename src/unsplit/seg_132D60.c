@@ -2863,7 +2863,23 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248140);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248238);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248380);
+extern void func_00248140(void **);
+extern void func_00248238(void **);
+extern void *D_00669350;
+extern DataStruct D_00669070;
+
+s32 func_00248380(void) {
+    if (D_00669350 == NULL) {
+        return 0;
+    }
+    func_002370C8(&D_00669070);
+    D_00669070.field_E0 = 5;
+    D_00669070.field_60 = 0x30003;
+    func_00237018(&D_00669070, 0x16, 1);
+    func_00248140(&D_00669350);
+    func_00248238(&D_00669350);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00248400);
 
