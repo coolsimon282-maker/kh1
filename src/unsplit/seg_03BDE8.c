@@ -6150,7 +6150,34 @@ void func_00168518(void) {
     func_00170E98();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00168530);
+f32 func_00162C20(f32*);
+void func_00123E48(s32, f32*);
+void func_00168530(u8* p) {
+    u8* q = *(u8**)(p + 0x144);
+    s32 i;
+    s32* a;
+    s32* b;
+    sceVu0SubVector((f32*)(q + 0xE0), (f32*)(D_0035BD40[0] + 0x10), (f32*)(p + 0x10));
+    sceVu0CopyVector((f32*)(q + 0xF0), (f32*)(q + 0xE0));
+    *(s32*)(q + 0xF4) = 0;
+    *(f32*)(q + 0xEC) = func_00162C20((f32*)(q + 0xE0));
+    *(f32*)(q + 0xFC) = func_00162C20((f32*)(q + 0xF0));
+    func_00123E48(*(s32*)(p + 4), D_00575020[*(s32*)q]);
+    func_00137688((s32)p, func_001376E8_2(p, (f32*)(q + 0xF0)));
+    i = 4;
+    b = (s32*)(q + 0x154);
+    a = (s32*)(q + 0x140);
+loop:
+    i--;
+    *a = 0;
+    *b = 0;
+    b--;
+    a--;
+    if (i > 0) {
+        goto loop;
+    }
+    *(s32*)(q + 0x58) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00168618);
 
