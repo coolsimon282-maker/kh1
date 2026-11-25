@@ -3827,7 +3827,38 @@ void func_00150D70(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00150DE0);
+typedef struct {
+    s32 state;
+    u32 *obj;
+    s32 pad08;
+    f32 unk0C;
+    sceVu0FVECTOR pos;
+    u8 pad20[0x20];
+} V150DE0;
+extern V150DE0 D_0054F750_e[] __asm__("D_0054F750");
+
+void func_00150DE0(s32 on) {
+    V150DE0 *p = D_0054F750_e;
+    s32 i;
+
+    if (on) {
+        for (i = 0; i < 8; i++, p++) {
+            if (p->obj != 0 && p->state == 0) {
+                *p->obj |= 0x30;
+                p->state = 3;
+                p->unk0C = D_00306840;
+                sceVu0CopyVector(p->pos, (f32 *)((u8 *)p->obj + 0x20));
+            }
+        }
+    } else {
+        for (i = 0; i < 8; i++, p++) {
+            if (p->obj != 0 && p->state == 3) {
+                p->state = 4;
+                p->unk0C = D_00306840;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00150EC8);
 
@@ -4472,6 +4503,8 @@ void func_00155EE8(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155EF8);
 
+/* unused: keeps func_001560F8 at its size once func_00150DE0 is C (rule F1) */
+extern s32 D_001560F8_pad0;
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
