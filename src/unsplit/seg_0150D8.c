@@ -553,7 +553,29 @@ f32 func_00119E80(s32 a0, s32 a1, f32* a2, f32* a3) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119EF8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_00119FC0);
+typedef struct {
+    u8 unk_00[0xC];
+    f32 unk_0C;
+    s32 unk_10;
+} Seg150D8Ent6238;
+extern Seg150D8Ent6238 *D_002A6238;
+
+static inline void Seg150D8_Scale(f32 *out, f32 *in, f32 s) {
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlw $8,0x0(%2)\n\tqmtc2.ni $8,$vf5\n\tvmulx.xyzw $vf6,$vf4,$vf5x\n\tsqc2 $vf6,0x0(%0)" : : "r"(out), "r"(in), "r"(&s) : "$8", "memory");
+}
+
+s32 func_00119FC0(s32 a0, f32 *a1, f32 *a2, f32 *a3, f32 *a4) {
+    sceVu0FVECTOR t;
+    f32 d;
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvmul.xyz $vf5,$vf4,$vf5\n\tvaddy.x $vf5,$vf5,$vf5y\n\tvaddz.x $vf5,$vf5,$vf5z\n\tqmfc2.ni $2,$vf5\n\tmtc1 $2,%0" : "=f"(d) : "r"(a2), "r"(a1) : "$2", "memory");
+    d += D_002A6238[a0].unk_0C;
+    if (*a4 < d) {
+        return 0;
+    }
+    Seg150D8_Scale(t, a1, d);
+    __asm__ volatile("lqc2 $vf4,0x0(%1)\n\tlqc2 $vf5,0x0(%2)\n\tvsub.xyzw $vf6,$vf4,$vf5\n\tsqc2 $vf6,0x0(%0)\n\tnop" : : "r"(a3), "r"(a2), "r"(t) : "memory");
+    return func_001198C8(-1, a0, (s32)a3) != 0;
+}
 
 s32 func_0011A068(void) {
     s32 i;
