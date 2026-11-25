@@ -383,15 +383,77 @@ s32 func_002343A8(s32 a0, s32 a1, s32 a2, s32 a3) {
     return s;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234440);
+s32 func_00234440(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 8;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_Ent2340[D_00647FB8].arg[4] = a4;
+    D_Ent2340[D_00647FB8].arg[5] = a5;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234508);
+s32 func_00234508(s32 a0, s32 a1, s32 a2, s32 a3) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 9;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002345A0);
+s32 func_002345A0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 10;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_Ent2340[D_00647FB8].arg[4] = a4;
+    D_Ent2340[D_00647FB8].arg[5] = a5;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234668);
+s32 func_00234668(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 11;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_Ent2340[D_00647FB8].arg[4] = a4;
+    D_Ent2340[D_00647FB8].arg[5] = a5;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00234730);
+s32 func_00234730(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    s32 s;
+    D_Ent2340[D_00647FB8].type = 9;
+    D_Ent2340[D_00647FB8].serial = D_00647FC0;
+    D_Ent2340[D_00647FB8].arg[0] = a0;
+    D_Ent2340[D_00647FB8].arg[1] = a1;
+    D_Ent2340[D_00647FB8].arg[2] = a2;
+    D_Ent2340[D_00647FB8].arg[3] = a3;
+    D_Ent2340[D_00647FB8].arg[4] = a4;
+    D_00647FB8 = (D_00647FB8 + 1) & 0x3F;
+    s = D_00647FC0++;
+    return s;
+}
 
 typedef struct { s32 type; s32 serial; s32 arg[6]; } Ent2347;
 extern Ent2347 D_Ent2347[] __asm__("D_006477B0");
@@ -1486,9 +1548,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002407B0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00240810);
 
-/* unused: layout only (notes/f1.md F1). After func_0023C8C8 was matched, func_002408D8 lost its folded
- * `addu $4,$4,D_00651E70` (and the function at 0x2414A8 changed too) without it (q1, 25 Nov). */
-extern s32 D_2408D8_layout0;
+/* layout note (notes/f1.md F1): func_002408D8 (and the function at 0x2414A8) flip with the code above them: after
+ * func_0023C8C8 one unused `extern s32 D_2408D8_layout0;` here was needed, after func_00234440..func_00234730 none
+ * (q1, 25 Nov). If they differ again, try 0-n such externs here. */
 extern u8 D_00651E70;
 extern void func_00240810(void *);
 
@@ -1580,6 +1642,9 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002416A8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241948);
 
+/* unused: layout only (notes/f1.md F1): without it func_00241A10 loses its folded `sw $5,D_00652888($1)`
+ * (after func_00234440..func_00234730 were matched, q1 25 Nov) */
+extern s32 D_241A10_layout0;
 extern u32 D_00652888[];
 
 void func_00241A10(s32 arg0, u32 arg1) {
