@@ -396,7 +396,50 @@ void func_001043E0(u8* a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104528);
+extern s32 D_002A6234_s __asm__("D_002A6234");
+extern s32 D_002A623C;
+extern s32 D_002A6240;
+extern s32 D_002A6244;
+extern s32 D_002A6248;
+extern s32 D_002A6250;
+extern s32 D_002A625C;
+extern s32 D_002A6260;
+extern s32 D_002A6264;
+extern s32 D_002A6268;
+extern s32 D_002A626C;
+extern s32 D_002A6270;
+extern s32 D_002A6278;
+extern s32 D_002A627C;
+extern s32 D_002A6280;
+extern s32 D_002A6284;
+extern s32 D_002A6288;
+extern s32 D_002A628C;
+extern s32 D_002A6290;
+extern s32 D_002A6298;
+extern s32 D_002A629C;
+extern s32 D_002A62A0;
+extern s32 D_002A62A4;
+extern s32 D_002A62A8;
+extern s32 D_002A62EC;
+
+void func_00104528(void) {
+    D_002A6234_s = D_002A6270;
+    D_002A6238 = (Seg1970Unk14*)D_002A6274;
+    D_002A623C = D_002A6278;
+    D_002A6240 = D_002A627C;
+    D_002A6244 = D_002A6280;
+    D_002A6248 = D_002A6284;
+    D_002A624C = (Seg1970F0C*)D_002A6288;
+    D_002A6250 = D_002A628C;
+    D_002A6254 = (Seg1970Unk10*)D_002A6290;
+    D_002A6258 = D_002A6294;
+    D_002A625C = D_002A6298;
+    D_002A6260 = D_002A629C;
+    D_002A6264 = D_002A62A0;
+    D_002A6268 = D_002A62A4;
+    D_002A626C = D_002A62A8;
+    D_002A62EC = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00104678);
 
