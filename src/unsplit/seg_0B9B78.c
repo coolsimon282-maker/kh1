@@ -380,7 +380,25 @@ s32 func_001BAAD0(void) {
     return func_001BA980()[2];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0B9B78", func_001BAAF0);
+void func_001BAAF0(u8 *a0) {
+    *(s32 *)(a0 + 0x9B40) = 0x4000;
+    *(s32 *)(a0 + 0x9B44) = 0x8000;
+    *(s32 *)(a0 + 0x9B48) = 0x400;
+    *(s32 *)(a0 + 0x9B60) = 0x1000;
+    *(s32 *)(a0 + 0x9B64) = 0;
+    *(s32 *)(a0 + 0x9B4C) = 0x2000;
+    *(s32 *)(a0 + 0x9B50) = 0x2000;
+    *(s32 *)(a0 + 0x9B54) = 0x2000;
+    *(s32 *)(a0 + 0x9B58) = 0x1000;
+    /* The original assembler moved the last instruction of the `sw $7,0x9B5C($4)` macro (lui $1; addu $1,$1,$4;
+     * sw) into the jr delay slot; ours never does, so this store is written with $at spelled out, after a barrier
+     * so that nothing else can use $at in between. */
+    __asm__ volatile("");
+    {
+        register u8 *at asm("$1") = a0 + 0x10000;
+        *(s32 *)(at - 0x64A4) = 0x1000;
+    }
+}
 
 extern char D_00490020[];
 void func_001BE820(void *, s32);
