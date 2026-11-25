@@ -224,7 +224,48 @@ void func_001C2808(s32 arg0, s32 arg1, void* arg2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C28B8);
+extern s8 D_003C2D30[];
+extern s32 D_0038ACC4[];
+extern s32 D_0038B4C4[];
+
+s32 func_001C28B8(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)func_0022F768(1);
+    s32 b2 = (s32)func_0022F768(2);
+
+    arg0->unk_174[36] = arg1;
+    if (arg1 < 0x800) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s8*)(b1 + arg1);
+    } else if (arg1 < 0x900) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s8*)(b1 + arg1);
+    } else if (arg1 < 0xB00) {
+        arg1 -= 0x900;
+        if ((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1) {
+            arg0->unk_174[3]++;
+            arg0->unk_174[arg0->unk_174[3] + 4] = D_0038B4C4[arg1];
+        } else {
+            arg0->unk_174[3]++;
+            arg0->unk_174[arg0->unk_174[3] + 4] = D_0038ACC4[arg1];
+        }
+    } else if (arg1 < 0xC80) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(u8*)(arg1 + b1 - 0x200);
+    } else if (arg1 < 0xCC0) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = D_003C2D30[arg1];
+    } else if (arg1 < 0xD00) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = D_003C2D30[arg1];
+    } else if (arg1 < 0xD40) {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = D_003C2D30[arg1];
+    } else {
+        arg0->unk_174[3]++;
+        arg0->unk_174[arg0->unk_174[3] + 4] = *(s8*)(arg1 + b2 - 0xD40);
+    }
+    return 2;
+}
 
 s32 func_001C2AA0(Script* arg0, s32 arg1) {
     s32 b1 = (s32)func_0022F768(1);
