@@ -281,7 +281,43 @@ s32 func_0024D4A0(void) {
     return D_0046A60C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D4B0);
+typedef struct {
+    char c[11];
+} S11_D4B0;
+typedef struct {
+    char c[16];
+} S16_D4B0;
+extern S11_D4B0 D_0048B478;
+extern S16_D4B0 D_0048B488;
+extern char D_00491948[];
+extern char D_00491958[];
+extern char D_00491968[];
+extern char D_00491970[];
+extern s32 D_0046A610;
+s32 func_00120A20(char *, s32, char *, s32 *);
+void func_0024D808(void);
+
+s32 func_0024D4B0(void) {
+    S11_D4B0 a = D_0048B478;
+    S16_D4B0 b = D_0048B488;
+    s32 r;
+
+    D_0046A610 = 0;
+    D_0046A60C = 0;
+    func_00120A20(D_00491948, 0, NULL, &r);
+    if (func_00120A20(D_00491958, 0, NULL, &r) < 0) {
+        return 1;
+    }
+    if (func_00120A20(D_00491968, 10, a.c, &r) < 0) {
+        return 1;
+    }
+    if (func_00120A20(D_00491970, 0x12, b.c, &r) < 0) {
+        return 1;
+    }
+    D_0046A60C = 1;
+    func_0024D808();
+    return 0;
+}
 
 extern s32 D_0046A618;
 
