@@ -7631,7 +7631,42 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016DD30);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016DF30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016E0D0);
+typedef struct N16E0D0 { s32 a; s32 b; s32 (*fn)(u8*, s32, s32, s32); s32 d; struct N16E0D0* next; } N16E0D0;
+extern N16E0D0* D_00575780_e __asm__("D_00575780");
+extern N16E0D0* D_00575784_e __asm__("D_00575784");
+void func_0016E0D0(s32 m) {
+    N16E0D0* e = D_00575780_e;
+    N16E0D0* prev = NULL;
+    N16E0D0* nx;
+    s32 r;
+    u8* o;
+    while (e != NULL) {
+        nx = e->next;
+        r = 1;
+        if (e->fn != NULL && (u32)(e->a - 1) < 2) {
+            o = (u8*)D_0035BD40[e->a];
+            if (o != NULL) {
+                r = 0;
+                if ((*(s32*)o & 0x8000) && (e->b & m)) {
+                    r = e->fn(o, *(s32*)(o + 0x144), m, e->d);
+                }
+            }
+        }
+        if (r == 1) {
+            if (prev == NULL) {
+                D_00575780_e = e->next;
+            } else {
+                prev->next = e->next;
+            }
+            e->fn = NULL;
+            e->next = D_00575784_e;
+            D_00575784_e = e;
+        } else {
+            prev = e;
+        }
+        e = nx;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0016E1F0);
 
