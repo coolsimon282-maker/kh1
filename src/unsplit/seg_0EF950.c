@@ -3861,7 +3861,37 @@ void func_00212270(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002122B8);
+extern s32 D_00641C10[];
+extern s32 D_00642410;
+extern s32 D_00641C10_l[] __asm__("D_00641C10");
+extern s32 D_f1pad_gef; /* unused: rule F1 */
+void func_002122B8(void) {
+    s32 i;
+    s32 s = D_00641BD0 + D_00641BD4;
+    s32 m;
+
+    if (D_00642410 < s || D_00641BF0[D_00641BC4] != D_00641C10_l[s]) {
+        for (i = 0; i < D_00642410; i++) {
+            if (D_00641C10[i] == D_00641BF0[D_00641BC4]) {
+                m = D_00642410;
+                if (m < 7) {
+                    D_00641BD0 = 0;
+                    D_00641BD4 = i;
+                    return;
+                }
+                m -= 7;
+                if (i < m) {
+                    D_00641BD0 = i;
+                    D_00641BD4 = 0;
+                    return;
+                }
+                D_00641BD0 = m;
+                D_00641BD4 = i - m;
+                return;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_002123B8);
 
@@ -4167,9 +4197,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_00214130);
 void func_00214130(s32, s32, s32, s32, s32, s32);
 
 extern s32 D_f1pad_feadghb; /* unused: rule F1 */
-extern s32 D_f1pad_gg; /* unused: rule F1 */
-extern s32 D_f1pad_babdgdg; /* unused: rule F1 */
-extern s32 D_f1pad_h; /* unused: rule F1 */
 void func_00214290(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     s32 *e;
     s32 c;
