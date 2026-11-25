@@ -373,7 +373,16 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108DF8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108D68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00108FD0);
+extern T108CF8 D_002AA060[];
+extern u8 D_002B1C60[][64][0x90];
+void func_00108C58(s32, u8*);
+
+void func_00108FD0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
+    func_00108B60((S108B60*)a3, (T108B60*)&D_002AA060[a0]);
+    func_00108C58(a2, D_002B1C60[D_00351BD0][a0]);
+    func_00108CD0((s32*)D_002B1C60[D_00351BD0][a0], (s32*)a4);
+    func_0015ED80(a1, func_00108D90)->unk_10 = (s32)&D_002AA060[a0].t.e[D_00351BD0];
+}
 
 int sceGsSetDefLoadImage_s(u8 *, short, short, short, short, short, short, short) __asm__("sceGsSetDefLoadImage");
 void func_001090E8(s32 a0, s32 a1, s32 a2, s32 a3) {
