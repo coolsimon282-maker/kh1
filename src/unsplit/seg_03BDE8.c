@@ -4846,7 +4846,28 @@ void func_00153D88(u8* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153E80);
+void func_00153E80(u8* p) {
+    f32 f;
+    if (*(s32*)(p + 0x70) == 0x11) {
+        func_00130340(p, 0x100006D, 16.0f);
+        func_00130578((s32)p, 0x4000002D, 0.0f);
+    } else {
+        switch (*(s32*)(p + 0x164)) {
+        case 0x43:
+        case 0x6C:
+            f = 8.0f;
+            func_00130340(p, 0x1000044, f);
+            func_00130578((s32)p, 0x40000000, f);
+            break;
+        case 0x8D:
+            f = 8.0f;
+            func_00130340(p, 0x100008E, f);
+            func_00130578((s32)p, 0x40000075, f);
+            break;
+        }
+    }
+    func_00153D88(p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00153F88);
 
