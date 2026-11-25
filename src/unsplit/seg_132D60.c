@@ -2354,7 +2354,45 @@ void func_00245300(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
     D_006626C0 = func_002388B8((u8 *)&D_006626D0_o, 1, D_006626C0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002453E8);
+extern s32 D_006627C8;
+extern s32 D_006627D0;
+extern s32 D_006627D8;
+extern u8 D_00431D20[];
+extern sceVu0FMATRIX D_002DEC20;
+extern void *func_001315C0(s32, s32, f32 *, f32);
+void func_00237A48(s32 *, sceVu0FMATRIX, f32 *, s32);
+s32 func_00249580(f32 *);
+void func_00249558(void *, void *);
+
+void func_002453E8(s32 a0, f32 f) {
+    sceVu0FVECTOR v;
+    s32 w[4];
+    Struct_006627B0 *s = &D_006627B0;
+    s32 o = 0;
+
+    switch (s->unk0) {
+    case 0:
+        o = D_006627C8;
+        break;
+    case 1:
+        o = D_006627D0;
+        break;
+    case 2:
+        o = D_006627D8;
+        break;
+    }
+    if (a0 != 0) {
+        func_002479A0(o);
+    }
+    func_00247AA0(o);
+    func_001315C0(s->unk4, 0x8004, v, 0.0f);
+    if (func_00249580(v) == 0) {
+        func_00237A48(w, D_002DEC20, v, 1);
+        func_00249558(w, w);
+        w[1] -= 0x36;
+        func_00245300(o, (s32)D_00431D20, w[0], w[1], f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245508);
 
