@@ -5185,8 +5185,6 @@ INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DA940);
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAAA8);
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DAB88);
-
 typedef struct {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ f32* unk_004;
@@ -5205,6 +5203,37 @@ typedef struct {
     u64 unk_328_11 : 1;
     u64 unk_328_12 : 52;
 } ScriptQ;
+
+/* Unused on purpose: keeps later functions matching (notes/f1.md F1). */
+extern s32 func_001DAB88_f1_pad1;
+
+void func_001DAB88(ScriptQ* arg0) {
+    ScriptMsgG msg;
+    f32 t;
+
+    arg0->unk_028 += D_002B8344;
+    if (arg0->unk_024 < arg0->unk_028) {
+        msg.unk_00 = 3;
+        msg.unk_01 = 0;
+        msg.unk_04 = arg0->unk_000;
+        msg.unk_10[0] = arg0->unk_014;
+        msg.unk_10[1] = arg0->unk_018;
+        msg.unk_10[2] = arg0->unk_01C;
+        msg.unk_10[3] = 1.0f;
+        func_001C4640((ScriptMsg*)&msg);
+        arg0->unk_328_11 = 0;
+        return;
+    }
+    t = arg0->unk_028 / arg0->unk_024;
+    msg.unk_00 = 3;
+    msg.unk_01 = 0;
+    msg.unk_04 = arg0->unk_000;
+    msg.unk_10[0] = arg0->unk_008[0] + (arg0->unk_014 - arg0->unk_008[0]) * t;
+    msg.unk_10[1] = arg0->unk_008[1] + (arg0->unk_018 - arg0->unk_008[1]) * t;
+    msg.unk_10[2] = arg0->unk_008[2] + (arg0->unk_01C - arg0->unk_008[2]) * t;
+    msg.unk_10[3] = 1.0f;
+    func_001C4640((ScriptMsg*)&msg);
+}
 
 s32 func_001DACC8(Script* arg0) {
     ScriptQ* x = (ScriptQ*)arg0;
