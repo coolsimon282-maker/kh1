@@ -153,9 +153,57 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00106ED0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_00107120);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001072C0);
+extern s32 D_00351BD0;
+extern s32 D_00494AA0[];
+extern s32 D_00494BA0;
+extern s32 D_0047A210[];
+extern s32 D_004761D0_s[] __asm__("D_004761D0");
+void func_00107120(s32* a0, s32* a1, s32 a2, s32 a3);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_006B18", func_001073F0);
+void func_001072C0(s32 a0, s32* a1) {
+    s32 i;
+    s32 n = 0;
+    s32 m = 0;
+
+    if (D_00351BD0 != 0) {
+        for (i = 0; i < D_00494BA0; i++) {
+            func_00107120(a1 + n, &D_0047A210[m], D_00494AA0[i], 4);
+            n += D_00494AA0[i];
+            m += D_00494AA0[i] * 4;
+        }
+    } else {
+        for (i = 0; i < D_00494BA0; i++) {
+            func_00107120(a1 + n, &D_004761D0_s[m], D_00494AA0[i], 4);
+            n += D_00494AA0[i];
+            m += D_00494AA0[i] * 4;
+        }
+    }
+}
+
+extern s32 D_00494B20[];
+extern s32 D_00494BA4;
+extern s32 D_00472190[];
+extern s32 D_0046E150[];
+
+void func_001073F0(s32 a0, s32* a1) {
+    s32 i;
+    s32 n = 0;
+    s32 m = 0;
+
+    if (D_00351BD0 != 0) {
+        for (i = 0; i < D_00494BA4; i++) {
+            func_00107120(a1 + n, &D_00472190[m], D_00494B20[i], 4);
+            n += D_00494B20[i];
+            m += D_00494B20[i] * 4;
+        }
+    } else {
+        for (i = 0; i < D_00494BA4; i++) {
+            func_00107120(a1 + n, &D_0046E150[m], D_00494B20[i], 4);
+            n += D_00494B20[i];
+            m += D_00494B20[i] * 4;
+        }
+    }
+}
 
 s32 func_00107520(s32 arg0) {
     Seg6B18Unk10* p = &D_00494BA8[arg0];
