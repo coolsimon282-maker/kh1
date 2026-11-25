@@ -2516,7 +2516,27 @@ u8* func_00147D18(s32 a) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00147D50);
+/* unused: rule F1 (with fewer, func_0014ED30, func_001560F8 or func_00176F08 change) */
+extern s32 D_lay147D50_0;
+extern s32 D_lay147D50_1;
+extern s32 D_lay147D50_2;
+extern s32 D_lay147D50_3;
+extern s32 D_lay147D50_4;
+extern s32 D_lay147D50_5;
+extern s32 D_lay147D50_6;
+extern s32 D_lay147D50_7;
+extern s32 D_lay147D50_8;
+extern s32 D_lay147D50_9;
+extern s32 D_lay147D50_10;
+extern s32 D_lay147D50_11;
+void func_00121878(s32, f32*);
+void func_00147D50(u8* a, s32 b) {
+    f32 v[4];
+    func_00121878(b, v);
+    (*(u32**)(a + 4))[0] = (u16)(s32)((v[0] / 6.2831855f) * 65536.0f);
+    (*(u32**)(a + 4))[1] = (u16)(s32)((v[1] / 6.2831855f) * 65536.0f);
+    (*(u32**)(a + 4))[2] = (u16)(s32)((v[2] / 6.2831855f) * 65536.0f);
+}
 
 /* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was; with it func_00176F08 needs one flip_dummy less (rule F1) */
 extern s32 D_00147E08_pad0;
