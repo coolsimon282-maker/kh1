@@ -4325,9 +4325,45 @@ s32 func_001D8808(Script* arg0) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8850);
+s32 func_001D8850(void) {
+    ScriptMsgG msg;
+    u8* p;
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D8928);
+    msg.unk_00 = 7;
+    msg.unk_01 = 0;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        if ((func_001239D8(*(s32*)(p + 4)) >= 0x12C && func_001239D8(*(s32*)(p + 4)) < 0x15F) ||
+            (func_001239D8(*(s32*)(p + 4)) >= 0x190 && func_001239D8(*(s32*)(p + 4)) < 0x21C)) {
+            msg.unk_04 = *(s32*)(p + 4);
+            func_001C4640((ScriptMsg*)&msg);
+        }
+    }
+    return 2;
+}
+
+s32 func_001D8928(void) {
+    ScriptMsgG msg;
+    u8* p;
+
+    msg.unk_00 = 6;
+    msg.unk_01 = 0;
+    msg.unk_10[0] = 0.0f;
+    msg.unk_10[1] = 0.0f;
+    msg.unk_10[2] = 0.0f;
+    msg.unk_10[3] = 1.0f;
+    for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        if ((func_001239D8(*(s32*)(p + 4)) >= 0x12C && func_001239D8(*(s32*)(p + 4)) < 0x15F) ||
+            (func_001239D8(*(s32*)(p + 4)) >= 0x190 && func_001239D8(*(s32*)(p + 4)) < 0x21C)) {
+            msg.unk_04 = *(s32*)(p + 4);
+            func_001C4640((ScriptMsg*)&msg);
+        }
+    }
+    return 2;
+}
 
 void func_001D8A00(void) {
     D_003854E0.unk_3070 &= ~0x1000000000000000;
