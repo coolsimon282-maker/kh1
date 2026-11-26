@@ -457,7 +457,6 @@ s32 func_0013C6A8(u32 n);
 s32 func_0013C968(s32 a0, u32 a1);
 u8* func_00147A88(s32);
 s32 func_0013C9E0(a0, a1);
-/* unused: rule F1 (with fewer, func_00176F08, func_0014ED30, func_001560F8 or func_00168530 change) */
 void *func_0013DA88(s32 a);
 s32 func_0013DB30(s32 a);
 s32 func_0014A408(void);
@@ -496,7 +495,6 @@ s32 func_00146998(u8* p);
 s32 func_00146998();
 s32 func_00146B90(u8* a, s32 b, s32 c, s32 d);
 u8* func_00146BD0(s32 a, s32 b);
-/* unused: rule F1 (keeps func_001560F8, func_00168530, func_0016FA10, func_00176F08 as they were) */
 u8* func_00147138(u8* p, s32 a1);
 void func_00147278(s32 a0, s32 a1, s32 a2);
 void func_0011D350_nt() __asm__("func_0011D350");
@@ -507,9 +505,7 @@ s32 func_001477E0(s32 a0);
 u8* func_00147A88(s32 i);
 s32 func_001623E0(u8* p);
 s32 func_001765F8(s32 arg0);
-/* unused: rule F1 (with other counts func_0014ED30, func_00152E10, func_001560F8 or func_00176F08 change; 26 Nov, after fm was merged into fm-q1: 7 and 8 among 0-16, with 13 flip_dummies above func_00176F08) */
 void func_00147D50(u8* a, s32 b);
-/* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was; with it func_00176F08 needs one flip_dummy less (rule F1) */
 u8* func_00147ED8(s32 a, s32 b, s32 c, f32* v);
 void func_00148068(u8* p, f32 f);
 u8* func_00148768(s32 a0, s32 a1, s32 a2, s32 a3, f32 f);
