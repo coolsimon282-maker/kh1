@@ -4510,7 +4510,46 @@ s32 func_0015A520(u8* p, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015A5B8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015A758);
+s32 Actor_IsActive(u8*);
+void Actor_Remove(u8*);
+void func_0015A758(u8* p, u8* q) {
+    sceVu0FVECTOR d;
+    u8* e;
+    f32 k;
+
+    e = *(u8**)&D_002E26A0;
+    if (Actor_IsActive(e) == 0) {
+        return;
+    }
+    sceVu0SubVector(d, (f32*)(p + 0x10), (f32*)(e + 0x10));
+    *(s32*)&d[1] = 0;
+    func_001223B0(d, d);
+    if (*(s32*)(p + 0x70) == 0) {
+        if (d[3] < *(f32*)(*(u8**)(p + 0x130) + 0x44)) {
+            func_0014F658((s32)p, 2);
+            k = 0.5f;
+            *(f32*)(p + 0x3C0) = func_00177D68() * *(f32*)(q + 8) - *(f32*)(q + 8) * k;
+            *(s32*)(p + 0x3C4) = 0;
+            *(f32*)(p + 0x3C8) = func_00177D68() * *(f32*)(q + 8) - *(f32*)(q + 8) * k;
+            *(s32*)(p + 0x3B0) = 0;
+        }
+    } else {
+        if (sceVu0InnerProduct(d, (f32*)(e + 0x30)) < 0.0f && d[3] > 2000.0f) {
+            Actor_Remove(p);
+            return;
+        }
+        *(s32*)(p + 0x20) = 0;
+        *(f32*)(p + 0x24) = 1.0f;
+        *(s32*)(p + 0x28) = 0;
+        *(f32*)(p + 0x3B0) += *(f32*)q * D_002B8344;
+        if (*(f32*)(p + 0x3B0) >= *(f32*)(q + 4)) {
+            *(f32*)(p + 0x3B0) = *(f32*)(q + 4);
+        }
+        *(f32*)(p + 0x2C) = *(f32*)(p + 0x3B0);
+        sceVu0ScaleVector(d, (f32*)(p + 0x3C0), D_002B8344);
+        sceVu0AddVector((f32*)(p + 0x30), (f32*)(p + 0x30), d);
+    }
+}
 
 extern u8 D_00351AA0[];
 void func_0015A758(u8*, u8*);
