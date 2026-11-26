@@ -21,7 +21,24 @@ typedef struct {
     /* 0x2F0 */ s32 unk_2F0;
 } ScriptVM;
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C21B8);
+extern u8 D_003C39B0[];
+extern u8 D_003C39F0[];
+extern u8 D_003C3A30[];
+extern XGiantMountain D_003854E0;
+
+static inline void clr64(u8 *p) {
+    s32 i;
+    for (i = 63; i >= 0; i--) {
+        p[i] = 0;
+    }
+}
+
+void func_001C21B8(void) {
+    clr64(D_003C39B0);
+    clr64(D_003C39F0);
+    clr64(D_003C3A30);
+    D_003854E0.unk_3070 &= ~0x40000000000;
+}
 
 // Opcode 0 NOP.
 s32 ScriptOp_Nop(void) {
