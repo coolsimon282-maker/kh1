@@ -1,6 +1,10 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
+// Its .data is defined below (the library version string).
 #include "common.h"
+
+#ifdef VERSION_FM
+char D_0046C5B0[16] = "PsIIlibdbc  2500"; // .data: library version (no NUL)
+#endif
 
 /* libdbc has no reference source: the types are derived from the assembly. */
 

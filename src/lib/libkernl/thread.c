@@ -1,5 +1,5 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
+// Its .data (two words) is defined at D_0046BE88 below.
 #include "common.h"
 
 struct ThreadParam {
@@ -101,7 +101,13 @@ void topThread(void *arg)
 }
 
 /* the kernel event thread's id, zero until InitKernEvent creates it */
+#ifdef VERSION_FM
+// .data (0x0046BE88-0x0046BE90)
+int D_0046BE88 = 0; /* kernEventThreadId */
+int D_0046BE8C = 0;
+#else
 extern int D_0046BE88; /* kernEventThreadId */
+#endif
 
 /* The link's small-data base, which no header declares */
 extern char D_00494050[]; /* _gp */
