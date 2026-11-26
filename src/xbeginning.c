@@ -27,6 +27,64 @@ extern XInchWorm D_00297850;
 extern s32 D_002978C0;
 extern s32 D_002978C4;
 extern s32 D_002978CC;
+
+#ifdef VERSION_FM
+// .data (0x0029B140-0x0029B410): four GIF packets with their DMA ref tags (the code sees the tags as UNK_TYPE,
+// so they are defined under their assembler names), and the XInchWorm work area
+u64 D_0029B140[6] = {
+    0x2000000000008001ULL, 0xEE,
+    0x44, 0x43,
+    0x31001, 0x48,
+};
+sceDmaTag D_00297740_t __asm__("D_00297740") = {3, 0, 0, (sceDmaTag*)D_0029B140};
+u64 D_0029B180[8] = {
+    0x3000000000008001ULL, 0xEEE,
+    0x44, 0x43,
+    0x5010D, 0x48,
+    0x60, 0x15,
+};
+sceDmaTag D_00297790_t __asm__("D_00297790") = {4, 0, 0, (sceDmaTag*)D_0029B180};
+u64 D_0029B1D0[6] = {
+    0x2000000000008001ULL, 0xEE,
+    0x131000070ULL, 0x4F,
+    0x5000D, 0x48,
+};
+sceDmaTag D_002977D0_t __asm__("D_002977D0") = {3, 0, 0, (sceDmaTag*)D_0029B1D0};
+u64 D_0029B210[10] = {
+    0x4000000000008001ULL, 0xEEEE,
+    0x44, 0x43,
+    0x5000D, 0x48,
+    0x31000070, 0x4F,
+    0x60, 0x15,
+};
+sceDmaTag D_00297830_t __asm__("D_00297830") = {5, 0, 0, (sceDmaTag*)D_0029B210};
+f32 D_0029B270 = 0.0f;
+// XInchWorm D_00297850 (0x80 bytes); its last four words are separate labels the code uses
+u8 D_00297850_b[0x70] __asm__("D_00297850") __attribute__((aligned(16))) = {0};
+s32 D_002978C0 = 0;
+s32 D_002978C4 = 0;
+s32 D_0029B2F8 = 0;
+s32 D_002978CC = 0;
+u32 D_0029B300[4] = {0};
+sceVu0FVECTOR D_0029B310[16] = {
+    {1.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f, 0.0f},
+    {1.0f, 1.0f, 0.0f, 0.0f},
+    {2.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 2.0f, 0.0f, 0.0f},
+    {2.0f, 2.0f, 0.0f, 0.0f},
+    {4.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 4.0f, 0.0f, 0.0f},
+    {4.0f, 4.0f, 0.0f, 0.0f},
+    {6.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 6.0f, 0.0f, 0.0f},
+    {6.0f, 6.0f, 0.0f, 0.0f},
+    {8.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 8.0f, 0.0f, 0.0f},
+    {8.0f, 8.0f, 0.0f, 0.0f},
+    {16.0f, 16.0f, 0.0f, 0.0f},
+};
+#endif
 extern s32 D_002A0500;
 extern s32 D_002A0514;
 extern s32 D_002A2740;

@@ -484,6 +484,8 @@ segments:
 
   ## .data section ##
   - [ 0x172c70, data ]
+  - [ 0x19b140, .data, xbeginning ]
+  - [ 0x19b410, data ]
   - [ 0x1a69e0, .data, xpancake ]
   - [ 0x1a6b80, data ]
   - [ 0x1b6460, .data, xarcade ]
