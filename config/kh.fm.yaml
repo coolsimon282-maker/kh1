@@ -528,6 +528,8 @@ segments:
   - [ 0x2732d0, data ]
   - [ 0x2772d0, .data, unsplit/gumi ]
   - [ 0x277848, data ]
+  - [ 0x2dabd8, .data, unsplit/xstuck ]
+  - [ 0x2dac40, data ]
   - [ 0x2e3c80, .data, xquack ]
   - [ 0x2e3cb8, .data, xtango ]
   - [ 0x2e4658, data ]
