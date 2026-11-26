@@ -850,7 +850,7 @@ void func_0012A270(XAudArg* arg0) {
 }
 
 extern f32 D_002C58B0[4];
-s32 func_0013C2A8(s32);
+s32 Party_FindCharacterSlot(s32);
 void func_0023E0B0(s32, s32);
 void func_00153D88(XAudObj*);
 
@@ -862,7 +862,7 @@ void func_0012A280(XAudArg* arg0) {
     sceVu0CopyVector(obj->unk_3C0, D_002C58B0);
     obj->unk_3B0 = 0;
     obj->unk_370.raw |= 0x1000000000000000;
-    func_0023E0B0(func_0013C2A8(obj->unk_130->unk_4C), 3);
+    func_0023E0B0(Party_FindCharacterSlot(obj->unk_130->unk_4C), 3);
     func_00153D88(obj);
 }
 
@@ -1223,10 +1223,10 @@ void func_0012ACA8(XAudArg* arg0) {
     arg0[0].s = func_00122AF8(arg0[0].s, arg0[1].s | 8, arg0[2].s);
 }
 
-void func_00122B70(void*);
+void Interpolation_ClearValue(void*);
 
 void func_0012ACE0(XAudArg* arg0) {
-    func_00122B70(arg0[0].p);
+    Interpolation_ClearValue(arg0[0].p);
 }
 
 void func_001228C8(void*, void*, f32, void*);
@@ -1238,7 +1238,7 @@ void func_0012ACF8(XAudArg* arg0) {
 extern s32 D_002C5C60;
 
 void func_0012AD20(XAudArg* arg0) {
-    func_001228C8(arg0[0].p, &D_002C5C60, arg0[1].f, func_00122B70);
+    func_001228C8(arg0[0].p, &D_002C5C60, arg0[1].f, Interpolation_ClearValue);
 }
 
 void func_00142058(void*);

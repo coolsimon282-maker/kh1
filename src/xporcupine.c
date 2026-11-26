@@ -31,7 +31,7 @@ s32 func_001014A8() {
     // strcat(stack, ".img");
     D_002A050C = func_00155ED8(0x34, 8);
     D_002A050C = func_001133E0(D_002A050C, 0x80);
-    return func_00120590(stack, D_002A050C, func_001011B8, 0);
+    return cdvd_QueueFileLoad(stack, D_002A050C, func_001011B8, 0);
 }
 
 void func_00101528() {
@@ -121,7 +121,7 @@ s32 func_001016E8(void) {
         strcpy(buf, worldBinImgFile);
         strcat(buf, ".bin");
         D_002A0508 = func_001133E0(D_002A0508, 0x80);
-        func_00120590(buf, D_002A0508, func_001011E0, 0);
+        cdvd_QueueFileLoad(buf, D_002A0508, func_001011E0, 0);
     }
     D_002B868C = D_002BC12C;
     return 4;

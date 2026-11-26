@@ -36,6 +36,6 @@ void func_001F45D8(XKitten*, s32);
 void func_001F45F0(XKitten*);
 void func_001F4640(XKitten*);
 void func_001F4668(XKitten*, XKitten*);
-void func_001F4690(XKitten*, XKitten*);
+void UiObject_InsertAfter(XKitten*, XKitten*);
 void func_001F46D8(XKitten*, XKitten*);
 void func_001F4888(XKitten*, s32);

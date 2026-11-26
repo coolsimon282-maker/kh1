@@ -667,7 +667,7 @@ void func_00123F00(XToaster* p, f32* v) {
 }
 
 s32 func_001499A0(void);
-s32 func_0013C2A8(s32);
+s32 Party_FindCharacterSlot(s32);
 void func_00141E68(XToaster*);
 void func_00153D88(XToaster*);
 void func_00241C60(XToaster*, s32);
@@ -684,7 +684,7 @@ void func_00124108(XToaster* p) {
     XToaster148* e;
 
     p->unk_14C = func_001499A0();
-    n = func_0013C2A8(p->unk_130->unk_4C);
+    n = Party_FindCharacterSlot(p->unk_130->unk_4C);
     k = n;
     if ((u32)n < 3 && p->unk_006 == 3) {
         if (n > 0) {

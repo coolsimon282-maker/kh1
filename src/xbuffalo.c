@@ -377,7 +377,7 @@ void fm_func_001C07A8(void) {
 #endif
 
 s32 func_001C2150(void) {
-    func_0011EF58(&D_00623B38, 0);
+    TaskList_UpdateMatching(&D_00623B38, 0);
     return 0;
 }
 

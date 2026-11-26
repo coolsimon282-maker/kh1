@@ -159,7 +159,7 @@ void func_001F4670(XKitten* arg0) {
     }
 }
 
-void func_001F4690(XKitten* arg0, XKitten* arg1) {
+void UiObject_InsertAfter(XKitten* arg0, XKitten* arg1) {
     XKitten* kit;
 
     if (arg0->prev != NULL) {

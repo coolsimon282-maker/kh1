@@ -22,6 +22,58 @@ worldfile_getNames           = 0x00112320; // type:func
 worldfile_getBinImgName      = 0x00112400; // type:func
 
 
+//=========================================================
+// names from jhaton/kh1 (docs/external/jhaton/names_for_fm.tsv)
+//=========================================================
+cdvd_QueueFileLoad                   = 0x00120748; // type:func
+Fade_ResetIntensity                  = 0x001066F8; // type:func
+Fade_StartOverlayIn                  = 0x00106978; // type:func
+Fade_StartOverlayOut                 = 0x00106A58; // type:func
+Fade_StartScreenIn                   = 0x00106780; // type:func
+Fade_StartScreenOut                  = 0x00106880; // type:func
+FadeTask_UpdateOverlayIn             = 0x00106920; // type:func
+FadeTask_UpdateOverlayOut            = 0x00106A08; // type:func
+FadeTask_UpdateScreenIn              = 0x00106708; // type:func
+FadeTask_UpdateScreenOut             = 0x00106810; // type:func
+FileLoadTask_IsActive                = 0x0011F2D0; // type:func
+GameData_BindBuffer                  = 0x001EE4B8; // type:func
+GameData_Initialize                  = 0x001EE520; // type:func
+GameData_Reset                       = 0x001EE4E8; // type:func
+GameState_ApplyAvailableSelection    = 0x001119D0; // type:func
+GameState_BindBuffer                 = 0x00111288; // type:func
+GameState_Initialize                 = 0x001117E0; // type:func
+GameState_RefreshAvailableFlags      = 0x001118F0; // type:func
+GameState_Reset                      = 0x001112B8; // type:func
+Graphics_Initialize                  = 0x00109288; // type:func
+GraphicsDmaTask_Update               = 0x001274C8; // type:func
+Interpolation_ClearValue             = 0x00122768; // type:func
+Interpolation_Initialize             = 0x00122BD8; // type:func
+PcService_Initialize                 = 0x0011FB00; // type:func
+PcService_Start                      = 0x0011FAD0; // type:func
+Script_ClampValue                    = 0x001C0BF0; // type:func
+Script_ExecuteEntry                  = 0x001C1D20; // type:func
+Script_GetWorkAddress                = 0x001C0E50; // type:func
+Script_PushS24                       = 0x001C0D20; // type:func
+ScriptOp_JumpRelative                = 0x001C08F0; // type:func
+ScriptOp_Nop                         = 0x001C08E8; // type:func
+SoundRpc_FindCachedValue             = 0x001ECED0; // type:func
+TaskList_FindPrevious                = 0x0011F058; // type:func
+TaskList_RemoveIf                    = 0x0011F228; // type:func
+TaskList_UpdateMatching              = 0x0011F130; // type:func
+TaskSystem_Initialize                = 0x0011EDC8; // type:func
+TaskSystem_Update                    = 0x0011EEB0; // type:func
+UiObject_InsertAfter                 = 0x001F3E48; // type:func
+VectorInterpolationTask_Update       = 0x00122430; // type:func
+WorkBuffers_Clear                    = 0x00232AD0; // type:func
+WorkBuffers_Get                      = 0x00232CC0; // type:func
+Party_AddCharacter                   = 0x0013C7D8; // type:func
+Party_FindCharacterSlot              = 0x0013C318; // type:func
+PartyMenu_ClearOpenRequest           = 0x0011C798; // type:func
+PartyMenu_RequestOpen                = 0x0011C788; // type:func
+PauseMenu_SelectMode                 = 0x001140A0; // type:func
+PauseMenu_Update                     = 0x00114280; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

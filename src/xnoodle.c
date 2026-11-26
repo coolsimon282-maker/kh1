@@ -287,7 +287,7 @@ void func_0010BB50(XNoodleObj* obj, s32 arg1) {
 }
 
 s32 func_0010BDA8(void) {
-    func_0011EF58(&D_002B3AE0, 0);
+    TaskList_UpdateMatching(&D_002B3AE0, 0);
     D_0048ECD4 = 0;
     return 0;
 }

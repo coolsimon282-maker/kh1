@@ -187,11 +187,11 @@ s32 func_001EF708(u32 arg0) {
     return ret;
 }
 
-void func_001EF810(void) {
-    D_003ED718 = func_0022F768(5);
+void GameData_BindBuffer(void) {
+    D_003ED718 = WorkBuffers_Get(5);
 }
 
-void func_001EF840(void) {
+void GameData_Reset(void) {
     func_0022F888();
     func_00218A10();
     D_003ED718->munny = 0;
@@ -216,7 +216,7 @@ void func_0022EBF0(void);
 void func_002319C0(void);
 void func_00232790(void);
 void func_00232AC8(void);
-void func_001EF878(void) {
+void GameData_Initialize(void) {
     func_00233610();
     func_00233A80();
     fm_func_001EFAA8();
@@ -236,7 +236,7 @@ void func_001EF878(void) {
     func_00232AC8();
 }
 #else
-void func_001EF878(void) {
+void GameData_Initialize(void) {
     func_00230068();
     memcard_Initialize();
     func_001F0D88(); // in xbiscuit

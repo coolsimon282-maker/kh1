@@ -9,7 +9,7 @@ typedef struct {
     /* 0x10 */ void* unk_10;
 } XCream;
 
-s32 func_001274C0(XCream* arg0) {
+s32 GraphicsDmaTask_Update(XCream* arg0) {
     sceDmaSend(sceDmaGetChan(SCE_DMA_GIF), arg0->unk_10);
     return 2;
 }
@@ -174,8 +174,8 @@ XCream* func_0015ED80(s32 arg0, s32 (*arg1)(XCream*));
 
 s32 func_00128488(void) {
     D_004F82C0 = 0;
-    func_0015ED80(0xEC53, func_001274C0)->unk_10 = D_004F8270;
-    func_0015ED80(0xB1BB, func_001274C0)->unk_10 = D_004F8270;
+    func_0015ED80(0xEC53, GraphicsDmaTask_Update)->unk_10 = D_004F8270;
+    func_0015ED80(0xB1BB, GraphicsDmaTask_Update)->unk_10 = D_004F8270;
     return 0;
 }
 

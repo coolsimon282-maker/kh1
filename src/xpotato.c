@@ -140,7 +140,7 @@ s32 func_001FD518(struct XPotMenu*);
 s32 func_001FE570(struct XPotMenu*);
 void func_001F3D58(struct XPotMenu*, s32);
 void* func_001F4468(struct XPotMenu*);
-void func_001F4690(void*, void*);
+void UiObject_InsertAfter(void*, void*);
 void func_001F3DC0(void*);
 s32 func_0013C288(s32);
 s32 func_00132F88(s32);
@@ -185,12 +185,12 @@ void func_00215F48(struct XPotMenu* m) {
                 t = func_001F4468(m);
                 p[0] = func_001F3A20(&D_003F4460, 6);
                 if (p[0] != NULL) {
-                    func_001F4690(p[0], t);
+                    UiObject_InsertAfter(p[0], t);
                     *(u16*)(p[0] + 0xCC) = *(u16*)(p[0] + 0xCE) = *(u16*)&D_00642CC8;
                     *(u16*)(p[0] + 0xD2) = *(u16*)&D_0063CF44 << 4;
                     p[1] = func_001F3A20(&D_003F4430, 6);
                     if (p[1] != NULL) {
-                        func_001F4690(p[1], p[0]);
+                        UiObject_InsertAfter(p[1], p[0]);
                         func_001F3DC0(p[0]);
                     }
                 }
@@ -313,7 +313,7 @@ void func_00217840(void* arg0) {
     void* p0 = func_001F3A20(&D_003EE8B0, 0);
 
     if (p0 != NULL) {
-        func_001F4690(p0, arg0);
+        UiObject_InsertAfter(p0, arg0);
     }
     D_0063CF00 = arg0;
     D_0063CF04 = NULL;

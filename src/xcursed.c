@@ -8,7 +8,7 @@ s32 D_003F4480;
 s32 D_00408480;
 s32 D_00408880;
 
-s32 func_0022F578(s32 arg0) {
+s32 WorkBuffers_Clear(s32 arg0) {
     s32* puVar1;
     int i;
 
@@ -74,7 +74,7 @@ s32 func_0022F578(s32 arg0) {
     }
 }
 
-void* func_0022F768(s32 arg0) {
+void* WorkBuffers_Get(s32 arg0) {
     switch (arg0) {
         case 0:
             return &D_003F2080;

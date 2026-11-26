@@ -121,11 +121,11 @@ void func_00106428(s32 a, s32 b, s32 c, s32 d) {
     func_0011ED30(0x2E646, func_00106230);
 }
 
-void func_001064E8(void) {
+void Fade_ResetIntensity(void) {
     D_0048E508 = 0;
 }
 
-s32 func_001064F8(XFlapjack* arg0) {
+s32 FadeTask_UpdateScreenIn(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
         D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = 128;
@@ -135,13 +135,13 @@ s32 func_001064F8(XFlapjack* arg0) {
     return 0;
 }
 
-void func_00106578(s32 arg0) {
+void Fade_StartScreenIn(s32 arg0) {
     XFlapjack* p0;
     s32 val;
 
     func_00106718();
     func_00106728();
-    p0 = func_0011EEB8(&D_002B8C70, 0, func_001064F8);
+    p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateScreenIn);
     val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -153,7 +153,7 @@ void func_00106578(s32 arg0) {
     }
 }
 
-s32 func_00106610(XFlapjack* arg0) {
+s32 FadeTask_UpdateScreenOut(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0) {
         D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = 0;
@@ -163,8 +163,8 @@ s32 func_00106610(XFlapjack* arg0) {
     return 0;
 }
 
-void func_00106690(s32 arg0) {
-    XFlapjack* p0 = func_0011EEB8(&D_002B8C70, 0, func_00106610);
+void Fade_StartScreenOut(s32 arg0) {
+    XFlapjack* p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateScreenOut);
     s32 val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -183,7 +183,7 @@ void func_00106728(void) {
     D_002B29D0 = 0;
 }
 
-s32 func_00106738(XFlapjack* arg0) {
+s32 FadeTask_UpdateOverlayIn(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
         D_002B860C = 128;
@@ -193,13 +193,13 @@ s32 func_00106738(XFlapjack* arg0) {
     return 0;
 }
 
-void func_00106790(s32 arg0) {
+void Fade_StartOverlayIn(s32 arg0) {
     XFlapjack* p0;
     s32 val;
 
     func_00106718();
     func_00106728();
-    p0 = func_0011EEB8(&D_002B8C70, 0, func_00106738);
+    p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateOverlayIn);
     val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -211,7 +211,7 @@ void func_00106790(s32 arg0) {
     }
 }
 
-s32 func_00106828(XFlapjack* arg0) {
+s32 FadeTask_UpdateOverlayOut(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0.0f) {
         D_002B860C = 0;
@@ -221,19 +221,19 @@ s32 func_00106828(XFlapjack* arg0) {
     return 0;
 }
 
-void func_00106880(s32 arg0) {
+void Fade_StartOverlayOut(s32 arg0) {
     XFlapjack* p0;
     f32 f0;
     s32 val;
 
     if (D_002B29CC == 1 || D_002B29D0 == 1) {
-        func_00106578(arg0);
+        Fade_StartScreenIn(arg0);
         func_00106718();
         func_00106728();
         return;
     }
 
-    p0 = func_0011EEB8(&D_002B8C70, 0, func_00106828);
+    p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateOverlayOut);
     val = arg0 << 1;
     f0 = 128.0f;
     if (arg0 == 0) {

@@ -25,13 +25,13 @@ extern void func_F20000();
 extern void func_001C0370(void*, s32);
 
 s32 func_001BBCD8(s32 arg0) {
-    XGumi* pvVar1 = func_0022F768(4);
+    XGumi* pvVar1 = WorkBuffers_Get(4);
 
     return pvVar1->unk_9BC0[arg0];
 }
 
 void func_001BBD10(s32 arg0, s32 arg1) {
-    XGumi* pvVar1 = func_0022F768(4);
+    XGumi* pvVar1 = WorkBuffers_Get(4);
 
     pvVar1->unk_9BC0[arg0] = arg1;
 }
@@ -55,7 +55,7 @@ s32 func_001BBD70(void) {
 INCLUDE_ASM("asm/nonmatchings/gumi", func_001BBDD0);
 
 void func_001BBE38(void) {
-    XGumi* pvVar1 = func_0022F768(4);
+    XGumi* pvVar1 = WorkBuffers_Get(4);
 
     if (pvVar1->unk_9B00 == 0) {
         pvVar1->unk_9B00 = 0x4000;
@@ -87,13 +87,13 @@ void func_001BBE38(void) {
 }
 
 s32 func_001BBF78(s32 arg0) {
-    XGumi* pvVar1 = func_0022F768(4);
+    XGumi* pvVar1 = WorkBuffers_Get(4);
     func_001BBE38();
     return (&pvVar1->unk_9B00)[arg0];
 }
 
 void func_001BBFC8(s32 arg0, s32 arg1) {
-    XGumi* pvVar1 = func_0022F768(4);
+    XGumi* pvVar1 = WorkBuffers_Get(4);
     (&pvVar1->unk_9B00)[arg0] = arg1;
 }
 
@@ -109,7 +109,7 @@ void func_001BC048(void) {
     XGumiBlock* pXVar2;
 
     func_001BD210();
-    pXVar1 = (XGumi*)func_0022F768(4);
+    pXVar1 = (XGumi*)WorkBuffers_Get(4);
     func_001C0370(pXVar1, sizeof(XGumi));
 
     pXVar1->unk_0004 = 0x100;
@@ -302,7 +302,7 @@ void* func_001BCAB0(void) {
 INCLUDE_ASM("asm/nonmatchings/gumi", func_001BCAC0);
 
 void func_001BCAE8(void) {
-    XGumi* piVar1 = func_0022F768(4);
+    XGumi* piVar1 = WorkBuffers_Get(4);
 
     if ((*(s32*)piVar1->unk_0000 != 'IMUG') || (piVar1->unk_0004 != 0x100)) {
         func_001BC048();
@@ -313,7 +313,7 @@ s32* func_001BCB30(void) {
     XGumi* piVar1;
 
     func_001BCAE8();
-    piVar1 = func_0022F768(4);
+    piVar1 = WorkBuffers_Get(4);
     return &piVar1->unk_0008;
 }
 
@@ -321,7 +321,7 @@ XGumiBlock* func_001BCB58(void) {
     XGumi* piVar1;
 
     func_001BCAE8();
-    piVar1 = func_0022F768(4);
+    piVar1 = WorkBuffers_Get(4);
     return &piVar1->unk_9A78;
 }
 
@@ -387,7 +387,7 @@ void func_001BCD98(void) {
 }
 
 s32 func_001BCF28(s32 arg0) {
-    XGumi* pvVar1 = func_0022F768(4);
+    XGumi* pvVar1 = WorkBuffers_Get(4);
 
     switch (arg0) {
         case 0:

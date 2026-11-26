@@ -7,7 +7,7 @@
 #include "libpad2.h"
 #include "libvu0.h"
 
-void func_0011F938();
+void PcService_Initialize();
 void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void));
 void func_00121AE8();
 void func_0012FB18();
@@ -75,7 +75,7 @@ s32 func_0011EBC8(void) {
     return 0;
 }
 
-void func_0011EBE8(void) {
+void TaskSystem_Initialize(void) {
     s32 i, j;
 
     sceVu0UnitMatrix(D_002C1E20);
@@ -94,14 +94,14 @@ void func_0011EBE8(void) {
     func_00122410();
     func_001208B8();
     func_00147870();
-    func_0011F938();
+    PcService_Initialize();
     func_0012FB18();
     ((XGoblin*)func_0011ED30(150000, func_0011EBC8))->unk_02 = -1;
 }
 
-void func_0011ECD0(void) {
+void TaskSystem_Update(void) {
     D_002C1EC0 = 1.0f / D_002B8340[1];
-    func_0011EF58(&D_004DD188, D_002C1EBC);
+    TaskList_UpdateMatching(&D_004DD188, D_002C1EBC);
     D_002C1EA0 ^= 1;
 }
 
@@ -160,7 +160,7 @@ XGoblin* func_0011EE10(XGoblin* g) {
     return NULL;
 }
 
-XGoblin* func_0011EE80(XGoblin* arg0, XGoblin* arg1) {
+XGoblin* TaskList_FindPrevious(XGoblin* arg0, XGoblin* arg1) {
     XGoblin* pXVar;
     XGoblin* pXVar2 = NULL;
 
@@ -207,7 +207,7 @@ void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
 #ifdef VERSION_FM
 void func_0015F010(void);
 
-s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
+s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
     u32 uVar3;
 
     s32 sVar5 = 0;
@@ -223,7 +223,7 @@ s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
             if (uVar3 & 4) {
                 if (pXVar2 != 0) {
                     if (pXVar2->unk_08 != next) {
-                        pXVar2 = func_0011EE80(arg0, next);
+                        pXVar2 = TaskList_FindPrevious(arg0, next);
                     }
                     pXVar2->unk_08 = next->unk_08;
                 } else {
@@ -247,7 +247,7 @@ s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
     return sVar5;
 }
 #else
-s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
+s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
     u32 uVar3;
 
     s32 sVar5 = 0;
@@ -262,7 +262,7 @@ s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
             if (uVar3 & 4) {
                 if (pXVar2 != 0) {
                     if (pXVar2->unk_08 != next) {
-                        pXVar2 = func_0011EE80(arg0, next);
+                        pXVar2 = TaskList_FindPrevious(arg0, next);
                     }
                     pXVar2->unk_08 = next->unk_08;
                 } else {
@@ -288,7 +288,7 @@ s32 func_0011EF58(XGoblin* arg0, s32 arg1) {
 }
 #endif
 
-s32 func_0011F050(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
+s32 TaskList_RemoveIf(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
     XGoblin* next;
     XGoblin* gob;
 
@@ -296,7 +296,7 @@ s32 func_0011F050(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
 
     for (next = arg0->unk_08; next != NULL; next = next->unk_08) {
         if (((next->unk_00 | arg1(next)) & 4) != 0) {
-            gob = func_0011EE80(arg0, next);
+            gob = TaskList_FindPrevious(arg0, next);
             if (gob != NULL) {
                 gob->unk_08 = next->unk_08;
             } else {
@@ -310,7 +310,7 @@ s32 func_0011F050(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
     return iVar1;
 }
 
-b32 func_0011F0F8(XOtherCrown* arg0) {
+b32 FileLoadTask_IsActive(XOtherCrown* arg0) {
     return arg0->unk_00 & 1;
 }
 
@@ -613,14 +613,14 @@ INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F8C0);
 //     D_004DDC00 = scePad2CreateSocket(&D_002C1FD8, &D_004DDA00);
 // }
 
-s32 func_0011F908(void) {
+s32 PcService_Start(void) {
     scePcStart(0x8000F8DE, 0, 0); // TODO: libpc bitfield macro combination
     return 0;
 }
 
-void func_0011F938(void) {
-    func_0011F908();
-    ((XGoblin*)func_0011ED30(10000, func_0011F908))->unk_02 = -1;
+void PcService_Initialize(void) {
+    PcService_Start();
+    ((XGoblin*)func_0011ED30(10000, PcService_Start))->unk_02 = -1;
 }
 
 u64* func_0011F970(u64 arg0, u64 arg1, u64* arg2) {

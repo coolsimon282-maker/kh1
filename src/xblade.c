@@ -64,7 +64,7 @@ extern s32 D_004D92E0;
 extern volatile s32 D_002BBDE0;
 extern s32 D_002B9660;
 void func_0011C5A8(void);
-void func_0011C5C8(void);
+void PartyMenu_ClearOpenRequest(void);
 void func_00113660(void);
 void func_0011D598(s32, s32);
 
@@ -187,7 +187,7 @@ extern s32 D_002C1384;
 extern XBladePair D_002C1378;
 extern s32 D_002DED04;
 s32 func_00111468(s32, s32);
-void func_001117D8(void);
+void GameState_ApplyAvailableSelection(void);
 void func_00103280(f32, f32, f32, f32);
 void *func_001EE228(void *);
 u8 *func_001EAFF8(void);
@@ -217,7 +217,7 @@ void func_001121C8(void) {
         D_002B8684 = func_00111468(D_002B8678, D_002B8680);
         worldfile_getNames_v();
         if (D_002B932C == 0) {
-            func_001117D8();
+            GameState_ApplyAvailableSelection();
         }
     }
     D_002BC12C = D_002BCDAC[D_002B8680].unk_00;
@@ -281,7 +281,7 @@ s32 func_001125F0(void) {
     char stack[64];
 
     func_0011C938(stack);
-    return func_00120590(stack, func_00155ED8(0x34, 4), func_00112508, 0);
+    return cdvd_QueueFileLoad(stack, func_00155ED8(0x34, 4), func_00112508, 0);
 }
 
 s32 func_00112630(void) {
@@ -318,7 +318,7 @@ s32 func_00112690(void) {
             func_001124E8();
         }
     } else {
-        func_00120590(worldDataFile, D_004D2A2C, func_00112630, 0);
+        cdvd_QueueFileLoad(worldDataFile, D_004D2A2C, func_00112630, 0);
     }
     return 4;
 }
@@ -385,7 +385,7 @@ void func_001128F0(s32 arg0) {
             strcat(str, ".img");
             D_002A050C = func_00155ED8(0x34, 8);
             D_002A050C = func_001133E0(D_002A050C, 0x80);
-            func_00120590(str, D_002A050C, (s32 (*)(void))func_001128D8, 0);
+            cdvd_QueueFileLoad(str, D_002A050C, (s32 (*)(void))func_001128D8, 0);
         }
     }
 }
@@ -416,7 +416,7 @@ void func_001128F0(s32 arg0) {
 //             strcat(str, ".img");
 //             D_002A050C = func_00155ED8(0x34, 8);
 //             D_002A050C = func_001133E0(D_002A050C, 0x80);
-//             func_00120590(str, D_002A050C, func_001128D8, 0);
+//             cdvd_QueueFileLoad(str, D_002A050C, func_001128D8, 0);
 //         }
 //     }
 // }
@@ -746,7 +746,7 @@ s32 func_00113380(void) {
     func_00112168();
     func_00101580();
     D_002B9340 = func_001133E0(D_002B9340, 0x80);
-    func_00120590(roomArchiveFile, D_002B9340, func_001132F0, 0);
+    cdvd_QueueFileLoad(roomArchiveFile, D_002B9340, func_001132F0, 0);
     return 4;
 }
 
@@ -1087,9 +1087,9 @@ extern s32 D_002BD85C;
 // hashes symbol addresses); func_001336A0's prototype keeps the count right since func_00114638 matched.
 s32 func_001336A0(void);
 
-// include/xblade.h declares this `void func_00113CB8();` but it returns D_002B9668; define it under
+// include/xblade.h declares this `void PauseMenu_SelectMode();` but it returns D_002B9668; define it under
 // another C name with the real symbol name.
-s32 func_00113CB8_s32(void) __asm__("func_00113CB8");
+s32 func_00113CB8_s32(void) __asm__("PauseMenu_SelectMode");
 
 s32 func_00113CB8_s32(void) {
     s32 one;
@@ -1158,8 +1158,8 @@ void func_00113E68(void) {
 
 static const char padding[] = "\0\0"; // TODO likely file split
 
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113E98);
-// s32 func_00113E98(void) {
+INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
+// s32 PauseMenu_Update(void) {
 //     s32 init1;
 //     f32 temp_f20;
 //     s32 init2;
@@ -1245,7 +1245,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", func_00113E98);
 //                 case 5:
 //                     if (D_002BD85C != 0) {
 //                         func_00113E38();
-//                         func_0011C5C8();
+//                         PartyMenu_ClearOpenRequest();
 //                     }
 //                     break;
 //                 case 3:
@@ -1354,7 +1354,7 @@ void func_00114440(void) {
     D_002B9664 = 0;
     func_00114410();
     func_0011C5A8();
-    func_0011C5C8();
+    PartyMenu_ClearOpenRequest();
 }
 
 // include/xblade.h declares this `void func_00114480();`; it is built as returning a value (no tail call).

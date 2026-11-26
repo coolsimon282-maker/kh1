@@ -10,3 +10,25 @@ _lseek = lseek;
 _kill = kill;
 _getpid = getpid;
 _sbrk = sbrk;
+
+/* Old (JP-address) names still used by C for functions renamed in symbol_addrs.txt: src/unsplit/ and xhumungus.c keep
+   the old identifiers (renaming inside them moved other functions, rule F1), and headers they include map the new
+   name to the old one with a #define. Drop a line once no C uses the old name. */
+cdvd_QueueFileLoad = func_00120590;
+func_001064E8 = Fade_ResetIntensity;
+func_00106790 = Fade_StartOverlayIn;
+func_00106880 = Fade_StartOverlayOut;
+func_00106578 = Fade_StartScreenIn;
+func_00106690 = Fade_StartScreenOut;
+func_0011F0F8 = FileLoadTask_IsActive;
+func_001116F8 = GameState_RefreshAvailableFlags;
+func_001090D8 = Graphics_Initialize;
+func_00122B70 = Interpolation_ClearValue;
+func_001C36A8 = Script_ExecuteEntry;
+func_0011EF58 = TaskList_UpdateMatching;
+UiObject_InsertAfter = func_001F4690;
+func_0022F578 = WorkBuffers_Clear;
+func_0022F768 = WorkBuffers_Get;
+Party_AddCharacter = func_0013C768;
+Party_FindCharacterSlot = func_0013C2A8;
+func_0011C5B8 = PartyMenu_RequestOpen;

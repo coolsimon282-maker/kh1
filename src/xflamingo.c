@@ -9,7 +9,7 @@ extern XGiantMountain D_003854E0;
 s32 func_001C3670(s32, s32);
 s32 func_001C3680(s32, s32);
 
-void func_001C36A8(Script* arg0, s32 arg1) {
+void Script_ExecuteEntry(Script* arg0, s32 arg1) {
     s32 initialPos = arg0->unk_174[2];
     s32 idx;
     s32 result;

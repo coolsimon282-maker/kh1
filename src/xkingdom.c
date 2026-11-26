@@ -301,7 +301,7 @@ INCLUDE_ASM("asm/nonmatchings/xkingdom", func_00120438);
 INCLUDE_ASM("asm/nonmatchings/xkingdom", func_001204C0);
 s32 func_001204C0(XOtherCrown*);
 
-s32 func_00120590(char* arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 cdvd_QueueFileLoad(char* arg0, s32 arg1, s32 arg2, s32 arg3) {
     XOtherCrown* temp_2 = func_0011EEB8(&D_004DE128, 0, func_001204C0);
     s32* new_var2 = &D_004DDC60; // TODO fake match
     s32* new_var;
@@ -322,7 +322,7 @@ s32 func_00120640(s32 arg0) {
     s32 i;
     
     for (i = 0; i < ARRAY_COUNT(D_004DDC68); i++, it++) {
-        if (func_0011F0F8(it) && (arg0 == -1 || arg0 == it->unk_44)) {
+        if (FileLoadTask_IsActive(it) && (arg0 == -1 || arg0 == it->unk_44)) {
             return 1;
         }
     }
@@ -345,7 +345,7 @@ void func_00120728(void* arg0) {
 }
 
 s32 func_00120750(void) {
-    func_0011EF58(&D_004DE128, 0);
+    TaskList_UpdateMatching(&D_004DE128, 0);
     return 0;
 }
 

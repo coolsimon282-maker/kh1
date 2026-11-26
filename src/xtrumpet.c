@@ -61,14 +61,14 @@ void func_00111210(s32);
 void func_00111298(void);
 void func_00111C98(s32, s32);
 
-void func_001110A0(void) {
-    D_002B90B0 = func_0022F768(3);
+void GameState_BindBuffer(void) {
+    D_002B90B0 = WorkBuffers_Get(3);
 }
 
-void func_001110D0(void) {
+void GameState_Reset(void) {
     s32 i;
 
-    func_001110A0();
+    GameState_BindBuffer();
     for (i = 0; i < ARRAY_COUNT(D_002B90B0->unk_6C); i++) {
         D_002B90B0->unk_6C[i] = 0;
     }
@@ -258,15 +258,15 @@ void func_001115C0(void) {
     }
 }
 
-void func_001115E8(void) {
+void GameState_Initialize(void) {
     D_002B8364 = 0;
-    func_0022F578(-1);
-    func_001EF840();
+    WorkBuffers_Clear(-1);
+    GameData_Reset();
     func_001601A8();
     func_0013CB18();
     func_001EBEB0();
     func_001BC048();
-    func_001110D0();
+    GameState_Reset();
 }
 
 void func_00111638(void) {
@@ -294,63 +294,63 @@ void func_001116C8(void) {
     }
 }
 
-void func_001116F8(void) {
-    s32 iVar1 = func_0013C2A8(3);
+void GameState_RefreshAvailableFlags(void) {
+    s32 iVar1 = Party_FindCharacterSlot(3);
     if (iVar1 != -1) {
         D_002B90B0->unk_158 |= 8;
     }
-    iVar1 = func_0013C2A8(5);
+    iVar1 = Party_FindCharacterSlot(5);
     if (iVar1 != -1) {
         D_002B90B0->unk_158 |= 0x20;
     }
-    iVar1 = func_0013C2A8(6);
+    iVar1 = Party_FindCharacterSlot(6);
     if (iVar1 != -1) {
         D_002B90B0->unk_158 |= 0x40;
     }
-    iVar1 = func_0013C2A8(7);
+    iVar1 = Party_FindCharacterSlot(7);
     if (iVar1 != -1) {
         D_002B90B0->unk_158 |= 0x80;
     }
-    iVar1 = func_0013C2A8(8);
+    iVar1 = Party_FindCharacterSlot(8);
     if (iVar1 != -1) {
         D_002B90B0->unk_158 |= 0x100;
     }
-    iVar1 = func_0013C2A8(9);
+    iVar1 = Party_FindCharacterSlot(9);
     if (iVar1 != -1) {
         D_002B90B0->unk_158 |= 0x200;
     }
 }
 
-void func_001117D8(void) {
+void GameState_ApplyAvailableSelection(void) {
   switch (D_002B8678) {
   case 5:
     if (D_002B90B0->unk_158 & 8) {
-      func_0013C768(3);
+      Party_AddCharacter(3);
     }
     break;
   case 8:
     if (D_002B90B0->unk_158 & 0x20) {
-      func_0013C768(5);
+      Party_AddCharacter(5);
     }
     break;
   case 9:
     if (D_002B90B0->unk_158 & 0x40) {
-      func_0013C768(6);
+      Party_AddCharacter(6);
     }
     break;
   case 10:
     if (D_002B90B0->unk_158 & 0x80) {
-      func_0013C768(7);
+      Party_AddCharacter(7);
     }
     break;
   case 0xd:
     if (D_002B90B0->unk_158 & 0x100) {
-      func_0013C768(8);
+      Party_AddCharacter(8);
     }
     break;
   case 0xf:
     if (D_002B90B0->unk_158 & 0x200) {
-      func_0013C768(9);
+      Party_AddCharacter(9);
     }
   }
 }

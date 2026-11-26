@@ -25,7 +25,7 @@ extern f32 D_002B8340[];
 s32 D_004FA670;
 s32 D_004FA680;
 
-s32 func_00122828(XHoot* arg0) {
+s32 VectorInterpolationTask_Update(XHoot* arg0) {
     s32 uVar1;
     f32 fVar2;
     f32 r;
@@ -52,7 +52,7 @@ void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
     if (0.0f >= arg0) {
         sceVu0CopyVector(arg1[3], arg2);
     } else {
-        pvVar1 = func_0011EEB8(&D_004FA670, 0, func_00122828);
+        pvVar1 = func_0011EEB8(&D_004FA670, 0, VectorInterpolationTask_Update);
         pvVar1->unk_10 = arg1;
         pvVar1->unk_44 = arg0;
         pvVar1->unk_40 = arg0;
@@ -134,7 +134,7 @@ XOwlEnt* func_00122AF8(s32 arg0, s32 arg1, s32 arg2) {
     return NULL;
 }
 
-void func_00122B70(s32* arg0) {
+void Interpolation_ClearValue(s32* arg0) {
     *arg0 = 0;
 }
 
@@ -242,13 +242,13 @@ extern u32 D_002B85F8;
 extern sceVu0FVECTOR D_002C6450;
 void func_00107E10(XOwlEnt*);
 void func_00110C70(sceVu0FVECTOR);
-void func_0011EF58(s32*, s32);
+void TaskList_UpdateMatching(s32*, s32);
 
 s32 func_00122EC8(void) {
     XOwlEnt* e;
     s32 i;
 
-    func_0011EF58(&D_004FA670, 0);
+    TaskList_UpdateMatching(&D_004FA670, 0);
     D_002C6450[3] = 1.0f;
     D_002C6450[2] = 1.0f;
     D_002C6450[1] = 1.0f;
@@ -273,7 +273,7 @@ s32 func_00122EC8(void) {
 }
 
 
-void func_00122FF0(void) {
+void Interpolation_Initialize(void) {
     func_0011EDD0(&D_004FA670, &D_004FA680, 0x50, 8);
 }
 
@@ -283,11 +283,11 @@ void func_00123020(void) {
 
     for (i = 30; i >= 0; i--) {
         if (p->unk_00 != 0 && (p->unk_04 & 8)) {
-            func_00122B70((s32*)p);
+            Interpolation_ClearValue((s32*)p);
         }
         p++;
     }
-    func_00122FF0();
+    Interpolation_Initialize();
 }
 
 void func_00123088(void) {
@@ -343,7 +343,7 @@ void func_00123108(void) {
     D_002C6440.p->unk_30[1] = 1.0f;
     D_002C6440.p->unk_30[2] = 1.0f;
     D_002C6440.p->unk_30[3] = 1.0f;
-    func_00122FF0();
+    Interpolation_Initialize();
     if (func_0011ED60(func_00122EC8) == 0) {
         func_0011ED30(60000, func_00122EC8);
     }

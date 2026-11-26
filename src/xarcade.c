@@ -61,14 +61,14 @@ extern s32 D_002BC73C;
 void fm_func_00110068(void);
 KingdomFile* func_00120190(char* filename); // cdvd_FindFile
 
-void func_001090D8(void) {
+void Graphics_Initialize(void) {
     KingdomFile* file;
 
     D_002BBDE4 = 7;
     fm_func_00110068();
     func_0010C010();
-    func_001EF810();
-    func_0022F578(-1);
+    GameData_BindBuffer();
+    WorkBuffers_Clear(-1);
     func_0011EAF8(D_002B6460, "host:./kingdom.log");
 
     file = func_00120190("kingdom.img");
@@ -84,14 +84,14 @@ void func_001090D8(void) {
     func_0011F7C0();
 }
 #else
-void func_001090D8(void) {
+void Graphics_Initialize(void) {
     KingdomFile* file;
 
     func_0010FEC0();
     func_001102A0();
     func_0010C010();
-    func_001EF810();
-    func_0022F578(-1);
+    GameData_BindBuffer();
+    WorkBuffers_Clear(-1);
     func_0011EAF8(D_002B29B0, "host:./kingdom.log");
 
     file = cdvd_FindFile("kingdom.img");
@@ -109,7 +109,7 @@ void func_001090D8(void) {
 #endif
 
 s32 func_001091B0(void) {
-    func_0011EF58(&D_002B8C70, 0);
+    TaskList_UpdateMatching(&D_002B8C70, 0);
     return 0;
 }
 
@@ -357,12 +357,12 @@ s32 func_00109E30();
 #ifdef VERSION_FM
 extern f32 D_0049517C;
 extern f32 D_002B8344;
-void func_00106790(s32);
+void Fade_StartOverlayIn(s32);
 
 s32 func_00109F60(void) {
     switch (D_0048EC00.unk_00) {
     case 0:
-        func_00106790(0x20);
+        Fade_StartOverlayIn(0x20);
         D_0048EC00.unk_00++;
         D_0049517C = 64.0f;
     case 1:

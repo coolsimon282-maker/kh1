@@ -221,7 +221,7 @@ void* func_001EDF28(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return D_0062D980;
 }
 
-s32 func_001EDF88(s32 arg0) {
+s32 SoundRpc_FindCachedValue(s32 arg0) {
     XDuck* p0;
     s32 i;
 

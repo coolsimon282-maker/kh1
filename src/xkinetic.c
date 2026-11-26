@@ -15,11 +15,11 @@ typedef struct {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C21B8);
 
-s32 func_001C2270(void) {
+s32 ScriptOp_Nop(void) {
     return 2;
 }
 
-s32 func_001C2278(Script* arg0, s32 arg1) {
+s32 ScriptOp_JumpRelative(Script* arg0, s32 arg1) {
     arg0->unk_174[2] += arg1;
     if (arg1 < 0) {
         return 4;
@@ -120,7 +120,7 @@ s32 func_001C24B0(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C24C8);
 
-s64 func_001C2578(s64 arg0, s32 arg1) {
+s64 Script_ClampValue(s64 arg0, s32 arg1) {
     switch (arg1) {
         case 0:
         case 1:
@@ -171,8 +171,8 @@ s64 func_001C2578(s64 arg0, s32 arg1) {
     return arg0;
 }
 
-s32 func_001C26A8(Script* arg0, s64 arg1) {
-    s32 val = func_001C2578(arg1, 4);
+s32 Script_PushS24(Script* arg0, s64 arg1) {
+    s32 val = Script_ClampValue(arg1, 4);
 
     arg0->unk_174[3]++;
     arg0->unk_174[arg0->unk_174[3] + 4] = val;
@@ -188,7 +188,7 @@ s32 func_001C26F8(Script* arg0, s32 arg1) {
 }
 
 void func_001C2728(s32 arg0, s32 arg1, void* arg2) {
-    u8* base = func_0022F768(2);
+    u8* base = WorkBuffers_Get(2);
 
     switch (arg1) {
     case 1:
@@ -203,13 +203,13 @@ void func_001C2728(s32 arg0, s32 arg1, void* arg2) {
     }
 }
 
-s32 func_001C27D8(s32 arg0) {
-    void* temp = func_0022F768(2); // todo: find proper struct for this argument
+s32 Script_GetWorkAddress(s32 arg0) {
+    void* temp = WorkBuffers_Get(2); // todo: find proper struct for this argument
     return temp + arg0;
 }
 
 void func_001C2808(s32 arg0, s32 arg1, void* arg2) {
-    u8* base = func_0022F768(2);
+    u8* base = WorkBuffers_Get(2);
 
     switch (arg1) {
     case 1:
@@ -229,8 +229,8 @@ extern s32 D_0038ACC4[];
 extern s32 D_0038B4C4[];
 
 s32 func_001C28B8(Script* arg0, s32 arg1) {
-    s32 b1 = (s32)func_0022F768(1);
-    s32 b2 = (s32)func_0022F768(2);
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
 
     arg0->unk_174[36] = arg1;
     if (arg1 < 0x800) {
@@ -268,8 +268,8 @@ s32 func_001C28B8(Script* arg0, s32 arg1) {
 }
 
 s32 func_001C2AA0(Script* arg0, s32 arg1) {
-    s32 b1 = (s32)func_0022F768(1);
-    s32 b2 = (s32)func_0022F768(2);
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
 
     arg0->unk_174[36] = arg1;
     if (arg1 < 0x800) {
@@ -292,8 +292,8 @@ extern s32 D_0038ACC4[];
 extern s32 D_0038B4C4[];
 
 s32 func_001C2B60(Script* arg0, s32 arg1) {
-    s32 b1 = (s32)func_0022F768(1);
-    s32 b2 = (s32)func_0022F768(2);
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
 
     arg0->unk_174[36] = arg1;
     if (arg1 < 0x800) {
