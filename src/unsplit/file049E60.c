@@ -9835,7 +9835,38 @@ void func_0017A6C0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017A7B0);
+extern sceVu0FVECTOR D_003625A0;
+extern sceVu0FVECTOR D_003625B0;
+void func_0017A7B0(void) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR w;
+
+    if (D_00575890 & 2) {
+        D_00575890 &= ~2;
+    }
+    if (D_005758C4_f > 0.0f) {
+        sceVu0ApplyMatrix(D_005758D0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_003625A0);
+    } else {
+        sceVu0ApplyMatrix(d, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_003625A0);
+        sceVu0SubVector(d, d, D_005758D0);
+        if (d[1] > 100.0f) {
+            d[1] = (d[1] - 100.0f) * 0.3f;
+        } else if (d[1] < -100.0f) {
+            d[1] = (d[1] + 100.0f) * 0.3f;
+        } else {
+            d[1] = 0.0f;
+        }
+        sceVu0AddVector(D_005758D0, D_005758D0, d);
+    }
+    sceVu0ApplyMatrix(D_005758E0, (sceVu0FVECTOR*)(D_00575894 + 0xD0), D_003625B0);
+    if (func_00177608(w, D_005758E0, D_005758D0) != 0) {
+        sceVu0CopyVector(D_005758D0, w);
+    }
+    D_00362684 = func_001250D0(D_005758D0, D_005758E0);
+    if (func_00177288(D_00575894) == 0) {
+        func_00176F08(1, 30.0f);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017A958);
 
