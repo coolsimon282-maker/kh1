@@ -4989,7 +4989,19 @@ s32 func_00155D70(s32 n, char* s) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00155E48);
+s32 func_00155E48(s32 a0, s32 n, char* s) {
+    s8* e = (s8*)D_00550400 + a0 * 0x48;
+    s32 i;
+    if (e[0] != a0 || strcmp((char*)e + 0x24, s) != 0) {
+        return 0;
+    }
+    for (i = 0; i < n; i++) {
+        if (e[i * 0x48] != a0) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 void func_00155EE8(u8* p) {
     p[3]++;
