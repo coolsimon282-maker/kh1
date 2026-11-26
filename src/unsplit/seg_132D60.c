@@ -940,7 +940,12 @@ s32 func_002366C0(s32 arg0) {
     return D_00648038[arg0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002366D8);
+s32 func_002366D8(s32 i, s32 n) {
+    s32 *seed = &D_00648038[i];
+    s32 s = (*seed * 0x41C64E6DL + 12345) & 0x7FFFFFFF;
+    *seed = s;
+    return ((s / 0x10000) * n + ((long)(s & 0xFFFF) * n) / 0x10000) / 0x8000;
+}
 
 extern s32 D_00648038_b[] __asm__("D_00648038");
 void func_002367A0(s32 i) {
