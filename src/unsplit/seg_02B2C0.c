@@ -881,7 +881,20 @@ void func_0012CB40(T0012CB40 *a0, s32 a1, s32 a2) {
     a0->s.m1 &= m;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012CB78);
+extern s32 D_00524F58[];
+extern s32 D_002E3160[];
+
+void func_0012CB78(s32 a0, s32 a1) {
+    s32 i = D_002E2FD8[0x3C]++;
+    s32 j;
+
+    func_0012CB40((T0012CB40 *)&D_002E2FD8[0x38], i, a1);
+    j = D_002E2FD8[0x58]++;
+    func_0012CB40((T0012CB40 *)&D_002E2FD8[0x54], j, a1);
+    D_002E3160[j] = a0;
+    D_00524F58[i] = a0;
+    D_00524F44 |= 0x10;
+}
 
 s32 func_0012CC38(s32 a0, s32 a1) {
     if (!((D_00524F44 >> a0) & 1)) {
