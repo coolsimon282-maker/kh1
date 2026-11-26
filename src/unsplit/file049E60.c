@@ -577,7 +577,28 @@ void func_0014A248(void) {
     D_0054C434 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014A0F0);
+extern s32 D_14A0F0_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+u8* func_001234A0(u8*);
+void func_0014A0F0(u8* p) {
+    u8* e;
+    s32 x;
+    f32 t = *(f32*)(p + 0x50);
+
+    if (t > 0.0f) {
+        *(f32*)(p + 0xA4) += D_002B8344;
+        if (t <= *(f32*)(p + 0xA4)) {
+            e = 0;
+            while ((e = func_001234A0(e)) != 0) {
+                *(s32*)(e + 0x3E0) &= ~*(s32*)(p + 0x54);
+            }
+            x = 0;
+            while ((x = func_0014A398(x)) != 0) {
+                *(s32*)(x + 0x9C) &= ~*(s32*)(p + 0x54);
+            }
+            *(f32*)(p + 0xA4) -= *(f32*)(p + 0x50);
+        }
+    }
+}
 
 s32 func_0014A1B0(u8* p, s32 a1, f32* a2) {
     s32 n, idx, r;
@@ -749,7 +770,35 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014AC50);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014ADE0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014AF60);
+f32 Vec_CosAngle(f32*, f32*);
+s32 func_0014AF60(u8* a, u8* b) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR d;
+    s32 k;
+
+    if ((s32)(*(u64*)b >> 6) & 1) {
+        goto ret1;
+    }
+    k = (s32)(*(u64*)a >> 17) & 7;
+    if (k != 1 && k != 3 && k != 4 && k != 2) {
+        goto ret1;
+    }
+    sceVu0RotMatrixY(m, D_002C1E20, *(f32*)(*(u8**)(a + 0x5C) + 0x60));
+    sceVu0CopyVector(v, (f32*)(*(u8**)(a + 0x34) + 0x30));
+    v[3] = 0.0f;
+    sceVu0ApplyMatrix(v, m, v);
+    if ((s32)(*(u64*)(b + 0x30) >> 10) & 1) {
+        sceVu0SubVector(d, (f32*)(b + 0x70), (f32*)(b + 0x10));
+    } else {
+        sceVu0SubVector(d, (f32*)(*(u8**)(b + 0x34) + 0x50), (f32*)(*(u8**)(a + 0x34) + 0x50));
+    }
+    if (Vec_CosAngle(v, d) < *(f32*)(*(u8**)(a + 0x5C) + 0x64)) {
+        return 0;
+    }
+ret1:
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014B090);
 
@@ -995,7 +1044,41 @@ s32 func_0014D180(u8* p) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014D210);
+extern s32 D_14D210_pad1; /* unused: rule F1 (keeps func_00176F08 / func_0015EEA0) */
+extern s32 D_002C5C54;
+s32 func_00140370(u8*, f32*);
+s32 func_0013F618(u8*, f32*);
+s32 func_0015CC48(u8*, f32*);
+s32 func_001507D0(u8*, f32*);
+s32 func_00144510(u8*, f32*);
+void func_0014D210(u8* a0, f32* v) {
+    u8* p = a0;
+
+    if (!(*(s32*)p & 0x2000) && func_0014D180(a0) != 0) {
+        if (func_00140370(p, v) != 0) {
+            return;
+        }
+        if (func_0013F618(p, v) != 0) {
+            return;
+        }
+        if (D_002C5C54 == 0 && func_0015CC48(p, v) != 0) {
+            return;
+        }
+        if (func_001507D0(p, v) != 0) {
+            return;
+        }
+    }
+    if (func_00144510(p, v) != 0) {
+        return;
+    }
+    if (v[3] > 0.0f && !(*(s32*)p & 0x400)) {
+        *(f32*)(p + 0x150) = atan2f(v[0], v[2]);
+        if (*(s32*)(p + 0x164) == 0xDC) {
+            func_00130398((s32)p, 6, 8.0f);
+        }
+    }
+    sceVu0CopyVector((f32*)(p + 0x20), v);
+}
 
 s32 func_0014DB20(u8*);
 s32 func_0014D330(u8* a0, s32 a1) {
@@ -1088,7 +1171,27 @@ s32 func_0014D778(u8* p, s32 a) {
     return *(s32*)(p + 0x70);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014D7B8);
+void func_0014D7B8(u8* a0, f32* a1) {
+    u8* p = a0;
+    f32 t = *(f32*)(p + 0x3B0);
+    s32 s;
+
+    if (t >= 4.0f) {
+        if (*(s32*)(p + 0x164) != 4 && *(s32*)(p + 0x164) != 9) {
+            func_0014F658((s32)a0, 0);
+            a1[3] = 0.0f;
+        } else {
+            s = *(s32*)(p + 0x3D0);
+            func_0014CCE0(p, *(f32*)(*(u8**)(p + 0x6C) + 0x10));
+            *(s32*)(p + 0x3D0) = s;
+        }
+        *(s32*)p |= 0x60000;
+    } else {
+        *(f32*)(p + 0x3B0) = t + D_002B8344;
+        a1[3] = 0.0f;
+    }
+    sceVu0CopyVector((f32*)(p + 0x20), a1);
+}
 
 s32 func_0014D878(u8* p, s32 a) {
     if (a != 0) {
@@ -1755,11 +1858,97 @@ void func_00150DE0(s32 on) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00150EC8);
+u8* func_001473A8(s32, s32, f32*);
+s32 func_001453A8(u8*, f32*, s32);
+s32 func_00150EC8(u8* p) {
+    sceVu0FVECTOR v;
+    u8* a = *(u8**)&D_002E26A0;
+    u8* q;
+    s32 r;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151010);
+    func_001315C0((s32)a, 0x8003, v, 0.0f);
+    q = *(u8**)(p + 0x144);
+    if (*(s32*)p & 0x20) {
+        goto ret0;
+    }
+    if (func_001453A8(a, (f32*)(p + 0x10), *(s32*)(q + 0x34)) == 0) {
+        goto ret0;
+    }
+    r = func_0013C9E0(*(s32*)(q + 8), *(u16*)(*(u8**)(a + 0x130) + 0x4C));
+    if (r == 0xFF) {
+        if (*(f32*)(q + 0x2C) <= 0.0f) {
+            func_00243630(2, *(s32*)(q + 8));
+        }
+        *(f32*)(q + 0x2C) = 60.0f;
+        goto ret0;
+    }
+    *(s32*)q = 2;
+    sceVu0SubVector((f32*)(q + 0x10), (f32*)(p + 0x10), v);
+    func_00243630(r == 0xC, *(s32*)(q + 8));
+    func_001473A8(0x1B, 0, (f32*)(p + 0x10));
+    *(f32*)(q + 0xC) = 30.0f;
+    *(s32*)p |= 0x30;
+    sceVu0CopyVector((f32*)(p + 0x20), D_002C58B0);
+    return 1;
+ret0:
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151148);
+/* unused: rule F1 (keeps func_00176F08; 3-4 work, 1 does not) */
+extern s32 D_151010_pad1;
+extern s32 D_151010_pad2;
+extern s32 D_151010_pad3;
+u8* func_001473A8(s32, s32, f32*);
+void func_00151010(u8* p) {
+    u8* q = *(u8**)(p + 0x144);
+    f32 r;
+    f32 t;
+
+    if (*(f32*)(p + 0x24) > 0.0f) {
+        *(s32*)p &= ~0x20;
+        if (!(*(s32*)(p + 0x2D0) & 1)) {
+            if (*(f32*)(p + 0x24) > 5.0f) {
+                r = *(f32*)(p + 0x24) / 20.0f;
+                if (r > 0.5f) {
+                    *(f32*)(q + 0x24) = 1.0f - r * 0.2f;
+                }
+                *(f32*)(p + 0x24) *= -0.8f;
+                func_001473A8(0x32, 0, (f32*)(p + 0x10));
+            } else {
+                sceVu0CopyVector((f32*)(p + 0x20), D_002C58A0);
+            }
+        }
+    }
+    t = *(f32*)(p + 0x24) + 3.0f;
+    *(f32*)(p + 0x24) = t;
+    if (t > 20.0f) {
+        *(f32*)(p + 0x24) = 20.0f;
+    }
+    *(f32*)(p + 0x20) *= 0.95f;
+    *(f32*)(p + 0x28) *= 0.95f;
+}
+
+extern s32 D_151148_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+void func_00151148(u8* p) {
+    u8* q = *(u8**)(p + 0x144);
+    f32 t;
+
+    if (*(f32*)(p + 0x24) < 0.0f) {
+        *(f32*)(p + 0x24) += *(f32*)(q + 0x30);
+    } else {
+        *(s32*)p &= ~0x20;
+        t = *(f32*)(q + 0x30) + -0.05f;
+        *(f32*)(q + 0x30) = t;
+        *(f32*)(p + 0x24) += t;
+        if (*(f32*)(p + 0x24) < 0.0f) {
+            sceVu0CopyVector((f32*)(p + 0x20), D_002C58A0);
+            *(s32*)q = 1;
+            return;
+        }
+    }
+    *(f32*)(p + 0x20) *= 0.95f;
+    *(f32*)(p + 0x28) *= 0.95f;
+}
 
 void func_00151208(u8* p) {
     u8* e = (u8*)D_0054F950;
@@ -1834,7 +2023,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001519C0);
 void func_00151B90(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151B98);
+void func_00151B98(u8* p, f32* v) {
+    u8* q = *(u8**)(p + 0x144);
+    u8* e;
+    u8* w;
+
+    if (*(s32*)(p + 0x70) == 0 && ((v[0] != 0.0f && v[2] != 0.0f) ||
+        ((e = *(u8**)(p + 0x98)) != NULL && 10.0f <= __builtin_fabsf(*(f32*)(p + 0x14) + v[1] - *(f32*)(e + 0x14))))) {
+        sceVu0CopyVector(v, D_002C58A0);
+    }
+    if (v[0] != 0.0f || v[2] != 0.0f) {
+        if (*(u8**)(p + 0x98) == NULL) {
+            return;
+        }
+        if (*(s32*)(q + 0x10) == 0) {
+            *(s32*)(q + 0x10) = (s32)func_00147138(p, 0);
+        }
+        sceVu0AddVector((f32*)(*(u8**)(p + 0x98) + 0x120), (f32*)(*(u8**)(p + 0x98) + 0x120), v);
+        return;
+    }
+    w = *(u8**)(q + 0x10);
+    if (w != NULL) {
+        func_00147278(*(u16*)(w + 8), *(s32*)(w + 4), 0x3C);
+        *(s32*)(q + 0x10) = 0;
+    }
+}
 
 void func_00151CD0(u8* p) {
     sceVu0FVECTOR v;
@@ -2332,7 +2545,20 @@ s32 func_00153C38(u8* p, s32 a) {
     return *(s32*)(p + 0x70);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00153C50);
+extern s32 D_153C50_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl; 1-3 work) */
+void func_00153C50(s32 a0, s32 a) {
+    u8* p = (u8*)a0;
+
+    func_00130340(p, 0x10000BA, 8.0f);
+    func_00130578((s32)p, 0x40000000, 0.0f);
+    *(s32*)(*(u8**)(p + 0x98) + 0x74) = a;
+    func_00152DC8(*(u8**)(p + 0x98), 0);
+    if (a != 0) {
+        *(u64*)*(u8**)(*(u8**)(p + 0x98) + 0x144) |= 2;
+        func_001315C0(a, 0x8003, *(u8**)(*(u8**)(p + 0x98) + 0x144) + 0x30, 0.0f);
+    }
+    *(s32*)(*(u8**)(*(u8**)(p + 0x98) + 0x144) + 0x40) = 0;
+}
 
 s32 func_00153D08(s32 a) {
     func_00153C50(a, 0);
@@ -2518,9 +2744,63 @@ void func_00154768(u8* p, u8* q, s32* out) {
     sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00154880);
+void func_00138A20(u8*, f32*, f32);
+void func_00154880(u8* p, s32 q, f32* out) {
+    sceVu0FVECTOR v;
+    f32* d = (f32*)(q + 0x10);
+    f32* f = (f32*)(p + 0x30);
+    f32 a;
+    f32 z;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001549B8);
+    if (sceVu0InnerProduct(f, d) < 0.0f) {
+        z = *(f32*)(q + 0x18);
+        q = 0x50;
+        a = atan2f(-d[0], -z);
+    } else {
+        z = *(f32*)(q + 0x18);
+        q = 0x51;
+        a = atan2f(d[0], z);
+    }
+    func_00130340(p, q | 0x1000000, 0.0f);
+    func_00130578((s32)p, 0x40000006, 8.0f);
+    func_001373F8(p, 30.0f);
+    *(f32*)(p + 0x150) = a;
+    func_00137688((s32)p, a);
+    sceVu0CopyVector(out, f);
+    out[3] = 0.0f;
+    sceVu0CopyVector(v, d);
+    v[3] = *(f32*)(D_003051EC + 0x3C);
+    func_00138A20(p, v, 20.0f);
+}
+
+extern s32 D_1549B8_pad1; /* unused: rule F1 (keeps func_0015EEA0 and func_00176F08; 0, 2, 3 fail) */
+void func_001549B8(u8* p, s32 q, f32* out) {
+    sceVu0FVECTOR v;
+    f32* d = (f32*)(q + 0x10);
+    f32* f = (f32*)(p + 0x30);
+    f32 a;
+    f32 z;
+
+    if (sceVu0InnerProduct(f, d) < 0.0f) {
+        z = *(f32*)(q + 0x18);
+        q = 0x50;
+        a = atan2f(-d[0], -z);
+    } else {
+        z = *(f32*)(q + 0x18);
+        q = 0x51;
+        a = atan2f(d[0], z);
+    }
+    func_00130340(p, q | 0x1000000, 0.0f);
+    func_00130578((s32)p, 0x40000075, 16.0f);
+    func_001373F8(p, 30.0f);
+    *(f32*)(p + 0x150) = a;
+    func_00137688((s32)p, a);
+    sceVu0CopyVector(out, f);
+    out[3] = 0.0f;
+    sceVu0CopyVector(v, d);
+    v[3] = *(f32*)(D_003051EC + 0x24) * *(f32*)(*(u8**)(p + 0x6C) + 0xC4);
+    func_00156260((s32)p, v);
+}
 
 void func_00154AF8(u8* p, u8* q, f32* r) {
     sceVu0FVECTOR v;
@@ -3466,7 +3746,23 @@ u8* func_00159740(u8* p, f32* v) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00159808);
+void func_00159808(u8* p, f32* a1) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+
+    if (a1[3] > 0.0f) {
+        a1[3] = 6.0f;
+    }
+    sceVu0CopyVector((f32*)(p + 0x20), a1);
+    if (func_00137618(p) != 0) {
+        sceVu0CopyVector(v, (f32*)(*(u8**)(p + 0x148) + 0x160));
+        v[1] = 0.0f;
+        sceVu0Normalize(v, v);
+        sceVu0ScaleVector(w, v, *(f32*)(*(u8**)(p + 0x148) + 0x16C));
+        sceVu0AddVector(w, w, (f32*)(p + 0x3C0));
+        func_001376E8_2(p, w);
+    }
+}
 
 s32 func_001598C8(u8* p, s32 a) {
     if (a == 0) {
@@ -3729,7 +4025,35 @@ s32 func_0015ACE0(u8* p, s32 b, s32 c) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015AD08);
+f32 Angle_Wrap(f32);
+void func_00142470(u8*, s32*);
+void func_0015AD08(u8* p) {
+    sceVu0FVECTOR v;
+    s32 w[4];
+    f32* t;
+    u8* r;
+
+    func_001315C0((s32)p, 0x8003, v, 0.0f);
+    if (*(f32**)(p + 0x144) == NULL) {
+        t = (f32*)func_00121C98(4, p + 0x144);
+        *(f32**)(p + 0x144) = t;
+        *(void**)(p + 0x4A0) = func_0015ACE0;
+        t[0] = 0.0f;
+    }
+    t = *(f32**)(p + 0x144);
+    if (t[0] > 0.0f) {
+        t[0] -= D_002B8344;
+    } else if (*(s32*)(p + 8) != 0) {
+        r = func_0014A4A8(p, 0, func_001477E0(0x1A));
+        *(u64*)r |= 0x40;
+        sceVu0CopyVector((f32*)(r + 0x10), v);
+        func_001354B8(r, *(s32*)(p + 8));
+        **(f32**)(p + 0x144) = 30.0f;
+    }
+    *(f32*)(p + 0x38) = Angle_Wrap(*(f32*)(p + 0x38) + D_002B8344 * 0.0087266455f);
+    func_00142388(v, w);
+    func_00142470(p, w);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015AE48);
 
@@ -3783,7 +4107,44 @@ s32 func_0015B628(u8* a, u8* b) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B6C0);
+s32 func_0015B6C0(u8* a, u8* b) {
+    sceVu0FVECTOR d;
+    f32 r;
+    f32 s;
+    f32 t;
+
+    sceVu0SubVector(d, (f32*)(a + 0x10), (f32*)(b + 0x10));
+    d[1] = __builtin_fabsf(d[1]);
+    if (*(f32*)(a + 8) + *(f32*)(b + 8) <= d[1]) {
+        return 0;
+    }
+    if (*(f32*)(b + 8) < d[1]) {
+        r = (d[1] - *(f32*)(b + 8)) / *(f32*)(a + 8);
+        r = _sqrtf(1.0f - r * r) * *(f32*)(a + 4);
+    } else {
+        r = *(f32*)(a + 4);
+    }
+    d[0] = __builtin_fabsf(d[0]);
+    d[2] = __builtin_fabsf(d[2]);
+    if (d[0] < d[2]) {
+        d[1] = d[0];
+        d[0] = d[2];
+        d[2] = d[1];
+    }
+    if (r + *(f32*)(b + 4) <= d[2]) {
+        return 0;
+    }
+    if (*(f32*)(b + 4) < d[2]) {
+        s = (d[2] - *(f32*)(b + 4)) / r;
+        s = _sqrtf(1.0f - s * s) * r + *(f32*)(b + 4);
+    } else {
+        s = r + *(f32*)(b + 4);
+    }
+    if (d[0] < s) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B7E8);
 
@@ -3793,13 +4154,128 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B998);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BAD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BB88);
+extern s32 D_15BB88_pad1; /* unused: rule F1 (keeps func_00176F08 / func_0015EEA0) */
+typedef struct { u64 a[4]; } B15BB88;
+s32 Actor_IsActive(u8*);
+s32 func_00123730(u8*);
+void* func_00122048(s32, s32);
+void func_001220B8(void*);
+s32 func_0015B998(f32*, f32*);
+s32 func_0015BB88(f32* box, u8* e, s32 o) {
+    B15BB88* out = (B15BB88*)o;
+    B15BB88* b;
+    u8* c;
+    s32 i;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BCB8);
+    if (Actor_IsActive(e) == 0) {
+        goto ret0;
+    }
+    if (func_00123730(e) == 0) {
+        goto ret0;
+    }
+    b = (B15BB88*)func_00122048(0x20, 0x10);
+    c = *(u8**)(*(u8**)(e + 0x134) + 0x14);
+    for (i = 0; i < (*(u8**)(e + 0x134))[5]; i++, c += 0x14) {
+        if (*(u32*)(e + 0x3A4) & (1 << i)) {
+            continue;
+        }
+        func_0015BAD0(e, c, (f32*)b);
+        if (func_0015B998(box, (f32*)b) != 0) {
+            if (out != NULL) {
+                *out = *b;
+            }
+            func_001220B8(b);
+            return 1;
+        }
+    }
+    func_001220B8(b);
+ret0:
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BD78);
+s32 func_001425D0(u8*);
+s32 func_0015BB88(f32*, u8*, s32);
+s32 func_0015BCB8(u8* p, f32* a1) {
+    sceVu0FVECTOR box[2];
+    sceVu0FVECTOR d;
+    u8* e = 0;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BEB0);
+    func_0015BAD0(p, *(u8**)(*(u8**)(p + 0x134) + 0x14), box[0]);
+    sceVu0SubVector(d, a1, (f32*)(p + 0x10));
+    sceVu0AddVector(box[1], box[1], d);
+    while ((e = func_001234A0(e)) != 0) {
+        if (e == p || func_001425D0(e) == 0) {
+            continue;
+        }
+        if (func_0015BB88(box[0], e, 0) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* unused: rule F1 (func_0015EEA0 / func_00176F08: 4 and 6 work, 0-3 and 5 do not) */
+extern s32 D_15BD78_pad1;
+extern s32 D_15BD78_pad2;
+extern s32 D_15BD78_pad3;
+extern s32 D_15BD78_pad4;
+typedef struct { u64 a[4]; } B15BD78;
+s32 func_001237E8(u8*);
+s32 func_0015BD78(f32* box, u8* e, s32 o) {
+    B15BD78* out = (B15BD78*)o;
+    B15BD78* b;
+    u8* c;
+    s32 i;
+
+    if (Actor_IsActive(e) == 0) {
+        goto ret0;
+    }
+    if (func_001237E8(e) == 0) {
+        goto ret0;
+    }
+    b = (B15BD78*)func_00122048(0x20, 0x10);
+    c = *(u8**)(*(u8**)(e + 0x134) + 0x18);
+    for (i = 0; i < (*(u8**)(e + 0x134))[6]; i++, c += 0x14) {
+        if (*(u32*)(e + 0x3A8) & (1 << i)) {
+            continue;
+        }
+        func_0015BAD0(e, c, (f32*)b);
+        if (func_0015B998(box, (f32*)b) != 0) {
+            if (out != NULL) {
+                *out = *b;
+                ((s32*)out)[3] = i;
+            }
+            func_001220B8(b);
+            return 1;
+        }
+    }
+    func_001220B8(b);
+ret0:
+    return 0;
+}
+
+void func_0015BEB0(u8* a, u8* b, f32* out) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR s;
+    sceVu0FVECTOR d;
+    f32 l;
+    f32 t;
+
+    s[0] = s[2] = 1.0f / (*(f32*)(a + 4) + *(f32*)(b + 4));
+    s[1] = 1.0f / (*(f32*)(a + 8) + *(f32*)(b + 8));
+    sceVu0SubVector(d, (f32*)(b + 0x10), (f32*)(a + 0x10));
+    sceVu0MulVector(v, d, s);
+    *(s32*)&d[1] = 0;
+    l = v[0] * v[0] + v[2] * v[2];
+    if (d[1] < l) {
+        t = _sqrtf((1.0f - v[1] * v[1]) / l) - 1.0f;
+        sceVu0ScaleVector(out, v, t * (*(f32*)(a + 4) + *(f32*)(b + 4) + 5.0f));
+    } else {
+        out[0] = *(f32*)(a + 4) + *(f32*)(b + 4) + 5.0f;
+        out[2] = d[1];
+    }
+    *(s32*)&out[1] = 0;
+}
 
 void func_0015BFF8(u8* a, u8* b, f32* out) {
     sceVu0FVECTOR d;
@@ -4177,7 +4653,24 @@ u8* func_0015DA70(u8* p) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015DAC0);
+extern s32 D_15DAC0_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+f32 Angle_Wrap(f32);
+s32 func_00137688_r(s32, f32) __asm__("func_00137688");
+s32 sceVu0ScaleVector_r(f32*, f32*, f32) __asm__("sceVu0ScaleVector");
+s32 func_0015DAC0(u8* a0) {
+    u8* p = a0;
+
+    if (*(u16*)(p + 0x30E) != 0xFFFF) {
+        func_0015D5E8(a0);
+        return func_00137688_r((s32)p, *(f32*)(p + 0x150));
+    }
+    func_0014CCE0(a0, 0.0f);
+    *(s32*)p &= ~0x400;
+    *(f32*)(p + 0x150) = Angle_Wrap(*(f32*)(p + 0x150) + 3.1415928f);
+    func_00130398((s32)p, 6, 0.0f);
+    func_00137688((s32)p, *(f32*)(p + 0x150));
+    return sceVu0ScaleVector_r((f32*)(p + 0x3C0), (f32*)(p + 0x30), 4.0f);
+}
 
 void func_0015DB80(u32* p) {
     *p &= 0xFFDFFFEF;
@@ -4397,7 +4890,30 @@ void func_0015EE78(s32 a, s32 b) {
     func_0011EEB8(D_0055BDE0, a, b);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015EEA0);
+typedef struct N15EEA0 {
+    u16 unk_00;
+    u16 unk_02;
+    s32 unk_04;
+    struct N15EEA0* next;
+    s32 (*fn)(struct N15EEA0*);
+} N15EEA0;
+s32 func_0015EEA0(void) {
+    N15EEA0* n = (N15EEA0*)((T122110b*)D_0055BDE0)->h[2];
+
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    while (n != NULL) {
+        if (!(n->fn(n) & 0x20)) {
+            n->unk_00 = 0;
+            n = n->next;
+        }
+        sceGsSyncPath(0, 0);
+    }
+    ((T122110b*)D_0055BDE0)->h[2] = 0;
+    ((T122110b*)D_0055BDE0)->h[3] = 0;
+    D_0055BDE0 = &D_00559DC0[D_00351BD0];
+    return 0;
+}
 
 extern volatile s32 D_002B8340_v __asm__("D_002B8340");
 extern volatile s32 D_00559DB4_v __asm__("D_00559DB4");
@@ -4542,7 +5058,20 @@ void func_00162058(s32 a) {
     func_00161A08(a);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00162070);
+s32 func_001617C0(s32*);
+void func_00167F68();
+void func_00162070(s32 a0, u8* a, s32 b, s32 c) {
+    s32* p = (s32*)a0;
+
+    if (p[0] == 0x4A424F4D) {
+        *(s32*)c = func_001617C0((s32*)a0);
+        *(s32*)a = p[8];
+        *(s32*)b = p[12];
+        func_00167F68(*(s32*)c, p);
+        return;
+    }
+    *(s32*)a = p[8];
+}
 
 void func_00162110(s32* a, u8** b) {
     u8* p;
@@ -4820,7 +5349,55 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164768);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164BA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164E00);
+typedef struct { u16 lo; u16 hi; s32 n; f32* tab; } E164E00;
+static inline s32 func_00164E00_bs(f32* t, s32 n, f32 x) {
+    s32 lo = 0;
+    s32 hi = n - 1;
+    s32 m;
+
+    if (x < t[0]) {
+        return -1;
+    }
+    if (t[hi * 4] <= x) {
+        return hi;
+    }
+    while (hi - lo >= 2) {
+        m = (lo + hi) / 2;
+        if (x < t[m * 4]) {
+            hi = m;
+        } else if (t[m * 4] < x) {
+            lo = m;
+        } else {
+            return m;
+        }
+    }
+    return lo;
+}
+f32* func_00164E00(u8* p, u32 key, f32 x) {
+    E164E00* e = *(E164E00**)(p + 0x3C);
+    u32 k0 = key & 0xFFFF;
+    u32 k1 = key >> 16;
+    E164E00* f;
+    s32 r;
+
+    while (*(s32*)e != -1) {
+        if (e->hi == k1 && (k0 == 0xFFFF || e->lo == k0)) {
+            f = e;
+            goto found;
+        }
+        e++;
+    }
+    f = NULL;
+found:
+    if (f == NULL) {
+        return NULL;
+    }
+    r = func_00164E00_bs(f->tab, f->n, x);
+    if (r < 0) {
+        return NULL;
+    }
+    return &f->tab[r * 4];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164F18);
 
@@ -5582,7 +6159,30 @@ s32 func_00171498(u8* a0, s32 a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001714F0);
+s32 func_001714F0(u8* a0, s32 a1) {
+    u8* p = a0;
+    u8* t;
+    s32 i;
+
+    if (func_0012CA98(a0) == 0) {
+        return 0;
+    }
+    switch (*(s32*)(p + 0x70)) {
+    found:
+        return 1;
+    case 0:
+    case 8:
+    case 0x18:
+        t = *(u8**)(*(u8**)(p + 0x6C) + 0xC8);
+        for (i = 0; i < t[0x21]; i++) {
+            if (t[0x22 + i] == a1) {
+                goto found;
+            }
+        }
+        break;
+    }
+    return 0;
+}
 
 s32 func_001715B0(u8* list, u8* self, f32 r) {
     sceVu0FVECTOR d;
@@ -6083,7 +6683,24 @@ s32 func_001730F0(u8* p, u8* q, s32 c, s32 m) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001731F8);
+s16* func_00171B80_p(u8* p, u8* q, s32 a2) __asm__("func_00171B80");
+void func_001731F8(u8* arg0) {
+    u8* q = *(u8**)(arg0 + 0x144);
+    u64 f = *(u64*)(q + 0x38);
+    s32* d;
+
+    if ((s32)(f >> 17) & 1) {
+        *(u64*)(q + 0x38) = f & ~0x20000;
+        return;
+    }
+    d = *(s32**)(*(u8**)(q + 0x170) + 0xC);
+    *(f32*)(q + 0x68) = func_00171AA8(((f32*)d)[5], ((f32*)d)[6]);
+    *(s32*)(q + 0x4C) = *func_00171B80_p(arg0, q, d[0]);
+    if (func_00171AE8((s32)arg0, q) != 0) {
+        *(f32*)(*(u8**)(q + 0x40) + 0x50) = ((f32*)d)[7];
+    }
+    *(s32*)(q + 0x174) = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001732B0);
 
@@ -6246,9 +6863,39 @@ s32 func_00173860(u8* p, u8* q, s32 c, s32 m) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00173968);
+s32 func_0016CE10(u8* p, u8* q, s32 c, s32 m);
+s32 func_00173968(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x23) == 0) {
+            return 0;
+        }
+        return func_0016CE10(p, q, c, 1);
+    case 2:
+        func_0016CE10(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00173A20);
+s32 func_0016D768(u8* p, u8* q, s32 c, s32 m);
+s32 func_00173A20(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x24) == 0) {
+            return 0;
+        }
+        return func_0016D768(p, q, c, 1);
+    case 2:
+        func_0016D768(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
 void func_00173AD8(s32 a, u8* p) {
     *(s32*)(p + 0x18) = 0xA;
@@ -6306,13 +6953,72 @@ void func_00173EA8(s32 a, u8* p) {
     *(s32**)(p + 0x1C) = D_0035C140;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00173EC0);
+s32 func_00173EC0(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x32) == 0) {
+            return 0;
+        }
+        return func_0016CB98(p, q, c, 1);
+    case 2:
+        func_0016CB98(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00173F78);
+s32 func_00173F78(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x33) == 0) {
+            return 0;
+        }
+        return func_0016CE10(p, q, c, 1);
+    case 2:
+        func_0016CE10(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174030);
+s32 func_00174030(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x34) == 0) {
+            return 0;
+        }
+        return func_0016D768(p, q, c, 1);
+    case 2:
+        func_0016D768(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001740E8);
+s16* func_00171B80_p(u8* p, u8* q, s32 a2) __asm__("func_00171B80");
+void func_001740E8(u8* arg0) {
+    u8* q = *(u8**)(arg0 + 0x144);
+    u64 f = *(u64*)(q + 0x38);
+    s32* d;
+
+    if ((s32)(f >> 17) & 1) {
+        *(u64*)(q + 0x38) = f & ~0x20000;
+        return;
+    }
+    d = *(s32**)(*(u8**)(q + 0x160) + 0xC);
+    *(f32*)(q + 0x68) = func_00171AA8(((f32*)d)[5], ((f32*)d)[6]);
+    *(s32*)(q + 0x4C) = *func_00171B80_p(arg0, q, d[0]);
+    if (func_00171AE8((s32)arg0, q) != 0) {
+        *(f32*)(*(u8**)(q + 0x40) + 0x50) = ((f32*)d)[7];
+    }
+    *(s32*)(q + 0x164) = 1;
+}
 
 s32 func_001741A0(u8* p, u8* q, s32 m) {
     s32 r = 0;
@@ -6404,13 +7110,71 @@ s32 func_001743B0(u8* p, u8* q, s32 c, s32 m) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001744B8);
+s32 func_0016C480(u8* p, u8* q, s32 c, s32 m);
+s32 func_001744B8(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x28) == 0) {
+            return 0;
+        }
+        return func_0016C480(p, q, c, 1);
+    case 2:
+        func_0016C480(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174570);
+s32 func_0016C650(u8* p, u8* q, s32 c, s32 m);
+s32 func_00174570(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x29) == 0) {
+            return 0;
+        }
+        return func_0016C650(p, q, c, 1);
+    case 2:
+        func_0016C650(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174628);
+s32 func_00174628(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x2A) == 0) {
+            return 0;
+        }
+        return func_0016CB98(p, q, c, 1);
+    case 2:
+        func_0016CB98(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001746E0);
+s32 func_001746E0(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x2B) == 0) {
+            return 0;
+        }
+        return func_0016D040(p, q, c, 1);
+    case 2:
+        func_0016D040(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174798);
 
@@ -6419,11 +7183,63 @@ void func_00174950(s32 a, u8* p) {
     *(s32**)(p + 0x1C) = D_0035C2C0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174968);
+s32 func_0016D2D0(u8* p, u8* q, s32 c, s32 m);
+s32 func_00174968(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x2D) == 0) {
+            return 0;
+        }
+        return func_0016D2D0(p, q, c, 1);
+    case 2:
+        func_0016D2D0(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174A20);
+s32 func_00174A20(u8* p, u8* q, s32 c, s32 m) {
+    switch (m) {
+    case 0:
+        return 0;
+    case 1:
+        if (func_00171A88((s32)p, (s32)q, 0x2E) == 0) {
+            return 0;
+        }
+        return func_0016D768(p, q, c, 1);
+    case 2:
+        func_0016D768(p, q, c, m);
+        return 1;
+    }
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174AD8);
+/* unused: rule F1 (5 needed here to keep func_00176F08) */
+extern s32 D_174AD8_pad1;
+extern s32 D_174AD8_pad2;
+extern s32 D_174AD8_pad3;
+extern s32 D_174AD8_pad4;
+extern s32 D_174AD8_pad5;
+s16* func_00171B80_p(u8* p, u8* q, s32 a2) __asm__("func_00171B80");
+void func_00174AD8(u8* arg0) {
+    u8* q = *(u8**)(arg0 + 0x144);
+    u64 f = *(u64*)(q + 0x38);
+    s32* d;
+
+    if ((s32)(f >> 17) & 1) {
+        *(u64*)(q + 0x38) = f & ~0x20000;
+        return;
+    }
+    d = *(s32**)(*(u8**)(q + 0x160) + 0xC);
+    *(f32*)(q + 0x68) = func_00171AA8(((f32*)d)[5], ((f32*)d)[6]);
+    *(s32*)(q + 0x4C) = *func_00171B80_p(arg0, q, d[0]);
+    if (func_00171AE8((s32)arg0, q) != 0) {
+        *(f32*)(*(u8**)(q + 0x40) + 0x50) = ((f32*)d)[7];
+    }
+    *(s32*)(q + 0x164) = 1;
+}
 
 s32 func_00174B90(u8* p, u8* q, s32 m) {
     s32 r = 0;
@@ -7103,7 +7919,48 @@ void func_00176B80(u8** p) {
     *(s16*)(*(u8**)(q + 0x6C) + 0xBE) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00176BA8);
+extern s32 D_176BA8_pad1; /* unused: rule F1 (keeps func_00176F08) */
+typedef struct {
+    u8* a;
+    u8* b;
+    s32 c;
+    s32 d;
+    s32 e;
+} S176BA8e;
+typedef struct {
+    s32* src;
+    S176BA8e e[2];
+} S176BA8;
+void func_00176BA8(u8* p, s32 arg1) {
+    s32* arg0 = (s32*)p;
+    S176BA8* t;
+    S176BA8e* e;
+    s32* o;
+    s32* c;
+    s32 i;
+    s32 v;
+    u8* a;
+
+    if (*arg0 == 0x14) {
+        t = (S176BA8*)((u8*)D_005757B0 + arg1 * 0x2C);
+        memset(t, 0, 0x2C);
+        t->src = arg0;
+        e = t->e;
+        i = 0;
+        c = arg0 + 4;
+        o = arg0 + 2;
+    loop:
+        a = (u8*)(*o++ + (s32)p);
+        i++;
+        e->a = e->b = a;
+        v = *c++;
+        e->d = 0;
+        e->c = v;
+        e->e = 0;
+        e++;
+        if (i < 2) goto loop;
+    }
+}
 
 void func_00178140(s32 n) {
     D_002C5AD0[n][2] = D_002C5AD0[n][3] = 0;
@@ -7127,6 +7984,9 @@ s32 func_00176EE0(void) {
 extern sceVu0FVECTOR D_005758A0;
 extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
+/* unused: rule F1, func_00176F08 (26 Nov, after func_0015DAC0: 0-3 and 5-10 work, 4 and 7 do not) */
+extern s32 D_176F08_pad1;
+extern s32 D_176F08_pad2;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
@@ -7246,7 +8106,23 @@ s32 func_00177608(f32* a0, f32* a1, f32* a2) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00177680);
+extern f32 D_003624B8;
+f32 Vec_Length(f32*);
+f32 func_00177680(f32* a0, f32* a1) {
+    sceVu0FVECTOR b;
+    sceVu0FVECTOR a;
+
+    sceVu0CopyVector(a, a1);
+    a[1] -= 10.0f;
+    sceVu0CopyVector(b, a1);
+    b[1] += D_003624B8;
+    if (func_00177608(a0, a, b) != 0) {
+        sceVu0SubVector(b, a0, a1);
+        return Vec_Length(b);
+    }
+    sceVu0CopyVector(a0, b);
+    return 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00177740);
 
@@ -7620,7 +8496,23 @@ void func_0017B200(void) {
     q[8] = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017B250);
+void func_0017B250(f32* out, f32* m, f32 t) {
+    f32 b[4];
+    f32 tt = t * t;
+    f32 u = 1.0f - t;
+    f32 uu;
+    s32 i;
+
+    uu = u * u;
+    b[3] = tt * t;
+    b[2] = tt * 3.0f * u;
+    b[0] = uu * u;
+    b[1] = t * 3.0f * uu;
+    for (i = 0; i < 3; i++) {
+        out[i] = m[i] * b[0] + m[i + 4] * b[1] + m[i + 8] * b[2] + m[i + 12] * b[3];
+    }
+    out[3] = 1.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017B308);
 
@@ -8299,7 +9191,22 @@ s32 func_0017ECF8_def(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017EF40);
+void func_0017D570_a(s32) __asm__("func_0017D570");
+void func_0017EF40(s32 arg0) {
+    D_00575920[0] = arg0;
+    if (D_002DED08 != 9) {
+        if (D_002DED08 != 3) {
+            sceVu0CopyVector((f32*)&D_00575920[4], D_005758E0);
+            func_00176F08(3, 60.0f);
+            return;
+        }
+        sceVu0CopyVector((f32*)&D_00575920[4], D_005758E0);
+        ((f32*)D_00575920)[1] = 60.0f;
+        return;
+    }
+    sceVu0CopyVector((f32*)&D_00575920[4], D_005758E0);
+    func_0017D570_a(arg0);
+}
 
 void func_0017D5A0(void);
 void func_0017EFF8(void) {

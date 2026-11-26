@@ -201,7 +201,25 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102070);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102118);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102978);
+extern s32 D_004945F8;
+extern s32 D_002A3F24;
+void TaskList_Init(s32*, s32*, s32, s32);
+u8* TaskList_Add(s32*, s32, void*);
+s32 func_00102118();
+void func_00102978(void) {
+    s32 i;
+    u8* t;
+
+    TaskList_Init(&D_00494878, &D_004945F8, 0x28, 0x10);
+    for (i = 0; i < D_002A3F24; i++) {
+        t = TaskList_Add(&D_00494878, 120000, func_00102118);
+        if (t != NULL) {
+            t[0x1D] = i;
+            t[0x1C] = 0;
+            t[0x1E] = 1;
+        }
+    }
+}
 
 void func_00102950(void) {
     func_0011EF58(&D_00494878, 0);

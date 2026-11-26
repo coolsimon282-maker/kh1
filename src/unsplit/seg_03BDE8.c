@@ -127,7 +127,7 @@ typedef struct {
     Seg3BDE8KV e[256];
 } Seg3BDE8KVTab;
 extern Seg3BDE8KVTab* D_0052EB40;
-void func_00142B30(u8*, f32*);
+s32 func_00142B30(u8*, f32*);
 void func_00152770(u8*, s32, void*);
 extern f32 D_002C58B0[];
 void func_0015DCC8(u8*, u8*);
@@ -649,7 +649,28 @@ void func_0013BF20(s32 a) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013BFB8);
+void func_0013BFB8(u8* a) {
+    s32 n;
+    s32 i;
+    u8 t;
+    u16* x;
+    u16* y;
+
+    for (n = 0x2F; n > 0; n--) {
+        if (a[n] == 0) {
+            continue;
+        }
+        for (i = 0; i < n; i++) {
+            x = (u16*)func_00147AE8(a[i]);
+            y = (u16*)func_00147AE8(a[i + 1]);
+            if (x[1] > y[1]) {
+                t = a[i];
+                a[i] = a[i + 1];
+                a[i + 1] = t;
+            }
+        }
+    }
+}
 
 void func_0013C008(void) {
     u8 buf[0xF0];
@@ -1136,7 +1157,38 @@ void func_0013E558(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013E638);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013E978);
+s32 func_00133000_2(u8*, s32) __asm__("func_00133000");
+void func_001333E0(u8*, s32, u32*);
+void func_00137230_v(u8*, u8*, s32) __asm__("func_00137230");
+void func_0013E978(u8* a0, u32* c) {
+    u8* p = a0;
+    s32 id;
+    s32 t = *(u8*)c;
+
+    switch (t) {
+    case 0:
+        break;
+    case 2:
+        if (func_00133000_2(a0, (c[0] >> 8) & 0xFFFF) == 0) {
+            break;
+        }
+        id = (c[0] >> 8) & 0xFFFF;
+        if (id == 0) {
+            func_00130340(p, 0x1000083, 0.0f);
+            func_00130578((s32)p, 0x8A, 0.0f);
+        } else {
+            func_00130340(p, (id + 0x83) | 0x1000000, 0.0f);
+        }
+        func_00130578((s32)p, 0x40000006, 8.0f);
+        func_001333E0(p, (c[0] >> 8) & 0xFFFF, c + 1);
+        func_0014CCE0_f(p, *(f32*)(D_003051EC + 0xE8));
+        sceVu0ScaleVector((f32*)(p + 0x3C0), (f32*)(p + 0x3C0), *(f32*)(D_003051EC + 0xF0));
+        break;
+    default:
+        func_00137230_v((u8*)c[1], p, t);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013EAB0);
 
@@ -1172,7 +1224,37 @@ s32 func_0013F108(u8* p) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F198);
+void func_0013E1F8(u8*, f32*);
+s32 func_001375D8(u8*);
+void func_001271B0(u8*, f32*);
+void func_00159978(u8*, f32*);
+void func_001707D0(u8*, f32*);
+extern u32 D_002C2024;
+void func_0013E558_2(u8*, f32*) __asm__("func_0013E558");
+void func_0013F198(u8* a0) {
+    u8* p = a0;
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+
+    func_0013E1F8(a0, v);
+    if (func_001375D8(p) == 0 && func_0013F108(p) == 0) {
+        if (*(s8*)(*(u8**)(p + 0x130) + 0x54) == 0) {
+            func_001271B0(p, v);
+        } else if ((D_002C1EA8 >> 17) & 1) {
+            func_00159978(p, v);
+        } else if (!((D_002C5960 >> 3) & 1)) {
+            func_001707D0(p, v);
+        } else if (D_002C2024 & 0x8000) {
+            func_001271B0(p, v);
+        }
+    }
+    sceVu0CopyVector(w, v);
+    w[1] = 0.0f;
+    sceVu0Normalize(w, w);
+    w[1] = v[1];
+    w[3] = v[3];
+    func_0013E558_2(p, w);
+}
 
 void func_0013F2C0(void) {
     s32 i;
@@ -1930,9 +2012,89 @@ s32 func_00142730(u8* p, s32* out) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001427D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001429F8);
+typedef struct {
+    sceVu0FVECTOR p;
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR h;
+    s16 r;
+    s16 pad[7];
+} R1429F8;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142B30);
+void func_00118648(R1429F8*);
+void func_00118608(R1429F8*);
+s32 func_001429F8(f32* a, f32* b, f32* out) {
+    R1429F8 q;
+
+    q.p[1] = a[1] + b[1];
+    q.p[0] = a[0];
+    q.p[2] = a[2];
+    q.p[3] = 1.0f;
+    sceVu0ScaleVector(q.d, b, 1.5f);
+    q.d[3] = 1.0f;
+    *(s32*)&q.d[1] = 0;
+    if (func_00119688((f32*)&q) >= 0) {
+        return 3;
+    }
+    func_00118648(&q);
+    if (q.r >= 0) {
+        return 3;
+    }
+    q.p[0] += b[0];
+    q.p[2] += b[2];
+    q.d[1] = b[3] - b[1];
+    *(s32*)&q.d[0] = 0;
+    *(s32*)&q.d[2] = 0;
+    func_00118608(&q);
+    if (q.r < 0) {
+        return 3;
+    }
+    sceVu0CopyVector(out, q.h);
+    func_00118648(&q);
+    if (q.r >= 0 && q.h[1] < out[1]) {
+        return 3;
+    }
+    return 0;
+}
+
+s32 func_00105B68(s32, s32);
+s32 func_00142B30(u8* p, f32* d) {
+    R1429F8 q;
+    s32 r = 0;
+    f32 h;
+
+    sceVu0CopyVector(q.p, (f32*)(p + 0x10));
+    q.p[1] -= *(f32*)(p + 0x2C4) * 0.5f;
+    q.d[0] = d[0];
+    q.d[2] = d[2];
+    q.p[3] = 1.0f;
+    *(s32*)&q.d[1] = 0;
+    q.d[3] = 1.0f;
+    func_00118608(&q);
+    if (q.r >= 0) {
+        if (func_00105B68(*(s32*)((u8*)&q + 0x34), q.r) != 0) {
+            r = 3;
+        }
+    }
+    sceVu0AddVector(q.p, (f32*)(p + 0x10), d);
+    q.p[3] = 1.0f;
+    q.d[3] = 1.0f;
+    *(s32*)&q.d[0] = 0;
+    *(s32*)&q.d[2] = 0;
+    q.d[1] = d[3] - d[1];
+    func_00118668(&q);
+    if (q.r < 0) {
+        r = 3;
+        goto end;
+    }
+    h = q.h[1] - *(f32*)(p + 0x14);
+    if (h < -*(f32*)(p + 0x2C4) * 0.5f) {
+        r = 1;
+    } else if (*(f32*)(p + 0x2C4) < h) {
+        r = 2;
+    }
+end:
+    return r;
+}
 
 void func_00142C80(u8* a0, f32* a1) {
     sceVu0FVECTOR v;
@@ -1945,7 +2107,36 @@ void func_00142C80(u8* a0, f32* a1) {
     func_00142B30(a0, v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142CF0);
+f32 Vec_Angle(f32*, f32*);
+void Vec_RotateTowards(f32*, f32*, f32*, f32);
+f32 func_00142CF0(u8* p, f32* tgt, f32 speed, f32 turn) {
+    sceVu0FVECTOR v;
+    f32 dist;
+    f32 r;
+
+    sceVu0SubVector(v, tgt, (f32*)(p + 0x10));
+    if (!(*(s32*)p & 0x10)) {
+        v[1] = 0.0f;
+    }
+    func_001223B0(v, v);
+    if (turn == 0.0f) {
+        turn = Vec_Angle((f32*)(p + 0x30), v);
+        r = v[3] / speed * 0.3f;
+        if (r > 1.0f) {
+            turn /= r;
+        }
+    }
+    dist = v[3];
+    if (dist < speed) {
+        speed = dist;
+    }
+    Vec_RotateTowards((f32*)(p + 0x30), v, v, turn);
+    *(f32*)(p + 0x150) = atan2f(v[0], v[2]);
+    func_00137688((s32)p, *(f32*)(p + 0x150));
+    v[3] = speed;
+    sceVu0CopyVector((f32*)(p + 0x20), v);
+    return dist;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142E30);
 
@@ -2116,7 +2307,37 @@ s32 func_00144410(u8* p, f32* q) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144510);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144650);
+extern s32 curWorldNo;
+extern s32 curRoomNo;
+u8* func_0012BD98(u8*, s32, u32, f32*);
+void func_00146C98(u8*, s32);
+void func_00144650(u8* p) {
+    sceVu0FVECTOR v;
+    u8* q;
+
+    if (curWorldNo == 0xD && curRoomNo == 8) {
+        return;
+    }
+    func_001315C0((s32)p, 0x8003, v, 0.0f);
+    if (v[1] > *(f32*)(p + 0x2D4)) {
+        func_0014F658((s32)p, 0x11);
+        sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0xA0), (f32*)(p + 0x3C0));
+        *(f32*)(*(u8**)(p + 0x148) + 0xA4) = 0.0f;
+        func_001223B0((f32*)(*(u8**)(p + 0x148) + 0xA0), (f32*)(*(u8**)(p + 0x148) + 0xA0));
+        q = *(u8**)(p + 0x148);
+        *(f32*)(q + 0xB8) = *(f32*)(q + 0xAC) * 0.7f;
+        *(f32*)(*(u8**)(p + 0x148) + 0xB0) = 40.0f;
+        *(f32*)(*(u8**)(p + 0x148) + 0xB4) = 30.0f;
+        if (*(s32*)(p + 0x88) & 0x20) {
+            func_00153E80(p);
+        } else {
+            func_00130398((s32)p, 0x2D, 16.0f);
+            *(s32*)p &= ~4;
+        }
+        func_0012BD98(p, p[0x39E], 0x80000008, v);
+        func_00146C98(p, 10);
+    }
+}
 
 void func_001447A0(u8* p) {
     func_0014CC88(p, 0.0f);
@@ -2126,7 +2347,31 @@ void func_001447A0(u8* p) {
     sceVu0ScaleVector((f32*)(p + 0x3C0), (f32*)(p + 0x200), D_002C1EC0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144810);
+f32 Vec_CosAngle(f32*, f32*);
+s32 func_00144810(u8* a0, f32* v) {
+    u8* p = a0;
+    sceVu0FVECTOR w;
+    f32 h;
+    s32 id;
+
+    if (v[3] == 0.0f || 0.0f < *(f32*)(*(u8**)(p + 0x148) + 0xB0) || (id = *(u16*)(p + 0x310)) == 0xFFFF) {
+        return 0;
+    }
+    h = func_00144378(a0);
+    if (5.0f < __builtin_fabsf(h)) {
+        return 0;
+    }
+    func_00105A30(-1, id, w);
+    if (-0.7f < Vec_CosAngle(w, v)) {
+        return 0;
+    }
+    *(f32*)(p + 0x14) -= h;
+    *(f32*)(p + 0x150) = atan2f(-w[0], -w[2]);
+    func_00130398((s32)p, 0x1000031, 8.0f);
+    *(void**)(func_00130578((s32)p, 0x40000006, 0.0f) + 0xC) = func_001447A0;
+    func_0014F658((s32)p, 0x10);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144958);
 
@@ -2506,7 +2751,50 @@ u8* func_00146FB8(u8* a0, s32 a1, s32 a2) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146FF0);
+/* unused: rule F1 (func_00146FF0 / func_00147138; after func_00144810: 0, 2, 3 work, 1 and 4 do not) */
+extern s32 D_146FF0_pad1;
+extern s32 D_146FF0_pad2;
+extern s8 D_0030884F[];
+s32 Fade_IsBlack(void);
+void func_00146C98(u8*, s32);
+void func_00146FF0(u8* p, s32 k, s32 a2, s32 bit) {
+    u8* e;
+
+    if ((D_002C1EA8 >> 9) & 1) {
+        return;
+    }
+    if (*(u32*)(p + 0x9C) & (1 << bit)) {
+        return;
+    }
+    if (Fade_IsBlack() != 0) {
+        return;
+    }
+    if (((s32)(*(u64*)(p + 0x370) >> 37) & 3) != 2 && !(*(s32*)p & 1)) {
+        return;
+    }
+    switch (k) {
+    case 0:
+        e = func_001473A8(a2, *(s32*)(p + 4) + 1, (f32*)(p + 0x50));
+        if (e != NULL) {
+            *(u8**)(e + 0xC) = p;
+            *(u64*)e |= 4;
+        }
+        break;
+    case 0x19:
+        func_00146FB8(p, *(s32*)(p + 4) + 1, a2);
+        break;
+    default:
+        a2 = D_0030884F[k];
+        if (a2 < 0) {
+            break;
+        }
+        if (a2 == 10 && (u8)(p[0x39E] - 11) < 2) {
+            break;
+        }
+        func_00146C98(p, a2);
+        break;
+    }
+}
 
 extern u16 D_003085D8[];
 extern u16 D_00307226[];
