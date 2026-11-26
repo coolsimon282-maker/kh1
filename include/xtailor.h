@@ -14,6 +14,7 @@ void func_0010FB90();
 void func_0010FCD0();
 #define PadReplay_Stop func_0010FCD0 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_0010FDB8();
+#define Gs_ClearScreenGrey func_0010FDB8 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110170();
 #define Fade_ClearScreenColor func_00110170 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110190();

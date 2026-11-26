@@ -654,7 +654,7 @@ void MsgWin_Init(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
 void func_0010EA38(s32, u_long128 *, s32);
 
 // Draws texts a3 and a3 + 1 side by side (second at x + a2) through temporary windows.
-void func_0010EBE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+void Text_DrawTwoColumns(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     u_long128 *b[2];
 
     b[0] = func_00121C98(0x2C, &b[0]);
@@ -702,13 +702,15 @@ void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
     arg0->unk_92 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EDC0);
+// Measures text arg0: returns its height in pixels (Text_GetLineCount divides it by 24) and fills four words at arg1;
+// probably the size of the text block.
+INCLUDE_ASM("asm/nonmatchings/xsauce", Text_Measure);
 
-// Number of 24-pixel lines of the text (func_0010EDC0 height / 24 + 1).
+// Number of 24-pixel lines of the text (Text_Measure height / 24 + 1).
 s32 Text_GetLineCount(s32 arg0) {
     s32 stack[4];
 
-    return func_0010EDC0(arg0, stack) / 24 + 1;
+    return Text_Measure(arg0, stack) / 24 + 1;
 }
 
 #ifdef VERSION_FM

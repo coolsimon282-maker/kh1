@@ -34,6 +34,7 @@ func_0010F3B8 = MsgWin_InitChoice;
 AllSet_Load = func_0010FA88;
 AreaNames_Load = func_0010FAE8;
 PadReplay_Stop = func_0010FCD0;
+Gs_ClearScreenGrey = func_0010FDB8;
 Fade_ClearScreenColor = func_00110170;
 func_00110190 = Fade_ResetAll;
 PlayTime_SetFrames = func_00110230;

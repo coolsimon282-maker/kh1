@@ -85,7 +85,7 @@ void func_00125100(f32 arg0, f32 arg1, f32* arg2, f32* arg3) {
 INCLUDE_ASM("asm/nonmatchings/xpeanut", func_001251B0);
 
 extern f32 D_004F77E0;
-void func_001109A8(void);
+void CameraMats_ApplyView(void);
 
 // builds this frame's camera: view from cameraEye towards cameraTarget, rolled by cameraRoll
 s32 Camera_BuildFrame(void) {
@@ -105,7 +105,7 @@ s32 Camera_BuildFrame(void) {
     sceVu0MulMatrix(D_004FAE10[D_002C1EA0], screenMatrix, viewMatrix);
     sceVu0CopyMatrix(worldScreenMatrix, D_004FAE10[D_002C1EA0]);
     D_002DED0C = (s32*)D_004FAE10[D_002C1EA0];
-    func_001109A8();
+    CameraMats_ApplyView();
     D_004F77E0 = ((f32 (*)(f32*, f32*))Vec_YawBetween)(cameraEye, cameraTarget);
     return 0;
 }
@@ -127,7 +127,7 @@ s32 Camera_BuildFrame(void);
 //     sceVu0MulMatrix(D_004FAE10[D_002C1EA0], screenMatrix, viewMatrix);
 //     sceVu0CopyMatrix(worldScreenMatrix, D_004FAE10[D_002C1EA0]);
 //     D_002DED0C = D_004FAE10[D_002C1EA0];
-//     func_001109A8();
+//     CameraMats_ApplyView();
 //     Vec_YawBetween(cameraEye, cameraTarget);
 //     D_004FAF90 = 0;
 //     return 0;

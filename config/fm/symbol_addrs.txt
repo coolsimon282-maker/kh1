@@ -483,6 +483,9 @@ Pad_UpdateWithReplay                 = 0x0010FD40; // type:func
 PadReplay_Stop                       = 0x0010FE80; // type:func
 PadReplay_Start                      = 0x0010FE90; // type:func
 Lib_ForceLinkCdIpu                   = 0x00111238; // type:func
+CameraMats_ApplyView                 = 0x00110BA8; // type:func
+Gs_ClearScreenGrey                   = 0x0010FF60; // type:func
+CameraMats_Build                     = 0x00110618; // type:func
 
 
 //=========================================================
@@ -545,6 +548,8 @@ MsgWin_RegisterImages                = 0x0010E8D0; // type:func
 Text_GetLineCount                    = 0x0010F098; // type:func
 MsgWin_GetShownLineCount             = 0x0010D0C0; // type:func
 Pad_IsConfirmPressed                 = 0x0010CF20; // type:func
+Text_Measure                         = 0x0010EF90; // type:func
+Text_DrawTwoColumns                  = 0x0010EDB0; // type:func
 
 
 //=========================================================

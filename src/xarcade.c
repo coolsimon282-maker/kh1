@@ -311,7 +311,7 @@ s32 SoftReset_Check(void) {
             Movie_Finish();
         }
         Frame_UpdateTimeStep();
-        func_0010FDB8(0);
+        Gs_ClearScreenGrey(0);
     }
     return *(volatile s32 *)&D_002BBE08;
 }

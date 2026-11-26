@@ -210,3 +210,4 @@ func_00218A00 = PartyMenu_ClearSlot;
 func_0010E230 = MsgWin_FreeBuffer;
 func_0010EEC8 = Text_GetLineCount;
 func_00124DD0 = Actor_StopAll;
+Gs_ClearScreenGrey = func_0010FDB8;

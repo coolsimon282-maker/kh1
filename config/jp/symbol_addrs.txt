@@ -1831,8 +1831,6 @@ cameraFov                            = 0x002DED00; // size:0x4
 cameraRoll                           = 0x002DED04; // size:0x4
 projDistance                         = 0x004FAE00;
 savedFov                             = 0x004FAF94;
-
-// names from the FM cleanup (docs/NAMES.md): same functions/data at their JP addresses
 MsgWin_RunChoice                     = 0x0010CAE0; // type:func
 Pad_IsConfirmPressed                 = 0x0010CCD8; // type:func
 MsgWin_GetShownLineCount             = 0x0010CE98; // type:func
@@ -1862,3 +1860,8 @@ PartyMenu_DrawHelp                   = 0x00218648; // type:func
 PartyMenu_Update                     = 0x002186B8; // type:func
 PartyMenu_ClampSlot                  = 0x002189D0; // type:func
 PartyMenu_ClearSlot                  = 0x00218A00; // type:func
+Text_DrawTwoColumns                  = 0x0010EBE0; // type:func
+Text_Measure                         = 0x0010EDC0; // type:func
+Gs_ClearScreenGrey                   = 0x0010FDB8; // type:func
+CameraMats_Build                     = 0x00110410; // type:func
+CameraMats_ApplyView                 = 0x001109A8; // type:func

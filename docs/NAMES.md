@@ -764,3 +764,8 @@ cleanup") and `config/eu/jp_names.txt` (the old JP name's line renamed in place)
 | Pad_IsConfirmPressed | 0x0010CF20 | xsauce.c | True when bit 0 of D_002C2108 is set (probably the confirm button press). |
 | Actor_StartLogic | 0x00123F28 | xtoaster.c | Starts the actor's per-kind logic (kind 1, 6) or its script from the definition (+0x0C, flags bit 48). |
 | Actor_StopAll | 0x00124A28 | xtoaster.c | For each active actor: kind 3 is reset in place (or removed when its script ended), kind 7 removed; stops actor scripts. |
+| CameraMats_ApplyView | 0x00110BA8 | xtailor.c | Saves D_002B84F0 and multiplies three camera matrices by viewMatrix. |
+| Gs_ClearScreenGrey | 0x0010FF60 | xtailor.c | Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display (probably clears the screen to grey). |
+| CameraMats_Build | 0x00110618 | xtailor.c | Builds the six camera matrices from the field of view and the screen constants CameraMats_SaveAndRebuild passes; probably the view-screen and clip matrices. |
+| Text_Measure | 0x0010EF90 | xsauce.c | Returns the height in pixels of text arg0 (Text_GetLineCount divides it by 24) and fills four words at arg1; probably the size of the text block. |
+| Text_DrawTwoColumns | 0x0010EDB0 | xsauce.c | Draws texts a3 and a3 + 1 side by side (second at x + a2) through temporary windows. |

@@ -646,8 +646,8 @@ void Gs_SetDisplaySize(s16 w, s16 h) {
 }
 #endif
 
-// Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display.
-void func_0010FDB8(s32 arg0) {
+// Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display (probably clears the screen to grey).
+void Gs_ClearScreenGrey(s32 arg0) {
     D_002BC918 = SCE_GS_SET_RGBAQ(arg0, arg0, arg0, 0x80, 1);
     func_00106948(&D_002BC980);
     Gs_SetDisplaySize(0x200, 0x1BF);
@@ -921,15 +921,17 @@ void Frame_UpdateTimeStep(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", Frame_UpdateTimeStep);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110410);
+// Builds the six camera matrices from the field of view arg0 and the screen constants (aspect, centre 2048, near / far
+// clip) that CameraMats_SaveAndRebuild passes; probably the view-screen and clip matrices.
+INCLUDE_ASM("asm/nonmatchings/xtailor", CameraMats_Build);
 
 #ifdef VERSION_FM
 extern f32 D_004D90F8;
 void func_00110AE0(void);
-void func_00110410(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
+void CameraMats_Build(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
                    f32, f32, f32, f32, f32, f32, f32, f32);
 
-// Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with func_00110410 (FM).
+// Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with CameraMats_Build (FM).
 void CameraMats_SaveAndRebuild(f32 arg0) {
     func_00110AE0();
     sceVu0CopyMatrix(D_004D2590, D_002B8370);
@@ -938,7 +940,7 @@ void CameraMats_SaveAndRebuild(f32 arg0) {
     sceVu0CopyMatrix(D_004D28D0, D_002B8430);
     sceVu0CopyMatrix(D_004D2910, D_002B8470);
     sceVu0CopyMatrix(D_004D25D0, D_002B84B0);
-    func_00110410(D_002B8370, D_002B83B0, D_002B83F0, D_002B8430, D_002B8470, D_002B84B0, arg0, 0.79999996f,
+    CameraMats_Build(D_002B8370, D_002B83B0, D_002B83F0, D_002B8430, D_002B8470, D_002B84B0, arg0, 0.79999996f,
                   0.8399998546f, 2048.0f, 2048.0f, 1.0f, 16777000.0f, 1.0f, 400000000.0f, D_004D90F8);
 }
 
@@ -947,7 +949,7 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", CameraMats_SaveAndRebuild);
 #endif
 
 // Saves D_002B84F0 and multiplies three camera matrices by viewMatrix.
-void func_001109A8(void) {
+void CameraMats_ApplyView(void) {
     sceVu0CopyMatrix(D_004D2950, D_002B84F0);
     sceVu0MulMatrix(D_002B84F0, D_002B83B0, viewMatrix);
     sceVu0MulMatrix(D_002B8530, D_002B8430, viewMatrix);
