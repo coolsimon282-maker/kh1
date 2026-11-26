@@ -833,7 +833,22 @@ void func_001E1688(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001E16B0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001E1748);
+extern s32 D_003DACCC;
+
+s32 func_001E1748(u8 *p) {
+    s32 v = *(s32 *)(p + 0x184 + *(s32 *)(p + 0x180) * 4);
+
+    if (v > 0) {
+        D_003DACD0 = 0x80 / v;
+        D_003DACCC = 0;
+    } else {
+        D_003DACD0 = 0;
+        D_003DACCC = 0x80;
+    }
+    func_0011ED30(0x280A0, func_001E15A0);
+    *(s32 *)(p + 0x180) -= 1;
+    return 2;
+}
 
 extern s32 D_003DACD0;
 
