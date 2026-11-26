@@ -1,6 +1,10 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
 #include "common.h"
+
+#ifdef VERSION_FM
+// .data (0x0046C5F0-0x0046C600)
+char D_0046C5F0[16] = "PsIIlibvib  2500"; // library version (no NUL)
+#endif
 
 /* the DBC command word passed by value in one 64-bit register */
 typedef struct {
