@@ -1,3 +1,8 @@
+/**
+ * EE side of the sound driver: SIF RPC calls to the IOP sound module (RPC id 0x11). Each wrapper puts its arguments
+ * in soundRpcBuf (0x2000 bytes, sent and received), calls one command number and returns the buffer. The driver also
+ * writes the state of its 24 voices to D_0063D640 (0xB4 bytes each), which SoundRpc_IsVoiceActive reads.
+ */
 #include "common.h"
 #include "xquack.h"
 #include "eekernel.h"
@@ -17,9 +22,9 @@ typedef struct XDuck {
 } XDuck; // size = 0x48
 
 s32 D_003DE5B8;
-sceSifClientData D_003DE5C0;
+sceSifClientData soundRpcClient;
 
-void* D_0062D980;
+void* soundRpcBuf;
 XDuck D_00639180[3];
 s32 D_00639588;
 s32 D_00639880;
@@ -47,7 +52,8 @@ extern s32 D_003E3CB0;
 extern char D_00490910[];
 int printf(const char*, ...);
 
-s32 func_001ED888(s32 arg0) {
+// Clears the buffers, binds the sound RPC server (id 0x11, retrying) and sends command 0 with the voice-state buffers.
+s32 SoundRpc_Initialize(s32 arg0) {
     u32 i;
     u32 j;
     s32* buf;
@@ -55,7 +61,7 @@ s32 func_001ED888(s32 arg0) {
 
     func_001ED878(0);
     for (i = 0; i < 0x800; i++) {
-        ((u32*)&D_0062D980)[i] = 0;
+        ((u32*)&soundRpcBuf)[i] = 0;
     }
     p = D_0063D640;
     for (i = 0; i < 0x2000; i++) {
@@ -66,11 +72,11 @@ s32 func_001ED888(s32 arg0) {
         p[i] = 0;
     }
     while (1) {
-        if (sceSifBindRpc(&D_003DE5C0, 0x11, 0) < 0) {
+        if (sceSifBindRpc(&soundRpcClient, 0x11, 0) < 0) {
             printf(D_00490910);
             return -1;
         }
-        if (D_003DE5C0.serve != NULL) {
+        if (soundRpcClient.serve != NULL) {
             break;
         }
         i = 0x10000;
@@ -83,35 +89,40 @@ s32 func_001ED888(s32 arg0) {
             D_00635640[j][i] = -1;
         }
     }
-    buf = (s32*)&D_0062D980;
+    buf = (s32*)&soundRpcBuf;
     buf[0] = (s32)D_0063D640;
     buf[1] = arg0;
     buf[2] = (s32)D_0063F640;
-    sceSifCallRpc(&D_003DE5C0, 0, 0, buf, 0x2000, buf, 0x2000, NULL, NULL);
+    sceSifCallRpc(&soundRpcClient, 0, 0, buf, 0x2000, buf, 0x2000, NULL, NULL);
     return 0;
 }
 
+// Sends sound RPC command 31 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EDA60(void) {
-    sceSifCallRpc(&D_003DE5C0, 31, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 31, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 32 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EDAB8(void) {
-    sceSifCallRpc(&D_003DE5C0, 32, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 32, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 33 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EDB10(void) {
-    sceSifCallRpc(&D_003DE5C0, 33, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 33, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 34 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EDB68(void) {
-    sceSifCallRpc(&D_003DE5C0, 34, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 34, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
-s32 func_001EDBC0(s32 arg0, s32 arg1, s32 arg2) {
+// Returns 1 if one of the 24 voices plays sound arg0 (with arg1 / arg2 matching unless < 0).
+s32 SoundRpc_IsVoiceActive(s32 arg0, s32 arg1, s32 arg2) {
     XQuackVoice* p;
     s32 i;
 
@@ -168,9 +179,9 @@ void* func_001EDD20(XQuackVag* vag, s32 arg1, s32 arg2, s32 arg3) {
     f = vag->unk_1F;
     if (!(D_003DE5B8 & 4)) {
         func_001EE0B8(0x12, (s32)vag, arg1, arg2, arg3, pitch, e, f);
-        return D_0062D980;
+        return soundRpcBuf;
     }
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 s32 func_001EDDC0(s32 arg0, s32 arg1, s32 arg2) {
@@ -216,11 +227,12 @@ s32 func_001EDDC0(s32 arg0, s32 arg1, s32 arg2) {
 void* func_001EDF28(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (!(D_003DE5B8 & 8)) {
         func_001EE0B8(41, arg0, arg1, arg2, arg3, 0, 0, 0);
-        return D_0062D980;
+        return soundRpcBuf;
     }
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
+// Looks arg0 up in the three cached entries (D_00639180) and returns its unk_18 (0 if none).
 s32 SoundRpc_FindCachedValue(s32 arg0) {
     XDuck* p0;
     s32 i;
@@ -287,207 +299,222 @@ void func_001EE0B8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     }
 }
 
+// Sends sound RPC command 1 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE188(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 1, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 1, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
 void* func_001EE1E0(s32 arg0, s32 arg1) {
     func_001EE0B8(38, arg0, arg1, 0, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 39 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE228(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 39, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 39, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
 
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 15 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE280(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 15, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 15, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
 
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE2D8(s32 arg0, s32 arg1, s32 arg2) {
     D_00639880++;
     func_001EE0B8(4, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE330(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     if (!(D_003DE5B8 & 2)) {
         func_001EE0B8(5, arg0, arg1, arg2, arg3, arg4, 0, 0);
-        return D_0062D980;
+        return soundRpcBuf;
     }
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE390(s32 arg0, s32 arg1, s32 arg2) {
     func_001EE0B8(6, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE3D8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001EE0B8(2, arg0, arg1, arg2, arg3, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE428(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_001EE0B8(7, arg0, arg1, arg2, arg3, arg4, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE478(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_001EE0B8(8, arg0, arg1, arg2, arg3, arg4, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE4C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001EE0B8(9, arg0, arg1, arg2, arg3, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE518(s32 arg0, s32 arg1, s32 arg2) {
     D_00639880++;
     func_001EE0B8(11, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE570(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     if (!(D_003DE5B8 & 1)) {
         func_001EE0B8(12, arg0, arg1, arg2, arg3, arg4, arg5, 0);
-        return D_0062D980;
+        return soundRpcBuf;
     }
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE5D8(s32 arg0) {
     func_001EE0B8(13, arg0, 0, 0, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE618(s32 arg0, s32 arg1, s32 arg2) {
     func_001EE0B8(14, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 47 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE660(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 47, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 47, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 48 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE6B8(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 48, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 48, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
 void* func_001EE710(s32 arg0, s32 arg1, s32 arg2) {
     D_00639880++;
     func_001EE0B8(3, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE768(s32 arg0) {
     func_001EE0B8(19, arg0, 0, 0, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE7A8(s32 arg0, s32 arg1, s32 arg2) {
     func_001EE0B8(20, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE7F0(s32 arg0, s32 arg1, s32 arg2) {
     func_001EE0B8(21, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE838(s32 arg0, s32 arg1, s32 arg2) {
     D_00639880++;
     func_001EE0B8(40, arg0, arg1, arg2, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE890(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001EE0B8(42, arg0, arg1, arg2, arg3, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
 void* func_001EE8E0(s32 arg0, s32 arg1) {
     func_001EE0B8(43, arg0, arg1, 0, 0, 0, 0, 0);
-    return D_0062D980;
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 22 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE928(void) {
-    sceSifCallRpc(&D_003DE5C0, 22, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 22, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 23 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE980(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 23, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 23, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 24 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EE9D8(void) {
-    sceSifCallRpc(&D_003DE5C0, 24, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 24, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 25 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEA30(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32* buf = (s32*)&D_0062D980;
+    s32* buf = (s32*)&soundRpcBuf;
 
     buf[0] = arg0;
     buf[1] = arg1;
     buf[2] = arg2;
     buf[3] = arg3;
-    sceSifCallRpc(&D_003DE5C0, 25, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 25, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 27 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEA98(void) {
-    sceSifCallRpc(&D_003DE5C0, 27, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 27, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 29 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEAF0(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 29, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 29, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 50 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEB48(s32 arg0, s32 arg1) {
-    s32* buf = (s32*)&D_0062D980;
+    s32* buf = (s32*)&soundRpcBuf;
 
     buf[0] = arg0;
     buf[1] = arg1;
-    sceSifCallRpc(&D_003DE5C0, 50, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    sceSifCallRpc(&soundRpcClient, 50, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 35 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEBA8(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 35, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 35, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 36 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEC00(void* arg0) {
-    D_0062D980 = arg0;
-    sceSifCallRpc(&D_003DE5C0, 36, 0, &D_0062D980, 0x2000, &D_0062D980, 0x2000, NULL, NULL);
-    return D_0062D980;
+    soundRpcBuf = arg0;
+    sceSifCallRpc(&soundRpcClient, 36, 0, &soundRpcBuf, 0x2000, &soundRpcBuf, 0x2000, NULL, NULL);
+    return soundRpcBuf;
 }
 
+// Sends sound RPC command 30 (arguments in the shared buffer soundRpcBuf) and returns the buffer.
 void* func_001EEC58(void) {
     s32 i, j;
 
     if (D_00635640[0][0] != -1) {
-        sceSifCallRpc(&D_003DE5C0, 30, 0, D_00635640, 0x2000, D_00635640, 0x2000, NULL, NULL);
+        sceSifCallRpc(&soundRpcClient, 30, 0, D_00635640, 0x2000, D_00635640, 0x2000, NULL, NULL);
         D_003E3CB0 = 0;
         for (i = 0; i < 0x400; i++) {
             for (j = 7; j >= 0; j--) {
@@ -495,5 +522,5 @@ void* func_001EEC58(void) {
             }
         }
     }
-    return D_0062D980;
+    return soundRpcBuf;
 }

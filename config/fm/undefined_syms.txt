@@ -74,3 +74,4 @@ ScriptOp_CallCommand = func_001DDCB8;
 func_001C3380 = ScriptOp_StartThread;
 func_001C2728 = Script_ReadWork;
 func_001C2808 = Script_WriteWork;
+func_001EDBC0 = SoundRpc_IsVoiceActive;

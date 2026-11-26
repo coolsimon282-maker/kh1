@@ -80,7 +80,7 @@ void Graphics_Initialize(void) {
     D_002B6478 = D_0046A688.unk_1C();
     func_00110230(0);
     D_002BC73C = 0;
-    func_001ED888(NULL);
+    SoundRpc_Initialize(NULL);
     Pad_Reset();
 }
 #else
@@ -103,7 +103,7 @@ void Graphics_Initialize(void) {
     D_002B29C8 = disk_Mgr.unk_1C();
     func_00110230(0);
     D_002B8C8C = 0;
-    func_001ED888(NULL);
+    SoundRpc_Initialize(NULL);
     Pad_Reset();
 }
 #endif
@@ -195,7 +195,7 @@ s32 func_00109468(void) {
     if (D_002B6484 == 0 && (*(u64 *)D_002BCA00_w & 0xF0900000000) == 0xF0900000000 && (D_002BCA00_w[2] & 0xF09) != 0 &&
         func_0010BF98_s() == 0 && func_001EE090() == 0) {
         *(volatile s32 *)&D_002BBE08 = 0;
-        func_001ED888(1);
+        SoundRpc_Initialize(1);
         func_00114420();
         func_00239488();
         func_00178140(0);

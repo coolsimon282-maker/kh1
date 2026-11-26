@@ -182,3 +182,7 @@ other functions (rule F1).
 | Script_GetOpcode | 0x001C1CE8 | xkinetic.c | Returns the opcode (top byte) of instruction arg1 at arg0. |
 | Script_GetOperand | 0x001C1CF8 | xkinetic.c | Returns the signed 24-bit operand of instruction arg1 at arg0. |
 | scriptOpTable | 0x0037A198 | xkinetic.c | the 32 opcode handlers, in the order of jhaton's OPCODE_NAMES (6 checked against the handlers' code); was D_003759E0 |
+| SoundRpc_Initialize | 0x001EC7D0 | xquack.c | Clears the buffers, binds the sound RPC server (id 0x11, retrying) and sends command 0 with the voice-state buffers. |
+| SoundRpc_IsVoiceActive | 0x001ECB08 | xquack.c | Returns 1 if one of the 24 voices plays sound arg0 (with arg1 / arg2 matching unless < 0). |
+| soundRpcClient | 0x003E3C88 | xquack.c | the sceSifClientData every sound RPC call goes through (bound to id 0x11 by SoundRpc_Initialize); was D_003DE5C0 |
+| soundRpcBuf | 0x00633640 | xquack.c | the 0x2000-byte send/receive buffer of every sound RPC call; was D_0062D980 |

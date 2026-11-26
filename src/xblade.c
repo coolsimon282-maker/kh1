@@ -256,7 +256,7 @@ void* func_001124E8(void) {
 }
 
 s32 func_00112508(UNK_TYPE arg0, UNK_TYPE arg1, s32* arg2) {
-    func_001ED888(2);
+    SoundRpc_Initialize(2);
     func_001EE1E0(3, -9);
     func_00101528();
     func_001EE1E0(0, -1);
@@ -467,7 +467,7 @@ void func_00112B60(void) {
 }
 
 void func_00112B68(void) {
-    func_001ED888(2);
+    SoundRpc_Initialize(2);
     func_001EE1E0(3, -9);
     func_001EE1E0(0, -1);
     func_001EE1E0(3, -1);
