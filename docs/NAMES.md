@@ -186,3 +186,8 @@ other functions (rule F1).
 | SoundRpc_IsVoiceActive | 0x001ECB08 | xquack.c | Returns 1 if one of the 24 voices plays sound arg0 (with arg1 / arg2 matching unless < 0). |
 | soundRpcClient | 0x003E3C88 | xquack.c | the sceSifClientData every sound RPC call goes through (bound to id 0x11 by SoundRpc_Initialize); was D_003DE5C0 |
 | soundRpcBuf | 0x00633640 | xquack.c | the 0x2000-byte send/receive buffer of every sound RPC call; was D_0062D980 |
+| Gs_LoadClut16 | 0x00100D18 | xbeginning.c | Uploads a 16-colour CLUT (8x2, PSMCT32) to GS block dbp. |
+| Gs_LoadClut256 | 0x00100D90 | xbeginning.c | Uploads a 256-colour CLUT (16x16, PSMCT32) to GS block dbp. |
+| Gs_LoadTex4_512x256 | 0x00100E08 | xbeginning.c | Uploads a 512x256 4-bit texture (PSMT4) to GS block dbp. |
+| Gs_LoadTex8_256x256 | 0x00100E80 | xbeginning.c | Uploads a 256x256 8-bit texture (PSMT8) to GS block dbp. |
+| Gs_LoadTex8H_256x1024 | 0x00100EF8 | xbeginning.c | Uploads a 256x1024 PSMT8H texture to GS block dbp. |

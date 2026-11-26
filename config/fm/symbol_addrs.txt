@@ -227,6 +227,16 @@ SoundRpc_Initialize                  = 0x001EC7D0; // type:func
 SoundRpc_IsVoiceActive               = 0x001ECB08; // type:func
 
 
+//=========================================================
+// xbeginning.c
+//=========================================================
+Gs_LoadClut16                        = 0x00100D18; // type:func
+Gs_LoadClut256                       = 0x00100D90; // type:func
+Gs_LoadTex4_512x256                  = 0x00100E08; // type:func
+Gs_LoadTex8_256x256                  = 0x00100E80; // type:func
+Gs_LoadTex8H_256x1024                = 0x00100EF8; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

@@ -1,3 +1,7 @@
+/**
+ * The program's start: main() and the top level of each frame (which passes run, from the flag word D_002B85F8),
+ * plus small helpers that upload fixed-size images (CLUTs and textures) to GS memory.
+ */
 #include "common.h"
 #include "common_funcs.h"
 
@@ -95,17 +99,20 @@ void func_00177748(void);
 void func_00177768(void);
 void func_001777A8(void);
 
+// Task callback (priority 159998): calls func_00106A40.
 s32 func_001000C8(void) {
     func_00106A40();
     return 0;
 }
 
+// Task callback (priority 184990): waits for the GS path, then calls func_00106AA8.
 s32 func_001000E8(void) {
     sceGsSyncPath(0, 0);
     func_00106AA8();
     return 0;
 }
 
+// Adds the two per-frame tasks above to the main task list.
 void func_00100118(void) {
     *(u16*)(TaskSystem_AddTask(159998, func_001000C8) + 2) = -1;
     *(u16*)(TaskSystem_AddTask(184990, func_001000E8) + 2) = -1;
@@ -237,6 +244,7 @@ INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100240);
 #endif
 #endif
 
+// One frame's top level: runs the draw passes selected by D_002B85F8 and the optional ones (D_002A2740, ...).
 s32 func_00100328(void) {
     s32 temp_16;
     s32 temp_3;
@@ -271,6 +279,7 @@ s32 func_00100328(void) {
     return 0;
 }
 
+// Initialises the graphics, then runs func_00109580 forever.
 int main(void) {
     Graphics_Initialize();
     do {
@@ -278,6 +287,7 @@ int main(void) {
     } while (TRUE);
 }
 
+// Fills two XArg1 entries from row arg0 of D_00486430 and row 0 of D_0046BE90.
 void func_00100460(s32 arg0, XArg1* arg1) {
     s32 i;
 
@@ -293,6 +303,7 @@ void func_00100460(s32 arg0, XArg1* arg1) {
     }
 }
 
+// Fills the five XArg1 tables (rows 0, 1, 3, 6, 7).
 void func_001004F0(void) {
     func_00100460(0, &D_0048DC50);
     func_00100460(1, &D_0048DC90);
@@ -533,35 +544,40 @@ void func_00100B30(void) {
 INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100B30);
 #endif
 
-void func_00100C18(u_long128* srcaddr, s16 dbp) {
+// Uploads a 16-colour CLUT (8x2, PSMCT32) to GS block dbp.
+void Gs_LoadClut16(u_long128* srcaddr, s16 dbp) {
     sceGsSetDefLoadImage(&D_002B8700, dbp, 1, 0, 0, 0, 8, 2);
     FlushCache(WRITEBACK_DCACHE);
     sceGsExecLoadImage(&D_002B8700, srcaddr);
     sceGsSyncPath(0, 0);
 }
 
-void func_00100C90(u_long128* srcaddr, s16 dbp) {
+// Uploads a 256-colour CLUT (16x16, PSMCT32) to GS block dbp.
+void Gs_LoadClut256(u_long128* srcaddr, s16 dbp) {
     sceGsSetDefLoadImage(&D_002B8700, dbp, 1, 0, 0, 0, 16, 16);
     FlushCache(WRITEBACK_DCACHE);
     sceGsExecLoadImage(&D_002B8700, srcaddr);
     sceGsSyncPath(0, 0);
 }
 
-void func_00100D08(u_long128* srcaddr, s16 dbp) {
+// Uploads a 512x256 4-bit texture (PSMT4) to GS block dbp.
+void Gs_LoadTex4_512x256(u_long128* srcaddr, s16 dbp) {
     sceGsSetDefLoadImage(&D_002B8700, dbp, 8, 20, 0, 0, 512, 256);
     FlushCache(WRITEBACK_DCACHE);
     sceGsExecLoadImage(&D_002B8700, srcaddr);
     sceGsSyncPath(0, 0);
 }
 
-void func_00100D80(u_long128* srcaddr, s16 dbp) {
+// Uploads a 256x256 8-bit texture (PSMT8) to GS block dbp.
+void Gs_LoadTex8_256x256(u_long128* srcaddr, s16 dbp) {
     sceGsSetDefLoadImage(&D_002B8700, dbp, 4, 19, 0, 0, 256, 256);
     FlushCache(WRITEBACK_DCACHE);
     sceGsExecLoadImage(&D_002B8700, srcaddr);
     sceGsSyncPath(0, 0);
 }
 
-void func_00100DF8(u_long128* srcaddr, s16 dbp) {
+// Uploads a 256x1024 PSMT8H texture to GS block dbp.
+void Gs_LoadTex8H_256x1024(u_long128* srcaddr, s16 dbp) {
     sceGsSetDefLoadImage(&D_002B8700, dbp, 4, 27, 0, 0, 256, 1024);
     FlushCache(WRITEBACK_DCACHE);
     sceGsExecLoadImage(&D_002B8700, srcaddr);
@@ -614,22 +630,22 @@ s32 func_00100F48(void) {
     img = (u_long128*)((u8*)h + h[6]);
     func_00100A10((XBegCamSrc*)t);
     for (i = 0; i < t->n14; i++) {
-        ((XBegLoadFn)func_00100C18)(tex + i * 0x10, i + 0x3E00);
+        ((XBegLoadFn)Gs_LoadClut16)(tex + i * 0x10, i + 0x3E00);
     }
     for (i = t->n14; i < t->n16; i += 4) {
-        ((XBegLoadFn)func_00100C90)(tex + i * 0x10, i + 0x3E00);
+        ((XBegLoadFn)Gs_LoadClut256)(tex + i * 0x10, i + 0x3E00);
     }
     for (i = 0; i < 16; i++) {
         switch (t->type[i]) {
         case 0x14:
-            ((XBegLoadFn)func_00100D08)(img + i * 0x1000, 0x2600 + i * 0x100);
+            ((XBegLoadFn)Gs_LoadTex4_512x256)(img + i * 0x1000, 0x2600 + i * 0x100);
             break;
         case 0x13:
-            ((XBegLoadFn)func_00100D80)(img + i * 0x1000, 0x2600 + i * 0x100);
+            ((XBegLoadFn)Gs_LoadTex8_256x256)(img + i * 0x1000, 0x2600 + i * 0x100);
             break;
         }
     }
-    ((XBegLoadFn)func_00100DF8)(img + 0x10000, 0);
+    ((XBegLoadFn)Gs_LoadTex8H_256x1024)(img + 0x10000, 0);
     p = (u8*)h + h[8];
     D_002A3F24 = (u32)h[9] / 0x810;
     func_00100E70(p);

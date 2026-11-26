@@ -1,3 +1,7 @@
+/**
+ * Event script runner (the opcode handlers are in xkinetic.c) and functions on the event system's big state block
+ * D_003854E0 (XGiantMountain).
+ */
 #include "xhumungus.h"
 #include "xflamingo.h"
 
@@ -9,6 +13,7 @@ extern XGiantMountain D_003854E0;
 s32 Script_GetOpcode(s32, s32);
 s32 Script_GetOperand(s32, s32);
 
+// Runs script entry arg1 at once, up to END or a handler returning 4 or 8, then puts the program counter back.
 void Script_ExecuteEntry(Script* arg0, s32 arg1) {
     s32 initialPos = arg0->unk_174[2];
     s32 idx;
@@ -40,6 +45,7 @@ void Script_ExecuteEntry(Script* arg0, s32 arg1) {
 #ifdef VERSION_FM
 extern s32 D_003F34A4;
 
+// Returns 0 while D_003F34A4 is 1; otherwise clears flag 0x1000 of D_003854E0.unk_3078 and returns 4.
 s32 fm_func_001C1DF8(void) {
     if (D_003F34A4 == 1) {
         return 0;
@@ -51,6 +57,7 @@ s32 fm_func_001C1DF8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xflamingo", func_001C3780);
 
+// Sets bit 40 of D_003854E0.unk_3070.
 void func_001C38C0(void) {
     D_003854E0.unk_3070 |= 0x10000000000;
 }
