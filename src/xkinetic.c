@@ -410,7 +410,16 @@ s32 ScriptOp_Reserved20(void) {
 }
 
 // Opcode 30 LOAD_WORK_BIT.
-INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_LoadWorkBit);
+s32 ScriptOp_LoadWorkBit(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
+    s32 bit = arg1 % 8;
+
+    arg1 = arg1 / 8 - 0xD40;
+    arg0->unk_174[3]++;
+    arg0->unk_174[arg0->unk_174[3] + 4] = (((s8*)b2)[arg1] >> bit) & 1;
+    return 2;
+}
 
 // Opcode 11 STORE_LOCAL: pops a value into local variable operand.
 s32 ScriptOp_StoreLocal(Script* arg0, s32 arg1) {
