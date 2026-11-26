@@ -70,6 +70,7 @@ STRICT_ALIASING_FILES = [
     "xtango.c",
     "xtrumpet.c",
     "xturtle.c",
+    "xkinetic.c",  # a3, run 3: ScriptOp_StoreVar16 (sp reload hoisted above the u16 store); other functions unchanged
 ]
 
 # Files built without -g. With -g the assembler never fills a call's empty delay slot (around soft-float calls
