@@ -7693,7 +7693,34 @@ void func_001DE098(void) {
     D_003854E0.unk_3380++;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE0B0);
+void func_001D90B0(ScriptMv *);
+
+void func_001DE0B0(ScriptMv *arg0) {
+    s32 n;
+    s32 i;
+
+    n = D_002B8344 * 0.5f;
+    if (n == 0) {
+        n = 1;
+    }
+    for (i = 0; i < n; i++) {
+        if ((s32)(arg0->unk_328 >> 6) & 1) {
+            func_001D2AF0(arg0);
+        }
+        if ((s32)(arg0->unk_328 >> 9) & 1) {
+            func_001D5730(arg0);
+        }
+        if ((s32)(arg0->unk_328 >> 10) & 1) {
+            func_001D90B0(arg0);
+        }
+        if ((s32)(arg0->unk_328 >> 12) & 1) {
+            func_001DAD58((ScriptAD *)arg0);
+        }
+    }
+    if ((s32)(arg0->unk_328 >> 11) & 1) {
+        func_001DAB88((ScriptQ *)arg0);
+    }
+}
 
 void func_001DE1B8(Script* arg0) {
     ScriptMsgG msg;
