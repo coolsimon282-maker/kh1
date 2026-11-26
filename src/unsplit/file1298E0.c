@@ -1758,7 +1758,33 @@ s32 func_00230EC8(s32 a0) {
     return -2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file1298E0", func_00230F18);
+s32 func_001BC578(void);
+s32 func_001EFDE8(s32);
+void Munny_Add(s32);
+void func_001BA420(s32, s32);
+void func_00230F18(void) {
+    s32 i;
+    s32 n;
+
+    if (D_00646A1C >= 0) {
+        func_0011D598(8);
+        i = 0;
+        Munny_Add(func_001EFDE8(D_00646A1C) * D_00646A28);
+        func_001BA420(D_00646A1C, func_001BC590(D_00646A1C) - D_00646A28);
+        D_00647640 -= D_00646A28;
+        n = func_001BC578();
+        for (; i < n; i++) {
+            if (func_001BC590(i) != 0 && func_001EFDE8(i) != 0) {
+                goto done;
+            }
+        }
+        func_0020BE10(0x10);
+    } else {
+        func_0011D598(4);
+    }
+done:
+    D_00646A28 = 1;
+}
 
 s32 func_001BC578(void);
 s32 func_001EFDE8(s32);
