@@ -2341,7 +2341,50 @@ void func_00223218(s32 a0) {
     func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00223260);
+extern u8 D_003F66E0[];
+extern u8 D_003F66B0[];
+extern u8 D_003F6680[];
+s32 func_00223260(s32 a0) {
+    u8 *e[3];
+    s32 n;
+    s32 rows;
+    u8 *q;
+    s32 p;
+    s32 *pp;
+    u16 v;
+
+    if ((e[0] = func_001F3A20(D_003F66E0, 0x32)) != NULL) {
+        UiObject_InsertAfter(e[0], (u8 *)a0);
+        if ((e[1] = func_001F3A20(D_003F66B0, 0x32)) != NULL) {
+            pp = &p;
+            UiObject_InsertAfter(e[1], e[0]);
+            if ((e[2] = func_001F3A20(D_003F6680, 0x32)) != NULL) {
+                UiObject_InsertAfter(e[2], e[1]);
+                p = D_006436C0;
+                n = D_006436B8;
+                if (n / 4 * 4 < *pp * 4) {
+                    D_006436C0 = 0;
+                    p = 0;
+                }
+                if (n < *pp * 4 + D_006436BC) {
+                    D_006436BC = 0;
+                }
+                rows = (n + 3) / 4;
+                q = e[2];
+                v = *(u16 *)&D_006436C0 << 4;
+                *(s16 *)(q + 0xCA) = *(u16 *)&D_006436B8;
+                *(s16 *)(q + 0xDA) = v;
+                *(s16 *)(q + 0xD8) = rows;
+                if (n < 4 || *pp == (s16)rows - 1) {
+                    *(s16 *)(q + 0xCC) = (n - 1) % 4 + 1;
+                } else {
+                    *(s16 *)(q + 0xCC) = 4;
+                }
+                *(s16 *)(q + 0xD2) = *(u16 *)&D_006436BC << 4;
+            }
+        }
+    }
+}
 
 s32 func_002233D8(s32 a0) {
     if (func_001F42B8(a0)) {
