@@ -2854,7 +2854,52 @@ void func_001350D0(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001350D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_001354B8);
+extern s32 D_1354B8_pad1;
+s32 func_00123768(u8*);
+s32 func_001350D8(u8*, s32, u8*);
+void func_00141608(u8*, s32);
+typedef struct { u64 lo:32; u32 b:1; } V1354B8;
+s32 func_001354B8(u8* p, u8* h) {
+    s32 a[4];
+    u8* hh[4];
+    s32 r;
+    u8* q;
+    u8* t;
+    s32 n;
+    f32 f;
+    s32 m;
+    s32 k;
+
+    hh[0] = h;
+    if (!func_00123768(h)) {
+        return 0;
+    }
+    r = func_001350D8(p, *(s32*)(p + 0x54), hh[0]);
+    if (r != 0) {
+    q = *(u8**)(p + 0x34);
+    if (q != NULL) {
+        t = *(u8**)(*(u8**)(q + 0x6C) + 0xC8);
+        if (t != NULL) {
+            n = *(s32*)(*(u8**)(hh[0] + 0x6C) + 0xD8);
+            if (n > 0) {
+                f = (f32)(n - *t) * (f32)D_003051EC[0x94] / 100.0f + 1.0f;
+                if (*(u8**)(q + 0x148) != NULL && ((V1354B8*)(*(u8**)(q + 0x148) + 0x170))->b) {
+                    f += (f32)D_003051EC[0x95] / 100.0f;
+                }
+                m = *(s32*)(*(u8**)(p + 0x5C) + 0x2C) * *(u16*)(D_003051EC + 0x96) / 100;
+                k = (f32)*(s32*)(*(u8**)(p + 0x5C) + 0x2C) * f;
+                func_00141608(q, (((k < 1) ? 1 : k) < m) ? ((k < 1) ? 1 : k) : m);
+            }
+        }
+    }
+    if (*(s32*)(p + 0x38) != 0) {
+        a[0] = (s32)hh;
+        a[1] = 4;
+        func_0012BBC8_5(*(u8**)(p + 0xA0), *(s32*)(p + 0x38), 1, a, 0);
+    }
+    }
+    return r;
+}
 
 void func_00135640(u8 *a0, u8 *a1) {
     *(s32 *)(a1 + 0x3E0) = (*(s32 *)(a1 + 0x3E0) | *(s32 *)(a0 + 0x54));
