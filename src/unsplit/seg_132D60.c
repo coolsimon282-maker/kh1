@@ -3710,7 +3710,26 @@ void func_00245B08(s32 a0, u8 *e) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245CD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00245DA0);
+extern u64 D_006627E0[];
+typedef struct { s32 used; u8 pad[0x85C]; } E245DA0;
+extern E245DA0 D_00662A30_q[] __asm__("D_00662A30");
+void func_00245918(void);
+void func_00245CD0(E245DA0 *);
+s32 func_00245DA0(void) {
+    s32 i;
+    func_002370C8(D_006627E0);
+    D_006627E0[0x1C] = 5;
+    D_006627E0[0xC] = 0x30003;
+    D_006627E0[0xE] = 0x8000000048;
+    func_00237018(D_006627E0, 0x16, 1);
+    func_00245918();
+    for (i = 0; i < 10; i++) {
+        if (D_00662A30_q[i].used != 0) {
+            func_00245CD0(&D_00662A30_q[i]);
+        }
+    }
+    return 0;
+}
 
 extern u8 D_0045BC10[];
 extern u8 D_0045D240[];
