@@ -232,7 +232,8 @@ char* Actor_GetDebugName(s32 id, char* buf) {
 }
 
 #ifdef VERSION_FM
-INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487030);
+// .rodata 0x0048D338: 8 zero bytes nothing refers to (the end of xtoaster's .rodata)
+const s32 D_00487030[2] = {0};
 #endif
 
 // Fills arg1 with the actor's model (+0x154), the first word of +0x14C (or 0) and +0x1D0.
