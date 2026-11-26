@@ -186,7 +186,7 @@ extern f32 D_0052AD50;
 extern f32 D_002B8344;
 void func_001625C8(sceVu0FMATRIX, sceVu0FMATRIX);
 
-// Task: while summoning (D_002C1EA8 bit 20) moves the camera (D_002DECE0 / D_002DECF0) from where it was to the summon view (D_00301030 / D_00301040) over 40 frames with a random turn.
+// Task: while summoning (D_002C1EA8 bit 20) moves the camera (cameraEye / cameraTarget) from where it was to the summon view (D_00301030 / D_00301040) over 40 frames with a random turn.
 s32 Summon_CameraTask(u16* arg0) {
     sceVu0FVECTOR sp0;
     sceVu0FVECTOR sp10;
@@ -205,10 +205,10 @@ s32 Summon_CameraTask(u16* arg0) {
 
     if (*arg0 & 0x10) {
         func_001625C8(D_005325E8->unk_D0, sp60);
-        D_002DECF0[3] = 1.0f;
-        D_002DECE0[3] = 1.0f;
-        sceVu0ApplyMatrix(D_0052AD20, sp60, D_002DECE0);
-        sceVu0ApplyMatrix(D_0052AD30, sp60, D_002DECF0);
+        cameraTarget[3] = 1.0f;
+        cameraEye[3] = 1.0f;
+        sceVu0ApplyMatrix(D_0052AD20, sp60, cameraEye);
+        sceVu0ApplyMatrix(D_0052AD30, sp60, cameraTarget);
         sceVu0SubVector(D_0052AD10, D_00301040, D_0052AD20);
         D_0052AD08 = Vec_Length(D_0052AD10);
         sceVu0SubVector(D_0052AD10, D_0052AD30, D_0052AD20);
@@ -259,8 +259,8 @@ s32 Summon_CameraTask(u16* arg0) {
     sp0[3] = 1.0f;
     sp10[3] = 1.0f;
     sp0[1] = (D_00301030[1] * var_f21) + (D_0052AD20[1] * (1.0f - var_f21));
-    sceVu0ApplyMatrix(D_002DECE0, D_005325E8->unk_D0, sp0);
-    sceVu0ApplyMatrix(D_002DECF0, D_005325E8->unk_D0, sp10);
+    sceVu0ApplyMatrix(cameraEye, D_005325E8->unk_D0, sp0);
+    sceVu0ApplyMatrix(cameraTarget, D_005325E8->unk_D0, sp10);
     return 0;
 }
 #else
@@ -282,10 +282,10 @@ s32 Summon_CameraTask(u16* arg0) {
 
     if (*arg0 & 0x10) {
         func_00163638(D_005325E8->unk_D0, sp60);
-        D_002DECF0[3] = 1.0f;
-        D_002DECE0[3] = 1.0f;
-        sceVu0ApplyMatrix(D_005324D0, sp60, D_002DECE0);
-        sceVu0ApplyMatrix(D_005324E0, sp60, D_002DECF0);
+        cameraTarget[3] = 1.0f;
+        cameraEye[3] = 1.0f;
+        sceVu0ApplyMatrix(D_005324D0, sp60, cameraEye);
+        sceVu0ApplyMatrix(D_005324E0, sp60, cameraTarget);
         sceVu0SubVector(D_005324C0, D_00301040, D_005324D0);
         D_005324B8 = Vec_Length(D_005324C0);
         sceVu0SubVector(D_005324C0, D_005324E0, D_005324D0);
@@ -336,8 +336,8 @@ s32 Summon_CameraTask(u16* arg0) {
     sp0[3] = 1.0f;
     sp10[3] = 1.0f;
     sp0[1] = (D_00301030[1] * var_f21) + (D_005324D0[1] * (1.0f - var_f21));
-    sceVu0ApplyMatrix(D_002DECE0, D_005325E8->unk_D0, sp0);
-    sceVu0ApplyMatrix(D_002DECF0, D_005325E8->unk_D0, sp10);
+    sceVu0ApplyMatrix(cameraEye, D_005325E8->unk_D0, sp0);
+    sceVu0ApplyMatrix(cameraTarget, D_005325E8->unk_D0, sp10);
     return 0;
 }
 #endif
@@ -366,7 +366,7 @@ s32 Summon_PhaseBegin(void) {
     func_001373F8(D_005325E8, 0.0f);
     D_005325E8->unk_00 |= 0x200000;
     *q = func_00148768(D_00350CE0, 0, D_005325E8, 0x1C, 0.5f);
-    func_00125088(53.0f);
+    Camera_PushFov(53.0f);
     func_001336D8();
     func_0023E0B0(0, 3);
     func_0023E0B0(1, 3);
@@ -555,7 +555,7 @@ s32 func_0014F658(XAppleBlemish*, s32);
 void func_00131500(XAppleBlemish*);
 void func_00130340(XAppleBlemish*, f32, UNK_PTR);
 s32 Actor_PopState(void*);
-void func_001250B0(void);
+void Camera_PopFov(void);
 void func_00133588(void);
 void func_001452E0(s32, s32);
 void func_0023E0B0(s32, s32);
@@ -565,7 +565,7 @@ void Summon_RestoreActors(void) {
     XAppleBlemish* var_16;
 
     func_00133588();
-    func_001250B0();
+    Camera_PopFov();
     func_0023E0B0(0, 1);
     var_16 = Actor_Next(NULL);
     if (var_16 != NULL) {
@@ -595,7 +595,7 @@ INCLUDE_ASM("asm/nonmatchings/xapple", Summon_RestoreActors);
 #endif
 // int TaskList_Add(int*, int, int*);
 // int Actor_PopState(void*);
-// void func_001250B0(void);
+// void Camera_PopFov(void);
 // void func_00133588(void);
 // void func_001452E0(int, int);
 // void func_0014F8B0(XAppleBlemish*, int);
@@ -607,7 +607,7 @@ INCLUDE_ASM("asm/nonmatchings/xapple", Summon_RestoreActors);
 //     XAppleBlemish* var_16;
 
 //     func_00133588();
-//     func_001250B0();
+//     Camera_PopFov();
 //     func_0023E0B0(0, 1);
 //     var_16 = Actor_Next(NULL);
 //     if (var_16 != NULL) {

@@ -428,15 +428,15 @@ typedef struct {
 extern XInchWormF D_00494310[];
 extern f32 D_0029B270;
 extern f32 D_002B8344;
-extern sceVu0FVECTOR D_002DECE0;
+extern sceVu0FVECTOR cameraEye;
 
 void func_001006F8(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        D_00494310[i].unk_60 = D_002DECE0[0];
+        D_00494310[i].unk_60 = cameraEye[0];
         D_00494310[i].unk_64 = 0.0f;
-        D_00494310[i].unk_68 = D_002DECE0[2];
+        D_00494310[i].unk_68 = cameraEye[2];
     }
     D_00494310[1].unk_54 += D_0029B270 * D_002B8344;
     if (D_00494310[1].unk_54 > PI) {

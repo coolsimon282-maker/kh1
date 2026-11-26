@@ -21,7 +21,7 @@ typedef struct {
     /* 0x18 */ u64 flags;
 } RyjSortEnt; // size = 0x20
 
-extern sceVu0FVECTOR D_002DECE0;
+extern sceVu0FVECTOR cameraEye;
 extern RyjSortEnt D_0035C710[256];
 extern RyjSortEnt* D_0061E310[256];
 extern s32 D_0061E710;
@@ -80,7 +80,7 @@ void RyjMngFlag_SortEntries(void) {
     for (i = 255; i >= 0; i--, e++) {
         if (e->flags & 0x100) {
             if (!(e->flags & 0x200)) {
-                sceVu0SubVector(v, D_002DECE0, e->pos);
+                sceVu0SubVector(v, cameraEye, e->pos);
                 sceVu0MulVector(v, v, v);
                 D_0061E310[SORT_COUNT] = e;
                 SORT_COUNT++;

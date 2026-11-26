@@ -1096,14 +1096,14 @@ void func_0012A4C8(XAudArg* arg0) {
     func_00147F88(arg0[0].p, arg0[1].f);
 }
 
-extern f32 D_002DEC60[4][4];
+extern f32 viewMatrix[4][4];
 void sceVu0InversMatrix(f32 (*)[4], f32 (*)[4]);
 void Vec_Project(s32, f32 (*)[4], s32);
 
 // Native command 29 (2 args).
 void func_0012A4E8(XAudArg* arg0) {
     f32 m[4][4] __attribute__((aligned(16)));
-    sceVu0InversMatrix(m, D_002DEC60);
+    sceVu0InversMatrix(m, viewMatrix);
     Vec_Project(arg0[0].s, m, arg0[1].s);
 }
 
@@ -1121,11 +1121,11 @@ void NativeCmd_SetAngles16(XAudArg* arg0) {
     ((XAudArg*)p->unk_04)[2].s = (u16)(s32)((v[2].f / 6.2831855f) * 65536.0f);
 }
 
-extern f32 D_002DEC60[4][4];
+extern f32 viewMatrix[4][4];
 
-// Native command 56 (0 args, returns a value): a0 = atan2f(D_002DEC60[0][2], D_002DEC60[2][2]).
+// Native command 56 (0 args, returns a value): a0 = atan2f(viewMatrix[0][2], viewMatrix[2][2]).
 void func_0012A5F0(XAudArg* arg0) {
-    arg0[0].f = atan2f(D_002DEC60[0][2], D_002DEC60[2][2]);
+    arg0[0].f = atan2f(viewMatrix[0][2], viewMatrix[2][2]);
 }
 
 void func_00147D50(void*, s32);

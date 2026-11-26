@@ -709,3 +709,19 @@ other functions (rule F1).
 | op_md_direct | 0x001B3870 | ppp/draw/md0.c | Model draw sent directly (op1_md_draw flag 4, without 0x300). |
 | op_md_direct_x300 | 0x001B6910 | ppp/draw/md0.c | Model draw sent directly with flags 0x300. |
 | op_shape_draw | 0x001B8198 | ppp/draw/md0.c | Shape drawing used by pppDrawShapeDraw and pppKeShpTail(2)Draw, probably. |
+| Camera_SetFov | 0x00124C68 | xpeanut.c | Sets the field of view (degrees) and projDistance = 256 / tan(fov / 2). |
+| Camera_PushFov | 0x00124CE0 | xpeanut.c | Saves the current field of view in savedFov, then sets a new one. |
+| Camera_PopFov | 0x00124D08 | xpeanut.c | Sets the field of view back to savedFov. |
+| Vec_YawBetween | 0x00124D28 | xpeanut.c | atan2 of (a - b) in x and z: the yaw from b to a (declared void, the result is left in $f0 for callers that read it as f32). |
+| Camera_BuildFrame | 0x00125000 | xpeanut.c | Builds this frame's camera: view matrix from cameraEye towards cameraTarget rolled by cameraRoll, screen matrix, their product, and the yaw D_004F77E0. |
+| Camera_UsePreviousFrame | 0x001251A0 | xpeanut.c | Copies the previous frame's view, world-to-screen and screen matrices back into the current ones. |
+| cameraFov | 0x002E27A0 | xpeanut.c | ? |
+| cameraRoll | 0x002E27A4 | xpeanut.c | ? |
+| cameraEye | 0x002E2780 | xpeanut.c | ? |
+| cameraTarget | 0x002E2790 | xpeanut.c | ? |
+| cameraUp | 0x002E26B0 | xpeanut.c | ? |
+| viewMatrix | 0x002E2700 | xpeanut.c | ? |
+| screenMatrix | 0x002E2740 | xpeanut.c | ? |
+| worldScreenMatrix | 0x002E26C0 | xpeanut.c | ? |
+| projDistance | 0x004F7650 | xpeanut.c | ? |
+| savedFov | 0x004F77E4 | xpeanut.c | ? |
