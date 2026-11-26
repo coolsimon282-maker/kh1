@@ -4733,7 +4733,47 @@ void func_00151D20(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00151E28);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00151FA0);
+s32 func_00151E28(u8*);
+/* unused: rule F1 (26 Nov: 1, 4, 11, 12 of 0-13 keep func_001560F8 / func_00176F08) */
+extern s32 D_lay151FA0_0;
+extern s32 D_lay151FA0_1;
+extern s32 D_lay151FA0_2;
+extern s32 D_lay151FA0_3;
+extern s32 D_lay151FA0_4;
+extern s32 D_lay151FA0_5;
+extern s32 D_lay151FA0_6;
+extern s32 D_lay151FA0_7;
+extern s32 D_lay151FA0_8;
+extern s32 D_lay151FA0_9;
+extern s32 D_lay151FA0_10;
+void func_00151FA0(u8* p) {
+    f32* d = *(f32**)(p + 0x144);
+    sceVu0FVECTOR v;
+    if (func_00151E28(p) != 0) {
+        d[1] += D_002B8344;
+        if (12.0f < d[1]) {
+            func_00137308(p, *(u8**)(p + 8));
+            sceVu0CopyVector(v, (f32*)(*(u8**)(p + 8) + 0x30));
+            if (__builtin_fabsf(v[0]) > __builtin_fabsf(v[2])) {
+                v[2] = 0.0f;
+            } else {
+                v[0] = 0.0f;
+            }
+            *(f32*)(*(u8**)(p + 8) + 0x150) = atan2f(v[0], v[2]);
+            func_0014F658(*(s32*)(p + 8), 0x1B);
+        }
+    } else {
+        d[1] = 0.0f;
+    }
+    if (*(u8**)(p + 8) != NULL && func_0014F600(*(s32*)(p + 8)) != 0) {
+        d[3] += D_002B8344;
+        if (120.0f <= d[3]) {
+            func_00151CD0(p);
+        }
+    } else {
+        d[3] = 0.0f;
+    }
+}
 
 void func_001520C0(u8* p) {
     *(f32*)(*(u8**)(p + 0x144) + 8) += D_002B8344;
