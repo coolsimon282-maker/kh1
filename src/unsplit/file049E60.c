@@ -5697,7 +5697,30 @@ s32 func_00171498(u8* a0, s32 a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001714F0);
+s32 func_001714F0(u8* a0, s32 a1) {
+    u8* p = a0;
+    u8* t;
+    s32 i;
+
+    if (func_0012CA98(a0) == 0) {
+        return 0;
+    }
+    switch (*(s32*)(p + 0x70)) {
+    found:
+        return 1;
+    case 0:
+    case 8:
+    case 0x18:
+        t = *(u8**)(*(u8**)(p + 0x6C) + 0xC8);
+        for (i = 0; i < t[0x21]; i++) {
+            if (t[0x22 + i] == a1) {
+                goto found;
+            }
+        }
+        break;
+    }
+    return 0;
+}
 
 s32 func_001715B0(u8* list, u8* self, f32 r) {
     sceVu0FVECTOR d;
