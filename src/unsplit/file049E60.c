@@ -7512,7 +7512,23 @@ s32 func_00177608(f32* a0, f32* a1, f32* a2) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00177680);
+extern f32 D_003624B8;
+f32 Vec_Length(f32*);
+f32 func_00177680(f32* a0, f32* a1) {
+    sceVu0FVECTOR b;
+    sceVu0FVECTOR a;
+
+    sceVu0CopyVector(a, a1);
+    a[1] -= 10.0f;
+    sceVu0CopyVector(b, a1);
+    b[1] += D_003624B8;
+    if (func_00177608(a0, a, b) != 0) {
+        sceVu0SubVector(b, a0, a1);
+        return Vec_Length(b);
+    }
+    sceVu0CopyVector(a0, b);
+    return 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00177740);
 
