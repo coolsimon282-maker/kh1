@@ -487,7 +487,7 @@ segments:
   - [ 0x1b74d0, .data, xnoodle ]
   - [ 0x1bb5c0, .data, xsauce ]
   - [ 0x1bbbb0, .data, xtailor ]
-  - [ 0x1bcb60, data ]
+  - [ 0x1bcb60, .data, xtrumpet ]
   - [ 0x1bcc28, .data, worldfile ]
   - [ 0x1bcda0, data ]
   - [ 0x1e26b0, .data, xpeanut ]
