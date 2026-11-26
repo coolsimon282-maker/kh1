@@ -1,13 +1,14 @@
 /**
  * System start-up and per-frame services: IOP module loading, the task lists, the controllers and GS packet helpers.
  *
- * A task list (XGoblin) is a pool of fixed-size entries plus a list sorted by priority; each entry holds a function
+ * A task list (TaskList, include/tasklist.h) is a pool of fixed-size entries plus a list sorted by priority; each entry holds a function
  * that TaskList_UpdateMatching calls every frame (return value bit 4: remove the task, bit 8: stop the walk). The
  * main list D_004DD188 is set up by TaskSystem_Initialize and run by TaskSystem_Update.
  */
 #include "common.h"
 
 #include "io.h"
+#include "tasklist.h"
 #include "xlamp.h"
 
 #include "libpc.h"
@@ -106,7 +107,7 @@ void TaskSystem_Initialize(void) {
     func_00147870();
     PcService_Initialize();
     func_0012FB18();
-    ((XGoblin*)TaskSystem_AddTask(150000, func_0011EBC8))->unk_02 = -1;
+    ((TaskEntry*)TaskSystem_AddTask(150000, func_0011EBC8))->runFlags = -1;
 }
 
 // Runs one frame of the main task list (tasks whose flags match D_002C1EBC).
@@ -136,51 +137,51 @@ s32 TaskSystem_RemoveTask(s32 arg0) {
 
 // Sets up a task list over a pool of count entries of size bytes each, all free.
 void TaskList_Init(s32* arg0, s32* arg1, s32 arg2, s32 arg3) {
-    XGoblin* g = (XGoblin*)arg0;
+    TaskList* g = (TaskList*)arg0;
     s32 i;
 
-    g->unk_00 = arg2;
-    g->unk_02 = arg3;
-    g->unk_04 = (s32)arg1;
-    g->unk_08 = NULL;
-    g->unk_0C = NULL;
+    g->entrySize = arg2;
+    g->count = arg3;
+    g->pool = (s32)arg1;
+    g->first = NULL;
+    g->lastAdded = NULL;
     for (i = 0; i < arg3; i++) {
-        ((XGoblin*)arg1)->unk_00 = 0;
-        ((XGoblin*)arg1)->unk_02 = 0;
+        ((TaskEntry*)arg1)->flags = 0;
+        ((TaskEntry*)arg1)->runFlags = 0;
         arg1 = (s32*)((u8*)arg1 + arg2);
     }
 }
 
-// Finds a free entry (unk_00 == 0) in the pool, searching on from the last one handed out (unk_0C).
-XGoblin* TaskList_FindFree(XGoblin* g) {
-    u8* p = (u8*)g->unk_0C;
+// Finds a free entry (flags == 0) in the pool, searching on from the last one handed out (lastAdded).
+TaskEntry* TaskList_FindFree(TaskList* g) {
+    u8* p = (u8*)g->lastAdded;
     u8* base;
     u8* end;
     s32 i;
 
     if (p == NULL) {
-        p = (u8*)g->unk_04;
+        p = (u8*)g->pool;
     }
-    base = (u8*)g->unk_04;
-    end = base + g->unk_00 * g->unk_02;
-    for (i = 0; i < g->unk_02; i++) {
-        p += g->unk_00;
+    base = (u8*)g->pool;
+    end = base + g->entrySize * g->count;
+    for (i = 0; i < g->count; i++) {
+        p += g->entrySize;
         if (p >= end) {
             p = base;
         }
-        if (((XGoblin*)p)->unk_00 == 0) {
-            return (XGoblin*)p;
+        if (((TaskEntry*)p)->flags == 0) {
+            return (TaskEntry*)p;
         }
     }
     return NULL;
 }
 
 // Returns the entry before arg1 in the list (NULL if arg1 is the first).
-XGoblin* TaskList_FindPrevious(XGoblin* arg0, XGoblin* arg1) {
-    XGoblin* pXVar;
-    XGoblin* pXVar2 = NULL;
+TaskEntry* TaskList_FindPrevious(TaskList* arg0, TaskEntry* arg1) {
+    TaskEntry* pXVar;
+    TaskEntry* pXVar2 = NULL;
 
-    for (pXVar = arg0->unk_08; pXVar != NULL && pXVar != arg1; pXVar = pXVar->unk_08) {
+    for (pXVar = arg0->first; pXVar != NULL && pXVar != arg1; pXVar = pXVar->next) {
         pXVar2 = pXVar;
     }
 
@@ -190,33 +191,33 @@ XGoblin* TaskList_FindPrevious(XGoblin* arg0, XGoblin* arg1) {
 /* Union access = alias set 0: the target loads the list head only after the stores to the new entry, as
    if built with -fno-strict-aliasing. */
 typedef union {
-    XGoblin g;
-} XGoblinAny;
+    TaskList g;
+} TaskListAny;
 
-// Takes a free entry, fills it in and links it into the list sorted by priority (unk_04).
+// Takes a free entry, fills it in and links it into the list sorted by priority.
 void* TaskList_Add(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
-    XGoblin* g = (XGoblin*)arg0;
-    XGoblin* n = TaskList_FindFree(g);
-    XGoblin* prev;
-    XGoblin* cur;
+    TaskList* g = (TaskList*)arg0;
+    TaskEntry* n = TaskList_FindFree(g);
+    TaskEntry* prev;
+    TaskEntry* cur;
 
     if (n != NULL) {
-        n->unk_0C = (void*)func;
-        n->unk_00 = 0x11;
-        n->unk_04 = arg1;
-        n->unk_02 = 0;
+        n->func = (void*)func;
+        n->flags = 0x11;
+        n->prio = arg1;
+        n->runFlags = 0;
         prev = NULL;
-        for (cur = ((XGoblinAny*)g)->g.unk_08; cur != NULL && arg1 >= cur->unk_04; cur = cur->unk_08) {
+        for (cur = ((TaskListAny*)g)->g.first; cur != NULL && arg1 >= cur->prio; cur = cur->next) {
             prev = cur;
         }
         if (prev != NULL) {
-            prev->unk_08 = n;
+            prev->next = n;
         } else {
-            g->unk_08 = n;
+            g->first = n;
         }
-        n->unk_08 = cur;
+        n->next = cur;
     }
-    g->unk_0C = (void*)n;
+    g->lastAdded = n;
     return n;
 }
 
@@ -224,29 +225,29 @@ void* TaskList_Add(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
 void func_0015F010(void);
 
 // Calls every task whose flags contain arg1; unlinks those that return bit 4, stops at one that returns bit 8.
-s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
+s32 TaskList_UpdateMatching(TaskList* arg0, s32 arg1) {
     u32 uVar3;
 
     s32 sVar5 = 0;
-    XGoblin* pXVar2 = NULL;
-    XGoblin* next = arg0->unk_08;
+    TaskEntry* pXVar2 = NULL;
+    TaskEntry* next = arg0->first;
 
     while (next != 0) {
-        if ((next->unk_02 & arg1) == arg1) {
-            uVar3 = next->unk_0C(next);
+        if ((next->runFlags & arg1) == arg1) {
+            uVar3 = next->func(next);
             func_0015F010();
-            next->unk_00 &= 0xFFEF;
+            next->flags &= 0xFFEF;
 
             if (uVar3 & 4) {
                 if (pXVar2 != 0) {
-                    if (pXVar2->unk_08 != next) {
+                    if (pXVar2->next != next) {
                         pXVar2 = TaskList_FindPrevious(arg0, next);
                     }
-                    pXVar2->unk_08 = next->unk_08;
+                    pXVar2->next = next->next;
                 } else {
-                    arg0->unk_08 = next->unk_08;
+                    arg0->first = next->next;
                 }
-                next->unk_00 = 0;
+                next->flags = 0;
             } else {
                 pXVar2 = next;
             }
@@ -257,35 +258,35 @@ s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
                 break;
             }
         }
-        next = next->unk_08;
+        next = next->next;
     }
 
-    arg0->unk_0C = NULL;
+    arg0->lastAdded = NULL;
     return sVar5;
 }
 #else
-s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
+s32 TaskList_UpdateMatching(TaskList* arg0, s32 arg1) {
     u32 uVar3;
 
     s32 sVar5 = 0;
-    XGoblin* pXVar2 = NULL;
-    XGoblin* next = arg0->unk_08;
+    TaskEntry* pXVar2 = NULL;
+    TaskEntry* next = arg0->first;
 
     while (next != 0) {
-        if ((next->unk_02 & arg1) == arg1) {
-            uVar3 = next->unk_0C(next);
-            next->unk_00 &= 0xFFEF;
+        if ((next->runFlags & arg1) == arg1) {
+            uVar3 = next->func(next);
+            next->flags &= 0xFFEF;
 
             if (uVar3 & 4) {
                 if (pXVar2 != 0) {
-                    if (pXVar2->unk_08 != next) {
+                    if (pXVar2->next != next) {
                         pXVar2 = TaskList_FindPrevious(arg0, next);
                     }
-                    pXVar2->unk_08 = next->unk_08;
+                    pXVar2->next = next->next;
                 } else {
-                    arg0->unk_08 = next->unk_08;
+                    arg0->first = next->next;
                 }
-                next->unk_00 = 0;
+                next->flags = 0;
             } else {
                 pXVar2 = next;
             }
@@ -297,30 +298,30 @@ s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
                 break;
             }
         }
-        next = next->unk_08;
+        next = next->next;
     }
 
-    arg0->unk_0C = NULL;
+    arg0->lastAdded = NULL;
     return sVar5;
 }
 #endif
 
 // Unlinks every task for which the callback (or the task's own flags) has bit 4 set.
-s32 TaskList_RemoveIf(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
-    XGoblin* next;
-    XGoblin* gob;
+s32 TaskList_RemoveIf(TaskList* arg0, u16 (*arg1)(TaskEntry*)) {
+    TaskEntry* next;
+    TaskEntry* gob;
 
     s32 iVar1 = 0;
 
-    for (next = arg0->unk_08; next != NULL; next = next->unk_08) {
-        if (((next->unk_00 | arg1(next)) & 4) != 0) {
+    for (next = arg0->first; next != NULL; next = next->next) {
+        if (((next->flags | arg1(next)) & 4) != 0) {
             gob = TaskList_FindPrevious(arg0, next);
             if (gob != NULL) {
-                gob->unk_08 = next->unk_08;
+                gob->next = next->next;
             } else {
-                arg0->unk_08 = next->unk_08;
+                arg0->first = next->next;
             }
-            next->unk_00 = 0;
+            next->flags = 0;
         }
         iVar1++;
     }
@@ -334,11 +335,11 @@ b32 FileLoadTask_IsActive(XOtherCrown* arg0) {
 }
 
 // Returns the task in the list whose function is arg1 (0 if none).
-s32 TaskList_FindByFunc(XGoblin* arg0, s32 arg1) {
-    XGoblin* p;
+s32 TaskList_FindByFunc(TaskList* arg0, s32 arg1) {
+    TaskEntry* p;
 
-    for (p = arg0->unk_08; p != NULL; p = p->unk_08) {
-        if ((s32)p->unk_0C == arg1) {
+    for (p = arg0->first; p != NULL; p = p->next) {
+        if ((s32)p->func == arg1) {
             return (s32)p;
         }
     }
@@ -346,18 +347,18 @@ s32 TaskList_FindByFunc(XGoblin* arg0, s32 arg1) {
 }
 
 // Unlinks task arg1 from the list; returns 1 if it was there.
-s32 TaskList_Unlink(XGoblin* arg0, s32 arg1) {
-    XGoblin* prev = NULL;
-    XGoblin* p;
+s32 TaskList_Unlink(TaskList* arg0, s32 arg1) {
+    TaskEntry* prev = NULL;
+    TaskEntry* p;
 
-    for (p = arg0->unk_08; p != NULL; p = p->unk_08) {
+    for (p = arg0->first; p != NULL; p = p->next) {
         if ((s32)p == arg1) {
             if (prev != NULL) {
-                prev->unk_08 = p->unk_08;
+                prev->next = p->next;
             } else {
-                arg0->unk_08 = p->unk_08;
+                arg0->first = p->next;
             }
-            p->unk_08 = NULL;
+            p->next = NULL;
             return 1;
         }
         prev = p;
@@ -649,7 +650,7 @@ s32 PcService_Start(void) {
 // Starts the performance counters and adds a task (priority 10000) that restarts them every frame.
 void PcService_Initialize(void) {
     PcService_Start();
-    ((XGoblin*)TaskSystem_AddTask(10000, PcService_Start))->unk_02 = -1;
+    ((TaskEntry*)TaskSystem_AddTask(10000, PcService_Start))->runFlags = -1;
 }
 
 // Writes one A+D pair (value arg1, register arg0) and returns the next position.
