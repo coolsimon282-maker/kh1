@@ -1459,7 +1459,22 @@ s32 func_0023F920(u8 *a0, s32 a1) {
     return func_0023F7D8((s32 *)a0, func_0023F700(a0, a1));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023FAD0);
+extern A3V16 D_00491600;
+
+s32 func_0023FAD0(u8 *a0, s32 a1) {
+    A3V16 col;
+    u8 *p = a0 + 0x80;
+
+    col = D_00491600;
+    a1 = func_0023E160(p, *(s32 *)(a0 + 0x90) + 0x40, &col, a1, 0.0f, *(f32 *)(a0 + 0xA00), *(f32 *)(a0 + 0xA1C));
+    if (*(f32 *)(a0 + 0xA0C) != 0.0f) {
+        s32 *c = (s32 *)&col;
+        c[3] = *(f32 *)(a0 + 0xA08);
+        c[0] = c[1] = c[2] = 0x80;
+        return func_0023E160(p, *(s32 *)(a0 + 0x90) + 0x40, &col, a1, *(f32 *)(a0 + 0xA00), *(f32 *)(a0 + 0xA04), *(f32 *)(a0 + 0xA1C));
+    }
+    return a1;
+}
 
 s32 func_0023FB90(u8 *a0, s32 a1) {
     s32 bufA[4];
@@ -1557,7 +1572,38 @@ s32 func_0023FEB8_d(u8 *a0, s32 a1) {
     return func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x20, &col, a1, 0.0f, s, *(f32 *)(a0 + 0xA1C));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023FF38);
+extern s32 D_a3pad_0023FF38_1;
+s32 func_0023FF38(void *a0_, s32 a1) {
+    u8 *a0 = a0_;
+    s32 bufA[4];
+    s32 pos[4];
+    A3Blk tmp;
+    f32 f;
+    s32 i;
+    s32 n;
+    s32 q;
+    s32 m;
+
+    if (**(f32 **)(a0 + 0xA88) * 0.000174532892f <= 4.71238804f) {
+        return a1;
+    }
+    func_0023D528(a0, bufA, pos);
+    n = **(f32 **)(a0 + 0xA88) - 27000.0f;
+    q = n / 3000;
+    for (i = 0; i < q; i++) {
+        a1 = func_0023D700_f(*(s32 *)(a0 + 0x48), *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+        pos[0] -= 0x1A;
+    }
+    m = n % 3000;
+    if (m == 0) {
+        return a1;
+    }
+    f = m / 3000.0f;
+    pos[0] = pos[0] + (1.0f - f) * 26.0f;
+    tmp = **(A3Blk **)(a0 + 0x48);
+    tmp.c = tmp.c * (f + 0.0625f);
+    return func_0023D700_f((s32)&tmp, *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+}
 
 extern s32 func_0023FEB8(void);
 extern s32 func_0023FF38(void *arg0, s32 arg1);
@@ -1589,10 +1635,39 @@ s32 func_00240170_d(u8 *a0, s32 a1) {
     return func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x30, &col, a1, 0.0f, s, *(f32 *)(a0 + 0xA1C));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002401F0);
+s32 func_002401F0(u8 *a0, s32 a1) {
+    s32 bufA[4];
+    s32 pos[4];
+    A3Blk tmp;
+    f32 f;
+    s32 i;
+    s32 n;
+    s32 q;
+    s32 m;
+
+    if (**(f32 **)(a0 + 0xA8C) * 0.000174532892f <= 4.71238804f) {
+        return a1;
+    }
+    func_0023D528(a0, bufA, pos);
+    n = **(f32 **)(a0 + 0xA8C) - 27000.0f;
+    q = n / 3000;
+    for (i = 0; i < q; i++) {
+        a1 = func_0023D700_f(*(s32 *)(a0 + 0x4C), *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+        pos[0] -= 0x1A;
+    }
+    m = n % 3000;
+    if (m == 0) {
+        return a1;
+    }
+    f = m / 3000.0f;
+    pos[0] = pos[0] + (1.0f - f) * 26.0f;
+    tmp = **(A3Blk **)(a0 + 0x4C);
+    tmp.c = tmp.c * (f + 0.0625f);
+    return func_0023D700_f((s32)&tmp, *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+}
 
 extern s32 func_00240170(void);
-extern void func_002401F0(s32, s32);
+extern s32 func_002401F0();
 
 void func_002403D0(s32 arg0) {
     func_002401F0(arg0, func_00240170());
@@ -1719,7 +1794,41 @@ void func_00240FA0(u8 *a0) {
     func_00237018((void *)D_00651D64, (D_00651D60 - D_00651D64) >> 4, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002410B8);
+extern s32 D_a3pad_002410B8_1;
+extern s32 D_a3pad_002410B8_2;
+s32 func_002403D0_r(u8 *, s32) __asm__("func_002403D0");
+s32 func_00240AE0_f(s32 *, s32, s32, s32, f32) __asm__("func_00240AE0");
+void func_002410B8(u8 *a0) {
+    s32 a[4];
+    s32 b[4];
+    s32 p;
+
+    D_00651D64 = (s32)&D_00351E10;
+    D_00651D60 = (s32)((u_long128 *)&D_00351E10 + 1);
+    func_00240B68(a0);
+    D_00651D60 = func_0023EE80(a0, D_00651D60);
+    D_00651D60 = func_0023DFC0_r(a0, D_00651D60);
+    ((u64 *)D_00651D60)[0] = 0x1000000000008001;
+    ((u64 *)D_00651D60)[1] = 0xE;
+    D_00651D60 += 0x10;
+    ((u64 *)D_00651D60)[0] = *(u64 *)(*(u8 **)(a0 + 0x70) + 0x18);
+    ((u64 *)D_00651D60)[1] = 6;
+    D_00651D60 += 0x10;
+    D_00651D60 = func_00240118(a0, D_00651D60);
+    if (*(s32 *)(a0 + 0xA8C) != 0) {
+        D_00651D60 = func_002403D0_r(a0, D_00651D60);
+    }
+    p = D_00651D60;
+    D_00651D60 += 0x10;
+    D_00651D60 = (s32)func_00237008(0x42, 0x8000000048, (u64 *)D_00651D60);
+    func_00236FD8((void *)p, D_00651D60);
+    func_0023D528(a0, a, b);
+    p = func_00240AE0_f((s32 *)(a0 + 0xAA0), b[0], b[1], D_00651D60, *(f32 *)(a0 + 0xA1C));
+    D_00651D60 = p + 0x10;
+    D_00651D60 = (s32)func_00237008(0x42, 0x8000000044, (u64 *)D_00651D60);
+    func_00236FD8((void *)p, D_00651D60);
+    func_00237018((void *)D_00651D64, (D_00651D60 - D_00651D64) >> 4, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00241260);
 
@@ -3029,7 +3138,25 @@ void func_002461F8(u8 *a0, s32 a1, f32 f) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246320);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246438);
+typedef struct { u64 d[0x18]; } A3Ent6438;
+extern A3Ent6438 D_00668060_e __asm__("D_00668060");
+extern u8 D_0045D280[];
+extern s32 D_0045D6D0[];
+void UiFile_Relocate(void *);
+void UiFile_CopyParts(s32 *, A3Ent6438 *, void *);
+s32 TaskSystem_FindTask(s32 (*)(void));
+s32 func_00246320(void);
+void func_00246438(void) {
+    A3Ent6438 e[3];
+
+    memset(&D_00668040, 0, 0x20);
+    UiFile_Relocate(D_0045D280);
+    UiFile_CopyParts(D_0045D6D0, e, D_0045D280);
+    D_00668060_e = e[2];
+    if (TaskSystem_FindTask(func_00246320) == 0) {
+        func_0011ED30(0x28489, func_00246320);
+    }
+}
 
 void func_002464F8(s32 *out) {
     s32 i;
@@ -3182,9 +3309,33 @@ void func_00246EA8(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246ED8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002470D0);
-
 typedef struct { u8 b[0x930]; } Ent247190;
+s32 UiPart_GetColorAnimState(u8 *);
+void func_00246ED8(s32, Ent247190 *);
+void func_002470D0(Ent247190 *a0) {
+    s32 *p = (s32 *)a0;
+    s32 f = 0;
+
+    switch (p[0]) {
+    case 0:
+        return;
+    case 1:
+        p[0] = 2;
+        f = 1;
+        break;
+    case 2:
+        if (UiPart_GetColorAnimState(a0->b + 0x30) & 4) {
+            p[0]++;
+        }
+        break;
+    case 3:
+        p[0] = 0;
+        break;
+    }
+    p[1]++;
+    func_00246ED8(f, a0);
+}
+
 extern Ent247190 D_0045FAC0_u[] __asm__("D_0045FAC0");
 extern u64 D_00668E20[];
 extern void func_002470D0(Ent247190 *);

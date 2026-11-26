@@ -1006,7 +1006,22 @@ void func_001F8EE0(u8 *a0) {
     func_001F86E0(a0, 0, BF(a0, 0xC0), 0x200, BF(a0, 0xC4) * *(s16 *)(a0 + 0xCE) - BF(a0, 0xC8));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_001F8F30);
+extern s32 D_a3pad_8f30_1;
+u64 *GsPacket_AddReg(u64 arg0, u64 arg1, u64 *arg2);
+void func_001F8F30(void) {
+    u64 *g = (u64 *)func_00122048(0x400, 0x80);
+    u64 *p = g;
+    u64 *q;
+    g += 2;
+    q = (u64 *)(((u32)p & 0xFFFFFFF) | 0x80000000);
+    g[0] = 0x1000000000008001;
+    g[1] = 0xE;
+    g = GsPacket_AddReg(0x40, 0x17F000001FF0000, g + 2);
+    *p = ((g - p) >> 1) - 1 | 0x70000000;
+    sceDmaSend(sceDmaGetChan(0x2), (u8 *)q);
+    sceGsSyncPath(0, 0);
+    func_001220B8((u8 *)p);
+}
 
 void func_001F8FF0(s32 a0) {
     D_003F1A60 = a0;
@@ -2719,7 +2734,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A758);
 void func_0020A8E8(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A8F0);
+extern s32 D_a3pad_0020A8F0_1;
+extern s32 D_a3pad_0020A8F0_2;
+extern s32 D_a3pad_0020A8F0_3;
+extern s32 D_a3pad_0020A8F0_4;
+extern s32 D_a3pad_0020A8F0_5;
+typedef struct { u64 d[14]; } A3GsStoreImage;
+int sceGsSetDefStoreImage(A3GsStoreImage *sp, short sbp, short sbw, short spsm, short x, short y, short w, short h);
+int sceGsExecStoreImage(A3GsStoreImage *sp, u_long128 *dstaddr);
+void FlushCache(int);
+extern u32 D_003F34B0[];
+void func_0020A8F0(void) {
+    A3GsStoreImage si0;
+    A3GsStoreImage si1;
+    u_long128 b0[16];
+    u_long128 b1[16];
+
+    sceGsSetDefStoreImage(&si0, 0, 8, 0, 0x100, 4, 0x10, 1);
+    sceGsSetDefStoreImage(&si1, 0, 8, 0, 0x100, 0x1BB, 0x10, 1);
+    FlushCache(0);
+    sceGsExecStoreImage(&si0, b0);
+    sceGsExecStoreImage(&si1, b1);
+    sceGsSyncPath(0, 0);
+    D_003F34B0[0] = *(u32 *)b0 & 0xFFFFFF;
+    D_003F34B0[1] = *(u32 *)b1 & 0xFFFFFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A9B0);
 
@@ -3167,7 +3206,27 @@ void func_0020EB20(s32 a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020EB98);
+extern s32 D_a3pad_eb98_1;
+extern s32 D_a3pad_eb98_2;
+extern s32 D_a3pad_eb98_3;
+extern s32 D_a3pad_eb98_4;
+extern s32 D_a3pad_eb98_5;
+
+extern u8 *const D_003010F8_e __asm__("D_003010F8");
+extern s32 D_00641378[];
+extern s32 D_00641278[][16];
+void func_0020EB98(void) {
+    u32 i;
+    s32 j;
+    u8 *e;
+    for (i = 0; i < (u32)D_003DE6A0; i++) {
+        e = D_003010F8_e + D_003010F8_e[i + 0x48E] * 0x74;
+        D_00641378[i] = e[0x25];
+        for (j = 0; j < D_00641378[i]; j++) {
+            D_00641278[i][j] = e[0x26 + j];
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020EC50);
 
