@@ -82,7 +82,78 @@ f32 func_002369E8(u32 a) {
     return a * (1.0f / 4294967296.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00236A58);
+extern s32 D_a3pad_6a58_1;
+typedef struct {
+    sceVu0FMATRIX m0;
+    sceVu0FMATRIX m40;
+    sceVu0FMATRIX m80;
+    sceVu0FMATRIX mC0;
+    sceVu0FVECTOR pad100[4];
+    sceVu0FVECTOR pos;
+    sceVu0FVECTOR tgt;
+    sceVu0FVECTOR v160;
+    sceVu0FVECTOR v170;
+    sceVu0FVECTOR rot;
+    sceVu0FVECTOR dir;
+    u8 pad1A0[0x40];
+    s32 flag;
+    f32 dist;
+} Cam236A58;
+extern Cam236A58 *D_00425F70;
+extern f32 D_00425CE0[4][4];
+f32 atan2f(f32, f32);
+s32 func_00236D48(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2);
+
+void func_00236A58(void) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR v0;
+    sceVu0FVECTOR v1;
+    f32 dx;
+    f32 dy;
+    f32 dz;
+
+    if (D_00425F70->flag == 0) {
+        dx = D_00425F70->tgt[0] - D_00425F70->pos[0];
+        dz = D_00425F70->tgt[2] - D_00425F70->pos[2];
+        dy = D_00425F70->tgt[1] - D_00425F70->pos[1];
+        D_00425F70->rot[2] = 0.0f;
+        D_00425F70->rot[0] = atan2f(-dy, _sqrtf(dx * dx + dz * dz));
+        D_00425F70->rot[1] = atan2f(dx, dz);
+    } else {
+        Cam236A58 *c;
+        func_00236D48(m, D_00425CE0, D_00425F70->rot);
+        c = D_00425F70;
+        d[0] = 0.0f;
+        d[1] = 0.0f;
+        d[2] = c->dist;
+        d[3] = 1.0f;
+        sceVu0ApplyMatrix(d, m, d);
+        c = D_00425F70;
+        c->pos[0] = c->tgt[0] + d[0];
+        dx = c->tgt[0] - c->pos[0];
+        c->pos[1] = c->tgt[1] + d[1];
+        dy = c->tgt[1] - c->pos[1];
+        c->pos[2] = c->tgt[2] + d[2];
+        dz = c->tgt[2] - c->pos[2];
+    }
+    sceVu0RotMatrixX(m, D_00425CE0, D_00425F70->rot[0]);
+    sceVu0RotMatrixY(m, m, D_00425F70->rot[1]);
+    sceVu0ApplyMatrix(v0, m, D_00425F70->v160);
+    sceVu0ApplyMatrix(v1, m, D_00425F70->v170);
+    sceVu0CameraMatrix(D_00425F70->m80, D_00425F70->pos, v0, v1);
+    sceVu0UnitMatrix(D_00425F70->mC0);
+    func_00236D48(D_00425F70->mC0, D_00425F70->mC0, D_00425F70->rot);
+    sceVu0MulMatrix(D_00425F70->m0, D_00425F70->m40, D_00425F70->m80);
+    {
+    Cam236A58 *e = D_00425F70;
+    e->dir[0] = dx;
+    e->dir[1] = dy;
+    e->dir[2] = dz;
+    e->dir[3] = 1.0f;
+    sceVu0Normalize(e->dir, e->dir);
+    }
+}
 
 extern f32 D_00425CE0[4][4];
 
