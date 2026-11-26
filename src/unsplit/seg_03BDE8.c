@@ -114,7 +114,7 @@ void func_00118D78(Seg3BDE8Loc40*);
 void func_00144EB0(s32, void*);
 extern s32 D_00350CE8[];
 void func_001560C8(u8*);
-u8* func_00152688(u8*, s32, s32);
+void func_00152688(u8*, s32, s32);
 void func_00152D50(u8*, s32, f32*);
 extern f32 D_005758C0;
 extern s32 D_00304C18[];
@@ -4758,22 +4758,7 @@ void func_00152648(u8* p) {
     }
 }
 
-/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, then func_00142388): keeps its %lo fold (rules F1/Q1) */
-typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
-extern V176F08 D_00362458_v[] __asm__("D_00362458");
-void func_00135640(u8*, u8*);
-u8* func_00152688(u8* p, s32 a1, s32 a2) {
-    s32 t;
-    u8* r;
-    func_00152648(p);
-    t = func_0014A408();
-    r = func_0014A4A8((u8*)a1, t, func_001477E0(a2));
-    *(u8**)(*(u8**)(p + 0x144) + 0x40) = r;
-    *(u64*)r = (*(u64*)r & ~0x3000) | 0x100;
-    *(s32*)(r + 8) = *(s32*)(p + 0x68);
-    func_00135640(r, p);
-    return r;
-}
+INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152688);
 
 void func_00152730(u8* p) {
     func_00152538(p);
@@ -4825,6 +4810,9 @@ void func_00152DC8(u8* p, s32 b) {
     *(f32*)(*(u8**)(p + 0x144) + 0x1C) = D_00351930[b][0];
 }
 
+/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, then func_00142388): keeps its %lo fold (rules F1/Q1) */
+typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
+extern V176F08 D_00362458_v[] __asm__("D_00362458");
 void func_00152C28(u8*, f32*, f32);
 void func_00152D50_f(u8*, s32, f32*, f32) __asm__("func_00152D50");
 extern f32 D_0035193C[][4];
@@ -9722,6 +9710,9 @@ extern int flip_dummy_9;
 extern int flip_dummy_10;
 extern int flip_dummy_11;
 extern int flip_dummy_12;
+extern int flip_dummy_13;
+extern int flip_dummy_14;
+extern int flip_dummy_15;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
