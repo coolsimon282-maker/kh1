@@ -69,21 +69,6 @@ extern int D_00669B80[256];       /* the RPC send and receive buffer */
 extern DbcSocketTable D_0066A000; /* the socket states */
 extern DbcClient D_0066FB30;      /* the client of the RPC server 0x8000091B (sceDbcSendData2) */
 extern DbcSocketTable D_0066FF80; /* the work area the IOP writes the socket states to */
-extern char D_00492ED0[];
-extern char D_00492EE8[];
-extern char D_00492F10[];
-extern char D_00492F38[];
-extern char D_00492F50[];
-extern char D_00492F70[];
-extern char D_00492F90[];
-extern char D_00492FB0[];
-extern char D_00492FD0[];
-extern char D_00492FF0[];
-extern char D_00493010[];
-extern char D_00493038[];
-extern char D_00493058[];
-extern char D_00493078[];
-extern char D_00493098[];
 
 int sceSifCallRpc(DbcClient *cd, unsigned int rpc_number, unsigned int mode, void *sendbuf, int ssize,
                   void *recvbuf, int rsize, void (*end_func)(void *), void *end_param);
@@ -112,7 +97,7 @@ int sceDbcInit(void)
     sceSifInitRpc(0);
     while (1) {
         if (sceSifBindRpc(&D_00669B08, 0x80000900, 0) < 0) {
-            DPRINT(D_00492ED0);
+            DPRINT("libdbc: bind failed\n");
             exit(-1);
         }
         if (D_00669B08.serve != 0) {
@@ -124,7 +109,7 @@ int sceDbcInit(void)
     }
     while (1) {
         if (sceSifBindRpc(&D_0066FB30, 0x8000091B, 0) < 0) {
-            DPRINT(D_00492ED0);
+            DPRINT("libdbc: bind failed\n");
             exit(-1);
         }
         if (D_0066FB30.serve != 0) {
@@ -136,14 +121,14 @@ int sceDbcInit(void)
     }
     ver = sceDbcGetModVersion();
     if ((ver >> 8) != 2) {
-        scePrintf(D_00492EE8);
-        scePrintf(D_00492F10, 2, 0, ver >> 8, ver & 0xFF);
+        scePrintf("libdbc: Module version mismatch ");
+        scePrintf("[libdbc.a = %d.%d, dbcman.irx = %d.%d]\n", 2, 0, ver >> 8, ver & 0xFF);
         return 0;
     }
     for (i = 0; i < 16; i++) {
         D_0066A000.w[i] = 0;
     }
-    DPRINT(D_00492F38, &D_0066FF80);
+    DPRINT("SifDmaAddr %08x\n", &D_0066FF80);
     sceDbcSetWorkAddr(&D_0066FF80);
     return 1;
 }
@@ -157,7 +142,7 @@ int sceDbcSetWorkAddr(void *addr)
 {
     D_00669B80[1] = (int)addr;
     if (sceSifCallRpc(&D_00669B08, 0x80000904, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00492F50);
+        DPRINT("sceDbcSetWorkAddr: rpc error\n");
         return 0;
     }
     return D_00669B80[0];
@@ -179,7 +164,7 @@ int sceDbcCreateSocket(DbcSocketParam *param, void *buf0, void *buf1)
         p->name[i] = param->name[i];
     }
     if (sceSifCallRpc(&D_00669B08, 0x80000901, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00492F70);
+        DPRINT("sceDbcCreateSocket: rpc error\n");
         return 0;
     }
     return p->ret;
@@ -189,7 +174,7 @@ int sceDbcDeleteSocket(int s)
 {
     D_00669B80[0] = s;
     if (sceSifCallRpc(&D_00669B08, 0x80000902, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00492F90);
+        DPRINT("sceDbcDeleteSocket: rpc error\n");
         return 0;
     }
     return D_00669B80[1];
@@ -206,7 +191,7 @@ int sceDbcGetDepNumber(int s)
     }
     D_00669B80[0] = s;
     if (sceSifCallRpc(&D_00669B08, 0x80000903, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00492FB0);
+        DPRINT("sceDbcGetDepNumber: rpc error\n");
         return 0;
     }
     return D_00669B80[1];
@@ -216,7 +201,7 @@ int sceDbcInitSocket(int s)
 {
     D_00669B80[0] = s;
     if (sceSifCallRpc(&D_00669B08, 0x80000915, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00492FD0);
+        DPRINT("sceDbcInitSocket: rpc error\n");
         return 0;
     }
     return D_00669B80[1];
@@ -226,7 +211,7 @@ int sceDbcResetSocket(int s)
 {
     D_00669B80[0] = s;
     if (sceSifCallRpc(&D_00669B08, 0x80000916, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00492FF0);
+        DPRINT("sceDbcResetSocket: rpc error\n");
         return 0;
     }
     return D_00669B80[1];
@@ -236,7 +221,7 @@ int sceDbcGetDeviceStatus(int s)
 {
     D_00669B80[0] = s;
     if (sceSifCallRpc(&D_00669B08, 0x80000917, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00493010);
+        DPRINT("sceDbcGetDeviceStatus: rpc error\n");
         return 0;
     }
     return D_00669B80[1];
@@ -255,7 +240,7 @@ int sceDbcSRData(int s, int cmd, int *slen, unsigned char *sdata, int *rlen, uns
         p->sdata[i] = sdata[i];
     }
     if (sceSifCallRpc(&D_00669B08, 0x80000918, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00493038);
+        DPRINT("sceDbcSRData: rpc error\n");
         return 0;
     }
     if (p->ret >= 0) {
@@ -280,7 +265,7 @@ int sceDbcSendData(int s, int cmd, int *len, unsigned char *data)
         p->data[i] = data[i];
     }
     if (sceSifCallRpc(&D_00669B08, 0x80000919, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00493058);
+        DPRINT("sceDbcSendData: rpc error\n");
         return 0;
     }
     if (p->ret < 0) {
@@ -305,7 +290,7 @@ int sceDbcSendData2(int s, int cmd, int *len, unsigned char *data)
         return 0;
     }
     if (sceSifCallRpc(&D_0066FB30, 0x8000091B, 1, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00493078);
+        DPRINT("sceDbcSendData2: rpc error\n");
         return 0;
     }
     return 1;
@@ -320,7 +305,7 @@ int sceDbcReceiveData(int s, int cmd, int *len, unsigned char *data)
     p->cmd = cmd;
     p->len = *len;
     if (sceSifCallRpc(&D_00669B08, 0x8000091A, 0, D_00669B80, 0x400, D_00669B80, 0x400, 0, 0) < 0) {
-        DPRINT(D_00493098);
+        DPRINT("sceDbcReceiveData: rpc error\n");
         return 0;
     }
     if (p->ret >= 0) {

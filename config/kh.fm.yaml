@@ -623,7 +623,7 @@ segments:
   - [ 0x392850, rodata, lib/libgcc/frame-dwarf2_ro ]
   - [ 0x392920, rodata, lib/libgraph_ro ]
   - [ 0x392e60, .rodata, lib/libdma ]
-  - [ 0x392ed0, rodata, lib/libdbc_ro ]
+  - [ 0x392ed0, .rodata, lib/libdbc ]
   - [ 0x3930b8, .rodata, lib/libpad2 ]
   - [ 0x3930e0, rodata, lib/libcdvd_ro ]
   - [ 0x3932c8, .rodata, lib/libm/s_atan ]
