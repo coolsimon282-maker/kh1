@@ -1006,7 +1006,22 @@ void func_001F8EE0(u8 *a0) {
     func_001F86E0(a0, 0, BF(a0, 0xC0), 0x200, BF(a0, 0xC4) * *(s16 *)(a0 + 0xCE) - BF(a0, 0xC8));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_001F8F30);
+extern s32 D_a3pad_8f30_1;
+u64 *GsPacket_AddReg(u64 arg0, u64 arg1, u64 *arg2);
+void func_001F8F30(void) {
+    u64 *g = (u64 *)func_00122048(0x400, 0x80);
+    u64 *p = g;
+    u64 *q;
+    g += 2;
+    q = (u64 *)(((u32)p & 0xFFFFFFF) | 0x80000000);
+    g[0] = 0x1000000000008001;
+    g[1] = 0xE;
+    g = GsPacket_AddReg(0x40, 0x17F000001FF0000, g + 2);
+    *p = ((g - p) >> 1) - 1 | 0x70000000;
+    sceDmaSend(sceDmaGetChan(0x2), (u8 *)q);
+    sceGsSyncPath(0, 0);
+    func_001220B8((u8 *)p);
+}
 
 void func_001F8FF0(s32 a0) {
     D_003F1A60 = a0;
