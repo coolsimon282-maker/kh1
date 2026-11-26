@@ -1,8 +1,8 @@
-// Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x0252F8).
-// Functions can be matched here like in any other file; the file may be split later.
+// Final Mix's version of xpillow (JP: src/xpillow.c, 0x1256B0-0x1274C0; here 0x1252F8-0x1274C8, the whole former
+// placeholder seg_0252F8, between xpeanut and xcream as in JP). FM only (JP/EU use src/xpillow.c).
 #include "common.h"
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_001252F8);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_001252F8);
 
 extern u32 D_002C1EA8;
 void func_001252F8(void);
@@ -31,7 +31,7 @@ s32 func_00125B90(s32 arg0) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125BB8);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_00125BB8);
 
 extern u32 D_002E3190;
 s32 func_00130030(u8 *);
@@ -85,9 +85,9 @@ void func_00125BE8(u8 *a0, s32 a1) {
     func_001333E0(p, 0, a1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125CF0);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_00125CF0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00125DC8);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_00125DC8);
 
 extern f32 D_004F77F0;
 extern f32 D_004F77F4;
@@ -156,7 +156,7 @@ void func_00126238(u8 *a0, f32 *n, s32 *c) {
     n[3] = 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126360);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_00126360);
 
 typedef struct { s16 id; u8 pad[0x12]; } Rec0252_14;
 extern Rec0252_14 *D_004F7810_r __asm__("D_004F7810");
@@ -204,7 +204,7 @@ s32 func_00126838(u8 *a0, s32 *a1, f32 *v) {
     return 18;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_001269D8);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_001269D8);
 
 s32 func_001233F8(s32);
 void func_0012ED88(u8 *, s32 *, f32 *, f32 *);
@@ -221,7 +221,7 @@ void func_00126BA0(u8 *a, s32 *b, f32 *c) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0252F8", func_00126C10);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xpillow", func_00126C10);
 
 void func_00126E80(a, b, c)
     u8* a;
