@@ -581,12 +581,15 @@ segments:
   - [ 0x38fb38, .rodata, ppp/keProg/pppKeTh ]
   - [ 0x38fb48, .rodata, ppp/keProg/pppKeBornRnd5 ]
   - [ 0x38fb58, .rodata, ppp/keProg/pppKeMvYpEff ]
-  - [ 0x38fb68, rodata ]
+  - [ 0x38fb68, rodata ] # a float of pppKeShpTail3, one of pppKeShpTail3X (on a 4-byte boundary)
+  - [ 0x38fb70, .rodata, ppp/ryjProg/pppRyjMatrixNoRot ]
+  - [ 0x38fb90, .rodata, ppp/ryjProg/pppRyjDrawShipoly ]
+  - [ 0x38fbd0, .rodata, ppp/ryjProg/pppRyjDrawShipolyBone ]
   - [ 0x38fc80, .rodata, ppp/ryjProg/pppRyjMegaBirth ]
   - [ 0x38fca8, rodata ] # zero padding after pppRyjMegaBirth's jump table (the next piece is 16-aligned)
-  - [ 0x38fcb0, rodata ]
+  - [ 0x38fcb0, .rodata, ppp/ryjProg/pppRyjMegaPlaceLamp ]
   - [ 0x38fd40, .rodata, ppp/ryjProg/pppRyjMegaBirthModel ] # jump tables of func_001A26D0 / func_001A2798
-  - [ 0x38fd98, rodata ] # D_0048FD98/9C: used outside pppRyjMegaBirthModel
+  - [ 0x38fd98, .rodata, ppp/xpear ] # D_0048FD98/9C
   - [ 0x38fda0, .rodata, ppp/draw/draw ]
   - [ 0x38fda8, .rodata, ppp/draw/global ]
   - [ 0x38fe80, rodata ]
