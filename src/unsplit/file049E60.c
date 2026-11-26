@@ -2011,7 +2011,41 @@ s32 func_001507D0(u8* p, f32* a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00150930);
+void func_00150930(u8* p, u8* q, f32* v) {
+    sceVu0FVECTOR w;
+    f32 y;
+    f32 t;
+    f32 s;
+    f32 h;
+    u8* e;
+
+    e = *(u8**)(p + 0x98);
+    if (e != 0 && *(s8*)(*(u8**)(e + 0x130) + 0x54) == 0xB) {
+        *(f32*)(*(u8**)(e + 0x144) + 0xC) = 180.0f;
+    }
+    *(f32*)(func_0014CB90_r(p) + 4) = 4.0f;
+    func_0012EC88((s32)q, (u8*)w);
+    if (*(s8*)(*(u8**)(q + 0x130) + 0x54) == 0xB) {
+        w[0] = *(f32*)(q + 0x10);
+        w[1] += 120.0f;
+        w[2] = *(f32*)(q + 0x18);
+    }
+    sceVu0SubVector(v, w, (f32*)(p + 0x10));
+    y = v[1];
+    v[1] = 0.0f;
+    func_001223B0(v, v);
+    s = v[3];
+    t = (s / *(f32*)(*(u8**)(p + 0x6C) + 8) > 30.0f) ? s / *(f32*)(*(u8**)(p + 0x6C) + 8) : 30.0f;
+    h = (y - t * 0.48469386f * t * 0.5f) / t;
+    sceVu0ScaleVector((f32*)(p + 0x3C0), v, s / t);
+    *(f32*)(p + 0x3B4) = 0.48469386f;
+    *(f32*)(p + 0x3CC) = 0.99f;
+    *(s32*)(p + 0x3B0) = 0;
+    *(f32*)(p + 0x3C4) = h;
+    *(f32*)(p + 0x3B8) = -h / 0.48469386f;
+    func_0014F658((s32)p, 3);
+    func_001376E8_2(p, v);
+}
 
 void func_00150AF0(u8* p, f32* a1) {
     u8* r = func_0014CB90_r(p);
