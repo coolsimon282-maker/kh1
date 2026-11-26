@@ -8299,7 +8299,22 @@ s32 func_0017ECF8_def(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017EF40);
+void func_0017D570_a(s32) __asm__("func_0017D570");
+void func_0017EF40(s32 arg0) {
+    D_00575920[0] = arg0;
+    if (D_002DED08 != 9) {
+        if (D_002DED08 != 3) {
+            sceVu0CopyVector((f32*)&D_00575920[4], D_005758E0);
+            func_00176F08(3, 60.0f);
+            return;
+        }
+        sceVu0CopyVector((f32*)&D_00575920[4], D_005758E0);
+        ((f32*)D_00575920)[1] = 60.0f;
+        return;
+    }
+    sceVu0CopyVector((f32*)&D_00575920[4], D_005758E0);
+    func_0017D570_a(arg0);
+}
 
 void func_0017D5A0(void);
 void func_0017EFF8(void) {
