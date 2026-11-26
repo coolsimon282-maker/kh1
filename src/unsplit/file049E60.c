@@ -6297,7 +6297,38 @@ found:
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164F18);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00165450);
+void func_00165450(u8* p, u8* q, f32 t) {
+    u8* e;
+
+    e = (u8*)func_00164E00(q, 0x10000, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x10000;
+    }
+    e = (u8*)func_00164E00(q, 0x10001, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x20000;
+    }
+    e = (u8*)func_00164E00(q, 0x10002, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x40000;
+    }
+    e = (u8*)func_00164E00(q, 0x10003, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x80000;
+    }
+    e = (u8*)func_00164E00(q, 0, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x100000;
+    }
+    e = (u8*)func_00164E00(q, 0x50000, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x400000;
+    }
+    e = (u8*)func_00164E00(q, 0x70000, t);
+    if (e != NULL && e[4] != 0) {
+        *(u32*)(p + 0xC) |= 0x800000;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001655E0);
 
