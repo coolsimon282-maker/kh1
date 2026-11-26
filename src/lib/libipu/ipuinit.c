@@ -1,5 +1,4 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
 #include "common.h"
 
 int DIntr(void);
@@ -24,6 +23,27 @@ void func_00272738(int chcr)
 
 typedef unsigned int u128_ipu __attribute__((mode(TI)));
 
+#ifdef VERSION_FM
+/* .data (0x0046E0B0-0x0046E120): the quantiser matrices (ipuQuantMatrix: the intra matrix, then one row of the
+   non-intra matrix, sent four times) and the colour table (ipuColorTable) sceIpuInit loads */
+union {
+    unsigned char b[80];
+    volatile u128_ipu q[5];
+} D_0046E0B0 = {{
+    8, 16, 16, 19, 16, 19, 22, 22, 22, 22, 22, 22, 26, 24, 26, 27,
+    27, 27, 26, 26, 26, 26, 27, 27, 27, 29, 29, 29, 34, 34, 34, 29,
+    29, 29, 27, 27, 29, 29, 32, 32, 34, 34, 37, 38, 37, 35, 35, 34,
+    35, 38, 38, 40, 40, 40, 48, 48, 46, 46, 56, 56, 58, 69, 69, 83,
+    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+}};
+union {
+    unsigned short c[16];
+    u128_ipu q[2];
+} D_0046E100 = {{
+    0x0000, 0x0421, 0x0842, 0x03E0, 0x1084, 0x14A5, 0x18C6, 0x1CE7,
+    0x001F, 0x2529, 0x294A, 0x7C00, 0x318C, 0x35AD, 0x7FFF, 0x39CE,
+}};
+#else
 /* the quantiser matrices (ipuQuantMatrix) and the colour table (ipuColorTable), still in .data */
 extern union {
     unsigned char b[80];
@@ -33,6 +53,7 @@ extern union {
     unsigned short c[16];
     u128_ipu q[2];
 } D_0046E100;
+#endif
 
 void sceIpuInit(void)
 {

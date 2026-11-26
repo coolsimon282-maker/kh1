@@ -555,7 +555,8 @@ segments:
   - [ 0x36c600, .data, lib/libcdvd ]
   - [ 0x36e070, .data, lib/libpc ]
   - [ 0x36e080, .data, lib/libmc ]
-  - [ 0x36e0a0, data, lib/libipu ]
+  - [ 0x36e0a0, .data, lib/libipu/libipu ]
+  - [ 0x36e0b0, .data, lib/libipu/ipuinit ]
   - [ 0x36e120, data ]
 
   ## .rodata section ##
