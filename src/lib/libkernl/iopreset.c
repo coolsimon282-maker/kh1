@@ -25,8 +25,6 @@ typedef struct {
 } SifDmaData;
 
 extern SifCmdResetData D_0066DD40 __attribute__((aligned(64))); /* resetData (64-aligned, in the bss) */
-extern char D_00492350[];          /* "rom0:UDNL " */
-extern char D_00492360[];          /* "too long parameter '%s'\n" */
 
 void sceSifStopDma(void);
 unsigned int sceSifGetReg(unsigned int reg);
@@ -85,13 +83,13 @@ int sceSifSyncIop(void) {
 
 int sceSifRebootIop(const char* arg) {
     char buf[80];
-    char* s = D_00492350;
+    char* s = "rom0:UDNL ";
     char* d;
     char* p;
 
     for (p = (char*)arg; *p != 0; p++) {}
     if ((unsigned int)(p + 11 - (char*)arg) > 80) {
-        scePrintf(D_00492360, arg);
+        scePrintf("too long parameter '%s'\n", arg);
         return 0;
     }
     sceSifInitRpc(0);
