@@ -65,7 +65,6 @@ segments:
   - [ 0xc540, c, xsauce ]
   - [ 0xf580, c, xtailor ]
   - [ 0x11288, c, xtrumpet ]
-  - [ 0x12268, c, unsplit/seg_012268 ]
   - [ 0x12270, c, worldfile ]
   - [ 0x12498, c, xblade ]
   - [ 0x150d8, c, unsplit/seg_0150D8 ]

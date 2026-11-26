@@ -649,10 +649,8 @@ void func_00111F00(void) {
 
 // The following unused functions might be part of worldfile.c?
 
-#ifndef VERSION_FM
 void func_00111F28(void) {
 }
-#endif
 
 void func_00111F30(void) {
 }
