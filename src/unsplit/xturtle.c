@@ -36,8 +36,6 @@ const char* worldfile_getAbbr(int idx, char* dest);
 typedef struct {
     char c[10];
 } Seg1C7A8Str10;
-extern Seg1C7A8Str10 D_0048D130;
-extern char D_0048D128[];
 char* strcat(char*, const char*);
 typedef struct {
     s32 unk_00;
@@ -91,7 +89,6 @@ typedef struct {
 void* func_001EE618(s32, s32, s32);
 void* func_001EE390(s32, s32, s32);
 extern s32 D_004E3A40;
-extern char D_0048D140[];
 Seg1C7A8Unk18* func_0011CFA8(s32, s32, s32, s32, s32);
 void* func_001EDD20(void*, s32, s32, s32);
 void func_0011E1C8(void*);
@@ -216,6 +213,13 @@ void func_0011C9C0(void) {
     func_00101528();
 }
 
+// .rodata (0x0048D110-0x0048D1C0): these four strings (func_0011CA68 and func_0011EA40 use them by name), then the
+// literal of func_0011CB80 and the strings and jump tables of the asm functions after it.
+const char D_0048D110[] = "%3d";
+const char D_0048D118[] = "amusic/music";
+const char D_0048D128[] = ".dat";
+const Seg1C7A8Str10 D_0048D130 = {"amusic/se"};
+
 INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011CA68);
 
 void func_0011C938(char* a0) {
@@ -227,7 +231,7 @@ void func_0011C938(char* a0) {
 }
 
 s32 func_0011CB80(void* arg0) {
-    return func_00120438(D_0048D140, arg0);
+    return func_00120438("amusic/se000.dat", arg0);
 }
 
 s32 func_0011CBA0(void) {
@@ -879,6 +883,9 @@ void func_0011E830(s32 arg0, s32 arg1) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011EA40);
+
+// .rodata 0x0048D1A0 (func_0011EAE0 uses it by name; the disassembler leaves it out of the function)
+const char D_0048D1A0[] = "%4d";
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011EAE0);
 
