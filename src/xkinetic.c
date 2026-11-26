@@ -430,7 +430,24 @@ INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar16);
 INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar32);
 
 // Opcode 31 STORE_WORK_BIT.
-INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreWorkBit);
+s32 ScriptOp_StoreWorkBit(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
+    s32 bit = arg1 % 8;
+    s32 mask;
+
+    arg1 = arg1 / 8 - 0xD40;
+    if (arg0->unk_174[arg0->unk_174[3] + 4] >= 2) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = 1;
+    } else if (arg0->unk_174[arg0->unk_174[3] + 4] < 0) {
+        arg0->unk_174[arg0->unk_174[3] + 4] = 0;
+    }
+    mask = ~(1 << bit);
+    ((u8*)b2)[arg1] &= mask;
+    ((u8*)b2)[arg1] |= arg0->unk_174[arg0->unk_174[3] + 4] << bit;
+    arg0->unk_174[3]--;
+    return 2;
+}
 
 // Opcode 21 PUSH_S24_ALT: pushes the operand without clamping.
 s32 ScriptOp_PushS24Alt(Script* arg0, s32 arg1) {
