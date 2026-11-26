@@ -72,6 +72,7 @@ STRICT_ALIASING_FILES = [
     "xblade.c",
     "xbuffalo.c",
     "xhumungus.c",
+    "xkinetic.c",  # q1, 26 Nov: ScriptOp_StoreVar16 needs it; the file's other 33 C functions are unaffected
     "xmeowp.c",
     "xnoodle.c",  # a5, run 6: func_0010BB50 only matches with strict aliasing; the rest of the file is unaffected
     "xpackage.c",
