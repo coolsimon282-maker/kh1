@@ -585,3 +585,6 @@ other functions (rule F1).
 | CoThread_SortRunList | 0x001C0460 | xbuffalo.c | Frees the threads marked to end and lists the used ones in D_0037A170 by priority (+0x02), ended by -1. |
 | CoThread_RunSteps | 0x001C0688 | xbuffalo.c | Calls CoThread_RunAll arg0 times. |
 | CoThread_SetEndCallback | 0x001C06C0 | xbuffalo.c | Sets the end callback (+0x20) of thread arg0 (or the current one) (FM only). |
+| GameOver_Start | 0x0011C710 | xpaste.c | Starts the game over sequence, probably: sets D_002BD854, stops the game (func_00114420, func_00180CE0), fades the music and adds GameOver_ChoiceTask. |
+| GameOver_ChoiceTask | 0x0011C698 | xpaste.c | Task: when the menu (D_003F7774) closes, choice 0 requests game mode 10, choice 1 starts func_0022BCB8 and adds GameOver_ContinueTask. |
+| GameOver_ContinueTask | 0x0011C630 | xpaste.c | Task: when D_003F34A4 clears, either requests game mode 15 (D_003F720C == 1, FM) or starts the sequence again. |

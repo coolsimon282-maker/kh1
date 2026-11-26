@@ -717,6 +717,14 @@ CoThread_RunSteps                    = 0x001C0688; // type:func
 CoThread_SetEndCallback              = 0x001C06C0; // type:func
 
 
+//=========================================================
+// xpaste.c
+//=========================================================
+GameOver_Start                       = 0x0011C710; // type:func
+GameOver_ChoiceTask                  = 0x0011C698; // type:func
+GameOver_ContinueTask                = 0x0011C630; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
