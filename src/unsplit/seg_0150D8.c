@@ -899,7 +899,69 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B108);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B220);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0150D8", func_0011B6A0);
+typedef struct { s32 pad0[3]; u32 f0 : 1; u32 f1 : 31; } Ent11B6A0;
+extern s32 D_003044D0;
+extern Ent11B6A0 D_003044D8_b[] __asm__("D_003044D8");
+extern f32 D_002C1250[];
+extern void *D_002C1300;
+s32 func_0011B220(s32, f32 *, f32 *, s32, f32);
+
+s32 func_0011B6A0(u8 *a0, f32 *a1, s32 a2) {
+    f32 box[6];
+    f32 b2[6];
+    s32 i;
+    s32 r;
+    f32 rad;
+    f32 y;
+
+    switch (*(s32 *)(a0 + 0x28) & 0x7C) {
+    case 4:
+        D_002C1300 = func_00116690;
+        break;
+    case 0x10:
+        D_002C1300 = func_001166A0;
+        break;
+    case 8:
+        D_002C1300 = func_001166B0;
+        break;
+    case 0x20:
+        D_002C1300 = func_001166C0;
+        break;
+    case 0x40:
+        D_002C1300 = func_001166C8;
+        break;
+    default:
+        D_002C1300 = func_001166D8;
+        break;
+    }
+    rad = D_002C1250[0] + *(f32 *)(a0 + 0x20) * 0.5f;
+    r = 0;
+    for (i = 0; i < D_003044D0; i++) {
+        if (D_003044D8_b[i].f0 != 1) {
+            y = a1[1] - *(f32 *)(a0 + 0x24);
+            box[0] = a1[0] - D_002C1250[0];
+            box[2] = a1[2] - D_002C1250[0];
+            box[3] = a1[0] + D_002C1250[0];
+            box[5] = a1[2] + D_002C1250[0];
+            box[1] = y - D_002C1250[0];
+            box[4] = y + D_002C1250[0];
+            if (func_0011A728(box, i) != 0) {
+                func_0011A410(i);
+                b2[0] = a1[0] - rad;
+                b2[3] = a1[0] + rad;
+                b2[2] = a1[2] - rad;
+                b2[5] = a1[2] + rad;
+                a1[1] = a1[1] - *(f32 *)(a0 + 0x24);
+                b2[4] = a1[1] + rad;
+                b2[1] = a1[1] - rad;
+                r |= func_0011B220(i, a1, b2, a2, *(f32 *)(a0 + 0x20));
+                a1[1] = a1[1] + *(f32 *)(a0 + 0x24);
+            }
+        }
+    }
+    i = r;
+    return i;
+}
 
 s32 func_0011B908(s32 a0, s32 a1, f32 *pt) {
     sceVu0FVECTOR d1;
