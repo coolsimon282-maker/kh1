@@ -1515,7 +1515,27 @@ INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E860);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011EAE0);
+typedef struct { char s[12]; } Seg1C7A8Str0C;
+const Seg1C7A8Str0C D_0048D1A8 = {"amusic/wave"};
+const char D_0048D1B8[] = ".wd";
+int sprintf(char*, const char*, ...);
+void func_0011EAE0(s32 a0, char* a1) {
+    char buf[80];
+
+    sprintf(buf, D_0048D1A0, a0);
+    if (buf[0] == ' ') {
+        buf[0] = '0';
+        if (buf[1] == ' ') {
+            buf[1] = '0';
+            if (buf[2] == ' ') {
+                buf[2] = '0';
+            }
+        }
+    }
+    *(Seg1C7A8Str0C*)a1 = D_0048D1A8;
+    strcat(a1, buf);
+    strcat(a1, D_0048D1B8);
+}
 #else
 INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E900);
 #endif

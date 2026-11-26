@@ -88,6 +88,7 @@ NO_G_FILES = [
     "pppKeBornRnd5.c",  # a3: func_0018F780 (third atan2 twin; soft-double calls)
     "xtrumpet.c",      # a2: fm_func_00111BE8 (gas fills the b slot with cvt.s.w only without -g; rest of the file identical)
     "xarcade.c",       # a1: func_00109468 (volatile store in the jal slot: gas fills it only without -g)
+    "xturtle.c",       # a3: func_0011EAE0 (gas fills the strcat jal slot with the struct copy's swr only without -g)
 ]
 
 # EU (SCES_509.67) is built without -g (and, like FM, without masps2's nops) apart from these files: with that, every
