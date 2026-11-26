@@ -37,7 +37,7 @@ s16 D_002BB5C0[40] = {
 };
 s8 D_002BB610[10] = {0x18, 0x18, 0x18, 0x18, 0x28, 0x28, 0x21, 0x21, 0x21, 0x21};
 
-// CLUTs (16 colours each) loaded by func_0010E700
+// CLUTs (16 colours each) loaded by MsgWin_RegisterImages
 u32 D_002B7B70[16] __attribute__((aligned(16))) = {
     0x0, 0x43000000, 0x80888888, 0x80F8F8F8,
     0x0, 0x43000000, 0x80888888, 0x80F8F8F8,
@@ -246,7 +246,7 @@ s32 func_0010CA30(XSauceTbl* p) {
 }
 
 // Runs the window's choice (+0x28): waits for the text to finish, sets up the choices, then updates them until one is picked.
-void func_0010CAE0(XSauceTbl* t, XSauce* p) {
+void MsgWin_RunChoice(XSauceTbl* t, XSauce* p) {
     if (p->unk_28 != 0) {
         switch (t->unk_000C) {
         case 0:
@@ -339,7 +339,7 @@ void Text_FadeOutGlyphs(XSauceAnim* p, s32 n) {
 }
 
 // True when bit 0 of D_002C2108 is set (probably the confirm button press).
-s32 func_0010CCD8(void) {
+s32 Pad_IsConfirmPressed(void) {
     if (D_002C2108 & 1) {
         return 1;
     }
@@ -365,7 +365,7 @@ typedef struct {
 void func_0010CCF0(XSauceSteps* p);
 
 // Number of lines shown so far: from the elapsed +0x08 and the per-line durations (+0x0C of each step).
-s32 func_0010CE98(XSauceSteps* p) {
+s32 MsgWin_GetShownLineCount(XSauceSteps* p) {
     s32 i;
     f32 sum;
     func_0010CCF0(p);
@@ -486,7 +486,7 @@ s16 Text_ReadU16(s32* pos, u8* buf) {
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D250);
 
 // Clears the window's drawing flag and frees its buffer (+0x20).
-void func_0010E230(XSauce* arg0) {
+void MsgWin_FreeBuffer(XSauce* arg0) {
     arg0->unk_12 = 0;
     if (arg0->unk_20 != 0) {
         func_00121D50(arg0->unk_20);
@@ -495,7 +495,7 @@ void func_0010E230(XSauce* arg0) {
 }
 
 // Window finished: mode 1 calls the callback (+0x00) once more with the next count, mode 0 frees the buffer and calls it.
-void func_0010E270(XSauce* p) {
+void MsgWin_OnFinished(XSauce* p) {
     switch (p->unk_11) {
     case 1:
         if (p->unk_00 != NULL) {
@@ -564,7 +564,7 @@ void func_0010E580(void) {
 }
 
 // Adds task Kanji_UploadTask and registers the sixteen window images 16348..16363 (D_002B7B70..D_002B7F30).
-void func_0010E700(void) {
+void MsgWin_RegisterImages(void) {
     *(u16*)(TaskSystem_AddTask(180150, Kanji_UploadTask) + 2) = -1;
 
     Gs_Load8x2Image(16348, &D_002B7B70);
@@ -705,7 +705,7 @@ void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EDC0);
 
 // Number of 24-pixel lines of the text (func_0010EDC0 height / 24 + 1).
-s32 func_0010EEC8(s32 arg0) {
+s32 Text_GetLineCount(s32 arg0) {
     s32 stack[4];
 
     return func_0010EDC0(arg0, stack) / 24 + 1;

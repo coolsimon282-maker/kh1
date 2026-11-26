@@ -400,7 +400,9 @@ INCLUDE_ASM("asm/nonmatchings/xtrumpet", eu_func_00111B00);
 #endif
 
 #ifdef VERSION_FM
-u32 fm_func_00111B08(arg0)
+// The frame count in a0 as 60 Hz frames: unchanged in FM (EU's eu_func_00111AA8 adds a fifth, 50 Hz to 60 Hz).
+// The Time_Calc* helpers call it without an argument, so it gets their own a0.
+u32 Time_FromFrames(arg0)
 u32 arg0;
 {
     return arg0;
@@ -408,14 +410,16 @@ u32 arg0;
 #endif
 
 #ifdef VERSION_FM
-u32 fm_func_00111B10(void) {
-    return fm_func_00111B08() / 216000;
+// Whole hours of the frame count in a0 (216000 frames an hour).
+u32 Time_CalcHours(void) {
+    return Time_FromFrames() / 216000;
 }
 #endif
 
 #ifdef VERSION_FM
-u32 fm_func_00111B48(void) {
-    u32 t = fm_func_00111B08();
+// Minutes part (0..59) of the frame count in a0.
+u32 Time_CalcMinutesPart(void) {
+    u32 t = Time_FromFrames();
     u32 hours = t / 216000;
     u32 rest = t % 216000;
 
@@ -424,8 +428,9 @@ u32 fm_func_00111B48(void) {
 #endif
 
 #ifdef VERSION_FM
-u32 fm_func_00111B90(void) {
-    u32 t = fm_func_00111B08();
+// Seconds part (0..59) of the frame count in a0.
+u32 Time_CalcSecondsPart(void) {
+    u32 t = Time_FromFrames();
     u32 hours = t / 216000;
     u32 rest = t % 216000;
     u32 minutes = rest / 3600;
@@ -436,8 +441,9 @@ u32 fm_func_00111B90(void) {
 #endif
 
 #ifdef VERSION_FM
-u32 fm_func_00111BE8(void) {
-    u32 t = fm_func_00111B08();
+// Hundredths of a second (frames part * 100 / 60) of the frame count in a0.
+u32 Time_CalcHundredthsPart(void) {
+    u32 t = Time_FromFrames();
     u32 hours = t / 216000;
     u32 rest = t % 216000;
     u32 minutes = rest / 3600;
@@ -611,7 +617,7 @@ typedef struct {
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ u8 unk_20[0x14];
-    /* 0x34 */ s32 time[2][4]; // fm_func_00111BE8, seconds, minutes, hours
+    /* 0x34 */ s32 time[2][4]; // Time_CalcHundredthsPart, seconds, minutes, hours
 } XTrumpetUnk9288;
 
 extern XTrumpetUnk9288 D_004D9288;
@@ -619,17 +625,17 @@ extern XTrumpetUnk9288 D_004D9288;
 #ifdef VERSION_FM
 
 
-// splits a frame count into hours/minutes/seconds/hundredths (the fm_func_00111B08 helpers take it in a0)
+// splits a frame count into hours/minutes/seconds/hundredths (the Time_FromFrames helpers take it in a0)
 void func_00111C98(s32 which, s32 t) {
     u32 hours, minutes, seconds, fraction;
 
     if (t < 0) {
         t = 0;
     }
-    hours = ((u32 (*)(s32))fm_func_00111B10)(t);
-    minutes = ((u32 (*)(s32))fm_func_00111B48)(t);
-    seconds = ((u32 (*)(s32))fm_func_00111B90)(t);
-    fraction = ((u32 (*)(s32))fm_func_00111BE8)(t);
+    hours = ((u32 (*)(s32))Time_CalcHours)(t);
+    minutes = ((u32 (*)(s32))Time_CalcMinutesPart)(t);
+    seconds = ((u32 (*)(s32))Time_CalcSecondsPart)(t);
+    fraction = ((u32 (*)(s32))Time_CalcHundredthsPart)(t);
     if (which == 0) {
         D_004D9288.time[0][0] = fraction;
         D_004D9288.time[0][1] = seconds;

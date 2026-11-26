@@ -727,5 +727,40 @@ cleanup") and `config/eu/jp_names.txt` (the old JP name's line renamed in place)
 | viewMatrix | 0x002E2700 | xpeanut.c | Copy of this frame's sceVu0CameraMatrix result. |
 | screenMatrix | 0x002E2740 | xpeanut.c | Copy of the screen matrix D_002B8370 for this frame. |
 | worldScreenMatrix | 0x002E26C0 | xpeanut.c | screenMatrix * viewMatrix, built by Camera_BuildFrame. |
-| projDistance | 0x004F7650 | xpeanut.c | 256 / tan(fov / 2), set by Camera_SetFov and passed to func_00110848. |
+| projDistance | 0x004F7650 | xpeanut.c | 256 / tan(fov / 2), set by Camera_SetFov and passed to CameraMats_SaveAndRebuild. |
 | savedFov | 0x004F77E4 | xpeanut.c | Field of view saved by Camera_PushFov, restored by Camera_PopFov. |
+| Fade_ResetAll | 0x001103A0 | xtailor.c | Resets the fade and overlay state and colours (FM). |
+| ScreenWobble_Set | 0x00110E38 | xtailor.c | Sets the screen wobble factors D_002B9090 and clears their phases D_002B90A0. |
+| ScreenWobble_Apply | 0x00110E68 | xtailor.c | Applies the wobble (cosine of advancing phases) to vector arg0 and passes it to func_00176110 / func_00176150 (FM). |
+| CameraMats_SaveAndRebuild | 0x00110A48 | xtailor.c | Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with func_00110410 (FM). |
+| CameraMats_Restore | 0x00110C30 | xtailor.c | Restores the six camera matrices saved by CameraMats_SaveAndRebuild. |
+| Pad_UpdateWithReplay | 0x0010FD40 | xtailor.c | Updates the pads; while D_004D2990 is set the pad data is replaced by D_002BCA00 and func_001BA4A8 runs (probably demo playback) (FM). |
+| PadReplay_Stop | 0x0010FE80 | xtailor.c | Stops the pad replay: D_004D2990 = 0 (probably demo playback, see Pad_UpdateWithReplay). |
+| PadReplay_Start | 0x0010FE90 | xtailor.c | Starts the pad replay: D_004D2990 = 1 (probably demo playback, see Pad_UpdateWithReplay). |
+| Lib_ForceLinkCdIpu | 0x00111238 | xtailor.c | Calls sceCd / sceIpu functions with dummy arguments (probably only so that they are linked). |
+| Time_GetHours | 0x001EE428 | xtango.c | Whole hours of the frame count in a0 (passed on to Time_CalcHours; FM only). Probably for record times. |
+| Time_GetMinutesPart | 0x001EE440 | xtango.c | Minutes part of the frame count in a0 (passed on to Time_CalcMinutesPart). |
+| Time_GetSecondsPart | 0x001EE458 | xtango.c | Seconds part of the frame count in a0 (passed on to Time_CalcSecondsPart). |
+| Time_GetHundredthsPart | 0x001EE470 | xtango.c | Hundredths part of the frame count in a0 (passed on to Time_CalcHundredthsPart). |
+| Time_FromFrames | 0x00111B08 | xtrumpet.c | The frame count in a0 as 60 Hz frames: unchanged in FM (EU's eu_func_00111AA8 adds a fifth, 50 Hz to 60 Hz). The Time_Calc* helpers call it without an argument, so it gets their own a0. |
+| Time_CalcHours | 0x00111B10 | xtrumpet.c | Whole hours of the frame count in a0 (216000 frames an hour). |
+| Time_CalcMinutesPart | 0x00111B48 | xtrumpet.c | Minutes part (0..59) of the frame count in a0. |
+| Time_CalcSecondsPart | 0x00111B90 | xtrumpet.c | Seconds part (0..59) of the frame count in a0. |
+| Time_CalcHundredthsPart | 0x00111BE8 | xtrumpet.c | Hundredths of a second (frames part * 100 / 60) of the frame count in a0. |
+| PresetMenu_Open | 0x00217F58 | xpotato.c | Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0 (probably the preset page: its other state D_0063CF3C..D_0063CF50 is what PresetMenu_ApplyChoice uses). |
+| PresetMenu_ClampMemberSlot | 0x00217FB0 | xpotato.c | Clamps the selected party slot D_0063CF3C to the party size, then func_00215B88. |
+| PresetMenu_ClearSelection | 0x00217FE8 | xpotato.c | Clears the page selections D_0063CF3C..D_0063CF50. |
+| PresetMenu_ApplyChoice | 0x00216EA8 | xpotato.c | Stores the chosen preset D_0063CF48 for the selected party member and applies it to the entries listed in D_003F40F8 (preset 5: nothing). |
+| PartyMenu_Update | 0x00218DD0 | xpotato.c | Party member list page: one row per member (Char_GetName); moving fills the child page through func_00217908. |
+| PartyMenu_ClampSlot | 0x002190E8 | xpotato.c | Clamps the selected party slot D_0063CF88 to the party size. |
+| PartyMenu_ClearSlot | 0x00219118 | xpotato.c | Clears the selected party slot D_0063CF88. |
+| PartyMenu_DrawHelp | 0x00218D60 | xpotato.c | Draws help text 0x110, or 0x111 with party member D_0063CF88's name (FM). |
+| MsgWin_RunChoice | 0x0010CD40 | xsauce.c | Runs the window's choice (+0x28): waits for the text to finish, sets up the choices, then updates them until one is picked. |
+| MsgWin_FreeBuffer | 0x0010E3F0 | xsauce.c | Clears the window's drawing flag and frees its buffer (+0x20). |
+| MsgWin_OnFinished | 0x0010E430 | xsauce.c | Window finished: mode 1 calls the callback (+0x00) once more with the next count, mode 0 frees the buffer and calls it. |
+| MsgWin_RegisterImages | 0x0010E8D0 | xsauce.c | Adds task Kanji_UploadTask and registers the sixteen window images 16348..16363 (D_002B7B70..D_002B7F30). |
+| Text_GetLineCount | 0x0010F098 | xsauce.c | Number of 24-pixel lines of the text (func_0010EDC0 height / 24 + 1). |
+| MsgWin_GetShownLineCount | 0x0010D0C0 | xsauce.c | Number of lines shown so far: from the elapsed +0x08 and the per-line durations (+0x0C of each step). |
+| Pad_IsConfirmPressed | 0x0010CF20 | xsauce.c | True when bit 0 of D_002C2108 is set (probably the confirm button press). |
+| Actor_StartLogic | 0x00123F28 | xtoaster.c | Starts the actor's per-kind logic (kind 1, 6) or its script from the definition (+0x0C, flags bit 48). |
+| Actor_StopAll | 0x00124A28 | xtoaster.c | For each active actor: kind 3 is reset in place (or removed when its script ended), kind 7 removed; stops actor scripts. |

@@ -147,7 +147,7 @@ void func_00106A08(UNK_TYPE*, s32);
 void func_00106AA8(void);
 void func_00107CF8(XInchWorm*);
 void func_00108D68(s32, s32, XInchWorm*);
-void func_0010E700(void);
+void MsgWin_RegisterImages(void);
 void func_001116A8(void);
 int func_00111910(void);
 void func_001139F8(void);
@@ -262,7 +262,7 @@ void func_00100240(void) {
     D_002B85F8 &= ~2;
     func_0011E418();
     D_002B9310 = 0;
-    func_0010E700();
+    MsgWin_RegisterImages();
     func_0010BE10();
     TaskSystem_AddTask(50000, &World_LoadTask);
     func_001004F0();
@@ -293,7 +293,7 @@ void func_00100240(void) {
     D_002B85F8 &= ~2;
     func_0011E5F0();
     D_002B9310 = 0;
-    func_0010E700();
+    MsgWin_RegisterImages();
     func_0010BE10();
     TaskSystem_AddTask(50000, &World_LoadTask);
     func_001004F0();

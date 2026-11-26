@@ -270,7 +270,7 @@ typedef struct {
 extern XPotatoTbl D_003F40F8[];
 
 // Stores the chosen preset D_0063CF48 for the selected party member and applies it to the entries listed in D_003F40F8 (preset 5: nothing).
-void func_002167A0(void) {
+void PresetMenu_ApplyChoice(void) {
     u8 idx = D_003010F8->unk_48E[D_0063CF3C];
     s32* list = D_003F40F8[idx].list;
     s32 count = D_003F40F8[idx].count;
@@ -298,7 +298,7 @@ void func_002167A0(void) {
     }
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002167A0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", PresetMenu_ApplyChoice);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002168F8);
@@ -355,8 +355,9 @@ s32 func_00217810(s32 arg0) {
 #endif
 #endif
 
-// Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0.
-void func_00217840(void* arg0) {
+// Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0 (probably the
+// preset page: its other state D_0063CF3C..D_0063CF50 is what PresetMenu_ApplyChoice uses).
+void PresetMenu_Open(void* arg0) {
     void* p0 = func_001F3A20(&D_003EE8B0, 0);
 
     if (p0 != NULL) {
@@ -367,7 +368,7 @@ void func_00217840(void* arg0) {
 }
 
 // Clamps the selected party slot D_0063CF3C to the party size, then func_00215B88.
-void func_00217898(void) {
+void PresetMenu_ClampMemberSlot(void) {
     if (D_0063CF3C > D_003DE6A0 - 1) {
         D_0063CF3C = D_003DE6A0 - 1;
     }
@@ -375,7 +376,7 @@ void func_00217898(void) {
 }
 
 // Clears the page selections D_0063CF3C..D_0063CF50.
-void func_002178D0(void) {
+void PresetMenu_ClearSelection(void) {
     D_0063CF3C = 0;
     D_0063CF40 = 0;
     D_0063CF44 = 0;
@@ -445,9 +446,9 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217908);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
 #ifdef VERSION_FM
-s32 func_00218648(s32 arg0);
+s32 PartyMenu_DrawHelp(s32 arg0);
 // Draws help text 0x110, or 0x111 with party member D_0063CF88's name (FM).
-s32 func_00218648(s32 arg0) {
+s32 PartyMenu_DrawHelp(s32 arg0) {
     s32 v = 0x110;
 
     func_001F9010(23);
@@ -459,10 +460,10 @@ s32 func_00218648(s32 arg0) {
 }
 #else
 #ifdef VERSION_EU
-s32 func_00218648(s32 arg0);
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218648);
+s32 PartyMenu_DrawHelp(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", PartyMenu_DrawHelp);
 #else
-s32 func_00218648(s32 arg0) {
+s32 PartyMenu_DrawHelp(s32 arg0) {
     s32 val = 277;
 
     func_001F9B50(23);
@@ -506,7 +507,7 @@ s32 Char_GetName(s32);
 void func_00207870(XPotMenu*, s32, s32, s32, s32, s32, s32);
 
 // Party member list page: one row per member (Char_GetName); moving fills the child page through func_00217908.
-void func_002186B8(XPotMenu* m) {
+void PartyMenu_Update(XPotMenu* m) {
     XPotMenu* p;
     u32 v;
     s32 b;
@@ -545,7 +546,7 @@ void func_002186B8(XPotMenu* m) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002186B8);
+INCLUDE_ASM("asm/nonmatchings/xpotato", PartyMenu_Update);
 #endif
 
 #ifdef VERSION_FM
@@ -568,14 +569,14 @@ s32 func_00218840(s32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218870);
 
 // Clamps the selected party slot D_0063CF88 to the party size.
-void func_002189D0(void) {
+void PartyMenu_ClampSlot(void) {
     if (D_0063CF88 > D_003DE6A0 - 1) {
         D_0063CF88 = D_003DE6A0 - 1;
     }
 }
 
 // Clears the selected party slot D_0063CF88.
-void func_00218A00(void) {
+void PartyMenu_ClearSlot(void) {
     D_0063CF88 = 0;
 }
 

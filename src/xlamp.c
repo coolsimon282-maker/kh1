@@ -136,7 +136,7 @@ void func_001227B0(void) {
     func_00178140(0);
     Summon_End(); // in xapple
     func_0015A5D0();
-    func_00124DD0();
+    Actor_StopAll();
     func_001333A0();
     func_00146830();
     func_00149008();

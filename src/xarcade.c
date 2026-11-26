@@ -205,7 +205,7 @@ void Game_InitSystems();
 
 // Resets the fades, sets up fadeTaskList and adds FadeTaskList_Task.
 void* Fade_InitSystem(void) {
-    func_00110190();
+    Fade_ResetAll();
     func_00176E30();
     func_00176E98();
     D_00358BE0 = 1;
@@ -288,7 +288,7 @@ s32 func_001EE090(void);
 void func_00239488(void);
 void func_00178140(s32);
 void func_001220D0(void);
-s32 func_0010FB90_s(void) __asm__("func_0010FB90");
+s32 func_0010FB90_s(void) __asm__("Pad_UpdateWithReplay");
 
 // When the pad combination (all shoulder buttons with start and select, probably) is held and nothing is loading, stops sound, any movie and the game and returns D_002BBE08 (cleared: reset).
 s32 SoftReset_Check(void) {

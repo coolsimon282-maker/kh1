@@ -110,10 +110,10 @@ s32 Char_GetUsedAP(s32);
 extern s32 D_003E3D20[];
 extern u32 D_003E3D48[];
 extern XTangoUnk30* func_001496C8(void);
-void fm_func_00111B10(void);
-void fm_func_00111B48(void);
-void fm_func_00111B90(void);
-void fm_func_00111BE8(void);
+void Time_CalcHours(void);
+void Time_CalcMinutesPart(void);
+void Time_CalcSecondsPart(void);
+void Time_CalcHundredthsPart(void);
 extern u16 D_003E3CD0[];
 void func_001EDC50(void*);
 void func_001EDCD8(f32);
@@ -180,41 +180,44 @@ INCLUDE_ASM("asm/nonmatchings/xtango", eu_func_001EC508);
 #endif
 
 #ifdef VERSION_FM
-// Calls fm_func_00111B10 (FM only).
-void fm_func_001EE428(void) {
-    fm_func_00111B10();
+// Whole hours of the frame count in a0 (passed on to Time_CalcHours; FM only). Probably for record times.
+void Time_GetHours(void) {
+    Time_CalcHours();
 }
 #endif
 
 #ifdef VERSION_FM
-// Calls fm_func_00111B48.
-void func_001EF530(void) {
-    fm_func_00111B48();
+// Minutes part of the frame count in a0 (passed on to Time_CalcMinutesPart).
+void Time_GetMinutesPart(void) {
+    Time_CalcMinutesPart();
+}
+#elif defined(VERSION_EU)
+void Time_GetMinutesPart(void) {
+    Time_CalcMinutesPart();
 }
 #else
-void func_001EF530(void) {
-    fm_func_00111B48();
-}
+// JP's function is 0x98 bytes (not a tail call): JP has no Time_Calc* helpers
+INCLUDE_ASM("asm/nonmatchings/xtango", Time_GetMinutesPart);
 #endif
 
 #ifdef VERSION_FM
-// Calls fm_func_00111B90.
-void func_001EF5C8(void) {
-    fm_func_00111B90();
+// Seconds part of the frame count in a0 (passed on to Time_CalcSecondsPart).
+void Time_GetSecondsPart(void) {
+    Time_CalcSecondsPart();
 }
 #else
-// JP's function is 0xA0 bytes (not a tail call like FM's); EU's calls its own copy of fm_func_00111B90
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
+// JP's function is 0xA0 bytes (not a tail call like FM's); EU's calls its own copy of Time_CalcSecondsPart
+INCLUDE_ASM("asm/nonmatchings/xtango", Time_GetSecondsPart);
 #endif
 
 #ifdef VERSION_FM
-// Calls fm_func_00111BE8.
-void func_001EF668(void) {
-    fm_func_00111BE8();
+// Hundredths part of the frame count in a0 (passed on to Time_CalcHundredthsPart).
+void Time_GetHundredthsPart(void) {
+    Time_CalcHundredthsPart();
 }
 #else
-// JP's function is 0xA0 bytes as well; EU's calls its own copy of fm_func_00111BE8
-INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
+// JP's function is 0xA0 bytes as well; EU's calls its own copy of Time_CalcHundredthsPart
+INCLUDE_ASM("asm/nonmatchings/xtango", Time_GetHundredthsPart);
 #endif
 
 // Converts a BCD number (one decimal digit per nibble) to binary.

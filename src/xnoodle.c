@@ -520,7 +520,7 @@ void func_0010BB10(XNoodle* arg0, s32 arg1) {
     if (arg0->unk_18 != 0) {
         arg0->unk_14 = arg1;
         arg0->unk_18 = 3;
-        func_0010E230(&arg0->unk_80);
+        MsgWin_FreeBuffer(&arg0->unk_80);
     }
 }
 

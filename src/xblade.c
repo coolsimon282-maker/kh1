@@ -316,10 +316,10 @@ void World_ApplyWorldData(void) {
     }
     D_002BC12C = roomTable[curRoomNo].unk_00;
     func_00103280(1.0f, 1.0f, 1.0f, 1.0f);
-    func_00110C40(1.0f, 1.0f, 1.0f, 1.0f);
+    ScreenWobble_Set(1.0f, 1.0f, 1.0f, 1.0f);
     D_002B8C84 = (((XWorldEntryF *)roomTable)[curRoomNo].unk_10 >> 1) & 1;
     if (D_002B8C84 != 0) {
-        func_00110C40(1.0f, 0.9f, 1.0f, (13421772.0f / 268435456.0f));
+        ScreenWobble_Set(1.0f, 0.9f, 1.0f, (13421772.0f / 268435456.0f));
     }
     e1 = EA;
     D_002B85F8 = (D_002B85F8 & ~4) | (((*(u32 *)((u8 *)e1 + 0x10) & 1) ^ 1) << 2);
@@ -1374,7 +1374,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                             PauseScreen_AnimateColors(D_004D2A78);
 //                             D_002B9664 = 1;
 //                             func_001224B8();
-//                             func_0010FB90();
+//                             Pad_UpdateWithReplay();
 //                             if (SoftReset_Check() == 0) {
 //                                 break; 
 //                             } 

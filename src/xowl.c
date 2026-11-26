@@ -261,7 +261,7 @@ void Light_GetColorMatrix(u8* obj, sceVu0FMATRIX m) {
 extern u32 D_002B85F8;
 extern sceVu0FVECTOR D_002C6450;
 void func_00107E10(XOwlEnt*);
-void func_00110C70(sceVu0FVECTOR);
+void ScreenWobble_Apply(sceVu0FVECTOR);
 void TaskList_UpdateMatching(s32*, s32);
 
 // Per-frame task: runs the interpolation tasks, recomputes the global ambient colour and handles type 3 lights.
@@ -289,7 +289,7 @@ s32 LightTask_Update(void) {
         }
     }
     D_002C6450[3] = 1.0f;
-    func_00110C70(D_002C6450);
+    ScreenWobble_Apply(D_002C6450);
     return 0;
 }
 

@@ -511,7 +511,7 @@ s32 SysMessage_WaitWhileActive(void) {
         }
         if (mask != 0) {
             D_002B9664 = 1;
-            func_0010FB90();
+            Pad_UpdateWithReplay();
             func_001220D0();
             func_0010F708();
             if (Movie_IsRunning() != 0) {
@@ -587,7 +587,7 @@ void Pad_Update(void);
 void func_001BA4A8(void);
 
 // Updates the pads; while D_004D2990 is set the pad data is replaced by D_002BCA00 and func_001BA4A8 runs (probably demo playback) (FM).
-void func_0010FB90(void) {
+void Pad_UpdateWithReplay(void) {
     s32 i;
 
     func_0010F6F0();
@@ -606,16 +606,16 @@ void func_0010FB90(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Pad_UpdateWithReplay);
 #endif
 
-// D_004D2990 = 0.
-void func_0010FCD0(void) {
+// Stops the pad replay: D_004D2990 = 0 (probably demo playback, see Pad_UpdateWithReplay).
+void PadReplay_Stop(void) {
     D_004D2990 = 0;
 }
 
-// D_004D2990 = 1.
-void func_0010FCE0(void) {
+// Starts the pad replay: D_004D2990 = 1 (probably demo playback, see Pad_UpdateWithReplay).
+void PadReplay_Start(void) {
     D_004D2990 = 1;
 }
 
@@ -825,7 +825,7 @@ extern s32 D_002BC080[4];
 extern s32 D_002BC0B0[4];
 
 // Resets the fade and overlay state and colours (FM).
-void func_00110190(void) {
+void Fade_ResetAll(void) {
     D_002B834C = 0;
     D_002BBE14 = 0;
     D_002BBE18 = 0;
@@ -850,7 +850,7 @@ void func_00110190(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110190);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Fade_ResetAll);
 #endif
 
 // Sets the play time counter D_002BBDF4.
@@ -930,7 +930,7 @@ void func_00110410(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, s
                    f32, f32, f32, f32, f32, f32, f32, f32);
 
 // Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with func_00110410 (FM).
-void func_00110848(f32 arg0) {
+void CameraMats_SaveAndRebuild(f32 arg0) {
     func_00110AE0();
     sceVu0CopyMatrix(D_004D2590, D_002B8370);
     sceVu0CopyMatrix(D_004D2850, D_002B83B0);
@@ -943,7 +943,7 @@ void func_00110848(f32 arg0) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110848);
+INCLUDE_ASM("asm/nonmatchings/xtailor", CameraMats_SaveAndRebuild);
 #endif
 
 // Saves D_002B84F0 and multiplies three camera matrices by viewMatrix.
@@ -954,8 +954,8 @@ void func_001109A8(void) {
     sceVu0MulMatrix(D_002B8570, D_002B8470, viewMatrix);
 }
 
-// Restores the six camera matrices saved by func_00110848.
-void func_00110A30(void) {
+// Restores the six camera matrices saved by CameraMats_SaveAndRebuild.
+void CameraMats_Restore(void) {
     sceVu0CopyMatrix(D_002B8370, D_004D2590);
     sceVu0CopyMatrix(D_002B83B0, D_004D2850);
     sceVu0CopyMatrix(D_002B83F0, D_004D2890);
@@ -968,7 +968,7 @@ void func_00110A30(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110AE0);
 
 // Sets the screen wobble factors D_002B9090 and clears their phases D_002B90A0.
-void func_00110C40(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void ScreenWobble_Set(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     D_002B9090[0] = arg0;
     D_002B9090[1] = arg1;
     D_002B9090[2] = arg2;
@@ -984,7 +984,7 @@ void func_00176110(f32*);
 void func_00176150(f32*);
 
 // Applies the wobble (cosine of advancing phases) to vector arg0 and passes it to func_00176110 / func_00176150 (FM).
-void func_00110C70(sceVu0FVECTOR arg0) {
+void ScreenWobble_Apply(sceVu0FVECTOR arg0) {
     register s32 i asm("$18");
     f32* ang;
     f32* v = D_002BC190;
@@ -1010,7 +1010,7 @@ void func_00110C70(sceVu0FVECTOR arg0) {
     func_00176150(arg0);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110C70);
+INCLUDE_ASM("asm/nonmatchings/xtailor", ScreenWobble_Apply);
 #endif
 
 // Load callback of dkmovie.x: marks the player loaded and starts it (func_F20000(0, movie)).
@@ -1120,7 +1120,7 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", Movie_Finish);
 #endif
 
 // Calls sceCd / sceIpu functions with dummy arguments (probably only so that they are linked).
-void func_00111050(void) {
+void Lib_ForceLinkCdIpu(void) {
     sceCdRead(0, 0, NULL, NULL);
     Decode_Chunk();
     sceCdStatus();

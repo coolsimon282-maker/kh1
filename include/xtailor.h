@@ -10,11 +10,14 @@ void func_0010FA88();
 void func_0010FAE8();
 #define AreaNames_Load func_0010FAE8 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_0010FB90();
+#define Pad_UpdateWithReplay func_0010FB90 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_0010FCD0();
+#define PadReplay_Stop func_0010FCD0 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_0010FDB8();
 void func_00110170();
 #define Fade_ClearScreenColor func_00110170 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110190();
+#define Fade_ResetAll func_00110190 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110230(s32);
 #define PlayTime_SetFrames func_00110230 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110240();
@@ -24,6 +27,7 @@ void func_001102A0();
 void func_001102C0();
 #define Frame_UpdateTimeStep func_001102C0 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110C40(f32, f32, f32, f32);
+#define ScreenWobble_Set func_00110C40 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 void func_00110E18();
 #define Movie_ClearState func_00110E18 // name in config/fm/symbol_addrs.txt; old identifier kept for src/unsplit and xhumungus (rule F1)
 s32 func_00110E38(s32);
