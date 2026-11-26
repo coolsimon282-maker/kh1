@@ -495,7 +495,7 @@ segments:
   - [ 0x1c58a0, .data, xgoblin ]
   - [ 0x1c5c30, data ]
   - [ 0x1c5c60, .data, xowl ]
-  - [ 0x1c6460, data ]
+  - [ 0x1c6460, .data, xtoaster ]
   - [ 0x1e26b0, .data, xpeanut ]
   - [ 0x1e27b0, data ]
   - [ 0x204b00, .data, xapple ]
@@ -534,8 +534,7 @@ segments:
   - [ 0x38d008, .rodata, xblade ]
   - [ 0x38d090, rodata ]
   - [ 0x38d2b0, .rodata, xowl ] # func_00122988's jump table (jtbl_0048D2B0)
-  - [ 0x38d2c8, rodata ]
-  - [ 0x38d320, .rodata, xtoaster ]
+  - [ 0x38d2c8, .rodata, xtoaster ]
   - [ 0x38d388, rodata ]
   - [ 0x38dc48, .rodata, xapple ]
   - [ 0x38dcb8, rodata ]
