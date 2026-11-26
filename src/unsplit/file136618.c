@@ -1600,7 +1600,66 @@ s32 func_0023E5B0(u8 *a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023E8F0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023EC88);
+extern A3V16 D_004915D0;
+extern s32 D_00454A28;
+
+s32 func_0023EC88(u8 *a0, s32 a1) {
+    A3V16 col;
+    s32 bufA[4];
+    s32 pos[4];
+    f32 step;
+    f32 s0;
+    s32 n;
+    s32 d;
+    s32 k;
+    s32 i;
+    s32 q;
+
+    col = D_004915D0;
+    if (*(s32 *)a0 == 4) {
+        n = D_00454A28;
+        s0 = 0.5235987f;
+        d = 1;
+    } else {
+        n = *(s32 *)(*(u8 **)(*(u8 **)(a0 + 4) + 0x6C) + 0x48);
+        if (n > 20) {
+            n = 20;
+        }
+        s0 = 0.5235987f;
+        d = 1;
+    }
+    if (*(s32 *)(a0 + 0xA18) == 0) {
+        return a1;
+    }
+    s0 *= n;
+    step = s0;
+    if (4.71238804f < s0) {
+        s0 = 4.71238804f;
+    }
+    a1 = func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x10, &col, a1, 0.0f, s0, *(f32 *)(a0 + 0xA1C));
+    if (step <= 4.71238804f) {
+        return a1;
+    }
+    if (*(s32 *)a0 == 0 || *(s32 *)a0 == 4) {
+        k = 0x1A;
+    } else {
+        k = 0x11;
+    }
+    func_0023D528(a0, bufA, pos);
+    pos[0] -= 1;
+    q = (n - 9) / d;
+    for (i = 0; i < q; i++) {
+        a1 = func_0023D700_f(*(s32 *)(a0 + 0x5C), *(s32 *)(a0 + 0x6C), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+        pos[0] -= k;
+    }
+    if (*(s32 *)a0 == 0 || *(s32 *)a0 == 4) {
+        **(s32 **)(a0 + 0x64) = 0x1B8;
+    } else {
+        **(s32 **)(a0 + 0x64) = 0x18D;
+    }
+    s0 = *(f32 *)(a0 + 0xA1C);
+    return func_0023D700_f(*(s32 *)(a0 + 0x64), *(s32 *)(a0 + 0x6C), pos[0], pos[1], a1, s0);
+}
 
 extern u8 D_004268B0[];
 NOTHROW(s32, func_0023E8F0);
