@@ -6786,7 +6786,51 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0016DB80);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0016DD30);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0016DF30);
+u32 func_001627E8(s32);
+void func_00171790(u8*, u8*);
+typedef struct { u64 pad:15; u32 b:1; } V16DF30;
+static inline s32 func_0016DF30_m(s32 t, u8* b) {
+    switch (t) {
+    case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12:
+        return 1;
+    }
+    return t == *(s32*)(b + 0x4C);
+}
+void func_0016DF30(u8* p, u8* q) {
+    sceVu0FVECTOR v;
+    f32* e;
+    f32 a;
+
+    if (*(s32*)(p + 0x70) == 0) {
+        *(u64*)(q + 0x38) |= 0x10000;
+    }
+    if (!func_0016DF30_m(*(s32*)(p + 0x164), q)) {
+        *(s32*)(q + 0x48) = 0;
+        *(u64*)(q + 0x38) &= ~0x8000ULL;
+    } else {
+        func_00171790(p, q);
+        if (*(s32*)(q + 0x90) != 0) {
+            func_00137688((s32)p, func_001376E8_2(p, (f32*)(q + 0xC0)));
+            sceVu0ScaleVectorXYZ((f32*)(q + 0x120), (f32*)(p + 0x30), 1.0f);
+        }
+        if (!(*(f32*)(q + 0x68) <= 0.0f)) {
+            return;
+        }
+        if (!((V16DF30*)(q + 0x38))->b) {
+            return;
+        }
+        e = (f32*)(*(u8**)(q + 0x14) + (func_001627E8(*(s32*)(q + 0x10) << 12) >> 12) * 0x14);
+        a = *(f32*)(p + 0x3C) + e[0];
+        v[0] = sinf(a);
+        v[1] = 0.0f;
+        v[2] = cosf(a);
+        v[3] = 0.0f;
+        sceVu0ScaleVector(v, v, e[2]);
+        v[1] = e[1];
+        func_0014D428(p, v, e[3], e[4]);
+        *(u64*)(q + 0x38) &= ~0x8000ULL;
+    }
+}
 
 typedef struct N16E0D0 { s32 a; s32 b; s32 (*fn)(u8*, s32, s32, s32); s32 d; struct N16E0D0* next; } N16E0D0;
 extern N16E0D0* D_00575780_e __asm__("D_00575780");
