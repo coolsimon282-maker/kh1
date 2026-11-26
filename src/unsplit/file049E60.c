@@ -1768,7 +1768,41 @@ void func_00150660(void) {
     func_00137318();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00150678);
+extern s32 D_150678_pad1;
+f32 Vec_LengthXZ(f32*);
+f32 Angle_Wrap(f32);
+void func_00150678_s(u8*, u8*) __asm__("func_00137308");
+extern s32 D_0054F738;
+void func_00150678(u8* p, u8* q) {
+    f32 v[4];
+    f32 ip;
+    f32 a;
+
+    a = *(f32*)(q + 0x34);
+    v[1] = 0.0f;
+    v[0] = sinf(a);
+    v[1] = 0.0f;
+    v[2] = cosf(a);
+    v[3] = 1.0f;
+    if (Vec_LengthXZ((f32*)(p + 0x3C0)) < 1.0f) {
+        ip = sceVu0InnerProduct(v, (f32*)(p + 0x30));
+    } else {
+        ip = sceVu0InnerProduct(v, (f32*)(p + 0x3C0));
+    }
+    if (0.0f < ip) {
+        *(s32*)p |= 0x800000;
+        a = *(f32*)(q + 0x34);
+    } else {
+        *(s32*)p &= ~0x800000;
+        a = Angle_Wrap(*(f32*)(q + 0x34) + 3.1415928f);
+    }
+    *(f32*)(p + 0x150) = a;
+    func_00137688((s32)p, a);
+    sceVu0ScaleVector((f32*)(*(u8**)(p + 0x148) + 0x130), (f32*)(p + 0x3C0), D_002B8344 * 0.5f);
+    func_00150678_s(p, q);
+    func_0014F658((s32)p, 0x1A);
+    D_0054F738 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001507D0);
 
