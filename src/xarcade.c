@@ -10,6 +10,83 @@
 
 #include "libgraph.h"
 
+#ifdef VERSION_FM
+#include "libdma.h"
+
+// labels inside the arrays below, kept for the code (and other files) that use them by name
+#define DATA_LABEL(name, base, off) __asm__(".globl " #name "\n" #name " = " #base " + " #off)
+
+// .data (0x002B6460-0x002B6780)
+char D_002B6460[20] = "host:./kingdom.cnf";
+u32 D_002B29C4 = 0;
+char* D_002B6478 = NULL;
+s32 D_002B29CC = 0;
+s32 D_002B29D0 = 0;
+s32 D_002B6484 = 0;
+// GIF packets and the DMA ref tags that send them (func_00106948)
+u64 D_002B6490[42] __attribute__((aligned(16))) = {
+    0x6000000000000001ULL, 0xEEEEEE,
+    0x0, 0x3F,
+    0x8008000664021A00ULL, 0x6,
+    0x131000070ULL, 0x4E,
+    0x44, 0x42,
+    0x30000, 0x47,
+    0x0, 0x14,
+    0x6420000000000001ULL, 0x535310,
+    0x116, 0x140808080ULL,
+    0x0, 0xFFFFFFFE73F87000ULL,
+    0x18002000, 0xFFFFFFFE8BF89000ULL,
+    0x3000000000000001ULL, 0xEEE,
+    0x8008000264120E00ULL, 0x6,
+    0x44, 0x42,
+    0x80, 0x3B,
+    0x6420000000000001ULL, 0x535310,
+    0x156, 0x140808080ULL,
+    0x0, 0xFFFFFFFE73F87000ULL,
+    0x18002000, 0xFFFFFFFE8BF89000ULL,
+    0x1000000000008001ULL, 0xE,
+    0x31000070, 0x4E,
+};
+sceDmaTag D_002B65E0 = {21, 0, 0, (sceDmaTag*)D_002B6490};
+u64 D_002B65F0[24] = {
+    0x5000000000000001ULL, 0xEEEEE,
+    0x0, 0x3F,
+    0x8008000664120E00ULL, 0x6,
+    0x131000070ULL, 0x4E,
+    0x44, 0x42,
+    0x30000, 0x47,
+    0x6420000000000001ULL, 0x535310,
+    0x116,
+    0x180808080ULL, 0x0,
+    0x173F86FF8ULL, 0x18002000,
+    0x18BF88FF8ULL, 0x1000000000008001ULL,
+    0xE, 0x31000070,
+    0x4E,
+};
+DATA_LABEL(D_002B2BB8, D_002B65F0, 0x78);
+sceDmaTag D_002B2C00 = {12, 0, 0, (sceDmaTag*)D_002B65F0};
+u64 D_002B66C0[20] = {
+    0x5000000000000001ULL, 0xEEEEE,
+    0x401B0, 0x4C,
+    0x30000, 0x47,
+    0x60, 0x14,
+    0x5, 0x8,
+    0x8000000664020000ULL, 0x6,
+    0x6400000000008001ULL, 0x535310,
+    0x116, 0x180808080ULL,
+    0x0, 0xFFFFFFFE74007000ULL,
+    0x1C002000, 0xFFFFFFFE80008000ULL,
+};
+sceDmaTag D_002B2CB0 = {10, 0, 0, (sceDmaTag*)D_002B66C0};
+s32 D_002B2CC0 = 0;
+s32 D_002B2CC4 = 0;
+u_long128* D_002B2CC8 = NULL;
+u_long128* D_002B2CCC = NULL;
+#else
+extern s32 D_002B2C00;
+extern s32 D_002B2CB0;
+#endif
+
 typedef struct {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ f32 unk_04;
@@ -18,8 +95,6 @@ typedef struct {
 extern char D_002B29B0[]; // "host:./kingdom.cnf"
 extern char* D_002B29C8;
 extern s64 D_002B2BB8;
-extern s32 D_002B2C00;
-extern s32 D_002B2CB0;
 extern s32 D_002B2CC0;
 extern s32 D_002B2CC4;
 extern u_long128* D_002B2CC8;
@@ -247,7 +322,6 @@ extern f32 D_00495168;
 extern f32 D_0049516C;
 extern f32 D_002B8344;
 extern u64 D_002B6490[];
-extern u8 D_002B65E0[];
 void func_001099D8(void);
 
 s32 func_00109B28(void) {
@@ -269,7 +343,7 @@ s32 func_00109B28(void) {
         a = D_00495184 * D_0049516C;
         D_002B6490[33] = (u64)(s32)a << 24 | 0x100808080;
         D_002B6490[17] = (u64)(s32)c << 24 | 0x100808080;
-        func_00106948(D_002B65E0);
+        func_00106948(&D_002B65E0);
         D_00495184 -= D_002B8344;
         return 0;
     }
