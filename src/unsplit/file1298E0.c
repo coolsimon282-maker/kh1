@@ -732,9 +732,86 @@ void func_0022BD58(s32 a0) {
     func_002078F0(a0, t == 1, 2, 2, 0x160, (s16)*(u16 *)(a0 + 0xC0) >> 4, 0x5A, 0x18D, 0x2D);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file1298E0", func_0022C2A0);
+void Config_SetOption4(s32);
+void func_001FA808(s32, s32, s32, s32, s32);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file1298E0", func_0022C4E8);
+void func_0022C2A0(s32 a0) {
+    s32 t;
+    s32 t3;
+    s32 t6;
+    s32 bx;
+
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 8) & 0x4000) {
+            func_001F3708(a0, 0xC);
+            func_0011D598(3);
+            D_006469B4 = D_006469B0;
+            D_006469B0--;
+        } else {
+            func_001FDFD0(a0);
+            t3 = *(s16 *)(a0 + 0xDA) * 0x60;
+            bx = *(s16 *)(a0 + 0xBE) - 0x7000;
+            t6 = *(s16 *)(a0 + 0xC4) * *(s16 *)(a0 + 0xD2);
+            func_0020BC48(8,
+                (*(s32 *)(a0 + 0xB0) + t3 + bx + *(s16 *)(a0 + 0xC2) - *(s16 *)(a0 + 0xC6)) >> 4,
+                (*(s32 *)(a0 + 0xB4) + t6 / 16 + *(s16 *)(a0 + 0xC0) - 0x7400) >> 4);
+            if (func_001FE570(a0)) {
+                func_001F3708(a0, 0xB);
+                Config_SetOption4(func_001FD538((u8 *)a0));
+                D_006469B4 = D_006469B0;
+                D_006469B0++;
+            }
+        }
+    }
+    func_00201440(a0, 2, 2, 0xB, 0x51, 0x7A, 0x48, D_003F7210, 0x57);
+    func_002066B0(a0, -0x40, 0x70, 0x280, 0x80C2726E, 0x80C2726E);
+    func_002053E8(a0, -0x40, 0x72, 0x280, 0x9C, 0x40000000);
+    func_002066B0(a0, -0x40, 0x10E, 0x280, 0x80C2726E, 0x80C2726E);
+    func_001FA808(a0, 0xA1, 0x1DB, 0xF, 0x80E6E6E6);
+    t = func_001FD538((u8 *)a0);
+    func_002078F0(a0, t == 0, 2, 2, 0xA3, 0xAE, 0x5A, 0xD0, 0x1DD);
+    func_002078F0(a0, t == 1, 2, 2, 0x103, 0xAE, 0x5A, 0x130, 0x1DE);
+}
+
+void Config_SetOption3(s32);
+
+void func_0022C4E8(s32 a0) {
+    s32 t;
+    s32 t3;
+    s32 t6;
+    s32 bx;
+
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 8) & 0x4000) {
+            func_001F3708(a0, 0xC);
+            func_0011D598(3);
+            D_006469B4 = D_006469B0;
+            D_006469B0--;
+        } else {
+            func_001FDFD0(a0);
+            t3 = *(s16 *)(a0 + 0xDA) * 0x60;
+            bx = *(s16 *)(a0 + 0xBE) - 0x7000;
+            t6 = *(s16 *)(a0 + 0xC4) * *(s16 *)(a0 + 0xD2);
+            func_0020BC48(8,
+                (*(s32 *)(a0 + 0xB0) + t3 + bx + *(s16 *)(a0 + 0xC2) - *(s16 *)(a0 + 0xC6)) >> 4,
+                (*(s32 *)(a0 + 0xB4) + t6 / 16 + *(s16 *)(a0 + 0xC0) - 0x7400) >> 4);
+            if (func_001FE570(a0)) {
+                func_001F3708(a0, 0xB);
+                Config_SetOption3(func_001FD538((u8 *)a0));
+                D_006469B4 = D_006469B0;
+                D_006469B0++;
+            }
+        }
+    }
+    func_00201440(a0, 2, 2, 0xB, 0x51, 0x7A, 0x48, D_003F7210, 0x57);
+    func_002066B0(a0, -0x40, 0x70, 0x280, 0x80C2726E, 0x80C2726E);
+    func_002053E8(a0, -0x40, 0x72, 0x280, 0x9C, 0x40000000);
+    func_002066B0(a0, -0x40, 0x10E, 0x280, 0x80C2726E, 0x80C2726E);
+    func_001FA808(a0, 0xA1, 0x59, 0xF, 0x80E6E6E6);
+    t = func_001FD538((u8 *)a0);
+    func_002078F0(a0, t == 0, 2, 2, 0xA3, 0xAE, 0x5A, 0xD0, 0x2E);
+    func_002078F0(a0, t == 1, 2, 2, 0x103, 0xAE, 0x5A, 0x130, 0x2F);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file1298E0", func_0022C730);
 
