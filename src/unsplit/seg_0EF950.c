@@ -1346,7 +1346,16 @@ void func_001F8170(u8* p) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_001F81E8);
+void func_001F81E8(u8* p) {
+    *(f32*)(p + 0x9C) -= D_002B8344;
+    if (*(f32*)(p + 0x9C) <= 0.0f) {
+        *(f32*)(p + 0x9C) = 0.0f;
+    }
+    func_001F5FE0(p);
+    if (*(f32*)(p + 0x9C) <= 0.0f || *(s32*)(p + 0x8C) >= 6) {
+        func_001F8170(p);
+    }
+}
 
 void func_001F8270(void) {
     s32 t0;
@@ -3473,6 +3482,20 @@ void func_0020DD38(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020DE28);
 
+/* unused: rule F1 for the D2C40_v trio (func_0020DED8, func_0020E090, func_00214290) once func_001F81E8 is in C (26 Nov:
+ * with 0 pads above func_001F81E8, 11 and 12 here are stable, 0-10, 13 and 14 are not; pads above func_001F81E8 alone never fix it) */
+extern s32 D_lay2C40_0;
+extern s32 D_lay2C40_1;
+extern s32 D_lay2C40_2;
+extern s32 D_lay2C40_3;
+extern s32 D_lay2C40_4;
+extern s32 D_lay2C40_5;
+extern s32 D_lay2C40_6;
+extern s32 D_lay2C40_7;
+extern s32 D_lay2C40_8;
+extern s32 D_lay2C40_9;
+extern s32 D_lay2C40_10;
+extern s32 D_lay2C40_11;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
 extern s32 D_f1pad_dafb; /* unused: rule F1 */
@@ -3506,7 +3529,19 @@ void func_0020E090(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020E1C0);
+/* unused: rule F1 (26 Nov: only 2, 3 and 8 among 0-20 keep func_00211840 .. func_00215420) */
+extern s32 D_lay20E1C0_0;
+extern s32 D_lay20E1C0_1;
+extern s32 D_lay20E1C0_2;
+void func_0020E1C0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 *e = D2C40_v[a1];
+    u32 c = e[4];
+    s32 v;
+
+    v = func_001BA228(a5);
+    func_00201550(a0, 2, 0, a2, a3, a4, a2 + 0x18, (s32)e, v, 0xF);
+    func_00208280(a0, a2 + 6, a3 + 4, 0x12, 0x2B, c >> 24);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_0EF950", func_0020E280);
 

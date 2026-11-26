@@ -12,9 +12,195 @@
 #include "libgraph.h"
 #include "libvu0.h"
 #include "sdk/libcdvd.h"
+#include "libdma.h"
+
+#ifdef VERSION_FM
+// .data (0x002BBBB0-0x002BCB60)
+typedef struct {
+    u64 unk_00[14];
+} XTailorSave;
+
+// labels inside the arrays below, kept for the code (and other files) that use them by name
+#define DATA_LABEL(name, base, off) __asm__(".globl " #name "\n" #name " = " #base " + " #off)
+
+// GIF packets and the DMA ref tags that send them (func_00106948)
+u64 D_002BBBB0[14] = {
+    0x3000000000000001ULL, 0xEEE,
+    0x801B0, 0x4C,
+    0x131000070ULL, 0x4E,
+    0x30000, 0x47,
+    0x4400000000008001ULL, 0x5510,
+    0x6, 0x100000000ULL,
+    0x174007000ULL, 0x17C009000ULL,
+};
+sceDmaTag D_002B8170 = {7, 0, 0, (sceDmaTag*)D_002BBBB0};
+u64 D_002BBC30[18] = {
+    0x1000000000000001ULL, 0xE,
+    0x30000, 0x47,
+    0x4400000000008003ULL, 0x5510,
+    0x6, 0x170000000ULL,
+    0x174007000ULL, 0x17C009000ULL,
+    0x6, 0x180323296ULL,
+    0x174007000ULL, 0x174109000ULL,
+    0x6, 0x180323296ULL,
+    0x17BF07000ULL, 0x17C009000ULL,
+};
+sceDmaTag D_002BBCC0 = {9, 0, 0, (sceDmaTag*)D_002BBC30};
+u64 D_002BBCD0[4] = {
+    0x1000000000008001ULL, 0xE,
+    0xFFFFFF000801B0ULL, 0x4C,
+};
+sceDmaTag D_002B8240 = {2, 0, 0, (sceDmaTag*)D_002BBCD0};
+u64 D_002BBD00[6] = {
+    0x2000000000008001ULL, 0xEE,
+    0x800D0, 0x4C,
+    0x31000070, 0x4E,
+};
+sceDmaTag D_002B8280 = {3, 0, 0, (sceDmaTag*)D_002BBD00};
+
+s32 D_002BBD40 = 0;
+s32 D_002BBD48[18] = {0};
+s32 D_002BBD90[20] = {0};
+volatile s32 D_002BBDE0 = 0;
+u32 D_002BBDE4 = 0;
+s32 D_002BBDE8 = 0;
+f32 D_002BBDEC = 0.0f;
+volatile s32 D_002BBDF0 = 0;
+volatile u32 D_002BBDF4 = 0;
+volatile s32 D_002B8340 = 0;
+f32 D_002B8344 = 0.0f;
+f32 D_002B8348 = 0.0f;
+s32 D_002B834C = 0;
+s32 D_002BBE08 = 0;
+s32 D_002B8354 = 0;
+s32 D_002BBE10 = 0;
+s32 D_002BBE14 = 0;
+s32 D_002BBE18 = 0;
+s32 D_002B8364 = 0;
+sceVu0FMATRIX D_002B8370 = {0};
+sceVu0FMATRIX D_002B83B0 = {0};
+sceVu0FMATRIX D_002B83F0 = {0};
+sceVu0FMATRIX D_002B8430 = {0};
+sceVu0FMATRIX D_002B8470 = {0};
+sceVu0FMATRIX D_002B84B0 = {0};
+sceVu0FMATRIX D_002B84F0 = {0};
+sceVu0FMATRIX D_002B8530 = {0};
+sceVu0FMATRIX D_002B8570 = {0};
+s32 D_002BC060[4] = {0};
+s32 fadeScreenColor[4] = {0};
+s32 D_002BC080[4] = {0};
+DATA_LABEL(D_002BC08C, D_002BC080, 12);
+s32 D_002BC090 = 0;
+s32 D_002BC094 = 0;
+f32 D_002BC098 = 0.0f;
+s32 D_002BC09C = 0;
+s32 D_002BC0A0 = 0;
+s32 D_002BC0A4 = 0;
+u32 D_002B85F8 = 0;
+s32 D_002BC0B0[4] = {0};
+DATA_LABEL(fadeOverlayAlpha, D_002BC0B0, 12);
+s32 D_002BC0C0[12] = {0};
+f32 D_002BC0F0[12] = {0};
+f32 D_002BC120 = 0.0f;
+f32 D_002BC124 = 0.0f;
+s32 curWorldNo = 0;
+s32 D_002BC12C = 0;
+s32 curRoomNo = 0;
+s32 D_002B8684 = 0;
+s32 D_002B8688 = 0;
+s32 D_002B868C = 0;
+s32* D_002BC140 = NULL;
+s32* D_002BC144 = NULL;
+s32 D_002B8698[10] = {0};
+s32 D_002BC170[2][4] = {{0}};
+sceVu0FVECTOR D_002BC190 = {0};
+sceVu0FVECTOR D_002BC1A0 = {0};
+sceGsLoadImage D_002B8700 = {{0}};
+sceGsLoadImage D_002B8760 = {{0}};
+u8 D_002BC270[0xB0] = {0};
+u32 D_002B8870[256] = {0};
+s32 fadeTaskList[4] = {0};
+s32 D_002BC730 = 0;
+s32 D_002B8C84 = 0;
+s32 D_002B8C88 = 0;
+s32 D_002BC73C = 0;
+s32 D_002B8C90 = 0;
+s32 D_002B8C94 = 0;
+// GS register addresses (D_002BC750/D_002BC7C0) and values (D_002BC830) that func_0010FEC0 copies into D_004D8EF0
+u64 D_002BC750[13] __attribute__((aligned(16))) = {
+    0x4C, 0x4E,
+    0x18, 0x40,
+    0x47, 0x42,
+    0x4A, 0x6,
+    0x14, 0x16,
+    0x34, 0x36,
+    0x8,
+};
+u64 D_002BC7C0[13] __attribute__((aligned(16))) = {
+    0x4D, 0x4F,
+    0x19, 0x41,
+    0x48, 0x43,
+    0x4B, 0x7,
+    0x15, 0x17,
+    0x35, 0x37,
+    0x9,
+};
+u64 D_002BC830[13] __attribute__((aligned(16))) = {
+    0x800D0, 0x31000070,
+    0x740000007000ULL, 0x17F000001FF0000ULL,
+    0x5000D, 0x44,
+    0x0, 0x20000045DD308002ULL,
+    0x60, 0x2000000001300000ULL,
+    0x0, 0x0,
+    0x5,
+};
+u64 D_002BC8A0[28] __attribute__((aligned(16))) = {
+    0x5000000000000001ULL, 0xEEEEE,
+    0x131000070ULL, 0x4E,
+    0x1080000, 0x4C,
+    0x44, 0x42,
+    0x30000, 0x47,
+    0x1BF000001FF0000ULL, 0x40,
+    0x4400000000000001ULL, 0x5510,
+    0x6,
+    0x180000000ULL, 0x174007000ULL,
+    0x190009000ULL, 0x4000000000008001ULL,
+    0xEEEE, 0x5000D,
+    0x47, 0x800D0,
+    0x4C, 0x17F000001FF0000ULL,
+    0x40, 0x31000070,
+    0x4E,
+};
+DATA_LABEL(D_002BC918, D_002BC8A0, 0x78);
+sceDmaTag D_002BC980 = {14, 0, 0, (sceDmaTag*)D_002BC8A0};
+u64 D_002BC990[4] = {
+    0x5000000000008001ULL, 0xEEEEE,
+    0x0, 0x3F,
+};
+u64 D_002BC9B0[8] = {
+    0x807010, 0x3D,
+    0x60, 0x15,
+    0x44, 0x43,
+    0x5000D, 0x48,
+};
+sceDmaTag D_002BC9F0 = {6, 0, 0, (sceDmaTag*)D_002BC990};
+XTailorSave D_002BCA00[2] = {{{0}}};
+DATA_LABEL(D_002BCA70, D_002BCA00, 0x70);
+s32 D_002B9030 = 0;
+sceVu0FMATRIX D_002B9040 = {0};
+s32 D_002BCB30 = 0;
+s32 D_002B9084 = 0;
+sceVu0FVECTOR D_002B9090 = {0};
+s32 D_002B90A0[3] = {0};
+#else
+extern s32 D_002BC980;
+extern s32 D_002B8170;
+extern s32 D_002B8240;
+extern s32 D_002B8280;
+extern s32 D_002BBCC0;
+#endif
 
 extern u64 D_002BC918;
-extern s32 D_002BC980;
 
 extern s32 D_002BBD48[];
 extern s32 D_002BBD90[];
@@ -22,9 +208,6 @@ extern s32 D_002BBD90[];
 extern s32 D_004D6B20[];
 
 extern s32 D_002A30D0;
-extern s32 D_002B8170;
-extern s32 D_002B8240;
-extern s32 D_002B8280;
 extern sceVu0FMATRIX D_002B8370;
 extern sceVu0FMATRIX D_002B83B0;
 extern sceVu0FMATRIX D_002B83F0;
@@ -97,7 +280,6 @@ void func_0010F448(void) {
 }
 
 #ifdef VERSION_FM
-extern s32 D_002BBCC0;
 extern s32 D_004D5B0C;
 void func_001FD100(s32, s32);
 void func_001F1ED8(s32, s32, s32, s32, s32);
@@ -386,9 +568,6 @@ void* AreaNames_GetCurrent(void) {
 }
 
 #ifdef VERSION_FM
-typedef struct {
-    u64 unk_00[14];
-} XTailorSave;
 extern XTailorSave D_002BCA00[2];
 extern XTailorSave D_002C5AD0[2];
 void Pad_Update(void);

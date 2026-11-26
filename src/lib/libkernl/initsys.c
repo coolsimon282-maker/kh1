@@ -11,18 +11,18 @@ typedef struct {
     void* func;
 } _sysEntry;
 
-/* initsys.o's data (still in the data segments) */
-extern _sysEntry D_0046AF00[2]; /* SysEntry: {0x5A, func_0025F3F0}, {0x83, func_0025F428} */
-extern s32* D_0046AEF8;         /* _SyscallEntry */
-extern s32 __sce_sema_id;
-extern s32 __sce_eh_sema_id;
-
 void InitAlarm(void);
 void InitExecPS2(void);
 u32* func_0025F428(u32* addr, u32* end, u32 value);
 s32 func_0025F3F0(u32* dst, u32* src, u32 size);
 u32 FindAddress(void* start, void* end, void* value);
 void func_0025F5B0(s32 n, void* f);
+
+/* initsys.o's data */
+s32* D_0046AEF8 = NULL; /* _SyscallEntry */
+_sysEntry D_0046AF00[2] = {{0x83, func_0025F428}, {0x5A, func_0025F3F0}}; /* SysEntry */
+s32 __sce_sema_id = 0;
+s32 __sce_eh_sema_id = 0;
 
 void supplement_crt0(void) {
     struct SemaParam libc_sema;

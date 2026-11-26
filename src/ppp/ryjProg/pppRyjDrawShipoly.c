@@ -31,7 +31,13 @@ void pppRyjDrawShipolyDes(pppPObject* pobj, pppCtrlTable* ctbl) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipoly", func_0019C460);
 
+#ifdef VERSION_FM
+// .data (0x00372730-0x00372750)
+sceVu0FVECTOR D_00372730 = {4.0f, -1.0f, 0.0f, 0.0f};
+f32 D_00372740[4] = {3.0f, 2.0f, 0.0f, 0.0f};
+#else
 extern f32 D_00372740[4];
+#endif
 
 // Interpolates the 16-byte keys i and i + 1 of a and b at the fraction of t (VU0).
 void RyjShipoly_LerpKey(f32* out, u8* a, u8* b, f32 t) {

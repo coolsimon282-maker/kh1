@@ -379,6 +379,78 @@ typedef struct {
     /* 0x50 */ sceVu0FVECTOR unk_50[2];
 } XGoblinPadState; /* size = 0x70 */
 
+#ifdef VERSION_FM
+// labels inside the variables below, kept for the code (and other files) that use them by name
+#define DATA_LABEL(name, base, off) __asm__(".globl " #name "\n" #name " = " #base " + " #off)
+
+// .data (0x002C58A0-0x002C5C30)
+sceVu0FVECTOR D_002C58A0 = {0.0f, 0.0f, 0.0f, 1.0f};
+sceVu0FVECTOR D_002C58B0 = {0.0f, 0.0f, 0.0f, 0.0f};
+s32 D_002C58C0 = 0;
+sceVu0FMATRIX D_002C1E20 = {0};
+sceVu0FMATRIX D_002C1E60 = {0};
+s32 D_002C1EA0 = 0;
+u32 D_002C1EA8 __attribute__((aligned(8))) = 0;
+DATA_LABEL(D_002C1EAA, D_002C1EA8, 2);
+s32 D_002C5960 __attribute__((aligned(8))) = 0;
+u32 D_002C1EB8_w __asm__("D_002C1EB8") __attribute__((aligned(8))) = 0; // _VX in common_data.h
+s32 D_002C1EBC = 0;
+f32 D_002C1EC0 = 0.0f;
+s32 D_002C1EC8 __attribute__((aligned(8))) = 0;
+DATA_LABEL(D_002C597A, D_002C1EC8, 2);
+f32 D_002C5980[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+// pad button bits: {pad2 bit, game bit}
+u32 D_002C1EE0[30][2] = {
+    {0x2000, 0x1},
+    {0x4, 0x1},
+    {0x4000, 0x2},
+    {0x4000, 0x4},
+    {0x1000, 0x8},
+    {0x8000, 0x10},
+    {0x10, 0x20},
+    {0x100000, 0x20},
+    {0x40, 0x40},
+    {0x400000, 0x40},
+    {0x80, 0x80},
+    {0x800000, 0x80},
+    {0x20, 0x100},
+    {0x200000, 0x100},
+    {0x300, 0x200},
+    {0x100, 0x2000},
+    {0x200, 0x1000},
+    {0x800, 0x400},
+    {0x100, 0x800},
+    {0x200, 0x20000},
+    {0x8000, 0x800000},
+    {0x1, 0x8000},
+    {0x2000, 0x10000},
+    {0x4, 0x10000},
+    {0x400, 0x40000},
+    {0x2000, 0x80000},
+    {0x1000, 0x100000},
+    {0x8000, 0x200000},
+    {0x100, 0x400000},
+    {0x200, 0x400000},
+};
+u8 D_002C5A80[8] = {3};
+scePad2SocketParam D_002C5A88[2] = {{2, 0, 0, 0}, {2, 1, 0, 0}};
+XGoblinPadState D_002C5AD0[2] = {{0}};
+DATA_LABEL(D_002C5AD2, D_002C5AD0, 0x2);
+DATA_LABEL(D_002C2024, D_002C5AD0, 0x4);
+DATA_LABEL(D_002C5AD8, D_002C5AD0, 0x8);
+DATA_LABEL(D_002C5AE0, D_002C5AD0, 0x10);
+DATA_LABEL(D_002C5B00, D_002C5AD0, 0x30);
+DATA_LABEL(D_002C5B44, D_002C5AD0, 0x74);
+XGoblinPadState D_002C5BB0 = {0};
+DATA_LABEL(D_002C2104, D_002C5BB0, 0x4);
+DATA_LABEL(D_002C2108, D_002C5BB0, 0x8);
+DATA_LABEL(D_002C5BE0, D_002C5BB0, 0x30);
+f32 D_002C5C20 = 0.0f;
+s32 D_002C5C24 = 0;
+s32 D_002C5C28 = 0;
+s32 D_002C5C2C = 0;
+#endif
+
 extern f32 D_002C5C20;
 
 extern f32 D_002C5980[4];
@@ -620,7 +692,6 @@ void Pad_Reset(void) {
 }
 
 #ifdef VERSION_FM
-extern scePad2SocketParam D_002C5A88;
 extern u_long128 D_004E42C0;
 extern s32 D_004E44C0;
 
@@ -630,7 +701,7 @@ void Pad_Initialize(void) {
 
     sceDbcInit();
     scePad2Init(0);
-    *socket = scePad2CreateSocket(&D_002C5A88, &D_004E42C0);
+    *socket = scePad2CreateSocket(D_002C5A88, &D_004E42C0);
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/xgoblin", Pad_Initialize);

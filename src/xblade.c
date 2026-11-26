@@ -106,6 +106,91 @@ extern s32 D_002B9340;
 extern volatile s32 D_002B9664; // TODO not sure if volatile but needed to match func_00113BC0
 extern s32 D_002B9668;
 extern s32 D_002B966C;
+
+#ifdef VERSION_FM
+#include "libdma.h"
+
+// .data (0x002BCDA0-0x002BD150)
+XWorldEntry* entranceTable = NULL;
+s32 entranceCount = 0;
+s32 curEntranceNo = 0;
+XWorldEntry* roomTable = NULL;
+u32 roomCount = 0;
+s32 D_002B9304 = 0;
+s32 D_002B9308 = 0;
+s32 D_002B930C = 0;
+s32 D_002B9310 = 0;
+s32 D_002B9314 = 0;
+s32 D_002B9318[4] = {0};
+s32 D_002B9328 = 0;
+s32 D_002B932C = 0;
+u32 D_002B9330 = 0;
+u32 D_002B9334 = 0;
+s32 D_002B9338 = 0;
+u32 D_002B933C = 0;
+s32 D_002B9340 = 0;
+// GIF packet (sent by func_00113410 through the ref tag D_002BD100)
+u64 D_002BCE00[96] __attribute__((aligned(16))) = {
+    0x1000000000000001ULL, 0xE,
+    0x30000, 0x47,
+    0xA400000000008009ULL, 0x5151515100ULL,
+    0xC, 0xC,
+    0x100000000ULL, 0x177007688ULL,
+    0x14C000000ULL, 0x177007CF8ULL,
+    0x100000000ULL, 0x179007688ULL,
+    0x14C000000ULL, 0x179007CF8ULL,
+    0xC, 0xC,
+    0x14C000000ULL, 0x177007CF8ULL,
+    0x14C000000ULL, 0x177008308ULL,
+    0x14C000000ULL, 0x179007CF8ULL,
+    0x14C000000ULL, 0x179008308ULL,
+    0xC, 0xC,
+    0x14C000000ULL, 0x177008308ULL,
+    0x100000000ULL, 0x177008978ULL,
+    0x14C000000ULL, 0x179008308ULL,
+    0x100000000ULL, 0x179008978ULL,
+    0xC, 0xC,
+    0x100D17A88ULL, 0x176E07688ULL,
+    0x180D17A88ULL, 0x176E07F08ULL,
+    0x100D17A88ULL, 0x177007688ULL,
+    0x180D17A88ULL, 0x177007F08ULL,
+    0xC, 0xC,
+    0x180D17A88ULL, 0x176E07F08ULL,
+    0x180D17A88ULL, 0x176E080F8ULL,
+    0x180D17A88ULL, 0x177007F08ULL,
+    0x180D17A88ULL, 0x1770080F8ULL,
+    0xC, 0xC,
+    0x180D17A88ULL, 0x176E080F8ULL,
+    0x100D17A88ULL, 0x176E08978ULL,
+    0x180D17A88ULL, 0x1770080F8ULL,
+    0x100D17A88ULL, 0x177008978ULL,
+    0xC, 0xC,
+    0x100D17A88ULL, 0x179007688ULL,
+    0x180D17A88ULL, 0x179007F08ULL,
+    0x100D17A88ULL, 0x179207688ULL,
+    0x180D17A88ULL, 0x179207F08ULL,
+    0xC, 0xC,
+    0x180D17A88ULL, 0x179007F08ULL,
+    0x180D17A88ULL, 0x1790080F8ULL,
+    0x180D17A88ULL, 0x179207F08ULL,
+    0x180D17A88ULL, 0x1792080F8ULL,
+    0xC, 0xC,
+    0x180D17A88ULL, 0x1790080F8ULL,
+    0x100D17A88ULL, 0x179008978ULL,
+    0x180D17A88ULL, 0x1792080F8ULL,
+    0x100D17A88ULL, 0x179208978ULL,
+};
+sceDmaTag D_002BD100 = {48, 0, 0, (sceDmaTag*)D_002BCE00};
+s32 D_002B9660 = 0;
+volatile s32 D_002B9664 = 0;
+s32 D_002B9668 = 0;
+s32 D_002B966C = 0;
+u64 D_002BD120[4] = {
+    0x1000000000008001ULL, 0xE,
+    0x507FD, 0x48,
+};
+sceDmaTag D_002BD140 = {2, 0, 0, (sceDmaTag*)D_002BD120};
+#endif
 extern s32 D_002BD8D8;
 extern s32 D_002C1EBC;
 
@@ -1491,7 +1576,9 @@ typedef struct {
 } XBladeBox; // size = 0x110
 
 extern void* D_004D9368; // XBladeBox*
+#ifndef VERSION_FM
 extern u8 D_002BD140[];
+#endif
 
 // Transforms the model's eight bounding box corners by arg0 and registers it in the next slot (func_00108DF8) when func_0024EDF0 says it is visible.
 s32 func_00114638(sceVu0FVECTOR* m, u8* mdl, s32 id, s32 arg3) {
@@ -1518,7 +1605,7 @@ s32 func_00114638(sceVu0FVECTOR* m, u8* mdl, s32 id, s32 arg3) {
     sceVu0MulMatrix(((XBladeBox*)D_004D9368)->m, D_002B84F0, D_00297850);
     if (func_0024EDF0(((XBladeBox*)D_004D9368)->m, ((XBladeBox*)D_004D9368)->v) == 0) {
         if (id == 40000) {
-            func_00106A08(D_002BD140, 40000);
+            func_00106A08(&D_002BD140, 40000);
         }
         func_00108DF8(D_004D2AAC++, id, m, ((XBladeBox*)D_004D9368)->verts, arg3);
         ret = 1;

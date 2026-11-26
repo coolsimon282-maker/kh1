@@ -182,3 +182,4 @@ func_001218E0 = Mat_ToEuler;
 func_00121970 = Timer_CountDown;
 func_001C1680 = CoThread_RunAll;
 func_0011C540 = GameOver_Start;
+func_00121878 = Vec_ToAngles;

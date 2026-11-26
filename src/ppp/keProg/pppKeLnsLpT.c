@@ -38,7 +38,12 @@ void pppKeLnsLpTDraw(pppPObject* pobj, PKeLnsLpT* p, pppCtrlTable* ctbl) {
     KeLnsFlsLp_Draw(lp, 0, 0);
 }
 
+#ifdef VERSION_FM
+// .data (0x00372708-0x00372710)
+u8 D_00372708 = 0; // next lens index
+#else
 extern u8 D_00372708; // next lens index
+#endif
 
 void pppKeLnsLpTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsLpT* p = (KeLnsLpT*)&pobj->val[ctbl->useVal[0]];

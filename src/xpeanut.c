@@ -3,6 +3,17 @@
 
 #include "math.h"
 
+#ifdef VERSION_FM
+// jump table of the first function (func_001251B0.s)
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487038);
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487040);
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487048);
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487050);
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487058);
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487060);
+INCLUDE_RODATA("asm/nonmatchings/xpeanut", D_00487068);
+#endif
+
 extern s32 D_002C1EA0;
 
 extern sceVu0FMATRIX D_002B8370;

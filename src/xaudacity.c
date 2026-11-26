@@ -1602,3 +1602,281 @@ void func_0012B170(s32* arg0) {
 void func_0012B1A0(s32* arg0) {
     *arg0 = D_002979E8;
 }
+
+#ifdef VERSION_FM
+// .data (0x002E2810-0x002E2FB8)
+// labels inside the variables below, kept for the code that uses them by name
+#define DATA_LABEL(name, base, off) __asm__(".globl " #name "\n" #name " = " #base " + " #off)
+
+void func_00128E18();
+void func_00128E20();
+void NativeCmd_StartProg();
+void NativeCmd_StopProg();
+void func_00128DC0();
+void NativeCmd_RestartProg();
+void func_0012B3A8();
+void func_0012B3C0();
+void func_0012B408();
+void func_00128DF8();
+void func_0012B440();
+void func_0012B448();
+void func_0012B450();
+void func_0012B530();
+void func_0012B540();
+void func_0012B558();
+void func_0012B570();
+void func_0012B638();
+void func_0012B670();
+void func_00128DA0();
+void func_0012B680();
+void func_0012B6F0();
+void func_0012B690();
+void func_0012B590();
+void func_0012B5B0();
+void func_0012B5E8();
+void func_0012B658();
+void func_0012B2C0();
+void func_0012B330();
+void func_0012B708();
+void func_0012B358();
+void func_0012B3D8();
+
+// script command table: handler and its argument word (count in the low bits, plus a 0x40000000 flag)
+typedef struct {
+    void (*func)();
+    u32 args;
+} XAudCmd;
+
+XAudCmd D_002E2810[226] = {
+    {(void (*)())func_00128E18, 0x1},
+    {(void (*)())func_00128E20, 0x1},
+    {(void (*)())NativeCmd_SinDeg, 0x40000001},
+    {(void (*)())NativeCmd_CosDeg, 0x40000001},
+    {(void (*)())func_00129328, 0x40000001},
+    {(void (*)())func_00128F00, 0x40000000},
+    {(void (*)())func_00128FB8, 0x40000001},
+    {(void (*)())NativeCmd_AddVector, 0x2},
+    {(void (*)())NativeCmd_SubVector, 0x2},
+    {(void (*)())func_00129038, 0x1},
+    {(void (*)())NativeCmd_RotateVectorY, 0x2},
+    {(void (*)())NativeCmd_FaceVector, 0x2},
+    {(void (*)())func_00129398, 0x3},
+    {(void (*)())func_001293C0, 0x4},
+    {(void (*)())func_001293F8, 0x4},
+    {(void (*)())func_0012A418, 0x40000003},
+    {(void (*)())func_0012A450, 0x2},
+    {(void (*)())func_0012A470, 0x1},
+    {(void (*)())NativeCmd_AddScaledVector, 0x3},
+    {(void (*)())func_00129430, 0x4},
+    {(void (*)())NativeCmd_StartProg, 0x40000002},
+    {(void (*)())func_0012A488, 0x40000005},
+    {(void (*)())func_0012A738, 0x40000000},
+    {(void (*)())func_0012A760, 0x40000003},
+    {(void (*)())func_00129188, 0x3},
+    {(void (*)())func_00128ED8, 0x40000000},
+    {(void (*)())func_0012A4C8, 0x2},
+    {(void (*)())func_00129458, 0x40000004},
+    {(void (*)())NativeCmd_StopProg, 0x1},
+    {(void (*)())func_0012A4E8, 0x2},
+    {(void (*)())func_00129490, 0x40000001},
+    {(void (*)())NativeCmd_RotateVectorZ, 0x2},
+    {(void (*)())func_001294C0, 0x2},
+    {(void (*)())func_00128DC0, 0x4},
+    {(void (*)())NativeCmd_RestartProg, 0x40000003},
+    {(void (*)())func_001294E0, 0x40000001},
+    {(void (*)())NativeCmd_SetAngleFromVector, 0x2},
+    {(void (*)())func_00129540, 0x40000001},
+    {(void (*)())func_0012A900, 0x40000006},
+    {(void (*)())func_0012A528, 0x2},
+    {(void (*)())func_00129570, 0x40000003},
+    {(void (*)())func_0012A968, 0x2},
+    {(void (*)())func_0012A9B8, 0x2},
+    {(void (*)())func_001295A8, 0x40000002},
+    {(void (*)())func_001295D8, 0x40000002},
+    {(void (*)())func_0012AA08, 0x2},
+    {(void (*)())func_00128F10, 0x40000001},
+    {(void (*)())func_00129608, 0x40000002},
+    {(void (*)())func_0012AA28, 0x40000004},
+    {(void (*)())func_0012AA60, 0x2},
+    {(void (*)())func_00129638, 0x3},
+    {(void (*)())func_00129660, 0x40000001},
+    {(void (*)())NativeCmd_AddLight, 0x40000003},
+    {(void (*)())NativeCmd_ClearInterpolation, 0x1},
+    {(void (*)())func_001296A8, 0x1},
+    {(void (*)())NativeCmd_SetAngles16, 0x2},
+    {(void (*)())func_0012A5F0, 0x40000000},
+    {(void (*)())func_0012AA80, 0x40000002},
+    {NULL, 0x0},
+    {(void (*)())func_001296B0, 0x2},
+    {(void (*)())func_0012A7A0, 0x40000002},
+    {(void (*)())func_0012A628, 0x2},
+    {(void (*)())func_0012AD50, 0x1},
+    {(void (*)())func_0012AD68, 0x2},
+    {(void (*)())func_0012AD88, 0x40000001},
+    {(void (*)())func_001296D0, 0x40000002},
+    {(void (*)())func_00128F40, 0x1},
+    {(void (*)())func_0012ADB8, 0x3},
+    {(void (*)())func_0012ADE0, 0x2},
+    {(void (*)())func_00129700, 0x40000001},
+    {(void (*)())func_0012AAB0, 0x40000001},
+    {(void (*)())func_0012AAE0, 0x40000001},
+    {(void (*)())func_00128F48, 0x1},
+    {(void (*)())func_00128F50, 0x1},
+    {(void (*)())func_0012A648, 0x40000004},
+    {(void (*)())func_00129718, 0x40000002},
+    {(void (*)())func_0012A7D0, 0x2},
+    {(void (*)())func_0012AE78, 0x40000003},
+    {(void (*)())func_00129748, 0x40000004},
+    {(void (*)())func_0012AB10, 0x2},
+    {(void (*)())func_0012AB60, 0x40000002},
+    {(void (*)())func_0012AB90, 0x40000003},
+    {(void (*)())func_00129780, 0x4},
+    {(void (*)())func_001297A8, 0x2},
+    {(void (*)())func_001297C0, 0x40000002},
+    {(void (*)())func_001297F0, 0x40000001},
+    {(void (*)())func_00129820, 0x2},
+    {(void (*)())func_00129840, 0x2},
+    {(void (*)())func_00129848, 0x2},
+    {(void (*)())func_00129868, 0x40000001},
+    {(void (*)())func_0012B030, 0x40000002},
+    {(void (*)())func_00129878, 0x40000002},
+    {(void (*)())func_001298A8, 0x40000002},
+    {(void (*)())NativeCmd_ScaleVector, 0x2},
+    {(void (*)())func_0012ABC8, 0x40000005},
+    {(void (*)())func_0012A7F0, 0x2},
+    {(void (*)())func_001298D8, 0x2},
+    {(void (*)())func_0012A680, 0x40000001},
+    {(void (*)())func_00129910, 0x3},
+    {(void (*)())func_00129938, 0x3},
+    {(void (*)())func_00129200, 0x40000002},
+    {(void (*)())func_0012B068, 0x2},
+    {(void (*)())func_0012AC08, 0x40000004},
+    {(void (*)())func_0012A6B8, 0x2},
+    {(void (*)())func_00129960, 0x40000001},
+    {(void (*)())func_0012B0D8, 0x40000000},
+    {(void (*)())func_001299B8, 0x40000004},
+    {(void (*)())func_001299F0, 0x3},
+    {(void (*)())func_00129A18, 0x5},
+    {(void (*)())func_00129A48, 0x40000003},
+    {(void (*)())func_00129A80, 0x4},
+    {(void (*)())NativeCmd_SetFlags1CC, 0x2},
+    {(void (*)())NativeCmd_ClearFlags1CC, 0x2},
+    {(void (*)())func_00129AE8, 0x2},
+    {(void (*)())func_00129B28, 0x40000001},
+    {(void (*)())func_00129B40, 0x4},
+    {(void (*)())NativeCmd_SetFlags3A4, 0x4},
+    {(void (*)())NativeCmd_ClearFlags3A4, 0x4},
+    {(void (*)())func_00129C08, 0x2},
+    {(void (*)())func_00129C30, 0x3},
+    {(void (*)())func_00129C58, 0x40000001},
+    {(void (*)())func_00129C88, 0x2},
+    {(void (*)())func_0012B0F8, 0x2},
+    {(void (*)())func_0012B170, 0x40000002},
+    {(void (*)())func_00129CA8, 0x2},
+    {(void (*)())func_00129CC0, 0x2},
+    {(void (*)())func_0012A6D8, 0x3},
+    {(void (*)())func_00129CF8, 0x2},
+    {(void (*)())func_00129D18, 0x2},
+    {(void (*)())func_00129D38, 0x1},
+    {(void (*)())func_0012B3A8, 0x1},
+    {(void (*)())func_0012B3C0, 0x1},
+    {(void (*)())func_00129D58, 0x40000001},
+    {(void (*)())func_00129D70, 0x3},
+    {(void (*)())func_00129230, 0x4},
+    {(void (*)())func_00129D98, 0x2},
+    {(void (*)())func_00129DD8, 0x2},
+    {(void (*)())func_00129DF8, 0x2},
+    {(void (*)())func_0012B0E8, 0x40000000},
+    {(void (*)())func_00129E18, 0x40000001},
+    {(void (*)())NativeCmd_LineCheck, 0x40000004},
+    {(void (*)())func_00129E78, 0x40000001},
+    {(void (*)())func_0012B408, 0x40000001},
+    {(void (*)())func_00129EA8, 0x2},
+    {(void (*)())NativeCmd_RotateVectorXYZ, 0x2},
+    {(void (*)())func_0012A700, 0x2},
+    {(void (*)())func_00129F20, 0x2},
+    {(void (*)())func_00129F40, 0x40000001},
+    {(void (*)())func_0012AFF0, 0x40000004},
+    {(void (*)())NativeCmd_DegToRad, 0x40000001},
+    {(void (*)())func_00128DF8, 0x2},
+    {(void (*)())func_0012B440, 0x4},
+    {(void (*)())func_0012B448, 0x5},
+    {(void (*)())func_00129F60, 0x40000003},
+    {(void (*)())func_0012A720, 0x2},
+    {(void (*)())func_0012B120, 0x40000001},
+    {(void (*)())func_00129F88, 0x40000001},
+    {(void (*)())func_00129FB8, 0x1},
+    {(void (*)())func_00129FD0, 0x40000002},
+    {(void (*)())func_0012A818, 0x2},
+    {(void (*)())func_0012A838, 0x40000003},
+    {(void (*)())func_0012B450, 0x1},
+    {(void (*)())func_0012B530, 0x1},
+    {(void (*)())func_0012A000, 0x40000001},
+    {(void (*)())func_0012B540, 0x1},
+    {(void (*)())func_0012B558, 0x1},
+    {(void (*)())func_00128FA8, 0x1},
+    {(void (*)())func_0012B570, 0x2},
+    {(void (*)())func_0012A018, 0x2},
+    {(void (*)())func_0012A038, 0x2},
+    {(void (*)())func_0012A078, 0x40000001},
+    {(void (*)())func_0012B638, 0x1},
+    {(void (*)())func_0012A098, 0x40000001},
+    {(void (*)())func_0012AC40, 0x1},
+    {(void (*)())func_0012B670, 0x40000000},
+    {(void (*)())func_0012A888, 0x1},
+    {(void (*)())func_0012A0C8, 0x40000001},
+    {(void (*)())fm_func_00129330, 0x1},
+    {(void (*)())func_00128DA0, 0x0},
+    {(void (*)())func_0012AC58, 0x2},
+    {(void (*)())func_0012A0E0, 0x2},
+    {(void (*)())func_0012A0F8, 0x40000001},
+    {(void (*)())func_0012A128, 0x1},
+    {(void (*)())func_0012A140, 0x3},
+    {(void (*)())func_0012A168, 0x1},
+    {(void (*)())func_0012B680, 0x40000000},
+    {(void (*)())func_0012B6F0, 0x1},
+    {(void (*)())func_0012A1B8, 0x40000001},
+    {(void (*)())func_0012A8E8, 0x40000001},
+    {(void (*)())func_0012A1C8, 0x40000001},
+    {(void (*)())func_0012B088, 0x2},
+    {(void (*)())func_0012B690, 0x40000000},
+    {(void (*)())func_0012B1A0, 0x40000000},
+    {(void (*)())func_0012B590, 0x2},
+    {(void (*)())func_0012B5B0, 0x2},
+    {(void (*)())func_0012B5E8, 0x2},
+    {(void (*)())func_0012B658, 0x0},
+    {(void (*)())func_0012B2C0, 0x0},
+    {(void (*)())func_0012B330, 0x40000000},
+    {(void (*)())func_0012A1F8, 0x40000001},
+    {(void (*)())func_0012B0A8, 0x40000001},
+    {(void (*)())NativeCmd_StartInterpolation, 0x3},
+    {(void (*)())func_0012AD20, 0x2},
+    {(void (*)())func_0012A210, 0x2},
+    {(void (*)())func_0012A270, 0x40000001},
+    {(void (*)())func_0012AE00, 0x0},
+    {(void (*)())func_0012AE28, 0x1},
+    {(void (*)())func_0012A280, 0x1},
+    {(void (*)())func_0012A308, 0x1},
+    {(void (*)())func_0012A328, 0x40000003},
+    {(void (*)())func_0012A360, 0x1},
+    {(void (*)())func_0012B708, 0x40000001},
+    {(void (*)())fm_func_0012A400, 0x1},
+    {(void (*)())func_0012A8A0, 0x2},
+    {(void (*)())func_0012AC78, 0x2},
+    {(void (*)())func_0012B150, 0x2},
+    {(void (*)())func_0012B358, 0x1},
+    {(void (*)())fm_func_0012B1A8, 0x1},
+    {(void (*)())func_0012A3D0, 0x40000001},
+    {(void (*)())fm_func_00128F70, 0x40000000},
+    {(void (*)())fm_func_0012A498, 0x2},
+    {(void (*)())fm_func_00128F98, 0x40000000},
+    {(void (*)())func_0012B3D8, 0x40000001},
+    {(void (*)())func_00129320, 0x2},
+    {(void (*)())fm_func_00128FB0, 0x40000000},
+    {(void (*)())fm_func_0012A4C8, 0x40000002},
+};
+extern u8 D_00362340[];
+void* D_002E2F20[2] = {D_002E2810, D_00362340};
+s32 D_002DF430_a[35] __asm__("D_002DF430") = {0};
+DATA_LABEL(D_002DF43C, D_002DF430, 0xC);
+#endif

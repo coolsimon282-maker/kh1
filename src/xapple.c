@@ -864,6 +864,18 @@ void* Summon_Start(s32 arg0, s32 arg1) {
     return TaskSystem_AddTask(52000, Summon_MainTask);
 }
 
+#ifdef VERSION_FM
+// The rest of xapple's .data (0x00304B68-0x00304B88). Defined after the function above: its "%s%s" comes before
+// ".dat" in xapple's .rodata.
+char* D_00301078 = ".dat";
+void (*D_00304B6C)(void) = NULL;
+s32 D_00301080 = 0;
+s32 D_00301088 __attribute__((aligned(8))) = 0;
+f32 D_0030108C = 0.0f;
+f32 D_00301090 = 0.0f;
+s32 D_00301094 = 0;
+#endif
+
 // Stops a running summon: ends the program and the task, restores the party, clears the summon flags.
 void Summon_End(void) {
     if ((D_002C1EA8 >> 13) & 1) {

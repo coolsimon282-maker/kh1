@@ -31,10 +31,17 @@ typedef struct {
     /* 0x8 */ u32 unk_08;
 } XBravo;
 
+#ifdef VERSION_FM
+extern u16 D_003DE5F0[];
+extern u32 D_003DE630[];
+extern s32 D_003DE690[];
+extern s32 D_003DE6A0;
+#else
 u16 D_003DE5F0[12];
 u32 D_003DE630[10];
 s32 D_003DE690[3];
 s32 D_003DE6A0;
+#endif
 
 extern XBravo* func_00147AE8(s32);
 void func_001F0C28(void);
@@ -65,6 +72,23 @@ typedef struct {
 } XTangoUnkE4b; // size = 0xE4
 
 extern XTangoUnkE4b D_003E3D70[];
+
+#ifdef VERSION_FM
+// .data (0x003E3CB8-0x003E4654)
+u16 D_003DE5F0[12] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19};
+u16 D_003E3CD0[20] = {0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A};
+u32 D_003DE630[10] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+s32 D_003E3D20[10] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+u32 D_003E3D48[4] = {0, 12, 13, 0};
+s32 D_003DE690[4] = {0x52, 0x53, 0x54, 0x55};
+// Probably one object in the original: a count and ten 0xE4-byte entries (the code reads entry 0 as D_003E3D6C,
+// from its +4 as D_003E3D70[], and entries 1.. as D_003E3E50[]). Written as four variables: an equate
+// ('name = base + off') for the inner labels makes this old gas misplace the base symbol here.
+s32 D_003DE6A0 = 0;
+s32 D_003E3D6C = 0;
+u8 D_003E3D70_b[0xE0] __asm__("D_003E3D70") = {0}; // the code sees XTangoUnkE4b D_003E3D70[]
+XTangoUnkE4 D_003E3E50[9] = {{0}};
+#endif
 
 typedef struct {
     /* 0x00 */ char unk_00[0x18];

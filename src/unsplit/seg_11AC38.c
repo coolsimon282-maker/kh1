@@ -262,6 +262,10 @@ s32 sceDmaGetChan(s32);
 s32 sceDmaSend(s32, u8 *);
 
 extern u8 D_003F4BF0[];
+extern s32 D_lay21AD08_0;
+extern s32 D_lay21AD08_1;
+extern s32 D_lay21AD08_2;
+extern s32 D_lay21AD08_3;
 extern u8 D_003F4C90[];
 void func_001F3E90(u8 *, u8 *);
 void func_001F3DC0(u8 *);
@@ -283,7 +287,27 @@ void func_0021AC38(s32 a0) {
     func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x6F);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AD08);
+/* unused: rule F1 (with fewer, func_0022FCB8 or func_00231EA0 change; 5 on fm-q1, 4 since fm was merged into it on 26 Nov: 0-3 and 5-8 all move fm functions below) */
+extern u8 D_003F4C90[];
+extern u8 D_003F4BF0[];
+extern s32 D_00642D20;
+void func_001F3E90(u8 *, u8 *);
+void func_001F3E20(u8 *, u8 *);
+void func_001F3DC0(u8 *);
+void func_0021AD08(u8 *a0) {
+    u8 *e[2];
+    if ((e[0] = func_001F3A20(D_003F4C90, 6)) != NULL) {
+        func_001F3E90(a0, e[0]);
+        func_001F3E20(e[0], a0);
+        *(s16 *)(e[0] + 0xD2) = *(u16 *)&D_00642D24 * 16;
+        if ((e[1] = func_001F3A20(D_003F4BF0, 6)) != NULL) {
+            func_001F3E90(e[0], e[1]);
+            func_001F3E20(e[1], e[0]);
+            func_001F3DC0(e[0]);
+        }
+    }
+    D_00642D20 = (s32)a0;
+}
 
 void func_0021ADB0(void) {
     func_00218D38();
@@ -802,9 +826,24 @@ void func_0021F810(s32 a0) {
     func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021F858);
+extern u8 D_003F5F90[];
+extern u8 D_003F5F60[];
+extern u8 D_003F5F30[];
+extern s32 D_0064324C;
+void func_0021F858(s32 a0) {
+    u8 *e[3];
+    if ((e[0] = func_001F3A20(D_003F5F90, 0x32)) != NULL) {
+        func_001F4690(e[0], (u8 *)a0);
+        if ((e[1] = func_001F3A20(D_003F5F60, 0x32)) != NULL) {
+            func_001F4690(e[1], e[0]);
+            if ((e[2] = func_001F3A20(D_003F5F30, 0x32)) != NULL) {
+                func_001F4690(e[2], e[1]);
+                *(s16 *)(e[2] + 0xD2) = *(u16 *)&D_0064324C * 16;
+            }
+        }
+    }
+}
 
-NOTHROW(void, func_0021F858);
 NOTHROW(void, func_0021F410);
 
 void func_0021F900(s32 a0) {
@@ -2517,7 +2556,25 @@ void func_002292A8(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229338);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002293F0);
+extern u8 *D_00643718;
+void func_002293F0(u8 *a0) {
+    u8 *e[2];
+    u8 *p;
+    u16 v;
+    if ((e[0] = func_001F3A20(D_003F6CE0, 6)) != NULL) {
+        func_001F4690(e[0], (u8 *)a0);
+        p = e[0];
+        v = D_00643730;
+        *(u16 *)(p + 0xCE) = v;
+        *(u16 *)(p + 0xCC) = v;
+        *(s16 *)(p + 0xD2) = *(u16 *)&D_006436D0 * 16;
+        if ((e[1] = func_001F3A20(D_003F6CA0, 6)) != NULL) {
+            func_001F4690(e[1], e[0]);
+            func_001F3DC0(e[0]);
+        }
+    }
+    D_00643718 = a0;
+}
 
 void func_00229490(u8 *a0) {
     u8 *e[3];
@@ -2682,7 +2739,25 @@ void func_002299B0(u8 *a0) {
     *(s16 *)(a0 + 0xC0) += n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229A10);
+extern s32 D_006437E0;
+extern u8 D_003F6E70[];
+
+void func_00229A10(s32 a0) {
+    u8 *e;
+    func_001F3758(*(s32 *)(D_00646990 + 0x10));
+    func_0011D598(3);
+    D_006437E4 = 0;
+    D_006469A4 = 0;
+    D_006437E0 = 0;
+    func_00233EF8(0);
+    e = func_001F3A20(D_003F6E70, 6);
+    if (e != NULL) {
+        func_001F4690(e, (u8 *)a0);
+        func_001F4058(e, 2);
+        func_001F3D58(e, 6);
+        func_002299B0(e);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229AD0);
 
@@ -4492,7 +4567,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used; after func_0021AE28 (with its 10 pads) 3, 5, 7, 12 among 0-17: 5 used; after func_0022DEE0 + func_0022E368 only 17 among 0-33: 17 used; after func_0022B8A0 (with its 2 pads) only 39 among 0-52: 39 used (these externs now sit above func_00231CD0, which they also steer). After a4 added q1's func_0021D948, func_002204F0, func_00225C30, func_00230728 (26 Nov): 1-5, 7-19, 21, 23, 25 OK among 0-45 (real builds); 12 used. Check the code, not just the size: work/layoutn2.sh-style scan). */
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used; after func_0021AE28 (with its 10 pads) 3, 5, 7, 12 among 0-17: 5 used; after func_0022DEE0 + func_0022E368 only 17 among 0-33: 17 used; after func_0022B8A0 (with its 2 pads) only 39 among 0-52: 39 used (these externs now sit above func_00231CD0, which they also steer). After a4 added q1's func_0021D948, func_002204F0, func_00225C30, func_00230728 (26 Nov): 1-5, 7-19, 21, 23, 25 OK among 0-45 (real builds); 12 used. Check the code, not just the size: work/layoutn2.sh-style scan; meanwhile on fm-q1 (before fm was merged into it on 26 Nov; q1 had its own D_231EA0_layout0-3 just above D_003F7C48 below): after the fm merge into fm-q1 (with layout_fn_229EC0 above) the first match among 0-120 was 1: 1 used; after func_002293F0 (26 Nov, qc2 scan): 0 used; after func_00229A10: 5 (1-4 not): 5 used; after func_0021AD08 + func_0021F858: 4 used; after merging fm into fm-q1 (26 Nov; q1's four dropped, these 12 kept and func_0021AD08's D_lay21AD08 pads cut from 5 to 4): 12 still used). */
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
