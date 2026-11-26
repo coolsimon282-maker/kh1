@@ -44,6 +44,16 @@ GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | $maspsenv {TOOL
 PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_AS_CMD}"
 
 LIB_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -isystem include/gcc-991111 {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS}"
+# Sony library files that were assembled with the newer gas 2.10-ee-001003 (it moves a volatile access or a
+# `move` into an empty jal/jr delay slot; 991111's own gas does not): same 991111 cc1, the 2.96 tree's assembler
+# (notes/a1.md L1, notes/a2.md L1). Not libvu0.c: gas 2.10 encodes vsqrt differently.
+LIB_GAS210_FILES = [
+    "src/lib/libcdvd.c",
+    "src/lib/libgraph.c",
+    "src/lib/libkernl/diei.c",
+    "src/lib/libkernl/kprintf.c",
+]
+LIB_GAS210_COMPILE_CMD = f"{LIB_CC_DIR}/ee-gcc -c -B {GAME_CC_DIR}/ee/bin/ -isystem include/gcc-991111 {COMMON_INCLUDES} $verdef {COMMON_COMPILE_FLAGS}"
 
 # src/lib/libc and src/lib/libm are newlib's own source (newlib 1.8.2; rand.c and signal.c from 1.9.0), unchanged.
 # Sony built them with the game compiler (ee-gcc 2.96), not the 991111 one, and libm in IEEE-only mode.
@@ -268,6 +278,12 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
     )
 
     ninja.rule(
+        "libcc210",
+        description="cc $in",
+        command=f"{LIB_GAS210_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
+    )
+
+    ninja.rule(
         "libgcccc",
         description="cc $in",
         command=f"{LIBGCC_COMPILE_CMD} $in -o $out && {CROSS}strip $out -N dummy-symbol-name",
@@ -322,6 +338,8 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
                 build(entry.object_path, entry.src_paths, "libgcccc", implicit=implicit)
             elif str(entry.src_paths[0]).startswith(("src/lib/libc/", "src/lib/libm/")):
                 build(entry.object_path, entry.src_paths, "newlibcc", implicit=implicit)
+            elif str(entry.src_paths[0]) in LIB_GAS210_FILES:
+                build(entry.object_path, entry.src_paths, "libcc210", implicit=implicit)
             elif any(
                 str(src_path).startswith("src/lib/") for src_path in entry.src_paths
             ):
