@@ -1562,7 +1562,54 @@ void pppInitHeap(pppMemMng* m, pppEMCB* start, s32 size) {
 }
 
 // Allocates a block from the effect heap.
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAlloc);
+void* pppAlloc(pppMemMng* m, s32 size) {
+    pppEMCB* p;
+    pppEMCB* n;
+    pppEMCB* q;
+    pppEMCB* t;
+
+    size = ((size + 15) & ~15) + 16;
+    if (m->lastFreeHeap != NULL) {
+        p = m->lastFreeHeap->next;
+        goto search;
+    restart:
+        p = m->effectHeapBottom;
+        goto search;
+    }
+    p = m->effectHeapTop->next;
+    m->lastFreeHeap = m->effectHeapTop;
+search:
+    for (;;) {
+        t = p->prev;
+        if (t == NULL) {
+            if (m->lastFreeHeap == NULL) {
+                return NULL;
+            }
+            m->lastFreeHeap = NULL;
+            goto restart;
+        }
+        p = t;
+        if (p->owner == 0) {
+            n = p->next;
+            if ((s32)n - (s32)p >= size) {
+                m->allocSize += size;
+                q = (pppEMCB*)((u8*)p->next - size);
+                if (q != p && (u32)((u8*)q - (u8*)p) >= 16) {
+                    m->lastFreeHeap = p;
+                    q->prev = p;
+                    q->next = n;
+                    n->prev = q;
+                    p->next = q;
+                    p = q;
+                } else {
+                    m->lastFreeHeap = NULL;
+                }
+                p->owner = 1;
+                return p + 1;
+            }
+        }
+    }
+}
 
 typedef struct {
     s32 next;
