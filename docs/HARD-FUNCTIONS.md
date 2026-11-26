@@ -12,9 +12,9 @@ These match on their own branch, but combined with other workers' matches in the
 |---|---|---|
 | `unsplit/seg_0EF950` | `func_0020E1C0`, `func_001F81E8` | fm-q1 (blocked by the D2C40_v trio: a gcc combine-pass effect, see notes/a5.md run 4) |
 | `unsplit/seg_132D60` | `func_0023A608` | fm-a4 commit 1d8dc82d |
-| `unsplit/seg_03BDE8` | `func_00147D50`, `func_001590A8`, `func_00152688` | fm-q1 / fm-a1 76eb0e4a (its F1 fix was flaky) |
+| `unsplit/seg_03BDE8` | `func_00147D50`, `func_00152688` | fm-q1 / fm-a1 76eb0e4a (its F1 fix was flaky) |
 
-Redone on 26 Nov: `func_0014F868`, `func_00149BD0`, `func_00159350` (a1), `func_0021D948`, `func_002204F0`, `func_00225C30`, `func_00230728` (a4); `func_00162428` (q1, after fm was merged into fm-q1: no pads needed).
+Redone on 26 Nov: `func_0014F868`, `func_00149BD0`, `func_00159350` (a1), `func_0021D948`, `func_002204F0`, `func_00225C30`, `func_00230728` (a4); `func_00162428` (q1, after fm was merged into fm-q1: no pads needed), `func_001590A8` (q1, two pads).
 
 ## By file
 
