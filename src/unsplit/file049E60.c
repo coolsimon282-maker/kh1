@@ -5906,7 +5906,38 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00169008);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00169210);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001693C8);
+typedef struct { u64 pad:7; u64 b7:1; u64 pad8:2; u32 b10:1; } F1693C8;
+void func_001693C8(u8* p, u8* q) {
+    f32 v[4];
+
+    switch (*(s32*)(p + 0x70)) {
+    case 0x18:
+        func_00169008(p, q);
+        break;
+    case 4:
+    case 8:
+    case 0x15:
+        func_00169210(p, q);
+        break;
+    default:
+        if (func_00169688(p, q)) {
+            return;
+        }
+        func_00168D20(p, q);
+        break;
+    }
+    if (*(f32*)(q + 0x124) == 0.0f && *(f32*)(q + 0x12C) == 0.0f) {
+        if (((F1693C8*)(q + 0x38))->b10) {
+            ((F1693C8*)(q + 0x38))->b7 = 1;
+            sceVu0ScaleVector(v, (f32*)(q + 0xF0), 0.4f);
+            sceVu0AddVector(v, v, (f32*)(p + 0x30));
+            v[1] = 0.0f;
+            sceVu0Normalize((f32*)(q + 0x120), v);
+        }
+    } else {
+        ((F1693C8*)(q + 0x38))->b7 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00169510);
 
