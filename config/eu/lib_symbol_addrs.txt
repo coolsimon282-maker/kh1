@@ -1,1 +1,2 @@
 /// SDK libraries: not located in the EU version yet
+sceVu0CopyVectorXYZ          = 0x00262800; // type:func
