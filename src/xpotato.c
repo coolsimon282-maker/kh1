@@ -1157,3 +1157,231 @@ s32 func_00219788(void* arg0) {
     return func_001F9438(arg0, 0, 174, 12, D_003F4BD0[D_00642D24], 17, 0x80C87850);
 }
 #endif
+
+#ifdef VERSION_FM
+// .data (0x003F4050-0x003F47F0); more xpotato data follows, interleaved with xrodent's (still in the asm data).
+// The blocks starting with a function are UI object descriptors (func_001F3A20). D_003F4430, D_003F4460 and D_003EE8B0
+// are declared as s32 above (the code only takes their address), so they are defined under other C names here.
+extern u8 D_004800A0[];
+void func_00215CE8();
+void func_00216198();
+void func_002168F8();
+void func_00216D88();
+void func_002170B0();
+void func_00217420();
+void func_00217B00();
+s32 D_003F4050[6] = {
+    0x0, 0x3, 0x4, 0x5,
+    0x1, 0x2,
+};
+s32 D_003F4068[6] = {
+    0x0, 0x8, 0x7, 0x6,
+    0x1, 0x2,
+};
+s32 fm_D_003F4080[6] = {
+    0x0, 0x8, 0x7, 0x1,
+    0x2, 0x0,
+};
+s32 D_003F4098[4] = {
+    0x0, 0x8, 0x1, 0x2,
+};
+s32 D_003F40A8[6] = {
+    0x0, 0x8, 0x7, 0x1,
+    0x2, 0x0,
+};
+s32 D_003F40C0[4] = {
+    0x0, 0x8, 0x1, 0x2,
+};
+s32 D_003F40D0[6] = {
+    0x0, 0x8, 0x7, 0x1,
+    0x2, 0x0,
+};
+s32 D_003F40E8[4] = {
+    0x0, 0x8, 0x1, 0x2,
+};
+XPotatoTbl D_003F40F8[10] = { // per-preset lists of the entries it sets
+    {NULL, 0}, {D_003F4050, 6}, {D_003F4068, 6}, {fm_D_003F4080, 5}, {NULL, 0},
+    {D_003F4098, 4}, {D_003F40A8, 5}, {D_003F40C0, 4}, {D_003F40D0, 5}, {D_003F40E8, 4},
+};
+s32 D_003F4148[10] = {
+    0x1, 0x0, 0x2, 0x2,
+    0x0, 0x2, 0x0, 0x0,
+    0x2, 0x0,
+};
+s32 D_003F4170[10] = {
+    0x1, 0x2, 0x2, 0x0,
+    0x2, 0x1, 0x2, 0x2,
+    0x0, 0x0,
+};
+s32 D_003F4198[10] = {
+    0x2, 0x0, 0x0, 0x0,
+    0x1, 0x0, 0x1, 0x1,
+    0x0, 0x0,
+};
+s32 D_003F41C0[10] = {
+    0x1, 0x2, 0x0, 0x1,
+    0x2, 0x1, 0x1, 0x1,
+    0x1, 0x0,
+};
+s32* D_003F41E8[6] = {D_003F4148, D_003F4170, D_003F4198, D_003F41C0, NULL, NULL};
+s32 D_003F4200[10][9] = { // the characters' own preset rows
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 1, 2, 1, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0, 0, 1, 2, 2},
+    {1, 1, 0, 0, 0, 0, 0, 2, 2},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {2, 1, 1, 0, 0, 0, 0, 0, 2},
+    {1, 0, 1, 0, 0, 0, 0, 2, 2},
+    {1, 0, 1, 0, 0, 0, 0, 0, 2},
+    {2, 1, 0, 0, 0, 0, 0, 1, 2},
+    {1, 1, 0, 0, 0, 0, 0, 0, 2},
+};
+s32 D_003F4368[6] = {
+    0xEB, 0xEC, 0xED, 0xEE,
+    0xEF, 0xF0,
+};
+s32 D_003F4380[10] = {
+    0xF7, 0xF8, 0xF9, 0xFA,
+    0xFB, 0xFC, 0xFD, 0xFE,
+    0x100, 0x0,
+};
+s32 D_003F43A8[4] = {
+    0x10B, 0x10C, 0x10D, 0x0,
+};
+s32 D_003F43B8[4] = {
+    0x10E, 0x10C, 0x10F, 0x0,
+};
+void* D_003F43C8[10] = {
+    &D_003F43A8, &D_003F43B8, &D_003F43B8, &D_003F43A8,
+    &D_003F43A8, &D_003F43A8, &D_003F43A8, &D_003F43A8,
+    &D_003F43A8, 0,
+};
+s32 D_003F43F0[6] = {
+    0xF1, 0xF2, 0xF3, 0xF4,
+    0xF5, 0xF6,
+};
+s32 D_003F4408[10] = {
+    0x101, 0x102, 0x103, 0x104,
+    0x105, 0x106, 0x107, 0x108,
+    0x10A, 0x0,
+};
+void* xpotato_d_003f4430[12] __asm__("D_003F4430") = {
+    (void*)func_00215C48, 0, (void*)0x4, (void*)0x12C0000,
+    (void*)0x540200, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* xpotato_d_003f4460[8] __asm__("D_003F4460") = {
+    (void*)func_00215CE8, 0, (void*)0x4, (void*)0x47015F,
+    (void*)0xFFFE007A, 0, (void*)0x1C007A, (void*)0x2,
+};
+s32 fm_D_003F4480[2] = {0};
+s32 D_003F4488[6] = {
+    0xD1, 0xD2, 0xD3, 0x0,
+    0x0, 0x0,
+};
+void* D_003F44A0[10] = {
+    (void*)func_00215EE8, 0, (void*)0x4, (void*)0x12C0000,
+    (void*)0x540200, 0, 0, 0,
+    0, 0,
+};
+s32 D_003F44C8[6] = {
+    0xCE, 0xCF, 0xD0, 0x0,
+    0x0, 0x0,
+};
+void* D_003F44E0[10] = {
+    (void*)func_00215F48, 0, (void*)0x4, (void*)0x47009F,
+    (void*)0x5200B4, 0, (void*)0x1C00B4, (void*)0x30002,
+    (void*)0x3, 0,
+};
+s32 D_003F4508[6] = {
+    0xFFFFFFFD, 0x61, 0xBF, 0x0,
+    0x0, 0x0,
+};
+void* D_003F4520[12] = {
+    (void*)func_00216198, 0, (void*)0x4, (void*)0x47009F,
+    (void*)0x156, 0, (void*)0x1A0156, 0,
+    0, 0, 0, 0,
+};
+void* D_003F4550[12] = {
+    (void*)func_00216758, 0, (void*)0x4, (void*)0x12C0000,
+    (void*)0x540200, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* D_003F4580[10] = {
+    (void*)func_002168F8, 0, (void*)0x4, (void*)0x47009F,
+    (void*)0x1A0156, 0, (void*)0x1C0156, (void*)0x10002,
+    (void*)0x1, 0,
+};
+s32 D_003F45A8[6] = {
+    0xCE, 0xCF, 0xD0, 0x0,
+    0x0, 0x0,
+};
+void* D_003F45C0[12] = {
+    (void*)func_00216D88, 0, (void*)0x4, (void*)0x47009F,
+    (void*)0x1C0156, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* D_003F45F0[12] = {
+    (void*)func_00217038, 0, (void*)0x4, (void*)0x12C0000,
+    (void*)0x540200, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* D_003F4620[12] = {
+    (void*)func_002170B0, 0, (void*)0x4, (void*)0x47000B,
+    (void*)0x7A, 0, (void*)0x1C007A, (void*)0x2,
+    (void*)0x4, 0, 0, 0,
+};
+// at 0x003F4650 (the name is the JP address)
+void* xpotato_d_003ee8b0[12] __asm__("D_003EE8B0") = {
+    (void*)func_00217420, 0, (void*)0x4, 0,
+    (void*)0x1800200, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* D_003F4680[12] = {
+    (void*)func_00217810, 0, (void*)0x4, (void*)0x1F000B,
+    (void*)0x1A007A, 0, 0, 0,
+    0, 0, 0, 0,
+};
+s32 D_003F46B0[8] = {
+    0x112, 0x113, 0x114, 0x115,
+    0x115, 0x115, 0x115, 0x116,
+};
+void* D_003F46D0[12] = {
+    (void*)func_00217B00, 0, (void*)0x7, &D_004800A0,
+    (void*)0xDC0160, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* D_003F4700[12] = {
+    (void*)PartyMenu_DrawHelp, 0, (void*)0x4, (void*)0x12C0000,
+    (void*)0x540200, 0, 0, 0,
+    0, 0, 0, 0,
+};
+void* D_003F4730[12] = {
+    (void*)PartyMenu_Update, 0, (void*)0x4, (void*)0x47000B,
+    (void*)0x7A, 0, (void*)0x1C007A, (void*)0x2,
+    0, 0, 0, 0,
+};
+void* D_003F4760[12] = {
+    (void*)func_00218840, 0, (void*)0x4, (void*)0x1F000B,
+    (void*)0x1A007A, 0, 0, 0,
+    0, 0, 0, 0,
+};
+s32 D_003F4790[2] = {
+    0x127, 0x128,
+};
+s32 D_003F4798[2] = {
+    0x12C, 0x12D,
+};
+s32 D_003F47A0[2] = {
+    0x130, 0x131,
+};
+s32 D_003F47A8[4] = {
+    0x1CA, 0x5A, 0x5B, 0x0,
+};
+s32 D_003F47B8[14] = {
+    0x152, 0x153, 0x154, 0x155,
+    0x156, 0x157, 0x158, 0x159,
+    0x15A, 0x15B, 0x15C, 0x15D,
+    0x0, 0x0,
+};
+#endif

@@ -239,7 +239,12 @@ INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);
 typedef union { u_long128 q; s32 w[4]; } XBuffaloQW;
 
 s32 puts(const char*);
+#ifdef VERSION_FM
+#define MSG_MAX_TASK "already max task!"
+#else
 extern char D_00490300[]; // error message for a full table
+#define MSG_MAX_TASK D_00490300
+#endif
 
 // like CoThread_Create, with a slot from 1..15
 #ifdef VERSION_EU
@@ -257,7 +262,7 @@ s32 CoThread_CreateBig(s32 arg0, s32 arg1, ...) {
     }
     idx = CoThread_FindFree(0);
     if (idx < 0) {
-        puts(D_00490300);
+        puts(MSG_MAX_TASK);
         return -1;
     }
     D_0037A16C[idx].unk_00 = 1;
@@ -470,3 +475,7 @@ void* func_001C2178(void) {
     return TaskSystem_AddTask(50002, func_001C2150);
 }
 
+#ifdef VERSION_FM
+// zero fill to 0x00490320: xkinetic's .rodata starts 16-aligned, which the link script's SUBALIGN(8) does not keep
+const s32 D_00490318[2] = {0};
+#endif

@@ -5,7 +5,15 @@
 #include "common.h"
 #include "worldfile.h"
 
-// .data
+#ifdef VERSION_FM
+// .data (0x0029B410-0x0029B420): four words func_001011E0 clears (also read by xblade, xhumungus, xaudacity, ...)
+s32 D_0029B410 = 0;
+s32 D_0029B414 = 0;
+s32 D_002979E8 = 0; // at 0x0029B418 (the name is the JP address)
+s32 D_0029B41C = 0;
+#endif
+
+// .data (in other files' data)
 extern s32 D_002A050C;
 extern s32 D_002A0520[2];
 extern s32 D_002B8688;

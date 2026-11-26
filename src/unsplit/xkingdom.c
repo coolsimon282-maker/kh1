@@ -44,15 +44,13 @@ extern s32 D_002C5C30;
 extern A2FileEnt D_004E4A00_e[] __asm__("D_004E4A00");
 extern s32 D_004F3200;
 extern s32 D_004F3208;
-extern char D_0048D240[];
-extern char D_0048D250[];
 s32 func_00120580(void *, void *);
 A2FileEnt *func_00120190_e(char *) __asm__("func_00120190");
 
 void func_0011FE20(void) {
     A2FileEnt *e;
 
-    func_00120580(D_0048D240, D_004E4A00_e);
+    func_00120580("\\KINGDOM.IDX;1", D_004E4A00_e);
     D_002C5C30 = 0;
     e = D_004E4A00_e;
     while (e->unk_08 != 0 || e->unk_0C != 0) {
@@ -64,7 +62,7 @@ void func_0011FE20(void) {
         }
     }
 end:
-    e = func_00120190_e(D_0048D250);
+    e = func_00120190_e("kingdom.img");
     D_004F3200 = e->unk_08;
 }
 
@@ -194,7 +192,6 @@ void func_001201D0(u8 *r) {
 
 extern s32 D_004F3200;
 void func_0010BF08(void (*)(), void *);
-extern char D_0048D260[];
 extern s32 D_002C5B44;
 extern void (*D_0046A6A8)(s32);
 int sceOpen(const char *, int, ...);
@@ -207,7 +204,7 @@ void func_001202C0(u8 *r) {
     s32 err = 0;
     s32 got;
     s32 left;
-    s32 fd = sceOpen(D_0048D260, 1);
+    s32 fd = sceOpen("pfs0:kingdom.img", 1);
 
     if (fd < 0 || (D_002C5B44 & 0x2000)) {
         err = 1;
@@ -400,6 +397,11 @@ typedef struct {
     u8 b;
 } A2Str9;
 extern A2Str9 D_0048D278; /* "cdrom0:\\" */
+/* .rodata 0x0048D278, read as one u64 and a byte */
+const union {
+    char s[9];
+    A2Str9 v;
+} xkingdom_cdrom0 __asm__("D_0048D278") = {"cdrom0:\\"};
 extern char D_004E4500[];
 extern char D_0048B549[];
 char *strcat(char *, const char *);
@@ -466,7 +468,6 @@ int sceSifRebootIop(const char *);
 int sceSifSyncIop(void);
 void fm_func_001101E8(void);
 int *sceCdInitEeCB(int, void *, int);
-extern char D_0048D288[];
 extern u8 D_004F35B0[];
 
 void func_00120B10(void) {
@@ -474,7 +475,7 @@ void func_00120B10(void) {
     sceFsReset();
     sceCdInit(0);
     sceCdMmode(2);
-    while (!sceSifRebootIop(D_0048D288)) {
+    while (!sceSifRebootIop("cdrom0:\\IOPRP250.IMG")) {
     }
     while (!sceSifSyncIop()) {
     }
@@ -486,7 +487,6 @@ void func_00120B10(void) {
 }
 
 extern s32 D_004F3208;
-extern u8 D_0048D2A0[];
 s32 sceCdSync(s32);
 void fm_func_00120438(void *, void *);
 void func_0011FD60(s32, s32, void *);
@@ -494,7 +494,7 @@ void func_0011FE20(void);
 
 void func_00120BA0(void) {
     sceCdDiskReady(0);
-    fm_func_00120438(&D_004F3208, D_0048D2A0);
+    fm_func_00120438(&D_004F3208, "\\SYSTEM.CNF;1");
     func_0011FD60(D_004F3208, 1, D_004F2A00);
     sceCdSync(0);
     func_0011FE20();

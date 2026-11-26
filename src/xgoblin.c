@@ -38,14 +38,34 @@ extern s32 D_004DDC00;
 extern _VX D_002C1EB8;
 extern s32 D_002C5960;
 extern s32 D_002C1EC8;
+#ifdef VERSION_FM
+// the module names are literals here (.rodata 0x0048D1C0-0x0048D240)
+#define IRX_SIO2MAN "sio2man.irx"
+#define IRX_SIO2D "sio2d.irx"
+#define IRX_DBCMAN "dbcman.irx"
+#define IRX_DS2O "ds2o.irx"
+#define IRX_MCMAN "mcman.irx"
+#define IRX_MCSERV "mcserv.irx"
+#define IRX_LIBSD "libsd.irx"
+#define IRX_LIBSSL "libssl.irx"
+#else
 extern char D_0048D1C0[];
+#define IRX_SIO2MAN D_0048D1C0
 extern char D_0048D1D0[];
+#define IRX_SIO2D D_0048D1D0
 extern char D_0048D1E0[];
+#define IRX_DBCMAN D_0048D1E0
 extern char D_0048D1F0[];
+#define IRX_DS2O D_0048D1F0
 extern char D_0048D200[];
+#define IRX_MCMAN D_0048D200
 extern char D_0048D210[];
+#define IRX_MCSERV D_0048D210
 extern char D_0048D220[];
+#define IRX_LIBSD D_0048D220
 extern char D_0048D230[];
+#define IRX_LIBSSL D_0048D230
+#endif
 void func_00120B10(void);
 void func_001209D8(char*);
 void Pad_Initialize(void);
@@ -61,17 +81,17 @@ void Iop_LoadModules(void) {
     D_002C5960 = 0;
     D_002C1EB8.s32 = 0;
     func_00120B10();
-    func_001209D8(D_0048D1C0);
-    func_001209D8(D_0048D1D0);
-    func_001209D8(D_0048D1E0);
+    func_001209D8(IRX_SIO2MAN);
+    func_001209D8(IRX_SIO2D);
+    func_001209D8(IRX_DBCMAN);
     for (i = 0; i < 2; i++) {
-        func_001209D8(D_0048D1F0);
+        func_001209D8(IRX_DS2O);
     }
     Pad_Initialize();
-    func_001209D8(D_0048D200);
-    func_001209D8(D_0048D210);
-    func_001209D8(D_0048D220);
-    func_001209D8(D_0048D230);
+    func_001209D8(IRX_MCMAN);
+    func_001209D8(IRX_MCSERV);
+    func_001209D8(IRX_LIBSD);
+    func_001209D8(IRX_LIBSSL);
     func_0024D4B0();
     func_00120BA0();
     func_00122410();

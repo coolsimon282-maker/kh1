@@ -988,4 +988,9 @@ void op_fog_set_range(void) {
     D_00372800[1] = D_002BC124;
 }
 
+#ifdef VERSION_FM
+// .rodata (0x0048FDA0): a float constant func_001A9280 loads
+const f32 D_00489A60 = 0.0f;
+#else
 INCLUDE_RODATA("asm/nonmatchings/ppp/draw/draw", D_00489A60);
+#endif

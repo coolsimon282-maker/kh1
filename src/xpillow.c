@@ -7,6 +7,16 @@
 #include "common.h"
 
 #ifdef VERSION_FM
+// .data (0x002E27B0-0x002E27E0)
+s32 D_002E27B0[4] = {0}; // nothing refers to it by name
+u8 D_002E27C0[8] = {0x08, 0x16, 0x0B, 0x18, 0x0D, 0x19, 0x0E, 0x1A}; // func_001269D8
+u32 D_002DED20 = 0; // flag bits (at 0x002E27C8; the name is the JP address)
+f32 D_002E27CC = 0.0f;
+f32 D_002E27D0 = 0.0f;
+s32 (*D_002E27D4)(u8*, u8*, u8*) = NULL;
+// zero fill to 0x002E27E0: xcream's .data starts 16-aligned, which the link script's SUBALIGN(8) does not keep
+s32 D_002E27D8[2] = {0};
+
 INCLUDE_ASM("asm/nonmatchings/xpillow", func_001252F8);
 #endif
 

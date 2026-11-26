@@ -211,3 +211,8 @@ func_0010E230 = MsgWin_FreeBuffer;
 func_0010EEC8 = Text_GetLineCount;
 func_00124DD0 = Actor_StopAll;
 Gs_ClearScreenGrey = func_0010FDB8;
+
+/* Words in (still assembly) .data that only look like addresses; splat writes them as these symbols. */
+D_00370000 = 0x00370000;
+D_00370038 = 0x00370038;
+D_00489668 = 0x0048F9A8;

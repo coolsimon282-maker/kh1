@@ -28,10 +28,6 @@ extern TtyRec D_0066ABD0;   /* tty_rec */
 extern char D_0066AC00[];   /* tty_sbuf, 320 bytes */
 extern char D_0066AD40[];   /* tty_rbuf, 320 bytes */
 /* tty.o's strings */
-extern char D_004920F8[]; /* "TTY: packet size larger than expect\n" */
-extern char D_00492120[]; /* "TTY: receive error" */
-extern char D_00492138[]; /* "TTY: send err %d\n" */
-extern char D_00492150[]; /* "TTY: err ti->wlen=%08x\n" */
 
 void kprintf(char* fmt, ...);
 int sceDeci2ExRecv(int s, void* buf, unsigned short len);
@@ -85,11 +81,11 @@ void sceTtyHandler(int event, int param, void* opt) {
     case 2:
         if (param != 0) {
             if (320 < (unsigned int)(tty->rlen + param)) {
-                kprintf(D_004920F8);
+                kprintf("TTY: packet size larger than expect\n");
             }
             i = sceDeci2ExRecv(tty->s, tty->rbuf + tty->rlen, (unsigned short)param);
             if (i < 0) {
-                kprintf(D_00492120);
+                kprintf("TTY: receive error");
             }
             tty->rlen = tty->rlen + i;
             return;
@@ -105,7 +101,7 @@ void sceTtyHandler(int event, int param, void* opt) {
     case 3:
         n = sceDeci2ExSend(tty->s, tty->wbuf, (unsigned short)tty->wlen);
         if (n < 0) {
-            kprintf(D_00492138, n);
+            kprintf("TTY: send err %d\n", n);
             break;
         }
         tty->wbuf = tty->wbuf + n;
@@ -114,7 +110,7 @@ void sceTtyHandler(int event, int param, void* opt) {
 
     case 4:
         if (tty->wlen != 0) {
-            kprintf(D_00492150, tty->wlen);
+            kprintf("TTY: err ti->wlen=%08x\n", tty->wlen);
         }
         break;
 
@@ -210,3 +206,6 @@ int sceTtyInit(void) {
     D_0066ABD0.q = QueueInit(256);
     return 1;
 }
+
+/* zero fill to 0x00492170: kprintf's .rodata starts 16-aligned, which the link script's SUBALIGN(8) does not keep */
+const int D_00492168[2] = {0};

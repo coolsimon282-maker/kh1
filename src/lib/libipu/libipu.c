@@ -1,6 +1,10 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
 #include "common.h"
+
+#ifdef VERSION_FM
+// .data (0x0046E0A0-0x0046E0B0)
+char D_0046E0A0[16] = "PsIIlibipu  2500"; // library version (no NUL)
+#endif
 
 typedef struct {
     unsigned int d4madr;

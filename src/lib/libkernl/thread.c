@@ -40,7 +40,6 @@ int SuspendThread(int t);
 int _iWakeupThread(void);
 int _iSuspendThread(void);
 void kprintf(char *fmt, ...);
-extern char D_00492388[];
 
 /* An EE syscall leaf (`addiu $3,$zero,NUM; syscall 0`) issued inline, for
    the calls that act on its result.  The syscall returns in $2. */
@@ -94,7 +93,7 @@ void topThread(void *arg)
             SuspendThread(ring->ent[i].id);
             break;
         default:
-            kprintf(D_00492388); /* the message "## internel error in libkernl.a!" in .rodata */
+            kprintf("## internel error in libkernl.a!\n");
             break;
         }
     }

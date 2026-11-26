@@ -1,5 +1,5 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
+// Its .data and .rodata are defined below (FM).
 #include "common.h"
 
 /* libpad2 has no reference source: the types are derived from the assembly. */
@@ -62,10 +62,18 @@ typedef struct {
     unsigned char name[16];
 } scePad2SocketParam;
 
+#ifdef VERSION_FM
+/* .data (0x0046C5C0-0x0046C5F0); the state names are this file's .rodata (put out last first) */
+char D_0046C5C0[16] = "PsIIlibpad2 2500"; /* library version (no NUL) */
+int D_0046C5D0 = 0;                /* set by scePad2Init */
+int D_0046C5D8[2] = {0};           /* the two DMA counts last seen by scePad2CheckDma */
+char *D_0046C5E0[4] = {"NOLINK", "STABLE", "EXECCMD", "ERROR"}; /* the state names */
+#else
 extern int D_0046C5D0;            /* set by scePad2Init */
 extern int D_0046C5D8[2];         /* the two DMA counts last seen by scePad2CheckDma */
 extern char *D_0046C5E0[4];       /* the state names */
 extern char D_004930D8[];         /* an empty string */
+#endif
 extern Pad2Socket D_00670040[16]; /* the sockets */
 
 int sceDbcCreateSocket(Pad2DbcParam *p, void *buf0, void *buf1);
@@ -364,5 +372,9 @@ void scePad2StateIntToStr(int state, char *str)
         strcpy(str, D_0046C5E0[state]);
         return;
     }
+#ifdef VERSION_FM
+    strcpy(str, ""); /* gcc copies the one byte from the literal */
+#else
     *str = D_004930D8[0];
+#endif
 }
