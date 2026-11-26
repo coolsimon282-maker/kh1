@@ -2715,7 +2715,34 @@ void func_00154880(u8* p, s32 q, f32* out) {
     func_00138A20(p, v, 20.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001549B8);
+extern s32 D_1549B8_pad1; /* unused: rule F1 (keeps func_0015EEA0 and func_00176F08; 0, 2, 3 fail) */
+void func_001549B8(u8* p, s32 q, f32* out) {
+    sceVu0FVECTOR v;
+    f32* d = (f32*)(q + 0x10);
+    f32* f = (f32*)(p + 0x30);
+    f32 a;
+    f32 z;
+
+    if (sceVu0InnerProduct(f, d) < 0.0f) {
+        z = *(f32*)(q + 0x18);
+        q = 0x50;
+        a = atan2f(-d[0], -z);
+    } else {
+        z = *(f32*)(q + 0x18);
+        q = 0x51;
+        a = atan2f(d[0], z);
+    }
+    func_00130340(p, q | 0x1000000, 0.0f);
+    func_00130578((s32)p, 0x40000075, 16.0f);
+    func_001373F8(p, 30.0f);
+    *(f32*)(p + 0x150) = a;
+    func_00137688((s32)p, a);
+    sceVu0CopyVector(out, f);
+    out[3] = 0.0f;
+    sceVu0CopyVector(v, d);
+    v[3] = *(f32*)(D_003051EC + 0x24) * *(f32*)(*(u8**)(p + 0x6C) + 0xC4);
+    func_00156260((s32)p, v);
+}
 
 void func_00154AF8(u8* p, u8* q, f32* r) {
     sceVu0FVECTOR v;
