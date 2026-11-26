@@ -1227,7 +1227,59 @@ u_long128* func_00237EC0(A2QList* a0, u_long128* a1) {
     return a1 + k;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00237F20);
+u32 *func_002378C8(Seg132Node *, u32 *, s32);
+u32 *func_00237790_n(Seg132Node *, u32 *, s32) __asm__("func_00237790");
+u32 *func_00237D48(Seg132Node *, u32 *, s32);
+u32 *func_00237EC0_3(Seg132Node *, u32 *, s32) __asm__("func_00237EC0");
+void *sceDmaGetChan(int);
+void sceDmaSend(void *, void *);
+void FlushCache(int);
+int sceGsSyncPath(int mode, u_short timeout);
+
+/* unused: rule F1 (26 Nov, with 6 D_lay241A10 above func_00241A10: 0, 6 fine) */
+extern s32 D_lay237F20_0;
+extern s32 D_lay237F20_1;
+extern s32 D_lay237F20_2;
+extern s32 D_lay237F20_3;
+extern s32 D_lay237F20_4;
+extern s32 D_lay237F20_5;
+void func_00237F20(Seg132Ot *ot, u32 *buf0, u32 *buf1, s32 a3, s32 a4) {
+    Seg132Node *tbl = ot->tbl;
+    Seg132Node *node;
+    u32 *buf = buf0;
+    u32 *r;
+    s32 n;
+    s32 cnt;
+    u32 *ch;
+    Seg132Node **pp;
+
+    cnt = 1 << ot->bits;
+    for (n = 0; n < cnt; n++, tbl++) {
+        for (pp = &tbl->next; *pp != NULL; pp = &node->next) {
+            node = *pp;
+            r = buf;
+            if (node->pad == 2) {
+                r = func_002378C8(node, buf, a4);
+            } else if (node->pad == 1) {
+                r = func_00237790_n(node, buf, a4);
+            } else if (node->pad == 3) {
+                r = func_00237D48(node, buf, a4);
+            } else if (node->pad == 4) {
+                r = func_00237EC0_3(node, buf, 0);
+            }
+            if (r != buf) {
+                *r |= 0x70000000;
+                ch = sceDmaGetChan(2);
+                *ch |= 0x40;
+                FlushCache(0);
+                sceGsSyncPath(0, 0);
+                sceDmaSend(ch, buf);
+                buf = (buf == buf0) ? buf1 : buf0;
+            }
+        }
+    }
+    sceGsSyncPath(0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002380C0);
 
@@ -2677,7 +2729,14 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002416A8);
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00241948);
 
 /* unused: layout only (notes/f1.md F1): without them func_00241A10 loses its folded `sw $5,D_00652888($1)`.
- * fm (with func_0023A7E8) needed 1, 3, 4 or 5, q1 (after func_00234440..func_00234730) 1; rescanned after the merge. */
+ * fm (with func_0023A7E8) needed 1, 3, 4 or 5, q1 (after func_00234440..func_00234730) 1; rescanned after the merge: 0; after func_0023CA48 +
+ * func_00237F20 (26 Nov): 6 (5-7 fine), these D_lay241A10. */
+extern s32 D_lay241A10_0;
+extern s32 D_lay241A10_1;
+extern s32 D_lay241A10_2;
+extern s32 D_lay241A10_3;
+extern s32 D_lay241A10_4;
+extern s32 D_lay241A10_5;
 extern u32 D_00652888[];
 
 void func_00241A10(s32 arg0, u32 arg1) {
