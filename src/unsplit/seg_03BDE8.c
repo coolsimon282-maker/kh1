@@ -6190,7 +6190,21 @@ void func_0015D5E8(u8* p) {
     func_0014F658((s32)p, 0x12);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0015D6C8);
+s32 func_0015D6C8_d(u8* p, f32* v) __asm__("func_0015D6C8");
+s32 func_0015D6C8_d(u8* p, f32* v) {
+    f32 a[4];
+    f32 b[4];
+    if (v[3] == 0.0f || *(u16*)(p + 0x30E) == 0xFFFF) {
+        return 0;
+    }
+    func_00105A30(-1, *(u16*)(p + 0x30E), a);
+    sceVu0Normalize(b, v);
+    if (0.0f < sceVu0InnerProduct(a, b)) {
+        return 0;
+    }
+    func_0015D5E8(p);
+    return 1;
+}
 
 s32 func_0015D770(s32 a) {
     s32 r = func_0015D6C8(a);
