@@ -115,14 +115,42 @@ void fde_merge(fde_vector *v1, const fde_vector *v2) {
 
 INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", end_fde_sort);
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", __register_frame_info);
+/* The original keeps the stores in source order and does not tail-call SignalSema: written here as stores
+   through a volatile view and an explicit SignalSema in a do-while (no sibcall from inside a loop). */
+void __register_frame_info(void *begin, struct object *ob) {
+    volatile struct object *v = ob;
+    int id;
+    v->fde_begin = begin;
+    v->pc_end = 0;
+    v->pc_begin = 0;
+    v->fde_array = 0;
+    v->count = 0;
+    __gthread_mutex_lock(&__sce_eh_sema_id);
+    v->next = D_0066FAD0;
+    id = __sce_eh_sema_id;
+    D_0066FAD0 = ob;
+    do { SignalSema(id); } while (0);
+}
 
 void __register_frame(void *begin) {
     struct object *ob = (struct object *)malloc(sizeof(struct object));
     __register_frame_info(begin, ob);
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgcc/frame-dwarf2", __register_frame_info_table);
+void __register_frame_info_table(void *begin, struct object *ob) {
+    volatile struct object *v = ob;
+    int id;
+    v->fde_array = begin;
+    v->fde_begin = begin;
+    v->pc_end = 0;
+    v->pc_begin = 0;
+    v->count = 0;
+    __gthread_mutex_lock(&__sce_eh_sema_id);
+    v->next = D_0066FAD0;
+    id = __sce_eh_sema_id;
+    D_0066FAD0 = ob;
+    do { SignalSema(id); } while (0);
+}
 
 void __register_frame_info(void *begin, struct object *ob);
 void __register_frame_info_table(void *begin, struct object *ob);
