@@ -1025,7 +1025,21 @@ void func_00249C48(void) {
     ((void (*)(void))func_00249D48)();
 }
 
-INCLUDE_ASM("asm/nonmatchings/xcapy", func_00249C60);
+typedef struct {
+    s32 n;
+    void *e[1];
+} A3List9C60;
+void func_00249C60(A3List9C60 *a0) {
+    s32 i;
+
+    if (a0->n == 0) {
+        return;
+    }
+    for (i = 0; i < a0->n - 1; i++) {
+        func_00249A48(a0->e[i], 0);
+    }
+    func_00249A48(a0->e[i], 1);
+}
 
 typedef struct { s32 n; s32 e[1]; } Seg132_249D20;
 s32 func_00249D20(Seg132_249D20* p, s32 a1) {
