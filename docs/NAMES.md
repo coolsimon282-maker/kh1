@@ -529,7 +529,7 @@ other functions (rule F1).
 | IoThread_Main | 0x0010C0C8 | xnoodle.c | Thread body: waits for the frame semaphore D_0048ECE0 and runs the (at most two) registered jobs. |
 | IoThread_AddJob | 0x0010C170 | xnoodle.c | Registers a job (function, argument) in a free one of the two slots. |
 | IoThread_RemoveJob | 0x0010C1B8 | xnoodle.c | Removes the job with function arg0. |
-| IoThread_IsBusy | 0x0010C200 | xnoodle.c | ? |
+| IoThread_IsBusy | 0x0010C200 | xnoodle.c | True when a job is registered (C name func_0010BF98_s32, declared void in xnoodle.h). |
 | IoThread_ClearJobs | 0x0010C240 | xnoodle.c | Clears both job slots. |
 | IoThread_Init | 0x0010C278 | xnoodle.c | Creates the two semaphores and the job thread (priority 0x28, stack D_002B3B10) and starts it. |
 | Frame_WaitVSync | 0x0010C348 | xnoodle.c | Wakes the job thread and waits for the VSync semaphore D_00495258. |
