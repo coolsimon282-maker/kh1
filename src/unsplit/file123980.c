@@ -172,7 +172,28 @@ void func_00224698(u8 *a0) {
     *(s16 *)(a0 + 0xC0) += n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file123980", func_002246F8);
+extern s32 D_003F6950[];
+extern s32 D_00643738;
+void UiObject_InsertAfter(u8 *, u8 *);
+
+void func_002246F8(s32 a0) {
+    u8 *e;
+
+    func_001F3758(*(s32 *)(D_00643740 + 0x10));
+    func_0011D598(3);
+    D_0064373C = 0;
+    D_00643758 = 0;
+    D_00643738 = 0;
+    func_00223980(D_006436D4, 0, 0);
+    func_00233EF8(0);
+    e = func_001F3A20(D_003F6950, 6);
+    if (e != NULL) {
+        UiObject_InsertAfter(e, (u8 *)a0);
+        func_001F4058(e, 1);
+        func_001F3D58(e, 6);
+        func_00224698(e);
+    }
+}
 
 void func_001FDFD0(s32);
 s32 func_001FD538(s32);
