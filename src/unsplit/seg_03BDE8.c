@@ -2720,7 +2720,22 @@ u8* func_00147D18(s32 a) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00147D50);
+/* unused: rule F1 (with other counts func_0014ED30, func_00152E10, func_001560F8 or func_00176F08 change; 26 Nov, after fm was merged into fm-q1: 7 and 8 among 0-16, with 13 flip_dummies above func_00176F08) */
+void func_00121878(s32, f32*);
+extern s32 D_lay147D50_0;
+extern s32 D_lay147D50_1;
+extern s32 D_lay147D50_2;
+extern s32 D_lay147D50_3;
+extern s32 D_lay147D50_4;
+extern s32 D_lay147D50_5;
+extern s32 D_lay147D50_6;
+void func_00147D50(u8* a, s32 b) {
+    f32 v[4];
+    func_00121878(b, v);
+    (*(u32**)(a + 4))[0] = (u16)(s32)((v[0] / 6.2831855f) * 65536.0f);
+    (*(u32**)(a + 4))[1] = (u16)(s32)((v[1] / 6.2831855f) * 65536.0f);
+    (*(u32**)(a + 4))[2] = (u16)(s32)((v[2] / 6.2831855f) * 65536.0f);
+}
 
 /* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was; with it func_00176F08 needs one flip_dummy less (rule F1) */
 extern s32 D_00147E08_pad0;
@@ -9906,10 +9921,7 @@ extern int flip_dummy_8;
 extern int flip_dummy_9;
 extern int flip_dummy_10;
 extern int flip_dummy_11;
-extern int flip_dummy_12;
-extern int flip_dummy_13;
-extern int flip_dummy_14;
-extern int flip_dummy_15;
+extern int flip_dummy_12; /* 13-15 dropped with func_00147D50 (26 Nov): 12-14 dummies were stable with it, 15-17 flaky */
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
