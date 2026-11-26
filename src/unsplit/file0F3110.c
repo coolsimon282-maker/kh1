@@ -2943,7 +2943,42 @@ void func_0020A728(s32 a0) {
     *(s32 *)(p + 0x3C) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A758);
+extern s32 D_f1_0020A758_0;
+extern s32 D_f1_0020A758_1;
+extern s32 D_f1_0020A758_2;
+extern s32 D_f1_0020A758_3;
+extern s32 D_f1_0020A758_4;
+extern s32 D_f1_0020A758_5;
+void func_0020A758(u8 *a0, s32 a1, s32 a2, s32 a3) {
+    extern f32 D_00425CE0[4][4];
+    extern f32 D_003F31E0[4];
+    extern s32 D_00641040;
+    extern s32 func_001623E0(s32);
+    extern void func_00161DE8(s32, s32 *, u8 *, s32);
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR r;
+    u8 *e = D_003F3530 + a1 * 0xD0;
+    u8 *b;
+    s32 t;
+    s32 i;
+
+    if (*(s32 *)(e + 0x78) >= 0) {
+        t = *(f32 *)(a0 + 0x24);
+        r[0] = 0;
+        r[1] = (f32)(t % 256) * 0.00390625f * 6.2831855f - 3.1415928f;
+        r[2] = -1.57079625129699707f;
+        r[3] = 1.0f;
+        sceVu0RotMatrix(m, D_00425CE0, r);
+        sceVu0TransMatrix(m, m, D_003F31E0);
+        b = (u8 *)func_001623E0(*(s32 *)(e + 0x14)) + *(s32 *)(e + 0x78) * 64;
+        for (i = 0; i < *(s32 *)(e + 0x74); i++) {
+            sceVu0MulMatrix((void *)(b + i * 64), m, (void *)(*(u8 **)(e + 0xC0) + i * 64));
+        }
+        *(s32 *)(e + 0x30) = 0xEA61;
+        *(s32 *)(e + 0x34) = (*(s32 *)(a0 + 0x90) << 24) | 0x606060;
+        func_00161DE8(*(s32 *)(e + 0x14), &D_00641040, e + 0x28, 0);
+    }
+}
 
 void func_0020A8E8(void) {
 }
@@ -3386,6 +3421,21 @@ extern s32 D_lay2C40_15;
 extern s32 D_lay2C40_16;
 extern s32 D_lay2C40_17;
 extern s32 D_lay2C40_18;
+extern s32 D_lay2C40_19;
+extern s32 D_lay2C40_20;
+extern s32 D_lay2C40_21;
+extern s32 D_lay2C40_22;
+extern s32 D_lay2C40_23;
+extern s32 D_lay2C40_24;
+extern s32 D_lay2C40_25;
+extern s32 D_lay2C40_26;
+extern s32 D_lay2C40_27;
+extern s32 D_lay2C40_28;
+extern s32 D_lay2C40_29;
+extern s32 D_lay2C40_30;
+extern s32 D_lay2C40_31;
+extern s32 D_lay2C40_32;
+extern s32 D_lay2C40_33;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
 void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
@@ -3430,7 +3480,48 @@ void func_0020E1C0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020E280);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020E408);
+void func_0020E408(u8 *a0) {
+    extern s32 D_00641228;
+    extern s32 D_00641234;
+    extern s32 D_003F3940[];
+    extern s32 D_003F3960[];
+    extern s32 func_001EFB30(s32);
+    extern s32 Item_IsUsable(s32);
+    extern s32 func_001EFC98(s32);
+    s32 m = *(s32 *)(a0 + 0x24);
+    s32 ok = 0;
+    s32 s;
+
+    switch (m) {
+    case 0:
+        if (D_00641234 != 0 && func_001EFB30(D_00641234)) {
+            ok = 1;
+        }
+        break;
+    case 1:
+        if (D_00641234 != 0 && Item_IsUsable(D_00641234)) {
+            ok = 1;
+        }
+        break;
+    case 2:
+        if (D_00641228 != -1 && D_00641234 != 0) {
+            ok = 1;
+        }
+        break;
+    case 3:
+        if (D_00641234 != 0) {
+            ok = func_001EFC98(D_00641234) != 0;
+        }
+        break;
+    }
+    if (D_00641228 != -1) {
+        s = D_003F3940[ok * 4 + m];
+    } else {
+        s = D_003F3960[ok * 4 + m];
+    }
+    func_001F9010(0x17);
+    func_001F9438((s32)a0, 0, 0xAE, 0xC, s, 0x11, 0x80C87850);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020E588);
 
