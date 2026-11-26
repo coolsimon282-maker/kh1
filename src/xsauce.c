@@ -704,7 +704,52 @@ void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
 
 // Measures text arg0: returns its height in pixels (Text_GetLineCount divides it by 24) and fills four words at arg1;
 // probably the size of the text block.
-INCLUDE_ASM("asm/nonmatchings/xsauce", Text_Measure);
+extern s32 D_004D5AF0;
+extern s32 D_004D59F0[];
+void func_0010D250(XSauce*, u_long128*);
+s32 Text_Measure(s32 arg0, s32* arg1) {
+    XSauce* s;
+    XSauce* p1;
+    XSauce* p2;
+    XSauce* p3;
+    XSauce* p4;
+    u_long128* b;
+    s32 i;
+    s32 m;
+    s32* q;
+
+    s = (XSauce*)func_00121C98(0x2C, (u_long128**)&s);
+    s->unk_12 = 0;
+    p1 = s;
+    p1->unk_10 = 1;
+    p1->unk_00 = 0;
+    p2 = s;
+    p2->unk_14 = 0;
+    p2->unk_13 |= 2;
+    p2->unk_08 = 0;
+    p2->unk_04 = arg0;
+    p3 = s;
+    p2->unk_24 = 0;
+    p2->unk_0A = 0;
+    p3->unk_11 = 0;
+    p4 = s;
+    p4->unk_0C = 0;
+    p4->unk_0E = 0;
+    p4->unk_18 = 0;
+    p4->unk_1C = 0;
+    p4->unk_20 = 0;
+    p4->unk_28 = 0;
+    b = func_00121C98(0x1890, &b);
+    func_0010D250(s, b);
+    func_00121D50((s32)b);
+    func_00121D50((s32)s);
+    m = 0;
+    for (i = 0; i < D_004D5AF0; i++) {
+        if (m < D_004D59F0[i]) m = D_004D59F0[i];
+    }
+    *arg1 = D_004D5AF0;
+    return m;
+}
 
 // Number of 24-pixel lines of the text (Text_Measure height / 24 + 1).
 s32 Text_GetLineCount(s32 arg0) {
