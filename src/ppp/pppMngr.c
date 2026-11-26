@@ -1002,7 +1002,43 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppQuickSortF);
 #endif
 
 // Computes each effect's depth and sorts the effects for drawing (pppQuickSortF).
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSortAllPart);
+extern sceVu0FMATRIX D_00615EB0;
+void pppQuickSortF(f32* a, s32* b, s32 left, s32 right);
+
+s32 pppSortAllPart(ppvmng** list) {
+    f32 depth[0x100];
+    sceVu0FVECTOR v;
+    ppvmng* p;
+    s32 n;
+    s32 i;
+
+    p = ppvMngTbl;
+    n = 0;
+    for (i = 0; i < 0x100; i++, p++) {
+        if (p->usef != 0) {
+            switch (p->drawPriority) {
+            case 1:
+                depth[n] = 1000000.0f;
+                break;
+            case 2:
+                depth[n] = 0.0f;
+                break;
+            default:
+                *(u_long128*)v = *(u_long128*)p;
+                v[3] = 1.0f;
+                sceVu0ApplyMatrix(v, D_00615EB0, v);
+                depth[n] = v[2];
+                break;
+            }
+            list[n] = p;
+            n++;
+        }
+    }
+    if (n >= 2) {
+        pppQuickSortF(depth, (s32*)list, 0, n - 1);
+    }
+    return n;
+}
 
 // Per-frame update of every running effect (sound, render data, program calls, end handling).
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppCalcAllPart);
