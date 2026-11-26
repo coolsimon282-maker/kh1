@@ -9234,7 +9234,55 @@ s32 func_00177440(f32* p, f32* b) {
     return func_00119688(v[0]) != -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00177488);
+void func_00118608(Seg3BDE8Loc40*);
+typedef struct {
+    f32 v[4];
+    f32 w[4];
+    f32 r;
+    u8 pad[0xC];
+    f32 out[4];
+} S177488;
+s32 func_00118868(S177488*);
+f32 Vec_Length(f32*);
+s32 func_00177488(f32* a0, f32* a1, f32* a2) {
+    sceVu0FVECTOR d;
+    Seg3BDE8Loc40 b;
+    S177488 c;
+    f32 len;
+    s32 hit;
+    s32 r;
+    f32 k;
+
+    sceVu0SubVector(b.w, a2, a1);
+    sceVu0CopyVector(b.v, a1);
+    func_00118D78(&b);
+    hit = b.h30 != -1;
+    if (!hit) {
+        func_00118608(&b);
+        if (b.h30 != -1) {
+            hit = 1;
+        }
+        if (!hit) {
+            goto end;
+        }
+    }
+    k = 20.0f;
+    sceVu0CopyVector(a0, a1);
+    while (sceVu0CopyVector(c.v, a0), sceVu0SubVector(d, b.x, a0), !((len = Vec_Length(d)) >= 1000.0f)) {
+        if (len >= k) {
+            sceVu0ScaleVector(d, d, k / len);
+        }
+        sceVu0CopyVector(c.w, d);
+        c.r = 40.0f;
+        r = func_00118868(&c);
+        sceVu0CopyVector(a0, c.out);
+        if (r != 0 || !(len >= k)) {
+            break;
+        }
+    }
+end:
+    return hit;
+}
 
 s32 func_00177608(f32* a0, f32* a1, f32* a2) {
     Seg3BDE8Loc40 b;
