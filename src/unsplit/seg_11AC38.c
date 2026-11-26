@@ -1129,7 +1129,36 @@ void func_00220848(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002208B8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00220AF0);
+typedef struct { u8 pad[0x64]; u16 v; } A3V3E90A0;
+extern A3V3E90A0 D_003E90A0_v __asm__("D_003E90A0");
+void func_0011D598_v0af0(s32) __asm__("func_0011D598");
+extern u8 D_003F6270[];
+extern u8 D_003F62A0[];
+void func_00220AF0(s32 a0) {
+    u8 *e[2];
+    s32 t;
+
+    if (func_001F42B8(a0)) {
+        t = *(s32 *)(D_00425BC8 + 0x8);
+        if (t & 0x4000) {
+            func_001F3758(D_00643428);
+            func_0011D598(3);
+        } else if (t & 0x1000) {
+            func_0011D598_v0af0(2);
+            func_001F3758(*(s32 *)(D_00643428 + 0x10));
+            if ((e[0] = func_001F3A20(D_003F62A0, 0x32)) != NULL) {
+                UiObject_InsertAfter(e[0], (u8 *)a0);
+                *(f32 *)(e[0] + 0xA0) = D_003E90A0_v.v;
+                if ((e[1] = func_001F3A20(D_003F6270, 0x32)) != NULL) {
+                    UiObject_InsertAfter(e[1], e[0]);
+                    *(f32 *)(e[1] + 0xA0) = *(f32 *)(e[0] + 0xA0) + D_003E90A0_v.v;
+                }
+            }
+        }
+    }
+    func_0021B820();
+    func_0021CB88(a0, 0xB0, 8, 0x140, 7);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00220C28);
 
