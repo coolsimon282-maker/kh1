@@ -765,7 +765,49 @@ void func_0021E508(void) {
     *(s32 *)(D_003ED728 + 0x0) = (*(s32 *)(D_003ED728 + 0x0) - 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021E538);
+extern s32 D_00643118;
+extern s32 D_0064324C;
+extern u8 *D_003F5C50[];
+extern s32 D_003F3510;
+void func_0021E538(void) {
+    switch (D_00643118) {
+    case 0:
+        switch (*(s32 *)D_003F350C) {
+        case 0:
+            (*(s32 *)D_003ED728)++;
+            *(s32 *)D_003F350C = 1;
+            D_00643118 = 1;
+            D_00643120 = D_0064324C;
+            cdvd_QueueFileLoad(D_003F5C50[D_0064324C], D_003F3510, func_0021E508, 0);
+            return;
+        case 1:
+            D_00643118 = *(s32 *)D_003F350C;
+            return;
+        default:
+            if (D_00643120 != D_0064324C) {
+                *(s32 *)D_003F350C = 0;
+                D_00643118 = 0;
+            } else {
+                D_0064311C = D_00643120;
+                D_00643118 = 2;
+            }
+            return;
+        }
+    case 1:
+        if (*(s32 *)D_003F350C == 2) {
+            if (D_00643120 != D_0064324C) {
+                *(s32 *)D_003F350C = 0;
+                D_00643118 = 0;
+            } else {
+                D_00643118 = *(s32 *)D_003F350C;
+                D_0064311C = D_00643120;
+            }
+        }
+        break;
+    case 2:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021E670);
 
