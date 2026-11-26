@@ -7103,7 +7103,48 @@ void func_00176B80(u8** p) {
     *(s16*)(*(u8**)(q + 0x6C) + 0xBE) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00176BA8);
+extern s32 D_176BA8_pad1; /* unused: rule F1 (keeps func_00176F08) */
+typedef struct {
+    u8* a;
+    u8* b;
+    s32 c;
+    s32 d;
+    s32 e;
+} S176BA8e;
+typedef struct {
+    s32* src;
+    S176BA8e e[2];
+} S176BA8;
+void func_00176BA8(u8* p, s32 arg1) {
+    s32* arg0 = (s32*)p;
+    S176BA8* t;
+    S176BA8e* e;
+    s32* o;
+    s32* c;
+    s32 i;
+    s32 v;
+    u8* a;
+
+    if (*arg0 == 0x14) {
+        t = (S176BA8*)((u8*)D_005757B0 + arg1 * 0x2C);
+        memset(t, 0, 0x2C);
+        t->src = arg0;
+        e = t->e;
+        i = 0;
+        c = arg0 + 4;
+        o = arg0 + 2;
+    loop:
+        a = (u8*)(*o++ + (s32)p);
+        i++;
+        e->a = e->b = a;
+        v = *c++;
+        e->d = 0;
+        e->c = v;
+        e->e = 0;
+        e++;
+        if (i < 2) goto loop;
+    }
+}
 
 void func_00178140(s32 n) {
     D_002C5AD0[n][2] = D_002C5AD0[n][3] = 0;
