@@ -323,7 +323,17 @@ typedef union {
     XOwlE2* p;
     f32 f;
 } XOwlU;
+
+#ifdef VERSION_FM
+// .data (0x002C5C60-0x002C6460)
+sceVu0FVECTOR D_002C5C60 = {1.0f, 1.0f, 1.0f, 1.0f};
+sceVu0FVECTOR D_002C5C70 = {1.0f, 1.0f, 1.0f, 1.0f};
+XOwlEnt D_002C5C80[31] = {{0}};
+XOwlU D_002C6440 = {0};
+sceVu0FVECTOR D_002C6450 = {0.0f, 0.0f, 0.0f, 0.0f};
+#else
 extern XOwlU D_002C6440;
+#endif
 s32 func_00122EC8(void);
 s32 func_0011ED60(s32 (*)(void));
 

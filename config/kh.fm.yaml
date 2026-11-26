@@ -494,6 +494,8 @@ segments:
   - [ 0x1bd150, data ]
   - [ 0x1c58a0, .data, xgoblin ]
   - [ 0x1c5c30, data ]
+  - [ 0x1c5c60, .data, xowl ]
+  - [ 0x1c6460, data ]
   - [ 0x1e26b0, .data, xpeanut ]
   - [ 0x1e27b0, data ]
   - [ 0x204b00, .data, xapple ]
