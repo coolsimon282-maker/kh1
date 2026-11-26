@@ -336,6 +336,7 @@ segments:
   - [ 0x116180, c, xpotato ]
   - [ 0x119f98, c, xrodent ]
   - [ 0x11ac38, c, unsplit/seg_11AC38 ]
+  - [ 0x123980, c, unsplit/file123980 ]
   - [ 0x1298e0, c, unsplit/file1298E0 ]
   - [ 0x132ad0, c, xcursed ]
   - [ 0x132d60, c, unsplit/seg_132D60 ]
