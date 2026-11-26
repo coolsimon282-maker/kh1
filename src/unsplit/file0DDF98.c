@@ -3224,10 +3224,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001EA5F8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001EA658);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001EA6B8);
-
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001EA760);
-
 typedef struct {
     u64 unk_00 : 8;
     u64 unk_01 : 24;
@@ -3236,6 +3232,42 @@ typedef struct {
     f32 unk_10[4];
 } A2Msg;
 s32 func_001C4640(A2Msg *);
+
+s32 func_001EA6B8(A2Script *p) {
+    A2Msg msg;
+    s32 *q = func_001E98D0((s32)(*(u64 *)((u8 *)p + 0x328) >> 5) & 1, p->unk_174[p->unk_174[3] + 4]);
+
+    if (q != NULL) {
+        msg.unk_00 = 0xD;
+        msg.unk_01 = 0;
+        msg.unk_10[3] = 1.0f;
+        msg.unk_10[0] = 0.0f;
+        msg.unk_10[1] = 0.0f;
+        msg.unk_04 = *q;
+        msg.unk_10[2] = 0.0f;
+        func_001C4640(&msg);
+    }
+    p->unk_174[3]--;
+    return 2;
+}
+
+s32 func_001EA760(A2Script *p) {
+    A2Msg msg;
+    s32 *q = func_001E98D0((s32)(*(u64 *)((u8 *)p + 0x328) >> 5) & 1, p->unk_174[p->unk_174[3] + 4]);
+
+    if (q != NULL) {
+        msg.unk_00 = 0xE;
+        msg.unk_01 = 0;
+        msg.unk_10[3] = 1.0f;
+        msg.unk_10[0] = 0.0f;
+        msg.unk_10[1] = 0.0f;
+        msg.unk_04 = *q;
+        msg.unk_10[2] = 0.0f;
+        func_001C4640(&msg);
+    }
+    p->unk_174[3]--;
+    return 2;
+}
 
 s32 func_001EA808(A2Script *arg0) {
     A2Msg msg;
