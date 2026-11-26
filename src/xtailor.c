@@ -193,6 +193,9 @@ s32 D_002B9084 = 0;
 sceVu0FVECTOR D_002B9090 = {0};
 s32 D_002B90A0[3] = {0};
 #else
+extern volatile s32 D_002BBDF0;
+extern volatile u32 D_002BBDF4;
+extern volatile s32 D_002B8340;
 extern s32 D_002BC980;
 extern s32 D_002B8170;
 extern s32 D_002B8240;

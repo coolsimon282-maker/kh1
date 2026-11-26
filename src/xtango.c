@@ -199,11 +199,8 @@ void func_001EF5C8(void) {
     fm_func_00111B90();
 }
 #else
-extern u32 fm_func_00111B90(void);
-
-void func_001EF5C8(void) {
-    fm_func_00111B90();
-}
+// JP's function is 0xA0 bytes (not a tail call like FM's); EU's calls its own copy of fm_func_00111B90
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF5C8);
 #endif
 
 #ifdef VERSION_FM
@@ -212,9 +209,8 @@ void func_001EF668(void) {
     fm_func_00111BE8();
 }
 #else
-void func_001EF668(void) {
-    fm_func_00111BE8(0);
-}
+// JP's function is 0xA0 bytes as well; EU's calls its own copy of fm_func_00111BE8
+INCLUDE_ASM("asm/nonmatchings/xtango", func_001EF668);
 #endif
 
 // Converts a BCD number (one decimal digit per nibble) to binary.

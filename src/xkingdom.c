@@ -308,7 +308,7 @@ INCLUDE_ASM("asm/nonmatchings/xkingdom", func_00120438);
 INCLUDE_ASM("asm/nonmatchings/xkingdom", func_001204C0);
 s32 func_001204C0(XOtherCrown*);
 
-s32 cdvd_QueueFileLoad(char* arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 cdvd_QueueFileLoad(char* arg0, s32 arg1, s32 (*arg2)(void), s32 arg3) {
     XOtherCrown* temp_2 = TaskList_Add(&D_004DE128, 0, func_001204C0);
     s32* new_var2 = &D_004DDC60; // TODO fake match
     s32* new_var;

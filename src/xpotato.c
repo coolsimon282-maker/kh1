@@ -782,6 +782,32 @@ void func_00218D38(void) {
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218DD0);
 
 NOTHROW(void, func_00218DD0);
+#ifndef VERSION_FM
+// JP/EU: what the FM-only block above declares for the shared code below
+typedef struct XPotMenu {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ struct XPotMenu* unk_10;
+    /* 0x14 */ char unk_14[0x10];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ char unk_28[0xB0];
+    /* 0xD8 */ u16 unk_D8;
+} XPotMenu;
+
+extern s32* D_00425BC8;
+extern s32 D_00642D28;
+extern s32 D_003F4798[];
+extern s32 D_003F47A0[];
+s32 func_001F42B8(XPotMenu*);
+void func_001F3758(XPotMenu*);
+void func_001FDFD0(XPotMenu*);
+void func_0020BD18(XPotMenu*, s32);
+s32 func_001FD538(XPotMenu*);
+void func_001FD858(XPotMenu*);
+s32 func_001FD518(XPotMenu*);
+s32 func_001FE570(XPotMenu*);
+void func_00206690(XPotMenu*, s32, s32, s32);
+void func_002078F0(XPotMenu*, s32, s32, s32, s32, s32, s32, s32, s32);
+#endif
 extern s32 D_003F4878[];
 extern s32 D_003F4818[];
 extern s32 D_003F4848[];
