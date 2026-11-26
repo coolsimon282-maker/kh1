@@ -137,8 +137,38 @@ s32 ScriptOp_PopSwitchValue(Script* arg0) {
     return 2;
 }
 
-// Opcode 5 END.
-INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_End);
+// Script seen by END: the thread slot table (program counters, -1 = free) and the current slot
+typedef struct {
+    /* 0x000 */ char unk_000[0x17C];
+    /* 0x17C */ s32 pc;
+    /* 0x180 */ char unk_180[0x178];
+    /* 0x2F8 */ s32 thread[8];
+    /* 0x318 */ s32 cur;
+    /* 0x31C */ char unk_31C[0xC];
+    /* 0x328 */ u64 flags;
+} ScriptEnd;
+
+// Opcode 5 END: frees the current thread slot (-1) and switches to the next used slot above it (its program counter
+// in slot table thread[]); in slot 7 it sets flag bit 3 of 0x328 instead. Always ends the frame.
+s32 ScriptOp_End(Script *arg0) {
+    ScriptEnd *s = (ScriptEnd *)arg0;
+    s32 i, t;
+
+    if (s->cur == 7) {
+        s->flags |= 8;
+        return 4;
+    }
+    s->thread[s->cur] = -1;
+    for (i = s->cur + 1; i < 8; i++) {
+        t = s->thread[i];
+        if (t != -1) {
+            s->pc = t;
+            s->cur = i;
+            break;
+        }
+    }
+    return 4;
+}
 
 // Clamps a value to a variable type's range (0/1: one bit, 2: s8, 3: s16, ...).
 s64 Script_ClampValue(s64 arg0, s32 arg1) {
@@ -415,8 +445,26 @@ s32 ScriptOp_StartThread(Script *arg0, s32 arg1) {
     return 2;
 }
 
-// Opcode 23 WAIT_THREAD.
-INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_WaitThread);
+// Opcode 23 WAIT_THREAD: pops a script number and a slot (0-7); while that slot is still in use (not -1) it moves the
+// program counter back 2 (the wait runs again) and ends the frame.
+s32 ScriptOp_WaitThread(Script *arg0) {
+    ScriptVM *vm = (ScriptVM *)arg0;
+    s32 a = vm->stack[vm->sp--];
+    s32 b = vm->stack[vm->sp--];
+    s32 *p;
+
+    if (b < 0) {
+        b = 0;
+    } else if (b >= 8) {
+        b = 7;
+    }
+    p = func_001E98D0((s32)(*(u64 *)((u8 *)vm + 0x328) >> 5) & 1, a);
+    if (p[b + 0xBE] != -1) {
+        arg0->unk_174[2] -= 2;
+        return 4;
+    }
+    return 2;
+}
 
 typedef struct {
     u64 unk_00 : 8;
