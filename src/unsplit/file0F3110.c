@@ -3083,7 +3083,22 @@ void func_0020D748(void) {
     func_00207358();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020D7D8);
+void func_0020D7D8(s32 a0) {
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 0x8) & 0x4000) {
+            func_001F3708_x(a0, 0x6);
+            func_0011D598(0x3);
+        } else {
+            func_0020BD18(a0, 0x8);
+            if (func_001FE570(a0)) {
+                func_001F3708_x(a0, 0x6);
+            }
+        }
+    }
+    func_0020C100(a0, *(s32 *)(a0 + 0x28));
+    func_001F9438(a0, 0, 0x80, 0xE, *(s32 *)(a0 + 0x24), 0xF, 0x801EC8C8);
+    func_002079C8(a0);
+}
 
 void func_0020D890(u8 *a0, s32 a1) {
     s32 n = func_001EFD98(a1) * 0x170;
@@ -3161,7 +3176,7 @@ void func_0020DD38(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020DE28);
 
 /* unused: rule F1 for the D2C40_v trio (func_0020DED8, func_0020E090, func_00214290) once func_001F81E8 is in C (26 Nov:
- * 12 were stable then; with func_001FE5A0 in C only 35 of 0-100 is clean: rescan the count after every edit above, work/f1/layscan.sh) */
+ * 12 were stable then; with func_001FE5A0 in C only 35 of 0-100 was clean, + func_0020D7D8: 117 of 0-120: rescan the count after every edit above, work/f1/layscan.sh) */
 extern s32 D_lay2C40_0;
 extern s32 D_lay2C40_1;
 extern s32 D_lay2C40_2;
@@ -3197,6 +3212,88 @@ extern s32 D_lay2C40_31;
 extern s32 D_lay2C40_32;
 extern s32 D_lay2C40_33;
 extern s32 D_lay2C40_34;
+extern s32 D_lay2C40_35;
+extern s32 D_lay2C40_36;
+extern s32 D_lay2C40_37;
+extern s32 D_lay2C40_38;
+extern s32 D_lay2C40_39;
+extern s32 D_lay2C40_40;
+extern s32 D_lay2C40_41;
+extern s32 D_lay2C40_42;
+extern s32 D_lay2C40_43;
+extern s32 D_lay2C40_44;
+extern s32 D_lay2C40_45;
+extern s32 D_lay2C40_46;
+extern s32 D_lay2C40_47;
+extern s32 D_lay2C40_48;
+extern s32 D_lay2C40_49;
+extern s32 D_lay2C40_50;
+extern s32 D_lay2C40_51;
+extern s32 D_lay2C40_52;
+extern s32 D_lay2C40_53;
+extern s32 D_lay2C40_54;
+extern s32 D_lay2C40_55;
+extern s32 D_lay2C40_56;
+extern s32 D_lay2C40_57;
+extern s32 D_lay2C40_58;
+extern s32 D_lay2C40_59;
+extern s32 D_lay2C40_60;
+extern s32 D_lay2C40_61;
+extern s32 D_lay2C40_62;
+extern s32 D_lay2C40_63;
+extern s32 D_lay2C40_64;
+extern s32 D_lay2C40_65;
+extern s32 D_lay2C40_66;
+extern s32 D_lay2C40_67;
+extern s32 D_lay2C40_68;
+extern s32 D_lay2C40_69;
+extern s32 D_lay2C40_70;
+extern s32 D_lay2C40_71;
+extern s32 D_lay2C40_72;
+extern s32 D_lay2C40_73;
+extern s32 D_lay2C40_74;
+extern s32 D_lay2C40_75;
+extern s32 D_lay2C40_76;
+extern s32 D_lay2C40_77;
+extern s32 D_lay2C40_78;
+extern s32 D_lay2C40_79;
+extern s32 D_lay2C40_80;
+extern s32 D_lay2C40_81;
+extern s32 D_lay2C40_82;
+extern s32 D_lay2C40_83;
+extern s32 D_lay2C40_84;
+extern s32 D_lay2C40_85;
+extern s32 D_lay2C40_86;
+extern s32 D_lay2C40_87;
+extern s32 D_lay2C40_88;
+extern s32 D_lay2C40_89;
+extern s32 D_lay2C40_90;
+extern s32 D_lay2C40_91;
+extern s32 D_lay2C40_92;
+extern s32 D_lay2C40_93;
+extern s32 D_lay2C40_94;
+extern s32 D_lay2C40_95;
+extern s32 D_lay2C40_96;
+extern s32 D_lay2C40_97;
+extern s32 D_lay2C40_98;
+extern s32 D_lay2C40_99;
+extern s32 D_lay2C40_100;
+extern s32 D_lay2C40_101;
+extern s32 D_lay2C40_102;
+extern s32 D_lay2C40_103;
+extern s32 D_lay2C40_104;
+extern s32 D_lay2C40_105;
+extern s32 D_lay2C40_106;
+extern s32 D_lay2C40_107;
+extern s32 D_lay2C40_108;
+extern s32 D_lay2C40_109;
+extern s32 D_lay2C40_110;
+extern s32 D_lay2C40_111;
+extern s32 D_lay2C40_112;
+extern s32 D_lay2C40_113;
+extern s32 D_lay2C40_114;
+extern s32 D_lay2C40_115;
+extern s32 D_lay2C40_116;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
 void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
