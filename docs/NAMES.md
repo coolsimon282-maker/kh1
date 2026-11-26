@@ -544,3 +544,28 @@ other functions (rule F1).
 | NativeCmd_StartProg | 0x00128CC8 | xcream.c | Native command 20 (2 args, returns a value): a0 = ScriptProg_Start(arg0, a1). |
 | NativeCmd_StopProg | 0x00128CF8 | xcream.c | Native command 28 (1 arg): func_0012B850(a0) (stops the program started by NativeCmd_StartProg, probably). |
 | NativeCmd_RestartProg | 0x00128D10 | xcream.c | Native command 34 (3 args, returns a value): stops program a0 when set and starts program a2 again. |
+| Vec_Length | 0x00120BF8 | xball.c | Length of the vector (sqrt of its inner product). |
+| Vec_LengthXZ | 0x00120C18 | xball.c | Length of the vector in the XZ plane. |
+| Mat_RotateZXY | 0x00120C38 | xball.c | arg0 = arg1 rotated about Z, X, then Y by the angles in arg2. |
+| Angle_Wrap | 0x00120C88 | xball.c | Wraps an angle into -PI..PI (at most 0x400 steps of 2 PI). |
+| Mat_AxisAngle | 0x00120CF8 | xball.c | Rotation matrix of angle ang about the unit axis (Rodrigues form). |
+| Vec_Project | 0x00120EF0 | xball.c | arg0 = arg1 * arg2 (w set to 1) divided by its w; returns 1 / w. |
+| Vec_TriangleNormal | 0x00120F70 | xball.c | Normalised normal of the triangle arg0[0..2]. |
+| Mat_IsBoxOnScreen | 0x00121000 | xball.c | True when all eight points, transformed by m, are in front (w >= 1) and inside 0..4095 on screen. |
+| Vec_ScaleXZ | 0x001210F0 | xball.c | arg1 = arg2 with X and Z scaled by arg0. |
+| Mat_IsClipped | 0x00121120 | xball.c | True when arg0[0][2] < 0 or sceVu0ClipScreen rejects it. |
+| Spline_ComputeCoeffs | 0x001213A0 | xball.c | Natural cubic spline: the second-derivative terms of the n values y (end values 0). |
+| Spline_Evaluate | 0x001214E0 | xball.c | Cubic spline value at t from values a and coefficients b. |
+| Line_IntersectXZ | 0x00121550 | xball.c | Point where line p + t d meets the line through q along n in the XZ plane; returns t (NaN when parallel). |
+| Mat_DropShadow | 0x00121620 | xball.c | Drop shadow matrix (sceVu0DropShadowMatrix) with its translation scaled by arg3. |
+| Mat_Transpose3x3 | 0x00121668 | xball.c | arg0 = the transposed 3x3 part of arg1, without translation. |
+| Angle_StepTowards | 0x001216D8 | xball.c | Angle a turned towards b by at most c per frame (scaled by the time step D_002B8344). |
+| Vec_CosAngle | 0x00121748 | xball.c | Cosine of the angle between two vectors, clamped to -1..1. |
+| Vec_Angle | 0x00121840 | xball.c | Angle between two vectors (acos of Vec_CosAngle). |
+| Vec_RotateTowards | 0x00121860 | xball.c | out = direction a turned towards b by at most t per frame. |
+| Mat_ScaleRows | 0x00121958 | xball.c | arg0 rows 0..2 = arg1 rows scaled by arg2[0..2]. |
+| Vec_Div3 | 0x001219C8 | xball.c | arg0[i] = arg1[i] / arg2[i] for X, Y, Z. |
+| Vec_ToAngles | 0x00121A10 | xball.c | Pitch and yaw of direction arg0 into arg1 (roll 0). |
+| Mat_ToEuler | 0x00121A78 | xball.c | Euler angles of the normalised rotation matrix arg0 into arg1. |
+| Timer_CountDown | 0x00121B08 | xball.c | A positive timer minus D_002B8340[1], not below 0. |
+| Vec_CosAngleXZ | 0x00121B38 | xball.c | Vec_CosAngle of the two vectors flattened to Y = 0 (the result is not returned). |

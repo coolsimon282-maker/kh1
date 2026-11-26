@@ -28,8 +28,8 @@ extern f32 D_004FAF90;
 extern f32 D_004FAF94;
 
 extern void func_00110848(f32);
-extern f32 func_00120AC8(f32);
-void func_00120B40(f32, sceVu0FVECTOR, sceVu0FMATRIX);
+extern f32 Angle_Wrap(f32);
+void Mat_AxisAngle(f32, sceVu0FVECTOR, sceVu0FMATRIX);
 
 void func_00125010(f32 arg0) {
     D_002DED00 = arg0;
@@ -52,7 +52,7 @@ void func_001250D0(f32* arg0, f32* arg1) {
 void func_00125100(f32 arg0, f32 arg1, f32* arg2, f32* arg3) {
     sceVu0FMATRIX m;
 
-    sceVu0RotMatrixY(m, D_002C1E20, -func_00120AC8(D_002DED04));
+    sceVu0RotMatrixY(m, D_002C1E20, -Angle_Wrap(D_002DED04));
     sceVu0ApplyMatrix(arg3, m, arg2);
     arg3[0] = -arg3[0];
     arg3[3] = arg1;
@@ -74,7 +74,7 @@ s32 func_001253B8(void) {
     func_00110848(D_004FAE00);
     sceVu0SubVector(v0, D_002DECF0, D_002DECE0);
     sceVu0Normalize(v0, v0);
-    func_00120B40(func_00120AC8(D_002DED04), v0, m);
+    Mat_AxisAngle(Angle_Wrap(D_002DED04), v0, m);
     sceVu0ApplyMatrix(v1, m, D_002DEC10);
     sceVu0CameraMatrix(D_004FAE90[D_002C1EA0], D_002DECE0, v0, v1);
     sceVu0CopyMatrix(D_002DEC60, D_004FAE90[D_002C1EA0]);
@@ -96,7 +96,7 @@ s32 func_001253B8(void);
 //     func_00110848(D_004FAE00);
 //     sceVu0SubVector(v0, D_002DECF0, D_002DECE0);
 //     sceVu0Normalize(v0, v0);
-//     func_00120B40(func_00120AC8(D_002DED04), v0, m);
+//     Mat_AxisAngle(Angle_Wrap(D_002DED04), v0, m);
 //     sceVu0ApplyMatrix(v1, m, D_002DEC10);
 //     sceVu0CameraMatrix(D_004FAE90[D_002C1EA0], D_002DECE0, v0, v1);
 //     sceVu0CopyMatrix(D_002DEC60, D_004FAE90[D_002C1EA0]);

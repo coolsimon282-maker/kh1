@@ -666,6 +666,36 @@ NativeCmd_StopProg                   = 0x00128CF8; // type:func
 NativeCmd_RestartProg                = 0x00128D10; // type:func
 
 
+//=========================================================
+// xball.c
+//=========================================================
+Vec_Length                           = 0x00120BF8; // type:func
+Vec_LengthXZ                         = 0x00120C18; // type:func
+Mat_RotateZXY                        = 0x00120C38; // type:func
+Angle_Wrap                           = 0x00120C88; // type:func
+Mat_AxisAngle                        = 0x00120CF8; // type:func
+Vec_Project                          = 0x00120EF0; // type:func
+Vec_TriangleNormal                   = 0x00120F70; // type:func
+Mat_IsBoxOnScreen                    = 0x00121000; // type:func
+Vec_ScaleXZ                          = 0x001210F0; // type:func
+Mat_IsClipped                        = 0x00121120; // type:func
+Spline_ComputeCoeffs                 = 0x001213A0; // type:func
+Spline_Evaluate                      = 0x001214E0; // type:func
+Line_IntersectXZ                     = 0x00121550; // type:func
+Mat_DropShadow                       = 0x00121620; // type:func
+Mat_Transpose3x3                     = 0x00121668; // type:func
+Angle_StepTowards                    = 0x001216D8; // type:func
+Vec_CosAngle                         = 0x00121748; // type:func
+Vec_Angle                            = 0x00121840; // type:func
+Vec_RotateTowards                    = 0x00121860; // type:func
+Mat_ScaleRows                        = 0x00121958; // type:func
+Vec_Div3                             = 0x001219C8; // type:func
+Vec_ToAngles                         = 0x00121A10; // type:func
+Mat_ToEuler                          = 0x00121A78; // type:func
+Timer_CountDown                      = 0x00121B08; // type:func
+Vec_CosAngleXZ                       = 0x00121B38; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

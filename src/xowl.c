@@ -84,7 +84,7 @@ typedef struct {
 } XOwlAmb;
 
 extern sceVu0FVECTOR D_002C5C70;
-f32 func_00120A38(sceVu0FVECTOR);
+f32 Vec_Length(sceVu0FVECTOR);
 
 // Computes an object's ambient colour and the mask of directional/point/spot lights that reach it.
 void Light_CalcAmbient(u8* ctx) {
@@ -118,7 +118,7 @@ void Light_CalcAmbient(u8* ctx) {
             break;
         case 5:
             sceVu0SubVector(v, (f32*)(ctx + 0x10), e->pos);
-            d = func_00120A38(v);
+            d = Vec_Length(v);
             if (d < e->range) {
                 sceVu0InterVector(v, e->col, D_002C5C70, cosf(d / e->range * 3.1415928f * 0.5f));
                 sceVu0MulVector(amb, amb, v);

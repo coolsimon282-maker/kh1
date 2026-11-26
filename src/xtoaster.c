@@ -563,7 +563,7 @@ typedef struct {
     /* 0x90 */ XToaster* unk_90;
 } XToasterObj;
 
-f32 func_00120AC8(f32);
+f32 Angle_Wrap(f32);
 f32 sinf(f32);
 f32 cosf(f32);
 void func_00116660(sceVu0FVECTOR);
@@ -580,7 +580,7 @@ void Actor_SetPosition(XToaster* p, s32 arg1) {
     p->unk_010[3] = 1.0f;
     sceVu0CopyVector(p->unk_050, p->unk_010);
     if (!((XT_FLAGS(p) >> 44) & 1)) {
-        a = func_00120AC8(v[3]);
+        a = Angle_Wrap(v[3]);
         p->unk_030[0] = sinf(a);
         p->unk_030[1] = 0.0f;
         p->unk_030[2] = cosf(a);

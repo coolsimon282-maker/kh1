@@ -83,9 +83,9 @@ extern LargeApple* D_00532504;
 
 // funcs
 s32 TaskList_UpdateMatching(s32*, s32);
-f32 func_00120A38(sceVu0FVECTOR);
-f32 func_00120A58(f32*);
-f32 func_00120AC8(f32);
+f32 Vec_Length(sceVu0FVECTOR);
+f32 Vec_LengthXZ(f32*);
+f32 Angle_Wrap(f32);
 XAppleBlemish* Actor_Next(XAppleBlemish*);
 void Actor_PushState(XAppleBlemish*, s32);
 void Actor_SetPositionById(s32, sceVu0FVECTOR);
@@ -210,7 +210,7 @@ s32 Summon_CameraTask(u16* arg0) {
         sceVu0ApplyMatrix(D_0052AD20, sp60, D_002DECE0);
         sceVu0ApplyMatrix(D_0052AD30, sp60, D_002DECF0);
         sceVu0SubVector(D_0052AD10, D_00301040, D_0052AD20);
-        D_0052AD08 = func_00120A38(D_0052AD10);
+        D_0052AD08 = Vec_Length(D_0052AD10);
         sceVu0SubVector(D_0052AD10, D_0052AD30, D_0052AD20);
         sceVu0Normalize(D_0052AD10, D_0052AD10);
         sceVu0ScaleVector(D_0052AD10, D_0052AD10, D_0052AD08);
@@ -221,11 +221,11 @@ s32 Summon_CameraTask(u16* arg0) {
         D_0052AD08 = D_0052AD40[3];
         D_0052AD40[3] = 1.0f;
         sceVu0SubVector(D_0052AD10, D_00301030, D_00301040);
-        D_0052AD0C = func_00120A58(D_0052AD10) - D_0052AD08;
+        D_0052AD0C = Vec_LengthXZ(D_0052AD10) - D_0052AD08;
 
         fVar1 = atan2f(D_0052AD20[0] - D_0052AD30[0], D_0052AD20[2] - D_0052AD30[2]);
         fVar2 = atan2f(D_00301030[0] - D_00301040[0], D_00301030[2] - D_00301040[2]);
-        D_0052AD04 = func_00120AC8(fVar2 - fVar1);
+        D_0052AD04 = Angle_Wrap(fVar2 - fVar1);
 
         if (func_00177D68() < 0.5f) {
             if (D_0052AD04 < 0.0f) {
@@ -250,7 +250,7 @@ s32 Summon_CameraTask(u16* arg0) {
 
     var_f21 = (cosf(var_f21 * PI) + 1.0f) * 0.5f;
     sceVu0InterVector(sp10, D_00301040, D_0052AD30, var_f21);
-    ry = func_00120AC8(D_0052AD04 * var_f21);
+    ry = Angle_Wrap(D_0052AD04 * var_f21);
     sceVu0RotMatrixY(sp20, D_002C1E20, ry);
     sceVu0ApplyMatrix(D_0052AD10, sp20, D_0052AD40);
     s = D_0052AD08 + D_0052AD0C * var_f21;
@@ -287,7 +287,7 @@ s32 Summon_CameraTask(u16* arg0) {
         sceVu0ApplyMatrix(D_005324D0, sp60, D_002DECE0);
         sceVu0ApplyMatrix(D_005324E0, sp60, D_002DECF0);
         sceVu0SubVector(D_005324C0, D_00301040, D_005324D0);
-        D_005324B8 = func_00120A38(D_005324C0);
+        D_005324B8 = Vec_Length(D_005324C0);
         sceVu0SubVector(D_005324C0, D_005324E0, D_005324D0);
         sceVu0Normalize(D_005324C0, D_005324C0);
         sceVu0ScaleVector(D_005324C0, D_005324C0, D_005324B8);
@@ -298,11 +298,11 @@ s32 Summon_CameraTask(u16* arg0) {
         D_005324B8 = D_005324F0[3];
         D_005324F0[3] = 1.0f;
         sceVu0SubVector(D_005324C0, D_00301030, D_00301040);
-        D_005324BC = func_00120A58(D_005324C0) - D_005324B8;
+        D_005324BC = Vec_LengthXZ(D_005324C0) - D_005324B8;
 
         fVar1 = atan2f(D_005324D0[0] - D_005324E0[0], D_005324D0[2] - D_005324E0[2]);
         fVar2 = atan2f(D_00301030[0] - D_00301040[0], D_00301030[2] - D_00301040[2]);
-        D_005324B4 = func_00120AC8(fVar2 - fVar1);
+        D_005324B4 = Angle_Wrap(fVar2 - fVar1);
 
         if (func_00177D68() < 0.5f) {
             if (D_005324B4 < 0.0f) {
@@ -327,7 +327,7 @@ s32 Summon_CameraTask(u16* arg0) {
 
     var_f21 = (cosf(var_f21 * PI) + 1.0f) * 0.5f;
     sceVu0InterVector(sp10, D_00301040, D_005324E0, var_f21);
-    ry = func_00120AC8(D_005324B4 * var_f21);
+    ry = Angle_Wrap(D_005324B4 * var_f21);
     sceVu0RotMatrixY(sp20, D_002C1E20, ry);
     sceVu0ApplyMatrix(D_005324C0, sp20, D_005324F0);
     s = D_005324B8 + D_005324BC * var_f21;

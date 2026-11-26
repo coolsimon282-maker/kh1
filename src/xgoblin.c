@@ -381,7 +381,7 @@ typedef struct {
 extern f32 D_002C5C20;
 
 extern f32 D_002C5980[4];
-f32 func_00120A38(f32*);
+f32 Vec_Length(f32*);
 
 // Reads both analog sticks with a dead zone (D_002C5C20): direction bits for the d-pad, unit and scaled vectors.
 s32 Pad_ReadSticks(XGoblinPadState* out, u8* data) {
@@ -410,7 +410,7 @@ s32 Pad_ReadSticks(XGoblinPadState* out, u8* data) {
             }
             D_002C5980[j] /= 127.5f - D_002C5C20;
         }
-        f = func_00120A38(D_002C5980);
+        f = Vec_Length(D_002C5980);
         if (f > 1.0f) {
             f = 1.0f;
         }

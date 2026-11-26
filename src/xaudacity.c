@@ -2,7 +2,7 @@
  * Native command functions, probably called by the actor / AI bytecode: table D_002E2810 holds {function, argument count |
  * 0x40000000 when the command returns a value}, and each function reads its arguments from the array it is passed and
  * writes its result to element 0. Most wrap an engine function; the rest read or set fields of an actor object (XAudObj).
- * Angles in degrees are converted with (d / 180) * PI and wrapped by func_00120AC8.
+ * Angles in degrees are converted with (d / 180) * PI and wrapped by Angle_Wrap.
  */
 #include "common.h"
 #include "math.h"
@@ -14,7 +14,7 @@ extern f32 D_002B8348;
 extern s32 D_002DF430;
 extern s32 D_002DF43C;
 
-extern f32 func_00120AC8(f32);
+extern f32 Angle_Wrap(f32);
 extern f32 func_00177D68(void);
 extern s32 func_00147A10(s32);
 
@@ -155,15 +155,15 @@ typedef union XAudArg {
     XAudB8* b8;
 } XAudArg;
 
-// Native command 2 (1 arg, returns a value): sine of the angle a0 in degrees (wrapped by func_00120AC8).
+// Native command 2 (1 arg, returns a value): sine of the angle a0 in degrees (wrapped by Angle_Wrap).
 void NativeCmd_SinDeg(f32* arg0) {
-    f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
+    f32 x = Angle_Wrap((*arg0 / 180.0f) * PI);
     *arg0 = sinf(x);
 }
 
 // Native command 3 (1 arg, returns a value): cosine of the angle a0 in degrees.
 void NativeCmd_CosDeg(f32* arg0) {
-    f32 x = func_00120AC8((*arg0 / 180.0f) * PI);
+    f32 x = Angle_Wrap((*arg0 / 180.0f) * PI);
     *arg0 = cosf(x);
 }
 
@@ -194,9 +194,9 @@ void func_00128F48(void) {
 void func_00128F50(void) {
 }
 
-// Native command 149 (1 arg, returns a value): a0 degrees to radians (wrapped by func_00120AC8).
+// Native command 149 (1 arg, returns a value): a0 degrees to radians (wrapped by Angle_Wrap).
 void NativeCmd_DegToRad(f32* arg0) {
-    *arg0 = func_00120AC8((*arg0 / 180.0f) * PI);
+    *arg0 = Angle_Wrap((*arg0 / 180.0f) * PI);
 }
 
 // Native command 166 (1 arg): D_002B8348 = a0.
@@ -229,11 +229,11 @@ void fm_func_00128FB0(XAudArg* arg0) {
 }
 #endif
 
-f32 func_00120A38(s32);
+f32 Vec_Length(s32);
 
-// Native command 6 (1 arg, returns a value): a0 = func_00120A38(a0).
+// Native command 6 (1 arg, returns a value): a0 = Vec_Length(a0).
 void func_00128FB8(XAudArg* arg0) {
-    arg0[0].f = func_00120A38(arg0[0].s);
+    arg0[0].f = Vec_Length(arg0[0].s);
 }
 
 // Native command 7 (2 args): vector a0 += a1.
@@ -258,7 +258,7 @@ void sceVu0ApplyMatrix(f32*, f32 (*)[4], f32*);
 // Native command 10 (2 args): rotates vector a0 about Y by a1 degrees.
 void NativeCmd_RotateVectorY(XAudArg* arg0) {
     f32 m[4][4] __attribute__((aligned(16)));
-    sceVu0RotMatrixY(m, D_002C1E20, func_00120AC8((arg0[1].f / 180.0f) * PI));
+    sceVu0RotMatrixY(m, D_002C1E20, Angle_Wrap((arg0[1].f / 180.0f) * PI));
     sceVu0ApplyMatrix(arg0[0].p, m, arg0[0].p);
 }
 
@@ -269,7 +269,7 @@ void sceVu0ApplyMatrix(f32*, f32 (*)[4], f32*);
 // Native command 31 (2 args): rotates vector a0 about Z by a1 degrees.
 void NativeCmd_RotateVectorZ(XAudArg* arg0) {
     f32 m[4][4] __attribute__((aligned(16)));
-    sceVu0RotMatrixZ(m, D_002C1E20, func_00120AC8((arg0[1].f / 180.0f) * PI));
+    sceVu0RotMatrixZ(m, D_002C1E20, Angle_Wrap((arg0[1].f / 180.0f) * PI));
     sceVu0ApplyMatrix(arg0[0].p, m, arg0[0].p);
 }
 
@@ -282,11 +282,11 @@ void NativeCmd_AddScaledVector(XAudArg* arg0) {
     sceVu0AddVector(arg0[0].p, arg0[0].p, v);
 }
 
-void func_001216C8(s32, s32, s32, f32);
+void Vec_RotateTowards(s32, s32, s32, f32);
 
-// Native command 24 (3 args): func_001216C8(a0, a1, a0, (a2 / 180.0f) * PI).
+// Native command 24 (3 args): Vec_RotateTowards(a0, a1, a0, (a2 / 180.0f) * PI).
 void func_00129188(XAudArg* arg0) {
-    func_001216C8(arg0[0].s, arg0[1].s, arg0[0].s, (arg0[2].f / 180.0f) * PI);
+    Vec_RotateTowards(arg0[0].s, arg0[1].s, arg0[0].s, (arg0[2].f / 180.0f) * PI);
 }
 
 void sceVu0ScaleVectorXYZ(f32*, f32*, f32);
@@ -296,11 +296,11 @@ void NativeCmd_ScaleVector(XAudArg* arg0) {
     sceVu0ScaleVectorXYZ(arg0[0].p, arg0[0].p, arg0[1].f);
 }
 
-f32 func_001215A8(s32, s32);
+f32 Vec_CosAngle(s32, s32);
 
-// Native command 100 (2 args, returns a value): a0 = func_001215A8(a0, a1).
+// Native command 100 (2 args, returns a value): a0 = Vec_CosAngle(a0, a1).
 void func_00129200(XAudArg* arg0) {
-    arg0[0].f = func_001215A8(arg0[0].s, arg0[1].s);
+    arg0[0].f = Vec_CosAngle(arg0[0].s, arg0[1].s);
 }
 
 void func_0014E668(s32, f32, f32, s32, s32);
@@ -321,7 +321,7 @@ void NativeCmd_RotateVectorXYZ(XAudArg* arg0) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        rot[i] = func_00120AC8((((f32*)arg0[1].p)[i] / 180.0f) * PI);
+        rot[i] = Angle_Wrap((((f32*)arg0[1].p)[i] / 180.0f) * PI);
     }
     rot[3] = 0.0f;
     sceVu0RotMatrix(m, D_002C1E20, rot);
@@ -335,11 +335,11 @@ void fm_func_00129330(void) {
 #endif
 
 #ifdef VERSION_FM
-void func_00121878(void*, s32);
+void Vec_ToAngles(void*, s32);
 
-// Native command 223 (2 args): func_00121878(a0, a1).
+// Native command 223 (2 args): Vec_ToAngles(a0, a1).
 void func_00129320(XAudArg* arg0) {
-    func_00121878(arg0[0].p, arg0[1].s);
+    Vec_ToAngles(arg0[0].p, arg0[1].s);
 }
 #else
 void func_00129320(void) {
@@ -1098,13 +1098,13 @@ void func_0012A4C8(XAudArg* arg0) {
 
 extern f32 D_002DEC60[4][4];
 void sceVu0InversMatrix(f32 (*)[4], f32 (*)[4]);
-void func_00120D38(s32, f32 (*)[4], s32);
+void Vec_Project(s32, f32 (*)[4], s32);
 
 // Native command 29 (2 args).
 void func_0012A4E8(XAudArg* arg0) {
     f32 m[4][4] __attribute__((aligned(16)));
     sceVu0InversMatrix(m, D_002DEC60);
-    func_00120D38(arg0[0].s, m, arg0[1].s);
+    Vec_Project(arg0[0].s, m, arg0[1].s);
 }
 
 // Native command 39 (2 args): sceVu0CopyVector(a0->unk_08, a1).
