@@ -7958,7 +7958,23 @@ void func_0017B200(void) {
     q[8] = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017B250);
+void func_0017B250(f32* out, f32* m, f32 t) {
+    f32 b[4];
+    f32 tt = t * t;
+    f32 u = 1.0f - t;
+    f32 uu;
+    s32 i;
+
+    uu = u * u;
+    b[3] = tt * t;
+    b[2] = tt * 3.0f * u;
+    b[0] = uu * u;
+    b[1] = t * 3.0f * uu;
+    for (i = 0; i < 3; i++) {
+        out[i] = m[i] * b[0] + m[i + 4] * b[1] + m[i + 8] * b[2] + m[i + 12] * b[3];
+    }
+    out[3] = 1.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017B308);
 
