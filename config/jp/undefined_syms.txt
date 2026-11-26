@@ -4,6 +4,20 @@ D_00555ED0 = 0x00555ED0;
 /* Old (JP-address) names still used by C for functions renamed in symbol_addrs.txt / jp_names.txt (FM cleanup):
    xhumungus.c keeps the old identifiers (renaming inside it moved other functions, rule F1). Same list as
    config/fm/undefined_syms.txt; made with the names-tools aliases check (C compiled for this version). */
+/* FM-address names that shared C uses, at their JP addresses: each name's EU address (config/eu/undefined_syms.txt)
+   plus the JP-EU shift of the JP names on both sides of it (0x1B90 here; ppvMngTbl: the 0xC000 table ends where
+   D_0036C600 starts; D_002BBDF0/4 sit just before D_002B8340 in FM and EU). There is no JP program here to check
+   against; lightTbl is probably right (only the name below it is near: same shift assumed). */
+presetPosRooms = 0x002B90D0;
+entranceTable = 0x002B92F0;
+entranceCount = 0x002B92F4;
+roomTable = 0x002B92FC;
+roomCount = 0x002B9300;
+lightTbl = 0x002C21D0;
+ppvMngTbl = 0x00360600;
+D_002BBDF0 = 0x002B8338;
+D_002BBDF4 = 0x002B833C;
+
 func_00106380 = Fade_StartIrisClose;
 func_00106428 = Fade_StartIrisOpen;
 func_001064E8 = Fade_ResetIntensity;
