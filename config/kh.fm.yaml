@@ -523,8 +523,7 @@ segments:
   - [ 0x272750, .data, ppp/draw/draw ]
   - [ 0x272ea0, .data, ppp/draw/global ]
   - [ 0x273000, .data, ppp/draw/md ]
-  - [ 0x273090, .data, ppp/draw/md0 ]
-  - [ 0x2732d0, data ]
+  - [ 0x273090, .data, ppp/draw/md0 ] # up to 0x2772d0: its packet data and the sine table D_0036F790
   - [ 0x2772d0, .data, unsplit/gumi ]
   - [ 0x277848, data ]
   - [ 0x2dabd8, .data, unsplit/xstuck ]
