@@ -4562,7 +4562,55 @@ void func_0015C508(u8* a, u8* b, f32* out) {
     out[3] = 1.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015C5D0);
+void func_0015C1F8(u8*, u8*, f32*);
+void func_0015C3A0(u8*, u8*, f32*);
+void func_0015C5D0(u8* a, u8* b, f32* out) {
+    u8* t;
+    s32 sw;
+
+    sw = 0;
+    if (*(s32*)a > *(s32*)b) {
+        t = a;
+        a = b;
+        b = t;
+        sw = 1;
+    }
+    switch (*(s32*)a) {
+    case 1:
+        switch (*(s32*)b) {
+        case 1:
+            func_0015BEB0(a, b, out);
+            break;
+        case 2:
+            func_0015BFF8(a, b, out);
+            break;
+        case 3:
+            func_0015C1F8(a, b, out);
+            break;
+        }
+        break;
+    case 2:
+        switch (*(s32*)b) {
+        case 2:
+            func_0015C128(a, b, out);
+            break;
+        case 3:
+            func_0015C3A0(a, b, out);
+            break;
+        }
+        break;
+    case 3:
+        switch (*(s32*)b) {
+        case 3:
+            func_0015C508(a, b, out);
+            break;
+        }
+        break;
+    }
+    if (sw) {
+        sceVu0SubVector(out, D_002C58A0, out);
+    }
+}
 
 u8* func_001234A0(u8*);
 s32 func_00123730(u8*);
