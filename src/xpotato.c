@@ -5,7 +5,7 @@ extern s32 D_00642CC8;
 extern s32 D_00642CA8[];
 extern s32 func_00132FE0(s32);
 
-extern s32 func_001EF960(u32);
+extern s32 Party_GetMemberName(u32);
 extern s32 D_003E8E08;
 
 extern s32 D_003F4BD0[];
@@ -277,7 +277,7 @@ s32 func_00217038(s32 arg0) {
     s32 val = 204;
     if (D_0063CF3C != 0) {
         val = 205;
-        D_003E8E08 = func_001EF960(D_0063CF3C);
+        D_003E8E08 = Party_GetMemberName(D_0063CF3C);
     }
     func_001F9010(23);
     return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
@@ -287,7 +287,7 @@ s32 func_00217038(s32 arg0) {
     s32 val = 213;
     if (D_0063CF3C != 0) {
         val = 214;
-        D_003E3088 = func_001EF960(D_0063CF3C);
+        D_003E3088 = Party_GetMemberName(D_0063CF3C);
     }
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
@@ -401,7 +401,7 @@ s32 func_00218648(s32 arg0) {
 
     func_001F9010(23);
     if (D_0063CF88 != 0) {
-        D_003E8E08 = func_001EF960(D_0063CF88);
+        D_003E8E08 = Party_GetMemberName(D_0063CF88);
         v++;
     }
     return func_001F9438((void*)arg0, 0, 174, 12, v, 17, 0x80C87850);
@@ -412,7 +412,7 @@ s32 func_00218648(s32 arg0) {
 
     func_001F9B50(23);
     if (D_0063CF88 != 0) {
-        D_003E3088 = func_001EF960(D_0063CF88);
+        D_003E3088 = Party_GetMemberName(D_0063CF88);
         val = 278;
     }
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
@@ -446,7 +446,7 @@ void func_002078F0(XPotMenu*, s32, s32, s32, s32, s32, s32, s32, s32);
 extern XPotMenu* D_00642CE8;
 
 
-s32 func_001EF938(s32);
+s32 Char_GetName(s32);
 void func_00207870(XPotMenu*, s32, s32, s32, s32, s32, s32);
 
 void func_002186B8(XPotMenu* m) {
@@ -483,7 +483,7 @@ void func_002186B8(XPotMenu* m) {
     sel = func_001FD518(m);
     for (y = 0, i = 0; i < D_003DE6A0; i++, y += 28) {
         c = (i == sel) ? 11 : 0;
-        func_00207870(m, c, 2, 0, y, 0x7A, func_001EF938(D_003010F8->unk_48E[i]));
+        func_00207870(m, c, 2, 0, y, 0x7A, Char_GetName(D_003010F8->unk_48E[i]));
     }
 }
 

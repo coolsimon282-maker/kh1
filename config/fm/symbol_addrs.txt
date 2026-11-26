@@ -278,6 +278,64 @@ GameState_SaveRoomPositions          = 0x00111510; // type:func
 GameState_GetPosition                = 0x00111590; // type:func
 
 
+//=========================================================
+// xtango.c
+//=========================================================
+PlayTime_GetFrames                   = 0x001EE118; // type:func
+PlayTime_GetTotalHours               = 0x001EE198; // type:func
+PlayTime_GetTotalMinutes             = 0x001EE1D0; // type:func
+PlayTime_GetTotalSeconds             = 0x001EE200; // type:func
+PlayTime_Split                       = 0x001EE230; // type:func
+PlayTime_GetHoursPart                = 0x001EE2D0; // type:func
+PlayTime_GetMinutesPart              = 0x001EE308; // type:func
+PlayTime_GetSecondsPart              = 0x001EE348; // type:func
+PlayTime_GetHundredthsPart           = 0x001EE388; // type:func
+BcdToInt                             = 0x001EE488; // type:func
+Char_GetName                         = 0x001EE5F0; // type:func
+Party_GetMemberName                  = 0x001EE618; // type:func
+Item_GetData                         = 0x001EE680; // type:func
+Item_GetName                         = 0x001EE698; // type:func
+Item_GetDescription                  = 0x001EE6D0; // type:func
+Item_GetType                         = 0x001EE768; // type:func
+Item_IsPartyWide                     = 0x001EE7C8; // type:func
+Item_IsUsable                        = 0x001EE9E0; // type:func
+Item_CanCharEquip                    = 0x001EEA00; // type:func
+Item_GetNameOrNone                   = 0x001EEB88; // type:func
+Item_GetNameOrNone2                  = 0x001EEBB0; // type:func
+Item_GetDescriptionOrNone            = 0x001EEBD8; // type:func
+Item_GetDescriptionOrNone2           = 0x001EEC00; // type:func
+Char_PreviewWeaponStat19             = 0x001EEC48; // type:func
+Char_PreviewAccessoryStat15          = 0x001EECB0; // type:func
+Char_PreviewAccessoryStat17          = 0x001EED18; // type:func
+Char_PreviewAccessoryMaxAP           = 0x001EED80; // type:func
+Char_PreviewAccessoryStat19          = 0x001EEDE8; // type:func
+Char_PreviewAccessoryStat20          = 0x001EEE50; // type:func
+Party_CountWeaponUsers               = 0x001EEEB8; // type:func
+Party_CountAccessoryEquipped         = 0x001EEF38; // type:func
+Char_CountAccessoryOnOthers          = 0x001EEFD8; // type:func
+Char_CountEquippedAll                = 0x001EF050; // type:func
+Inventory_GetFreeCount               = 0x001EF0C0; // type:func
+Char_CountItemEquipped               = 0x001EF140; // type:func
+Item_GetWeaponIndex                  = 0x001EF250; // type:func
+Item_IsWeaponType                    = 0x001EF270; // type:func
+Item_IsWeapon                        = 0x001EF2C0; // type:func
+Item_IsAccessory                     = 0x001EF370; // type:func
+Char_GetAbilityCount                 = 0x001EF3A0; // type:func
+Char_CountAbility                    = 0x001EF450; // type:func
+Ability_GetData                      = 0x001EF528; // type:func
+Ability_GetName                      = 0x001EF540; // type:func
+Ability_GetDescription               = 0x001EF580; // type:func
+Ability_GetApCost                    = 0x001EF5C0; // type:func
+Char_GetMaxAP                        = 0x001EF658; // type:func
+Char_GetUsedAP                       = 0x001EF680; // type:func
+Char_GetFreeAP                       = 0x001EF720; // type:func
+Munny_Set                            = 0x001EF778; // type:func
+Munny_Get                            = 0x001EF7A0; // type:func
+Munny_Add                            = 0x001EF7B0; // type:func
+Munny_Sub                            = 0x001EF7F0; // type:func
+Party_RefreshStats                   = 0x001EF830; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

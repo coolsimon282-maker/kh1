@@ -214,3 +214,56 @@ other functions (rule F1).
 | GameState_GetPosition | 0x00111590 | xtrumpet.c | Copies gameState vector index to out. |
 | gameState | 0x002BCB60 | xtrumpet.c | pointer to the game state in work buffer 3 (GameState_BindBuffer sets it); was D_002B90B0 |
 | presetPosRooms | 0x002BCB80 | xtrumpet.c | 39 (world, room, preset index) entries: rooms whose saved party positions come from a preset; was D_002BCB80 |
+| PlayTime_GetFrames | 0x001EE118 | xtango.c | Play time in frames: the frame counter D_002BBDF4 times the scale D_002BBDEC. |
+| PlayTime_GetTotalHours | 0x001EE198 | xtango.c | Play time in whole hours (frames / 216000, 60 frames a second). |
+| PlayTime_GetTotalMinutes | 0x001EE1D0 | xtango.c | Play time in whole minutes (frames / 3600). |
+| PlayTime_GetTotalSeconds | 0x001EE200 | xtango.c | Play time in whole seconds (frames / 60). |
+| PlayTime_Split | 0x001EE230 | xtango.c | Splits the play time into hours, minutes, seconds and frames. |
+| PlayTime_GetHoursPart | 0x001EE2D0 | xtango.c | Hours part of the play time (same as PlayTime_GetTotalHours). |
+| PlayTime_GetMinutesPart | 0x001EE308 | xtango.c | Minutes part of the play time (0..59). |
+| PlayTime_GetSecondsPart | 0x001EE348 | xtango.c | Seconds part of the play time (0..59). |
+| PlayTime_GetHundredthsPart | 0x001EE388 | xtango.c | Frames part of the play time scaled to hundredths of a second. |
+| BcdToInt | 0x001EE488 | xtango.c | Converts a BCD number (one decimal digit per nibble) to binary. |
+| Char_GetName | 0x001EE5F0 | xtango.c | Name message of character arg0 (message id from D_003DE5F0); probably the name. |
+| Party_GetMemberName | 0x001EE618 | xtango.c | Name message of the character in party slot arg0 (D_003010F8->unk_48E); probably the name. |
+| Item_GetData | 0x001EE680 | xtango.c | Item table entry of item arg0 (func_00147A88). |
+| Item_GetName | 0x001EE698 | xtango.c | Name string of item arg0 (from its entry's unk_00), or message 151 for item 0. |
+| Item_GetDescription | 0x001EE6D0 | xtango.c | Entry unk_0C of item arg0 (1..255), else 0; probably the description string. |
+| Item_GetType | 0x001EE768 | xtango.c | Item category (entry unk_02): 0 usable item, 1 accessory, 2..11 weapons (by how Char_CountItemEquipped uses it). |
+| Item_IsPartyWide | 0x001EE7C8 | xtango.c | Bit 0 of entry unk_04; when set func_001EFBB0 checks every party member, so probably "acts on the whole party". |
+| Item_IsUsable | 0x001EE9E0 | xtango.c | Item type is 0 (usable item). |
+| Item_CanCharEquip | 0x001EEA00 | xtango.c | False when arg0 is a weapon (type 2..11) of another type than character arg1's weapon type (D_003E3D20). |
+| Item_GetNameOrNone | 0x001EEB88 | xtango.c | Item_GetName, or message 167 for item 0 (FM). |
+| Item_GetNameOrNone2 | 0x001EEBB0 | xtango.c | Same as Item_GetNameOrNone (a second copy in the game). |
+| Item_GetDescriptionOrNone | 0x001EEBD8 | xtango.c | Item_GetDescription, or message 168 for item 0 (FM). |
+| Item_GetDescriptionOrNone2 | 0x001EEC00 | xtango.c | Same as Item_GetDescriptionOrNone (a second copy in the game). |
+| Char_PreviewWeaponStat19 | 0x001EEC48 | xtango.c | Character arg0's stat 19 (func_00141B10 stats) with weapon arg1 equipped for the test; probably strength. |
+| Char_PreviewAccessoryStat15 | 0x001EECB0 | xtango.c | Character arg0's stat 15 with accessory slot arg1 set to arg2 for the test. |
+| Char_PreviewAccessoryStat17 | 0x001EED18 | xtango.c | Character arg0's stat 17 with accessory slot arg1 set to arg2 for the test. |
+| Char_PreviewAccessoryMaxAP | 0x001EED80 | xtango.c | Character arg0's stat 56 (max AP, see Char_GetMaxAP) with accessory slot arg1 set to arg2. |
+| Char_PreviewAccessoryStat19 | 0x001EEDE8 | xtango.c | Character arg0's stat 19 with accessory slot arg1 set to arg2 for the test. |
+| Char_PreviewAccessoryStat20 | 0x001EEE50 | xtango.c | Character arg0's stat 20 with accessory slot arg1 set to arg2 for the test. |
+| Party_CountWeaponUsers | 0x001EEEB8 | xtango.c | Number of current party members whose weapon (unk_32) is arg0. |
+| Party_CountAccessoryEquipped | 0x001EEF38 | xtango.c | Number of arg0 accessories equipped by current party members. |
+| Char_CountAccessoryOnOthers | 0x001EEFD8 | xtango.c | Number of arg0 accessories equipped by the ten characters other than arg1. |
+| Char_CountEquippedAll | 0x001EF050 | xtango.c | Number of arg0 equipped (as weapon or accessory) by all ten characters. |
+| Inventory_GetFreeCount | 0x001EF0C0 | xtango.c | Stock of item arg0 (unk_499) minus the copies equipped by the ten characters, at least 0. |
+| Char_CountItemEquipped | 0x001EF140 | xtango.c | How many arg1 character arg0 holds: in item slots (type 0), accessory slots (type 1) or as weapon. |
+| Item_GetWeaponIndex | 0x001EF250 | xtango.c | Item type - 2 (weapon type index). |
+| Item_IsWeaponType | 0x001EF270 | xtango.c | Item arg0's type is weapon type D_003DE630[idx]. |
+| Item_IsWeapon | 0x001EF2C0 | xtango.c | Item arg0's type is one of the ten weapon types in D_003DE630. |
+| Item_IsAccessory | 0x001EF370 | xtango.c | Item arg0 is non-zero and of type 1 (accessory). |
+| Char_GetAbilityCount | 0x001EF3A0 | xtango.c | Number of abilities in character arg0's ability list (unk_40, 0-terminated, 48 max). |
+| Char_CountAbility | 0x001EF450 | xtango.c | Number of entries of ability arg1 in character arg0's list (bit 0x80 ignored). |
+| Ability_GetData | 0x001EF528 | xtango.c | Ability table entry (func_00147AE8). |
+| Ability_GetName | 0x001EF540 | xtango.c | Entry unk_04 of ability arg0 (bit 0x80 cleared), or message 180 (FM); probably the name. |
+| Ability_GetDescription | 0x001EF580 | xtango.c | Entry unk_08 of ability arg0, or message 180 (FM); probably the description. |
+| Ability_GetApCost | 0x001EF5C0 | xtango.c | Entry unk_00 of ability arg0; summed by Char_GetUsedAP, so the AP cost. |
+| Char_GetMaxAP | 0x001EF658 | xtango.c | Stat 56 of character arg0 (D_003E3E50 = D_003E3D70 + 0xE0, the stats func_00141B10 fills); max AP by Char_GetFreeAP. |
+| Char_GetUsedAP | 0x001EF680 | xtango.c | Sum of the AP cost of character arg0's abilities without bit 0x80 (equipped ones, probably). |
+| Char_GetFreeAP | 0x001EF720 | xtango.c | Character arg0's stat 56 minus Char_GetUsedAP, at least 0. |
+| Munny_Set | 0x001EF778 | xtango.c | Sets munny (at most 99999). |
+| Munny_Get | 0x001EF7A0 | xtango.c | Returns munny. |
+| Munny_Add | 0x001EF7B0 | xtango.c | Adds to munny, clamped to 0..99999. |
+| Munny_Sub | 0x001EF7F0 | xtango.c | Subtracts from munny, clamped to 0..99999. |
+| Party_RefreshStats | 0x001EF830 | xtango.c | Counts party members (D_003E3D6C, D_003DE6A0 with slot 3) and recomputes the stats (D_003E3D70) of all ten characters. |
