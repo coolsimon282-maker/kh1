@@ -1,3 +1,7 @@
+/**
+ * Room change helpers: loading the room's image file (<world abbr>00_<nn>.img, name from worldfile_getBinImgName)
+ * and switching the two music channels (D_0048DE90 = playing, D_002A0520 = wanted; probably BGM).
+ */
 #include "common.h"
 #include "worldfile.h"
 
@@ -23,7 +27,8 @@ extern void func_0011C6C8(s32);
 
 INCLUDE_ASM("asm/nonmatchings/xporcupine", func_001011E0);
 
-s32 func_001014A8() {
+// Queues the load of worldBinImgFile + ".img" into a newly allocated buffer (D_002A050C).
+s32 Room_LoadBinImg() {
     char stack[64];
 
     strcpy(stack, worldBinImgFile);
@@ -34,6 +39,7 @@ s32 func_001014A8() {
     return cdvd_QueueFileLoad(stack, D_002A050C, func_001011B8, 0);
 }
 
+// Resets both music channels to "none" (-1) and clears related state.
 void func_00101528() {
     D_0048DE90[0] = -1;
     D_002BD8B8[0] = 0;
@@ -43,12 +49,14 @@ void func_00101528() {
     D_002B9338 = 0;
 }
 
+// Resets D_002B8688 / D_002B868C to -1 and D_002B930C to 0.
 void func_00101560() {
     D_002B8688 = -1;
     D_002B868C = -1;
     D_002B930C = 0;
 }
 
+// For each channel whose wanted track changed: starts the new one (func_0011D070) and records it.
 void func_00101580() {
     s32 i;
 
@@ -62,6 +70,7 @@ void func_00101580() {
     }
 }
 
+// Stops (func_0011D1F8, fade arg0) each channel whose track will change or is empty.
 void func_00101628(s32 arg0) {
     s32 i;
     
@@ -86,6 +95,7 @@ void func_001016B8(void) {
 //     func_00101580();
 // }
 
+// Room change: gets the room image name, handles the music, and so on (probably the room load step).
 s32 func_001016E8(void) {
     extern s32 D_002BC12C;
     extern s32 D_002B9304;
@@ -113,7 +123,7 @@ s32 func_001016E8(void) {
     D_002B8688 = curWorldNo;
     if (D_002B9308 == 1) {
         if (D_002B9328 != 0) {
-            func_001014A8();
+            Room_LoadBinImg();
         } else {
             TaskSystem_AddTask(0xC350, func_00113380);
         }

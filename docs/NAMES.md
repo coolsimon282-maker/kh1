@@ -191,3 +191,4 @@ other functions (rule F1).
 | Gs_LoadTex4_512x256 | 0x00100E08 | xbeginning.c | Uploads a 512x256 4-bit texture (PSMT4) to GS block dbp. |
 | Gs_LoadTex8_256x256 | 0x00100E80 | xbeginning.c | Uploads a 256x256 8-bit texture (PSMT8) to GS block dbp. |
 | Gs_LoadTex8H_256x1024 | 0x00100EF8 | xbeginning.c | Uploads a 256x1024 PSMT8H texture to GS block dbp. |
+| Room_LoadBinImg | 0x001015A8 | xporcupine.c | Queues the load of worldBinImgFile + ".img" into a newly allocated buffer (D_002A050C). |
