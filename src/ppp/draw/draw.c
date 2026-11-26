@@ -4,6 +4,36 @@
 #include "eekernel.h"
 #include "ppp.h"
 
+#ifdef VERSION_FM
+// .data (0x00372750-0x00372EA0)
+void (*D_00372750[4])(sceVu0FMATRIX, sceVu0FMATRIX, f32) = {sceVu0RotMatrixX, sceVu0RotMatrixY, sceVu0RotMatrixZ, NULL};
+s32 D_00372760 = 0; // random seed
+u64 D_00372770[4] __attribute__((aligned(16))) = { // pppKeTkFade (as u_long128[2])
+    0x0901010101010101ULL, 0xF101010101010101ULL,
+    0x0901010101010101ULL, 0x0101010101010101ULL,
+};
+s8 D_00372790[32] = { // pppKeTkFade
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+    0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+};
+sceVu0FVECTOR D_003727B0[4] = { // pppKeMatSN
+    {0.0f, 0.0f, 0.0f, 1.0f},
+    {1.0f, 0.0f, 0.0f, 1.0f},
+    {0.0f, 1.0f, 0.0f, 1.0f},
+    {0.0f, 0.0f, 1.0f, 1.0f},
+};
+u8 D_003727F0[16] = {0x00, 0x02, 0x01, 0x00, 0x14, 0x13}; // GS psm per image/clut type
+f32 D_00372800[48] = {0}; // fog work
+u32 D_003728C0[18] = { // bit table (read by ppp/draw/md0)
+    0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80,
+    0x100, 0x200, 0x400, 0x800, 0x1000, 0x2000, 0x4000, 0x8000,
+};
+sceDmaChan* oa_dmagif = NULL;
+// zero area nothing refers to by name, up to ppp/draw/global's .data
+s32 D_0037290C = 0;
+u8 D_00372910[0x590] = {0};
+#endif
+
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9280);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A95B8);
@@ -887,7 +917,9 @@ u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
     return p + 0x60;
 }
 
+#ifndef VERSION_FM
 extern f32 D_00372800[16]; // fog work
+#endif
 
 void op_init_fog_work(void) {
     f32* w = D_00372800;

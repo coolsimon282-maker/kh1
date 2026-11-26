@@ -2,6 +2,16 @@
 #include "sifdev.h"
 #include "ppp/draw.h"
 
+#ifdef VERSION_FM
+// .data (0x00372EA0-0x00373000)
+s8 spr_index = 0;
+s32 spr_a[32] = {0};
+s8 spr_rev_index = 0;
+s32 spr_rev_a[32] = {0};
+// table nothing refers to by name (up to ppp/draw/md's .data)
+s32 D_00372FB0[20] = {0x14, 0x1C, 0x20, 0x28, 0x18, 0x20, 0x28, 0x30, 0, 0, 0, 0, 0, 0, 0, 0, 0x1C};
+#endif
+
 void op_oef2_set(void*, void*);
 
 void opc(void) {
