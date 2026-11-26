@@ -25,7 +25,13 @@ void pppRyjMatrixNoRotCalc(pppPObject* pobj, void* p, pppCtrlTable* ctbl) {
     ppvPObj.next->cmat[3][2] = pos[2];
 }
 
+#ifdef VERSION_FM
+// .data (0x00372710-0x00372730)
+sceVu0FVECTOR D_00372710 = {4.0f, -1.0f, 0.0f, 0.0f};
+sceVu0FVECTOR D_00372720 = {3.0f, 2.0f, 0.0f, 0.0f};
+#else
 extern sceVu0FVECTOR D_00372710;
+#endif
 
 // hand-written VU0 code (whole body)
 void func_0019B2A0(sceVu0FVECTOR* a, s32 n, sceVu0FVECTOR* out) {
