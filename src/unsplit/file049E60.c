@@ -9450,7 +9450,36 @@ s32 func_0017DC40(void) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017DD00);
+extern f32 D_003625F0[];
+void func_0017DD00(void) {
+    f32 v[4];
+    f32 l;
+
+    if (D_00575890 & 2) {
+        D_00575890 &= ~2;
+        func_00177680(D_005758E0, (f32*)(D_00575894 + 0x10));
+        D_005758E0[1] -= 150.0f;
+    }
+    if (D_00575890 & 1) {
+        D_00575890 &= ~1;
+    }
+    if (D_00575890 & 4) {
+        D_00575890 &= ~4;
+    }
+    func_00177680(v, (f32*)(D_00575894 + 0x10));
+    v[1] -= 150.0f;
+    sceVu0SubVector(v, v, D_005758E0);
+    if (Vec_Length(v) < 0.0f) {
+        l = 0.0f;
+    } else if (Vec_Length(v) > 200.0f) {
+        l = 200.0f;
+    } else {
+        l = Vec_Length(v);
+    }
+    sceVu0ScaleVector(v, v, l / 200.0f);
+    sceVu0AddVector(D_005758E0, D_005758E0, v);
+    sceVu0AddVector(D_005758D0, D_005758E0, D_003625F0);
+}
 
 void func_0017DE80(void) {
     if (D_002DED08 != 10 && D_002B8678 == 6 && D_002B8680 == 10) {
