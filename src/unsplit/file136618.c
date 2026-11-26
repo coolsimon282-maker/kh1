@@ -3681,7 +3681,24 @@ void func_00246570(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
     D_00668280 = func_002388B8((u8 *)&D_00668290_o, 1, D_00668280);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246658);
+void func_00246658(s32 n, s32 *out) {
+    s32 tmp[5];
+    s32 i;
+
+    for (i = 4; i >= 0; i--) {
+        out[i] = 0;
+    }
+    for (i = 0; i < 5; i++) {
+        if (n >= 0) {
+            tmp[i] = n + 1;
+            n -= 300;
+            if (tmp[i] > 300) {
+                tmp[i] = 300;
+            }
+            out[i] = tmp[i] / 2;
+        }
+    }
+}
 
 s32 func_002466E8(u32 arg0) {
     s32 temp_3;
