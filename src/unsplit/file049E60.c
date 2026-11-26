@@ -4772,7 +4772,42 @@ void func_0015DCC8(u8* p, u8* q) {
     sceVu0Normalize(out, out);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015DD50);
+typedef struct { u64 pad:2; u32 f:1; } V15DD50;
+s32 func_0015DD50(u8* p, f32* v) {
+    f32 t[4];
+    f32 ip;
+    f32 s;
+    s32 r;
+
+    if (D_002C5C54 != 0) {
+        goto ret0;
+    }
+    if ((func_001375F0(p) == 0 && ((V15DD50*)(p + 0x160))->f) || (*(s32*)(p + 0x160) & 1)) {
+        return 0;
+    }
+    r = func_0015DC50(p);
+    *(s32*)(*(u8**)(p + 0x148) + 0x120) = r;
+    if (r < 0) {
+        goto ret0;
+    }
+    sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0x110), D_002C58A0);
+    if (0.0f < v[3]) {
+        func_0015DCC8(p, (u8*)t);
+        ip = sceVu0InnerProduct(t, v);
+        if (0.0f < ip) {
+            if (0.8f < v[3]) {
+                s = *(f32*)(*(u8**)(p + 0x6C) + 8);
+            } else {
+                s = *(f32*)(*(u8**)(p + 0x6C) + 4);
+            }
+            sceVu0ScaleVectorXYZ((f32*)(*(u8**)(p + 0x148) + 0x110), t, s * ip);
+        }
+    }
+    func_0014F658((s32)p, 0xC);
+    return 1;
+ret0:
+    return 0;
+}
 
 void func_0015DE88(u8* a0) {
     func_0015DCC8(a0, a0 + 0x20);
