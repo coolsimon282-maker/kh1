@@ -208,7 +208,29 @@ void func_00233A80(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233AC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00233D08);
+typedef struct { s32 a; s32 id; u8 pad[0x18]; } Q233D08;
+extern Q233D08 D_006477B0_r[] __asm__("D_006477B0");
+extern s32 D_00647FB8;
+extern s32 D_00647FBC;
+extern s32 D_00647FB0_r __asm__("D_00647FB0");
+extern s32 D_00647FC4_r __asm__("D_00647FC4");
+s32 func_00233D08(s32 id) {
+    s32 i;
+
+    if (id != 0) {
+        for (i = D_00647FBC; i != D_00647FB8; i++, i &= 0x3F) {
+            if (D_006477B0_r[i].id == id) {
+                return 1;
+            }
+        }
+        if (D_00647FB0_r != 0 && D_00647FC4_r == id) {
+            return 1;
+        }
+    } else if (D_00647FB8 != D_00647FBC || D_00647FB0_r != 0) {
+        return 1;
+    }
+    return 0;
+}
 
 typedef struct { s32 a; s32 id; u8 pad[0x18]; } Q132_20;
 extern Q132_20 D_006477B0_q[] __asm__("D_006477B0");
