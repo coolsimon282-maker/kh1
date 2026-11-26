@@ -7154,7 +7154,34 @@ void func_00162500(void) {
     *(s16*)((u8*)func_0011ED30(0x2E630, func_00160370) + 2) = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001625C8);
+f32 func_00162C20(f32*);
+void func_001625C8(sceVu0FVECTOR* src, sceVu0FVECTOR* m) {
+    sceVu0FVECTOR t;
+    f32 a;
+    f32 b;
+    f32 c;
+    f32 z;
+    sceVu0CopyMatrix(m, src);
+    a = func_00162C20(m[0]);
+    b = func_00162C20(m[1]);
+    c = func_00162C20(m[2]);
+    sceVu0TransposeMatrix(m, m);
+    z = 0.0f;
+    m[3][3] = 1.0f;
+    m[3][2] = z;
+    m[3][1] = z;
+    m[3][0] = z;
+    m[2][3] = z;
+    m[1][3] = z;
+    m[0][3] = z;
+    sceVu0DivVectorXYZ(m[0], m[0], a);
+    sceVu0DivVectorXYZ(m[1], m[1], b);
+    sceVu0DivVectorXYZ(m[2], m[2], c);
+    sceVu0ApplyMatrix(t, m, src[3]);
+    m[3][0] = -t[0];
+    m[3][1] = -t[1];
+    m[3][2] = -t[2];
+}
 
 void func_001626F0(f32* s, f32* r, f32* t, sceVu0FVECTOR* m) {
     s32 i;
