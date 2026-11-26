@@ -564,7 +564,6 @@ segments:
   - [ 0x38cc30, .rodata, xporcupine ]
   - [ 0x38cc40, rodata ]
   - [ 0x38cca0, .rodata, xarcade ]
-  - [ 0x38cd20, rodata ]
   - [ 0x38cd30, .rodata, xnoodle ]
   - [ 0x38cd60, rodata ]
   - [ 0x38cf10, .rodata, xtailor ]
