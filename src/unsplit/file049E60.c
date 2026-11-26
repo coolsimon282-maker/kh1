@@ -4961,7 +4961,55 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164768);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164BA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164E00);
+typedef struct { u16 lo; u16 hi; s32 n; f32* tab; } E164E00;
+static inline s32 func_00164E00_bs(f32* t, s32 n, f32 x) {
+    s32 lo = 0;
+    s32 hi = n - 1;
+    s32 m;
+
+    if (x < t[0]) {
+        return -1;
+    }
+    if (t[hi * 4] <= x) {
+        return hi;
+    }
+    while (hi - lo >= 2) {
+        m = (lo + hi) / 2;
+        if (x < t[m * 4]) {
+            hi = m;
+        } else if (t[m * 4] < x) {
+            lo = m;
+        } else {
+            return m;
+        }
+    }
+    return lo;
+}
+f32* func_00164E00(u8* p, u32 key, f32 x) {
+    E164E00* e = *(E164E00**)(p + 0x3C);
+    u32 k0 = key & 0xFFFF;
+    u32 k1 = key >> 16;
+    E164E00* f;
+    s32 r;
+
+    while (*(s32*)e != -1) {
+        if (e->hi == k1 && (k0 == 0xFFFF || e->lo == k0)) {
+            f = e;
+            goto found;
+        }
+        e++;
+    }
+    f = NULL;
+found:
+    if (f == NULL) {
+        return NULL;
+    }
+    r = func_00164E00_bs(f->tab, f->n, x);
+    if (r < 0) {
+        return NULL;
+    }
+    return &f->tab[r * 4];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00164F18);
 
