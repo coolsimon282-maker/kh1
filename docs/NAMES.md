@@ -435,3 +435,24 @@ other functions (rule F1).
 | Summon_End | 0x0013BD08 | xapple.c | Stops a running summon: ends the program and the task, restores the party, clears the summon flags. |
 | summonFileNames | 0x00304B00 | xapple.c | File name bases of the six summons ("xs_dumbo" ... "xs_simba"). |
 | summonPhaseTable | 0x00304B48 | xapple.c | The four summon phases: duration and function (Summon_PhaseBegin .. Summon_PhaseWaitEnd). |
+| UiPart_StepColorAnim | 0x00249FB0 | xmonitor.c | Advances the part's colour key track (track 0, flags 0xA) by dt; sets "ended" (4) at the last key. |
+| UiPart_StartColorAnim | 0x0024A088 | xmonitor.c | Turns the colour track on (flags 8, track state 2). |
+| UiPart_StopColorAnim | 0x0024A0A8 | xmonitor.c | Turns the colour track off. |
+| UiPart_RewindColorAnim | 0x0024A0C0 | xmonitor.c | Rewinds the colour track to its first key. |
+| UiPart_GetColor | 0x0024A0E0 | xmonitor.c | Colour of the colour track now (linear between the current and next key). |
+| UiPart_GetColorAnimState | 0x0024A1C0 | xmonitor.c | State of the colour track (2 running, 4 ended). |
+| UiPart_StepGradientAnim | 0x0024A1C8 | xmonitor.c | Advances the four-corner colour track (track 1, flags 0xC0) by dt. |
+| UiPart_RewindGradientAnim | 0x0024A2E0 | xmonitor.c | Rewinds the four-corner colour track. |
+| UiPart_GetGradient | 0x0024A300 | xmonitor.c | The four corner colours of track 1 now (interpolated). |
+| UiPart_StartGradientAnim | 0x0024A450 | xmonitor.c | Turns the four-corner colour track on. |
+| UiPart_StopGradientAnim | 0x0024A470 | xmonitor.c | Turns the four-corner colour track off. |
+| UiPart_GetGradientAnimState | 0x0024A488 | xmonitor.c | State of the four-corner colour track. |
+| UiPart_StepRectAnim | 0x0024A490 | xmonitor.c | Advances the rectangle track (track 2, flags 0x14) by dt. |
+| UiPart_RewindRectAnim | 0x0024A568 | xmonitor.c | Rewinds the rectangle track. |
+| UiPart_GetRect | 0x0024A588 | xmonitor.c | Rectangle (x, y, w, h) of track 2 now (interpolated). |
+| UiPart_StartRectAnim | 0x0024A678 | xmonitor.c | Turns the rectangle track on. |
+| UiPart_StopRectAnim | 0x0024A698 | xmonitor.c | Turns the rectangle track off. |
+| UiPart_GetRectAnimState | 0x0024A6B0 | xmonitor.c | State of the rectangle track. |
+| UiPart_BuildSprite | 0x0024A6B8 | xmonitor.c | Fills a sprite packet (colours from the tracks or the part, XYZ from the rectangle, UV with half-texel offsets) for part arg1. |
+| UiPart_BuildSprite8 | 0x0024AA48 | xmonitor.c | UiPart_BuildSprite with TEX0 set for an 8-bit CLUT texture (PSM 0x13, CLD 1). |
+| UiFile_Relocate | 0x0024AAC8 | xmonitor.c | Turns the key track offsets of every part in a UI file into pointers (asserts 16-byte alignment). |

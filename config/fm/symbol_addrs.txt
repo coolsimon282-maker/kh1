@@ -532,6 +532,32 @@ Summon_Start                         = 0x0013BB60; // type:func
 Summon_End                           = 0x0013BD08; // type:func
 
 
+//=========================================================
+// xmonitor.c
+//=========================================================
+UiPart_StepColorAnim                 = 0x00249FB0; // type:func
+UiPart_StartColorAnim                = 0x0024A088; // type:func
+UiPart_StopColorAnim                 = 0x0024A0A8; // type:func
+UiPart_RewindColorAnim               = 0x0024A0C0; // type:func
+UiPart_GetColor                      = 0x0024A0E0; // type:func
+UiPart_GetColorAnimState             = 0x0024A1C0; // type:func
+UiPart_StepGradientAnim              = 0x0024A1C8; // type:func
+UiPart_RewindGradientAnim            = 0x0024A2E0; // type:func
+UiPart_GetGradient                   = 0x0024A300; // type:func
+UiPart_StartGradientAnim             = 0x0024A450; // type:func
+UiPart_StopGradientAnim              = 0x0024A470; // type:func
+UiPart_GetGradientAnimState          = 0x0024A488; // type:func
+UiPart_StepRectAnim                  = 0x0024A490; // type:func
+UiPart_RewindRectAnim                = 0x0024A568; // type:func
+UiPart_GetRect                       = 0x0024A588; // type:func
+UiPart_StartRectAnim                 = 0x0024A678; // type:func
+UiPart_StopRectAnim                  = 0x0024A698; // type:func
+UiPart_GetRectAnimState              = 0x0024A6B0; // type:func
+UiPart_BuildSprite                   = 0x0024A6B8; // type:func
+UiPart_BuildSprite8                  = 0x0024AA48; // type:func
+UiFile_Relocate                      = 0x0024AAC8; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

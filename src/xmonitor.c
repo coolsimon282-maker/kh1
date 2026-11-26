@@ -1,3 +1,7 @@
+/**
+ * Part of ttlib/ui.c (the assert file name): UI parts with three key-frame tracks (colour, four corner colours,
+ * rectangle), sprite packet building, and relocating a UI file. Struct Monitor is a UI part.
+ */
 #include "common.h"
 #include "eestruct.h"
 
@@ -31,7 +35,8 @@ extern char D_00491848[]; // "ttlib/ui.c"
 extern char D_00491858[];
 void __assert(const char* file, int line, const char* expr);
 
-void func_00246B50(Monitor* m, s32 dt) {
+// Advances the part's colour key track (track 0, flags 0xA) by dt; sets "ended" (4) at the last key.
+void UiPart_StepColorAnim(Monitor* m, s32 dt) {
     MonitorSub* s;
 
     if ((*(u64*)&m->unk60 & 0xA) == 0xA) {
@@ -55,24 +60,28 @@ void func_00246B50(Monitor* m, s32 dt) {
     }
 }
 
-void func_00246C28(Monitor* m) {
+// Turns the colour track on (flags 8, track state 2).
+void UiPart_StartColorAnim(Monitor* m) {
     m->unk60 |= 8;
     m->sub[0].unk10 |= 2;
 }
 
-void func_00246C48(Monitor* m) {
+// Turns the colour track off.
+void UiPart_StopColorAnim(Monitor* m) {
     m->sub[0].unk10 = 0;
     m->unk60 &= ~8;
 }
 
-void func_00246C60(Monitor* m) {
+// Rewinds the colour track to its first key.
+void UiPart_RewindColorAnim(Monitor* m) {
     MonitorSub* s = &m->sub[0];
     s->unk4 = 0;
     s->unk0 = 0;
     s->unk10 &= ~4;
 }
 
-void func_00246C80(Monitor* m, s32* out) {
+// Colour of the colour track now (linear between the current and next key).
+void UiPart_GetColor(Monitor* m, s32* out) {
     MonitorSub* s = &m->sub[0];
     MonitorKey* k;
     f32 r;
@@ -95,11 +104,13 @@ void func_00246C80(Monitor* m, s32* out) {
     }
 }
 
-s32 func_00246D60(Monitor* m) {
+// State of the colour track (2 running, 4 ended).
+s32 UiPart_GetColorAnimState(Monitor* m) {
     return m->sub[0].unk10;
 }
 
-void func_00246D68(Monitor* m, s32 dt) {
+// Advances the four-corner colour track (track 1, flags 0xC0) by dt.
+void UiPart_StepGradientAnim(Monitor* m, s32 dt) {
     MonitorSub* s;
 
     if ((*(u64*)&m->unk60 & 0xC0) == 0xC0) {
@@ -121,14 +132,16 @@ void func_00246D68(Monitor* m, s32 dt) {
     }
 }
 
-void func_00246E80(Monitor* m) {
+// Rewinds the four-corner colour track.
+void UiPart_RewindGradientAnim(Monitor* m) {
     MonitorSub* s = &m->sub[1];
     s->unk4 = 0;
     s->unk0 = 0;
     s->unk10 &= ~4;
 }
 
-void func_00246EA0(Monitor* m, s32 (*out)[4]) {
+// The four corner colours of track 1 now (interpolated).
+void UiPart_GetGradient(Monitor* m, s32 (*out)[4]) {
     MonitorSub* s = &m->sub[1];
     MonitorKey50* k;
     f32 r;
@@ -156,21 +169,25 @@ void func_00246EA0(Monitor* m, s32 (*out)[4]) {
     }
 }
 
-void func_00246FF0(Monitor* m) {
+// Turns the four-corner colour track on.
+void UiPart_StartGradientAnim(Monitor* m) {
     m->unk60 |= 0x80;
     m->sub[1].unk10 |= 2;
 }
 
-void func_00247010(Monitor* m) {
+// Turns the four-corner colour track off.
+void UiPart_StopGradientAnim(Monitor* m) {
     m->sub[1].unk10 = 0;
     m->unk60 &= ~0x80;
 }
 
-s32 func_00247028(Monitor* m) {
+// State of the four-corner colour track.
+s32 UiPart_GetGradientAnimState(Monitor* m) {
     return m->sub[1].unk10;
 }
 
-void func_00247030(Monitor* m, s32 dt) {
+// Advances the rectangle track (track 2, flags 0x14) by dt.
+void UiPart_StepRectAnim(Monitor* m, s32 dt) {
     MonitorSub* s;
 
     if ((*(u64*)&m->unk60 & 0x14) == 0x14) {
@@ -194,14 +211,16 @@ void func_00247030(Monitor* m, s32 dt) {
     }
 }
 
-void func_00247108(Monitor* m) {
+// Rewinds the rectangle track.
+void UiPart_RewindRectAnim(Monitor* m) {
     MonitorSub* s = &m->sub[2];
     s->unk4 = 0;
     s->unk0 = 0;
     s->unk10 &= ~4;
 }
 
-void func_00247128(Monitor* m, s32* out) {
+// Rectangle (x, y, w, h) of track 2 now (interpolated).
+void UiPart_GetRect(Monitor* m, s32* out) {
     MonitorSub* s = &m->sub[2];
     MonitorKey* k;
     f32 r;
@@ -228,21 +247,24 @@ void func_00247128(Monitor* m, s32* out) {
     }
 }
 
-void func_00247218(Monitor* m) {
+// Turns the rectangle track on.
+void UiPart_StartRectAnim(Monitor* m) {
     m->unk60 |= 0x10;
     m->sub[2].unk10 |= 2;
 }
 
-void func_00247238(Monitor* m) {
+// Turns the rectangle track off.
+void UiPart_StopRectAnim(Monitor* m) {
     m->sub[2].unk10 = 0;
     m->unk60 &= ~0x10;
 }
 
-s32 func_00247250(Monitor* m) {
+// State of the rectangle track.
+s32 UiPart_GetRectAnimState(Monitor* m) {
     return m->sub[2].unk10;
 }
 
-void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2);
+void UiPart_BuildSprite(sceGsTex0* tex, s32 arg1, u64 arg2);
 
 typedef struct {
     /* 0x00 */ s32 x;
@@ -304,7 +326,8 @@ static inline void MonitorSetXYZ(MonitorPkt* o, s32 x, s32 y, s32 w, s32 h) {
     o->xyz[3].w = 0;
 }
 
-void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2) {
+// Fills a sprite packet (colours from the tracks or the part, XYZ from the rectangle, UV with half-texel offsets) for part arg1.
+void UiPart_BuildSprite(sceGsTex0* tex, s32 arg1, u64 arg2) {
     MonitorPkt* o = (MonitorPkt*)tex;
     MonitorG* m = (MonitorG*)arg1;
     s32 c[4];
@@ -320,14 +343,14 @@ void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2) {
     o->reg1 = 6;
     fl = *(u64*)&m->flags;
     if ((fl & 0xA) == 0xA) {
-        func_00246C80((Monitor*)m, c);
+        UiPart_GetColor((Monitor*)m, c);
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 4; j++) {
                 o->col[i][j] = c[j];
             }
         }
     } else if ((fl & 0xC0) == 0xC0) {
-        func_00246EA0((Monitor*)m, cm);
+        UiPart_GetGradient((Monitor*)m, cm);
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 4; j++) {
                 o->col[i][j] = cm[i][j];
@@ -347,7 +370,7 @@ void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2) {
         }
     }
     if ((*(u64*)&m->flags & 0x14) == 0x14) {
-        func_00247128((Monitor*)m, r);
+        UiPart_GetRect((Monitor*)m, r);
         MonitorSetXYZ(o, r[0], r[1], r[2], r[3]);
     } else {
         MonitorSetXYZ(o, m->x, m->y, m->w, m->h);
@@ -376,8 +399,9 @@ void func_00247258(sceGsTex0* tex, s32 arg1, u64 arg2) {
     }
 }
 
-void func_002475E8(s32 arg0, sceGsTex0* tex, u64* arg2) {
-    func_00247258(tex, arg0, arg2[3]);
+// UiPart_BuildSprite with TEX0 set for an 8-bit CLUT texture (PSM 0x13, CLD 1).
+void UiPart_BuildSprite8(s32 arg0, sceGsTex0* tex, u64* arg2) {
+    UiPart_BuildSprite(tex, arg0, arg2[3]);
     tex->CSA = 0;
     tex->CLD = 1;
     tex->PSM = 0x13;
@@ -399,7 +423,8 @@ typedef struct {
 } MonitorEntry;
 extern char D_00491860[];
 
-void func_00247668(MonitorFile* f) {
+// Turns the key track offsets of every part in a UI file into pointers (asserts 16-byte alignment).
+void UiFile_Relocate(MonitorFile* f) {
     MonitorEntry* e;
     u8* b0;
     u8* b1;

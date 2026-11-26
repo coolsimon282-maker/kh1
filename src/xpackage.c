@@ -28,11 +28,11 @@ typedef struct {
     /* 0x60 */ u64 unk_60;
 } XPackageUnk77A8;
 
-void func_00247128(XPackageUnk77A8* arg0, s32* arg1);
+void UiPart_GetRect(XPackageUnk77A8* arg0, s32* arg1);
 
 void func_002477A8(XPackageUnk77A8* arg0, s32* arg1) {
     if ((arg0->unk_60 & 0x14) == 0x14) {
-        func_00247128(arg0, arg1);
+        UiPart_GetRect(arg0, arg1);
         return;
     }
     arg1[0] = arg0->unk_00[0];
@@ -48,8 +48,8 @@ typedef struct {
     /* 0x60 */ u64 unk_60;
 } XPackageUnk7808;
 
-void func_00246C80(XPackageUnk7808*, void*);
-void func_00246EA0(XPackageUnk7808*, s32 (*)[4]);
+void UiPart_GetColor(XPackageUnk7808*, void*);
+void UiPart_GetGradient(XPackageUnk7808*, s32 (*)[4]);
 
 // gets an object's matrix: built by one of two helpers depending on the flags, its own, or its first row repeated
 void func_00247808(XPackageUnk7808* p, s32 (*m)[4]) {
@@ -57,14 +57,14 @@ void func_00247808(XPackageUnk7808* p, s32 (*m)[4]) {
     s32 v[4];
     s32 t[4][4];
     if ((p->unk_60 & 0xA) == 0xA) {
-        func_00246C80(p, (void*)v);
+        UiPart_GetColor(p, (void*)v);
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 4; j++) {
                 m[i][j] = v[j];
             }
         }
     } else if ((p->unk_60 & 0xC0) == 0xC0) {
-        func_00246EA0(p, t);
+        UiPart_GetGradient(p, t);
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 4; j++) {
                 m[i][j] = t[i][j];
@@ -85,46 +85,46 @@ void func_00247808(XPackageUnk7808* p, s32 (*m)[4]) {
     }
 }
 
-NOTHROW(void, func_00247108);
-NOTHROW(void, func_00247218);
-NOTHROW(void, func_00246C60);
-NOTHROW(void, func_00246C28);
-NOTHROW(void, func_00246E80);
-NOTHROW(void, func_00246FF0);
+NOTHROW(void, UiPart_RewindRectAnim);
+NOTHROW(void, UiPart_StartRectAnim);
+NOTHROW(void, UiPart_RewindColorAnim);
+NOTHROW(void, UiPart_StartColorAnim);
+NOTHROW(void, UiPart_RewindGradientAnim);
+NOTHROW(void, UiPart_StartGradientAnim);
 void func_002479A0(u8* p) {
     if (*(u32*)(p + 0x60) & 4) {
-        func_00247108(p);
-        func_00247218(p);
+        UiPart_RewindRectAnim(p);
+        UiPart_StartRectAnim(p);
     }
     if (*(u32*)(p + 0x60) & 2) {
-        func_00246C60(p);
-        func_00246C28(p);
+        UiPart_RewindColorAnim(p);
+        UiPart_StartColorAnim(p);
     }
     if (*(u32*)(p + 0x60) & 0x40) {
-        func_00246E80(p);
-        func_00246FF0(p);
+        UiPart_RewindGradientAnim(p);
+        UiPart_StartGradientAnim(p);
     }
 }
 
-NOTHROW(void, func_00247238);
-NOTHROW(void, func_00246C48);
-NOTHROW(void, func_00247010);
+NOTHROW(void, UiPart_StopRectAnim);
+NOTHROW(void, UiPart_StopColorAnim);
+NOTHROW(void, UiPart_StopGradientAnim);
 void func_00247A30(u8* p) {
     if (*(u32*)(p + 0x60) & 4) {
-        func_00247238(p);
+        UiPart_StopRectAnim(p);
     }
     if (*(u32*)(p + 0x60) & 2) {
-        func_00246C48(p);
+        UiPart_StopColorAnim(p);
     }
     if (*(u32*)(p + 0x60) & 0x40) {
-        func_00247010(p);
+        UiPart_StopGradientAnim(p);
     }
 }
 
 void func_00247AA0(s32 arg0) {
-    func_00247030(arg0, 1);
-    func_00246B50(arg0, 1);
-    func_00246D68(arg0, 1);
+    UiPart_StepRectAnim(arg0, 1);
+    UiPart_StepColorAnim(arg0, 1);
+    UiPart_StepGradientAnim(arg0, 1);
 }
 
 typedef struct {
