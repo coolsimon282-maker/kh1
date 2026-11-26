@@ -564,7 +564,7 @@ segments:
   - [ 0x38fd40, .rodata, ppp/ryjProg/pppRyjMegaBirthModel ] # jump tables of func_001A26D0 / func_001A2798
   - [ 0x38fd98, rodata ] # D_0048FD98/9C: used outside pppRyjMegaBirthModel
   - [ 0x38fda0, .rodata, ppp/draw/draw ]
-  - [ 0x38fe18, .rodata, ppp/draw/global ]
+  - [ 0x38fda8, .rodata, ppp/draw/global ]
   - [ 0x38fe80, rodata ]
   - [ 0x390320, .rodata, xkinetic ]
   - [ 0x390340, rodata ]

@@ -14,6 +14,18 @@ s32 D_00372FB0[20] = {0x14, 0x1C, 0x20, 0x28, 0x18, 0x20, 0x28, 0x30, 0, 0, 0, 0
 
 void op_oef2_set(void*, void*);
 
+#ifdef VERSION_FM
+int printf(const char*, ...);
+// The four "error !" strings at the start of this file's .rodata have no code using them: the checks that printed
+// them were folded away at compile time (never true), but gcc had already put out their strings. An if (0) keeps that.
+#define SPR_ERROR(msg) \
+    if (0) {           \
+        printf(msg);   \
+    }
+#else
+#define SPR_ERROR(msg)
+#endif
+
 void opc(void) {
 }
 
@@ -43,6 +55,7 @@ s32 op_spr_alloc(s32 size) {
     i++;
     spr_index = i;
     spr_a[i] = addr + size;
+    SPR_ERROR("op_spr_alloc error !\n");
     return addr;
 }
 
@@ -53,6 +66,7 @@ s32 op_spr_rev_alloc(s32 size) {
     i++;
     spr_rev_index = i;
     spr_rev_a[i] = addr;
+    SPR_ERROR("op_spr_rev_alloc error !\n");
     return addr - size;
 }
 
@@ -61,6 +75,7 @@ void op_spr_free(void) {
     s32 i = spr_index;
 
     spr_index = i - 1;
+    SPR_ERROR("op_spr_free error !\n");
 }
 // void op_spr_free(void) {
 //     spr_index--;
@@ -70,6 +85,7 @@ void op_spr_rev_free(void) {
     s32 i = spr_rev_index;
 
     spr_rev_index = i - 1;
+    SPR_ERROR("op_spr_rev_free error !\n");
 }
 // void op_spr_rev_free(void) {
 //     spr_rev_index--;
