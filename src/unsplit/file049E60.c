@@ -3967,7 +3967,35 @@ s32 func_0015ACE0(u8* p, s32 b, s32 c) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015AD08);
+f32 Angle_Wrap(f32);
+void func_00142470(u8*, s32*);
+void func_0015AD08(u8* p) {
+    sceVu0FVECTOR v;
+    s32 w[4];
+    f32* t;
+    u8* r;
+
+    func_001315C0((s32)p, 0x8003, v, 0.0f);
+    if (*(f32**)(p + 0x144) == NULL) {
+        t = (f32*)func_00121C98(4, p + 0x144);
+        *(f32**)(p + 0x144) = t;
+        *(void**)(p + 0x4A0) = func_0015ACE0;
+        t[0] = 0.0f;
+    }
+    t = *(f32**)(p + 0x144);
+    if (t[0] > 0.0f) {
+        t[0] -= D_002B8344;
+    } else if (*(s32*)(p + 8) != 0) {
+        r = func_0014A4A8(p, 0, func_001477E0(0x1A));
+        *(u64*)r |= 0x40;
+        sceVu0CopyVector((f32*)(r + 0x10), v);
+        func_001354B8(r, *(s32*)(p + 8));
+        **(f32**)(p + 0x144) = 30.0f;
+    }
+    *(f32*)(p + 0x38) = Angle_Wrap(*(f32*)(p + 0x38) + D_002B8344 * 0.0087266455f);
+    func_00142388(v, w);
+    func_00142470(p, w);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015AE48);
 
