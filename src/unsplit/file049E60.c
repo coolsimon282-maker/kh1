@@ -5896,7 +5896,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00168618);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001687D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001689D0);
+typedef struct { u64 pad:10; u32 b10:1; } F1689D0;
+void func_001689D0(u8* p, u8* q) {
+    f32 r[16];
+
+    if (((F1689D0*)(q + 0x38))->b10 || *(u8**)(q + 0x90) == NULL) {
+        if (*(f32*)(q + 0xE4) < 0.0f) {
+            sceVu0AddVector(r, (f32*)(D_0035BD40[0] + 0x10), (f32*)(q + 0x20));
+            sceVu0SubVector(r + 4, (f32*)(p + 0x10), (f32*)(D_0035BD40[0] + 0x10));
+        } else {
+            sceVu0AddVector(r, (f32*)(p + 0x10), (f32*)(q + 0x20));
+            sceVu0SubVector(r + 4, (f32*)(D_0035BD40[0] + 0x10), (f32*)(p + 0x10));
+        }
+    } else {
+        if (*(f32*)(q + 0xA0) < 0.0f) {
+            sceVu0AddVector(r, (f32*)(*(u8**)(q + 0x90) + 0x10), (f32*)(q + 0x20));
+            sceVu0SubVector(r + 4, (f32*)(p + 0x10), (f32*)(*(u8**)(q + 0x90) + 0x10));
+        } else {
+            sceVu0AddVector(r, (f32*)(p + 0x10), (f32*)(q + 0x20));
+            sceVu0SubVector(r + 4, (f32*)(*(u8**)(q + 0x90) + 0x10), (f32*)(p + 0x10));
+        }
+    }
+    if (func_00119688(r) < 0 && func_00162A58(r + 4) < 500.0f) {
+        *(s32*)(q + 0x58) = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00168B30);
 
