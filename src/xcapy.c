@@ -1,3 +1,8 @@
+/**
+ * Number and timer drawing for a HUD panel, probably a minigame or record screen (JP/EU only): prints a time as
+ * mm'ss''cc (or hh:mm'ss''cc) with %02d groups in the small font (scale 0.8), and draws three sprite lists (D_006633A0,
+ * D_006633C0, D_006633E0) at the panel's position before it. Not in the EU build yet (its C data differs there).
+ */
 #include "common.h"
 
 typedef struct XCapy {

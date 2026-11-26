@@ -1,3 +1,9 @@
+/**
+ * UI objects (XKitten, JP/EU; Final Mix builds its own copy, not in its own file yet): a pool of 24 objects (D_00639A90) created
+ * with func_001F3A20 (second argument 6, or func_00233138(4, 54) + 1), kept in a doubly linked list (prev/next, see
+ * UiObject_InsertAfter), with flag bits in +0x38 and a state in +0x84 (4 = removed). Menu pages (xpotato) are built from
+ * these.
+ */
 #include "common.h"
 #include "xmeowp.h"
 

@@ -1,3 +1,9 @@
+/**
+ * Frame and DMA plumbing (JP/EU; Final Mix's second half: src/unsplit/xlamp.c): two task lists (D_004FA560,
+ * D_004F8530) with add helpers, the VIF1/GIF DMA end handlers (installed with AddDmacHandler; they switch FlushCache to
+ * iFlushCache while they run), the per-frame system update / start-up lists that call the subsystems' init and update
+ * functions (actors, lights, graphics DMA, ...), and the performance counter stop.
+ */
 #include "common.h"
 #include "libpc.h"
 #include "eekernel.h"

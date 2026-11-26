@@ -1,3 +1,10 @@
+/**
+ * CD/DVD file system (JP/EU; Final Mix: src/unsplit/xkingdom.c): the KINGDOM.IMG file table (files found by
+ * a hash of their name, bsearch on 16-byte entries), sector reads with retry (sceCdRead / sceCdSync / sceCdGetError), the
+ * in-place decompressor of compressed files, the read task queue (IOReadTask) and its callback thread, probably a disc
+ * check (while bit 1 of D_002C1EB8 is set, a sector of a known file is read again and compared with a saved copy, every
+ * 60 frames until it matches), and the IOP / CD start-up (IOPRP243.IMG, SYSTEM.CNF).
+ */
 #include "common.h"
 #include "io.h"
 #include "disk.h"
