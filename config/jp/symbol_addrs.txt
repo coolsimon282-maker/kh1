@@ -1802,16 +1802,32 @@ SaTask_GetGroupSize                  = 0x00248318; // type:func
 SaTask_CreateGroup                   = 0x00248340; // type:func
 SaTask_AllocGroup                    = 0x002484F8; // type:func
 SaTask_Init                          = 0x00248530; // type:func
-fadeScreenColor                      = 0x002B85C0; //
-fadeOverlayAlpha                     = 0x002B860C; //
+fadeScreenColor                      = 0x002B85C0;
+fadeOverlayAlpha                     = 0x002B860C;
 curWorldNo                           = 0x002B8678; // size:0x4
 curRoomNo                            = 0x002B8680; // size:0x4
-fadeTaskList                         = 0x002B8C70; //
+fadeTaskList                         = 0x002B8C70;
 gameState                            = 0x002B90B0;
-curEntranceNo                        = 0x002B92F8; //=========================================================
+curEntranceNo                        = 0x002B92F8;
 summonFileNames                      = 0x00301010; // size:0x20
 summonPhaseTable                     = 0x00301058; // size:0x20
-scriptOpTable                        = 0x003759E0; //=========================================================
+scriptOpTable                        = 0x003759E0;
 soundRpcClient                       = 0x003DE5C0;
-interpTaskList                       = 0x004FA670; //=========================================================
-soundRpcBuf                          = 0x0062D980; //=========================================================
+interpTaskList                       = 0x004FA670;
+soundRpcBuf                          = 0x0062D980;
+Camera_SetFov                        = 0x00125010; // type:func
+Camera_PushFov                       = 0x00125088; // type:func
+Camera_PopFov                        = 0x001250B0; // type:func
+Vec_YawBetween                       = 0x001250D0; // type:func
+Camera_BuildFrame                    = 0x001253B8; // type:func
+Camera_UsePreviousFrame              = 0x00125558; // type:func
+cameraUp                             = 0x002DEC10; // size:0x10
+worldScreenMatrix                    = 0x002DEC20; // size:0x40
+viewMatrix                           = 0x002DEC60; // size:0x40
+screenMatrix                         = 0x002DECA0; // size:0x40
+cameraEye                            = 0x002DECE0; // size:0x10
+cameraTarget                         = 0x002DECF0; // size:0x10
+cameraFov                            = 0x002DED00; // size:0x4
+cameraRoll                           = 0x002DED04; // size:0x4
+projDistance                         = 0x004FAE00;
+savedFov                             = 0x004FAF94;
