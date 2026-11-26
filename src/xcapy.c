@@ -60,7 +60,50 @@ extern s32 D_006691D0;
 void func_002474E8(s32 a0, u8 *a1, s32 x, s32 y, f32 f);
 void func_002475D0(s32 x, s32 y, u8 *c, f32 f, char *s, s32 font);
 
-INCLUDE_ASM("asm/nonmatchings/xcapy", func_00247930);
+int sprintf(char *, const char *, ...);
+extern s32 D_00467408;
+extern char D_004917D8[];
+extern char D_004917E0[];
+extern char D_004917E8[];
+
+void func_00247930(void *arg0) {
+    u8 sp[3];
+    char sp10[0x10];
+    s32 x;
+    s32 y;
+
+    x = *(s32 *)((u8 *)arg0 + 0x24);
+    if (*(s32 *)((u8 *)arg0 + 0x2C) != 0) {
+        x += 0x67;
+    } else {
+        x += 0x5D;
+    }
+    y = *(s32 *)((u8 *)arg0 + 0x28) + 0x2B;
+    sp[0] = 0xE5;
+    sp[1] = 0x4E;
+    sp[2] = 0x19;
+    if (*(s32 *)((u8 *)arg0 + 0x2C) != 0) {
+        sprintf(sp10, D_004917D8, *(s32 *)((u8 *)arg0 + 0x50));
+        func_002475D0(x, y, sp, 0.79999998f, sp10, D_00467408);
+        x += 22;
+        func_002475D0(x, y, sp, 0.79999998f, D_004917E0, D_00467408);
+        x += 11;
+    }
+    sprintf(sp10, D_004917D8, *(s32 *)((u8 *)arg0 + 0x4C));
+    func_002475D0(x, y, sp, 0.79999998f, sp10, D_00467408);
+    x += 22;
+    func_002475D0(x, y, sp, 0.79999998f, D_004917E8, D_00467408);
+    x += 11;
+    sprintf(sp10, D_004917D8, *(s32 *)((u8 *)arg0 + 0x48));
+    func_002475D0(x, y, sp, 0.79999998f, sp10, D_00467408);
+    x += 22;
+    func_002475D0(x, y, sp, 0.79999998f, D_004917E8, D_00467408);
+    x += 5;
+    func_002475D0(x, y, sp, 0.79999998f, D_004917E8, D_00467408);
+    x += 9;
+    sprintf(sp10, D_004917D8, *(s32 *)((u8 *)arg0 + 0x44));
+    func_002475D0(x, y, sp, 0.79999998f, sp10, D_00467408);
+}
 #else
 typedef struct XCapy {
     /* 0x00 */ char unk_00[0x08];
