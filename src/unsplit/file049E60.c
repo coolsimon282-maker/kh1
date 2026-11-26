@@ -3866,7 +3866,35 @@ void func_001593F8(s32 a, s32 b, s32 c) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00159440);
+void func_00159440(u8* p, f32* a1) {
+    f32 v[4];
+    f32 w[4];
+    s32 k = 0;
+    s32 f = 0x80000100;
+
+    sceVu0CopyVector(v, (f32*)(*(u8**)(p + 0x148) + 0x160));
+    v[1] = 0.0f;
+    sceVu0Normalize(v, v);
+    if (a1[3] > 0.0f) {
+        a1[3] = 0.3f;
+        sceVu0OuterProduct(w, v, a1);
+        if (w[1] > 0.9f) {
+            f = 0x40000100;
+            k = 0xCB;
+        } else if (w[1] < -0.9f) {
+            f = 0x20000100;
+            k = 0xCE;
+        }
+    }
+    if (func_00137618(p)) {
+        func_00130398((s32)p, k | 0x40000000, 8.0f);
+    }
+    func_0012BD98(p, p[0x39E], f, p + 0x10);
+    sceVu0CopyVector((f32*)(p + 0x20), a1);
+    sceVu0ScaleVector(w, v, *(f32*)(*(u8**)(p + 0x148) + 0x16C));
+    sceVu0AddVector(w, w, (f32*)(p + 0x3C0));
+    func_001376E8_2(p, w);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001595A8);
 
