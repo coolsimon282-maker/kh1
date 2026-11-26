@@ -2884,7 +2884,41 @@ void func_0020A1D8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A248);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A518);
+void func_0020A518(u8 *a0, s32 a1, s32 *a2, s32 *a3) {
+    extern u8 D_00640F40[];
+    extern u8 D_003F3050[];
+    extern s32 func_001301D8(u8 *, s32, s32, s32);
+    extern void func_001655E0(u8 *, s32, s32, f32);
+    extern void func_00167D70(s32, f32);
+    extern s32 func_00167698(s32);
+    extern void func_00161DE8(s32, u8 *, u8 *, s32);
+    s32 i;
+    s32 n;
+    u8 *e;
+    s32 h;
+    s32 c;
+    s32 k = 0xEA61;
+
+    for (i = 0; i < (u32)D_003DE6A0; i++) {
+        n = a2[i];
+        e = D_003F3530 + n * 0xD0;
+        if (*(s32 *)(e + 0xCC) != 0) {
+            h = func_001301D8(e + 0x18, a1, 0, 0);
+            func_001655E0(D_003F3050 + n * 64, *(s32 *)(e + 0x14), h, *(f32 *)(e + 0x70));
+            *(f32 *)(e + 0x70) += D_002B8344;
+            func_00167D70(*(s32 *)(e + 0x14), D_002B8344);
+            if ((f32)func_00167698(h) <= *(f32 *)(e + 0x70)) {
+                *(s32 *)(e + 0x70) = 0;
+            }
+            *(s32 *)(e + 0x30) = k++;
+            c = a3[i];
+            *(s32 *)(e + 0x34) = c | (*(s32 *)(a0 + 0x90) << 24) | ((c << 16) | (c << 8));
+            func_00161DE8(*(s32 *)(e + 0x14), D_00640F40 + i * 64, e + 0x28, 0);
+        } else {
+            k += 2;
+        }
+    }
+}
 
 void func_0020A6B8(void) {
 }
@@ -3352,69 +3386,6 @@ extern s32 D_lay2C40_15;
 extern s32 D_lay2C40_16;
 extern s32 D_lay2C40_17;
 extern s32 D_lay2C40_18;
-extern s32 D_lay2C40_19;
-extern s32 D_lay2C40_20;
-extern s32 D_lay2C40_21;
-extern s32 D_lay2C40_22;
-extern s32 D_lay2C40_23;
-extern s32 D_lay2C40_24;
-extern s32 D_lay2C40_25;
-extern s32 D_lay2C40_26;
-extern s32 D_lay2C40_27;
-extern s32 D_lay2C40_28;
-extern s32 D_lay2C40_29;
-extern s32 D_lay2C40_30;
-extern s32 D_lay2C40_31;
-extern s32 D_lay2C40_32;
-extern s32 D_lay2C40_33;
-extern s32 D_lay2C40_34;
-extern s32 D_lay2C40_35;
-extern s32 D_lay2C40_36;
-extern s32 D_lay2C40_37;
-extern s32 D_lay2C40_38;
-extern s32 D_lay2C40_39;
-extern s32 D_lay2C40_40;
-extern s32 D_lay2C40_41;
-extern s32 D_lay2C40_42;
-extern s32 D_lay2C40_43;
-extern s32 D_lay2C40_44;
-extern s32 D_lay2C40_45;
-extern s32 D_lay2C40_46;
-extern s32 D_lay2C40_47;
-extern s32 D_lay2C40_48;
-extern s32 D_lay2C40_49;
-extern s32 D_lay2C40_50;
-extern s32 D_lay2C40_51;
-extern s32 D_lay2C40_52;
-extern s32 D_lay2C40_53;
-extern s32 D_lay2C40_54;
-extern s32 D_lay2C40_55;
-extern s32 D_lay2C40_56;
-extern s32 D_lay2C40_57;
-extern s32 D_lay2C40_58;
-extern s32 D_lay2C40_59;
-extern s32 D_lay2C40_60;
-extern s32 D_lay2C40_61;
-extern s32 D_lay2C40_62;
-extern s32 D_lay2C40_63;
-extern s32 D_lay2C40_64;
-extern s32 D_lay2C40_65;
-extern s32 D_lay2C40_66;
-extern s32 D_lay2C40_67;
-extern s32 D_lay2C40_68;
-extern s32 D_lay2C40_69;
-extern s32 D_lay2C40_70;
-extern s32 D_lay2C40_71;
-extern s32 D_lay2C40_72;
-extern s32 D_lay2C40_73;
-extern s32 D_lay2C40_74;
-extern s32 D_lay2C40_75;
-extern s32 D_lay2C40_76;
-extern s32 D_lay2C40_77;
-extern s32 D_lay2C40_78;
-extern s32 D_lay2C40_79;
-extern s32 D_lay2C40_80;
-extern s32 D_lay2C40_81;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
 void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
@@ -3929,7 +3900,29 @@ void func_00211D28(s32 a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00211DA0);
+void func_00211DA0(void) {
+    extern s32 D_00642410;
+    extern s32 D_00641C10[];
+    extern s32 D_00642010[];
+    extern s32 D_00641BAC;
+    extern s32 Item_IsWeaponType(s32, s32);
+    extern void func_0020F290_a(u32 *, s32, s32) __asm__("func_0020F290");
+    s32 i;
+    s32 v;
+
+    D_00642410 = 0;
+    for (i = 1; i < 0x100; i++) {
+        if (*(u8 *)(i + (s32)D_003010F8 + 0x499) != 0 && Item_IsWeaponType(i, D_00641BAC)) {
+            v = D_00642410;
+            D_00642410 = v + 1;
+            D_00641C10[v] = i;
+        }
+    }
+    func_0020F290_a((u32 *)D_00641C10, 0, D_00642410 - 1);
+    for (i = 0; i < D_00642410; i++) {
+        D_00642010[i] = ((struct { u8 pad[0x499]; u8 t[0x100]; } *)D_003010F8)->t[D_00641C10[i]];
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00211ED0);
 
@@ -4271,7 +4264,42 @@ s32 func_00213E18(s32 a0) {
     return (((a0 & 0x80) << 16) | t0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00213E50);
+void func_00213E50(void *p, s32 l, s32 r, void *k) {
+    extern u32 (*D_003F3DE0[])(u32);
+    u8 *a = p;
+    s32 i;
+    s32 j;
+    u32 x;
+    u8 t;
+
+top:
+        j = r;
+        x = D_003F3DE0[(s32)k](a[(l + r) / 2]);
+        i = l;
+        for (;;) {
+            while (D_003F3DE0[(s32)k](a[i]) < x) {
+                i++;
+            }
+            while (x < D_003F3DE0[(s32)k](a[j])) {
+                j--;
+            }
+            if (i >= j) {
+                break;
+            }
+            t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+            i++;
+            j--;
+        }
+        if (l < i - 1) {
+            func_00213E50(a, l, i - 1, k);
+        }
+        if (j + 1 < r) {
+            l = j + 1;
+            goto top;
+        }
+}
 
 extern void func_00213E50(void *, s32, s32, void *);
 extern s32 D_00642C28;
