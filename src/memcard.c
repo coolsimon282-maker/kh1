@@ -106,7 +106,86 @@ void memcard_Initialize(void) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/memcard", func_00233AC8);
+int sceMcGetInfo(int, int, int *, int *, int *);
+int sceMcGetSlotMax(int);
+int sceMcSync(int, int *, int *);
+extern s32 D_00425CD0[2];
+extern s32 D_00425C08[2];
+extern s32 D_00647FB0;
+extern s32 D_00647FB4;
+extern s32 D_00647FB8;
+extern s32 D_00647FBC;
+extern s32 D_00647FC0;
+extern s32 D_00647FC4;
+extern s32 D_00425C10;
+extern s32 D_00425C14;
+extern s32 D_006477A8;
+extern s32 D_00647FD4;
+extern s32 D_00647FD8;
+extern s32 D_00647FE8_a[14] __asm__("D_00647FE8");
+extern s32 D_00425C28_a[2][4] __asm__("D_00425C28");
+extern s32 D_00425C48_a[2][4] __asm__("D_00425C48");
+extern s32 D_00425C68_a[2][4] __asm__("D_00425C68");
+extern s32 D_00425C88_a[2][4] __asm__("D_00425C88");
+extern s32 D_00425C18;
+extern s32 D_00425C1C;
+extern s32 D_00425C20;
+extern s32 D_00647FC8;
+
+void func_00233AC8(void) {
+    s32 i, j;
+    s32 port;
+
+    for (i = 0; i < 2; i++) {
+        D_00425CD0[i] = 1;
+        D_00425C08[i] = sceMcGetSlotMax(i);
+    }
+
+    D_00647FB0 = 0;
+    D_00647FB4 = 0;
+    D_00647FB8 = 0;
+    D_00647FBC = 0;
+    D_00647FC0 = 1;
+    D_00647FC4 = 1;
+    D_00425C10 = 0;
+    D_00425C14 = 0;
+    D_006477A8 = 0;
+    D_00647FD4 = 300;
+    D_00647FD8 = 300;
+
+    for (i = 0; i < 14; i++) {
+        D_00647FE8_a[i] = 0;
+    }
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            D_00425C28_a[i][j] = 3;
+            D_00425C48_a[i][j] = 0;
+            D_00425C68_a[i][j] = 0;
+            D_00425C88_a[i][j] = 0;
+        }
+    }
+
+    for (port = 0; port < 2; port++) {
+        sceMcGetInfo(port, 0, &D_00425C18, &D_00425C1C, &D_00425C20);
+
+        sceMcSync(0, 0, &D_00647FC8);
+        switch (D_00647FC8) {
+            case 0:
+                D_00425C28_a[port][0] = 0;
+                break;
+            case -1:
+                D_00425C28_a[port][0] = 1;
+                break;
+            case -2:
+                D_00425C28_a[port][0] = 2;
+                break;
+            default:
+                D_00425C28_a[port][0] = 3;
+                break;
+        }
+    }
+}
 #else
 void memcard_SetDefaults(void) {
     s32 i, j;
@@ -1450,7 +1529,48 @@ void memcard_Chdir(void) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/memcard", func_00235950);
+extern s32 D_00648004;
+int sceMcMkdir(int, int, const char *);
+
+void func_00235950(void) {
+    s32 *st = &D_00647FB4;
+
+    switch (*st) {
+    case 0:
+        sceMcMkdir(D_00425C10, D_00425C14, D_00648020);
+        (*st)++;
+        break;
+    case 1:
+        if (sceMcSync(1, NULL, &D_00647FC8) != 0) {
+            (*st)++;
+        }
+        break;
+    case 2:
+        switch (D_00647FC8) {
+        case 0:
+            D_00648004 = 0;
+            break;
+        case -2:
+            D_00648004 = 1;
+            break;
+        case -3:
+            D_00648004 = 2;
+            break;
+        case -4:
+            D_00648004 = 3;
+            break;
+        default:
+            D_00648004 = 4;
+            break;
+        }
+        D_00647FB0_a = 0;
+        D_00647FD8 = D_00647FD4;
+        if (D_00648034_a != NULL) {
+            D_00648034_a(D_00647FC4_a);
+        }
+        break;
+    }
+}
 #else
 void memcard_Mkdir(void) {
     switch (memcardLoopStep) {
