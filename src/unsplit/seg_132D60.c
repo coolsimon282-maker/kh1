@@ -3079,7 +3079,19 @@ void func_00243DA0(s32 x, s32 y, s32 a2, s32 *c, f32 f) {
                                  ((y * 16 + 0x7400) >> 4) - 0x740, a2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243E58);
+extern s32 D_00656420;
+extern s32 D_lay243E58_0; /* unused: rule F1 (keeps func_00248238 as it was) */
+extern s32 func_001F0868(s32, s32, s32, s32, s32, s32, s32, s32);
+void func_00243E58(s32 a0, s32 a1, s32 a2, s32 *c, f32 f) {
+    u8 col[4];
+    u8 *a;
+    col[0] = c[0];
+    col[1] = c[1];
+    col[2] = c[2];
+    a = &col[3];
+    *a = f * 128.0f;
+    D_00656420 = func_001F0868(D_00656420, 1, 1, *(s32 *)col, a0, a1, a2, 12);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243EF8);
 
