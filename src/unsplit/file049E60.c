@@ -1777,7 +1777,39 @@ void func_00150DE0(s32 on) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00150EC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151010);
+/* unused: rule F1 (keeps func_00176F08; 3-4 work, 1 does not) */
+extern s32 D_151010_pad1;
+extern s32 D_151010_pad2;
+extern s32 D_151010_pad3;
+u8* func_001473A8(s32, s32, f32*);
+void func_00151010(u8* p) {
+    u8* q = *(u8**)(p + 0x144);
+    f32 r;
+    f32 t;
+
+    if (*(f32*)(p + 0x24) > 0.0f) {
+        *(s32*)p &= ~0x20;
+        if (!(*(s32*)(p + 0x2D0) & 1)) {
+            if (*(f32*)(p + 0x24) > 5.0f) {
+                r = *(f32*)(p + 0x24) / 20.0f;
+                if (r > 0.5f) {
+                    *(f32*)(q + 0x24) = 1.0f - r * 0.2f;
+                }
+                *(f32*)(p + 0x24) *= -0.8f;
+                func_001473A8(0x32, 0, (f32*)(p + 0x10));
+            } else {
+                sceVu0CopyVector((f32*)(p + 0x20), D_002C58A0);
+            }
+        }
+    }
+    t = *(f32*)(p + 0x24) + 3.0f;
+    *(f32*)(p + 0x24) = t;
+    if (t > 20.0f) {
+        *(f32*)(p + 0x24) = 20.0f;
+    }
+    *(f32*)(p + 0x20) *= 0.95f;
+    *(f32*)(p + 0x28) *= 0.95f;
+}
 
 extern s32 D_151148_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
 void func_00151148(u8* p) {
