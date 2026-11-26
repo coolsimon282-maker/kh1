@@ -506,3 +506,41 @@ s32 func_0024E078(void) {
 void func_0024E088(s32 x) {
     D_0046A67C = x;
 }
+
+// .data (0x0046A608-0x0046A6B0); the same layout as JP's disk.c (JP names in the comments)
+typedef struct {
+    /* 0x00 */ void* (*unk_00)(void);
+    /* 0x04 */ void* (*getGamecode)(void);
+    /* 0x08 */ void* (*unk_08)(void);
+    /* 0x0C */ void* (*unk_0C)(void);
+    /* 0x10 */ s32 isMounted;
+    /* 0x14 */ void* (*getImgName)(void);
+    /* 0x18 */ s32 (*unk_18)(void);
+    /* 0x1C */ s32 (*unk_1C)(void);
+    /* 0x20 */ void (*unk_20)(s32);
+} XDiskMgr; // JP: DiskManager (include/disk.h); read here through A2Mount / A2MountF
+
+#define DATA_LABEL(name, base, off) __asm__(".globl " #name "\n" #name " = " #base " + " #off)
+
+s32 D_0046A608 = 0; // disk_BlockSize
+s32 D_0046A60C = 0;
+s32 D_0046A610 = 0;
+s32 D_0046A614 = 0;
+s32 D_0046A618 = 0; // disk_Timer
+u8 D_0046A620[] = "128M";                    // disk_SectorSize
+u8 D_0046A628[] = "PP.SLPS-25198.0.KINGDOM"; // disk_Gamecode
+u8 D_0046A640[] = "haneman0";
+u8 D_0046A650[] = "mangan01";
+u8 D_0046A660[] = "pfs0:kingdom.img";        // disk_ImgName
+s32 D_0046A674 = 0;
+s32 D_0046A678 = 0;
+s32 D_0046A67C = 0;
+s32 D_0046A680 = 0;
+XDiskMgr disk_Mgr_fm __asm__("D_0046A688") = { // disk_Mgr
+    func_0024D8A0, func_0024D8B0, func_0024D8C0, func_0024D8D0, 0,
+    func_0024D8E0, func_0024DDF8, func_0024E078, func_0024E088,
+};
+DATA_LABEL(D_0046A68C, D_0046A688, 0x4);  // .getGamecode
+DATA_LABEL(D_0046A6A4, D_0046A688, 0x1C); // .unk_1C (xblade)
+DATA_LABEL(D_0046A6A8, D_0046A688, 0x20); // .unk_20 (xkingdom)
+s32 D_0046A6AC = 0;
