@@ -1,3 +1,7 @@
+/**
+ * Seven fixed work buffers in .bss, numbered 0-6 (0xC0, 0x100, 0x40, 0x40, 0x1400, 0x40 and 0x40 quadwords, one
+ * after the other), cleared and looked up by number.
+ */
 #include "common.h"
 
 s32 D_003F2080;
@@ -8,6 +12,7 @@ s32 D_003F4480;
 s32 D_00408480;
 s32 D_00408880;
 
+// Clears work buffer arg0 (-1: all of them); returns -1 for an unknown number.
 s32 WorkBuffers_Clear(s32 arg0) {
     s32* puVar1;
     int i;
@@ -74,6 +79,7 @@ s32 WorkBuffers_Clear(s32 arg0) {
     }
 }
 
+// Returns the address of work buffer arg0 (NULL for an unknown number).
 void* WorkBuffers_Get(s32 arg0) {
     switch (arg0) {
         case 0:

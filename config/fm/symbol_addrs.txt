@@ -162,6 +162,21 @@ Fade_StartIrisClose                  = 0x001065A8; // type:func
 Fade_StartIrisOpen                   = 0x00106648; // type:func
 
 
+//=========================================================
+// xowl.c
+//=========================================================
+Interpolation_StartVector            = 0x001224C8; // type:func
+Light_CalcAmbient                    = 0x00122588; // type:func
+Light_Add                            = 0x001226F0; // type:func
+Light_GetDirMatrix                   = 0x00122770; // type:func
+Light_GetColorMatrix                 = 0x001229C0; // type:func
+LightTask_Update                     = 0x00122AB0; // type:func
+Light_ClearTemporary                 = 0x00122C08; // type:func
+Light_DisableTemporary               = 0x00122C70; // type:func
+Light_EnableAll                      = 0x00122CB8; // type:func
+Light_Initialize                     = 0x00122CF0; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
@@ -198,6 +213,13 @@ ppvMngTbl                            = 0x00364130; // size:0xC000
 fadeScreenColor                      = 0x002BC070; //
 fadeOverlayAlpha                     = 0x002BC0BC; //
 fadeTaskList                         = 0x002BC720; //
+
+
+//=========================================================
+// xowl.c (data)
+//=========================================================
+lightTbl                             = 0x002C5C80; // size:0x7C0
+interpTaskList                       = 0x004F6EC0;
 
 
 ///////////////////////////////////////////////////////////

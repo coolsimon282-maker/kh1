@@ -136,3 +136,15 @@ other functions (rule F1).
 | fadeScreenColor | 0x002BC070 | xpancake.c | screen brightness RGBA (0..128) the screen fade tasks write; was D_002B85C0 |
 | fadeOverlayAlpha | 0x002BC0BC | xpancake.c | overlay alpha (0..128) the overlay fade tasks write; was D_002B860C |
 | fadeTaskList | 0x002BC720 | xpancake.c | task list (xgoblin.c) every fade task is added to; was D_002B8C70 |
+| Interpolation_StartVector | 0x001224C8 | xowl.c | Moves vec[3] to target over time (at once if time <= 0), calling done when it gets there. |
+| Light_CalcAmbient | 0x00122588 | xowl.c | Computes an object's ambient colour and the mask of directional/point/spot lights that reach it. |
+| Light_Add | 0x001226F0 | xowl.c | Takes a free light, sets its type, flags and unk_08 and a default colour; returns it (NULL if none is free). |
+| Light_GetDirMatrix | 0x00122770 | xowl.c | Builds the light direction matrix for an object at pos from the lights in its mask (spot/point falloff included). |
+| Light_GetColorMatrix | 0x001229C0 | xowl.c | Builds the light colour matrix for an object from the lights in its mask, ambient colour in row 3. |
+| LightTask_Update | 0x00122AB0 | xowl.c | Per-frame task: runs the interpolation tasks, recomputes the global ambient colour and handles type 3 lights. |
+| Light_ClearTemporary | 0x00122C08 | xowl.c | Frees every temporary light (flag 8) and resets the interpolation tasks. |
+| Light_DisableTemporary | 0x00122C70 | xowl.c | Sets flag 0x10 (ignored) on every temporary light. |
+| Light_EnableAll | 0x00122CB8 | xowl.c | Clears flag 0x10 on every light. |
+| Light_Initialize | 0x00122CF0 | xowl.c | Clears every light, adds the default directional light (0, 1, 0, white) and starts LightTask_Update. |
+| lightTbl | 0x002C5C80 | xowl.c | the 31 lights (0x40 bytes: type, flags, range, position, direction, colour) every Light_ function walks; was D_002C5C80 |
+| interpTaskList | 0x004F6EC0 | xowl.c | task list of the vector interpolation tasks (Interpolation_Initialize); was D_004FA670 |

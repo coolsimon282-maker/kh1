@@ -121,7 +121,7 @@ void* TaskSystem_AddTask(s32 arg0, s32 (*func)(void)) {
     return TaskList_Add(&D_004DD188, arg0, func);
 }
 
-// Looks a task up by its function in the main task list (the result is not used).
+// Returns the main-list task that runs func, 0 if none (callers use the result; the C here is void).
 void TaskSystem_FindTask(s32 arg0) {
     TaskList_FindByFunc(&D_004DD188, arg0);
 }

@@ -72,7 +72,7 @@ typedef struct AppleCore {
 } AppleCore;
 
 s32 func_001009A8();
-void* func_00122AF8(s32, s32, s32);
+void* Light_Add(s32, s32, s32);
 s32 Interpolation_ClearValue(void*);
 extern f32 D_002B8340[];
 extern LargeApple* D_00532504;
@@ -513,7 +513,7 @@ s32 func_0013B480(OtherApple* arg0) {
     f32 temp_f2;
 
     if (arg0->unk_00 & 0x10) {
-        D_0052AD54.p = func_00122AF8(1, 9, 0);
+        D_0052AD54.p = Light_Add(1, 9, 0);
         D_0052AD54.p->unk_30[0] = D_0052AD54.p->unk_30[1] = D_0052AD54.p->unk_30[2] = 0.0f;
         D_0052AD54.p->unk_3C = 1.0f;
         func_001009A8();

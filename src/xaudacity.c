@@ -1217,10 +1217,10 @@ void func_0012AC78(XAudArg* arg0) {
     }
 }
 
-s32 func_00122AF8(s32, s32, s32);
+s32 Light_Add(s32, s32, s32);
 
 void func_0012ACA8(XAudArg* arg0) {
-    arg0[0].s = func_00122AF8(arg0[0].s, arg0[1].s | 8, arg0[2].s);
+    arg0[0].s = Light_Add(arg0[0].s, arg0[1].s | 8, arg0[2].s);
 }
 
 void Interpolation_ClearValue(void*);
@@ -1229,16 +1229,16 @@ void func_0012ACE0(XAudArg* arg0) {
     Interpolation_ClearValue(arg0[0].p);
 }
 
-void func_001228C8(void*, void*, f32, void*);
+void Interpolation_StartVector(void*, void*, f32, void*);
 
 void func_0012ACF8(XAudArg* arg0) {
-    func_001228C8(arg0[0].p, arg0[1].p, arg0[2].f, NULL);
+    Interpolation_StartVector(arg0[0].p, arg0[1].p, arg0[2].f, NULL);
 }
 
 extern s32 D_002C5C60;
 
 void func_0012AD20(XAudArg* arg0) {
-    func_001228C8(arg0[0].p, &D_002C5C60, arg0[1].f, Interpolation_ClearValue);
+    Interpolation_StartVector(arg0[0].p, &D_002C5C60, arg0[1].f, Interpolation_ClearValue);
 }
 
 void func_00142058(void*);

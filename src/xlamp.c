@@ -135,7 +135,7 @@ void func_001227B0(void) {
     func_00146830();
     func_00149008();
     func_0012B5D8();
-    func_00123020();
+    Light_ClearTemporary();
     func_0014C450();
     func_001355B8();
     func_0012FB50();

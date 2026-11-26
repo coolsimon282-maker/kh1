@@ -25,7 +25,7 @@ typedef struct {
 } PRyjLight;
 
 extern f32 D_003701D0[4];
-RyjLight* func_00122AF8(u8 type, s32 flags, s32 arg2);
+RyjLight* Light_Add(u8 type, s32 flags, s32 arg2);
 
 void pppRyjLightCalc(pppPObject* pobj, PRyjLight* p, pppCtrlTable* ctbl) {
     VRyjLight* v = (VRyjLight*)&pobj->val[ctbl->useVal[2]];
@@ -46,7 +46,7 @@ void pppRyjLightCalc(pppPObject* pobj, PRyjLight* p, pppCtrlTable* ctbl) {
     }
     light = v->unk_00;
     if (light == NULL) {
-        v->unk_00 = func_00122AF8(p->type, flags, 0);
+        v->unk_00 = Light_Add(p->type, flags, 0);
         if (v->unk_00 == NULL) {
             return;
         }
