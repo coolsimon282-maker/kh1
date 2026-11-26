@@ -73,6 +73,45 @@ typedef struct {
     s64 unk_B8;
 } XPancakePkt;
 extern XPancakePkt D_002A6AB0;
+
+#ifdef VERSION_FM
+#include "libdma.h"
+
+// .data (0x002A69E0-0x002A6B80): three GIF packets and the DMA ref tags func_00106948 sends them with (the code
+// sees the tags as u8[] and the third packet as XPancakePkt, so they are defined under their assembler names)
+u64 D_002A69E0[12] = {
+    0x2000000000000001ULL, 0xEE,
+    0xFFFFFF000800D0ULL, 0x4C,
+    0x30000, 0x47,
+    0x4420000000008001ULL, 0x5510,
+    0x6, 0x180808080ULL,
+    0xFFFFFFFE74007000ULL, 0xFFFFFFFE8C009000ULL,
+};
+sceDmaTag D_002A6A40_t __asm__("D_002A6A40") = {6, 0, 0, (sceDmaTag*)D_002A69E0};
+u64 D_002A6A50[10] = {
+    0x1000000000000001ULL, 0xE,
+    0x3C000, 0x47,
+    0x4420400000008001ULL, 0x5510,
+    0x6, 0x180000000ULL,
+    0xFFFFFFFE74007000ULL, 0xFFFFFFFE8C009000ULL,
+};
+sceDmaTag D_002A6AA0_t __asm__("D_002A6AA0") = {5, 0, 0, (sceDmaTag*)D_002A6A50};
+u64 D_002A6AB0_d[24] __asm__("D_002A6AB0") = {
+    0x7000000000000001ULL, 0xEEEEEEE,
+    0x0, 0x3F,
+    0x800D0, 0x4C,
+    0x200740061D40B600ULL, 0x6,
+    0x60, 0x14,
+    0x44, 0x42,
+    0x5, 0x8,
+    0x3000F, 0x47,
+    0x6400000000008001ULL, 0x535310,
+    0x156, 0x180808080ULL,
+    0x80008, 0xFFFFFFFE7FF27FF3ULL,
+    0xDF807F8, 0xFFFFFFFE800D800CULL,
+};
+sceDmaTag D_002A6B70_t __asm__("D_002A6B70") = {12, 0, 0, (sceDmaTag*)D_002A6AB0_d};
+#endif
 s32 func_00106230(void) {
     s32 n;
     f32 t;

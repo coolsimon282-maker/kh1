@@ -484,6 +484,8 @@ segments:
 
   ## .data section ##
   - [ 0x172c70, data ]
+  - [ 0x1a69e0, .data, xpancake ]
+  - [ 0x1a6b80, data ]
   - [ 0x1b6460, .data, xarcade ]
   - [ 0x1b6780, .data, xnoodle ]
   - [ 0x1bb5c0, .data, xsauce ]
