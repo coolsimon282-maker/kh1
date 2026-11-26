@@ -85,6 +85,8 @@ segments:
   - [ 0x2b2c0, c, unsplit/seg_02B2C0 ]
   - [ 0x3abf8, c, xapple ]
   - [ 0x3bde8, c, unsplit/seg_03BDE8 ]
+  - [ 0x49b40, c, unsplit/xsquash ]
+  - [ 0x49e60, c, unsplit/file049E60 ]
   - [ 0x7f910, c, ppp/pppMngr ]
   - [ 0x83b98, c, ppp/pppDummy ]
   - [ 0x83be0, c, ppp/stdProg/pppGetRotMatrixXYZ ]
