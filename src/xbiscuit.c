@@ -1095,7 +1095,79 @@ void func_001F3718(s32** arg0, s32** arg1) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2EB8);
+extern u64 D_003F1A70[];
+extern u64 D_003F1E70[];
+extern u64 D_003F27D0[];
+void GsPacket_SetDmaTag(u_long128 *arg0, s32 arg1, u_long128 *arg2);
+void func_001F3110(void);
+
+void func_001F2EB8(void) {
+    u64 *p;
+    u64 *dma;
+
+    p = D_003F1A70;
+    dma = p;
+    p += 2;
+    p[0] = 0x1000000000008001;
+    p[1] = 0xE;
+    p += 2;
+    p[0] = 0x4000D;
+    p[1] = 0x47;
+    p += 2;
+    GsPacket_SetDmaTag((u_long128 *)dma, 7, (u_long128 *)p);
+    GsPacket_LoadImage(0x3D7C, 4, 0x14, 0, 0, 0x100, 0x100, 0x800, D_003E9660, D_003F2670);
+    GsPacket_LoadImage(0x3DFC, 1, 0, 0, 0, 0x10, 0x10, 0x40, D_003F1660, D_003F2720);
+    p = D_003F1E70;
+    dma = p;
+    p += 2;
+    p[0] = 0x1000000000008004;
+    p[1] = 0xE;
+    p += 2;
+    p[0] = 0x4000D;
+    p[1] = 0x47;
+    p += 2;
+    p[0] = 0;
+    p[1] = 0x3F;
+    p += 2;
+    p[0] = 0x2007BF8621413D7C;
+    p[1] = 6;
+    p += 2;
+    p[0] = 0x61;
+    p[1] = 0x14;
+    p += 2;
+    GsPacket_SetDmaTag((u_long128 *)dma, 7, (u_long128 *)p);
+    p = (u64 *)D_003F2270;
+    dma = p;
+    p += 2;
+    p[0] = 0x1000000000008004;
+    p[1] = 0xE;
+    p += 2;
+    p[0] = 0x4000D;
+    p[1] = 0x47;
+    p += 2;
+    p[0] = 0;
+    p[1] = 0x3F;
+    p += 2;
+    p[0] = 0x2007FF8622411000;
+    p[1] = 6;
+    p += 2;
+    p[0] = 0x61;
+    p[1] = 0x14;
+    p += 2;
+    GsPacket_SetDmaTag((u_long128 *)dma, 7, (u_long128 *)p);
+    p = D_003F27D0;
+    dma = p;
+    p += 2;
+    p[0] = 0x1000000000008001;
+    p[1] = 0xE;
+    p += 2;
+    p[0] = 0x5000D;
+    p[1] = 0x47;
+    p += 2;
+    GsPacket_SetDmaTag((u_long128 *)dma, 7, (u_long128 *)p);
+    D_003F1A68 = 0;
+    func_001F3110();
+}
 #else
 INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F3738);
 #endif
