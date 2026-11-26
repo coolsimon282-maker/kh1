@@ -4107,7 +4107,16 @@ void func_002474E8(s32 a0, u8 *a1, s32 x, s32 y, f32 f) {
     D_006691D0 = func_002388B8((u8 *)&D_006691E0_o, 1, D_006691D0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002475D0);
+extern s32 D_006691D0;
+s32 func_001F12C0(s32, s32, s32, s32, s32, s32, s32);
+void func_002475D0(s32 x, s32 y, u8 *c, f32 f, char *s, s32 font) {
+    u8 col[4];
+    col[0] = *c++;
+    col[1] = *c++;
+    col[2] = *c;
+    col[3] = f * 128.0f;
+    D_006691D0 = func_001F12C0(D_006691D0, 1, *(s32 *)col, x, y, (s32)s, font);
+}
 
 void func_00247678(s32 arg0, s32 *arg1, s32 *arg2) {
     *arg1 = arg0 / 10;
