@@ -260,7 +260,54 @@ void func_00231EA0(u8 *a0) {
     func_001FB428((s32)a0, 1, 0, 0, x + 0x21, 0x10D, func_001F03A0(item), 0xF, 0x80808080);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file1319D0", func_00232390);
+extern u8 D_003F7D88[];
+void func_00205B30(u8 *, u8 *);
+s32 func_00207CA0(s32);
+void func_001FB428(u8 *, s32, s32, s32, s32, s32, s32, s32, s32);
+void func_00207D60(u8 *, s32, s32, s32, s32, s32, s32);
+typedef struct { u8 pad[9]; u8 a[1]; } V232390;
+
+void func_00232390(u8 *a0) {
+    s32 i;
+    u8 *p;
+    u8 *c;
+    u16 *t;
+    s32 n;
+    s32 y;
+    s32 id;
+    s32 need;
+    s32 have;
+    s32 col;
+    s32 r;
+
+    p = D_003F7D88;
+    for (i = 0; i < 7U; i++) {
+        func_00205B30(a0, p);
+        p += 0x20;
+    }
+    func_001FC308((s32)a0, 0xB, 0xD, 0, 0, 0x3D, 0, 0x80009100, 0x8027E4D4);
+    func_001F9438((s32)a0, 1, 0x1EA, 0xB, 0x1AA, 0xF, 0x4D508B2E);
+    y = 0x3F;
+    func_001F9438((s32)a0, 0, 0x2C, 0x2A, 0x1AB, 0xF, 0x80C8C8C8);
+    func_001F9438((s32)a0, 0, 0x10F, 0x2A, 0x1AC, 0xF, 0x80C8C8C8);
+    func_001F9438((s32)a0, 1, 0x1E4, 0x2A, 0x1AD, 0xF, 0x80C8C8C8);
+    c = (u8 *)&D_003F7C48[D_0064765C * 3];
+    t = &D_003F7A70[c[2] * 2];
+    n = c[3];
+    for (i = 0; i < n; i++) {
+        id = t[0];
+        need = t[1];
+        t += 2;
+        have = ((V232390 *)D_003010F8)->a[id + 0x490];
+        col = (have < need) ? 2 : 0;
+        func_0020DD38(a0, col, 0xF7, y, 0xC2, id);
+        r = func_00207CA0(0);
+        func_001F9438((s32)a0, 0, 0x190, y + 7, 0x55, 0xC, r);
+        func_001FB428(a0, 0, 1, 0, 0x1A2, y + 7, need, 0xC, r);
+        func_00207D60(a0, col, 0x1BD, y, 0x1E0, have, 0xC);
+        y += 0x1C;
+    }
+}
 
 s32 func_002325F8(void) {
     if (func_001F40C8() != 0) {
