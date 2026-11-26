@@ -16,8 +16,15 @@ typedef struct XDuck {
     /* 0x1C */ char unk_1C[0x2C];
 } XDuck; // size = 0x48
 
+#ifdef VERSION_FM
+// .data (0x003E3C80-0x003E3CB8)
+s32 D_003DE5B8 = 0;
+sceSifClientData D_003DE5C0 = {{0}};
+s32 D_003E3CB0 = 0;
+#else
 s32 D_003DE5B8;
 sceSifClientData D_003DE5C0;
+#endif
 
 void* D_0062D980;
 XDuck D_00639180[3];
