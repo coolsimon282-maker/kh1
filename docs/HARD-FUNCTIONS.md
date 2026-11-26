@@ -4,7 +4,16 @@ Snapshot of `fm` on 25 Nov 2026: every game function in the **hard** tier that i
 
 Tiers come from `eu-notes/tiers.py` (size, branches, calls, float and 64-bit work, earlier give-ups). The score is its difficulty estimate: higher is harder. "Notes" names the `notes/*.md` files that mention the function: read those first, they usually say exactly what was off.
 
-Also to redo: `func_0020E1C0` and `func_001F81E8` (seg_0EF950) matched on branch fm-q1 but were reverted in `fm` on 25 Nov because together with fm-a5's matches they moved func_00211840, func_002122B8 and func_002145D8 by 8 bytes each (rule F1). They need an F1 pad fix (see notes/a5.md: in seg_0EF950 the pad name length matters).
+## Matches set aside in merges (redo first)
+
+These match on their own branch, but combined with other workers' matches in the same file they moved other functions (rule F1), so `fm` keeps the file without them. Each needs an F1 pad/layout fix (notes/a1.md N4/N7, notes/a4.md F24, notes/a5.md on pad name length). The C is on the named branch.
+
+| File | Functions | Branch |
+|---|---|---|
+| `unsplit/seg_0EF950` | `func_0020E1C0`, `func_001F81E8` | fm-q1 |
+| `unsplit/seg_11AC38` | `func_0021D948`, `func_002204F0`, `func_00225C30`, `func_00230728` | fm-q1 |
+| `unsplit/seg_132D60` | `func_0023A608` | fm-a4 |
+| `unsplit/seg_03BDE8` | `func_00147D50`, `func_00149BD0`, `func_0014F868`, `func_00152688`, `func_001590A8`, `func_00159350`, `func_00162428` | fm-q1 |
 
 ## By file
 
