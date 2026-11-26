@@ -533,6 +533,8 @@ segments:
   - [ 0x2e3c80, .data, xquack ]
   - [ 0x2e3cb8, .data, xtango ]
   - [ 0x2e4658, data ]
+  - [ 0x2f4050, .data, xpotato ]
+  - [ 0x2f47f0, data ]
   - [ 0x36ae28, data, lib/libc/mlock ]
   - [ 0x36ae30, data, lib/libc/locale ]
   - [ 0x36ae58, .data, lib/libkernl/filestub ]
