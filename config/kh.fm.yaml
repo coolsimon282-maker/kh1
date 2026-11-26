@@ -331,7 +331,8 @@ segments:
   - [ 0xec7c0, c, xquack ]
   - [ 0xedc50, c, unsplit/seg_0EDC50 ]
   - [ 0xee118, c, xtango ]
-  - [ 0xef950, c, unsplit/seg_0EF950 ]
+  - [ 0xef950, c, unsplit/xbiscuit ]
+  - [ 0xf3110, c, unsplit/file0F3110 ]
   - [ 0x116180, c, xpotato ]
   - [ 0x119f98, c, xrodent ]
   - [ 0x11ac38, c, unsplit/seg_11AC38 ]
@@ -585,7 +586,7 @@ segments:
   - [ 0x38fe80, rodata ]
   - [ 0x390320, .rodata, xkinetic ]
   - [ 0x390340, rodata ]
-  - [ 0x390b10, .rodata, unsplit/seg_0EF950 ] # jump tables of func_001F4570 / func_001F45E0
+  - [ 0x390b10, .rodata, unsplit/file0F3110 ] # jump tables of func_001F4570 / func_001F45E0
   - [ 0x390b70, rodata ]
   - [ 0x390eb0, .rodata, xpotato ]
   - [ 0x390f10, .rodata, xrodent ]
