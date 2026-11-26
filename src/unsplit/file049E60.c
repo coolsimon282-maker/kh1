@@ -6904,7 +6904,67 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0016FD98);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00170170);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00170400);
+extern void (*D_0035BC80[])(u8*, s32*);
+extern u8 D_0035AE80[];
+typedef struct { s32 a; s32 b; } S170400;
+void func_00170400(u8* p) {
+    s32* o;
+    s32* e;
+    u16 k;
+    s32 i;
+    s32 n;
+    u8* b;
+    s32* q;
+
+    *(u64*)(*(u8**)(p + 0x148) + 0x30) &= ~0x100000000ULL;
+    *(s32*)(*(u8**)(p + 0x14C) + 0x2C) = 0;
+    k = *(u16*)(*(u8**)(p + 0x130) + 0x4C);
+    o = (s32*)func_00121C98(0x260, p + 0x144);
+    memset(o, 0, 0x260);
+    o[0] = -1;
+    for (i = 0; i < 3; i++) {
+        if (((u8**)&D_002E26A0)[i] == p) {
+            o[0] = i;
+            break;
+        }
+    }
+    if (D_0035BC80[k] != 0) {
+        D_0035BC80[k](p, o);
+    }
+    b = D_0035AE80;
+    if (o[7] == 0) {
+        o[6] = 0;
+    }
+    e = (s32*)(b + ((s32*)b)[k]);
+    if (e[0] == 0) {
+        o[1] = (s32)(b + 0x28);
+    } else {
+        o[1] = (s32)(e[0] + b);
+    }
+    if (e[1] == 0) {
+        o[2] = (s32)(b + 0x40);
+    } else {
+        o[2] = (s32)(b + e[1]);
+    }
+    if (e[2] == 0) {
+        o[3] = (s32)(b + 0x5C);
+    } else {
+        o[3] = (s32)(b + e[2]);
+    }
+    if (e[3] == 0) {
+        o[4] = 0;
+        o[5] = 0;
+    } else {
+        *(S170400*)(o + 4) = *(S170400*)(b + e[3]);
+        o[5] = (s32)(b + o[5]);
+    }
+    n = e[4];
+    q = e + 5;
+    for (i = 0; i < n; i++) {
+        *(s32*)((u8*)o[7] + i * 16 + 0xC) = (s32)(b + q[i]);
+    }
+    func_0016F7B8();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001705C0);
 
