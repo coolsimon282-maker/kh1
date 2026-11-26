@@ -430,7 +430,47 @@ s32 ScriptOp_StoreLocal(Script* arg0, s32 arg1) {
 }
 
 // Opcode 13 STORE_VAR8.
-INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar8);
+s32 ScriptOp_StoreVar8(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
+
+    if (arg1 < 0x800) {
+        *(u8*)(b1 + arg1) = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 2);
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0x900) {
+        arg1 -= 0x800;
+        *(u8*)(arg1 + b1 + 0x800) = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 2);
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0xB00) {
+        arg1 -= 0x900;
+        if ((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1) {
+            D_0038B4C4[arg1] = arg0->unk_174[arg0->unk_174[3] + 4];
+        } else {
+            D_0038ACC4[arg1] = arg0->unk_174[arg0->unk_174[3] + 4];
+        }
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0xC80) {
+        *(u8*)(arg1 + b1 - 0x200) = arg0->unk_174[arg0->unk_174[3] + 4];
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0xCC0) {
+        arg1 -= 0xC80;
+        D_003C39B0[arg1] = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 2);
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0xD00) {
+        arg1 -= 0xCC0;
+        D_003C39F0[arg1] = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 2);
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0xD40) {
+        arg1 -= 0xD00;
+        D_003C3A30[arg1] = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 2);
+        arg0->unk_174[3]--;
+    } else {
+        arg1 -= 0xD40;
+        *(u8*)(b2 + arg1) = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 2);
+        arg0->unk_174[3]--;
+    }
+    return 2;
+}
 
 // Opcode 15 STORE_VAR16.
 INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar16);
