@@ -2301,7 +2301,25 @@ void func_002292A8(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00229338);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002293F0);
+extern u8 *D_00643718;
+void func_002293F0(u8 *a0) {
+    u8 *e[2];
+    u8 *p;
+    u16 v;
+    if ((e[0] = func_001F3A20(D_003F6CE0, 6)) != NULL) {
+        func_001F4690(e[0], (u8 *)a0);
+        p = e[0];
+        v = D_00643730;
+        *(u16 *)(p + 0xCE) = v;
+        *(u16 *)(p + 0xCC) = v;
+        *(s16 *)(p + 0xD2) = *(u16 *)&D_006436D0 * 16;
+        if ((e[1] = func_001F3A20(D_003F6CA0, 6)) != NULL) {
+            func_001F4690(e[1], e[0]);
+            func_001F3DC0(e[0]);
+        }
+    }
+    D_00643718 = a0;
+}
 
 void func_00229490(u8 *a0) {
     u8 *e[3];
@@ -4046,8 +4064,7 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used. After q1's func_00225C30 (25 Nov): 48, 51, 52 among 0-70 (quick check), 51 used; after func_0021D948: only 16; after func_002204F0: 90. Check the code, not just the size: work/layoutn2.sh-style scan; after the fm merge into fm-q1 (with layout_fn_229EC0 above) the first match among 0-120 was 1: 1 used). */
-extern s32 D_231EA0_layout0;
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used. After q1's func_00225C30 (25 Nov): 48, 51, 52 among 0-70 (quick check), 51 used; after func_0021D948: only 16; after func_002204F0: 90. Check the code, not just the size: work/layoutn2.sh-style scan; after the fm merge into fm-q1 (with layout_fn_229EC0 above) the first match among 0-120 was 1: 1 used; after func_002293F0 (26 Nov, qc2 scan): 0 used). */
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
