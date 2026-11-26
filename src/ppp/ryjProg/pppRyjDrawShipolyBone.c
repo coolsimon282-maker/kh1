@@ -17,7 +17,139 @@ void pppRyjDrawShipolyBoneCalc(void) {
 
 INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", func_0019D100);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawShipolyBone", pppRyjDrawShipolyBoneDraw);
+// parameter block for op1_md_draw
+typedef struct {
+    /* 0x00 */ s32 mode;
+    /* 0x04 */ void* unk_04;
+    /* 0x08 */ u16 flag;
+    /* 0x0A */ u8 unk_0A;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ u64 unk_10;
+    /* 0x18 */ u8 col[4];
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ FMATRIX* dmat;
+    /* 0x24 */ void* unk_24;
+    /* 0x28 */ void* unk_28;
+    /* 0x2C */ FMATRIX* cmat;
+    /* 0x30 */ FMATRIX* unk_30;
+    /* 0x34 */ s32 unk_34;
+    /* 0x38 */ pppSVECTOR* lpvert;
+    /* 0x3C */ pppSVECTOR* lpnorm;
+    /* 0x40 */ s32 unk_40;
+    /* 0x44 */ FMATRIX* unk_44;
+    /* 0x48 */ s32 unk_48;
+    /* 0x4C */ u8 unk_4C;
+    /* 0x4D */ u8 unk_4D;
+    /* 0x4E */ char pad[0x12];
+} MdPrmB;
+
+typedef struct {
+    /* 0x00 */ pppCDT cdt;
+    /* 0x04 */ u32 index;
+    /* 0x08 */ u8 flag;
+    /* 0x09 */ u8 unk_09;
+    /* 0x0A */ u8 unk_0A;
+    /* 0x0B */ u8 unk_0B;
+    /* 0x0C */ u8 unk_0C;
+    /* 0x0D */ u8 pad_0D[8];
+    /* 0x15 */ u8 pad_15[0xF];
+    /* 0x24 */ u8 unk_24;
+} PRyjDrawShipolyB;
+
+typedef struct {
+    /* 0x0 */ char unk_00[8];
+    /* 0x8 */ u8 col[4];
+} VRyjDrawShipolyBC;
+
+extern char D_00616240[];
+extern char D_00616140[];
+extern char D_00616100[];
+extern s32 D_00616224;
+extern sceVu0FMATRIX D_00616180;
+extern sceVu0FVECTOR D_003701D0;
+s32 op1_md_draw(OMD_H* omd, MdPrmB* prm, s32 size);
+
+void func_0019D100(pppPObject* pobj, PRyjDrawShipolyB* p, pppCtrlTable* ctbl);
+extern u8* D_002E26A0;
+
+void pppRyjDrawShipolyBoneDraw(pppPObject* pobj, PRyjDrawShipolyB* p, pppCtrlTable* ctbl) {
+    u8* obj;
+    VRyjDrawShipolyBC* v;
+    pppModelSt* mdl;
+    OMD_H* omd;
+    pppPObject* next;
+    MdPrmB prm;
+    sceVu0FMATRIX m;
+
+    func_0019D100(pobj, p, ctbl);
+    if (p->index == 0xFFFF) {
+        return;
+    }
+    v = (VRyjDrawShipolyBC*)&pobj->val[ctbl->useVal[0]];
+    obj = D_002E26A0;
+    if (*(u8**)ppvMng->unk_A0 != NULL) {
+        obj = *(u8**)ppvMng->unk_A0;
+    }
+    prm.col[3] = v->col[3];
+    if (prm.col[3] == 0) {
+        return;
+    }
+    mdl = &ppvEnv->lpModel[p->index];
+    omd = mdl->omd;
+    prm.mode = 0;
+    if (p->flag & 2) {
+        prm.mode = 4;
+        if (!(omd->flag & 1)) {
+            prm.mode |= 8;
+        }
+    } else {
+        if (p->flag & 1) {
+            prm.mode = 0x80;
+        }
+        if (!(omd->flag & 1)) {
+            prm.mode |= 8;
+        }
+    }
+    if (!(omd->flag & 2)) {
+        prm.mode |= 0x10;
+    }
+    if (p->unk_09) {
+        prm.mode |= 0x200;
+    }
+    if (p->unk_0B) {
+        prm.mode |= 0x100;
+    }
+    if (p->unk_0A) {
+        prm.mode |= 0x2000;
+        prm.unk_30 = (FMATRIX*)m;
+        sceVu0MulMatrix(m, ppvWorldMatrix, ppvPObj.next->cmat);
+    }
+    prm.unk_44 = 0;
+    next = ppvPObj.next;
+    prm.flag = *(u16*)&omd->alpha;
+    prm.unk_0A = 0;
+    prm.unk_1C = 0;
+    prm.lpvert = next->lpvert;
+    prm.lpnorm = next->lpnorm;
+    prm.unk_04 = D_00616240;
+    sceVu0UnitMatrix(ppvPObj.next->dmat);
+    sceVu0CopyVector(ppvPObj.next->dmat[3], *(sceVu0FVECTOR*)(obj + 0x10));
+    sceVu0MulMatrix(ppvPObj.next->dmat, D_00616180, ppvPObj.next->dmat);
+    prm.dmat = &ppvPObj.next->dmat;
+    prm.col[0] = v->col[0];
+    prm.col[1] = v->col[1];
+    prm.col[2] = v->col[2];
+    prm.unk_24 = D_00616140;
+    prm.unk_28 = D_00616100;
+    prm.unk_0C = 0;
+    prm.unk_10 = 0;
+    prm.unk_40 = 0;
+    prm.cmat = &ppvPObj.next->cmat;
+    prm.unk_34 = D_00616224;
+    prm.unk_4C = p->unk_0C;
+    prm.unk_4D = p->unk_24;
+    D_00616224 = op1_md_draw(omd, &prm, mdl->nPacketSize);
+}
 
 void pppRyjDrawShipolyBoneCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     VRyjDrawShipolyBone* p = (VRyjDrawShipolyBone*)&pobj->val[ctbl->useVal[1]];
