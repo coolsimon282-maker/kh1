@@ -4214,7 +4214,53 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B7E8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B8E0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B998);
+s32 func_0015B550(f32*, f32*);
+s32 func_0015B7E8(f32*, f32*);
+NOTHROW(s32, func_0015B8E0);
+s32 func_0015B998(f32* a, f32* b) {
+    f32* t;
+    s32 r;
+
+    if (*(s32*)a > *(s32*)b) {
+        t = a;
+        a = b;
+        b = t;
+    }
+    r = 0;
+    switch (*(s32*)a) {
+    case 1:
+        switch (*(s32*)b) {
+        case 1:
+            r = func_0015B4A8(a, b);
+            break;
+        case 2:
+            r = func_0015B550(a, b);
+            break;
+        case 3:
+            r = func_0015B6C0((u8*)a, (u8*)b);
+            break;
+        }
+        break;
+    case 2:
+        switch (*(s32*)b) {
+        case 2:
+            r = func_0015B628((u8*)a, (u8*)b);
+            break;
+        case 3:
+            r = func_0015B7E8(a, b);
+            break;
+        }
+        break;
+    case 3:
+        switch (*(s32*)b) {
+        case 3:
+            r = func_0015B8E0(a, b);
+            break;
+        }
+        break;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BAD0);
 
@@ -4718,6 +4764,9 @@ u8* func_0015DA70(u8* p) {
 }
 
 extern s32 D_15DAC0_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+extern s32 D_15DAC0_pad2; /* unused: rule F1 (func_0015EEA0 after func_0015B998; 1 extra fails) */
+extern s32 D_15DAC0_pad3;
+
 f32 Angle_Wrap(f32);
 s32 func_00137688_r(s32, f32) __asm__("func_00137688");
 s32 sceVu0ScaleVector_r(f32*, f32*, f32) __asm__("sceVu0ScaleVector");
