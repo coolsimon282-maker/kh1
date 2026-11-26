@@ -2281,7 +2281,28 @@ u8* func_00146FB8(u8* a0, s32 a1, s32 a2) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146FF0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00147138);
+/* unused: rule F1 (keeps func_001560F8, func_00168530, func_0016FA10, func_00176F08 as they were) */
+extern s32 D_lay147138_0;
+extern s32 D_lay147138_1;
+extern u16 D_003085D8[];
+extern u16 D_00307226[];
+u8* func_00147138(u8* p, s32 a1) {
+    u8 k = *(u8*)(*(u8**)(p + 0x130) + 0x5C);
+    s32 v;
+    if (a1 == 4) {
+        a1 = D_003085D8[k];
+        if (a1 == 0) {
+            return 0;
+        }
+    } else {
+        v = D_00307226[*(u8*)(p + 0x39E) + (D_002B8678 * 8 + k) * 15];
+        if (v == 0) {
+            return 0;
+        }
+        a1 += v;
+    }
+    return func_001473A8(a1, *(s32*)(p + 4) + 1, (f32*)(p + 0x10));
+}
 
 void* func_001471E8(s32 a, s32 b) {
     s32 i;
