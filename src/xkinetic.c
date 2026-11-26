@@ -436,7 +436,32 @@ INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar8);
 INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar16);
 
 // Opcode 17 STORE_VAR32.
-INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar32);
+s32 ScriptOp_StoreVar32(Script* arg0, s32 arg1) {
+    s32 b1 = (s32)WorkBuffers_Get(1);
+    s32 b2 = (s32)WorkBuffers_Get(2);
+
+    if (arg1 < 0x800) {
+        *(s32*)(b1 + arg1) = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 4);
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0x900) {
+        arg1 -= 0x800;
+        *(s32*)(b1 + 0x800 + arg1) = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 4);
+        arg0->unk_174[3]--;
+    } else if (arg1 < 0xB00) {
+        arg1 -= 0x900;
+        if ((s32)(*(u64*)&arg0->unk_00[0x328] >> 5) & 1) {
+            D_0038B4C4[arg1] = arg0->unk_174[arg0->unk_174[3] + 4];
+        } else {
+            D_0038ACC4[arg1] = arg0->unk_174[arg0->unk_174[3] + 4];
+        }
+        arg0->unk_174[3]--;
+    } else {
+        arg1 -= 0xD40;
+        *(s32*)(b2 + arg1) = Script_ClampValue(arg0->unk_174[arg0->unk_174[3] + 4], 4);
+        arg0->unk_174[3]--;
+    }
+    return 2;
+}
 
 // Opcode 31 STORE_WORK_BIT.
 s32 ScriptOp_StoreWorkBit(Script* arg0, s32 arg1) {
