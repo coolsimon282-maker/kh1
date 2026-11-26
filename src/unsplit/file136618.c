@@ -1053,7 +1053,63 @@ void func_0023C5A8(s32 arg0) {
     *((s32 *)((s32)&D_00651310 + (arg0 * 0xE0))) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023C5C8);
+s32 Actor_IsActive(s32);
+void UiPart_GetCurrentRect(s32, s32 *);
+void UiPart_StartAnims(s32);
+void UiPart_StepAnims(s32);
+void UiPart_BuildSprite8(s32, void *, u8 *);
+extern s32 D_006512F0;
+extern s32 D_006512F4;
+extern s32 D_006512F8;
+extern s32 D_006512FC;
+
+void func_0023C5C8(s32 *a0, s32 a1, s32 a2) {
+    s32 w[4];
+    s32 r[4];
+    sceVu0FVECTOR v;
+    s32 o = 0;
+    s32 x;
+    s32 y;
+    s32 i;
+
+    if (Actor_IsActive(a0[0]) != 0) {
+        func_0012EC60(a0[0], a0[1], v);
+        if (func_00249580(v) == 0) {
+            func_00237A48(w, D_002DEC20, v, 1);
+            switch (a1) {
+            case 1:
+                o = D_006512F0;
+                break;
+            case 2:
+                o = D_006512F8;
+                break;
+            case 3:
+                o = D_006512F4;
+                break;
+            case 4:
+                o = D_006512FC;
+                break;
+            }
+            func_00249558(w, w);
+            x = w[0];
+            y = w[1];
+            UiPart_GetCurrentRect(o, r);
+            x -= r[2] / 2;
+            y -= r[3] / 2;
+            if (a2 != 0) {
+                UiPart_StartAnims(o);
+            }
+            UiPart_BuildSprite8(o, &D_00651210_o, D_00426850);
+            for (i = 0; i < 4; i++) {
+                s32 *p = &D_00651210_o.n[i].b;
+                p[-1] += x * 16;
+                p[0] += y * 16;
+            }
+            D_00651200_i = func_002388B8((u8 *)&D_00651210_o, 1, D_00651200_i);
+            UiPart_StepAnims(o);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023C7A0);
 
