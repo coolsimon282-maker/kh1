@@ -10193,7 +10193,29 @@ void func_00180038(void) {
     func_00176F08(0, 0.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00180080);
+f32 func_001779E8(f32*, f32*, f32);
+
+void func_00180080(void) {
+    f32 t;
+    f32 a;
+    f32 r;
+
+    if (D_003626F0[0] != 0) {
+        t = *(f32*)(D_00575894 + 0x3C) + *(f32*)&D_003626F0[1];
+        D_00362680[1] = t;
+        if (func_001779E8(D_002DECE0, D_002DECF0, t) < 200.0f) {
+            a = 0.0f;
+            while (a < 3.1415928f) {
+                a += 0.3141593f;
+                r = func_001779E8(D_002DECE0, D_002DECF0, D_00362680[1] + a);
+                if (D_00362680[3] - 10.0f <= r) break;
+                r = func_001779E8(D_002DECE0, D_002DECF0, D_00362680[1] - a);
+                if (D_00362680[3] - 10.0f <= r) break;
+            }
+        }
+        func_00176F08(1, 0.0f);
+    }
+}
 
 void func_0017EAA0(void) {
     D_002DED08 = 0;
