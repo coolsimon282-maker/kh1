@@ -2951,7 +2951,33 @@ void func_001557D0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00155878);
+void func_00155878(void) {
+    s32 i;
+    s32 k;
+    s32 n;
+    u8* e;
+    u8* q;
+
+    D_002C1EA8 &= ~0x40000;
+    func_00146BC8(-6);
+    for (i = 0; i < 0x40; i++) {
+        e = (u8*)D_00550400 + i * 0x48;
+        if (*(s8*)e != i) continue;
+        if (!(*(s32*)e & 0x10000)) continue;
+        for (k = 0; k < e[1]; k++) {
+            if (*(s8*)e != *(s8*)(e + k * 0x48)) {
+                e = NULL;
+                break;
+            }
+        }
+        if (e != NULL) {
+            q = D_FE0000 + (i << 18);
+            if (*(s32*)(q + 0x20) - *(s32*)(q + 0x1C) > 0) {
+                func_00146B90(q + *(s32*)(q + 0x1C), -6, 0, 0);
+            }
+        }
+    }
+}
 
 typedef struct { u8 pad[0x44]; s32 unk44; } V550400;
 s32 func_001559A8(s32 a0) {
