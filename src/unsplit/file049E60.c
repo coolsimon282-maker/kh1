@@ -3554,7 +3554,53 @@ s32 func_001566D8(f32* a0, f32* a1) {
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00156768);
+extern s32 D_156768_pad1;
+extern s32 D_156768_pad2;
+extern s32 D_156768_pad3;
+extern s32 D_156768_pad4;
+u8* func_00156768(f32* pos, u8* o) {
+    f32 d[4];
+    u8* e;
+    u8* q;
+    s32 i;
+    s32 n;
+    f32 dist;
+
+    e = D_00551600;
+    *(u8**)o = 0;
+    *(f32*)(o + 0x20) = 0.0f;
+    *(s32*)(o + 0x24) = 0;
+    for (n = 1; *e != 0; n++, e += e[1] * 0x60 + 0x30) {
+        if (*(u64*)e & 0x10000) {
+            continue;
+        }
+        sceVu0SubVector(d, pos, (f32*)(e + 0x10));
+        dist = sceVu0InnerProduct(d, d);
+        if (e[1] != 0) {
+            i = 0;
+            if (i < e[1]) {
+            q = e + 0x30;
+            do {
+                if (func_001566D8((f32*)q, pos)) {
+                    *(u8**)o = e;
+                    sceVu0CopyVector((f32*)(o + 0x10), d);
+                    *(f32*)(o + 0x20) = _sqrtf(dist);
+                    *(s32*)(o + 0x24) = n;
+                    return e;
+                }
+                q += 0x60;
+            } while (++i < e[1]);
+            }
+        } else if (*(u8**)o == 0 || dist < *(f32*)(o + 0x20)) {
+            *(u8**)o = e;
+            sceVu0CopyVector((f32*)(o + 0x10), d);
+            *(f32*)(o + 0x20) = dist;
+            *(s32*)(o + 0x24) = n;
+        }
+    }
+    *(f32*)(o + 0x20) = _sqrtf(*(f32*)(o + 0x20));
+    return *(u8**)o;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001568E8);
 
