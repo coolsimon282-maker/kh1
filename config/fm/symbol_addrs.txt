@@ -558,6 +558,57 @@ UiPart_BuildSprite8                  = 0x0024AA48; // type:func
 UiFile_Relocate                      = 0x0024AAC8; // type:func
 
 
+//=========================================================
+// xpackage.c
+//=========================================================
+UiPart_GetCurrentRect                = 0x0024AC08; // type:func
+UiPart_GetCurrentColors              = 0x0024AC68; // type:func
+UiPart_StartAnims                    = 0x0024AE00; // type:func
+UiPart_StopAnims                     = 0x0024AE90; // type:func
+UiPart_StepAnims                     = 0x0024AF00; // type:func
+UiFile_CopyParts                     = 0x0024AF40; // type:func
+UiFile_GetParts                      = 0x0024AFC0; // type:func
+UiPart_SetColor                      = 0x0024B008; // type:func
+Gs_SetQuadXYZ                        = 0x0024B058; // type:func
+Decode_CopyChunk                     = 0x0024B0C8; // type:func
+Decode_Chunk                         = 0x0024B138; // type:func
+Decode_GetChunkSize                  = 0x0024B178; // type:func
+Assert_Stub                          = 0x0024B1E8; // type:func
+SaTask_ClearGroups                   = 0x0024B1F0; // type:func
+SaTask_RunInGroup                    = 0x0024B228; // type:func
+SaTask_StepGroup                     = 0x0024B448; // type:func
+SaTask_FreeGroup                     = 0x0024B5C8; // type:func
+SaTask_RunWithContext                = 0x0024B6D0; // type:func
+SaTask_GetGroupSize                  = 0x0024B778; // type:func
+SaTask_CreateGroup                   = 0x0024B7A0; // type:func
+SaTask_AllocGroup                    = 0x0024B958; // type:func
+SaTask_Init                          = 0x0024B990; // type:func
+SaTask_RunInGroup0                   = 0x0024B2C8; // type:func
+SaTask_RunInGroup1                   = 0x0024B2F8; // type:func
+SaTask_RunInGroup2                   = 0x0024B328; // type:func
+SaTask_RunInGroup3                   = 0x0024B358; // type:func
+SaTask_RunInGroup4                   = 0x0024B388; // type:func
+SaTask_RunInGroup5                   = 0x0024B3B8; // type:func
+SaTask_RunInGroup6                   = 0x0024B3E8; // type:func
+SaTask_RunInGroup7                   = 0x0024B418; // type:func
+SaTask_StepGroup0                    = 0x0024B508; // type:func
+SaTask_StepGroup1                    = 0x0024B520; // type:func
+SaTask_StepGroup2                    = 0x0024B538; // type:func
+SaTask_StepGroup3                    = 0x0024B550; // type:func
+SaTask_StepGroup4                    = 0x0024B568; // type:func
+SaTask_StepGroup5                    = 0x0024B580; // type:func
+SaTask_StepGroup6                    = 0x0024B598; // type:func
+SaTask_StepGroup7                    = 0x0024B5B0; // type:func
+SaTask_FreeGroup0                    = 0x0024B610; // type:func
+SaTask_FreeGroup1                    = 0x0024B628; // type:func
+SaTask_FreeGroup2                    = 0x0024B640; // type:func
+SaTask_FreeGroup3                    = 0x0024B658; // type:func
+SaTask_FreeGroup4                    = 0x0024B670; // type:func
+SaTask_FreeGroup5                    = 0x0024B688; // type:func
+SaTask_FreeGroup6                    = 0x0024B6A0; // type:func
+SaTask_FreeGroup7                    = 0x0024B6B8; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

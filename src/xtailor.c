@@ -918,7 +918,7 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", Movie_Finish);
 // Calls sceCd / sceIpu functions with dummy arguments (probably only so that they are linked).
 void func_00111050(void) {
     sceCdRead(0, 0, NULL, NULL);
-    func_00247CD8();
+    Decode_Chunk();
     sceCdStatus();
     sceCdBreak();
     sceCdGetError();

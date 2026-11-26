@@ -50,7 +50,7 @@ extern u_long128* func_00121C98(s32, u_long128**);
 extern void func_001600B8();
 extern void func_001C20B8();
 extern void func_00233968();
-extern void func_00248530();
+extern void SaTask_Init();
 
 #ifdef VERSION_FM
 extern u32 D_002BBDE4;
@@ -153,7 +153,7 @@ void func_001093D8(void) {
     func_00100240();
     func_001C20B8();
     func_00236F18();
-    func_00248530();
+    SaTask_Init();
     D_002BC140 = D_002DEC60;
     D_002BC144 = D_002DECA0;
     D_002BBDE0 = 3;
@@ -166,7 +166,7 @@ void func_001093D8(void) {
     func_00100240();
     func_001C20B8();
     func_00233968();
-    func_00248530();
+    SaTask_Init();
     D_002B8690 = D_002DEC60;
     D_002B8694 = D_002DECA0;
 }

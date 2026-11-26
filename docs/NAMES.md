@@ -456,3 +456,49 @@ other functions (rule F1).
 | UiPart_BuildSprite | 0x0024A6B8 | xmonitor.c | Fills a sprite packet (colours from the tracks or the part, XYZ from the rectangle, UV with half-texel offsets) for part arg1. |
 | UiPart_BuildSprite8 | 0x0024AA48 | xmonitor.c | UiPart_BuildSprite with TEX0 set for an 8-bit CLUT texture (PSM 0x13, CLD 1). |
 | UiFile_Relocate | 0x0024AAC8 | xmonitor.c | Turns the key track offsets of every part in a UI file into pointers (asserts 16-byte alignment). |
+| UiPart_GetCurrentRect | 0x0024AC08 | xpackage.c | The part's rectangle: from its rectangle track when that runs (flags 0x14), else its own +0x00. |
+| UiPart_GetCurrentColors | 0x0024AC68 | xpackage.c | The part's four corner colours: from the colour or gradient track when running, its own four (flag 0x20), or its first one repeated. |
+| UiPart_StartAnims | 0x0024AE00 | xpackage.c | Rewinds and starts each key track the part has (rectangle 4, colour 2, gradient 0x40). |
+| UiPart_StopAnims | 0x0024AE90 | xpackage.c | Stops each key track the part has. |
+| UiPart_StepAnims | 0x0024AF00 | xpackage.c | Advances all three key tracks of the part by one frame. |
+| UiFile_CopyParts | 0x0024AF40 | xpackage.c | Copies the 0xC0-byte parts listed in arg0 (ended by -1) from UI file arg2 to arg1. |
+| UiFile_GetParts | 0x0024AFC0 | xpackage.c | Stores the address of each part listed in arg0 (ended by -1) of UI file arg2 in arg1. |
+| UiPart_SetColor | 0x0024B008 | xpackage.c | Sets all four corner colours of the part to colour arg1. |
+| Gs_SetQuadXYZ | 0x0024B058 | xpackage.c | Fills four GS XYZ vertices of the rectangle (x, y, w, h), offset to the GS window (0x700, 0x740 pixels). |
+| Decode_CopyChunk | 0x0024B0C8 | xpackage.c | Chunk handler: copies the data of a chunk (type byte, 32-bit size, data) to arg1 and returns the size. |
+| Decode_Chunk | 0x0024B138 | xpackage.c | Runs the handler of the chunk's type (table D_00469FC8) on it; returns the size it produced. |
+| Decode_GetChunkSize | 0x0024B178 | xpackage.c | Size field of a chunk of type 1 (asserts the type, src/decode.c). |
+| Assert_Stub | 0x0024B1E8 | xpackage.c | Empty: the assert handler (called with expression, file, line), compiled out. |
+| SaTask_ClearGroups | 0x0024B1F0 | xpackage.c | Clears the eight task group slots (sa_task.c, TASK_GRUPE_MAX). |
+| SaTask_RunInGroup | 0x0024B228 | xpackage.c | Calls func_0024AB00(arg1, arg2, arg3) with task group idx's context (D_0046A03C..D_0046A048) set, restoring two of them after. |
+| SaTask_StepGroup | 0x0024B448 | xpackage.c | Steps task group idx (func_0024E1D0) with its context set and counts its steps (+0x1C), unless a system message is up. |
+| SaTask_FreeGroup | 0x0024B5C8 | xpackage.c | Frees task group arg0 (when it owns its memory, +0x24) and clears its slot. |
+| SaTask_RunWithContext | 0x0024B6D0 | xpackage.c | SaTask_RunInGroup with a context passed in (arg0[3..6]). |
+| SaTask_GetGroupSize | 0x0024B778 | xpackage.c | Memory a task group with arg0 tasks needs (arg0 * 0x10340 + 0x5E7, 64-byte aligned). |
+| SaTask_CreateGroup | 0x0024B7A0 | xpackage.c | Sets up a task group in the given memory in a free slot (asserts "i!=TASK_GRUPE_MAX"). |
+| SaTask_AllocGroup | 0x0024B958 | xpackage.c | SaTask_CreateGroup with memory from malloc(SaTask_GetGroupSize(arg0)), owned by the group. |
+| SaTask_Init | 0x0024B990 | xpackage.c | SaTask_ClearGroups. |
+| SaTask_RunInGroup0 | 0x0024B2C8 | xpackage.c | SaTask_RunInGroup for group 0. |
+| SaTask_RunInGroup1 | 0x0024B2F8 | xpackage.c | SaTask_RunInGroup for group 1. |
+| SaTask_RunInGroup2 | 0x0024B328 | xpackage.c | SaTask_RunInGroup for group 2. |
+| SaTask_RunInGroup3 | 0x0024B358 | xpackage.c | SaTask_RunInGroup for group 3. |
+| SaTask_RunInGroup4 | 0x0024B388 | xpackage.c | SaTask_RunInGroup for group 4. |
+| SaTask_RunInGroup5 | 0x0024B3B8 | xpackage.c | SaTask_RunInGroup for group 5. |
+| SaTask_RunInGroup6 | 0x0024B3E8 | xpackage.c | SaTask_RunInGroup for group 6. |
+| SaTask_RunInGroup7 | 0x0024B418 | xpackage.c | SaTask_RunInGroup for group 7. |
+| SaTask_StepGroup0 | 0x0024B508 | xpackage.c | SaTask_StepGroup for group 0. |
+| SaTask_StepGroup1 | 0x0024B520 | xpackage.c | SaTask_StepGroup for group 1. |
+| SaTask_StepGroup2 | 0x0024B538 | xpackage.c | SaTask_StepGroup for group 2. |
+| SaTask_StepGroup3 | 0x0024B550 | xpackage.c | SaTask_StepGroup for group 3. |
+| SaTask_StepGroup4 | 0x0024B568 | xpackage.c | SaTask_StepGroup for group 4. |
+| SaTask_StepGroup5 | 0x0024B580 | xpackage.c | SaTask_StepGroup for group 5. |
+| SaTask_StepGroup6 | 0x0024B598 | xpackage.c | SaTask_StepGroup for group 6. |
+| SaTask_StepGroup7 | 0x0024B5B0 | xpackage.c | SaTask_StepGroup for group 7. |
+| SaTask_FreeGroup0 | 0x0024B610 | xpackage.c | SaTask_FreeGroup for group 0. |
+| SaTask_FreeGroup1 | 0x0024B628 | xpackage.c | SaTask_FreeGroup for group 1. |
+| SaTask_FreeGroup2 | 0x0024B640 | xpackage.c | SaTask_FreeGroup for group 2. |
+| SaTask_FreeGroup3 | 0x0024B658 | xpackage.c | SaTask_FreeGroup for group 3. |
+| SaTask_FreeGroup4 | 0x0024B670 | xpackage.c | SaTask_FreeGroup for group 4. |
+| SaTask_FreeGroup5 | 0x0024B688 | xpackage.c | SaTask_FreeGroup for group 5. |
+| SaTask_FreeGroup6 | 0x0024B6A0 | xpackage.c | SaTask_FreeGroup for group 6. |
+| SaTask_FreeGroup7 | 0x0024B6B8 | xpackage.c | SaTask_FreeGroup for group 7. |

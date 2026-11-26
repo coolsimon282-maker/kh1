@@ -1,3 +1,8 @@
+/**
+ * More UI part helpers (ttlib/ui.c, see xmonitor.c), then library code with assert file names "src/decode.c" (typed
+ * chunks: type byte, 32-bit size, data, with a handler table) and "src/sa_task.c" (eight task groups,
+ * TASK_GRUPE_MAX, each with its own context set around func_0024AB00 / func_0024E1D0 calls).
+ */
 #include "common.h"
 #include "xtango.h"
 
@@ -11,6 +16,7 @@ extern XWhiskey* D_00669A18[8];
 #define XPACKAGE_TABLE D_00663A28
 #endif
 
+// Clears words +0x10 / +0x14 of arg0 consecutive 0x20-byte entries.
 void func_00247778(s32 arg0, XWhiskey* arg1) {
     if (arg0 > 0) {
         while (arg0 != 0) {
@@ -30,7 +36,8 @@ typedef struct {
 
 void UiPart_GetRect(XPackageUnk77A8* arg0, s32* arg1);
 
-void func_002477A8(XPackageUnk77A8* arg0, s32* arg1) {
+// The part's rectangle: from its rectangle track when that runs (flags 0x14), else its own +0x00.
+void UiPart_GetCurrentRect(XPackageUnk77A8* arg0, s32* arg1) {
     if ((arg0->unk_60 & 0x14) == 0x14) {
         UiPart_GetRect(arg0, arg1);
         return;
@@ -52,7 +59,7 @@ void UiPart_GetColor(XPackageUnk7808*, void*);
 void UiPart_GetGradient(XPackageUnk7808*, s32 (*)[4]);
 
 // gets an object's matrix: built by one of two helpers depending on the flags, its own, or its first row repeated
-void func_00247808(XPackageUnk7808* p, s32 (*m)[4]) {
+void UiPart_GetCurrentColors(XPackageUnk7808* p, s32 (*m)[4]) {
     s32 i, j;
     s32 v[4];
     s32 t[4][4];
@@ -91,7 +98,8 @@ NOTHROW(void, UiPart_RewindColorAnim);
 NOTHROW(void, UiPart_StartColorAnim);
 NOTHROW(void, UiPart_RewindGradientAnim);
 NOTHROW(void, UiPart_StartGradientAnim);
-void func_002479A0(u8* p) {
+// Rewinds and starts each key track the part has (rectangle 4, colour 2, gradient 0x40).
+void UiPart_StartAnims(u8* p) {
     if (*(u32*)(p + 0x60) & 4) {
         UiPart_RewindRectAnim(p);
         UiPart_StartRectAnim(p);
@@ -109,7 +117,8 @@ void func_002479A0(u8* p) {
 NOTHROW(void, UiPart_StopRectAnim);
 NOTHROW(void, UiPart_StopColorAnim);
 NOTHROW(void, UiPart_StopGradientAnim);
-void func_00247A30(u8* p) {
+// Stops each key track the part has.
+void UiPart_StopAnims(u8* p) {
     if (*(u32*)(p + 0x60) & 4) {
         UiPart_StopRectAnim(p);
     }
@@ -121,7 +130,8 @@ void func_00247A30(u8* p) {
     }
 }
 
-void func_00247AA0(s32 arg0) {
+// Advances all three key tracks of the part by one frame.
+void UiPart_StepAnims(s32 arg0) {
     UiPart_StepRectAnim(arg0, 1);
     UiPart_StepColorAnim(arg0, 1);
     UiPart_StepGradientAnim(arg0, 1);
@@ -138,7 +148,7 @@ typedef struct {
 } XPackageUnk7AE0Hdr;
 
 // arg0: list of entry indices ended by -1; each entry is copied to arg1[]
-void func_00247AE0(s32* arg0, XPackageUnk7AE0Entry* arg1, XPackageUnk7AE0Hdr* arg2) {
+void UiFile_CopyParts(s32* arg0, XPackageUnk7AE0Entry* arg1, XPackageUnk7AE0Hdr* arg2) {
     XPackageUnk7AE0Entry* base = (XPackageUnk7AE0Entry*)((u8*)arg2 + arg2->unk_8);
 
     while (*arg0 != -1) {
@@ -159,7 +169,7 @@ typedef struct {
 } XPackageUnk7B60Hdr;
 
 // arg0: list of entry indices ended by -1; arg1 gets each entry's address
-void func_00247B60(s32* arg0, s32* arg1, XPackageUnk7B60Hdr* arg2) {
+void UiFile_GetParts(s32* arg0, s32* arg1, XPackageUnk7B60Hdr* arg2) {
     XPackageUnk7B60Entry* base = (XPackageUnk7B60Entry*)((u8*)arg2 + arg2->unk_8);
 
     while (*arg0 != -1) {
@@ -174,7 +184,8 @@ typedef struct {
     /* 0x20 */ s32 unk_20[4][4];
 } XPackageUnk7BA8;
 
-void func_00247BA8(XPackageUnk7BA8* arg0, s32* arg1) {
+// Sets all four corner colours of the part to colour arg1.
+void UiPart_SetColor(XPackageUnk7BA8* arg0, s32* arg1) {
     s32 i;
     s32 j;
 
@@ -191,7 +202,8 @@ typedef struct {
     /* 0xA0 */ s32 vtx[4][4];
 } XPackageQuad;
 
-void func_00247BF8(XPackageQuad* q, s32 x, s32 y, s32 w, s32 h) {
+// Fills four GS XYZ vertices of the rectangle (x, y, w, h), offset to the GS window (0x700, 0x740 pixels).
+void Gs_SetQuadXYZ(XPackageQuad* q, s32 x, s32 y, s32 w, s32 h) {
     s32 x0 = (x << 4) + 0x7000;
     s32 y0 = (y << 4) + 0x7400;
     s32 y1 = ((y + h) << 4) + 0x7400;
@@ -216,7 +228,7 @@ void func_00247BF8(XPackageQuad* q, s32 x, s32 y, s32 w, s32 h) {
 }
 
 // arg0: a type byte, a 32-bit little-endian size, then the data
-s32 func_00247C68(u8* arg0, void* arg1, s32* arg2) {
+s32 Decode_CopyChunk(u8* arg0, void* arg1, s32* arg2) {
     s32 size = arg0[1] + (arg0[2] << 8) + (arg0[3] << 16) + (arg0[4] << 24);
 
     memcpy(arg1, arg0 + 5, size);
@@ -226,7 +238,8 @@ s32 func_00247C68(u8* arg0, void* arg1, s32* arg2) {
 
 extern void (*D_00469FC8[])(u8* arg0, s32 arg1, s32* arg2);
 
-s32 func_00247CD8(s32 arg0, u8* arg1) {
+// Runs the handler of the chunk's type (table D_00469FC8) on it; returns the size it produced.
+s32 Decode_Chunk(s32 arg0, u8* arg1) {
     s32 ret;
 
     D_00469FC8[*arg1](arg1, arg0, &ret);
@@ -236,19 +249,22 @@ s32 func_00247CD8(s32 arg0, u8* arg1) {
 extern char D_00491878[]; // FM address names; probably the file name and message of an assert
 extern char D_00491880[];
 
-void func_00247D88();
+void Assert_Stub();
 
-s32 func_00247D18(u8* arg0) {
+// Size field of a chunk of type 1 (asserts the type, src/decode.c).
+s32 Decode_GetChunkSize(u8* arg0) {
     if (arg0[0] != 1) {
-        func_00247D88(D_00491878, D_00491880, 0x3F);
+        Assert_Stub(D_00491878, D_00491880, 0x3F);
     }
     return arg0[1] + (arg0[2] << 8) + (arg0[3] << 16) + (arg0[4] << 24);
 }
 
-void func_00247D88(void) {
+// Empty: the assert handler (called with expression, file, line), compiled out.
+void Assert_Stub(void) {
 }
 
-void func_00247D90(void) {
+// Clears the eight task group slots (sa_task.c, TASK_GRUPE_MAX).
+void SaTask_ClearGroups(void) {
     s32 i;
 
     for (i = 7; i >= 0; i--) {
@@ -262,7 +278,8 @@ extern s32 D_0046A040;
 extern s32 D_0046A044;
 extern s32 D_0046A048;
 
-void func_00247DC8(s32 idx, s32 arg1, s32 arg2, s32 arg3) {
+// Calls func_0024AB00(arg1, arg2, arg3) with task group idx's context (D_0046A03C..D_0046A048) set, restoring two of them after.
+void SaTask_RunInGroup(s32 idx, s32 arg1, s32 arg2, s32 arg3) {
     XWhiskey* p = XPACKAGE_TABLE[idx];
     s32 old40, old48, new40, new48;
 
@@ -279,41 +296,50 @@ void func_00247DC8(s32 idx, s32 arg1, s32 arg2, s32 arg3) {
     D_0046A048 = old48;
 }
 
-void func_00247E68(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(0, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 0.
+void SaTask_RunInGroup0(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(0, arg0, arg1, arg2);
 }
 
-void func_00247E98(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(1, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 1.
+void SaTask_RunInGroup1(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(1, arg0, arg1, arg2);
 }
 
-void func_00247EC8(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(2, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 2.
+void SaTask_RunInGroup2(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(2, arg0, arg1, arg2);
 }
 
-void func_00247EF8(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(3, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 3.
+void SaTask_RunInGroup3(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(3, arg0, arg1, arg2);
 }
 
-void func_00247F28(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(4, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 4.
+void SaTask_RunInGroup4(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(4, arg0, arg1, arg2);
 }
 
-void func_00247F58(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(5, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 5.
+void SaTask_RunInGroup5(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(5, arg0, arg1, arg2);
 }
 
-void func_00247F88(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(6, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 6.
+void SaTask_RunInGroup6(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(6, arg0, arg1, arg2);
 }
 
-void func_00247FB8(s32 arg0, s32 arg1, s32 arg2) {
-    func_00247DC8(7, arg0, arg1, arg2);
+// SaTask_RunInGroup for group 7.
+void SaTask_RunInGroup7(s32 arg0, s32 arg1, s32 arg2) {
+    SaTask_RunInGroup(7, arg0, arg1, arg2);
 }
 
 void func_0024E1D0(void);
 
-void func_00247FE8(s32 idx) {
+// Steps task group idx (func_0024E1D0) with its context set and counts its steps (+0x1C), unless a system message is up.
+void SaTask_StepGroup(s32 idx) {
     s32 old40 = D_0046A040;
     s32 old48 = D_0046A048;
     XWhiskey* p;
@@ -332,78 +358,96 @@ void func_00247FE8(s32 idx) {
     }
 }
 
-void func_002480A8(void) {
-    func_00247FE8(0);
+// SaTask_StepGroup for group 0.
+void SaTask_StepGroup0(void) {
+    SaTask_StepGroup(0);
 }
 
-void func_002480C0(void) {
-    func_00247FE8(1);
+// SaTask_StepGroup for group 1.
+void SaTask_StepGroup1(void) {
+    SaTask_StepGroup(1);
 }
 
-void func_002480D8(void) {
-    func_00247FE8(2);
+// SaTask_StepGroup for group 2.
+void SaTask_StepGroup2(void) {
+    SaTask_StepGroup(2);
 }
 
-void func_002480F0(void) {
-    func_00247FE8(3);
+// SaTask_StepGroup for group 3.
+void SaTask_StepGroup3(void) {
+    SaTask_StepGroup(3);
 }
 
-void func_00248108(void) {
-    func_00247FE8(4);
+// SaTask_StepGroup for group 4.
+void SaTask_StepGroup4(void) {
+    SaTask_StepGroup(4);
 }
 
-void func_00248120(void) {
-    func_00247FE8(5);
+// SaTask_StepGroup for group 5.
+void SaTask_StepGroup5(void) {
+    SaTask_StepGroup(5);
 }
 
-void func_00248138(void) {
-    func_00247FE8(6);
+// SaTask_StepGroup for group 6.
+void SaTask_StepGroup6(void) {
+    SaTask_StepGroup(6);
 }
 
-void func_00248150(void) {
-    func_00247FE8(7);
+// SaTask_StepGroup for group 7.
+void SaTask_StepGroup7(void) {
+    SaTask_StepGroup(7);
 }
 
-void func_00248168(s32 arg0) {
+// Frees task group arg0 (when it owns its memory, +0x24) and clears its slot.
+void SaTask_FreeGroup(s32 arg0) {
     if (*(s32*)((u8*)XPACKAGE_TABLE[arg0] + 0x24) != 0) {
         free(XPACKAGE_TABLE[arg0]);
     }
     XPACKAGE_TABLE[arg0] = NULL;
 }
 
-void func_002481B0(void) {
-    func_00248168(0);
+// SaTask_FreeGroup for group 0.
+void SaTask_FreeGroup0(void) {
+    SaTask_FreeGroup(0);
 }
 
-void func_002481C8(void) {
-    func_00248168(1);
+// SaTask_FreeGroup for group 1.
+void SaTask_FreeGroup1(void) {
+    SaTask_FreeGroup(1);
 }
 
-void func_002481E0(void) {
-    func_00248168(2);
+// SaTask_FreeGroup for group 2.
+void SaTask_FreeGroup2(void) {
+    SaTask_FreeGroup(2);
 }
 
-void func_002481F8(void) {
-    func_00248168(3);
+// SaTask_FreeGroup for group 3.
+void SaTask_FreeGroup3(void) {
+    SaTask_FreeGroup(3);
 }
 
-void func_00248210(void) {
-    func_00248168(4);
+// SaTask_FreeGroup for group 4.
+void SaTask_FreeGroup4(void) {
+    SaTask_FreeGroup(4);
 }
 
-void func_00248228(void) {
-    func_00248168(5);
+// SaTask_FreeGroup for group 5.
+void SaTask_FreeGroup5(void) {
+    SaTask_FreeGroup(5);
 }
 
-void func_00248240(void) {
-    func_00248168(6);
+// SaTask_FreeGroup for group 6.
+void SaTask_FreeGroup6(void) {
+    SaTask_FreeGroup(6);
 }
 
-void func_00248258(void) {
-    func_00248168(7);
+// SaTask_FreeGroup for group 7.
+void SaTask_FreeGroup7(void) {
+    SaTask_FreeGroup(7);
 }
 
-void func_00248270(s32* arg0, s32 arg1, s32 arg2, s32 arg3) {
+// SaTask_RunInGroup with a context passed in (arg0[3..6]).
+void SaTask_RunWithContext(s32* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 old40, old48, new40, new48;
 
     old40 = D_0046A040;
@@ -419,20 +463,25 @@ void func_00248270(s32* arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_0046A048 = old48;
 }
 
+// Calls func_0024AB00.
 void func_00248300() {
     func_0024AB00();
 }
 
-s32 func_00248318(s32 arg0) {
+// Memory a task group with arg0 tasks needs (arg0 * 0x10340 + 0x5E7, 64-byte aligned).
+s32 SaTask_GetGroupSize(s32 arg0) {
     return ((arg0 << 5) + arg0 * 0x10320 + 0x5E7) & ~0x3F;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xpackage", func_00248340);
+// Sets up a task group in the given memory in a free slot (asserts "i!=TASK_GRUPE_MAX").
+INCLUDE_ASM("asm/nonmatchings/xpackage", SaTask_CreateGroup);
 
-void func_002484F8(s32 arg0) {
-    func_00248340(arg0, malloc(func_00248318(arg0)), 1);
+// SaTask_CreateGroup with memory from malloc(SaTask_GetGroupSize(arg0)), owned by the group.
+void SaTask_AllocGroup(s32 arg0) {
+    SaTask_CreateGroup(arg0, malloc(SaTask_GetGroupSize(arg0)), 1);
 }
 
-void func_00248530(void) {
-    func_00247D90();
+// SaTask_ClearGroups.
+void SaTask_Init(void) {
+    SaTask_ClearGroups();
 }
