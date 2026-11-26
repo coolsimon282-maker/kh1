@@ -75,6 +75,8 @@ def shares_float_regs(reg1: str, reg2: str) -> bool:
 
 
 def get_op_inputs(op: str) -> List[str]:
+    if len(op.split()) < 2:
+        return []  # an op without operands (nop, ...) reads no float register
     op, args = op.split()[:2]
     args = args.split(",")
 
