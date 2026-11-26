@@ -24,13 +24,13 @@ extern s32 D_002B2CC0;
 extern s32 D_002B2CC4;
 extern u_long128* D_002B2CC8;
 extern u_long128* D_002B2CCC;
-extern s32 D_002B85C0[4];
+extern s32 fadeScreenColor[4];
 extern s32** D_002B8690;
 extern s32** D_002B8694;
 extern sceGsLoadImage D_002B8700;
 extern sceGsLoadImage D_002B8760;
 extern s32 D_002B8870;
-extern s32 D_002B8C70;
+extern s32 fadeTaskList;
 extern s32 D_002B8C8C;
 
 extern s32 D_00358BE0;
@@ -109,7 +109,7 @@ void Graphics_Initialize(void) {
 #endif
 
 s32 func_001091B0(void) {
-    TaskList_UpdateMatching(&D_002B8C70, 0);
+    TaskList_UpdateMatching(&fadeTaskList, 0);
     return 0;
 }
 
@@ -121,7 +121,7 @@ void* func_00109340(void) {
     func_00176E30();
     func_00176E98();
     D_00358BE0 = 1;
-    TaskList_Init(&D_002B8C70, &D_002B8870, 0x20, 0x20);
+    TaskList_Init(&fadeTaskList, &D_002B8870, 0x20, 0x20);
     return TaskSystem_AddTask(190050, func_001091B0);
 }
 
@@ -310,7 +310,7 @@ s32 func_00109D68(void) {
 
 void* func_00109DE8(void) {
     D_002B2CC4 = 1;
-    if (D_002B85C0[0] != 0x80) {
+    if (fadeScreenColor[0] != 0x80) {
         func_001037C8(1);
     }
     return TaskSystem_AddTask(190000, func_00109D68);

@@ -1078,8 +1078,8 @@ void func_00113CA8(void) {
 }
 
 extern u32 D_00375BC0;
-extern s32 D_002B85C0;
-extern s32 D_002B860C;
+extern s32 fadeScreenColor;
+extern s32 fadeOverlayAlpha;
 extern s32 D_002A6204;
 extern s32 D_002BD858;
 extern s32 D_002BD85C;
@@ -1125,7 +1125,7 @@ s32 func_00113CB8_s32(void) {
             D_002B9668 = 2;
         }
         if (D_002B9668 == 0) {
-            if (D_002B85C0 != 0x80 || D_002B860C != 0 || D_002A6204 != 0) {
+            if (fadeScreenColor != 0x80 || fadeOverlayAlpha != 0 || D_002A6204 != 0) {
                 D_002B9668 = 1;
             }
         }

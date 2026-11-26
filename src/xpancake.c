@@ -1,3 +1,8 @@
+/**
+ * Screen fades: fade the whole screen (fadeScreenColor, 0 = black .. 128 = normal) or an overlay (fadeOverlayAlpha)
+ * in or out over a number of frames, and an iris-like wipe (a rectangle that closes on or opens from a point).
+ * Each fade is a task on fadeTaskList (see xgoblin.c) that steps by the frame time D_002B8340[1].
+ */
 #include "common.h"
 
 typedef struct {
@@ -10,11 +15,11 @@ typedef struct {
 s32 D_002B29CC;
 s32 D_002B29D0;
 
-s32 D_002B85C0[4];
-s32 D_002B860C;
+s32 fadeScreenColor[4];
+s32 fadeOverlayAlpha;
 
 extern f32 D_002B8340[];
-extern u16 D_002B8C70;
+extern u16 fadeTaskList;
 
 f32 D_0048E508;
 
@@ -29,8 +34,9 @@ void func_001091F8(u8*, u8*);
 void func_00106728(void);
 XFlapjack* TaskList_Add(u16*, s32, s32 (*)(XFlapjack*));
 
-s32 func_001061D8(void) {
-    if (((D_002B85C0[0] == 0) || (D_002B860C == 128)) & 0xFFFF) {
+// Returns 1 when the screen is faded out (screen colour 0) or the overlay is fully in (128).
+s32 Fade_IsBlack(void) {
+    if (((fadeScreenColor[0] == 0) || (fadeOverlayAlpha == 128)) & 0xFFFF) {
         return 1;
     }
     return 0;
@@ -39,14 +45,16 @@ s32 func_001061D8(void) {
 #ifdef VERSION_FM
 extern s32 D_002A6204;
 
-s32 fm_func_001063F8(void) {
-    if (D_002B85C0[0] != 128 || D_002B860C != 0 || D_002A6204 != 0) {
+// Returns 1 while a fade is not back to normal (screen not 128, overlay not 0, or D_002A6204 set).
+s32 Fade_IsActive(void) {
+    if (fadeScreenColor[0] != 128 || fadeOverlayAlpha != 0 || D_002A6204 != 0) {
         return 1;
     }
     return 0;
 }
 #endif
 
+// Sends the image data of a packed header (offsets at +0x18 / +0x1C) to func_001091F8.
 void func_00106208(u8* arg0) {
     XPancakeHeader* hdr = (XPancakeHeader*)(arg0 + 0x10);
     u8* data = (u8*)hdr + hdr->unk_0C;
@@ -73,7 +81,8 @@ typedef struct {
     s64 unk_B8;
 } XPancakePkt;
 extern XPancakePkt D_002A6AB0;
-s32 func_00106230(void) {
+// Wipe task: shrinks or grows the rectangle around the centre each frame; ends (returns 4) when done.
+s32 FadeTask_UpdateIris(void) {
     s32 n;
     f32 t;
 
@@ -102,46 +111,51 @@ s32 func_00106230(void) {
     return 0;
 }
 
-void func_00106380(s32 a, s32 b, s32 c, s32 d) {
+// Starts a wipe that closes on the point (c, d) over a frames, down to size b.
+void Fade_StartIrisClose(s32 a, s32 b, s32 c, s32 d) {
     D_00494A7C = c * 16 + 0x7000;
     D_00494A80 = d * 16 + 0x7400;
     D_00494A8C = 1.0f;
     D_0048E508 = 800.0f / (f32)b / (f32)(a - 1);
     D_00494A84 = b;
-    TaskSystem_AddTask(0x2E646, func_00106230);
+    TaskSystem_AddTask(0x2E646, FadeTask_UpdateIris);
 }
 
-void func_00106428(s32 a, s32 b, s32 c, s32 d) {
+// Starts a wipe that opens from the point (c, d) over a frames, from size b.
+void Fade_StartIrisOpen(s32 a, s32 b, s32 c, s32 d) {
     f32 k = 800.0f / (f32)b / (f32)(a - 1);
     D_00494A7C = c * 16 + 0x7000;
     D_00494A80 = d * 16 + 0x7400;
     D_0048E508 = -k;
     D_00494A8C = (f32)a * k + 1.0f;
     D_00494A84 = b;
-    TaskSystem_AddTask(0x2E646, func_00106230);
+    TaskSystem_AddTask(0x2E646, FadeTask_UpdateIris);
 }
 
+// Stops the wipe (step 0).
 void Fade_ResetIntensity(void) {
     D_0048E508 = 0;
 }
 
+// Fade-in task: raises the screen colour towards 128; ends at the set time.
 s32 FadeTask_UpdateScreenIn(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
-        D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = 128;
+        fadeScreenColor[0] = fadeScreenColor[1] = fadeScreenColor[2] = fadeScreenColor[3] = 128;
         return 4;
     }
-    D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = arg0->unk_14 * arg0->unk_10;
+    fadeScreenColor[0] = fadeScreenColor[1] = fadeScreenColor[2] = fadeScreenColor[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
 
+// Starts fading the screen in over arg0 frames.
 void Fade_StartScreenIn(s32 arg0) {
     XFlapjack* p0;
     s32 val;
 
     func_00106718();
     func_00106728();
-    p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateScreenIn);
+    p0 = TaskList_Add(&fadeTaskList, 0, FadeTask_UpdateScreenIn);
     val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -153,18 +167,20 @@ void Fade_StartScreenIn(s32 arg0) {
     }
 }
 
+// Fade-out task: lowers the screen colour towards 0.
 s32 FadeTask_UpdateScreenOut(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0) {
-        D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = 0;
+        fadeScreenColor[0] = fadeScreenColor[1] = fadeScreenColor[2] = fadeScreenColor[3] = 0;
         return 4;
     }
-    D_002B85C0[0] = D_002B85C0[1] = D_002B85C0[2] = D_002B85C0[3] = arg0->unk_14 * arg0->unk_10;
+    fadeScreenColor[0] = fadeScreenColor[1] = fadeScreenColor[2] = fadeScreenColor[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
 
+// Starts fading the screen out over arg0 frames.
 void Fade_StartScreenOut(s32 arg0) {
-    XFlapjack* p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateScreenOut);
+    XFlapjack* p0 = TaskList_Add(&fadeTaskList, 0, FadeTask_UpdateScreenOut);
     s32 val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -175,31 +191,35 @@ void Fade_StartScreenOut(s32 arg0) {
     }
 }
 
+// Clears the flag D_002B29CC (checked by Fade_StartOverlayOut).
 void func_00106718(void) {
     D_002B29CC = 0;
 }
 
+// Clears the flag D_002B29D0 (checked by Fade_StartOverlayOut).
 void func_00106728(void) {
     D_002B29D0 = 0;
 }
 
+// Overlay fade-in task: raises the overlay alpha towards 128.
 s32 FadeTask_UpdateOverlayIn(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
-        D_002B860C = 128;
+        fadeOverlayAlpha = 128;
         return 4;
     }
-    D_002B860C = arg0->unk_14 * arg0->unk_10;
+    fadeOverlayAlpha = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
 
+// Starts fading the overlay in over arg0 frames.
 void Fade_StartOverlayIn(s32 arg0) {
     XFlapjack* p0;
     s32 val;
 
     func_00106718();
     func_00106728();
-    p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateOverlayIn);
+    p0 = TaskList_Add(&fadeTaskList, 0, FadeTask_UpdateOverlayIn);
     val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -211,16 +231,18 @@ void Fade_StartOverlayIn(s32 arg0) {
     }
 }
 
+// Overlay fade-out task: lowers the overlay alpha towards 0.
 s32 FadeTask_UpdateOverlayOut(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0.0f) {
-        D_002B860C = 0;
+        fadeOverlayAlpha = 0;
         return 4;
     }
-    D_002B860C = arg0->unk_14 * arg0->unk_10;
+    fadeOverlayAlpha = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
 
+// Starts fading the overlay out over arg0 frames (or fades the screen in instead if D_002B29CC/D_002B29D0 is 1).
 void Fade_StartOverlayOut(s32 arg0) {
     XFlapjack* p0;
     f32 f0;
@@ -233,7 +255,7 @@ void Fade_StartOverlayOut(s32 arg0) {
         return;
     }
 
-    p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateOverlayOut);
+    p0 = TaskList_Add(&fadeTaskList, 0, FadeTask_UpdateOverlayOut);
     val = arg0 << 1;
     f0 = 128.0f;
     if (arg0 == 0) {

@@ -128,3 +128,11 @@ other functions (rule F1).
 | GsPacket_LoadImage | 0x0011FBB0 | xgoblin.c | Builds a DMA chain that uploads an image to GS memory (BITBLTBUF, TRXPOS, TRXREG, TRXDIR, then the data). |
 | TaskSystem_AddTask | 0x0011EF10 | xgoblin.c | Adds a task with priority prio and function func to the main task list. |
 | TaskList_Init | 0x0011EFA8 | xgoblin.c | Sets up a task list over a pool of count entries of size bytes each, all free. |
+| Fade_IsBlack | 0x001063C8 | xpancake.c | Returns 1 when the screen is faded out (screen colour 0) or the overlay is fully in (128). |
+| Fade_IsActive | 0x001063F8 | xpancake.c | Returns 1 while a fade is not back to normal (screen not 128, overlay not 0, or D_002A6204 set). |
+| FadeTask_UpdateIris | 0x00106460 | xpancake.c | Wipe task: shrinks or grows the rectangle around the centre each frame; ends (returns 4) when done. |
+| Fade_StartIrisClose | 0x001065A8 | xpancake.c | Starts a wipe that closes on the point (c, d) over a frames, down to size b. |
+| Fade_StartIrisOpen | 0x00106648 | xpancake.c | Starts a wipe that opens from the point (c, d) over a frames, from size b. |
+| fadeScreenColor | 0x002BC070 | xpancake.c | screen brightness RGBA (0..128) the screen fade tasks write; was D_002B85C0 |
+| fadeOverlayAlpha | 0x002BC0BC | xpancake.c | overlay alpha (0..128) the overlay fade tasks write; was D_002B860C |
+| fadeTaskList | 0x002BC720 | xpancake.c | task list (xgoblin.c) every fade task is added to; was D_002B8C70 |

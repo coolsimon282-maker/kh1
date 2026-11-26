@@ -28,7 +28,7 @@ extern sceVu0FMATRIX D_002B84B0;
 extern sceVu0FMATRIX D_002B84F0;
 extern sceVu0FMATRIX D_002B8530;
 extern sceVu0FMATRIX D_002B8570;
-extern s32 D_002B85C0[4];
+extern s32 fadeScreenColor[4];
 extern s32 D_002B8210;
 extern s32 curWorldNo;
 extern s32 curRoomNo;
@@ -561,17 +561,17 @@ s32 func_00110038(s32);
 #endif
 
 void func_00110150(void) {
-    D_002B85C0[3] = 128;
-    D_002B85C0[2] = 128;
-    D_002B85C0[1] = 128;
-    D_002B85C0[0] = 128;
+    fadeScreenColor[3] = 128;
+    fadeScreenColor[2] = 128;
+    fadeScreenColor[1] = 128;
+    fadeScreenColor[0] = 128;
 }
 
 void func_00110170(void) {
-    D_002B85C0[3] = 0;
-    D_002B85C0[2] = 0;
-    D_002B85C0[1] = 0;
-    D_002B85C0[0] = 0;
+    fadeScreenColor[3] = 0;
+    fadeScreenColor[2] = 0;
+    fadeScreenColor[1] = 0;
+    fadeScreenColor[0] = 0;
 }
 
 #ifdef VERSION_FM

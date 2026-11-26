@@ -152,6 +152,16 @@ TaskSystem_AddTask                   = 0x0011EF10; // type:func
 TaskList_Init                        = 0x0011EFA8; // type:func
 
 
+//=========================================================
+// xpancake.c
+//=========================================================
+Fade_IsBlack                         = 0x001063C8; // type:func
+Fade_IsActive                        = 0x001063F8; // type:func
+FadeTask_UpdateIris                  = 0x00106460; // type:func
+Fade_StartIrisClose                  = 0x001065A8; // type:func
+Fade_StartIrisOpen                   = 0x00106648; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
@@ -180,6 +190,14 @@ roomArchiveFile              = 0x002BCD60; // size:0x40
 // ppp/pppMngr.c (data)
 //=========================================================
 ppvMngTbl                            = 0x00364130; // size:0xC000
+
+
+//=========================================================
+// xpancake.c (data)
+//=========================================================
+fadeScreenColor                      = 0x002BC070; //
+fadeOverlayAlpha                     = 0x002BC0BC; //
+fadeTaskList                         = 0x002BC720; //
 
 
 ///////////////////////////////////////////////////////////
