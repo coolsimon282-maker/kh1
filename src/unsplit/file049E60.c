@@ -6423,7 +6423,30 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174968);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174A20);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00174AD8);
+/* unused: rule F1 (5 needed here to keep func_00176F08) */
+extern s32 D_174AD8_pad1;
+extern s32 D_174AD8_pad2;
+extern s32 D_174AD8_pad3;
+extern s32 D_174AD8_pad4;
+extern s32 D_174AD8_pad5;
+s16* func_00171B80_p(u8* p, u8* q, s32 a2) __asm__("func_00171B80");
+void func_00174AD8(u8* arg0) {
+    u8* q = *(u8**)(arg0 + 0x144);
+    u64 f = *(u64*)(q + 0x38);
+    s32* d;
+
+    if ((s32)(f >> 17) & 1) {
+        *(u64*)(q + 0x38) = f & ~0x20000;
+        return;
+    }
+    d = *(s32**)(*(u8**)(q + 0x160) + 0xC);
+    *(f32*)(q + 0x68) = func_00171AA8(((f32*)d)[5], ((f32*)d)[6]);
+    *(s32*)(q + 0x4C) = *func_00171B80_p(arg0, q, d[0]);
+    if (func_00171AE8((s32)arg0, q) != 0) {
+        *(f32*)(*(u8**)(q + 0x40) + 0x50) = ((f32*)d)[7];
+    }
+    *(s32*)(q + 0x164) = 1;
+}
 
 s32 func_00174B90(u8* p, u8* q, s32 m) {
     s32 r = 0;
