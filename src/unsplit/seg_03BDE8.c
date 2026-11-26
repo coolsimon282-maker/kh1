@@ -4787,7 +4787,48 @@ s32 func_001520E0(u8* p, s32 b, s32 c) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152140);
+/* unused: rule F1 (26 Nov, with the table below moved here: 2 stable, 6 flaky, 10 not) */
+extern s32 D_lay152140_0;
+extern s32 D_lay152140_1;
+/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, func_00142388, then func_00152140): keeps its %lo fold (rules F1/Q1) */
+typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
+extern V176F08 D_00362458_v[] __asm__("D_00362458");
+void func_00152140(u8* p) {
+    s32* d = *(s32**)(p + 0x144);
+    if (d == NULL) {
+        d = (s32*)func_00121C98(0x14, p + 0x144);
+        d[0] = 0;
+        d[1] = 0;
+        d[2] = 0;
+        d[3] = 0;
+        d[4] = 0;
+        *(void**)(p + 0x4A0) = func_001520E0;
+    }
+    if (*(s32*)p & 0x400) {
+        switch (*(s32*)(p + 0x70)) {
+        case 0:
+            if (60.0f <= *(f32*)&d[2]) {
+                func_00151CD0(p);
+            } else {
+                func_00147138(p, 2);
+            }
+            d[1] = 0;
+            break;
+        case 2:
+            d[2] = 0;
+            break;
+        }
+    }
+    func_00151D20(p);
+    switch (*(s32*)(p + 0x70)) {
+    case 0:
+        func_00151FA0(p);
+        break;
+    case 2:
+        func_001520C0(p);
+        break;
+    }
+}
 
 void func_00152250(u8* p, s32 a1, f32* v) {
     f32 z = 0.0f;
@@ -4965,9 +5006,6 @@ void func_00152DC8(u8* p, s32 b) {
     *(f32*)(*(u8**)(p + 0x144) + 0x1C) = D_00351930[b][0];
 }
 
-/* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, then func_00142388): keeps its %lo fold (rules F1/Q1) */
-typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
-extern V176F08 D_00362458_v[] __asm__("D_00362458");
 void func_00152C28(u8*, f32*, f32);
 void func_00152D50_f(u8*, s32, f32*, f32) __asm__("func_00152D50");
 extern f32 D_0035193C[][4];
