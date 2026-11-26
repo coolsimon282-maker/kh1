@@ -447,7 +447,64 @@ void func_0022B3C8(s32 a0) {
     func_001F9438(a0, 0, 0xAE, 0xC, 0x199, 0x11, 0x80399BFF);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file1298E0", func_0022B410);
+extern u8 D_003F7000[];
+extern u8 D_003F6FA0[];
+extern u8 D_003F7028[];
+void UiObject_InsertAfter(u8 *, u8 *);
+void func_00233F28(s32, s32);
+void func_00233FB0(s32, s32);
+void func_00209340(s32, s32, u8 *);
+void func_0022B410(s32 a0) {
+    u8 *e[2];
+
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 0x8) & 0x4000) {
+            func_001F3840(a0);
+            func_0020BE10(0x10);
+            func_0011D598(3);
+        } else {
+            if (*(s32 *)(a0 + 0x10) == 0) {
+                if ((e[0] = func_001F3A20(D_003F7000, 6)) != NULL) {
+                    UiObject_InsertAfter(e[0], (u8 *)a0);
+                    func_001F3DC0((u8 *)a0);
+                }
+            }
+            func_001FD858((u8 *)a0);
+            func_0020BD18(a0, 8);
+            D_006437C4 = func_001FD518((u8 *)a0);
+            func_00233F28(D_006437C4, 0);
+            D_00425C28[D_006437C4 ^ 1].unk0 = 3;
+            if (func_001FE5A0(a0)) {
+                if (D_00425C28[D_006437C4].unk0 != 3) {
+                    if (func_00233F40(D_006437C4, 0)) {
+                        func_00233FB0(D_006437C4, 0);
+                        func_00233FF8(D_006437C4, 0);
+                        D_006469A4 = 0;
+                    }
+                    if (D_006437D8 != D_006437C4) {
+                        D_006469A4 = 0;
+                    }
+                    func_0011D598(2);
+                    func_00233F18();
+                    D_006437DC = 0;
+                    D_006437E0 = 0;
+                    func_001F36B8(*(s32 *)(a0 + 0x10));
+                    if ((e[0] = func_001F3A20(D_003F6FA0, 0)) != NULL) {
+                        UiObject_InsertAfter(e[0], (u8 *)a0);
+                        D_00646990 = (s32)e[0];
+                        if ((e[1] = func_001F3A20(D_003F6E40, 6)) != NULL) {
+                            UiObject_InsertAfter(e[1], e[0]);
+                            func_001F3DC0(e[0]);
+                        }
+                    }
+                } else {
+                    func_0022B2E0((u8 *)a0);
+                }
+            }
+        }
+    }
+    func_00209340(a0, 2, D_003F7028);
+}
 
 void func_0022B630(void) {
     func_00109268();
