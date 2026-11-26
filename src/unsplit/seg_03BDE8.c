@@ -604,7 +604,6 @@ void func_0013BD88(s32* p, s32 a, s32 b) {
 
 typedef struct { f32 dur; s32 (*fn)(void); } K13BDA0;
 typedef struct { K13BDA0* cur; s32 n; s32 idx; f32 t; } S13BDA0;
-extern s32 D_0013BDA0_pad2; /* unused: rule F1 (with func_0013BDA0) */
 s32 func_0013BDA0(S13BDA0* s) {
     K13BDA0* k;
     f32 z;
@@ -875,9 +874,6 @@ void func_0013C7D0(u32 x) {
     }
 }
 
-/* two dummy declarations keep func_001559A8 (far below) as it was (rule F1) */
-extern int flip_pad_13C858_0;
-extern int flip_pad_13C858_1;
 void func_0013C858(u32 v, u32 id) {
     u8* p;
     s32 i;
@@ -942,13 +938,6 @@ s32 func_0013C9E0(a0, a1)
     return 0xFF;
 }
 
-/* unused: rule F1 (with fewer, func_00176F08, func_0014ED30, func_001560F8 or func_00168530 change) */
-extern s32 D_lay13CAE8_0;
-extern s32 D_lay13CAE8_1;
-extern s32 D_lay13CAE8_2;
-extern s32 D_lay13CAE8_3;
-extern s32 D_lay13CAE8_4;
-extern s32 D_lay13CAE8_5;
 s32 func_0013CAE8(u32 a1, s32 a0) {
     s32 i;
 
@@ -1058,12 +1047,6 @@ s32 func_0014A408(void);
 void func_0012C880(u8*, s32);
 u8* func_0014A908_r(u8*, s32, s32) __asm__("func_0014A908");
 void func_00157A30_z(u8*, s32, s32) __asm__("func_00157A30");
-/* unused: rule F1 (26 Nov: only 5 and 11 among 0-16 keep func_00147138 .. func_00176F08) */
-extern s32 D_lay13DC10_0;
-extern s32 D_lay13DC10_1;
-extern s32 D_lay13DC10_2;
-extern s32 D_lay13DC10_3;
-extern s32 D_lay13DC10_4;
 u8* func_0013DC10(u8* p, s32 b) {
     s8* d = (s8*)func_0013DBE0(p, b);
     u8* e;
@@ -1466,8 +1449,6 @@ void func_00140D50(s32 a, f32* b) {
     sceVu0CopyVector(b, (f32*)(a + 0x30));
 }
 
-extern s32 D_00140DB8_pad1; /* unused: rule F1 (with func_00140DB8) */
-extern s32 D_00140DB8_pad3; /* unused: rule F1 (with func_00140DB8) */
 void func_00140DB8(u8* p, f32* v) {
     f32 z = 0.0f;
     f32 h;
@@ -1598,7 +1579,6 @@ void func_001412F8(s32 a0, s32 a1) {
     }
 }
 
-extern s32 D_00141348_pad2; /* unused: rule F1 (with func_00141348) */
 s32 func_00141348(u8** p, s32* out) {
     struct { void* a; s32 n; void* b; s32 m; } s;
     u8* q;
@@ -1980,8 +1960,6 @@ void func_00117710(u8*, u8*);
 void func_00137440_a(u8*, u8*) __asm__("func_00137440");
 u8* func_0015C738(u8*, f32*);
 
-/* unused declaration: without it func_0016FA10 loses an address fold (GCC 2.96 bug, notes/a1.md) */
-extern s32 D_003044E0_dummy_unused;
 void func_00143A70(u8* p, f32* v, s32 a2) {
     sceVu0FVECTOR w;
     f32 r;
@@ -2502,9 +2480,6 @@ u8* func_00146FB8(u8* a0, s32 a1, s32 a2) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146FF0);
 
-/* unused: rule F1 (keeps func_001560F8, func_00168530, func_0016FA10, func_00176F08 as they were) */
-extern s32 D_lay147138_0;
-extern s32 D_lay147138_1;
 extern u16 D_003085D8[];
 extern u16 D_00307226[];
 u8* func_00147138(u8* p, s32 a1) {
@@ -2758,15 +2733,7 @@ u8* func_00147D18(s32 a) {
     return r;
 }
 
-/* unused: rule F1 (with other counts func_0014ED30, func_00152E10, func_001560F8 or func_00176F08 change; 26 Nov, after fm was merged into fm-q1: 7 and 8 among 0-16, with 13 flip_dummies above func_00176F08) */
 void func_00121878(s32, f32*);
-extern s32 D_lay147D50_0;
-extern s32 D_lay147D50_1;
-extern s32 D_lay147D50_2;
-extern s32 D_lay147D50_3;
-extern s32 D_lay147D50_4;
-extern s32 D_lay147D50_5;
-extern s32 D_lay147D50_6;
 void func_00147D50(u8* a, s32 b) {
     f32 v[4];
     func_00121878(b, v);
@@ -2775,8 +2742,6 @@ void func_00147D50(u8* a, s32 b) {
     (*(u32**)(a + 4))[2] = (u16)(s32)((v[2] / 6.2831855f) * 65536.0f);
 }
 
-/* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was; with it func_00176F08 needs one flip_dummy less (rule F1) */
-extern s32 D_00147E08_pad0;
 void func_00147E08(u8* a, f32* m) {
     f32 v[4];
     func_001218E0(m, v);
@@ -2897,15 +2862,6 @@ u8* func_00148570(u8* a, s32 b, s32 c) {
     return r;
 }
 
-/* unused: rule F1 (26 Nov: only 8 among 0-14 keeps func_00152E10 .. func_00176F08) */
-extern s32 D_lay148600_0;
-extern s32 D_lay148600_1;
-extern s32 D_lay148600_2;
-extern s32 D_lay148600_3;
-extern s32 D_lay148600_4;
-extern s32 D_lay148600_5;
-extern s32 D_lay148600_6;
-extern s32 D_lay148600_7;
 u8* func_00148600(u8* a, s32 b, s32 c, f32 f) {
     f32 m[16];
     u8* r;
@@ -3053,8 +3009,6 @@ void func_00148B98(u8* p, s32 b, s32 c) {
 }
 
 void func_00148B70_f(u8*, s32, s32, f32) __asm__("func_00148B70");
-extern s32 D_00148BC0_pad2; /* unused: rule F1 (with func_00148BC0) */
-extern s32 D_00148BC0_pad6; /* unused: rule F1 (with func_00148BC0) */
 s32 func_00148BC0(u8* p) {
     u8* q = *(u8**)(p + 0x20);
     if (func_001233F8(*(s32*)(p + 0x10)) != 0) {

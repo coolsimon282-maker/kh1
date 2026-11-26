@@ -457,7 +457,6 @@ s32 func_0013C6A8(u32 n);
 s32 func_0013C968(s32 a0, u32 a1);
 u8* func_00147A88(s32);
 s32 func_0013C9E0(a0, a1);
-/* unused: rule F1 (with fewer, func_00176F08, func_0014ED30, func_001560F8 or func_00168530 change) */
 void *func_0013DA88(s32 a);
 s32 func_0013DB30(s32 a);
 s32 func_0014A408(void);
@@ -496,7 +495,6 @@ s32 func_00146998(u8* p);
 s32 func_00146998();
 s32 func_00146B90(u8* a, s32 b, s32 c, s32 d);
 u8* func_00146BD0(s32 a, s32 b);
-/* unused: rule F1 (keeps func_001560F8, func_00168530, func_0016FA10, func_00176F08 as they were) */
 u8* func_00147138(u8* p, s32 a1);
 void func_00147278(s32 a0, s32 a1, s32 a2);
 void func_0011D350_nt() __asm__("func_0011D350");
@@ -507,9 +505,7 @@ s32 func_001477E0(s32 a0);
 u8* func_00147A88(s32 i);
 s32 func_001623E0(u8* p);
 s32 func_001765F8(s32 arg0);
-/* unused: rule F1 (with other counts func_0014ED30, func_00152E10, func_001560F8 or func_00176F08 change; 26 Nov, after fm was merged into fm-q1: 7 and 8 among 0-16, with 13 flip_dummies above func_00176F08) */
 void func_00147D50(u8* a, s32 b);
-/* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was; with it func_00176F08 needs one flip_dummy less (rule F1) */
 u8* func_00147ED8(s32 a, s32 b, s32 c, f32* v);
 void func_00148068(u8* p, f32 f);
 u8* func_00148768(s32 a0, s32 a1, s32 a2, s32 a3, f32 f);
@@ -895,12 +891,6 @@ void func_0014CB38(void) {
     func_0014F830(0x15, 5, (s32)func_0014C400, (s32)func_0014C428, (s32)func_0014C6C0, (s32)func_0014C850, (s32)func_0014CA38, (s32)func_0014C5C8, 0);
 }
 
-/* four dummy declarations keep func_001560F8 (far below) scheduling as before (rule F1) */
-extern int flip_dummy_0;
-extern int flip_dummy_1;
-extern int flip_dummy_2;
-extern int flip_dummy_3;
-extern int flip_dummy_g3539;
 s32 func_00130340_x(s32, s32, f32) __asm__("func_00130340");
 typedef struct { u32 pad:9; u32 b9:1; } V14CB90;
 s32 func_0014CB90_def(s32 p) __asm__("func_0014CB90");
@@ -955,7 +945,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014CDC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014CEE8);
 
-extern s32 D_0014D070_pad1; /* unused: rule F1 (with func_0014D070) */
 void func_0014D070(u8* p, f32* v) {
     sceVu0FVECTOR d;
     f32 z;
@@ -1258,9 +1247,6 @@ void func_0014E4B8(void) {
     func_0014F830(8, 0x76, (s32)func_0014DC08, (s32)func_0014DC90, (s32)func_0014DF60, (s32)func_0014E160, (s32)func_0014E400, (s32)func_0014DD48, 0);
 }
 
-/* unused: rule F1 (keeps func_0014ED30, func_001559A8, func_001560F8 as they were) */
-extern s32 D_lay14E510_0;
-extern s32 D_lay14E510_1;
 u8* func_00132040(u8*);
 s32 func_0014E510(s32 a0) {
     u8* q = NULL;
@@ -1281,10 +1267,6 @@ s32 func_0014E510(s32 a0) {
 }
 
 extern u8* D_00350D78_b __asm__("D_00350D78");
-/* unused: rule F1 (26 Nov: 0, 2-4, 8, 9, 12, 14 of 0-14 fine) */
-extern s32 D_lay14E5B8_0;
-extern s32 D_lay14E5B8_1;
-extern s32 D_lay14E5B8_2;
 s32 func_0014E5B8(f32* v) {
     u8* h = D_00350D78_b;
     u8* e;
@@ -1804,7 +1786,6 @@ void func_00151808(void) {
     D_0054F950 = func_0014DAB8();
 }
 
-extern s32 D_00151860_pad5; /* unused: rule F1 (with func_00151860) */
 s32 func_00151860(u8* p, u8* q, s32 c) {
     f32 d;
     switch (c) {
@@ -1863,7 +1844,6 @@ void func_00151CD0(u8* p) {
 }
 
 u8* func_00147138(u8*, s32);
-extern s32 D_00151D20_pad1; /* unused: rule F1 (with func_00151D20) */
 void func_00151D20(u8* p) {
     sceVu0FVECTOR v;
     s32* d = *(s32**)(p + 0x144);
@@ -1897,18 +1877,6 @@ void func_00151D20(u8* p) {
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151E28);
 
 s32 func_00151E28(u8*);
-/* unused: rule F1 (26 Nov: 1, 4, 11, 12 of 0-13 keep func_001560F8 / func_00176F08) */
-extern s32 D_lay151FA0_0;
-extern s32 D_lay151FA0_1;
-extern s32 D_lay151FA0_2;
-extern s32 D_lay151FA0_3;
-extern s32 D_lay151FA0_4;
-extern s32 D_lay151FA0_5;
-extern s32 D_lay151FA0_6;
-extern s32 D_lay151FA0_7;
-extern s32 D_lay151FA0_8;
-extern s32 D_lay151FA0_9;
-extern s32 D_lay151FA0_10;
 void func_00151FA0(u8* p) {
     f32* d = *(f32**)(p + 0x144);
     sceVu0FVECTOR v;
@@ -1950,9 +1918,6 @@ s32 func_001520E0(u8* p, s32 b, s32 c) {
     return 0;
 }
 
-/* unused: rule F1 (26 Nov, with the table below moved here: 2 stable, 6 flaky, 10 not) */
-extern s32 D_lay152140_0;
-extern s32 D_lay152140_1;
 /* func_00176F08's table, declared up here (moved above func_00170FA8, func_0014D428, func_00142388, then func_00152140): keeps its %lo fold (rules F1/Q1) */
 typedef struct { void (*exit)(void); void (*enter)(void); } V176F08;
 extern V176F08 D_00362458_v[] __asm__("D_00362458");
@@ -2025,9 +1990,6 @@ void func_001523E8(s32 a, f32* v) {
     sceVu0CopyVector(v, D_002C58A0);
 }
 
-/* unused: rule F1 (keeps func_001559A8 and func_001560F8 as they were) */
-extern s32 D_lay152408_0;
-extern s32 D_lay152408_1;
 void func_00137318_p(u8*) __asm__("func_00137318");
 s32 func_00152408_d(u8* p, s32 a1) __asm__("func_00152408");
 s32 func_00152408_d(u8* p, s32 a1) {
@@ -2099,13 +2061,6 @@ void func_00152648(u8* p) {
 }
 
 void func_00135640(u8*, u8*);
-/* unused: rule F1 (26 Nov: 1 is flaky on func_00176F08, 0 and 2-12 were fine; 6 used) */
-extern s32 D_lay152688_0;
-extern s32 D_lay152688_1;
-extern s32 D_lay152688_2;
-extern s32 D_lay152688_3;
-extern s32 D_lay152688_4;
-extern s32 D_lay152688_5;
 u8* func_00152688(u8* p, s32 a1, s32 a2) {
     s32 t;
     u8* r;
@@ -2529,16 +2484,6 @@ void func_001545F0(u8* p, u8* a1) {
     sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0x160), D_002C58B0);
 }
 
-/* unused: rule F1 (26 Nov: 1, 2, 4, 7, 11 of 0-14 move func_001560F8) */
-extern s32 D_lay1546B8_0;
-extern s32 D_lay1546B8_1;
-extern s32 D_lay1546B8_2;
-extern s32 D_lay1546B8_3;
-extern s32 D_lay1546B8_4;
-extern s32 D_lay1546B8_5;
-extern s32 D_lay1546B8_6;
-extern s32 D_lay1546B8_7;
-extern s32 D_lay1546B8_8;
 void func_001546B8(u8* p, u8* q) {
     f32* s;
     if (sceVu0InnerProduct((f32*)(p + 0x30), (f32*)(q + 0x10)) < 0.0f) {
@@ -2577,7 +2522,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00154880);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001549B8);
 
-extern s32 D_00154AF8_pad1; /* unused: rule F1 (with func_00154AF8) */
 void func_00154AF8(u8* p, u8* q, f32* r) {
     sceVu0FVECTOR v;
 
@@ -2692,10 +2636,6 @@ void func_001557D0(void) {
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00155878);
 
 typedef struct { u8 pad[0x44]; s32 unk44; } V550400;
-extern s32 D_00146998_pad1; /* unused: rule F1 (with func_00146998) */
-extern s32 D_00141348_pad3; /* unused: rule F1 (with func_00141348) */
-extern s32 D_00150208_pad1; /* unused: rule F1 (with func_00150208) */
-extern s32 D_00152250_pad1; /* unused: rule F1 (with func_00152250) */
 s32 func_001559A8(s32 a0) {
     return ((V550400*)D_00550400)[(a0 - (s32)D_FE0000) / 0x40000].unk44;
 }
@@ -2837,15 +2777,6 @@ void func_00155EE8(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00155EF8);
 
-/* unused: keeps func_001560F8 at its size once func_00150DE0 is C (rule F1) */
-extern s32 D_001560F8_pad0;
-/* unused: keeps func_001560F8 at its size once func_00146BD0 is C (rule F1) */
-extern s32 D_00146BD0_padv1;
-extern s32 D_00154AF8_pad2; /* unused: rule F1 (with func_00154AF8) */
-extern s32 D_00158DF8_pad1; /* unused: rule F1 (with func_00158DF8) */
-extern s32 D_00153D88_pad1; /* unused: rule F1 (with func_00153D88) */
-extern s32 D_00151860_pad3; /* unused: rule F1 (with func_00151860) */
-extern s32 D_00149BD0_pad1; /* unused: rule F1 (with func_00149BD0) */
 s32 func_001560F8(s32 a0, s32 a1) {
     u8* r = func_001320A8_1(a0);
     s32 k = *(s8*)(r + 0x55);
@@ -3429,9 +3360,6 @@ void func_00158DF8(s32 a, s32 b, u8* p) {
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00158EC8);
 
 s32 func_00158EC8(void);
-/* unused: rule F1 (with none, func_00176F08 changes; 1-10 all fine on 26 Nov) */
-extern s32 D_lay1590A8_0;
-extern s32 D_lay1590A8_1;
 void func_001590A8(void) {
     if ((D_002C1EA8 >> 16) & 1) {
         func_F20000(6, 0);
@@ -3473,8 +3401,6 @@ extern sceVu0FVECTOR D_00351A50;
 extern sceVu0FVECTOR D_00351A60;
 extern sceVu0FVECTOR D_00351A70;
 
-/* unused: keeps func_0016FA10 (D_00575020 %lo fold) as it was (rule F1) */
-extern s32 D_00159258_pad0;
 s32 func_00159258(void) {
     s32 e = D_002E26A0;
     u8 **pp;
@@ -4300,7 +4226,6 @@ void func_0015DE88(u8* a0) {
 }
 
 void func_001223B0(f32*, f32*);
-extern s32 D_0015DEF8_pad1; /* unused: rule F1 (with func_0015DEF8) */
 void func_0015DEF8(u8* p, f32* out) {
     sceVu0FVECTOR a;
     sceVu0FVECTOR b;
@@ -4403,7 +4328,6 @@ typedef struct G15EA98 {
 extern G15EA98* D_00551D80;
 extern volatile s32 D_00559DB8;
 extern volatile s32 D_00559DB4_v __asm__("D_00559DB4");
-extern s32 D_0015EA98_pad1; /* unused: rule F1 (with func_0015EA98) */
 int func_0015EA98(void) {
     u32 r;
     while (sceGsSyncPath(1, 0) != 0) {
@@ -4595,8 +4519,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00161A08);
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00161DE8);
 
 extern u8 D_0056A0F0_p[] __asm__("D_0056A0F0");
-/* unused: without it func_0016FA10 loses its D_00575020 %lo fold (F1; repeating that extern did not help) */
-extern s32 D_00161F80_dummy_unused;
 void func_00161F80(void) {
     u8 *e = (u8 *)D_0056A0F0_p;
     s32 i;
@@ -6980,7 +6902,6 @@ void func_001763A0(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00177908);
 
-extern s32 D_lay176488_0; /* unused: rule F1 (keeps func_00176F08 as it was) */
 typedef struct { s32 a; s32 b; s32 key; s32 pad[5]; } E176488;
 s32 func_00176488_def(u8* p, u8* q, s32 key, s32 d) __asm__("func_00176488");
 s32 func_00176488_def(u8* p, u8* q, s32 key, s32 d) {
@@ -7206,21 +7127,6 @@ s32 func_00176EE0(void) {
 extern sceVu0FVECTOR D_005758A0;
 extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
-/* nine dummy declarations keep this function's table address form after func_00148FB0/func_00149090 (rule F1) */
-extern int flip_dummy_0;
-extern int flip_dummy_1;
-extern int flip_dummy_2;
-extern int flip_dummy_3;
-extern int flip_dummy_4;
-extern int flip_dummy_5; /* sixth one added with func_00146BD0 */
-extern int flip_dummy_6;
-extern int flip_dummy_7;
-extern int flip_dummy_8;
-extern int flip_dummy_9;
-extern int flip_dummy_10;
-extern int flip_dummy_11;
-extern int flip_dummy_12; /* 13-15 dropped with func_00147D50 (26 Nov): 12-14 dummies were stable with it, 15-17 flaky */
-extern int flip_dummy_13;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);

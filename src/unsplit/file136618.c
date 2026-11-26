@@ -306,13 +306,6 @@ void sceDmaSend(void *, void *);
 void FlushCache(int);
 int sceGsSyncPath(int mode, u_short timeout);
 
-/* unused: rule F1 (26 Nov, with 6 D_lay241A10 above func_00241A10: 0, 6 fine) */
-extern s32 D_lay237F20_0;
-extern s32 D_lay237F20_1;
-extern s32 D_lay237F20_2;
-extern s32 D_lay237F20_3;
-extern s32 D_lay237F20_4;
-extern s32 D_lay237F20_5;
 void func_00237F20(Seg132Ot *ot, u32 *buf0, u32 *buf1, s32 a3, s32 a4) {
     Seg132Node *tbl = ot->tbl;
     Seg132Node *node;
@@ -355,7 +348,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002380C0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00238258);
 
-extern s32 D_lay238440_0; /* unused: rule F1 (keeps func_00248238 as it was) */
 extern u_long128 D_00648070[];
 u_long128 *func_00237790(u8 *, u_long128 *, s32);
 void func_00238440(u8 *p, s32 n, s32 a2) {
@@ -665,9 +657,6 @@ void func_00239D20(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, f32 f
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00239E30);
 
-/* unused: layout only (notes/f1.md F1): without them func_00245F58 changes; 1-4 all OK */
-extern s32 D_23A318_pad1;
-extern s32 D_23A318_pad2;
 extern u64 D_00648630[];
 extern u_long128 *D_006488F0_p __asm__("D_006488F0");
 extern u_long128 *D_006488F4;
@@ -764,8 +753,6 @@ void func_0023A720(void) {
     }
 }
 
-/* unused: layout only (F1): keeps func_00245F58 / func_00247CC8 */
-extern s32 D_23A7E8_pad1;
 extern f32 D_002B8344;
 
 void func_0023A7E8(void) {
@@ -1383,8 +1370,6 @@ s32 func_0023F700(u8 *a0, s32 a1) {
     return a1;
 }
 
-/* unused: layout only (F1): with 1 or 3 of these func_00241A10 keeps its store fold (2/4 break it) */
-extern s32 D_23F7D8_pad1;
 extern s32 D_00454A20_i __asm__("D_00454A20");
 
 s32 func_0023F7D8(s32 *p, s32 a1) {
@@ -1798,15 +1783,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002416A8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00241948);
 
-/* unused: layout only (notes/f1.md F1): without them func_00241A10 loses its folded `sw $5,D_00652888($1)`.
- * fm (with func_0023A7E8) needed 1, 3, 4 or 5, q1 (after func_00234440..func_00234730) 1; rescanned after the merge: 0; after func_0023CA48 +
- * func_00237F20 (26 Nov): 6 (5-7 fine), these D_lay241A10. */
-extern s32 D_lay241A10_0;
-extern s32 D_lay241A10_1;
-extern s32 D_lay241A10_2;
-extern s32 D_lay241A10_3;
-extern s32 D_lay241A10_4;
-extern s32 D_lay241A10_5;
 extern u32 D_00652888[];
 
 void func_00241A10(s32 arg0, u32 arg1) {
@@ -2285,7 +2261,6 @@ void func_00243DA0(s32 x, s32 y, s32 a2, s32 *c, f32 f) {
 }
 
 extern s32 D_00656420;
-extern s32 D_lay243E58_0; /* unused: rule F1 (keeps func_00248238 as it was) */
 extern s32 func_001F0868(s32, s32, s32, s32, s32, s32, s32, s32);
 void func_00243E58(s32 a0, s32 a1, s32 a2, s32 *c, f32 f) {
     u8 col[4];
@@ -3162,9 +3137,6 @@ void func_00246BC8(void) {
     }
 }
 
-/* unused: layout only (notes/f1.md F1). Without it (or with 2 or 4) func_00247CC8 stops folding
- * `la $4,D_00431F30($4)`; 1 and 3 keep the file matching (25 Nov). */
-extern s32 D_246CF0_layout1;
 s32 func_00246CF0(s32 n, s32 *d) {
     s32 i;
     s32 r = 5;
