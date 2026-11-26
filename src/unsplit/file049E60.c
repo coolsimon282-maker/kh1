@@ -6629,7 +6629,44 @@ s32 func_001710D8(u8* p, u8 b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00171118);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001711D0);
+u8* Actor_FindNextOpponent(u8*, u8*);
+extern f32 D_0048EA68;
+typedef struct { u64 pad:37; u32 t:2; } V1711D0;
+void func_001711D0(u8* p, s32* out, f32 r) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR w;
+    u8* e;
+    s32 i;
+    f32 min;
+    f32 d;
+
+    out[1] = -1;
+    out[0] = 0;
+    if (r <= 0.0f) {
+        min = D_0048EA68;
+    } else {
+        min = r * r;
+    }
+    e = NULL;
+    while ((e = Actor_FindNextOpponent(p, e)) != NULL) {
+        if (((V1711D0*)(e + 0x370))->t != 2) continue;
+        if (!func_00123768(e)) continue;
+        if (func_00141200(e, 0)) continue;
+        i = -1;
+        while ((i = func_0012EE70((s32)e, i)) >= 0) {
+            if (func_0012F040((s32)e, i)) {
+                func_0012EC60((s32)e, i, v);
+                sceVu0SubVector(w, v, (f32*)(p + 0x10));
+                d = sceVu0InnerProduct(w, w);
+                if (d < min) {
+                    out[0] = (s32)e;
+                    min = d;
+                    out[1] = i;
+                }
+            }
+        }
+    }
+}
 
 extern f32 D_0048EA6C;
 s32 func_00171320(u8* p, s32 m) {
