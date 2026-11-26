@@ -8193,7 +8193,28 @@ void func_001763A0(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00177908);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00176488);
+extern s32 D_lay176488_0; /* unused: rule F1 (keeps func_00176F08 as it was) */
+typedef struct { s32 a; s32 b; s32 key; s32 pad[5]; } E176488;
+s32 func_00176488_def(u8* p, u8* q, s32 key, s32 d) __asm__("func_00176488");
+s32 func_00176488_def(u8* p, u8* q, s32 key, s32 d) {
+    s32 i;
+    s32 found = 0;
+    E176488* e = (E176488*)(p + 0x10);
+    for (i = 0; i < *(s32*)(p + 0xC); i++, e++) {
+        if (e->key == key) {
+            found = 1;
+            break;
+        }
+    }
+    if (found == 0) {
+        return 0;
+    }
+    if (func_00176658(e->a, q, e->b, d) == 0) {
+        return 0;
+    }
+    *(u8**)(q + 0x38) = p;
+    return 1;
+}
 
 s32 func_00176528(u8* p) {
     return *(s32*)(p + 0xC);
