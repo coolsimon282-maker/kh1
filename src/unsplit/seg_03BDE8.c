@@ -2069,7 +2069,36 @@ void func_00142C80(u8* a0, f32* a1) {
     func_00142B30(a0, v);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142CF0);
+f32 Vec_Angle(f32*, f32*);
+void Vec_RotateTowards(f32*, f32*, f32*, f32);
+f32 func_00142CF0(u8* p, f32* tgt, f32 speed, f32 turn) {
+    sceVu0FVECTOR v;
+    f32 dist;
+    f32 r;
+
+    sceVu0SubVector(v, tgt, (f32*)(p + 0x10));
+    if (!(*(s32*)p & 0x10)) {
+        v[1] = 0.0f;
+    }
+    func_001223B0(v, v);
+    if (turn == 0.0f) {
+        turn = Vec_Angle((f32*)(p + 0x30), v);
+        r = v[3] / speed * 0.3f;
+        if (r > 1.0f) {
+            turn /= r;
+        }
+    }
+    dist = v[3];
+    if (dist < speed) {
+        speed = dist;
+    }
+    Vec_RotateTowards((f32*)(p + 0x30), v, v, turn);
+    *(f32*)(p + 0x150) = atan2f(v[0], v[2]);
+    func_00137688((s32)p, *(f32*)(p + 0x150));
+    v[3] = speed;
+    sceVu0CopyVector((f32*)(p + 0x20), v);
+    return dist;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142E30);
 
