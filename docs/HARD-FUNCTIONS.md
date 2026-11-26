@@ -4,15 +4,9 @@ Snapshot of `fm` on 25 Nov 2026: every game function in the **hard** tier that i
 
 Tiers come from `eu-notes/tiers.py` (size, branches, calls, float and 64-bit work, earlier give-ups). The score is its difficulty estimate: higher is harder. "Notes" names the `notes/*.md` files that mention the function: read those first, they usually say exactly what was off.
 
-## Matches set aside in merges (redo first)
+## Matches set aside in merges
 
-These match on their own branch, but combined with other workers' matches in the same file they moved other functions (rule F1), so `fm` keeps the file without them. Each needs an F1 pad/layout fix (notes/a1.md N4/N7, notes/a4.md F24, notes/a5.md on pad name length). The C is on the named branch.
-
-| File | Functions | Branch |
-|---|---|---|
-| (none left: all redone on fm-q1 on 26 Nov, see below) | | |
-
-Redone on 26 Nov: `func_0014F868`, `func_00149BD0`, `func_00159350` (a1), `func_0021D948`, `func_002204F0`, `func_00225C30`, `func_00230728` (a4); `func_00162428` (q1, after fm was merged into fm-q1: no pads needed), `func_001590A8` (q1, two pads), `func_00147D50` (q1, seven pads + three flip_dummies fewer), `func_00152688` (q1/a1 C, prototype u8*, six pads), `func_0023A608` (a4 C, no pads needed on fm-q1), `func_0020E1C0` (q1, three pads), `func_001F81E8` (q1, with 12 pads above the D2C40_v extern for the trio).
+None left (26 Nov 2026): all matches set aside during the 25-26 Nov merges are back in `fm` (func_0020E1C0, func_001F81E8, func_0023A608, func_00147D50, func_001590A8, func_00162428, func_00152688, func_0013DC10, func_00152140, func_00151FA0, func_00237F20 and the earlier ones). Note: since the cleanup, several files listed below were split, renamed or folded into their JP files (see notes/a1.md, a2.md); the function names are unchanged unless docs/NAMES.md renamed them.
 
 ## By file
 
