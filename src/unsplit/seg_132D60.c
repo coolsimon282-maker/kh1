@@ -1383,7 +1383,30 @@ void func_0023A490(s32 a0, u8 *e, s32 x, s32 y, f32 f) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023A608);
+/* unused: layout only (F1): 7, 9-11 keep func_0023C5A8 / func_00247CC8 / func_00248238; 10 used. */
+extern s32 D_23A608_pad1;
+extern s32 D_23A608_pad2;
+extern s32 D_23A608_pad3;
+extern s32 D_23A608_pad4;
+extern s32 D_23A608_pad5;
+extern s32 D_23A608_pad6;
+extern s32 D_23A608_pad7;
+extern s32 D_23A608_pad8;
+extern s32 D_23A608_pad9;
+extern s32 D_23A608_pad10;
+extern u64 D_00648790[];
+void func_0023A608(s32 a0, s32 a1, s32 a2, s32 a3, f32 f) {
+    func_002370C8(D_00648790);
+    D_00648790[0x1C] = 5;
+    D_00648790[0xC] = 0x30003;
+    func_00237018(D_00648790, 0x16, 1);
+    D_006488F4 = (u_long128 *)&D_00351E10;
+    D_006488F0_p = (u_long128 *)&D_00351E10 + 1;
+    func_0023A490(a0, (u8 *)a1, a2, a3, f);
+    if (f != 0.0f) {
+        func_00237018(D_006488F4, D_006488F0_p - D_006488F4, 1);
+    }
+}
 
 typedef struct {
     s32 unk0;
