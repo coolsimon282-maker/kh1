@@ -1,12 +1,43 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
+// Its .data is defined below (FM); the .bss is still in the data segments: declare it extern here.
 #include "common.h"
 
 #include "eekernel.h"
 #include "sifrpc.h"
 #include "sifcmd.h"
 
-/* cdvd000.o's .data and .bss (still in the data segments) */
+#ifdef VERSION_FM
+/* cdvd000.o's .data (0x0046C600-0x0046E070); the receive/send buffers are 64-byte aligned for the SIF DMA */
+char D_0046C600[16] = "PsIIlibcdvd 2500"; /* library version (no NUL) */
+int SCE_CD_debug = 0;
+int D_0046C614 = 0;               /* cb_thread_id */
+int D_0046C618 = 0;               /* scmd_keep_cmd */
+int D_0046C61C = 0;               /* ncmd_keep_cmd */
+int D_0046C620 = -1;              /* cb_semid */
+int Init_seq = 0;                 /* poff_busy */
+int D_0046C628 = -1;              /* _sceCd_ncmd_semid */
+int D_0046C62C = -1;              /* _sceCd_scmd_semid */
+int _sceCd_c_cb_sem = 0;
+volatile int D_0046C634 = 0;      /* _sceCd_ee_read_mode */
+int D_0046C638 = -1;              /* ncmd_bind */
+int _icmd_bind = -1;              /* poff_bind */
+int D_0046C640 = -1;              /* search_bind */
+int D_0046C644 = -1;              /* diskready_bind */
+int D_0046C648 = -1;              /* scmd_bind */
+int D_0046C64C = -1;              /* init_bind */
+int D_0046C650 = 0;               /* init_count */
+volatile int D_0046C654 = 0;      /* sceCdCbfunc_num */
+int D_0046C658 = 0;               /* sceCdCbfunc_number */
+int D_0046C680[32] __attribute__((aligned(64))) = {0};   /* _sceCd_ncmdrdata */
+int D_0046C700[1024] __attribute__((aligned(64))) = {0}; /* _sceCd_ncmdsdata */
+int D_0046D700[48] __attribute__((aligned(64))) = {0};   /* _sceCd_rd_intr_data */
+int D_0046D7C0[4] = {0};          /* _sceCd_Read_cur_pos */
+sceSifClientData _sceCd_cd_ncmd = {0};
+int D_0046D800[272] __attribute__((aligned(64))) = {0};  /* _sceCd_scmdrdata */
+int D_0046DC40[258] = {0};        /* _sceCd_scmdsdata */
+sceSifClientData _sceCd_cd_scmd = {0};
+#endif
+/* cdvd000.o's .data (defined above in FM) and .bss (still in the data segments) */
 extern int SCE_CD_debug;
 extern int D_0046C614;            /* cb_thread_id */
 extern int D_0046C618;            /* scmd_keep_cmd */
