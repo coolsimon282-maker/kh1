@@ -1,5 +1,5 @@
-// Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x01C7A8).
-// Functions can be matched here like in any other file; the file may be split later.
+// Final Mix's version of xturtle (JP: src/xturtle.c, 0x11C5D8-0x11EAF8; here 0x11C7A8-0x11ECD8, the whole former
+// placeholder seg_01C7A8). FM only (JP/EU use src/xturtle.c). Built with strict aliasing like JP's xturtle.c.
 #include "common.h"
 extern s32 D_002A3F44;
 typedef struct { s32 a; s32 p4; s32 p8; s32 c; s32 b; s32 p14; } E3458;
@@ -193,7 +193,7 @@ void func_0011C9C0(void) {
     func_00101528();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CA68);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011CA68);
 
 void func_0011C938(char* a0) {
     char buf[16];
@@ -286,7 +286,7 @@ void func_0011CD20(s32 a0, u8 *a1, void (*cb)(void)) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011CC20);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011CC20);
 
 void func_0011CF88(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, Seg1C7A8Unk18* arg5, s32 arg6) {
     arg5->unk_00 = arg0;
@@ -498,7 +498,7 @@ void* func_0011D7C0(s32 arg0) {
     return func_0011C850(2, arg0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011D7E0);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011D7E0);
 
 void func_0011DB50(s32* a, s32* b) {
     if (*a < 0) *a = 0;
@@ -590,7 +590,7 @@ void func_0011DDD0(void) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011DE90);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011DE90);
 
 void func_0011E1C8(void* a0) {
     s32 i;
@@ -855,9 +855,9 @@ void func_0011E830(s32 arg0, s32 arg1) {
     func_0011E8D0(0, 0x3000, 0, arg0, 1, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011EA40);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011EA40);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01C7A8", func_0011EAE0);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xturtle", func_0011EAE0);
 
 void* func_0011EB88(s32 a0, s32 a1, s32 a2, void (*a3)(void)) {
     D_002BD8B8[a0] = -1;

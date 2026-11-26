@@ -1,5 +1,5 @@
-// Placeholder for code that hasn't been assigned to a source file yet (Final Mix offset 0x01FD30).
-// Functions can be matched here like in any other file; the file may be split later.
+// Final Mix's version of xkingdom (JP: src/xkingdom.c, 0x11FB68-0x120A38; here 0x11FD30-0x120BF8, the whole former
+// placeholder seg_01FD30). FM only (JP/EU use src/xkingdom.c).
 #include "common.h"
 
 extern s32 D_004F2A00[];
@@ -131,7 +131,7 @@ void func_00120038(s32* arg0) {
     *arg0 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120040);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xkingdom", func_00120040);
 
 u32 strlen(const char *);
 
@@ -299,7 +299,7 @@ s32 func_00120580(void *name, void *dst) {
     return D_002C5C48;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_01FD30", func_00120438);
+INCLUDE_ASM("asm/nonmatchings/unsplit/xkingdom", func_00120438);
 
 s32 func_00146878(void);
 
