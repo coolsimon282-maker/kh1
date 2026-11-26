@@ -10,9 +10,9 @@ These match on their own branch, but combined with other workers' matches in the
 
 | File | Functions | Branch |
 |---|---|---|
-| `unsplit/seg_0EF950` | `func_001F81E8` | fm-q1 (blocked by the D2C40_v trio: a gcc combine-pass effect, see notes/a5.md run 4) |
+| (none left: all redone on fm-q1 on 26 Nov, see below) | | |
 
-Redone on 26 Nov: `func_0014F868`, `func_00149BD0`, `func_00159350` (a1), `func_0021D948`, `func_002204F0`, `func_00225C30`, `func_00230728` (a4); `func_00162428` (q1, after fm was merged into fm-q1: no pads needed), `func_001590A8` (q1, two pads), `func_00147D50` (q1, seven pads + three flip_dummies fewer), `func_00152688` (q1/a1 C, prototype u8*, six pads), `func_0023A608` (a4 C, no pads needed on fm-q1), `func_0020E1C0` (q1, three pads).
+Redone on 26 Nov: `func_0014F868`, `func_00149BD0`, `func_00159350` (a1), `func_0021D948`, `func_002204F0`, `func_00225C30`, `func_00230728` (a4); `func_00162428` (q1, after fm was merged into fm-q1: no pads needed), `func_001590A8` (q1, two pads), `func_00147D50` (q1, seven pads + three flip_dummies fewer), `func_00152688` (q1/a1 C, prototype u8*, six pads), `func_0023A608` (a4 C, no pads needed on fm-q1), `func_0020E1C0` (q1, three pads), `func_001F81E8` (q1, with 12 pads above the D2C40_v extern for the trio).
 
 ## By file
 
