@@ -389,12 +389,59 @@ void func_00237F20(Seg132Ot *ot, u32 *buf0, u32 *buf1, s32 a3, s32 a4) {
     sceGsSyncPath(0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002380C0);
+NOTHROW(u_long128 *, func_00237790);
+void func_002380C0(Seg132Ot *ot, u32 *buf0, u32 *buf1, s32 a3, s32 a4) {
+    Seg132Node *tbl = ot->tbl;
+    Seg132Node *node;
+    u32 *buf = buf0;
+    u32 *r;
+    u32 *prev;
+    u32 *last;
+    s32 n;
+    s32 cnt;
+    u32 *ch;
+    Seg132Node **pp;
+
+    cnt = 1 << ot->bits;
+    for (n = 0; n < cnt; n++, tbl++) {
+        last = NULL;
+        pp = &tbl->next;
+        if (*pp != NULL) {
+            r = buf;
+            for (; *pp != NULL; pp = &node->next) {
+                node = *pp;
+                prev = r;
+                if (node->pad == 2) {
+                    r = func_002378C8(node, r, a4);
+                } else if (node->pad == 1) {
+                    r = (u32 *)func_00237790(node, r, a4);
+                } else if (node->pad == 3) {
+                    r = func_00237D48(node, r, a4);
+                } else if (node->pad == 4) {
+                    r = func_00237EC0_3(node, r, 0);
+                }
+                if (prev != r) {
+                    last = prev;
+                }
+            }
+            if (r != buf) {
+                *last |= 0x70000000;
+                ch = sceDmaGetChan(2);
+                *ch |= 0x40;
+                FlushCache(0);
+                sceGsSyncPath(0, 0);
+                sceDmaSend(ch, buf);
+                buf = (buf == buf0) ? buf1 : buf0;
+            }
+        }
+    }
+    sceGsSyncPath(0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00238258);
 
 extern u_long128 D_00648070[];
-u_long128 *func_00237790(u8 *, u_long128 *, s32);
+// (NOTHROW-declared above func_002380C0)
 void func_00238440(u8 *p, s32 n, s32 a2) {
     s32 i;
     u_long128 *r;
