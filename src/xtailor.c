@@ -923,7 +923,96 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", Frame_UpdateTimeStep);
 
 // Builds the six camera matrices from the field of view arg0 and the screen constants (aspect, centre 2048, near / far
 // clip) that CameraMats_SaveAndRebuild passes; probably the view-screen and clip matrices.
-INCLUDE_ASM("asm/nonmatchings/xtailor", CameraMats_Build);
+void CameraMats_Build(sceVu0FMATRIX m0, sceVu0FMATRIX m1, sceVu0FMATRIX m2, sceVu0FMATRIX m3, sceVu0FMATRIX m4,
+                      sceVu0FMATRIX m5, f32 scrz, f32 ax, f32 ay, f32 cx, f32 cy, f32 zmin, f32 zmax, f32 nearz,
+                      f32 farz, f32 farz2) {
+    sceVu0FMATRIX mt;
+    f32 az;
+    f32 cz;
+    f32 xr;
+    f32 yr;
+
+    // half width / height of the 640 x 458 screen at the near plane (computed first, or the schedule differs)
+    xr = nearz * 320.0f / scrz;
+    yr = nearz * 229.0f / scrz;
+
+    // view-screen matrix (as sceVu0ViewScreenMatrix) with farz2 -> m2
+    cz = (-zmax * nearz + zmin * farz2) / (-nearz + farz2);
+    az = farz2 * nearz * (-zmin + zmax) / (-nearz + farz2);
+    sceVu0UnitMatrix(m2);
+    m2[0][0] = scrz;
+    m2[1][1] = scrz;
+    m2[2][2] = 0.0f;
+    m2[3][3] = 0.0f;
+    m2[3][2] = 1.0f;
+    m2[2][3] = 1.0f;
+    sceVu0UnitMatrix(mt);
+    mt[0][0] = ax;
+    mt[1][1] = ay;
+    mt[2][2] = az;
+    mt[3][2] = cz;
+    mt[3][0] = cx;
+    mt[3][1] = cy;
+    sceVu0MulMatrix(m2, mt, m2);
+
+    // clip matrix with farz2 -> m3
+    sceVu0UnitMatrix(m3);
+    m3[0][0] = 2.0f * nearz / (2.0f * xr);
+    m3[1][1] = 2.0f * nearz / (2.0f * yr);
+    m3[2][2] = (farz2 + nearz) / (farz2 - nearz);
+    m3[3][2] = -2.0f * (farz2 * nearz) / (farz2 - nearz);
+    m3[2][3] = 1.0f;
+    m3[3][3] = 0.0f;
+
+    // view-screen matrix with farz -> m0
+    cz = (-zmax * nearz + zmin * farz) / (-nearz + farz);
+    az = farz * nearz * (-zmin + zmax) / (-nearz + farz);
+    sceVu0UnitMatrix(m0);
+    m0[0][0] = scrz;
+    m0[1][1] = scrz;
+    m0[2][2] = 0.0f;
+    m0[3][3] = 0.0f;
+    m0[3][2] = 1.0f;
+    m0[2][3] = 1.0f;
+    sceVu0UnitMatrix(mt);
+    mt[0][0] = ax;
+    mt[1][1] = ay;
+    mt[2][2] = az;
+    mt[3][2] = cz;
+    mt[3][0] = cx;
+    mt[3][1] = cy;
+    sceVu0MulMatrix(m0, mt, m0);
+
+    // clip matrix with farz -> m1
+    sceVu0UnitMatrix(m1);
+    m1[0][0] = 2.0f * nearz / (2.0f * xr);
+    m1[1][1] = 2.0f * nearz / (2.0f * yr);
+    m1[2][2] = (farz + nearz) / (farz - nearz);
+    m1[3][2] = -2.0f * (farz * nearz) / (farz - nearz);
+    m1[2][3] = 1.0f;
+    m1[3][3] = 0.0f;
+
+    // clip matrix for the whole GS area (2045 x 360.5) -> m4
+    xr = nearz * 2045.0f / scrz;
+    yr = nearz * 360.5f / scrz;
+    sceVu0UnitMatrix(m4);
+    m4[0][0] = 2.0f * nearz / (2.0f * xr);
+    m4[1][1] = 2.0f * nearz / (2.0f * yr);
+    m4[2][2] = (farz + nearz) / (farz - nearz);
+    m4[3][2] = -2.0f * (farz * nearz) / (farz - nearz);
+    m4[2][3] = 1.0f;
+    m4[3][3] = 0.0f;
+
+    // -> m5
+    sceVu0UnitMatrix(m5);
+    m5[0][0] = scrz * ax * xr / nearz;
+    m5[1][1] = scrz * ay * yr / nearz;
+    m5[2][2] = (zmin - zmax) * 0.5f;
+    m5[3][2] = (zmax + zmin) * 0.5f;
+    m5[3][0] = cx;
+    m5[3][1] = cy;
+    m5[3][3] = 1.0f;
+}
 
 #ifdef VERSION_FM
 extern f32 D_004D90F8;
