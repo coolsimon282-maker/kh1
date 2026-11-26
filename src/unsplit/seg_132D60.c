@@ -1211,7 +1211,21 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002380C0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00238258);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00238440);
+extern s32 D_lay238440_0; /* unused: rule F1 (keeps func_00248238 as it was) */
+extern u_long128 D_00648070[];
+u_long128 *func_00237790(u8 *, u_long128 *, s32);
+void func_00238440(u8 *p, s32 n, s32 a2) {
+    s32 i;
+    u_long128 *r;
+    for (i = 0; i < n; i++) {
+        r = func_00237790(p, D_00648070, a2);
+        p += 0x50;
+        if (r != D_00648070) {
+            *(u32 *)D_00648070 |= 0x70000000;
+            func_00237018(D_00648070, r - D_00648070, 1);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_002384E0);
 
