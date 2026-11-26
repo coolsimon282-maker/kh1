@@ -1884,7 +1884,20 @@ s32 func_0023C8C8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023C968);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CA48);
+void func_0023CA48(s32 a0, s32 a1, s32 x, s32 y, f32 f) {
+    s32 i;
+
+    func_002475E8(a0, (u8 *)&D_00651210_o, a1);
+    for (i = 0; i < 4; i++) {
+        s32 *e = &D_00651210_o.n[i].b;
+        e[-1] += x * 16;
+        e[0] += y * 16;
+    }
+    for (i = 0; i < 4; i++) {
+        D_00651210_o.m[i].d = D_00651210_o.m[i].d * f;
+    }
+    D_00651200_i = func_002388B8((u8 *)&D_00651210_o, 1, D_00651200_i);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_0023CB30);
 
