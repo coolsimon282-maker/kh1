@@ -1604,7 +1604,46 @@ s32 func_00140070(u8* p, f32* a1, f32* out) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001401D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00140370);
+s32 func_0015BCB8(u8*, f32*);
+s32 func_00140370(u8* p, f32* a1) {
+    f32 v[4];
+    f32 k;
+    f32 r;
+    f32 z;
+    s32 res;
+
+    res = func_00140070(p, a1, v);
+    if (res == 1) {
+    if (*(u16*)(p + 0x30C) != 0xFFFF) {
+        return 0;
+    }
+    k = 66.666666f;
+    r = fmodf(*(f32*)(p + 0x14), k);
+    if (r < 0.0f) {
+        r += k;
+    }
+    if (r < 10.0f) {
+        v[1] -= r;
+    } else if (r > 56.666666f) {
+        v[1] += k - r;
+    } else {
+        return 0;
+    }
+    if (func_0015BCB8(p, v)) {
+        return 0;
+    }
+    func_0014F658((s32)p, 0xA);
+    z = 0.0f;
+    func_00130398((s32)p, 0x1000014, z);
+    func_00130578((s32)p, 0x40000011, z);
+    sceVu0CopyVector((f32*)(p + 0x10), v);
+    sceVu0ScaleVector(a1, *(f32**)(p + 0x148), -1.0f);
+    a1[3] = z;
+    *(f32*)(p + 0x2C) = z;
+    *(f32*)(p + 0x150) = atan2f(-**(f32**)(p + 0x148), -(*(f32**)(p + 0x148))[2]);
+    }
+    return res;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001404D8);
 
