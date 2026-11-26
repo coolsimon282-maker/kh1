@@ -613,7 +613,13 @@ u8 func_001BC5F8(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/gumi", func_001BA488);
+extern u8 D_002C5AD0[];
+u8 *func_001BA488(s32 i) {
+    register u8 *at asm("$1");
+    i = i * 0x70;
+    __asm__ volatile("lui $1,%%hi(D_002C5AD0)\n\taddiu $1,$1,%%lo(D_002C5AD0)" : "=r"(at));
+    return at + i;
+}
 #else
 INCLUDE_ASM("asm/nonmatchings/gumi", func_001BC618);
 #endif
