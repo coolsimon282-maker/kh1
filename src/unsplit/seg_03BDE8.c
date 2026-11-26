@@ -5463,7 +5463,29 @@ void func_001545F0(u8* p, u8* a1) {
     sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0x160), D_002C58B0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001546B8);
+/* unused: rule F1 (26 Nov: 1, 2, 4, 7, 11 of 0-14 move func_001560F8) */
+extern s32 D_lay1546B8_0;
+extern s32 D_lay1546B8_1;
+extern s32 D_lay1546B8_2;
+extern s32 D_lay1546B8_3;
+extern s32 D_lay1546B8_4;
+extern s32 D_lay1546B8_5;
+extern s32 D_lay1546B8_6;
+extern s32 D_lay1546B8_7;
+extern s32 D_lay1546B8_8;
+void func_001546B8(u8* p, u8* q) {
+    f32* s;
+    if (sceVu0InnerProduct((f32*)(p + 0x30), (f32*)(q + 0x10)) < 0.0f) {
+        func_00130340(p, 0x100004C, 0.0f);
+    } else {
+        func_00130340(p, 0x100004D, 0.0f);
+    }
+    func_00130578((s32)p, 0x40000000, 8.0f);
+    func_001373F8(p, 30.0f);
+    sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
+    s = (f32*)(*(u8**)(p + 0x148) + 0x160);
+    sceVu0ScaleVector(s, s, 0.1f);
+}
 
 void func_00154768(u8* p, u8* q, s32* out) {
     f32* v = (f32*)(q + 0x10);
