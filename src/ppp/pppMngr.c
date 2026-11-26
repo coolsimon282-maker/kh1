@@ -45,7 +45,41 @@ pppVsfSt RendVsf[128];     // = {};
 ppvmng D_00360600[0x100];  // = {};
 
 s16 D_0036C5C6[];
+#ifdef VERSION_FM
+void pppRyjMegaBirthCalc();
+void pppRyjMegaBirthModelCalc();
+
+// Words in other (still assembly) data that only look like addresses in this file's data/rodata; splat wrote them
+// as these symbols. Defined here as plain values so they keep linking (belong in undefined_syms.txt).
+__asm__(".globl D_00370000\nD_00370000 = 0x00370000\n.globl D_00370038\nD_00370038 = 0x00370038\n"
+        ".globl D_00489668\nD_00489668 = 0x0048F9A8");
+
+// .data (0x00362730-0x00372708); the program table D_00370200 is at the end of the file
+pppModelSt D_00362730[128] = {0};
+pppShapeSt D_00363930[128] = {0};
+pppVsfSt D_00363D30[128] = {0};
+PppMngU D_00364130[0x100] = {0};
+s32 D_0036C600 = 0;
+// DMA end tag + GIF tag + register data
+u64 D_00370140[6] __attribute__((aligned(16))) = {
+    0x70000002, 0x0,
+    0x1000000000008001ULL, 0xE,
+    0x0, 0x3F,
+};
+u64 D_00370170[8] __attribute__((aligned(16))) = {
+    0x70000003, 0x0,
+    0x2000000000008001ULL, 0xEE,
+    0x31000070, 0x4E,
+    0x5, 0x8,
+};
+u32 D_003701B0[4] = {0};
+void* D_003701C0[4] = {pppRyjMegaBirthCalc, pppRyjMegaBirthModelCalc, NULL, NULL};
+sceVu0FVECTOR D_003701D0 = {0.0f, 0.0f, 0.0f, 0.0f};
+sceVu0IVECTOR D_003701E0 = {0, 0, 0, 0};
+sceVu0FVECTOR ppvParScl = {0.0f, 0.0f, 0.0f, 0.0f};
+#else
 s32 D_0036C600;
+#endif
 
 u8 D_00590580[];
 
@@ -1540,6 +1574,660 @@ void pppFree(pppEnvSt* env, void* ptr) {
 
 INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004887D0);
 
+#ifdef VERSION_FM
+void pppKeThResCon();
+void pppKeThRes8Con();
+void pppKeThRes8x4Con();
+void pppKeThRes8x128Con();
+void pppKeThRes16Con();
+void pppKeThRes16x4Con();
+void pppKeThRes16x64Con();
+void pppKeThRes24Con();
+void pppKeThRes24x4Con();
+void pppKeThRes32Con();
+void pppKeThRes32x4Con();
+void pppKeThRes32x32Con();
+void pppKeThRes40Con();
+void pppKeThRes40x4Con();
+void pppKeThRes48Con();
+void pppKeThRes48x4Con();
+void pppKeThRes64Con();
+void pppKeThRes64x4Con();
+void pppKeThRes64x16Con();
+void pppKeThRes128Con();
+void pppKeThRes128x4Con();
+void pppKeThRes128x8Con();
+void pppKeThRes255Con();
+void pppKeThRes255x4Con();
+void pppKeHitBallCalc();
+void pppKeHitBallCon();
+void pppKeGrvTgtCalc();
+void pppKeGrvTgtCon();
+void pppAcceleCalc();
+void pppAcceleCon();
+void pppAngAcceleCalc();
+void pppAngAcceleCon();
+void pppSclAcceleCalc();
+void pppSclAcceleCon();
+void pppColAcceleCalc();
+void pppColAcceleCon();
+void pppEiWfaccCalc();
+void pppKeHmgEffCalc();
+void pppKeHmgEffCon();
+void pppKeGrvEffCalc();
+void pppKeGrvEffCon();
+void pppKeHitChkPxBCalc();
+void pppKeHitChkPxBCon();
+void pppMove();
+void pppMoveCon();
+void pppAngMoveCalc();
+void pppAngMoveCon();
+void pppSclMoveCalc();
+void pppSclMoveCon();
+void pppColMoveCalc();
+void pppColMoveCon();
+void pppPoint();
+void pppPointCon();
+void pppAngleCalc();
+void pppAngleCon();
+void pppScaleCalc();
+void pppScaleCon();
+void pppColorCalc();
+void pppColorCon();
+void pppPObjPointCalc();
+void pppVertexAttendCalc();
+void pppEiWindFunCalc();
+void pppEiWindFunCon();
+void pppKeMvYpEffCalc();
+void pppKeDrctCalc();
+void pppKeDrctCon();
+void pppVtMimeCalc();
+void pppVtMimeDraw();
+void pppVtMimeCon();
+void pppVtMimeCon2();
+void pppVtMimeDes();
+void pppKeTkFadeDraw();
+void pppKeTkFadeCon();
+void pppRandFloatCalc();
+void pppRandUpFloatCalc();
+void pppRandDownFloatCalc();
+void pppRandCharCalc();
+void pppRandUpCharCalc();
+void pppRandDownCharCalc();
+void pppRandShortCalc();
+void pppRandUpShortCalc();
+void pppRandDownShortCalc();
+void pppRandIntCalc();
+void pppRandUpIntCalc();
+void pppRandDownIntCalc();
+void pppRandFVCalc();
+void pppRandUpFVCalc();
+void pppRandDownFVCalc();
+void pppRandIVCalc();
+void pppRandUpIVCalc();
+void pppRandDownIVCalc();
+void pppRandCVCalc();
+void pppRandUpCVCalc();
+void pppRandDownCVCalc();
+void pppRandHCVCalc();
+void pppRandUpHCVCalc();
+void pppRandDownHCVCalc();
+void pppSRandFVCalc();
+void pppSRandUpFVCalc();
+void pppSRandDownFVCalc();
+void pppSRandCVCalc();
+void pppSRandUpCVCalc();
+void pppSRandDownCVCalc();
+void pppSRandHCVCalc();
+void pppSRandUpHCVCalc();
+void pppSRandDownHCVCalc();
+void pppSMatrixCalc();
+void pppKeMatSNCalc();
+void pppKeMatSNCon();
+void pppMatrixXYZCalc();
+void pppMatrixXZYCalc();
+void pppMatrixYZXCalc();
+void pppMatrixYXZCalc();
+void pppMatrixZXYCalc();
+void pppMatrixZYXCalc();
+void pppMatrixLocCalc();
+void pppMatrixSclCalc();
+void pppRyjMatrixNoRotCalc();
+void pppKeMatPhtCalc();
+void pppRyjMatrixWorldXYZCalc();
+void pppRyjMatrixWorldXYZCon();
+void pppRyjMatrixWorldXZYCalc();
+void pppRyjMatrixWorldXZYCon();
+void pppRyjMatrixWorldYXZCalc();
+void pppRyjMatrixWorldYXZCon();
+void pppRyjMatrixWorldYZXCalc();
+void pppRyjMatrixWorldYZXCon();
+void pppRyjMatrixWorldZXYCalc();
+void pppRyjMatrixWorldZXYCon();
+void pppRyjMatrixWorldZYXCalc();
+void pppRyjMatrixWorldZYXCon();
+void pppParMatrixCalc();
+void pppKeParMatRCalc();
+void pppChrSclXYZMatrixCalc();
+void pppChrSclXZMatrixCalc();
+void pppChrSclYMatrixCalc();
+void pppChrYSclXYZMatrixCalc();
+void pppChrXSclXYZMatrixCalc();
+void pppDrawMatrixCalc();
+void pppDrawMatrixFrontCalc();
+void pppDrawMatrixNoRotCalc();
+void pppDrawMatrixWoodCalc();
+void pppDrawMatrixWoodSta();
+void pppKeDMatCalc();
+void pppKeDMatFrCalc();
+void pppKeDMatPhtCalc();
+void pppKeDMatPhtFrCalc();
+void pppRyjDrawMatrixWorldCalc();
+void pppRyjDrawMatrixWorldCon();
+void pppRyjDrawMatrixWorldFrontCalc();
+void pppRyjDrawMatrixWorldFrontCon();
+void pppRyjDrawMatrixWorldNoRotCalc();
+void pppRyjDrawMatrixWorldNoRotCon();
+void pppRyjDrawMatrixWorldWoodCalc();
+void pppRyjDrawMatrixWorldWoodCon();
+void pppKeZCrctCalc();
+void pppKeZCrctShpCalc();
+void pppKeThTpCalc();
+void pppKeThTpCon();
+void pppKeThTp2Con();
+void pppKeThSftCalc();
+void pppKeThSftCon();
+void pppKeThCalc();
+void pppKeThDraw();
+void pppKeThCon();
+void pppKeThCon2();
+void pppKeThDes();
+void pppDrawMdlDraw();
+void pppDrawMdlSemiDraw();
+void pppDrawMdlTsCalc();
+void pppDrawMdlTsDraw();
+void pppDrawMdlTsCon();
+void pppDrawMdl2Draw();
+void pppDrawMdlSemi2Draw();
+void pppDrawMdlTs2Calc();
+void pppDrawMdlTs2Draw();
+void pppDrawMdlTs2Con();
+void pppDrawMdl3Draw();
+void pppDrawMdlSemi3Draw();
+void pppDrawMdlTs3Calc();
+void pppDrawMdlTs3Draw();
+void pppDrawMdlTs3Con();
+void pppDrawMdlSeaDraw();
+void pppDrawMdlSeaCon();
+void pppDrawMdlSeaDes();
+void pppDrawShapeCalc();
+void pppDrawShapeDraw();
+void pppDrawShapeCon();
+void pppDrawShapeXCalc();
+void pppDrawShapeXDraw();
+void pppDrawShapeXCon();
+void pppDrawShapeFieldDraw();
+void pppDrawShapeFieldCon();
+void pppDrawShapeFieldDes();
+void pppKeMdlBmpDraw();
+void pppKeMdlBmpCon();
+void pppKeMdlBmpCon2();
+void pppKeMdlDttDraw();
+void pppKeMdlDttCon();
+void pppKeMdlDttCon2();
+void pppKeMdlTfdDraw();
+void pppKeMdlTfdCon();
+void pppKeMdlTfdUvDraw();
+void pppKeMdlTfdUvCon();
+void pppKeMdlTfd2Draw();
+void pppKeMdlTfd2Con();
+void pppKeMdlTfdUv2Draw();
+void pppKeMdlTfdUv2Con();
+void pppKeMdlTfd3Draw();
+void pppKeMdlTfd3Con();
+void pppKeMdlTfdUv3Draw();
+void pppKeMdlTfdUv3Con();
+void pppKeShpTailCalc();
+void pppKeShpTailDraw();
+void pppKeShpTailCon();
+void pppKeShpTailXCalc();
+void pppKeShpTailXDraw();
+void pppKeShpTailXCon();
+void pppKeShpTail2Calc();
+void pppKeShpTail2Draw();
+void pppKeShpTail2Con();
+void pppKeShpTail2XCalc();
+void pppKeShpTail2XDraw();
+void pppKeShpTail2XCon();
+void pppKeShpTail3Calc();
+void pppKeShpTail3Draw();
+void pppKeShpTail3Con();
+void pppKeShpTail3Con2();
+void pppKeShpTail3XCalc();
+void pppKeShpTail3XDraw();
+void pppKeShpTail3XCon();
+void pppKeShpTail3XCon2();
+void pppKeShpTailPhtCalc();
+void pppKeShpTailPhtDraw();
+void pppKeShpTailPhtCon();
+void pppKeShpTailPhtCon2();
+void pppKeShpTailLcCalc();
+void pppKeShpTailLcDraw();
+void pppKeShpTailLcCon();
+void pppKeShpDttCalc();
+void pppKeShpDttDraw();
+void pppKeShpDttCon();
+void pppRyjDrawShipolyCalc();
+void pppRyjDrawShipolyDraw();
+void pppRyjDrawShipolyCon();
+void pppRyjDrawShipolyDes();
+void pppDrawHookDraw();
+void pppPointApCalc();
+void pppPointApCon();
+void pppPointRApCalc();
+void pppPointRApCon();
+void pppVertexApCalc();
+void pppVertexApCon();
+void pppSegmentApCalc();
+void pppFaceApCalc();
+void pppVertexApLcCalc();
+void pppVertexApLcCon();
+void pppVertexApAtCalc();
+void pppVertexApAtCon();
+void pppKeBornRndCalc();
+void pppKeBornRndCon();
+void pppKeBornRnd2Calc();
+void pppKeBornRnd2Con();
+void pppKeBornRnd3Calc();
+void pppKeBornRnd3Con();
+void pppKeBornRnd4Calc();
+void pppKeBornRnd4Con();
+void pppKeBornRnd5Calc();
+void pppKeBornRnd5Con();
+void pppKeBornRnd6Calc();
+void pppKeBornRnd6Con();
+void pppKeBornPtCmplCalc();
+void pppKeBornPtCmplCon();
+void pppKeHitBornCalc();
+void pppKeHitBornCon();
+void pppKeThHitBornCalc();
+void pppKeThHitBornCon();
+void pppKeLnsLpSftCalc();
+void pppKeLnsLpSftCon();
+void pppKeLnsLpDraw();
+void pppKeLnsLpCon();
+void pppKeLnsLpCon2();
+void pppKeLnsArndDraw();
+void pppKeLnsArndCon();
+void pppKeLnsClmDraw();
+void pppKeLnsClmCon();
+void pppKeLnsCrnDraw();
+void pppKeLnsCrnCon();
+void pppKeLnsFlsDraw();
+void pppKeLnsFlsCon();
+void pppKeAcmSolidEnd();
+void pppKeThLzCalc();
+void pppKeThLzCon();
+void pppKeThLzDes();
+void pppKeThCpCalc();
+void pppKeThCpCon();
+void pppKeThCpDes();
+void pppKeThCpSftCalc();
+void pppKeAccSpdSvCalc();
+void pppKeAccSpdSvCon();
+void pppRyjDrawShipolyBoneCalc();
+void pppRyjDrawShipolyBoneDraw();
+void pppRyjDrawShipolyBoneCon();
+void pppRyjDrawShipolyBoneDes();
+void pppRyjMegaBirthCalc();
+void pppRyjMegaBirthDraw();
+void pppRyjMegaBirthCon();
+void pppRyjMegaBirthDes();
+void pppRyjMngFlagCalc();
+void pppRyjMegaBirthPrizeDraw();
+void pppRyjMegaBirthPrizeCon();
+void pppRyjMegaPlaceCalc();
+void pppRyjMegaPlaceDraw();
+void pppRyjMegaPlaceCon();
+void pppRyjMegaPlaceDes();
+void pppRyjMegaPlaceShapeCalc();
+void pppRyjMegaPlaceShapeCon();
+void pppRyjMegaPlaceModelCalc();
+void pppRyjMegaPlaceModelCon();
+void pppRyjMegaPlaceLampCalc();
+void pppRyjMegaPlaceLampCon();
+void pppRyjMegaBirthModelCalc();
+void pppRyjMegaBirthModelDraw();
+void pppRyjMegaBirthModelCon();
+void pppRyjMegaBirthModelDes();
+void pppRyjDrawKekotoCalc();
+void pppRyjDrawKekotoDraw();
+void pppRyjDrawKekotoCon();
+void pppMoveLoopCalc();
+void pppMoveLoopCon();
+void pppMoveLoopCon2();
+void pppAngMoveLoopCalc();
+void pppAngMoveLoopCon();
+void pppAngMoveLoopCon2();
+void pppSclMoveLoopCalc();
+void pppSclMoveLoopCon();
+void pppSclMoveLoopCon2();
+void pppPointLoopCalc();
+void pppPointLoopCon();
+void pppPointLoopCon2();
+void pppAngleLoopCalc();
+void pppAngleLoopCon();
+void pppAngleLoopCon2();
+void pppScaleLoopCalc();
+void pppScaleLoopCon();
+void pppScaleLoopCon2();
+void pppMatrixLoopCalc();
+void pppDrawMatrixLoopCalc();
+void pppDrawMdlLoopCalc();
+void pppDrawMdlLoopDraw();
+void pppDrawMdlLoopCon();
+void pppDrawMdlLoopCon2();
+void pppDrawMdlLoopDes();
+void pppDrawMdlLoopZCalc();
+void pppDrawMdlLoopZDraw();
+void pppDrawMdlLoopZCon();
+void pppDrawMdlLoopZCon2();
+void pppDrawMdlLoopZDes();
+void pppRyjLightCalc();
+void pppRyjLightCon();
+void pppRyjLightDes();
+void pppKeLnsLpTDraw();
+void pppKeLnsLpTCon();
+void pppKeLnsLpTCon2();
+void pppKeLnsLpTDes();
+void pppKeLnsArndTDraw();
+void pppKeLnsArndTCon();
+void pppKeLnsArndTDes();
+void pppKeLnsClmTDraw();
+void pppKeLnsClmTCon();
+void pppKeLnsClmTDes();
+void pppKeLnsCrnTDraw();
+void pppKeLnsCrnTCon();
+void pppKeLnsCrnTDes();
+void pppKeLnsFlsTDraw();
+void pppKeLnsFlsTCon();
+void pppKeLnsFlsTDes();
+void pppRyjDrawMatrixWorldDttCalc();
+void pppRyjDrawMatrixWorldDttCon();
+void pppRyjDrawMatrixWorldDttFrCalc();
+void pppRyjDrawMatrixWorldDttFrCon();
+void pppRyjMegaBirthFilterCalc();
+void pppRyjMegaBirthFilterDraw();
+void pppRyjMegaBirthFilterSta();
+void pppRyjMegaBirthFilterCon();
+void pppRyjMegaBirthFilterDes();
+void pppRyjMegaBirthModelFilterCalc();
+void pppRyjMegaBirthModelFilterDraw();
+void pppRyjMegaBirthModelFilterSta();
+void pppRyjMegaBirthModelFilterCon();
+void pppRyjMegaBirthModelFilterDes();
+void pppMatrixLoopXYZCalc();
+void pppMatrixLoopXZYCalc();
+void pppMatrixLoopYXZCalc();
+void pppMatrixLoopYZXCalc();
+void pppMatrixLoopZXYCalc();
+void pppMatrixLoopZYXCalc();
+
+// The effect program table: name and handlers of each program (ppp/*Prog). Its names are the last part of this
+// file's .rodata (gcc puts an initializer's strings out last first).
+typedef struct {
+    /* 0x00 */ char* name;
+    /* 0x04 */ void* calc;
+    /* 0x08 */ void* unk_08;
+    /* 0x0C */ void* draw;
+    /* 0x10 */ void* unk_10;
+    /* 0x14 */ void* sta;
+    /* 0x18 */ void* end;
+    /* 0x1C */ void* con;
+    /* 0x20 */ void* con2;
+    /* 0x24 */ void* des;
+} PppProgEnt; // size = 0x28
+
+PppProgEnt D_00370200_t[237] __asm__("D_00370200") = {
+    {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDummyFunc", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeThRes", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThResCon, NULL, NULL},
+    {"pppKeThRes8", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes8Con, NULL, NULL},
+    {"pppKeThRes8x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes8x4Con, NULL, NULL},
+    {"pppKeThRes8x128", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes8x128Con, NULL, NULL},
+    {"pppKeThRes16", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes16Con, NULL, NULL},
+    {"pppKeThRes16x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes16x4Con, NULL, NULL},
+    {"pppKeThRes16x64", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes16x64Con, NULL, NULL},
+    {"pppKeThRes24", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes24Con, NULL, NULL},
+    {"pppKeThRes24x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes24x4Con, NULL, NULL},
+    {"pppKeThRes32", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes32Con, NULL, NULL},
+    {"pppKeThRes32x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes32x4Con, NULL, NULL},
+    {"pppKeThRes32x32", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes32x32Con, NULL, NULL},
+    {"pppKeThRes40", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes40Con, NULL, NULL},
+    {"pppKeThRes40x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes40x4Con, NULL, NULL},
+    {"pppKeThRes48", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes48Con, NULL, NULL},
+    {"pppKeThRes48x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes48x4Con, NULL, NULL},
+    {"pppKeThRes64", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes64Con, NULL, NULL},
+    {"pppKeThRes64x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes64x4Con, NULL, NULL},
+    {"pppKeThRes64x16", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes64x16Con, NULL, NULL},
+    {"pppKeThRes128", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes128Con, NULL, NULL},
+    {"pppKeThRes128x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes128x4Con, NULL, NULL},
+    {"pppKeThRes128x8", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes128x8Con, NULL, NULL},
+    {"pppKeThRes255", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes255Con, NULL, NULL},
+    {"pppKeThRes255x4", NULL, NULL, NULL, NULL, NULL, NULL, pppKeThRes255x4Con, NULL, NULL},
+    {"pppKeHitBall", pppKeHitBallCalc, NULL, NULL, NULL, NULL, NULL, pppKeHitBallCon, NULL, NULL},
+    {"pppKeGrvTgt", pppKeGrvTgtCalc, NULL, NULL, NULL, NULL, NULL, pppKeGrvTgtCon, NULL, NULL},
+    {"pppAccele", pppAcceleCalc, NULL, NULL, NULL, NULL, NULL, pppAcceleCon, pppAcceleCon, NULL},
+    {"pppAngAccele", pppAngAcceleCalc, NULL, NULL, NULL, NULL, NULL, pppAngAcceleCon, pppAngAcceleCon, NULL},
+    {"pppSclAccele", pppSclAcceleCalc, NULL, NULL, NULL, NULL, NULL, pppSclAcceleCon, pppSclAcceleCon, NULL},
+    {"pppColAccele", pppColAcceleCalc, NULL, NULL, NULL, NULL, NULL, pppColAcceleCon, pppColAcceleCon, NULL},
+    {"pppEiWfacc", pppEiWfaccCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeHmgEff", pppKeHmgEffCalc, NULL, NULL, NULL, NULL, NULL, pppKeHmgEffCon, NULL, NULL},
+    {"pppKeGrvEff", pppKeGrvEffCalc, NULL, NULL, NULL, NULL, NULL, pppKeGrvEffCon, NULL, NULL},
+    {"pppKeHitChkPxB", pppKeHitChkPxBCalc, NULL, NULL, NULL, NULL, NULL, pppKeHitChkPxBCon, NULL, NULL},
+    {"pppMove", pppMove, NULL, NULL, NULL, NULL, NULL, pppMoveCon, pppMoveCon, NULL},
+    {"pppAngMove", pppAngMoveCalc, NULL, NULL, NULL, NULL, NULL, pppAngMoveCon, pppAngMoveCon, NULL},
+    {"pppSclMove", pppSclMoveCalc, NULL, NULL, NULL, NULL, NULL, pppSclMoveCon, pppSclMoveCon, NULL},
+    {"pppColMove", pppColMoveCalc, NULL, NULL, NULL, NULL, NULL, pppColMoveCon, pppColMoveCon, NULL},
+    {"pppPoint", pppPoint, NULL, NULL, NULL, NULL, NULL, pppPointCon, pppPointCon, NULL},
+    {"pppAngle", pppAngleCalc, NULL, NULL, NULL, NULL, NULL, pppAngleCon, pppAngleCon, NULL},
+    {"pppScale", pppScaleCalc, NULL, NULL, NULL, NULL, NULL, pppScaleCon, pppScaleCon, NULL},
+    {"pppColor", pppColorCalc, NULL, NULL, NULL, NULL, NULL, pppColorCon, pppColorCon, NULL},
+    {"pppPObjPoint", pppPObjPointCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppVertexAttend", pppVertexAttendCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppEiWindFun", pppEiWindFunCalc, NULL, NULL, NULL, NULL, NULL, pppEiWindFunCon, NULL, NULL},
+    {"pppKeMvYpEff", pppKeMvYpEffCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeDrct", pppKeDrctCalc, NULL, NULL, NULL, NULL, NULL, pppKeDrctCon, NULL, NULL},
+    {"pppVtMime", pppVtMimeCalc, NULL, pppVtMimeDraw, NULL, NULL, NULL, pppVtMimeCon, pppVtMimeCon2, pppVtMimeDes},
+    {"pppKeTkFade", NULL, NULL, pppKeTkFadeDraw, NULL, NULL, NULL, pppKeTkFadeCon, pppKeTkFadeCon, NULL},
+    {"pppRandFloat", pppRandFloatCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpFloat", pppRandUpFloatCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownFloat", pppRandDownFloatCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandChar", pppRandCharCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpChar", pppRandUpCharCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownChar", pppRandDownCharCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandShort", pppRandShortCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpShort", pppRandUpShortCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownShort", pppRandDownShortCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandInt", pppRandIntCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpInt", pppRandUpIntCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownInt", pppRandDownIntCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandFV", pppRandFVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpFV", pppRandUpFVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownFV", pppRandDownFVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandIV", pppRandIVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpIV", pppRandUpIVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownIV", pppRandDownIVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandCV", pppRandCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpCV", pppRandUpCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownCV", pppRandDownCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandHCV", pppRandHCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandUpHCV", pppRandUpHCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRandDownHCV", pppRandDownHCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandFV", pppSRandFVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandUpFV", pppSRandUpFVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandDownFV", pppSRandDownFVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandCV", pppSRandCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandUpCV", pppSRandUpCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandDownCV", pppSRandDownCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandHCV", pppSRandHCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandUpHCV", pppSRandUpHCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSRandDownHCV", pppSRandDownHCVCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSMatrix", pppSMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeMatSN", pppKeMatSNCalc, NULL, NULL, NULL, NULL, NULL, pppKeMatSNCon, NULL, NULL},
+    {"pppMatrix", pppMatrixXYZCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixXYZ", pppMatrixXYZCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixXZY", pppMatrixXZYCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixYZX", pppMatrixYZXCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixYXZ", pppMatrixYXZCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixZXY", pppMatrixZXYCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixZYX", pppMatrixZYXCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixLoc", pppMatrixLocCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixScl", pppMatrixSclCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixFront", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRyjMatrixNoRot", pppRyjMatrixNoRotCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeMatPht", pppKeMatPhtCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRyjMatrixWorld", pppRyjMatrixWorldXYZCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldXYZCon, NULL, NULL},
+    {"pppRyjMatrixWorldXYZ", pppRyjMatrixWorldXYZCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldXYZCon, NULL, NULL},
+    {"pppRyjMatrixWorldXZY", pppRyjMatrixWorldXZYCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldXZYCon, NULL, NULL},
+    {"pppRyjMatrixWorldYXZ", pppRyjMatrixWorldYXZCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldYXZCon, NULL, NULL},
+    {"pppRyjMatrixWorldYZX", pppRyjMatrixWorldYZXCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldYZXCon, NULL, NULL},
+    {"pppRyjMatrixWorldZXY", pppRyjMatrixWorldZXYCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldZXYCon, NULL, NULL},
+    {"pppRyjMatrixWorldZYX", pppRyjMatrixWorldZYXCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMatrixWorldZYXCon, NULL, NULL},
+    {"pppParMatrix", pppParMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeParMatR", pppKeParMatRCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppChrSclXYZMatrix", pppChrSclXYZMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppChrSclXZMatrix", pppChrSclXZMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppChrSclYMatrix", pppChrSclYMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppChrYSclXYZMatrix", pppChrYSclXYZMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppChrXSclXYZMatrix", pppChrXSclXYZMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMatrix", pppDrawMatrixCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMatrixFront", pppDrawMatrixFrontCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMatrixNoRot", pppDrawMatrixNoRotCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMatrixWood", pppDrawMatrixWoodCalc, NULL, NULL, NULL, pppDrawMatrixWoodSta, NULL, NULL, NULL, NULL},
+    {"pppKeDMat", pppKeDMatCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeDMatFr", pppKeDMatFrCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeDMatPht", pppKeDMatPhtCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeDMatPhtFr", pppKeDMatPhtFrCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRyjDrawMatrixWorld", pppRyjDrawMatrixWorldCalc, NULL, NULL, NULL, NULL, NULL, pppRyjDrawMatrixWorldCon, NULL, NULL},
+    {"pppRyjDrawMatrixWorldFront", pppRyjDrawMatrixWorldFrontCalc, NULL, NULL, NULL, NULL, NULL, pppRyjDrawMatrixWorldFrontCon, NULL, NULL},
+    {"pppRyjDrawMatrixWorldNoRot", pppRyjDrawMatrixWorldNoRotCalc, NULL, NULL, NULL, NULL, NULL, pppRyjDrawMatrixWorldNoRotCon, NULL, NULL},
+    {"pppRyjDrawMatrixWorldWood", pppRyjDrawMatrixWorldWoodCalc, NULL, NULL, NULL, NULL, NULL, pppRyjDrawMatrixWorldWoodCon, NULL, NULL},
+    {"pppKeZCrct", pppKeZCrctCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeZCrctShp", pppKeZCrctShpCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeThTp", pppKeThTpCalc, NULL, NULL, NULL, NULL, NULL, pppKeThTpCon, NULL, NULL},
+    {"pppKeThTp2", pppKeThTpCalc, NULL, NULL, NULL, NULL, NULL, pppKeThTp2Con, NULL, NULL},
+    {"pppKeThSft", pppKeThSftCalc, NULL, NULL, NULL, NULL, NULL, pppKeThSftCon, pppKeThSftCon, NULL},
+    {"pppKeTh", pppKeThCalc, NULL, pppKeThDraw, NULL, NULL, NULL, pppKeThCon, pppKeThCon2, pppKeThDes},
+    {"pppDrawMdlBS", NULL, NULL, pppDrawMdlDraw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdl", NULL, NULL, pppDrawMdlDraw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlSemi", NULL, NULL, pppDrawMdlSemiDraw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlTs", pppDrawMdlTsCalc, NULL, pppDrawMdlTsDraw, NULL, NULL, NULL, pppDrawMdlTsCon, pppDrawMdlTsCon, NULL},
+    {"pppDrawMdl2", NULL, NULL, pppDrawMdl2Draw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlSemi2", NULL, NULL, pppDrawMdlSemi2Draw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlTs2", pppDrawMdlTs2Calc, NULL, pppDrawMdlTs2Draw, NULL, NULL, NULL, pppDrawMdlTs2Con, pppDrawMdlTs2Con, NULL},
+    {"pppDrawMdl3", NULL, NULL, pppDrawMdl3Draw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlSemi3", NULL, NULL, pppDrawMdlSemi3Draw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlTs3", pppDrawMdlTs3Calc, NULL, pppDrawMdlTs3Draw, NULL, NULL, NULL, pppDrawMdlTs3Con, pppDrawMdlTs3Con, NULL},
+    {"pppDrawMdlSea", NULL, NULL, pppDrawMdlSeaDraw, NULL, NULL, NULL, pppDrawMdlSeaCon, NULL, pppDrawMdlSeaDes},
+    {"pppDrawShape", pppDrawShapeCalc, NULL, pppDrawShapeDraw, NULL, NULL, NULL, pppDrawShapeCon, pppDrawShapeCon, NULL},
+    {"pppDrawShapeX", pppDrawShapeXCalc, NULL, pppDrawShapeXDraw, NULL, NULL, NULL, pppDrawShapeXCon, pppDrawShapeXCon, NULL},
+    {"pppDrawShapeField", NULL, NULL, pppDrawShapeFieldDraw, NULL, NULL, NULL, pppDrawShapeFieldCon, NULL, pppDrawShapeFieldDes},
+    {"pppKeMdlBmp", NULL, NULL, pppKeMdlBmpDraw, NULL, NULL, NULL, pppKeMdlBmpCon, pppKeMdlBmpCon2, NULL},
+    {"pppKeMdlDtt", NULL, NULL, pppKeMdlDttDraw, NULL, NULL, NULL, pppKeMdlDttCon, pppKeMdlDttCon2, NULL},
+    {"pppKeMdlTfd", NULL, NULL, pppKeMdlTfdDraw, NULL, NULL, NULL, pppKeMdlTfdCon, NULL, NULL},
+    {"pppKeMdlTfdUv", NULL, NULL, pppKeMdlTfdUvDraw, NULL, NULL, NULL, pppKeMdlTfdUvCon, NULL, NULL},
+    {"pppKeMdlTfd2", NULL, NULL, pppKeMdlTfd2Draw, NULL, NULL, NULL, pppKeMdlTfd2Con, NULL, NULL},
+    {"pppKeMdlTfdUv2", NULL, NULL, pppKeMdlTfdUv2Draw, NULL, NULL, NULL, pppKeMdlTfdUv2Con, NULL, NULL},
+    {"pppKeMdlTfd3", NULL, NULL, pppKeMdlTfd3Draw, NULL, NULL, NULL, pppKeMdlTfd3Con, NULL, NULL},
+    {"pppKeMdlTfdUv3", NULL, NULL, pppKeMdlTfdUv3Draw, NULL, NULL, NULL, pppKeMdlTfdUv3Con, NULL, NULL},
+    {"pppKeShpTail", pppKeShpTailCalc, NULL, pppKeShpTailDraw, NULL, NULL, NULL, pppKeShpTailCon, NULL, NULL},
+    {"pppKeShpTailX", pppKeShpTailXCalc, NULL, pppKeShpTailXDraw, NULL, NULL, NULL, pppKeShpTailXCon, NULL, NULL},
+    {"pppKeShpTail2", pppKeShpTail2Calc, NULL, pppKeShpTail2Draw, NULL, NULL, NULL, pppKeShpTail2Con, NULL, NULL},
+    {"pppKeShpTail2X", pppKeShpTail2XCalc, NULL, pppKeShpTail2XDraw, NULL, NULL, NULL, pppKeShpTail2XCon, NULL, NULL},
+    {"pppKeShpTail3", pppKeShpTail3Calc, NULL, pppKeShpTail3Draw, NULL, NULL, NULL, pppKeShpTail3Con, pppKeShpTail3Con2, NULL},
+    {"pppKeShpTail3X", pppKeShpTail3XCalc, NULL, pppKeShpTail3XDraw, NULL, NULL, NULL, pppKeShpTail3XCon, pppKeShpTail3XCon2, NULL},
+    {"pppKeShpTailPht", pppKeShpTailPhtCalc, NULL, pppKeShpTailPhtDraw, NULL, NULL, NULL, pppKeShpTailPhtCon, pppKeShpTailPhtCon2, NULL},
+    {"pppKeShpTailLc", pppKeShpTailLcCalc, NULL, pppKeShpTailLcDraw, NULL, NULL, NULL, pppKeShpTailLcCon, NULL, NULL},
+    {"pppKeShpDtt", pppKeShpDttCalc, NULL, pppKeShpDttDraw, NULL, NULL, NULL, pppKeShpDttCon, pppKeShpDttCon, NULL},
+    {"pppRyjDrawShipoly", pppRyjDrawShipolyCalc, NULL, pppRyjDrawShipolyDraw, NULL, NULL, NULL, pppRyjDrawShipolyCon, NULL, pppRyjDrawShipolyDes},
+    {"pppDrawHook", NULL, NULL, pppDrawHookDraw, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSDMatrix", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppSCMatrix", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrix", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrixXYZ", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrixXZY", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrixYZX", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrixYXZ", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrixZXY", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppWMatrixZYX", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppPointAp", pppPointApCalc, NULL, NULL, NULL, NULL, NULL, pppPointApCon, NULL, NULL},
+    {"pppPointRAp", pppPointRApCalc, NULL, NULL, NULL, NULL, NULL, pppPointRApCon, NULL, NULL},
+    {"pppVertexAp", pppVertexApCalc, NULL, NULL, NULL, NULL, NULL, pppVertexApCon, NULL, NULL},
+    {"pppSegmentAp", pppSegmentApCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppFaceAp", pppFaceApCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppVertexApLc", pppVertexApLcCalc, NULL, NULL, NULL, NULL, NULL, pppVertexApLcCon, pppVertexApLcCon, NULL},
+    {"pppVertexApAt", pppVertexApAtCalc, NULL, NULL, NULL, NULL, NULL, pppVertexApAtCon, pppVertexApAtCon, NULL},
+    {"pppKeBornRnd", pppKeBornRndCalc, NULL, NULL, NULL, NULL, NULL, pppKeBornRndCon, NULL, NULL},
+    {"pppKeBornRnd2", pppKeBornRnd2Calc, NULL, NULL, NULL, NULL, NULL, pppKeBornRnd2Con, NULL, NULL},
+    {"pppKeBornRnd3", pppKeBornRnd3Calc, NULL, NULL, NULL, NULL, NULL, pppKeBornRnd3Con, NULL, NULL},
+    {"pppKeBornRnd4", pppKeBornRnd4Calc, NULL, NULL, NULL, NULL, NULL, pppKeBornRnd4Con, NULL, NULL},
+    {"pppKeBornRnd5", pppKeBornRnd5Calc, NULL, NULL, NULL, NULL, NULL, pppKeBornRnd5Con, NULL, NULL},
+    {"pppKeBornRnd6", pppKeBornRnd6Calc, NULL, NULL, NULL, NULL, NULL, pppKeBornRnd6Con, NULL, NULL},
+    {"pppKeBornPtCmpl", pppKeBornPtCmplCalc, NULL, NULL, NULL, NULL, NULL, pppKeBornPtCmplCon, NULL, NULL},
+    {"pppKeHitBorn", pppKeHitBornCalc, NULL, NULL, NULL, NULL, NULL, pppKeHitBornCon, NULL, NULL},
+    {"pppKeThHitBorn", pppKeThHitBornCalc, NULL, NULL, NULL, NULL, NULL, pppKeThHitBornCon, NULL, NULL},
+    {"pppKeLnsLpSft", pppKeLnsLpSftCalc, NULL, NULL, NULL, NULL, NULL, pppKeLnsLpSftCon, pppKeLnsLpSftCon, NULL},
+    {"pppKeLnsLp", NULL, NULL, pppKeLnsLpDraw, NULL, NULL, NULL, pppKeLnsLpCon, pppKeLnsLpCon2, NULL},
+    {"pppKeLnsArnd", NULL, NULL, pppKeLnsArndDraw, NULL, NULL, NULL, pppKeLnsArndCon, NULL, NULL},
+    {"pppKeLnsClm", NULL, NULL, pppKeLnsClmDraw, NULL, NULL, NULL, pppKeLnsClmCon, NULL, NULL},
+    {"pppKeLnsCrn", NULL, NULL, pppKeLnsCrnDraw, NULL, NULL, NULL, pppKeLnsCrnCon, NULL, NULL},
+    {"pppKeLnsFls", NULL, NULL, pppKeLnsFlsDraw, NULL, NULL, NULL, pppKeLnsFlsCon, NULL, NULL},
+    {"pppKeAcmSolid", NULL, NULL, NULL, NULL, NULL, pppKeAcmSolidEnd, NULL, NULL, NULL},
+    {"pppKeHitChk", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeThLz", pppKeThLzCalc, NULL, NULL, NULL, NULL, NULL, pppKeThLzCon, NULL, pppKeThLzDes},
+    {"pppKeThCp", pppKeThCpCalc, NULL, NULL, NULL, NULL, NULL, pppKeThCpCon, NULL, pppKeThCpDes},
+    {"pppKeThCpSft", pppKeThCpSftCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppKeAccSpdSv", pppKeAccSpdSvCalc, NULL, NULL, NULL, NULL, NULL, pppKeAccSpdSvCon, NULL, NULL},
+    {"pppRyjDrawShipolyBone", pppRyjDrawShipolyBoneCalc, NULL, pppRyjDrawShipolyBoneDraw, NULL, NULL, NULL, pppRyjDrawShipolyBoneCon, NULL, pppRyjDrawShipolyBoneDes},
+    {"pppRyjMegaBirth", pppRyjMegaBirthCalc, NULL, pppRyjMegaBirthDraw, NULL, NULL, NULL, pppRyjMegaBirthCon, NULL, pppRyjMegaBirthDes},
+    {"pppRyjMngFlag", pppRyjMngFlagCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppRyjMegaBirthPrize", NULL, NULL, pppRyjMegaBirthPrizeDraw, NULL, NULL, NULL, pppRyjMegaBirthPrizeCon, NULL, NULL},
+    {"pppRyjMegaPlace", pppRyjMegaPlaceCalc, NULL, pppRyjMegaPlaceDraw, NULL, NULL, NULL, pppRyjMegaPlaceCon, NULL, pppRyjMegaPlaceDes},
+    {"pppRyjMegaPlaceShape", pppRyjMegaPlaceShapeCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMegaPlaceShapeCon, NULL, NULL},
+    {"pppRyjMegaPlaceModel", pppRyjMegaPlaceModelCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMegaPlaceModelCon, NULL, NULL},
+    {"pppRyjMegaPlaceLamp", pppRyjMegaPlaceLampCalc, NULL, NULL, NULL, NULL, NULL, pppRyjMegaPlaceLampCon, NULL, NULL},
+    {"pppRyjMegaBirthModel", pppRyjMegaBirthModelCalc, NULL, pppRyjMegaBirthModelDraw, NULL, NULL, NULL, pppRyjMegaBirthModelCon, NULL, pppRyjMegaBirthModelDes},
+    {"pppRyjDrawKekoto", pppRyjDrawKekotoCalc, NULL, pppRyjDrawKekotoDraw, NULL, NULL, NULL, pppRyjDrawKekotoCon, NULL, NULL},
+    {"pppMoveLoop", pppMoveLoopCalc, NULL, NULL, NULL, NULL, NULL, pppMoveLoopCon, pppMoveLoopCon2, NULL},
+    {"pppAngMoveLoop", pppAngMoveLoopCalc, NULL, NULL, NULL, NULL, NULL, pppAngMoveLoopCon, pppAngMoveLoopCon2, NULL},
+    {"pppSclMoveLoop", pppSclMoveLoopCalc, NULL, NULL, NULL, NULL, NULL, pppSclMoveLoopCon, pppSclMoveLoopCon2, NULL},
+    {"pppPointLoop", pppPointLoopCalc, NULL, NULL, NULL, NULL, NULL, pppPointLoopCon, pppPointLoopCon2, NULL},
+    {"pppAngleLoop", pppAngleLoopCalc, NULL, NULL, NULL, NULL, NULL, pppAngleLoopCon, pppAngleLoopCon2, NULL},
+    {"pppScaleLoop", pppScaleLoopCalc, NULL, NULL, NULL, NULL, NULL, pppScaleLoopCon, pppScaleLoopCon2, NULL},
+    {"pppMatrixLoop", pppMatrixLoopCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMatrixLoop", pppDrawMatrixLoopCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppDrawMdlLoop", pppDrawMdlLoopCalc, NULL, pppDrawMdlLoopDraw, NULL, NULL, NULL, pppDrawMdlLoopCon, pppDrawMdlLoopCon2, pppDrawMdlLoopDes},
+    {"pppDrawMdlLoopZ", pppDrawMdlLoopZCalc, NULL, pppDrawMdlLoopZDraw, NULL, NULL, NULL, pppDrawMdlLoopZCon, pppDrawMdlLoopZCon2, pppDrawMdlLoopZDes},
+    {"pppRyjLight", pppRyjLightCalc, NULL, NULL, NULL, NULL, NULL, pppRyjLightCon, NULL, pppRyjLightDes},
+    {"pppKeLnsLpT", NULL, NULL, pppKeLnsLpTDraw, NULL, NULL, NULL, pppKeLnsLpTCon, pppKeLnsLpTCon2, pppKeLnsLpTDes},
+    {"pppKeLnsArndT", NULL, NULL, pppKeLnsArndTDraw, NULL, NULL, NULL, pppKeLnsArndTCon, NULL, pppKeLnsArndTDes},
+    {"pppKeLnsClmT", NULL, NULL, pppKeLnsClmTDraw, NULL, NULL, NULL, pppKeLnsClmTCon, NULL, pppKeLnsClmTDes},
+    {"pppKeLnsCrnT", NULL, NULL, pppKeLnsCrnTDraw, NULL, NULL, NULL, pppKeLnsCrnTCon, NULL, pppKeLnsCrnTDes},
+    {"pppKeLnsFlsT", NULL, NULL, pppKeLnsFlsTDraw, NULL, NULL, NULL, pppKeLnsFlsTCon, NULL, pppKeLnsFlsTDes},
+    {"pppRyjDrawMatrixWorldDtt", pppRyjDrawMatrixWorldDttCalc, NULL, NULL, NULL, NULL, NULL, pppRyjDrawMatrixWorldDttCon, NULL, NULL},
+    {"pppRyjDrawMatrixWorldDttFr", pppRyjDrawMatrixWorldDttFrCalc, NULL, NULL, NULL, NULL, NULL, pppRyjDrawMatrixWorldDttFrCon, NULL, NULL},
+    {"pppRyjMegaBirthFilter", pppRyjMegaBirthFilterCalc, NULL, pppRyjMegaBirthFilterDraw, NULL, pppRyjMegaBirthFilterSta, NULL, pppRyjMegaBirthFilterCon, NULL, pppRyjMegaBirthFilterDes},
+    {"pppRyjMegaBirthModelFilter", pppRyjMegaBirthModelFilterCalc, NULL, pppRyjMegaBirthModelFilterDraw, NULL, pppRyjMegaBirthModelFilterSta, NULL, pppRyjMegaBirthModelFilterCon, NULL, pppRyjMegaBirthModelFilterDes},
+    {"pppMatrixLoopXYZ", pppMatrixLoopXYZCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixLoopXZY", pppMatrixLoopXZYCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixLoopYXZ", pppMatrixLoopYXZCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixLoopYZX", pppMatrixLoopYZXCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixLoopZXY", pppMatrixLoopZXYCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {"pppMatrixLoopZYX", pppMatrixLoopZYXCalc, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+    {NULL, (void*)-1, (void*)-1, (void*)-1, (void*)-1, (void*)-1, (void*)-1, (void*)-1, (void*)-1, (void*)-1},
+};
+#else
 INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004887D8);
 
 INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004887F0);
@@ -2011,3 +2699,4 @@ INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004897C8);
 INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004897D8);
 
 INCLUDE_RODATA("asm/nonmatchings/ppp/pppMngr", D_004897E8);
+#endif

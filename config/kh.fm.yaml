@@ -503,6 +503,7 @@ segments:
   - [ 0x1e2fb8, data ]
   - [ 0x204b00, .data, xapple ]
   - [ 0x204b88, data ]
+  - [ 0x262730, .data, ppp/pppMngr ]
   - [ 0x272708, .data, ppp/keProg/pppKeLnsLpT ]
   - [ 0x272710, .data, ppp/ryjProg/pppRyjMatrixNoRot ]
   - [ 0x272730, .data, ppp/ryjProg/pppRyjDrawShipoly ]
