@@ -491,7 +491,23 @@ void func_001F3B00(s32 a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_001F3B88);
+extern s32 D_f1_001F3B88_0;
+void func_001F3B88(s32 a0, s32 a1) {
+    s32 i;
+    u8 *p = D_0063F758;
+    for (i = 24; i > 0; i--, p += 0xF0) {
+        switch (*(s32 *)(p + 0x8C)) {
+        case 0:
+        case 4:
+        case 5:
+            break;
+        default:
+            if (*(s32 *)(p + 0x7C) == a0) {
+                func_001F3698(p, a1);
+            }
+        }
+    }
+}
 
 void func_001F3C20(void) {
     s32 i;
@@ -3355,6 +3371,50 @@ extern s32 D_lay2C40_34;
 extern s32 D_lay2C40_35;
 extern s32 D_lay2C40_36;
 extern s32 D_lay2C40_37;
+extern s32 D_lay2C40_38;
+extern s32 D_lay2C40_39;
+extern s32 D_lay2C40_40;
+extern s32 D_lay2C40_41;
+extern s32 D_lay2C40_42;
+extern s32 D_lay2C40_43;
+extern s32 D_lay2C40_44;
+extern s32 D_lay2C40_45;
+extern s32 D_lay2C40_46;
+extern s32 D_lay2C40_47;
+extern s32 D_lay2C40_48;
+extern s32 D_lay2C40_49;
+extern s32 D_lay2C40_50;
+extern s32 D_lay2C40_51;
+extern s32 D_lay2C40_52;
+extern s32 D_lay2C40_53;
+extern s32 D_lay2C40_54;
+extern s32 D_lay2C40_55;
+extern s32 D_lay2C40_56;
+extern s32 D_lay2C40_57;
+extern s32 D_lay2C40_58;
+extern s32 D_lay2C40_59;
+extern s32 D_lay2C40_60;
+extern s32 D_lay2C40_61;
+extern s32 D_lay2C40_62;
+extern s32 D_lay2C40_63;
+extern s32 D_lay2C40_64;
+extern s32 D_lay2C40_65;
+extern s32 D_lay2C40_66;
+extern s32 D_lay2C40_67;
+extern s32 D_lay2C40_68;
+extern s32 D_lay2C40_69;
+extern s32 D_lay2C40_70;
+extern s32 D_lay2C40_71;
+extern s32 D_lay2C40_72;
+extern s32 D_lay2C40_73;
+extern s32 D_lay2C40_74;
+extern s32 D_lay2C40_75;
+extern s32 D_lay2C40_76;
+extern s32 D_lay2C40_77;
+extern s32 D_lay2C40_78;
+extern s32 D_lay2C40_79;
+extern s32 D_lay2C40_80;
+extern s32 D_lay2C40_81;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
 void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
