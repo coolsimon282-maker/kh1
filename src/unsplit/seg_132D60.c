@@ -3066,7 +3066,18 @@ void func_00243D18(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 fparg0,
     func_00243C10(arg1, arg2, arg3, arg4, fparg0, arg5);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243DA0);
+extern s32 D_00656420;
+void func_00243DA0(s32 x, s32 y, s32 a2, s32 *c, f32 f) {
+    u8 col[4];
+    u8 *a;
+    col[0] = c[0];
+    col[1] = c[1];
+    col[2] = c[2];
+    a = &col[3];
+    *a = f * 128.0f;
+    D_00656420 = func_001F0638_c(D_00656420, 1, *(s32 *)col, ((x * 16 + 0x7000) >> 4) - 0x700,
+                                 ((y * 16 + 0x7400) >> 4) - 0x740, a2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_132D60", func_00243E58);
 
