@@ -401,7 +401,27 @@ INCLUDE_ASM("asm/nonmatchings/gumi", func_001BC100);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/gumi", func_001BA060);
+void func_001BE820(void *, s32);
+void func_001BA060(u8* a0, s32 a1) {
+    u8 *q;
+    u8* p = a0;
+    u8* s;
+    u8* d;
+    s32 i;
+    s32 n;
+
+    func_001BE820(a0, 0xF70);
+    n = D_00377648[a1];
+    s = (u8 *)D_00377748[a1];
+    d = p;
+    for (i = 0; i < n; i++) {
+        *d++ = *s++;
+    }
+    q = (u8 *)func_001BA228(a1 + 0x47);
+    for (i = 0; i < 0x20; i++) {
+        p[0x50 + i] = q[i];
+    }
+}
 #else
 INCLUDE_ASM("asm/nonmatchings/gumi", func_001BC1E8);
 #endif
