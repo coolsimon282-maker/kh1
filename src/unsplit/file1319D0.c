@@ -68,7 +68,36 @@ s32 func_00231B38(s32 a0, s32 a1) {
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file1319D0", func_00231B98);
+void func_0011D598_v1b98(s32) __asm__("func_0011D598");
+extern u16 D_003F7C48[];
+extern s32 D_0064765C;
+extern s32 D_00647660;
+extern s32 D_00647670[];
+extern u16 D_003F7A70[];
+typedef struct { u8 pad[9]; u8 a[1]; } V231B98;
+void func_001EC2C0(s32, s32);
+void func_00231B98(void) {
+    u8 *c;
+    u16 *t;
+    s32 n;
+
+    if (D_00647660 > 0) {
+    func_0011D598_v1b98(0x12);
+    if (D_00647670[D_0064765C] == 0) {
+        D_00647670[D_0064765C] = 1;
+        D_006476F4++;
+        func_001EC2C0(D_0064765C, 1);
+    }
+    ((V231B98 *)D_003010F8)->a[D_00647660 + 0x490]++;
+    c = (u8 *)&D_003F7C48[D_0064765C * 3];
+    t = &D_003F7A70[c[2] * 2];
+    for (n = c[3]; n > 0; n--, t += 2) {
+        ((V231B98 *)D_003010F8)->a[t[0] + 0x490] -= t[1];
+    }
+    } else {
+        func_0011D598(4);
+    }
+}
 
 extern u16 D_003F7C48[];
 extern s32 D_0064765C;
