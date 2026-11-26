@@ -1157,7 +1157,38 @@ void func_0013E558(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013E638);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013E978);
+s32 func_00133000_2(u8*, s32) __asm__("func_00133000");
+void func_001333E0(u8*, s32, u32*);
+void func_00137230_v(u8*, u8*, s32) __asm__("func_00137230");
+void func_0013E978(u8* a0, u32* c) {
+    u8* p = a0;
+    s32 id;
+    s32 t = *(u8*)c;
+
+    switch (t) {
+    case 0:
+        break;
+    case 2:
+        if (func_00133000_2(a0, (c[0] >> 8) & 0xFFFF) == 0) {
+            break;
+        }
+        id = (c[0] >> 8) & 0xFFFF;
+        if (id == 0) {
+            func_00130340(p, 0x1000083, 0.0f);
+            func_00130578((s32)p, 0x8A, 0.0f);
+        } else {
+            func_00130340(p, (id + 0x83) | 0x1000000, 0.0f);
+        }
+        func_00130578((s32)p, 0x40000006, 8.0f);
+        func_001333E0(p, (c[0] >> 8) & 0xFFFF, c + 1);
+        func_0014CCE0_f(p, *(f32*)(D_003051EC + 0xE8));
+        sceVu0ScaleVector((f32*)(p + 0x3C0), (f32*)(p + 0x3C0), *(f32*)(D_003051EC + 0xF0));
+        break;
+    default:
+        func_00137230_v((u8*)c[1], p, t);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013EAB0);
 
