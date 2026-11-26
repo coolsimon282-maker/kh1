@@ -336,6 +336,40 @@ Munny_Sub                            = 0x001EF7F0; // type:func
 Party_RefreshStats                   = 0x001EF830; // type:func
 
 
+//=========================================================
+// xpotato.c
+//=========================================================
+GameData_ResetCharPresets            = 0x00216180; // type:func
+GameData_ApplyCharPreset             = 0x002161E8; // type:func
+Config_Reset                         = 0x00219128; // type:func
+Config_Get                           = 0x00219158; // type:func
+Config_Set                           = 0x002191F0; // type:func
+Config_GetOption0                    = 0x00219288; // type:func
+Config_GetOption0Wrap                = 0x00219298; // type:func
+Config_SetOption0                    = 0x002192B0; // type:func
+Config_GetOption1                    = 0x002192C0; // type:func
+Config_GetOption1Wrap                = 0x002192D0; // type:func
+Config_SetOption1                    = 0x002192E8; // type:func
+Config_GetOption2                    = 0x002192F8; // type:func
+Config_GetOption2Wrap                = 0x00219308; // type:func
+Config_SetOption2                    = 0x00219320; // type:func
+Config_GetOption3                    = 0x00219348; // type:func
+Config_GetOption3Wrap                = 0x00219358; // type:func
+Config_SetOption3                    = 0x00219370; // type:func
+Config_GetOption4                    = 0x00219380; // type:func
+Config_GetOption4Wrap                = 0x00219390; // type:func
+Config_SetOption4                    = 0x002193A8; // type:func
+Config_GetOption5                    = 0x002193B8; // type:func
+Config_GetOption5Wrap                = 0x002193C8; // type:func
+Config_SetOption5                    = 0x002193E0; // type:func
+Config_GetOption6                    = 0x002193F0; // type:func
+Config_GetOption6Wrap                = 0x00219400; // type:func
+Config_SetOption6                    = 0x00219418; // type:func
+ConfigMenu_UpdateOption0             = 0x00219A88; // type:func
+ConfigMenu_UpdateOption1             = 0x00219C18; // type:func
+ConfigMenu_UpdateOption2             = 0x00219DA8; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

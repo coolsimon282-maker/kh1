@@ -214,9 +214,9 @@ void GameData_BindBuffer(void) {
 // Resets several game data subsystems and sets munny to 0.
 void GameData_Reset(void) {
     func_0022F888();
-    func_00218A10();
+    Config_Reset();
     D_003ED718->munny = 0;
-    func_00215A88();
+    GameData_ResetCharPresets();
     func_0021D2B0();
 }
 

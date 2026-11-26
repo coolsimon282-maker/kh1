@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-void func_00215A88();
-void func_00215AF0();
-void func_00218A10();
+void GameData_ResetCharPresets();
+void GameData_ApplyCharPreset();
+void Config_Reset();
 
 #endif // XPOTATO_H

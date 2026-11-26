@@ -503,7 +503,7 @@ extern s32 D_004E44C0;
 extern u8 D_004E44C8[][20];
 extern s16 D_002C597A;
 extern u8 D_002C5A80[];
-s32 func_00218C08(void);
+s32 Config_GetOption3(void);
 void func_0011FEC0(void);
 
 // Reads the controller (scePad2), sets vibration, updates the button state and the game's mapped copy.
@@ -539,7 +539,7 @@ void Pad_Update(void) {
             if ((D_004E44C8[i][2] & 0xF) == 0xF) {
                 btn |= Pad_ReadSticks(e, buf);
             }
-            if (func_00218C08() == 0 && !(D_002C597A & 1)) {
+            if (Config_GetOption3() == 0 && !(D_002C597A & 1)) {
                 hi = e->unk_03 << 1;
                 vib = ((u32)(s8)e->unk_02 >> 31) | hi;
                 sceVibSetActParam(*sock, 1, D_002C5A80, 2, (u8*)&vib);

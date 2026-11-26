@@ -267,3 +267,32 @@ other functions (rule F1).
 | Munny_Add | 0x001EF7B0 | xtango.c | Adds to munny, clamped to 0..99999. |
 | Munny_Sub | 0x001EF7F0 | xtango.c | Subtracts from munny, clamped to 0..99999. |
 | Party_RefreshStats | 0x001EF830 | xtango.c | Counts party members (D_003E3D6C, D_003DE6A0 with slot 3) and recomputes the stats (D_003E3D70) of all ten characters. |
+| GameData_ResetCharPresets | 0x00216180 | xpotato.c | Sets the preset (GameData unk_20[i]) of all ten characters to 4 and applies it. |
+| GameData_ApplyCharPreset | 0x002161E8 | xpotato.c | Applies preset arg1 to character arg0: nine func_00170D60(arg0, i, value) calls from table D_003F41E8[arg1], or the character's own D_003F4200 row for preset 4. |
+| Config_Reset | 0x00219128 | xpotato.c | Clears the config options (GameData words 0x00..0x18), option 6 (+0x2C) = 1 in FM. |
+| Config_Get | 0x00219158 | xpotato.c | Returns config option arg0 (0..6: GameData +0x00, 0x04, 0x08, 0x10, 0x14, 0x18, 0x2C). |
+| Config_Set | 0x002191F0 | xpotato.c | Sets config option arg0 (same order as Config_Get). |
+| Config_GetOption0 | 0x00219288 | xpotato.c | Config option 0 (GameData +0x00). |
+| Config_GetOption0Wrap | 0x00219298 | xpotato.c | Calls Config_GetOption0. |
+| Config_SetOption0 | 0x002192B0 | xpotato.c | Sets config option 0. |
+| Config_GetOption1 | 0x002192C0 | xpotato.c | Config option 1 (GameData +0x04). |
+| Config_GetOption1Wrap | 0x002192D0 | xpotato.c | Calls Config_GetOption1. |
+| Config_SetOption1 | 0x002192E8 | xpotato.c | Sets config option 1. |
+| Config_GetOption2 | 0x002192F8 | xpotato.c | Config option 2 (GameData +0x08). |
+| Config_GetOption2Wrap | 0x00219308 | xpotato.c | Calls Config_GetOption2. |
+| Config_SetOption2 | 0x00219320 | xpotato.c | Sets config option 2. |
+| Config_GetOption3 | 0x00219348 | xpotato.c | Config option 3 (GameData +0x10). |
+| Config_GetOption3Wrap | 0x00219358 | xpotato.c | Calls Config_GetOption3. |
+| Config_SetOption3 | 0x00219370 | xpotato.c | Sets config option 3. |
+| Config_GetOption4 | 0x00219380 | xpotato.c | Config option 4 (GameData +0x14). |
+| Config_GetOption4Wrap | 0x00219390 | xpotato.c | Calls Config_GetOption4. |
+| Config_SetOption4 | 0x002193A8 | xpotato.c | Sets config option 4. |
+| Config_GetOption5 | 0x002193B8 | xpotato.c | Config option 5 (GameData +0x18). |
+| Config_GetOption5Wrap | 0x002193C8 | xpotato.c | Calls Config_GetOption5. |
+| Config_SetOption5 | 0x002193E0 | xpotato.c | Sets config option 5. |
+| Config_GetOption6 | 0x002193F0 | xpotato.c | Config option 6 (GameData +0x2C, FM only). |
+| Config_GetOption6Wrap | 0x00219400 | xpotato.c | Calls Config_GetOption6. |
+| Config_SetOption6 | 0x00219418 | xpotato.c | Sets config option 6. |
+| ConfigMenu_UpdateOption0 | 0x00219A88 | xpotato.c | Config menu page for option 0: two choices (D_003F4790), the selection written to GameData +0x00; pad bit 0x4000 closes it. |
+| ConfigMenu_UpdateOption1 | 0x00219C18 | xpotato.c | Config menu page for option 1 (choices D_003F4798, GameData +0x04). |
+| ConfigMenu_UpdateOption2 | 0x00219DA8 | xpotato.c | Config menu page for option 2 (choices D_003F47A0, GameData +0x08). |
