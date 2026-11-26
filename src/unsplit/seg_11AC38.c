@@ -567,7 +567,42 @@ void func_0021C5E0(s32 a0, s32 a1, s32 a2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C780);
+void func_0021C780(s32 a0, s32 a1, s32 a2) {
+    s32 i;
+    s32 y;
+    s32 v;
+    s32 x2;
+    s32 x3;
+
+    x2 = a1 + 0x34;
+    y = a2 + 0x14;
+    x3 = a1 + 0xC6;
+    v = y;
+    func_0021B860(a0, a1, a2, 0, 0, 0xF);
+    func_0021B860(a0, x2, a2, 0x92, 0, 0x10);
+    func_0021B860(a0, x3, a2, 0, 0, 0x11);
+    for (i = 0; i < 16; i++) {
+        func_0021B860(a0, a1, y, 0, 0, 0x12);
+        func_0021B860(a0, x2, y, 0x92, 0, 0x13);
+        func_0021B860(a0, x3, y, 0, 0, 0x14);
+        y += 0x10;
+    }
+    func_0021B860(a0, a1, y, 0, 0, 0x15);
+    func_0021B860(a0, x2, y, 0x92, 0, 0x16);
+    x2 = a1 + 0xF1;
+    func_0021B860(a0, x3, y, 0, 0, 0x17);
+    y = v;
+    func_0021B860(a0, x2, a2, 0, 0, 0);
+    for (i = 0; i < 16; i++) {
+        func_0021B860(a0, x2, y, 0, 0, 4);
+        y += 0x10;
+    }
+    func_0021B860(a0, x2, y, 0, 0, 2);
+    x2 = a1 + 0xE1;
+    for (i = 0, y = a2 + 7; i < 18; i++, y += 0x10) {
+        func_0021B860(a0, x2, y, 0, 0, 0x1F);
+    }
+}
 
 void func_0021C9A0(s32 a0, s32 a1, s32 a2) {
     s32 i;
