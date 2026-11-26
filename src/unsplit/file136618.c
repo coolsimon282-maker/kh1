@@ -974,7 +974,33 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023A968);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023AED0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023B4B8);
+typedef struct {
+    u8 pad[0x7C];
+    f32 unk7C;
+    f32 unk80;
+} Unk449908;
+extern Unk449908 D_00449908;
+
+void func_0023B4B8(s32 arg0) {
+    switch (arg0) {
+    case 0:
+        D_00449908.unk7C = 1.0f;
+        D_00449908.unk80 = -0.0999999940395355224609375f;
+        break;
+    case 1:
+        D_00449908.unk7C = 0.0f;
+        D_00449908.unk80 = 0.0999999940395355224609375f;
+        break;
+    case 2:
+        D_00449908.unk7C = 1.0f;
+        D_00449908.unk80 = 0.0f;
+        break;
+    case 3:
+        D_00449908.unk80 = 0.0f;
+        D_00449908.unk7C = 0.0f;
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023B570);
 
