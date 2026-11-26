@@ -523,7 +523,7 @@ segments:
   - [ 0x36ae30, data, lib/libc/locale ]
   - [ 0x36ae58, .data, lib/libkernl/filestub ]
   - [ 0x36aef8, .data, lib/libkernl/initsys ]
-  - [ 0x36af18, data, lib/libkernl/libosd ]
+  - [ 0x36af18, .data, lib/libkernl/libosd ]
   - [ 0x36b6e0, .data, lib/libkernl/alarm ]
   - [ 0x36be88, .data, lib/libkernl/thread ]
   - [ 0x36be90, .data, lib/libkernl/tlbfunc ]
