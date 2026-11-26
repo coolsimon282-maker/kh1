@@ -672,7 +672,24 @@ void func_0021D9C8(void) {
     func_0021B418();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021D9E0);
+void UiObject_InsertAfter(u8 *, u8 *);
+extern u8 *D_003F5C08[];
+u8 *func_0021D9E0(u8 *a0) {
+    u8 *o[3];
+    s32 i;
+    u8 *last = a0;
+
+    for (i = 0; i < 3; i++) {
+        o[i] = func_001F3A20(D_003F5C08[i], 0x32);
+        if (o[i] != NULL) {
+            UiObject_InsertAfter(o[i], last);
+            func_001F3D58(o[i], D_003F3488[i]);
+            last = o[i];
+        }
+    }
+    func_0020BE10(0x10);
+    return last;
+}
 
 void func_0021DAA0(u8 *a0) {
     *(f32 *)(a0 + 0xA0) = D_003E9104;
