@@ -1572,7 +1572,38 @@ s32 func_0023FEB8_d(u8 *a0, s32 a1) {
     return func_0023E160(a0 + 0x80, *(s32 *)(a0 + 0x90) + 0x20, &col, a1, 0.0f, s, *(f32 *)(a0 + 0xA1C));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023FF38);
+extern s32 D_a3pad_0023FF38_1;
+s32 func_0023FF38(void *a0_, s32 a1) {
+    u8 *a0 = a0_;
+    s32 bufA[4];
+    s32 pos[4];
+    A3Blk tmp;
+    f32 f;
+    s32 i;
+    s32 n;
+    s32 q;
+    s32 m;
+
+    if (**(f32 **)(a0 + 0xA88) * 0.000174532892f <= 4.71238804f) {
+        return a1;
+    }
+    func_0023D528(a0, bufA, pos);
+    n = **(f32 **)(a0 + 0xA88) - 27000.0f;
+    q = n / 3000;
+    for (i = 0; i < q; i++) {
+        a1 = func_0023D700_f(*(s32 *)(a0 + 0x48), *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+        pos[0] -= 0x1A;
+    }
+    m = n % 3000;
+    if (m == 0) {
+        return a1;
+    }
+    f = m / 3000.0f;
+    pos[0] = pos[0] + (1.0f - f) * 26.0f;
+    tmp = **(A3Blk **)(a0 + 0x48);
+    tmp.c = tmp.c * (f + 0.0625f);
+    return func_0023D700_f((s32)&tmp, *(s32 *)(a0 + 0x70), pos[0], pos[1], a1, *(f32 *)(a0 + 0xA1C));
+}
 
 extern s32 func_0023FEB8(void);
 extern s32 func_0023FF38(void *arg0, s32 arg1);
