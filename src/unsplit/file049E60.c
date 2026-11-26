@@ -3851,7 +3851,26 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BAD0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BB88);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BCB8);
+s32 func_001425D0(u8*);
+s32 func_0015BB88(f32*, u8*, s32);
+s32 func_0015BCB8(u8* p, f32* a1) {
+    sceVu0FVECTOR box[2];
+    sceVu0FVECTOR d;
+    u8* e = 0;
+
+    func_0015BAD0(p, *(u8**)(*(u8**)(p + 0x134) + 0x14), box[0]);
+    sceVu0SubVector(d, a1, (f32*)(p + 0x10));
+    sceVu0AddVector(box[1], box[1], d);
+    while ((e = func_001234A0(e)) != 0) {
+        if (e == p || func_001425D0(e) == 0) {
+            continue;
+        }
+        if (func_0015BB88(box[0], e, 0) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BD78);
 
