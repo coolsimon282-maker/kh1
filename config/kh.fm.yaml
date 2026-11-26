@@ -565,7 +565,7 @@ segments:
   - [ 0x38cc40, rodata ]
   - [ 0x38cca0, .rodata, xarcade ]
   - [ 0x38cd30, .rodata, xnoodle ]
-  - [ 0x38cd60, rodata ]
+  - [ 0x38cd60, .rodata, xsauce ] # jump tables and a format of its asm functions
   - [ 0x38cf10, .rodata, xtailor ]
   - [ 0x38cf40, .rodata, xtrumpet ]
   - [ 0x38cf70, .rodata, worldfile ]
