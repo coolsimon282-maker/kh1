@@ -577,7 +577,28 @@ void func_0014A248(void) {
     D_0054C434 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014A0F0);
+extern s32 D_14A0F0_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+u8* func_001234A0(u8*);
+void func_0014A0F0(u8* p) {
+    u8* e;
+    s32 x;
+    f32 t = *(f32*)(p + 0x50);
+
+    if (t > 0.0f) {
+        *(f32*)(p + 0xA4) += D_002B8344;
+        if (t <= *(f32*)(p + 0xA4)) {
+            e = 0;
+            while ((e = func_001234A0(e)) != 0) {
+                *(s32*)(e + 0x3E0) &= ~*(s32*)(p + 0x54);
+            }
+            x = 0;
+            while ((x = func_0014A398(x)) != 0) {
+                *(s32*)(x + 0x9C) &= ~*(s32*)(p + 0x54);
+            }
+            *(f32*)(p + 0xA4) -= *(f32*)(p + 0x50);
+        }
+    }
+}
 
 s32 func_0014A1B0(u8* p, s32 a1, f32* a2) {
     s32 n, idx, r;
