@@ -1140,7 +1140,24 @@ void func_0014D4F8(u8* p, f32* a1, f32 a, f32 b) {
     func_0014F658((s32)p, 3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014D570);
+void func_0014D570(f32* v, f32 lo, f32 hi, f32 dv, f32 g) {
+    f32 h;
+    f32 a;
+    f32 b;
+    f32 c;
+    f32 k;
+
+    h = -v[1];
+    v[1] = 0.0f;
+    func_001223B0(v, v);
+    k = 0.5f;
+    a = g * k;
+    c = ((v[3] / dv > lo ? v[3] / dv : lo) < hi) ? (v[3] / dv > lo ? v[3] / dv : lo) : hi;
+    b = -g * c * k;
+    c = (_sqrtf(b * b - a * 4.0f * h) - b) / (a + a);
+    sceVu0ScaleVector(v, v, (v[3] / c < dv) ? v[3] / c : dv);
+    v[1] = b;
+}
 
 void func_0014D6B0(u8* p, f32* v) {
     f32* d = (f32*)(p + 0x3C0);
@@ -1496,6 +1513,7 @@ void func_0014EE78(s32 n) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014EC60);
 
+extern s32 D_14ED30_pad1;
 typedef struct { s32 flags; s32 pad[3]; s32 mask; s32 pad2; } V14ED30a;
 typedef struct { s32 pad[2]; f32 a; f32 b; s32 pad2[2]; } V14ED30b;
 extern V14ED30a D_0054F438[];
