@@ -1,3 +1,15 @@
+/**
+ * Particle effect ("ppp") manager.
+ *
+ * Each running effect has a manager (ppvmng, 0xC0 bytes) in ppvMngTbl[0x100]. A manager is created from a DPD file
+ * (effect data: an etc. header (pppPEtcData), texture/CLUT images, shapes, RSD models, VSF data and the program data
+ * (pppPData) that says which programs (pppProg: ini/sta/calc/end/con/des... functions) run on which objects
+ * (pppPObject)). This file sets up the effect heap and render tables, relocates DPD data, uploads textures through a
+ * small VRAM cache, creates/deletes effect objects, steps every manager once per frame and draws them sorted by depth.
+ *
+ * usef (manager flags, from the code here): 1 = in use, 2 = ended, 4 = suspended (objects freed), 8 = set by
+ * init_part_mng, 0x20 = skipped by the update loop (probably paused), 0x40 = set/cleared by pppCalcAllPart.
+ */
 #include "common.h"
 #include "ppp.h"
 #include "ppp/draw.h"
@@ -30,7 +42,7 @@ typedef struct {
     /* 0x98 */ char unk_98[0x28];
 } PppMngU;
 
-extern PppMngU D_00364130[];
+extern PppMngU ppvMngTbl[];
 
 extern sceVu0FMATRIX D_00615E70;
 extern void func_0024EDF0(sceVu0FMATRIX, pppPEtcData*);
@@ -56,6 +68,7 @@ s32 ppvPrimpLen;
 u_long128 D_00570580;
 pppSVECTOR* ppvVertex;
 
+// Sets the GS packet area the effects draw into (NULL: the default area, length 0x20000).
 void pppSetPrimPacket(u_long128* primPacketArea, s32 len) {
     if (primPacketArea != NULL) {
         ppvPrimp = primPacketArea;
@@ -66,14 +79,17 @@ void pppSetPrimPacket(u_long128* primPacketArea, s32 len) {
     }
 }
 
+// Starts a draw pass (no vertex buffer yet).
 void drawStart(void) {
     ppvVertex = NULL;
 }
 
+// Allocates from the effect heap (debug wrapper of pppAlloc).
 s32 pppDbgAlloc(s32 arg0, s32 arg1) {
     return pppAlloc(arg0, arg1);
 }
 
+// Ends a draw pass: if anything was queued, kicks the ordering table and clears it.
 void drawEnd(void) {
     if (ppvCurPrimpLen != 0) {
         op_ot_draw();
@@ -81,6 +97,7 @@ void drawEnd(void) {
     }
 }
 
+// Initialises the effect drawing state (draw, GS, ordering table, fog work).
 void initGraphicSystem(void) {
     op_init_draw();
     op_gs2_init();
@@ -88,67 +105,73 @@ void initGraphicSystem(void) {
     op_init_fog_work();
 }
 
-void func_00181040(void) {
+// Ends every running effect: stops its sound, frees its objects and marks the manager ended.
+void pppEndAllPart(void) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_00364130[i].usef & 1) {
-            pppPEtcData* e = D_00364130[i].pEtc;
+        if (ppvMngTbl[i].usef & 1) {
+            pppPEtcData* e = ppvMngTbl[i].pEtc;
             if (e != NULL && *(u16*)&e->seNo != 0) {
-                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&D_00364130[i]);
-            func_00183E78(&D_00364130[i]);
+            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
+            pppEndMng(&ppvMngTbl[i]);
         }
     }
 }
 
-void func_001810D0(void) {
+// Sets flag 0x20 on every running effect (pppCalcAllPart skips them: probably pause).
+void pppPauseAllPart(void) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_00364130[i].usef & 1) {
-            D_00364130[i].usef |= 0x20;
+        if (ppvMngTbl[i].usef & 1) {
+            ppvMngTbl[i].usef |= 0x20;
         }
     }
 }
 
-void func_00181110(void) {
+// Clears flag 0x20 on every running effect (undoes pppPauseAllPart).
+void pppResumeAllPart(void) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_00364130[i].usef & 1) {
-            D_00364130[i].usef &= ~0x20;
+        if (ppvMngTbl[i].usef & 1) {
+            ppvMngTbl[i].usef &= ~0x20;
         }
     }
 }
 
-void func_00181150(s32 arg0) {
+// Sets flag 0x20 on the running effect whose handle (unk_94) is arg0.
+void pppPausePart(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if ((D_00364130[i].usef & 1) && D_00364130[i].unk_94 == arg0) {
-            D_00364130[i].usef |= 0x20;
+        if ((ppvMngTbl[i].usef & 1) && ppvMngTbl[i].unk_94 == arg0) {
+            ppvMngTbl[i].usef |= 0x20;
             return;
         }
     }
 }
 
-void func_001811A8(s32 arg0) {
+// Clears flag 0x20 on the running effect whose handle (unk_94) is arg0.
+void pppResumePart(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if ((D_00364130[i].usef & 1) && D_00364130[i].unk_94 == arg0) {
-            D_00364130[i].usef &= ~0x20;
+        if ((ppvMngTbl[i].usef & 1) && ppvMngTbl[i].unk_94 == arg0) {
+            ppvMngTbl[i].usef &= ~0x20;
             return;
         }
     }
 }
 
-void func_00181200(s32 arg0) {
+// Ends the running effect whose handle is arg0 (sound stopped, objects freed, marked ended).
+void pppEndPart(s32 arg0) {
     s32 i;
     s32 off;
-    PppMngU *base = D_00364130;
+    PppMngU *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -159,31 +182,33 @@ void func_00181200(s32 arg0) {
             }
             off += (s32)base;
             pppAllFreePObject((ppvmng*)off);
-            func_00183E78((void *)off);
+            pppEndMng((void *)off);
             return;
         }
     }
 }
 
-void func_001812B0(void) {
+// Like pppEndAllPart, but clears each manager completely (pppClearMng).
+void pppKillAllPart(void) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_00364130[i].usef & 1) {
-            pppPEtcData* e = D_00364130[i].pEtc;
+        if (ppvMngTbl[i].usef & 1) {
+            pppPEtcData* e = ppvMngTbl[i].pEtc;
             if (e != NULL && *(u16*)&e->seNo != 0) {
-                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&D_00364130[i]);
-            func_00183EC8((ppvmng*)&D_00364130[i]);
+            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
+            pppClearMng((ppvmng*)&ppvMngTbl[i]);
         }
     }
 }
 
-void func_00181340(s32 arg0) {
+// Like pppEndPart, but clears the manager completely (pppClearMng).
+void pppKillPart(s32 arg0) {
     s32 i;
     s32 off;
-    PppMngU *base = D_00364130;
+    PppMngU *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -194,17 +219,18 @@ void func_00181340(s32 arg0) {
             }
             off += (s32)base;
             pppAllFreePObject((ppvmng*)off);
-            func_00183EC8((ppvmng*)off);
+            pppClearMng((ppvmng*)off);
             return;
         }
     }
 }
 
-void func_001813F0(s32 arg0, s32 arg1) {
+// Ends every effect whose DPD data lies in [arg0, arg0 + arg1) (e.g. before that memory is reused).
+void pppEndPartInArea(s32 arg0, s32 arg1) {
     s32 i;
     s32 off;
     s32 d;
-    PppMngU *base = D_00364130;
+    PppMngU *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -216,17 +242,18 @@ void func_001813F0(s32 arg0, s32 arg1) {
                     func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
                 }
                 pppAllFreePObject((ppvmng*)(off + (s32)base));
-                func_00183E78((void *)(off + (s32)base));
+                pppEndMng((void *)(off + (s32)base));
             }
         }
     }
 }
 
-void func_001814C8(s32 arg0, s32 arg1) {
+// Like pppEndPartInArea, but clears the managers completely.
+void pppKillPartInArea(s32 arg0, s32 arg1) {
     s32 i;
     s32 off;
     s32 d;
-    PppMngU *base = D_00364130;
+    PppMngU *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -238,7 +265,7 @@ void func_001814C8(s32 arg0, s32 arg1) {
                     func_0011D1F8(*(u16*)&e->seNo, *(s32*)(p + 0x28), 0x3C);
                 }
                 pppAllFreePObject((ppvmng*)(off + (s32)base));
-                func_00183EC8((ppvmng*)(off + (s32)base));
+                pppClearMng((ppvmng*)(off + (s32)base));
             }
         }
     }
@@ -254,8 +281,9 @@ typedef struct {
     u8 b7;
     u64 pad3;
 } MngV15A0;
-extern MngV15A0 D_00364130_v15A0[] __asm__("D_00364130");
-void func_001815A0(s32 a0) {
+extern MngV15A0 D_00364130_v15A0[] __asm__("ppvMngTbl");
+// Sets (arg0 != 0) or clears the stop bit 0x80 and unk_B7 of every running effect.
+void pppStopAllPart(s32 a0) {
     s32 i;
     for (i = 0; i < 0x100; i++) {
         if (D_00364130_v15A0[i].usef & 1) {
@@ -270,18 +298,20 @@ void func_001815A0(s32 a0) {
     }
 }
 
-s32 func_00181600(s32 arg0) {
+// Returns the bone number (pEtc->boneNo) of the effect with handle arg0, or -2 if there is none.
+s32 pppGetPartBoneNo(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if (D_00364130[i].unk_94 == arg0) {
-            return D_00364130[i].pEtc->boneNo;
+        if (ppvMngTbl[i].unk_94 == arg0) {
+            return ppvMngTbl[i].pEtc->boneNo;
         }
     }
     return -2;
 }
 
-void func_00181640(u8* rsd, s16* tim, s16 tex, s16 clut) {
+// Moves the texture (TBP) and CLUT (CBP) addresses in an RSD model's packets to the given VRAM blocks.
+void dpd_reloc_rsd_texp(u8* rsd, s16* tim, s16 tex, s16 clut) {
     s16 dt;
     s16 dc;
     u8* e = rsd + *(s32*)(rsd + 4);
@@ -353,7 +383,8 @@ void func_00181640(u8* rsd, s16* tim, s16 tex, s16 clut) {
 }
 
 
-void func_001817E8(u8* shp, u16* tim, s16 tex, s16 clut) {
+// Moves the texture (TBP) and CLUT (CBP) addresses in a shape's packets to the given VRAM blocks.
+void dpd_reloc_shape_texp(u8* shp, u16* tim, s16 tex, s16 clut) {
     s16 dt = 0;
     s16 dc = 0;
     s32 n;
@@ -393,12 +424,15 @@ void func_001817E8(u8* shp, u16* tim, s16 tex, s16 clut) {
 }
 
 
+// Sets up the per-frame matrices (world, screen, screen*world) for drawing effects.
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetUp);
 
+// Skips the DPD header's version word.
 s32* dpd_h_skip_version(s32* p) {
     return p + 1;
 }
 
+// Skips n length-prefixed blocks of a DPD header.
 s32* dpd_h_skip_datainfo(s32* p, s32 n) {
     s32 len;
     s32 i;
@@ -410,7 +444,8 @@ s32* dpd_h_skip_datainfo(s32* p, s32 n) {
     return p;
 }
 
-void func_00181A58(s32* dpd, s32 idx, s32* out, ppvmng* m) {
+// Points the manager at etc. header number idx of a DPD and records how many texture/CLUT blocks it needs.
+void dpd_set_object_etc(s32* dpd, s32 idx, s32* out, ppvmng* m) {
     s32* p = dpd_h_skip_version(dpd);
     s32 n;
     s32 i;
@@ -441,7 +476,8 @@ void func_00181A58(s32* dpd, s32 idx, s32* out, ppvmng* m) {
 }
 
 
-s32* func_00181B38(s32* arg0, s32 arg1) {
+// Turns the offsets in a DPD's five pointer tables into addresses (adds the base).
+s32* dpd_reloc_tables(s32* arg0, s32 arg1) {
     s32* p = dpd_h_skip_version(arg0);
     s32 i;
     s32 j;
@@ -456,20 +492,22 @@ s32* func_00181B38(s32* arg0, s32 arg1) {
     return p;
 }
 
-void func_00181BA8(s32* arg0) {
+// Relocates a loaded DPD file and the program data of each of its effects.
+void dpd_reloc(s32* arg0) {
     s32* p;
     s32 n;
     s32 i;
 
-    func_00181B38(arg0, (s32)arg0);
+    dpd_reloc_tables(arg0, (s32)arg0);
     p = dpd_h_skip_version(arg0);
     n = *p++;
     for (i = 0; i < n; i++) {
-        func_001843E0(*p++, &D_00370200);
+        dpd_reloc_pdata(*p++, &D_00370200);
     }
 }
 
-s32* func_00181C20(s32* p, u8* use, s16 tex, s16 clut) {
+// For every shape the effect uses, moves its texture/CLUT addresses to the manager's VRAM blocks.
+s32* dpd_set_shape_texp(s32* p, u8* use, s16 tex, s16 clut) {
     s32 n = *p++;
     s32 i;
     u8 bits = 0;
@@ -493,7 +531,7 @@ s32* func_00181C20(s32* p, u8* use, s16 tex, s16 clut) {
             if (tim[2] == 0) {
                 tim[2] = 0x3D40;
             }
-            func_001817E8(shp, (u16*)tim, tex, clut);
+            dpd_reloc_shape_texp(shp, (u16*)tim, tex, clut);
             if (tex != 0) {
                 tim[1] = tex;
             }
@@ -507,9 +545,10 @@ s32* func_00181C20(s32* p, u8* use, s16 tex, s16 clut) {
 }
 
 
-void func_00181640(u8*, s16*, s16, s16);
+void dpd_reloc_rsd_texp(u8*, s16*, s16, s16);
 
-s32* func_00181D30(s32* p, u8* use, s16 tex, s16 clut) {
+// For every RSD model the effect uses, moves its texture/CLUT addresses to the manager's VRAM blocks.
+s32* dpd_set_rsd_texp(s32* p, u8* use, s16 tex, s16 clut) {
     s32 n = *p++;
     s32 i;
     u8 bits = 0;
@@ -533,7 +572,7 @@ s32* func_00181D30(s32* p, u8* use, s16 tex, s16 clut) {
             if (tim[2] == 0) {
                 tim[2] = 0x3D40;
             }
-            func_00181640(shp, tim, tex, clut);
+            dpd_reloc_rsd_texp(shp, tim, tex, clut);
             if (tex != 0) {
                 tim[1] = tex;
             }
@@ -547,9 +586,10 @@ s32* func_00181D30(s32* p, u8* use, s16 tex, s16 clut) {
 }
 
 
-s32* func_00181C20(s32*, u8*, s16, s16);
-s32* func_00181D30(s32*, u8*, s16, s16);
+s32* dpd_set_shape_texp(s32*, u8*, s16, s16);
+s32* dpd_set_rsd_texp(s32*, u8*, s16, s16);
 
+// Moves the effect's shapes and models to the VRAM blocks the manager got (texpStart/clutpStart).
 void dpd_set_object_tex(ppvmng* pMng) {
     s32* p = (s32*)pMng->pchDpd;
     s16 texpStart = pMng->texpStart;
@@ -560,12 +600,13 @@ void dpd_set_object_tex(ppvmng* pMng) {
     }
     p = dpd_h_skip_version(p);
     p = dpd_h_skip_datainfo(p, 2);
-    p = func_00181C20(p, pMng->pEtc->abUseShape, texpStart, clutpStart);
-    func_00181D30(p, pMng->pEtc->abUseRsd, texpStart, clutpStart);
+    p = dpd_set_shape_texp(p, pMng->pEtc->abUseShape, texpStart, clutpStart);
+    dpd_set_rsd_texp(p, pMng->pEtc->abUseRsd, texpStart, clutpStart);
 }
 
 extern pppShapeSt D_00363930[];
 
+// Registers the shapes the effect uses in the shape table (ppvEnv->lpShape).
 s32* dpd_set_shape_data(s32* p, u8* use) {
     s32 n = *p++;
     s32 i;
@@ -595,6 +636,7 @@ s32* dpd_set_shape_data(s32* p, u8* use) {
 
 extern pppModelSt D_00362730[];
 
+// Registers the RSD models the effect uses in the model table (ppvEnv->lpModel).
 s32* dpd_set_rsd_data(s32* p, u8* use) {
     s32 n = *p++;
     s32 i;
@@ -632,6 +674,7 @@ s32* dpd_set_rsd_data(s32* p, u8* use) {
 
 extern pppVsfSt D_00363D30[];
 
+// Registers the VSF data the effect uses in the VSF table (ppvEnv->lpVsf).
 s32* dpd_set_vsf_data(s32* p, u8* use) {
     s32 n = *p++;
     s32 i;
@@ -660,6 +703,7 @@ s32* dpd_set_vsf_data(s32* p, u8* use) {
 }
 
 
+// Registers the effect's shapes, models and VSF data in the render tables.
 s32 dpd_set_object_data(ppvmng* pMng) {
     s32* piVar1;
     s16** ppsVar2;
@@ -671,11 +715,13 @@ s32 dpd_set_object_data(ppvmng* pMng) {
     return dpd_set_vsf_data(ppsVar2, pMng->pEtc->abUseVsf);
 }
 
+// Sets D_0036C600 (read by pppDrawAllPart).
 void func_00182110(s32 arg0) {
     D_0036C600 = arg0;
 }
 
-void func_00182120(s16* tim, s16 off) {
+// Uploads one texture image to GS memory (VRAM block offset added for relocatable images).
+void dpd_load_tim(s16* tim, s16 off) {
     sceGsLoadImage li;
     s16 dbp = tim[0];
 
@@ -688,7 +734,8 @@ void func_00182120(s16* tim, s16 off) {
     sceGsExecLoadImage(&li, (u_long128*)(tim + 0x10));
 }
 
-void func_001821A8(s16* clut, s16 off) {
+// Uploads one CLUT (16x16 or 8x2) to GS memory.
+void dpd_load_clut(s16* clut, s16 off) {
     sceGsLoadImage li;
     s16 cbp = clut[1];
 
@@ -713,7 +760,8 @@ void func_001821A8(s16* clut, s16 off) {
     sceGsExecLoadImage(&li, (u_long128*)((u8*)clut + ((s32*)clut)[6] + 0x20));
 }
 
-void func_00182288(s32* arg0, u8* use, s16 off) {
+// Uploads the textures the effect uses.
+void dpd_load_object_tim(s32* arg0, u8* use, s16 off) {
     s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
     s32 n = *p++;
     s32 i;
@@ -731,26 +779,28 @@ void func_00182288(s32* arg0, u8* use, s16 off) {
             bits = use[k];
         }
         if (bits & 1) {
-            func_00182120(tim, off);
+            dpd_load_tim(tim, off);
         }
         bits >>= 1;
     }
 }
 
 
-void func_00182348(s32* arg0) {
+// Uploads every texture of a DPD.
+void dpd_load_all_tim(s32* arg0) {
     s32* p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
     s32 n = *p++;
     s32 i;
 
     for (i = 0; i < n; i++) {
-        func_00182120(*p++, 0);
+        dpd_load_tim(*p++, 0);
     }
 }
 
 
 
-void func_001823B8(s32* arg0, u8* use, s16 off) {
+// Uploads the CLUTs the effect uses.
+void dpd_load_object_clut(s32* arg0, u8* use, s16 off) {
     s32* p;
     s32 n;
     s32 i;
@@ -773,14 +823,15 @@ void func_001823B8(s32* arg0, u8* use, s16 off) {
             bits = use[k];
         }
         if (bits & 1) {
-            func_001821A8(tim, off);
+            dpd_load_clut(tim, off);
         }
         bits >>= 1;
     }
 }
 
 
-void func_00182478(s32* arg0) {
+// Uploads every CLUT of a DPD.
+void dpd_load_all_clut(s32* arg0) {
     s32* p;
     s32 n;
     s32 i;
@@ -791,10 +842,11 @@ void func_00182478(s32* arg0) {
     p = dpd_h_skip_datainfo(dpd_h_skip_version(arg0), 1);
     n = *p++;
     for (i = 0; i < n; i++) {
-        func_001821A8(*p++, 0);
+        dpd_load_clut(*p++, 0);
     }
 }
 
+// Clears one VRAM cache entry.
 void vramcache_clear(_VRAMCACHE* cache) {
     cache->dpd = NULL;
     cache->dpdId = 0;
@@ -803,6 +855,7 @@ void vramcache_clear(_VRAMCACHE* cache) {
     cache->boolUse = FALSE;
 }
 
+// Clears the texture (10) and CLUT (6) VRAM cache entries.
 void vramcachemng_clear(_VRAMCACHE_MNG* cacheMng) {
     s32 i;
 
@@ -815,8 +868,10 @@ void vramcachemng_clear(_VRAMCACHE_MNG* cacheMng) {
     }
 }
 
+// Probably finds or allocates n consecutive VRAM cache blocks for the manager's DPD (first block, or < 0).
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182580);
 
+// Gets texture VRAM blocks for the manager (texpStart = 0x3800 + 128 * block, 0 if none).
 void vramcache_texture(_VRAMCACHE_MNG* cacheMng, ppvmng* pMng) {
     s32 lVar1 = func_00182580(cacheMng, 10, pMng, pMng->unk_91);
 
@@ -827,6 +882,7 @@ void vramcache_texture(_VRAMCACHE_MNG* cacheMng, ppvmng* pMng) {
     }
 }
 
+// Gets CLUT VRAM blocks for the manager (clutpStart = 0x3D40 + 32 * block, 0 if none).
 void vramcache_clut(_VRAMCACHE_MNG* cacheMng, ppvmng* pMng) {
     s32 lVar1 = func_00182580(cacheMng->vramCacheClut, 6, pMng, pMng->unk_92);
 
@@ -837,6 +893,7 @@ void vramcache_clut(_VRAMCACHE_MNG* cacheMng, ppvmng* pMng) {
     }
 }
 
+// Probably the view-clip test of the effect's bounding box (world * view matrix against pEtc).
 void func_00182938(ppvmng* arg0) {
     sceVu0FMATRIX m;
 
@@ -844,8 +901,9 @@ void func_00182938(ppvmng* arg0) {
     func_0024EDF0(m, arg0->pEtc);
 }
 
-s32 func_00182980(void) {
-    PppMngU* p = D_00364130;
+// Adds up the work memory size (pEtc->nWorkMemSize) of every running, not suspended effect.
+s32 pppGetAllWorkMemSize(void) {
+    PppMngU* p = ppvMngTbl;
     s32 i;
     s32 sum = 0;
 
@@ -857,16 +915,17 @@ s32 func_00182980(void) {
     return sum;
 }
 
-s32 func_001829D0(s32 arg0) {
+// Suspends the first running effect with unk_98 < arg0: stops its sound, frees its objects, sets flag 4.
+s32 pppSuspendOnePart(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if ((D_00364130[i].usef & 1) && !(D_00364130[i].usef & 4) && ((ppvmng*)&D_00364130[i])->unk_98 < arg0) {
-            if (*(u16*)&D_00364130[i].pEtc->seNo != 0) {
-                func_0011D1F8(*(u16*)&D_00364130[i].pEtc->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+        if ((ppvMngTbl[i].usef & 1) && !(ppvMngTbl[i].usef & 4) && ((ppvmng*)&ppvMngTbl[i])->unk_98 < arg0) {
+            if (*(u16*)&ppvMngTbl[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&ppvMngTbl[i].pEtc->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&D_00364130[i]);
-            D_00364130[i].usef |= 4;
+            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
+            ppvMngTbl[i].usef |= 4;
             return 1;
         }
     }
@@ -874,16 +933,17 @@ s32 func_001829D0(s32 arg0) {
 }
 
 
-s32 func_00182A78(void) {
+// Clears the first running effect with unk_98 < 0 (sound stopped, objects freed, manager cleared).
+s32 pppKillOneTempPart(void) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if ((D_00364130[i].usef & 1) && !(D_00364130[i].usef & 4) && ((ppvmng*)&D_00364130[i])->unk_98 < 0) {
-            if (*(u16*)&D_00364130[i].pEtc->seNo != 0) {
-                func_0011D1F8(*(u16*)&D_00364130[i].pEtc->seNo, *(s32*)((u8*)&D_00364130[i] + 0xA8), 0x3C);
+        if ((ppvMngTbl[i].usef & 1) && !(ppvMngTbl[i].usef & 4) && ((ppvmng*)&ppvMngTbl[i])->unk_98 < 0) {
+            if (*(u16*)&ppvMngTbl[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&ppvMngTbl[i].pEtc->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&D_00364130[i]);
-            func_00183EC8((ppvmng*)&D_00364130[i]);
+            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
+            pppClearMng((ppvmng*)&ppvMngTbl[i]);
             return 1;
         }
     }
@@ -892,7 +952,8 @@ s32 func_00182A78(void) {
 
 
 #ifdef VERSION_FM
-void func_00182B18(f32* a, s32* b, s32 left, s32 right) {
+// Quicksort of a[left..right] in descending order, swapping b[] (the indices) along.
+void pppQuickSortF(f32* a, s32* b, s32 left, s32 right) {
     s32 i;
     s32 j;
     f32 pivot;
@@ -922,23 +983,27 @@ void func_00182B18(f32* a, s32* b, s32 left, s32 right) {
         j--;
     }
     if (left < i - 1) {
-        func_00182B18(a, b, left, i - 1);
+        pppQuickSortF(a, b, left, i - 1);
     }
     if (j + 1 < right) {
-        func_00182B18(a, b, j + 1, right);
+        pppQuickSortF(a, b, j + 1, right);
     }
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182B18);
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppQuickSortF);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182C78);
+// Computes each effect's depth and sorts the effects for drawing (pppQuickSortF).
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSortAllPart);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00182D90);
+// Per-frame update of every running effect (sound, render data, program calls, end handling).
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppCalcAllPart);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001831A0);
+// Draws every running effect in depth order (VRAM cache, texture upload, DMA of the packets).
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDrawAllPart);
 
+// Clears a manager and sets its default position, scale and colour (usef = 9).
 void init_part_mng(ppvmng* pMng) {
     memset(pMng, 0, 0xC0);
     pMng->unk_00 = 0;
@@ -964,8 +1029,9 @@ void init_part_mng(ppvmng* pMng) {
     pMng->unk_4C = 1.0f;
 }
 
-void func_00183658(ppvmng **out) {
-    PppMngU *p = D_00364130;
+// Finds a free manager in ppvMngTbl, initialises it and returns it through *out.
+void pppGetFreeMng(ppvmng **out) {
+    PppMngU *p = ppvMngTbl;
     s32 i;
     for (i = 0; i < 0x100; i++) {
         if (!(*(u64 *)((u8 *)&p[i] + 0x80) & 0x3000000000000)) {
@@ -983,22 +1049,23 @@ extern sceVu0FVECTOR D_00616200;
 extern pppModelSt D_00362730[];
 extern pppShapeSt D_00363930[];
 extern pppVsfSt D_00363D30[];
-void func_00185008(pppMemMng* m, pppEMCB* start, s32 size);
+void pppInitHeap(pppMemMng* m, pppEMCB* start, s32 size);
 
+// Initialises the effect system: graphics, heap (0x80000 bytes), render tables, managers, matrices.
 void pppInitPartRender(void) {
     s32 i;
 
     initGraphicSystem();
     ppvUserStopPartF = 0;
-    func_00185008(&D_00615E40.heapMng, (pppEMCB*)D_00595E40, 0x80000);
+    pppInitHeap(&D_00615E40.heapMng, (pppEMCB*)D_00595E40, 0x80000);
     D_00615E40.lpModel = D_00362730;
     D_00615E40.lpShape = D_00363930;
     D_00615E40.lpVsf = D_00363D30;
     ppvEnv = &D_00615E40;
     ppvHookFuncTbl = NULL;
-    memset(D_00364130, 0, 0xC000);
+    memset(ppvMngTbl, 0, 0xC000);
     for (i = 255; i >= 0; i--) {
-        D_00364130[i].usef = 0;
+        ppvMngTbl[i].usef = 0;
     }
     sceVu0UnitMatrix(D_006161C0);
     *(u_long128*)D_00616200 = 0;
@@ -1019,6 +1086,7 @@ extern f32 D_00615FB0;
 extern f32 D_002DED00;
 extern sceVu0FMATRIX D_00616180;
 
+// Sets the world/screen matrices and the eye/at vectors for this frame (the old ones are kept).
 void pppSetPartMatrix(sceVu0FMATRIX world, sceVu0FMATRIX screen, sceVu0FVECTOR eye, sceVu0FVECTOR at) {
     sceVu0FMATRIX unused;
 
@@ -1040,9 +1108,11 @@ void pppSetPartMatrix(sceVu0FMATRIX world, sceVu0FMATRIX screen, sceVu0FVECTOR e
     sceVu0MulMatrix(D_00616180, ppvScreenMatrix, D_00615EB0);
 }
 
+// Probably converts the frame time step (D_002B8340) for the effect timers.
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001838E8);
 
-void func_00183980(PppFuncList* arg0) {
+// Calls every program's ini function (pppProg.iniFunc) for the manager.
+void pppProgIni(PppFuncList* arg0) {
     s32 i;
 
     for (i = 0; i < arg0->num; i++) {
@@ -1053,7 +1123,8 @@ void func_00183980(PppFuncList* arg0) {
     }
 }
 
-void func_001839F0(PppFuncList* arg0) {
+// Calls every program's sta function (pppProg.staFunc) for the manager.
+void pppProgSta(PppFuncList* arg0) {
     s32 i;
 
     for (i = 0; i < arg0->num; i++) {
@@ -1064,7 +1135,8 @@ void func_001839F0(PppFuncList* arg0) {
     }
 }
 
-void func_00183A60(PppFuncList* arg0) {
+// Calls every program's end function (pppProg.endFunc) for the manager.
+void pppProgEnd(PppFuncList* arg0) {
     s32 i;
 
     for (i = 0; i < arg0->num; i++) {
@@ -1083,7 +1155,8 @@ typedef struct {
     /* 0x28 */ pppCtrlTable ctrlTable[0];
 } PppPDataF;
 
-void func_00183AD0(pppPObject* pobj) {
+// Points an object's control data at its program data and calls each program's con2 function.
+void pppCon2PObject(pppPObject* pobj) {
     PppPDataF* pdt = (PppPDataF*)pobj->pdtval->pdt;
     pppCtrlData** cd = (pppCtrlData**)((u8*)pobj + pdt->cvoff);
     pppCtrlTable* ct;
@@ -1100,7 +1173,8 @@ void func_00183AD0(pppPObject* pobj) {
     }
 }
 
-void func_00183B70(pppPObject* pobj) {
+// Points an object's control data at its program data and calls each program's con function.
+void pppConPObject(pppPObject* pobj) {
     PppPDataF* pdt = (PppPDataF*)pobj->pdtval->pdt;
     pppCtrlData** cd = (pppCtrlData**)((u8*)pobj + pdt->cvoff);
     pppCtrlTable* ct;
@@ -1117,7 +1191,8 @@ void func_00183B70(pppPObject* pobj) {
     }
 }
 
-pppPObject* func_00183C10(ppvmng* m, pppPDataVal* pdv) {
+// Allocates an effect object for program data pdv, links it into the manager's list by priority and constructs it.
+pppPObject* pppCreatePObject(ppvmng* m, pppPDataVal* pdv) {
     PppPDataF* pdt = (PppPDataF*)pdv->pdt;
     pppPObject* pobj;
     pppPObject** pp;
@@ -1159,11 +1234,12 @@ pppPObject* func_00183C10(ppvmng* m, pppPDataVal* pdv) {
     }
 end:
     pdv->pobjn++;
-    func_00183B70(pobj);
+    pppConPObject(pobj);
     return pobj;
 }
 
 
+// Calls each program's des function on the object, unlinks it and frees it.
 void pppDeletePObject(pppPObject* pobj) {
     pppPDataVal* pdv = pobj->pdtval;
     PppPDataF* pdt = (PppPDataF*)pdv->pdt;
@@ -1188,6 +1264,7 @@ void pppDeletePObject(pppPObject* pobj) {
 }
 
 
+// Deletes every object of the manager and frees its program data values.
 void pppAllFreePObject(ppvmng* pMng) {
     pppPObject* pObj = pMng->unk_74;
     pppPObject* next;
@@ -1223,7 +1300,8 @@ void pppAllFreePObject(ppvmng* pMng) {
 //     }
 // }
 
-void func_00183E78(PppMngU* arg0) {
+// Marks a manager ended (usef bit 1 -> 2) and tells its owner through the handle (flags bit 1 -> 2).
+void pppEndMng(PppMngU* arg0) {
     if (arg0->unk_94 != 0) {
         *(s32*)(arg0->unk_94 + 0x14) &= ~1;
         *(s32*)(arg0->unk_94 + 0x14) |= 2;
@@ -1233,7 +1311,8 @@ void func_00183E78(PppMngU* arg0) {
     }
 }
 
-void func_00183EC8(ppvmng* arg0) {
+// Clears a manager and its handle's flags.
+void pppClearMng(ppvmng* arg0) {
     u8* p = *(u8**)((u8*)arg0 + 0x94);
 
     if (p != NULL) {
@@ -1242,6 +1321,7 @@ void func_00183EC8(ppvmng* arg0) {
     }
 }
 
+// Probably builds the effect's base matrix (follows the camera / bone: atan2f, asinf, pppGetRotMatrixXYZ).
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EF8);
 
 #ifdef VERSION_FM
@@ -1268,7 +1348,8 @@ typedef struct {
     /* 0xAC */ f32 unk_AC;
 } PppMngS;
 
-void func_00184298(PppMngS* m, s32* data, s32 arg2) {
+// Points a manager at an effect's program data: program table, data values, start frames (calls ini if arg2).
+void pppSetMngData(PppMngS* m, s32* data, s32 arg2) {
     s32* d;
     s32 flag;
     s32* p1;
@@ -1317,17 +1398,18 @@ void func_00184298(PppMngS* m, s32* data, s32 arg2) {
         v++;
     } while (pd != NULL);
     if (arg2 != 0) {
-        func_00183980((PppFuncList*)m);
+        pppProgIni((PppFuncList*)m);
     }
     m->unk_9C = 0;
     m->unk_AC = *(f32*)&m->pEtc->wait;
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184298);
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSetMngData);
 #endif
 
-void func_001843E0(s32 b, s32 progs) {
+// Relocates an effect's program data: program numbers become pppProg pointers, offsets become addresses.
+void dpd_reloc_pdata(s32 b, s32 progs) {
     s32 *t1;
     s32 *t2;
     s32 n1;
@@ -1370,23 +1452,27 @@ void func_001843E0(s32 b, s32 progs) {
     }
 }
 
-void func_00184500(pppEnvSt* env, s32* src, void* heap, s32 size) {
+// Makes env the current effect environment, copies three values from src and initialises its heap.
+void pppSetEnv(pppEnvSt* env, s32* src, void* heap, s32 size) {
     ppvEnv = env;
     if (src != NULL) {
         ((s32*)env)[4] = src[5];
         ((s32*)env)[5] = src[6];
         ((s32*)env)[6] = src[7];
     }
-    func_00185008(env, heap, size);
+    pppInitHeap(env, heap, size);
 }
 
+// Probably the per-frame calc pass over the manager's objects (calls each program's calc function).
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184548);
 
+// Probably the per-frame pass that runs object timers, loops and deletes finished objects.
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00184728);
 
-pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 
-void func_00184DB0(ppvmng* m) {
+// Creates the objects whose start frame has been reached.
+void pppBirthPObject(ppvmng* m) {
     s32 i;
     pppPDataVal* pdv;
     pppPObject* pobj;
@@ -1395,7 +1481,7 @@ void func_00184DB0(ppvmng* m) {
         pdv = &((pppPDataVal*)m->unk_80)[i];
         if (pdv->startFrame <= *(s32*)((u8*)m + 0x58)) {
             pdv->startFrame = 0x7FFFFFFF;
-            pobj = func_00183C10(m, pdv);
+            pobj = pppCreatePObject(m, pdv);
             pdv->pobj = pobj;
             pobj->appearf = 0;
         }
@@ -1403,10 +1489,11 @@ void func_00184DB0(ppvmng* m) {
 }
 
 
-void func_00184E48(ppvmng* pMng) {
+// Runs the start of a manager's frame: sta functions, new objects, calc pass.
+void pppCalcMng(ppvmng* pMng) {
     ppvMng = pMng;
-    func_001839F0(pMng);
-    func_00184DB0(pMng);
+    pppProgSta(pMng);
+    pppBirthPObject(pMng);
     func_00184548(pMng);
 }
 
@@ -1422,13 +1509,14 @@ typedef struct {
     /* 0x85 */ u8 unk_85;
 } PppMngT2;
 
-s32 func_00184E80(ppvmng* m) {
+// Runs the end of a manager's frame and advances its time by one frame; returns 1 when the effect is over.
+s32 pppStepMng(ppvmng* m) {
     PppMngT2* t = (PppMngT2*)m;
     s32 tm;
 
     ppvMng = m;
     func_00184728(m);
-    func_00183A60(m);
+    pppProgEnd(m);
     if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
         return 0;
     }
@@ -1463,7 +1551,8 @@ typedef struct {
     /* 0xB0 */ u64 unk_B0;
 } PppMngT;
 
-s32 func_00184F60(ppvmng* arg0) {
+// Advances a manager's time by one frame without running its programs; returns 1 when the effect is over.
+s32 pppStepMngNoCalc(ppvmng* arg0) {
     PppMngT* m = (PppMngT*)arg0;
     s32 t;
 
@@ -1488,10 +1577,12 @@ s32 func_00184F60(ppvmng* arg0) {
 }
 
 
+// Empty.
 void func_00185000(void) {
 }
 
-void func_00185008(pppMemMng* m, pppEMCB* start, s32 size) {
+// Initialises the effect heap: one free block from start to start + size - 16 and an end block.
+void pppInitHeap(pppMemMng* m, pppEMCB* start, s32 size) {
     pppEMCB* b;
 
     m->effectHeapTop = start;
@@ -1507,6 +1598,7 @@ void func_00185008(pppMemMng* m, pppEMCB* start, s32 size) {
     m->allocSize = 0;
 }
 
+// Allocates a block from the effect heap.
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppAlloc);
 
 typedef struct {
@@ -1516,6 +1608,7 @@ typedef struct {
     s32 wdummy;
 } pppEMCBi;
 
+// Frees a block of the effect heap and merges it with free neighbours.
 void pppFree(pppEnvSt* env, void* ptr) {
     pppEMCBi* blk = (pppEMCBi*)ptr - 1;
     pppEMCBi* prev;

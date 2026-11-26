@@ -57,3 +57,53 @@ other functions (rule F1).
 | PartyMenu_RequestOpen | 0x0011C788 | xpaste.c | jhaton/kh1 fork (docs/external/jhaton/names_for_fm.tsv, JP 0x0011C5B8); was func_0011C5B8 |
 | PauseMenu_SelectMode | 0x001140A0 | xblade.c | jhaton/kh1 fork (docs/external/jhaton/names_for_fm.tsv, JP 0x00113CB8); was func_00113CB8 |
 | PauseMenu_Update | 0x00114280 | xblade.c | jhaton/kh1 fork (docs/external/jhaton/names_for_fm.tsv, JP 0x00113E98); was func_00113E98 |
+| pppEndAllPart | 0x0017F9D8 | ppp/pppMngr.c | Ends every running effect: stops its sound, frees its objects and marks the manager ended. |
+| pppPauseAllPart | 0x0017FA68 | ppp/pppMngr.c | Sets flag 0x20 on every running effect (pppCalcAllPart skips them: probably pause). |
+| pppResumeAllPart | 0x0017FAA8 | ppp/pppMngr.c | Clears flag 0x20 on every running effect (undoes pppPauseAllPart). |
+| pppPausePart | 0x0017FAE8 | ppp/pppMngr.c | Sets flag 0x20 on the running effect whose handle (unk_94) is arg0. |
+| pppResumePart | 0x0017FB40 | ppp/pppMngr.c | Clears flag 0x20 on the running effect whose handle (unk_94) is arg0. |
+| pppEndPart | 0x0017FB98 | ppp/pppMngr.c | Ends the running effect whose handle is arg0 (sound stopped, objects freed, marked ended). |
+| pppKillAllPart | 0x0017FC48 | ppp/pppMngr.c | Like pppEndAllPart, but clears each manager completely (pppClearMng). |
+| pppKillPart | 0x0017FCD8 | ppp/pppMngr.c | Like pppEndPart, but clears the manager completely (pppClearMng). |
+| pppEndPartInArea | 0x0017FD88 | ppp/pppMngr.c | Ends every effect whose DPD data lies in [arg0, arg0 + arg1) (e.g. before that memory is reused). |
+| pppKillPartInArea | 0x0017FE60 | ppp/pppMngr.c | Like pppEndPartInArea, but clears the managers completely. |
+| pppStopAllPart | 0x0017FF38 | ppp/pppMngr.c | Sets (arg0 != 0) or clears the stop bit 0x80 and unk_B7 of every running effect. |
+| pppGetPartBoneNo | 0x0017FF98 | ppp/pppMngr.c | Returns the bone number (pEtc->boneNo) of the effect with handle arg0, or -2 if there is none. |
+| dpd_reloc_rsd_texp | 0x0017FFD8 | ppp/pppMngr.c | Moves the texture (TBP) and CLUT (CBP) addresses in an RSD model's packets to the given VRAM blocks. |
+| dpd_reloc_shape_texp | 0x00180180 | ppp/pppMngr.c | Moves the texture (TBP) and CLUT (CBP) addresses in a shape's packets to the given VRAM blocks. |
+| dpd_set_object_etc | 0x001803F0 | ppp/pppMngr.c | Points the manager at etc. header number idx of a DPD and records how many texture/CLUT blocks it needs. |
+| dpd_reloc_tables | 0x001804D0 | ppp/pppMngr.c | Turns the offsets in a DPD's five pointer tables into addresses (adds the base). |
+| dpd_reloc | 0x00180540 | ppp/pppMngr.c | Relocates a loaded DPD file and the program data of each of its effects. |
+| dpd_set_shape_texp | 0x001805B8 | ppp/pppMngr.c | For every shape the effect uses, moves its texture/CLUT addresses to the manager's VRAM blocks. |
+| dpd_set_rsd_texp | 0x001806C8 | ppp/pppMngr.c | For every RSD model the effect uses, moves its texture/CLUT addresses to the manager's VRAM blocks. |
+| dpd_reloc_pdata | 0x00182D58 | ppp/pppMngr.c | Relocates an effect's program data: program numbers become pppProg pointers, offsets become addresses. |
+| dpd_load_tim | 0x00180AB8 | ppp/pppMngr.c | Uploads one texture image to GS memory (VRAM block offset added for relocatable images). |
+| dpd_load_clut | 0x00180B40 | ppp/pppMngr.c | Uploads one CLUT (16x16 or 8x2) to GS memory. |
+| dpd_load_object_tim | 0x00180C20 | ppp/pppMngr.c | Uploads the textures the effect uses. |
+| dpd_load_all_tim | 0x00180CE0 | ppp/pppMngr.c | Uploads every texture of a DPD. |
+| dpd_load_object_clut | 0x00180D50 | ppp/pppMngr.c | Uploads the CLUTs the effect uses. |
+| dpd_load_all_clut | 0x00180E10 | ppp/pppMngr.c | Uploads every CLUT of a DPD. |
+| pppGetAllWorkMemSize | 0x00181318 | ppp/pppMngr.c | Adds up the work memory size (pEtc->nWorkMemSize) of every running, not suspended effect. |
+| pppSuspendOnePart | 0x00181368 | ppp/pppMngr.c | Suspends the first running effect with unk_98 < arg0: stops its sound, frees its objects, sets flag 4. |
+| pppKillOneTempPart | 0x00181410 | ppp/pppMngr.c | Clears the first running effect with unk_98 < 0 (sound stopped, objects freed, manager cleared). |
+| pppQuickSortF | 0x001814B0 | ppp/pppMngr.c | Quicksort of a[left..right] in descending order, swapping b[] (the indices) along. |
+| pppGetFreeMng | 0x00181FE0 | ppp/pppMngr.c | Finds a free manager in ppvMngTbl, initialises it and returns it through *out. |
+| pppProgIni | 0x001822F8 | ppp/pppMngr.c | Calls every program's ini function (pppProg.iniFunc) for the manager. |
+| pppProgSta | 0x00182368 | ppp/pppMngr.c | Calls every program's sta function (pppProg.staFunc) for the manager. |
+| pppProgEnd | 0x001823D8 | ppp/pppMngr.c | Calls every program's end function (pppProg.endFunc) for the manager. |
+| pppCon2PObject | 0x00182448 | ppp/pppMngr.c | Points an object's control data at its program data and calls each program's con2 function. |
+| pppConPObject | 0x001824E8 | ppp/pppMngr.c | Points an object's control data at its program data and calls each program's con function. |
+| pppCreatePObject | 0x00182588 | ppp/pppMngr.c | Allocates an effect object for program data pdv, links it into the manager's list by priority and constructs it. |
+| pppEndMng | 0x001827F0 | ppp/pppMngr.c | Marks a manager ended (usef bit 1 -> 2) and tells its owner through the handle (flags bit 1 -> 2). |
+| pppClearMng | 0x00182840 | ppp/pppMngr.c | Clears a manager and its handle's flags. |
+| pppSetMngData | 0x00182C10 | ppp/pppMngr.c | Points a manager at an effect's program data: program table, data values, start frames (calls ini if arg2). |
+| pppSetEnv | 0x00182E78 | ppp/pppMngr.c | Makes env the current effect environment, copies three values from src and initialises its heap. |
+| pppBirthPObject | 0x001837A8 | ppp/pppMngr.c | Creates the objects whose start frame has been reached. |
+| pppCalcMng | 0x00183840 | ppp/pppMngr.c | Runs the start of a manager's frame: sta functions, new objects, calc pass. |
+| pppStepMng | 0x00183878 | ppp/pppMngr.c | Runs the end of a manager's frame and advances its time by one frame; returns 1 when the effect is over. |
+| pppStepMngNoCalc | 0x00183958 | ppp/pppMngr.c | Advances a manager's time by one frame without running its programs; returns 1 when the effect is over. |
+| pppInitHeap | 0x00183A00 | ppp/pppMngr.c | Initialises the effect heap: one free block from start to start + size - 16 and an end block. |
+| pppSortAllPart | 0x00181608 | ppp/pppMngr.c | Computes each effect's depth and sorts the effects for drawing (pppQuickSortF). |
+| pppCalcAllPart | 0x00181738 | ppp/pppMngr.c | Per-frame update of every running effect (sound, render data, program calls, end handling). |
+| pppDrawAllPart | 0x00181B30 | ppp/pppMngr.c | Draws every running effect in depth order (VRAM cache, texture upload, DMA of the packets). |
+| ppvMngTbl | 0x00364130 | ppp/pppMngr.c | the 0x100 effect managers (ppvmng, 0xC0 bytes each): every loop over managers in pppMngr.c walks it; was D_00364130 |

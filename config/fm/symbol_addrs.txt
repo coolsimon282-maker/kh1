@@ -74,6 +74,60 @@ PauseMenu_SelectMode                 = 0x001140A0; // type:func
 PauseMenu_Update                     = 0x00114280; // type:func
 
 
+//=========================================================
+// ppp/pppMngr.c
+//=========================================================
+pppEndAllPart                        = 0x0017F9D8; // type:func
+pppPauseAllPart                      = 0x0017FA68; // type:func
+pppResumeAllPart                     = 0x0017FAA8; // type:func
+pppPausePart                         = 0x0017FAE8; // type:func
+pppResumePart                        = 0x0017FB40; // type:func
+pppEndPart                           = 0x0017FB98; // type:func
+pppKillAllPart                       = 0x0017FC48; // type:func
+pppKillPart                          = 0x0017FCD8; // type:func
+pppEndPartInArea                     = 0x0017FD88; // type:func
+pppKillPartInArea                    = 0x0017FE60; // type:func
+pppStopAllPart                       = 0x0017FF38; // type:func
+pppGetPartBoneNo                     = 0x0017FF98; // type:func
+dpd_reloc_rsd_texp                   = 0x0017FFD8; // type:func
+dpd_reloc_shape_texp                 = 0x00180180; // type:func
+dpd_set_object_etc                   = 0x001803F0; // type:func
+dpd_reloc_tables                     = 0x001804D0; // type:func
+dpd_reloc                            = 0x00180540; // type:func
+dpd_set_shape_texp                   = 0x001805B8; // type:func
+dpd_set_rsd_texp                     = 0x001806C8; // type:func
+dpd_reloc_pdata                      = 0x00182D58; // type:func
+dpd_load_tim                         = 0x00180AB8; // type:func
+dpd_load_clut                        = 0x00180B40; // type:func
+dpd_load_object_tim                  = 0x00180C20; // type:func
+dpd_load_all_tim                     = 0x00180CE0; // type:func
+dpd_load_object_clut                 = 0x00180D50; // type:func
+dpd_load_all_clut                    = 0x00180E10; // type:func
+pppGetAllWorkMemSize                 = 0x00181318; // type:func
+pppSuspendOnePart                    = 0x00181368; // type:func
+pppKillOneTempPart                   = 0x00181410; // type:func
+pppQuickSortF                        = 0x001814B0; // type:func
+pppGetFreeMng                        = 0x00181FE0; // type:func
+pppProgIni                           = 0x001822F8; // type:func
+pppProgSta                           = 0x00182368; // type:func
+pppProgEnd                           = 0x001823D8; // type:func
+pppCon2PObject                       = 0x00182448; // type:func
+pppConPObject                        = 0x001824E8; // type:func
+pppCreatePObject                     = 0x00182588; // type:func
+pppEndMng                            = 0x001827F0; // type:func
+pppClearMng                          = 0x00182840; // type:func
+pppSetMngData                        = 0x00182C10; // type:func
+pppSetEnv                            = 0x00182E78; // type:func
+pppBirthPObject                      = 0x001837A8; // type:func
+pppCalcMng                           = 0x00183840; // type:func
+pppStepMng                           = 0x00183878; // type:func
+pppStepMngNoCalc                     = 0x00183958; // type:func
+pppInitHeap                          = 0x00183A00; // type:func
+pppSortAllPart                       = 0x00181608; // type:func
+pppCalcAllPart                       = 0x00181738; // type:func
+pppDrawAllPart                       = 0x00181B30; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
@@ -96,6 +150,12 @@ worldDataFile                = 0x002BCCA0; // size:0x40
 worldBinImgFile              = 0x002BCCE0; // size:0x40
 roomArchiveRaw               = 0x002BCD20; // size:0x40
 roomArchiveFile              = 0x002BCD60; // size:0x40
+
+
+//=========================================================
+// ppp/pppMngr.c (data)
+//=========================================================
+ppvMngTbl                            = 0x00364130; // size:0xC000
 
 
 ///////////////////////////////////////////////////////////

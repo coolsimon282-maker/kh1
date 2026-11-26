@@ -31,7 +31,7 @@ typedef union {
     pppPObject* p;
 } PObjPtr;
 
-pppPObject* func_00183C10(ppvmng* mng, void* pdt);
+pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 
 void pppKeHitBornCalc(pppPObject* pobj, PKeHitBorn* p, pppCtrlTable* ctbl) {
@@ -65,7 +65,7 @@ void pppKeHitBornCalc(pppPObject* pobj, PKeHitBorn* p, pppCtrlTable* ctbl) {
     pdt = (char*)ppvMng->unk_80 + p->bornPt.pdtn * 16;
     born = NULL;
     if (pdt != NULL) {
-        born = func_00183C10(ppvMng, pdt);
+        born = pppCreatePObject(ppvMng, pdt);
         ((PObjPtr*)&born->ppobj)->p = pobj;
     }
     src = &pobj->val[ctbl->useVal[0]];

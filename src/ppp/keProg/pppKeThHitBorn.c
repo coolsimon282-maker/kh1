@@ -24,7 +24,7 @@ typedef union {
     pppPObject* p;
 } PObjPtr;
 
-pppPObject* func_00183C10(ppvmng* mng, void* pdt);
+pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 
 void pppKeThHitBornCalc(pppPObject* pobj, PKeThHitBorn* p, pppCtrlTable* ctbl) {
@@ -54,7 +54,7 @@ void pppKeThHitBornCalc(pppPObject* pobj, PKeThHitBorn* p, pppCtrlTable* ctbl) {
                 born = NULL;
                 pdt = (char*)ppvMng->unk_80 + p->bornPt.pdtn * 16;
                 if (pdt != NULL) {
-                    born = func_00183C10(ppvMng, pdt);
+                    born = pppCreatePObject(ppvMng, pdt);
                     ((PObjPtr*)&born->ppobj)->p = pobj;
                 }
                 func_001AB0F0(&born->val[p->bornPt.valoff], n->data[n->idx]);
@@ -66,7 +66,7 @@ void pppKeThHitBornCalc(pppPObject* pobj, PKeThHitBorn* p, pppCtrlTable* ctbl) {
                 born = NULL;
                 pdt = (char*)ppvMng->unk_80 + p->bornPt.pdtn * 16;
                 if (pdt != NULL) {
-                    born = func_00183C10(ppvMng, pdt);
+                    born = pppCreatePObject(ppvMng, pdt);
                     ((PObjPtr*)&born->ppobj)->p = pobj;
                 }
                 func_001AB0F0(&born->val[p->bornPt.valoff], n->data[n->idx]);

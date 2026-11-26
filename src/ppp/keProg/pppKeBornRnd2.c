@@ -41,7 +41,7 @@ typedef struct {
     /* 0x18 */ s32 velOff;
 } PKeBornRnd2Cb;
 
-pppPObject* func_00183C10(ppvmng* mng, void* pdt);
+pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 
 void func_0018EDD8(pppPObject* pobj, PKeBornRnd2Cb* p, s16* sv) {
@@ -54,7 +54,7 @@ void func_0018EDD8(pppPObject* pobj, PKeBornRnd2Cb* p, s16* sv) {
     born = NULL;
     pdt = (char*)ppvMng->unk_80 + p->pdtn * 16;
     if (pdt != NULL) {
-        born = func_00183C10(ppvMng, pdt);
+        born = pppCreatePObject(ppvMng, pdt);
         born->ppobj = pobj;
     }
     t[0] = sv[0];

@@ -13,7 +13,7 @@ typedef struct {
     /* 0x10 */ s32 valoff;
 } PVertexApAt;
 
-pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 
 void func_00186640(pppPObject* parent, PVertexApAt* p, u16 arg2) {
     pppPObject* pobj;
@@ -23,7 +23,7 @@ void func_00186640(pppPObject* parent, PVertexApAt* p, u16 arg2) {
         pobj = NULL;
         pdv = &((pppPDataVal*)ppvMng->unk_80)[p->pdtn];
         if (pdv != NULL) {
-            pobj = func_00183C10(ppvMng, pdv);
+            pobj = pppCreatePObject(ppvMng, pdv);
             pobj->ppobj = parent;
         }
         *(u16*)(pobj->val + p->valoff) = arg2;

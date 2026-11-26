@@ -16,7 +16,7 @@ typedef struct {
     /* 0x0C */ u8 aps;
 } PPointAp;
 
-pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 
 void pppPointApCalc(pppPObject* pobj, PPointAp* p, pppCtrlTable* ctbl) {
     f32* pos = (f32*)&pobj->val[ctbl->useVal[0]];
@@ -36,7 +36,7 @@ void pppPointApCalc(pppPObject* pobj, PPointAp* p, pppCtrlTable* ctbl) {
         child = NULL;
         pdv = &((pppPDataVal*)ppvMng->unk_80)[p->pdtn];
         if (pdv != NULL) {
-            child = func_00183C10(ppvMng, pdv);
+            child = pppCreatePObject(ppvMng, pdv);
             child->ppobj = pobj;
         }
         dst = (f32*)&child->val[p->valoff];

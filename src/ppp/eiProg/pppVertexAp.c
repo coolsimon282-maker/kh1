@@ -23,7 +23,7 @@ typedef struct {
     /* 0x10 */ s32 valOfs;
 } PVertexAp;
 
-pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 
 // starts particle data dataNo as a child of pobj and puts it at vtx (moved by the current object's matrix)
 void func_00185F30(pppPObject* pobj, PVertexAp* p, pppSVECTOR* vtx) {
@@ -36,7 +36,7 @@ void func_00185F30(pppPObject* pobj, PVertexAp* p, pppSVECTOR* vtx) {
         child = NULL;
         pdv = (pppPDataVal*)ppvMng->unk_80 + p->dataNo;
         if (pdv != NULL) {
-            child = func_00183C10(ppvMng, pdv);
+            child = pppCreatePObject(ppvMng, pdv);
             child->ppobj = pobj;
         }
         v[0] = vtx->x;

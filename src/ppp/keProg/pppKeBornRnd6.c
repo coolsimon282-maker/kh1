@@ -67,7 +67,7 @@ typedef struct {
     /* 0x08 */ f32 step;
 } VKeBornRnd6Line;
 
-pppPObject* func_00183C10(ppvmng*, pppPDataVal*);
+pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 void func_001AB0F0(f32*, f32*);
 void func_001AB168(f32*, f32*, f32*);
 
@@ -82,7 +82,7 @@ void func_0018FBB0(pppPObject* parent, PKeBornRnd6Line* p, pppCtrlTable* ctbl) {
 
         child = NULL;
         if (d != NULL) {
-            child = func_00183C10(ppvMng, d);
+            child = pppCreatePObject(ppvMng, d);
             child->ppobj = parent;
         }
     }
@@ -108,7 +108,7 @@ void func_0018FBB0(pppPObject* parent, PKeBornRnd6Line* p, pppCtrlTable* ctbl) {
             child = NULL;
             pdv = &((pppPDataVal*)ppvMng->unk_80)[p->pdtn];
             if (pdv != NULL) {
-                child = func_00183C10(ppvMng, pdv);
+                child = pppCreatePObject(ppvMng, pdv);
                 child->ppobj = parent;
             }
             q = (f32*)&child->val[p->valoff];
