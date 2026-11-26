@@ -262,10 +262,6 @@ s32 sceDmaGetChan(s32);
 s32 sceDmaSend(s32, u8 *);
 
 extern u8 D_003F4BF0[];
-extern s32 D_lay21AD08_0;
-extern s32 D_lay21AD08_1;
-extern s32 D_lay21AD08_2;
-extern s32 D_lay21AD08_3;
 extern u8 D_003F4C90[];
 void func_001F3E90(u8 *, u8 *);
 void func_001F3DC0(u8 *);
@@ -287,7 +283,7 @@ void func_0021AC38(s32 a0) {
     func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x6F);
 }
 
-/* unused: rule F1 (with fewer, func_0022FCB8 or func_00231EA0 change; 5 on fm-q1, 4 since fm was merged into it on 26 Nov: 0-3 and 5-8 all move fm functions below) */
+/* unused: rule F1 (layout; went with the D_lay21AD08 pads, which were dropped on 26 Nov) */
 extern u8 D_003F4C90[];
 extern u8 D_003F4BF0[];
 extern s32 D_00642D20;
@@ -331,17 +327,6 @@ s32 func_0021ADE8(s32 a0) {
     return 0;
 }
 
-/* unused: layout only (F1): fewer or more break func_0022FA58 / func_00225330 / func_00228760 / func_00229EC0; only 10 of 1-13 OK. */
-extern s32 D_21AE28_pad1;
-extern s32 D_21AE28_pad2;
-extern s32 D_21AE28_pad3;
-extern s32 D_21AE28_pad4;
-extern s32 D_21AE28_pad5;
-extern s32 D_21AE28_pad6;
-extern s32 D_21AE28_pad7;
-extern s32 D_21AE28_pad8;
-extern s32 D_21AE28_pad9;
-extern s32 D_21AE28_pad10;
 typedef struct {
     u8 pad0[0x140];
     f32 f[20];
@@ -417,12 +402,6 @@ void func_0021B4A0(void) {
     D_006430EC = 0;
 }
 
-/* unused: layout only (F1): without them func_00225330 / func_00229EC0 / func_0022FCB8 change; 3-7 OK, 5 used. */
-extern s32 D_21B4C8_pad1;
-extern s32 D_21B4C8_pad2;
-extern s32 D_21B4C8_pad3;
-extern s32 D_21B4C8_pad4;
-extern s32 D_21B4C8_pad5;
 extern s32 D_003F59A4;
 extern f32 D_003F59B0;
 extern s32 D_003F59B4;
@@ -476,9 +455,6 @@ extern s32 D_00643104;
 extern s32 D_00643108;
 extern s32 D_0064310C;
 
-/* unused: layout only (notes/f1.md F1). Without it func_00228760 grows by 2 (combine stops folding its
- * lw D_003F6C90(reg)); 1, 2, 5, 6, 7 of these keep everything matching (25 Nov, with 10 D_231EA0_layout). */
-extern s32 D_21B5C8_layout1;
 void func_0021B5C8(s32 a0, s32 a1, s32 a2, s32 a3, f32 f) {
     s32 *st = &D_006430F0;
     s32 s = *st;
@@ -1596,8 +1572,6 @@ void func_00222B80(void) {
 s32 func_001EBC38(s32);
 extern s32 D_003F5C34;
 
-/* Unused on purpose: keeps fm-f1's func_0022FCB8 matching below this function (layout effect, notes/f1.md F1). */
-extern s32 func_00222BA8_merge_pad;
 void func_00222BA8(void) {
     s32 i;
     D_006436B8 = 0;
@@ -2597,11 +2571,17 @@ void func_00229490(u8 *a0) {
     func_0020BDA8(0x10);
 }
 
-/* unused: layout only (F1): without them func_0022FCB8 loses two `lw D(reg)` folds; 2-8 OK, 4 used. */
+/* unused: layout only (F1): the only pads left in the file (26 Nov, all others dropped): without them
+ * func_00229EC0, func_00231CD0 and func_00231EA0 change; 8-10 and 12-14 OK (0-7, 11 not), 9 used. */
 extern s32 D_2295A0_pad1;
 extern s32 D_2295A0_pad2;
 extern s32 D_2295A0_pad3;
 extern s32 D_2295A0_pad4;
+extern s32 D_2295A0_pad5;
+extern s32 D_2295A0_pad6;
+extern s32 D_2295A0_pad7;
+extern s32 D_2295A0_pad8;
+extern s32 D_2295A0_pad9;
 extern s32 D_003F34A8;
 extern s32 D_003F34C4;
 extern s32 D_003F6E24;
@@ -3044,9 +3024,6 @@ void func_0022B630(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022B648);
 
-/* unused: layout only (F1): with 0 or 3-7 func_0022FA58 / func_0022FCB8 change; 1, 2, 8 OK, 2 used. */
-extern s32 D_22B8A0_pad1;
-extern s32 D_22B8A0_pad2;
 extern u8 D_003F7000[];
 extern u8 D_003F7030[];
 extern u8 D_003F7060[];
@@ -4520,18 +4497,6 @@ s32 func_00231B38(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231B98);
 
-extern s32 D_231EA0_layout0;
-extern s32 D_231EA0_layout1;
-extern s32 D_231EA0_layout2;
-extern s32 D_231EA0_layout3;
-extern s32 D_231EA0_layout4;
-extern s32 D_231EA0_layout5;
-extern s32 D_231EA0_layout6;
-extern s32 D_231EA0_layout7;
-extern s32 D_231EA0_layout8;
-extern s32 D_231EA0_layout9;
-extern s32 D_231EA0_layout10;
-extern s32 D_231EA0_layout11;
 extern u16 D_003F7C48[];
 extern s32 D_0064765C;
 extern s32 D_00647660;
@@ -4563,11 +4528,8 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
 
 /* func_00231EA0 is layout-sensitive (notes/f1.md F1/F24): ee-gcc 2.96 makes several tie decisions in it
  * (combine folding `lhu D_003F7C48(reg)`, two saved-register ties) that depend on how many declarations precede
- * it in the file. The C below is right; these eight unused externs are only there to restore the layout that
- * gives the original code. If an edit above this point makes the function differ again, change their number
- * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
- * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used; after func_0021AE28 (with its 10 pads) 3, 5, 7, 12 among 0-17: 5 used; after func_0022DEE0 + func_0022E368 only 17 among 0-33: 17 used; after func_0022B8A0 (with its 2 pads) only 39 among 0-52: 39 used (these externs now sit above func_00231CD0, which they also steer). After a4 added q1's func_0021D948, func_002204F0, func_00225C30, func_00230728 (26 Nov): 1-5, 7-19, 21, 23, 25 OK among 0-45 (real builds); 12 used. Check the code, not just the size: work/layoutn2.sh-style scan; meanwhile on fm-q1 (before fm was merged into it on 26 Nov; q1 had its own D_231EA0_layout0-3 just above D_003F7C48 below): after the fm merge into fm-q1 (with layout_fn_229EC0 above) the first match among 0-120 was 1: 1 used; after func_002293F0 (26 Nov, qc2 scan): 0 used; after func_00229A10: 5 (1-4 not): 5 used; after func_0021AD08 + func_0021F858: 4 used; after merging fm into fm-q1 (26 Nov; q1's four dropped, these 12 kept and func_0021AD08's D_lay21AD08 pads cut from 5 to 4): 12 still used). */
+ * it in the file. Its own layout externs (D_231EA0_layoutN, history in git) were dropped on 26 Nov: with the
+ * file split and the other pads gone, the D_2295A0 pads above func_00229EC0 keep it (and func_00231CD0) matching. */
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;

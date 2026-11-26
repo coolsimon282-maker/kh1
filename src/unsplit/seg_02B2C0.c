@@ -978,10 +978,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D468);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012D6C0);
 
-/* unused: layout only (F1): without them func_001374A8 changes; 1-6 OK, 3 used. */
-extern s32 D_12D818_pad1;
-extern s32 D_12D818_pad2;
-extern s32 D_12D818_pad3;
 extern s32 D_002E3138;
 s32 func_0013DAA8(s32);
 s32 func_0012F040(s32, s32);
@@ -2178,10 +2174,6 @@ void func_00132240(u8 *a0) {
     func_00132220(*(s32 *)(a0 + 0x15C), *(s32 *)(a0 + 0x1D0));
 }
 
-/* unused: layout only (F1): without them func_001331D8 / func_001374A8 change; 1-8 OK, 3 used. */
-extern s32 D_132160_pad1;
-extern s32 D_132160_pad2;
-extern s32 D_132160_pad3;
 void func_00162070(u8 *, u8 *, u8 *, u8 *);
 void func_00123C80(u8 *, f32, f32);
 void func_00132160(u8 *a0, s32 *h, s32 *a2) {
@@ -2275,13 +2267,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132790);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132A78);
 
-/* unused: layout only (F1): func_001331D8 / func_001374A8 change otherwise; of 1-10 only 6 and 10 OK, 6 used. */
-extern s32 D_132C70_pad1;
-extern s32 D_132C70_pad2;
-extern s32 D_132C70_pad3;
-extern s32 D_132C70_pad4;
-extern s32 D_132C70_pad5;
-extern s32 D_132C70_pad6;
 typedef struct { u8 pad[0xC]; s32 n; u8 *e; u8 pad14[8]; s32 x1C; } V132C70;
 extern V132C70 D_00525298_c __asm__("D_00525298");
 extern s32 D_002B8684;
@@ -2495,10 +2480,9 @@ typedef struct {
 } A2Ent1C;
 /* unused: layout only (F1): with func_00132550 in C, func_001333E0 changes unless a declaration sits right
  * before this alias (1-8 tested OK; pads above func_00132550 or before func_001333E0 do not help).
- * After func_0012F0F8: 2, 3, 5 of these OK (1, 4 not); 3 used. */
+ * After func_0012F0F8: 2, 3, 5 of these OK (1, 4 not); 3 used. 26 Nov, with the other pads of the file gone:
+ * 1, 2, 4-7 OK (0, 3, 8 not); 1 used. */
 extern s32 D_1333E0_pad1;
-extern s32 D_1333E0_pad2;
-extern s32 D_1333E0_pad3;
 extern A2Ent1C D_00525368_e[] __asm__("D_00525368");
 void func_001373F8(u8 *, f32);
 
