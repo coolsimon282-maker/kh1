@@ -852,7 +852,76 @@ INCLUDE_ASM("asm/nonmatchings/memcard", func_00231370);
 #endif
 
 #ifdef VERSION_FM
-INCLUDE_ASM("asm/nonmatchings/memcard", func_00234F80);
+extern s32 D_00647FB4;
+extern s32 D_00647FC8;
+extern s32 D_00425C10;
+extern s32 D_00425C14;
+extern s32 D_00425C18;
+extern s32 D_00425C1C;
+extern s32 D_00425C20;
+extern s32 D_00647FB0_g __asm__("D_00647FB0");
+extern s32 (*D_00648034_g)(s32) __asm__("D_00648034");
+extern s32 D_00647FC4_g __asm__("D_00647FC4");
+extern s32 D_00647FE8_g[14] __asm__("D_00647FE8");
+extern s32 D_00425C28_g[2][4] __asm__("D_00425C28");
+extern s32 D_00425C48_g[2][4] __asm__("D_00425C48");
+extern s32 D_00425C68_g[2][4] __asm__("D_00425C68");
+extern s32 D_00425C88_g[2][4] __asm__("D_00425C88");
+int sceMcGetInfo(int, int, int *, int *, int *);
+int sceMcSync(int, int *, int *);
+
+void func_00234F80(void) {
+    s32 *st = &D_00647FB4;
+
+    switch (*st) {
+    case 0:
+        sceMcGetInfo(D_00425C10, D_00425C14, &D_00425C18, &D_00425C1C, &D_00425C20);
+        (*st)++;
+        break;
+    case 1:
+        if (sceMcSync(1, NULL, &D_00647FC8) != 0) {
+            (*st)++;
+        }
+        break;
+    case 2:
+        if (D_00425C18 == 3) {
+            D_00425C28_g[D_00425C10][D_00425C14] = 3;
+        } else {
+            switch (D_00647FC8) {
+            case 0:
+                D_00647FE8_g[1] = 0;
+                D_00425C28_g[D_00425C10][D_00425C14] = 0;
+                break;
+            case -1:
+                D_00647FE8_g[1] = 0;
+                D_00425C28_g[D_00425C10][D_00425C14] = 1;
+                D_00425C48_g[D_00425C10][D_00425C14] = 1;
+                D_00425C68_g[D_00425C10][D_00425C14] = 1;
+                break;
+            case -2:
+                D_00647FE8_g[1] = 0;
+                D_00425C28_g[D_00425C10][D_00425C14] = 2;
+                D_00425C48_g[D_00425C10][D_00425C14] = 1;
+                D_00425C68_g[D_00425C10][D_00425C14] = 1;
+                break;
+            default:
+                D_00425C28_g[D_00425C10][D_00425C14] = 3;
+                if (D_00647FE8_g[1] == 0) {
+                    D_00425C48_g[D_00425C10][D_00425C14] = 1;
+                    D_00425C88_g[D_00425C10][D_00425C14] = 1;
+                }
+                D_00647FE8_g[1] = 1;
+                break;
+            }
+        }
+        D_00647FB0_g = 0;
+        D_00647FD8 = D_00647FD4;
+        if (D_00648034_g != NULL) {
+            D_00648034_g(D_00647FC4_g);
+        }
+        break;
+    }
+}
 #else
 // void func_00231370(void) {
 //     if (D_00641FC8 != D_00641FCC) {
