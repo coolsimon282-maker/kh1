@@ -3197,9 +3197,33 @@ void func_00246EA8(s32 arg0, s32 arg1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246ED8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_002470D0);
-
 typedef struct { u8 b[0x930]; } Ent247190;
+s32 UiPart_GetColorAnimState(u8 *);
+void func_00246ED8(s32, Ent247190 *);
+void func_002470D0(Ent247190 *a0) {
+    s32 *p = (s32 *)a0;
+    s32 f = 0;
+
+    switch (p[0]) {
+    case 0:
+        return;
+    case 1:
+        p[0] = 2;
+        f = 1;
+        break;
+    case 2:
+        if (UiPart_GetColorAnimState(a0->b + 0x30) & 4) {
+            p[0]++;
+        }
+        break;
+    case 3:
+        p[0] = 0;
+        break;
+    }
+    p[1]++;
+    func_00246ED8(f, a0);
+}
+
 extern Ent247190 D_0045FAC0_u[] __asm__("D_0045FAC0");
 extern u64 D_00668E20[];
 extern void func_002470D0(Ent247190 *);
