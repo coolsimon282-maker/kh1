@@ -45,7 +45,72 @@ void func_00149BD0(s32 a0, s32 a1, s32 a2) {
 INCLUDE_ASM("asm/nonmatchings/xsquash", func_00149D78);
 #endif
 
+#ifdef VERSION_FM
+typedef struct {
+    /* 0x00 */ u32 used : 1;
+    /* 0x00 */ u32 state : 2;
+    /* 0x00 */ u32 b3 : 1;
+    /* 0x00 */ u32 rest : 28;
+    /* 0x04 */ s32 k;
+    /* 0x08 */ s32 n;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ void (*cb)(s32);
+} SquashSlot;
+extern s32 D_00350D14;
+u8* func_00147A88(s32);
+void func_00149BD0(s32 a0, s32 a1, s32 a2);
+
+s32 func_00149E38(s32 k, void (*cb)(s32)) {
+    char buf[0x20];
+    u8* p;
+    SquashSlot* s;
+    s32 off;
+    s32 n;
+    s32 i;
+    u8* r;
+
+    off = k * 0x74 + 0x30;
+    p = (u8*)D_003010F8 + off;
+    if (p[6] == 0) {
+        return 0;
+    }
+    n = *(s16*)(func_00147A88(p[6]) + 6);
+    s = (SquashSlot*)D_0054C1B0;
+    for (i = 0; i < 3; i++, s++) {
+        if (s->used && s->k == k && s->n == n) {
+            s->state = 1;
+            return 0;
+        }
+    }
+    s = (SquashSlot*)D_0054C1B0;
+    if (k != 0) {
+        s++;
+        for (i = 0; i < 2; i++, s++) {
+            if (!s->used || s->state == 0) {
+                break;
+            }
+        }
+    }
+    s->cb = cb;
+    s->k = k;
+    s->n = n;
+    s->used = 1;
+    s->state = 1;
+    s->b3 = 0;
+    if (n == 0) {
+        return 0;
+    }
+    r = func_00147A10(D_00350CE8[k]);
+    sprintf(buf, D_0048E410, r + n * 0x58 - 0x58, D_00350D14);
+    func_00120590(buf, s->unk_10, (s32 (*)(void))func_00149BD0, 0);
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xsquash", func_00149E38);
+#endif
 
 #ifndef VERSION_FM
 INCLUDE_RODATA("asm/nonmatchings/xsquash", D_00488128);
