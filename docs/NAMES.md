@@ -192,3 +192,10 @@ other functions (rule F1).
 | Gs_LoadTex8_256x256 | 0x00100E80 | xbeginning.c | Uploads a 256x256 8-bit texture (PSMT8) to GS block dbp. |
 | Gs_LoadTex8H_256x1024 | 0x00100EF8 | xbeginning.c | Uploads a 256x1024 PSMT8H texture to GS block dbp. |
 | Room_LoadBinImg | 0x001015A8 | xporcupine.c | Queues the load of worldBinImgFile + ".img" into a newly allocated buffer (D_002A050C). |
+| KeLnsFlr_SetShape | 0x001A5688 | ppp/xberry.c | sets a flare's frame count from the shape data and restarts its sequence |
+| KeLnsFlr_Step | 0x001A56A0 | ppp/xberry.c | steps a flare's shape animation by 0x200 (looping on flag 0x80) |
+| KeLnsShp_SetDraw | 0x001A5740 | ppp/xberry.c | sets up the draw of the current shape frame (func_001BA340) |
+| KeLnsClm_SetShape | 0x001A5FD0 | ppp/xberry.c | sets the shape of every flare of a KeLnsClm and seeds their phases once |
+| KeLnsShp_Draw | 0x001A60E8 | ppp/xberry.c | draws a flare shape at the lens position, alpha scaled by the lens power (cf. KeLnsFls_Draw) |
+| KeLnsStr_Draw | 0x001A62C0 | ppp/xberry.c | draws a flare shape stretched along the lens direction (zMat) |
+| KeLnsCrn_SetShape | 0x001A6518 | ppp/xberry.c | sets a KeLnsCrn's shape and its flare (KeLnsFlr_SetShape) |

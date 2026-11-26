@@ -78,7 +78,7 @@ typedef struct {
     /* 0x10 */ void* unk_10;
 } KeLnsLpTArg;
 
-void func_001A8060(KeLnsLpTArg* arg, s32 arg1);
+void KeLnsShp_Draw(KeLnsLpTArg* arg, s32 arg1);
 
 void func_00194980(KeLnsLpTUnk* arg0) {
     KeLnsLpTArg arg;
@@ -88,5 +88,5 @@ void func_00194980(KeLnsLpTUnk* arg0) {
     arg.unk_0C = arg0->unk_20;
     arg.unk_08 = ppvScreenMatrix;
     arg.unk_10 = &arg0->unk_10;
-    func_001A8060(&arg, 0);
+    KeLnsShp_Draw(&arg, 0);
 }

@@ -20,7 +20,7 @@ typedef struct {
 } KeLnsCrnDrawInfo;
 
 void func_00193E80(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl);
-void func_001A8248(KeLnsCrnDrawInfo* info, s32 arg1);
+void KeLnsStr_Draw(KeLnsCrnDrawInfo* info, s32 arg1);
 
 void pppKeLnsCrnDraw(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl) {
     KeLnsCrnDrawInfo info;
@@ -36,7 +36,7 @@ void pppKeLnsCrnDraw(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl) {
     info.unk_0C = p->unk_0C;
     info.crn = (KeLnsCrn*)&pobj->val[ctbl->useVal[0]];
     info.scl = ppvParScl;
-    func_001A8248(&info, 0);
+    KeLnsStr_Draw(&info, 0);
 }
 
 void pppKeLnsCrnCon(pppPObject* pobj, pppCtrlTable* ctbl) {

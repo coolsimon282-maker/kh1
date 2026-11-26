@@ -243,6 +243,18 @@ Gs_LoadTex8H_256x1024                = 0x00100EF8; // type:func
 Room_LoadBinImg                      = 0x001015A8; // type:func
 
 
+//=========================================================
+// ppp/xberry.c
+//=========================================================
+KeLnsFlr_SetShape                    = 0x001A5688; // type:func
+KeLnsFlr_Step                        = 0x001A56A0; // type:func
+KeLnsShp_SetDraw                     = 0x001A5740; // type:func
+KeLnsClm_SetShape                    = 0x001A5FD0; // type:func
+KeLnsShp_Draw                        = 0x001A60E8; // type:func
+KeLnsStr_Draw                        = 0x001A62C0; // type:func
+KeLnsCrn_SetShape                    = 0x001A6518; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

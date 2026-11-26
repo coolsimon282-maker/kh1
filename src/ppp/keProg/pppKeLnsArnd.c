@@ -16,7 +16,7 @@ typedef struct {
 } KeLnsArndArg;
 
 void func_00193978(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl);
-void func_001A8060(KeLnsArndArg* arg, s32 arg1);
+void KeLnsShp_Draw(KeLnsArndArg* arg, s32 arg1);
 
 void pppKeLnsArndDraw(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl) {
     KeLnsArndArg arg;
@@ -30,7 +30,7 @@ void pppKeLnsArndDraw(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl) {
     arg.scl = ppvParScl;
     arg.scale = p->scale;
     arg.shp = &pobj->val[ctbl->useVal[0]];
-    func_001A8060(&arg, 0);
+    KeLnsShp_Draw(&arg, 0);
 }
 
 void pppKeLnsArndCon(pppPObject* pobj, pppCtrlTable* ctbl) {
@@ -60,7 +60,7 @@ typedef struct {
     /* 0x0E */ u8 unk_0E;
 } VKeLnsArnd;
 
-void func_001A7F48(VKeLnsArnd* p, pppShapeSt* shp, u8 arg2); // ppp/xberry
+void KeLnsClm_SetShape(VKeLnsArnd* p, pppShapeSt* shp, u8 arg2); // ppp/xberry
 
 void func_00193BC8(pppPObject* pobj, PKeLnsArnd* p, pppCtrlTable* ctbl) {
     VKeLnsArnd* arnd = (VKeLnsArnd*)&pobj->val[ctbl->useVal[0]];
@@ -73,7 +73,7 @@ void func_00193BC8(pppPObject* pobj, PKeLnsArnd* p, pppCtrlTable* ctbl) {
         } else {
             shp = &ppvEnv->lpShape[p->shpIdx];
             if (shp != arnd->shp) {
-                func_001A7F48(arnd, shp, p->unk_16);
+                KeLnsClm_SetShape(arnd, shp, p->unk_16);
             }
         }
         arnd->unk_0A = p->unk_12;

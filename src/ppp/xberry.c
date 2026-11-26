@@ -1,3 +1,7 @@
+/**
+ * Helpers shared by the Ke* effect programs: births on model vertices (KeBornRnd2) and the lens-flare parts
+ * (KeLns*: flare shape animation, init and draw of the Lp / Clm / Arnd / Crn / Fls variants; types in ppp/pppKeLns.h).
+ */
 #include "common.h"
 
 #include "ppp/pppUtil.h"
@@ -37,7 +41,7 @@ void KeBornRnd2(pppPObject* pobj, void* p, void (*func)(pppPObject*, void*, pppS
 }
 
 // reads the u16 at 0x12 of the shape data (a count; maybe its number of frames)
-void func_001A75B0(KeLnsFlr* flr, pppShapeSt* shp) {
+void KeLnsFlr_SetShape(KeLnsFlr* flr, pppShapeSt* shp) {
     flr->cnt = ((u16*)shp->shape)[9];
     flr->seqIdx = 0;
 }
@@ -56,7 +60,7 @@ typedef struct {
 } KeLnsFlrRef;
 
 // steps the shape animation by 0x200
-void func_001A75C8(KeLnsFlrRef* p) {
+void KeLnsFlr_Step(KeLnsFlrRef* p) {
     KeLnsFlr* flr = p->flr;
     KeLnsSeq* seq = (KeLnsSeq*)(p->shp->shape + 1) + flr->seqIdx;
 
@@ -96,7 +100,7 @@ extern s32 D_00616224;
 s32 func_001BA340(void*, void*, s32);
 
 // sets up the draw of the current shape frame (func_001BA340 is in ppp/draw/md0)
-void func_001A7668(KeLnsShpDraw* p) {
+void KeLnsShp_SetDraw(KeLnsShpDraw* p) {
     KeLnsSeq* seq = (KeLnsSeq*)(p->shp->shape + 1) + p->flr->seqIdx;
 
     p->unk_18 = 0;
@@ -127,13 +131,13 @@ typedef union {
 } KeLnsClmFlag;
 
 // sets the shape of every flare and, once, their random phases (rdPr) from seed
-void func_001A7F48(KeLnsClm* p, pppShapeSt* shp, s32 seed) {
+void KeLnsClm_SetShape(KeLnsClm* p, pppShapeSt* shp, s32 seed) {
     s32 i;
     s32 r;
 
     p->shp = shp;
     for (i = 0; i < p->num; i++) {
-        func_001A75B0(&p->flr[i].flr, shp);
+        KeLnsFlr_SetShape(&p->flr[i].flr, shp);
     }
     if (!((KeLnsClmFlag*)&p->flag)->f.seeded) {
         r = seed;
@@ -183,7 +187,7 @@ typedef struct {
 } KeLnsShpPrm;
 
 // draws a flare shape at the lens position, scaled, with its alpha scaled by the lens power
-void func_001A8060(KeLnsShpArg* arg, s32 arg1) {
+void KeLnsShp_Draw(KeLnsShpArg* arg, s32 arg1) {
     sceVu0FMATRIX m;
     KeLnsShpPrm prm;
     KeLnsShp* shp = arg->shp;
@@ -218,13 +222,13 @@ void func_001A8060(KeLnsShpArg* arg, s32 arg1) {
     prm.col[3] = prm.col[3] * lp->vPow;
     prm.shp = shp->shp;
     prm.flr = &shp->flr;
-    func_001A75C8((KeLnsFlrRef*)&prm);
+    KeLnsFlr_Step((KeLnsFlrRef*)&prm);
     prm.unk_12 = arg1;
     prm.mat = m;
     prm.unk_2C = 0;
     prm.unk_18 = 0;
     prm.unk_1C = 0;
-    func_001A7668((KeLnsShpDraw*)&prm);
+    KeLnsShp_SetDraw((KeLnsShpDraw*)&prm);
 }
 
 void KeLnsArnd_Init(KeLnsArnd* p) {
@@ -261,7 +265,7 @@ typedef struct {
 } KeLnsStrArg;
 
 // draws a flare shape along the lens direction (zMat), stretched by len2 / len and faded by len2 / fadeLen
-void func_001A8248(KeLnsStrArg* arg, s32 arg1) {
+void KeLnsStr_Draw(KeLnsStrArg* arg, s32 arg1) {
     sceVu0FMATRIX m;
     KeLnsFlsShpPrm prm;
     KeLnsShp* shp = arg->shp;
@@ -304,19 +308,19 @@ void func_001A8248(KeLnsStrArg* arg, s32 arg1) {
     prm.col[3] = prm.col[3] * lp->vPow * t;
     prm.shp = shp->shp;
     prm.flr = &shp->flr;
-    func_001A75C8((KeLnsFlrRef*)&prm);
+    KeLnsFlr_Step((KeLnsFlrRef*)&prm);
     prm.unk_12 = arg1;
     prm.mat = m;
     prm.unk_2C = 0;
     prm.unk_18 = 0;
     prm.unk_1C = 0;
     prm.unk_1E = 0;
-    func_001A7668((KeLnsShpDraw*)&prm);
+    KeLnsShp_SetDraw((KeLnsShpDraw*)&prm);
 }
 
-void func_001A84B8(KeLnsCrn* p, pppShapeSt* shp) {
+void KeLnsCrn_SetShape(KeLnsCrn* p, pppShapeSt* shp) {
     p->shp = shp;
-    func_001A75B0(&p->flr, shp);
+    KeLnsFlr_SetShape(&p->flr, shp);
 }
 
 void KeLnsCrn_Init(KeLnsCrn* p) {
@@ -335,7 +339,7 @@ typedef struct {
     /* 0x14 */ f32* scl;
 } KeLnsFlsArg;
 
-// like func_001A8060, but the flare fades and stretches with the lens distance (len2 / len)
+// like KeLnsShp_Draw, but the flare fades and stretches with the lens distance (len2 / len)
 void KeLnsFls_Draw(KeLnsFlsArg* arg, s32 arg1) {
     sceVu0FMATRIX m;
     KeLnsFlsShpPrm prm;
@@ -394,14 +398,14 @@ void KeLnsFls_Draw(KeLnsFlsArg* arg, s32 arg1) {
     prm.col[3] = prm.col[3] * lp->vPow * t;
     prm.shp = shp->shp;
     prm.flr = &shp->flr;
-    func_001A75C8((KeLnsFlrRef*)&prm);
+    KeLnsFlr_Step((KeLnsFlrRef*)&prm);
     prm.unk_12 = arg1;
     prm.mat = m;
     prm.unk_2C = 0;
     prm.unk_18 = 0;
     prm.unk_1C = 0;
     prm.unk_1E = 0;
-    func_001A7668((KeLnsShpDraw*)&prm);
+    KeLnsShp_SetDraw((KeLnsShpDraw*)&prm);
 }
 
 void KeLnsFls_Init(KeLnsFls* p) {
@@ -422,6 +426,7 @@ typedef struct {
     /* 0x18 */ XBerryNode* list;
 } XBerryNodeOwner;
 
+// Sets flags | 8 on every node of the owner's list and clears each node's unk_0C.
 void func_001A8770(XBerryNodeOwner* arg0, s32 flags) {
     XBerryNode* node = arg0->list;
 

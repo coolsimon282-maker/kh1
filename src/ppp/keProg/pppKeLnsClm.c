@@ -49,7 +49,7 @@ typedef struct {
     /* 0x4 */ s32 shpIdx;
 } PKeLnsClm;
 
-void func_001A84B8(KeLnsClm* p, pppShapeSt* shp);
+void KeLnsCrn_SetShape(KeLnsClm* p, pppShapeSt* shp);
 
 void func_00193E80(pppPObject* pobj, PKeLnsClm* p, pppCtrlTable* ctbl) {
     KeLnsClm* clm = (KeLnsClm*)&pobj->val[ctbl->useVal[0]];
@@ -62,7 +62,7 @@ void func_00193E80(pppPObject* pobj, PKeLnsClm* p, pppCtrlTable* ctbl) {
         } else {
             shp = &ppvEnv->lpShape[p->shpIdx];
             if (shp != clm->shp) {
-                func_001A84B8(clm, shp);
+                KeLnsCrn_SetShape(clm, shp);
             }
         }
     }
