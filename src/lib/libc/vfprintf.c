@@ -81,7 +81,513 @@ _DEFUN (vfprintf, (fp, fmt0, ap),
   return _vfprintf_r (fp->_data, fp, fmt0, ap);
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/vfprintf", _vfprintf_r);
+/* newlib's _vfprintf_r (FLOATING_POINT; the body follows the ICO/KFIV decomp's copy of newlib 1.8.2), with newlib
+   1.9's `if (expt || ndig)` around the "0.000ddd" output. */
+#define	BUF		(MAXEXP+MAXFRACT+1)
+#define	MAXEXP		308
+#define	MAXFRACT	39
+#define	DEFPREC		6
+#define	quad_t	  long long
+#define	u_quad_t  unsigned long long
+#define	to_digit(c)	((c) - '0')
+#define is_digit(c)	((unsigned)to_digit (c) <= 9)
+#define	to_char(n)	((n) + '0')
+#define	ALT		0x001
+#define	HEXPREFIX	0x002
+#define	LADJUST		0x004
+#define	LONGDBL		0x008
+#define	LONGINT		0x010
+#define	QUADINT		0x020
+#define	SHORTINT	0x040
+#define	ZEROPAD		0x080
+#define	FPT		0x100
+extern int D_0046AE30; /* __mb_cur_max */
+#undef MB_CUR_MAX
+#define MB_CUR_MAX D_0046AE30
+#include <locale.h>
+extern int isinf(double);
+extern int isnan(double);
+char *cvt(struct _reent *, double, int, int, char *, int *, int, int *);
+int exponent(char *, int, int);
+int func_00252328(FILE *, struct __suio *);
+int func_00252370(FILE *, const char *, va_list);
+
+int
+_vfprintf_r(data, fp, fmt0, ap)
+	struct _reent *data;
+	FILE * fp;
+	_CONST char *fmt0;
+	va_list ap;
+{
+    register char *fmt;           /* format string */
+    register int ch;              /* character from fmt */
+    register int n, m;            /* handy integers (short term usage) */
+    register char *cp;            /* handy char pointer (short term usage) */
+    register struct __siov *iovp; /* for PRINT macro */
+    register int flags;           /* flags as above */
+    int ret;                      /* return value accumulator */
+    int width;                    /* width from format (%8d), or 0 */
+    int prec;                     /* precision from format (%.3d), or -1 */
+    char sign;                    /* sign prefix (' ', '+', '-', or \0) */
+    wchar_t wc;
+    char *decimal_point = localeconv()->decimal_point;
+    char softsign;  /* temporary negative sign for floats */
+    double _double; /* double precision arguments %[eEfgG] */
+    int expt;       /* integer value of exponent */
+    int expsize;    /* character count for expstr */
+    int ndig;       /* actual number of digits returned by cvt */
+    char expstr[7]; /* buffer for exponent string */
+
+    u_quad_t _uquad; /* integer arguments %[diouxX] */
+
+    enum { OCT, DEC, HEX } base; /* base for [diouxX] conversion */
+
+    int dprec;   /* a copy of prec if [diouxX], 0 otherwise */
+    int realsz;  /* field size expanded by dprec */
+    int size;    /* size of converted field or string */
+    char *xdigs; /* digits for [xX] conversion */
+#define NIOV 8
+    struct __suio uio;       /* output information: summary */
+    struct __siov iov[NIOV]; /* ... and individual io vectors */
+    char buf[BUF];           /* space for %c, %[diouxX], %[eEfgG] */
+    char ox[2];              /* space for 0x hex-prefix */
+    int state = 0;           /* mbtowc calls from library must not change state */
+
+#define PADSIZE 16 /* pad chunk size */
+    static const char blanks[PADSIZE] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+                                         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+    static const char zeroes[PADSIZE] = {'0', '0', '0', '0', '0', '0', '0', '0',
+                                         '0', '0', '0', '0', '0', '0', '0', '0'};
+
+#define PRINT(ptr, len)                                                                            \
+    {                                                                                              \
+        iovp->iov_base = (ptr);                                                                    \
+        iovp->iov_len = (len);                                                                     \
+        uio.uio_resid += (len);                                                                    \
+        iovp++;                                                                                    \
+        if (++uio.uio_iovcnt >= NIOV) {                                                            \
+            if (func_00252328(fp, &uio))                                                                \
+                goto error;                                                                        \
+            iovp = iov;                                                                            \
+        }                                                                                          \
+    }
+#define PAD(howmany, with)                                                                         \
+    {                                                                                              \
+        if ((n = (howmany)) > 0) {                                                                 \
+            while (n > PADSIZE) {                                                                  \
+                PRINT(with, PADSIZE);                                                              \
+                n -= PADSIZE;                                                                      \
+            }                                                                                      \
+            PRINT(with, n);                                                                        \
+        }                                                                                          \
+    }
+#define FLUSH()                                                                                    \
+    {                                                                                              \
+        if (uio.uio_resid && func_00252328(fp, &uio))                                                   \
+            goto error;                                                                            \
+        uio.uio_iovcnt = 0;                                                                        \
+        iovp = iov;                                                                                \
+    }
+
+#define SARG()                                                                                     \
+    (flags & LONGINT    ? va_arg(ap, long)                                                         \
+     : flags & SHORTINT ? (long)(short)va_arg(ap, int)                                             \
+                        : (long)va_arg(ap, int))
+#define UARG()                                                                                     \
+    (flags & LONGINT    ? va_arg(ap, unsigned long)                                                \
+     : flags & SHORTINT ? (unsigned long)(unsigned short)va_arg(ap, int)                           \
+                        : (unsigned long)va_arg(ap, unsigned int))
+
+    /* sorry, fprintf(read_only_file, "") returns EOF, not 0 */
+    if (cantwrite(fp))
+        return (EOF);
+
+    /* optimise fprintf(stderr) (and other unbuffered Unix files) */
+    if ((fp->_flags & (__SNBF | __SWR | __SRW)) == (__SNBF | __SWR) && fp->_file >= 0)
+        return (func_00252370(fp, fmt0, ap));
+
+    fmt = (char *)fmt0;
+    uio.uio_iov = iovp = iov;
+    uio.uio_resid = 0;
+    uio.uio_iovcnt = 0;
+    ret = 0;
+
+    /*
+     * Scan the format for conversions (`%' character).
+     */
+    for (;;) {
+        cp = fmt;
+        while ((n = _mbtowc_r(_REENT, &wc, fmt, MB_CUR_MAX, &state)) > 0) {
+            fmt += n;
+            if (wc == '%') {
+                fmt--;
+                break;
+            }
+        }
+        if ((m = fmt - cp) != 0) {
+            PRINT(cp, m);
+            ret += m;
+        }
+        if (n <= 0)
+            goto done;
+        fmt++; /* skip over '%' */
+
+        flags = 0;
+        dprec = 0;
+        width = 0;
+        prec = -1;
+        sign = '\0';
+
+    rflag:
+        ch = *fmt++;
+    reswitch:
+        switch (ch) {
+        case ' ':
+            if (!sign)
+                sign = ' ';
+            goto rflag;
+        case '#':
+            flags |= ALT;
+            goto rflag;
+        case '*':
+            if ((width = va_arg(ap, int)) >= 0)
+                goto rflag;
+            width = -width;
+            /* FALLTHROUGH */
+        case '-':
+            flags |= LADJUST;
+            goto rflag;
+        case '+':
+            sign = '+';
+            goto rflag;
+        case '.':
+            if ((ch = *fmt++) == '*') {
+                n = va_arg(ap, int);
+                prec = n < 0 ? -1 : n;
+                goto rflag;
+            }
+            n = 0;
+            while (is_digit(ch)) {
+                n = 10 * n + to_digit(ch);
+                ch = *fmt++;
+            }
+            prec = n < 0 ? -1 : n;
+            goto reswitch;
+        case '0':
+            flags |= ZEROPAD;
+            goto rflag;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            n = 0;
+            do {
+                n = 10 * n + to_digit(ch);
+                ch = *fmt++;
+            } while (is_digit(ch));
+            width = n;
+            goto reswitch;
+        case 'L':
+            flags |= LONGDBL;
+            goto rflag;
+        case 'h':
+            flags |= SHORTINT;
+            goto rflag;
+        case 'l':
+            if (*fmt == 'l') {
+                fmt++;
+                flags |= QUADINT;
+            } else {
+                flags |= LONGINT;
+            }
+            goto rflag;
+        case 'q':
+            flags |= QUADINT;
+            goto rflag;
+        case 'c':
+            *(cp = buf) = va_arg(ap, int);
+            size = 1;
+            sign = '\0';
+            break;
+        case 'D':
+            flags |= LONGINT;
+            /*FALLTHROUGH*/
+        case 'd':
+        case 'i':
+            _uquad = SARG();
+            if ((long)_uquad < 0) {
+                _uquad = -_uquad;
+                sign = '-';
+            }
+            base = DEC;
+            goto number;
+        case 'e':
+        case 'E':
+        case 'f':
+        case 'g':
+        case 'G':
+            if (prec == -1) {
+                prec = DEFPREC;
+            } else if ((ch == 'g' || ch == 'G') && prec == 0) {
+                prec = 1;
+            }
+
+            if (flags & LONGDBL) {
+                _double = (double)va_arg(ap, long double);
+            } else {
+                _double = va_arg(ap, double);
+            }
+
+            /* do this before tricky precision changes */
+            if (isinf(_double)) {
+                if (_double < 0)
+                    sign = '-';
+                cp = "Inf";
+                size = 3;
+                break;
+            }
+            if (isnan(_double)) {
+                cp = "NaN";
+                size = 3;
+                break;
+            }
+
+            flags |= FPT;
+            cp = cvt(data, _double, prec, flags, &softsign, &expt, ch, &ndig);
+            if (ch == 'g' || ch == 'G') {
+                if (expt <= -4 || expt > prec)
+                    ch = (ch == 'g') ? 'e' : 'E';
+                else
+                    ch = 'g';
+            }
+            if (ch <= 'e') { /* 'e' or 'E' fmt */
+                --expt;
+                expsize = exponent(expstr, expt, ch);
+                size = expsize + ndig;
+                if (ndig > 1 || flags & ALT)
+                    ++size;
+            } else if (ch == 'f') { /* f fmt */
+                if (expt > 0) {
+                    size = expt;
+                    if (prec || flags & ALT)
+                        size += prec + 1;
+                } else /* "0.X" */
+                    size = prec + 2;
+            } else if (expt >= ndig) { /* fixed g fmt */
+                size = expt;
+                if (flags & ALT)
+                    ++size;
+            } else
+                size = ndig + (expt > 0 ? 1 : 2 - expt);
+
+            if (softsign)
+                sign = '-';
+            break;
+        case 'n':
+            if (flags & LONGINT)
+                *va_arg(ap, long *) = ret;
+            else if (flags & SHORTINT)
+                *va_arg(ap, short *) = ret;
+            else
+                *va_arg(ap, int *) = ret;
+            continue; /* no output */
+        case 'O':
+            flags |= LONGINT;
+            /*FALLTHROUGH*/
+        case 'o':
+            _uquad = UARG();
+            base = OCT;
+            goto nosign;
+        case 'p':
+            /* NOSTRICT */
+            _uquad = (unsigned long)(unsigned long)va_arg(ap, void *);
+            base = HEX;
+            xdigs = "0123456789abcdef";
+            flags |= HEXPREFIX;
+            ch = 'x';
+            goto nosign;
+        case 's':
+            if ((cp = va_arg(ap, char *)) == NULL)
+                cp = "(null)";
+            if (prec >= 0) {
+                char *p = memchr(cp, 0, prec);
+
+                if (p != NULL) {
+                    size = p - cp;
+                    if (size > prec)
+                        size = prec;
+                } else
+                    size = prec;
+            } else
+                size = strlen(cp);
+            sign = '\0';
+            break;
+        case 'U':
+            flags |= LONGINT;
+            /*FALLTHROUGH*/
+        case 'u':
+            _uquad = UARG();
+            base = DEC;
+            goto nosign;
+        case 'X':
+            xdigs = "0123456789ABCDEF";
+            goto hex;
+        case 'x':
+            xdigs = "0123456789abcdef";
+        hex:
+            _uquad = UARG();
+            base = HEX;
+            /* leading 0x/X only if non-zero */
+            if (flags & ALT && _uquad != 0)
+                flags |= HEXPREFIX;
+
+            /* unsigned conversions */
+        nosign:
+            sign = '\0';
+        number:
+            if ((dprec = prec) >= 0)
+                flags &= ~ZEROPAD;
+
+            cp = buf + BUF;
+            if (_uquad != 0 || prec != 0) {
+                switch (base) {
+                case OCT:
+                    do {
+                        *--cp = to_char(_uquad & 7);
+                        _uquad >>= 3;
+                    } while (_uquad);
+                    /* handle octal leading 0 */
+                    if (flags & ALT && *cp != '0')
+                        *--cp = '0';
+                    break;
+
+                case DEC:
+                    /* many numbers are 1 digit */
+                    while (_uquad >= 10) {
+                        *--cp = to_char(_uquad % 10);
+                        _uquad /= 10;
+                    }
+                    *--cp = to_char(_uquad);
+                    break;
+
+                case HEX:
+                    do {
+                        *--cp = xdigs[_uquad & 15];
+                        _uquad >>= 4;
+                    } while (_uquad);
+                    break;
+
+                default:
+                    cp = "bug in vfprintf: bad base";
+                    size = strlen(cp);
+                    goto skipsize;
+                }
+            }
+            size = buf + BUF - cp;
+        skipsize:
+            break;
+        default: /* "%?" prints ?, unless ? is NUL */
+            if (ch == '\0')
+                goto done;
+            /* pretend it was %c with argument ch */
+            cp = buf;
+            *cp = ch;
+            size = 1;
+            sign = '\0';
+            break;
+        }
+
+        realsz = dprec > size ? dprec : size;
+        if (sign)
+            realsz++;
+        else if (flags & HEXPREFIX)
+            realsz += 2;
+
+        /* right-adjusting blank padding */
+        if ((flags & (LADJUST | ZEROPAD)) == 0)
+            PAD(width - realsz, blanks);
+
+        /* prefix */
+        if (sign) {
+            PRINT(&sign, 1);
+        } else if (flags & HEXPREFIX) {
+            ox[0] = '0';
+            ox[1] = ch;
+            PRINT(ox, 2);
+        }
+
+        /* right-adjusting zero padding */
+        if ((flags & (LADJUST | ZEROPAD)) == ZEROPAD)
+            PAD(width - realsz, zeroes);
+
+        /* leading zeroes from decimal precision */
+        PAD(dprec - size, zeroes);
+
+        /* the string or number proper */
+        if ((flags & FPT) == 0) {
+            PRINT(cp, size);
+        } else {             /* glue together f_p fragments */
+            if (ch >= 'f') { /* 'f' or 'g' */
+                if (_double == 0) {
+                    /* kludge for __dtoa irregularity */
+                    PRINT("0", 1);
+                    if (expt < ndig || (flags & ALT) != 0) {
+                        PRINT(decimal_point, 1);
+                        PAD(ndig - 1, zeroes);
+                    }
+                } else if (expt <= 0) {
+                    PRINT("0", 1);
+                    if (expt || ndig) {
+                        PRINT(decimal_point, 1);
+                        PAD(-expt, zeroes);
+                        PRINT(cp, ndig);
+                    }
+                } else if (expt >= ndig) {
+                    PRINT(cp, ndig);
+                    PAD(expt - ndig, zeroes);
+                    if (flags & ALT)
+                        PRINT(".", 1);
+                } else {
+                    PRINT(cp, expt);
+                    cp += expt;
+                    PRINT(".", 1);
+                    PRINT(cp, ndig - expt);
+                }
+            } else { /* 'e' or 'E' */
+                if (ndig > 1 || flags & ALT) {
+                    ox[0] = *cp++;
+                    ox[1] = '.';
+                    PRINT(ox, 2);
+                    if (_double || flags & ALT == 0) {
+                        PRINT(cp, ndig - 1);
+                    } else /* 0.[0..] */
+                        /* __dtoa irregularity */
+                        PAD(ndig - 1, zeroes);
+                } else /* XeYYY */
+                    PRINT(cp, 1);
+                PRINT(expstr, expsize);
+            }
+        }
+        /* left-adjusting padding (always blank) */
+        if (flags & LADJUST)
+            PAD(width - realsz, blanks);
+
+        /* finally, adjust ret */
+        ret += width > realsz ? width : realsz;
+
+        FLUSH(); /* copy out the I/O vectors */
+    }
+done:
+    FLUSH();
+error:
+    return (__sferror(fp) ? EOF : ret);
+    /* NOTREACHED */
+}
 
 /* from newlib's libc/stdlib/mprec.h (little-endian IEEE) and vfprintf.c's flag bits */
 union double_union {
@@ -174,3 +680,8 @@ exponent(p0, exp, fmtch)
 	}
 	return (p - p0);
 }
+
+/* The original's next object (dtoa.o) has 16-byte aligned .rodata, so the linker padded 12 bytes after this file's
+   .rodata. While dtoa's rodata is still the asm piece lib/libc/dtoa_ro (no such alignment), the padding is spelled
+   out here; drop this once dtoa.c owns its .rodata. */
+const char _vfprintf_rodata_pad[8] = { 0 }; /* placed 8-aligned: 0x208..0x210 */
