@@ -49,7 +49,38 @@ void serialPutchar(int c)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libkernl/kprintf", ftoi);
+/* gas 2.10 (configure.py LIB_GAS210_FILES): it fills the delay slots the original has filled. */
+int ftoi(unsigned long long a)
+{
+    unsigned long long m = a;
+    long long e;
+
+    e = (long long)((m << 1) >> 53);
+    e -= 1075;
+    if (e < -53) {
+        return 0;
+    }
+    if (e >= 13) {
+        return 9999;
+    }
+    m = (m << 12) >> 12;
+    m |= (unsigned long long)1 << 52;
+    if (e < 0) {
+        int s;
+
+        e = -e;
+        s = e - 2;
+        m >>= s;
+        if ((m & 3) == 3) {
+            m = (m >> 2) + 1;
+        } else {
+            m >>= 2;
+        }
+    } else {
+        m <<= e;
+    }
+    return (int)m;
+}
 
 INCLUDE_ASM("asm/nonmatchings/lib/libkernl/kprintf", printfloat);
 

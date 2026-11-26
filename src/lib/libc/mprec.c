@@ -419,7 +419,37 @@ struct _Bigint *__mdiff(struct _reent *ptr, struct _Bigint *a, struct _Bigint *b
     return c;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _ulp);
+union mp_double_union {
+    double d;
+    unsigned int i[2];
+};
+#define dword0(x) ((x).i[1])
+#define dword1(x) ((x).i[0])
+
+double _ulp(double _x)
+{
+    union mp_double_union x, a;
+    register int L;
+
+    x.d = _x;
+
+    L = (dword0(x) & 0x7ff00000) - (53 - 1) * 0x100000;
+    if (L > 0) {
+        dword0(a) = L;
+        dword1(a) = 0;
+    } else {
+        L = -L >> 20;
+        if (L < 20) {
+            dword0(a) = 0x80000 >> L;
+            dword1(a) = 0;
+        } else {
+            dword0(a) = 0;
+            L -= 20;
+            dword1(a) = L >= 31 ? 1 : 1 << (31 - L);
+        }
+    }
+    return a.d;
+}
 
 #include <reent.h>
 
@@ -506,7 +536,22 @@ struct _Bigint *_d2b(struct _reent *ptr, double dd, int *e, int *bits)
     return b;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libc/mprec", _ratio);
+double _ratio(struct _Bigint *a, struct _Bigint *b)
+{
+    MpDouble da, db;
+    int k, ka, kb;
+
+    da.d = _b2d(a, &ka);
+    db.d = _b2d(b, &kb);
+    k = ka - kb + 32 * (a->_wds - b->_wds);
+    if (k > 0)
+        word0(da) += k * 0x100000;
+    else {
+        k = -k;
+        word0(db) += k * 0x100000;
+    }
+    return da.d / db.d;
+}
 
 extern double D_00491FE0[];
 

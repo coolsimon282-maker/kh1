@@ -85,7 +85,21 @@ sceGsGParam* sceGsGetGParam(void) {
     return &D_004661C0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsResetPath);
+/* gas 2.10 (configure.py LIB_GAS210_FILES) moves the last volatile store into the jr delay slot. */
+typedef unsigned int u_long128_t __attribute__((mode(TI)));
+void sceGsResetPath(void) {
+    register int temp __asm__("$4") = 0;
+    *(volatile u_int*)0x10003C10 = 1;
+    *(volatile u_int*)0x10003C20 = 2;
+    __asm__ __volatile__("sync
+	cfc2 %0, $vi28
+	ori %0, %0, 0x200
+	ctc2 %0, $vi28
+	sync.p" : "=r"(temp) : "0"(temp));
+    *(volatile u_long128_t*)0x10005000 = ((u_long128_t*)D_0046C510)[0];
+    *(volatile u_long128_t*)0x10005000 = ((u_long128_t*)D_0046C510)[1];
+    *(volatile u_int*)0x10003000 = 1;
+}
 
 int func_00265558(void) {
     char buf[256];
@@ -181,7 +195,111 @@ int sceGsSyncV(int mode) {
     return (int)c;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libgraph", sceGsSyncPath);
+/* gas 2.10 (configure.py LIB_GAS210_FILES) moves the volatile loads into the scePrintf delay slots; scePrintf is called
+   through a void alias (the address temp lands in $2 after the call). */
+void scePrintf_v(const char* fmt, ...) __asm__("scePrintf");
+#define D1_CHCR ((volatile u_int*)0x10009000)
+#define D1_MADR ((volatile u_int*)0x10009010)
+#define D1_QWC ((volatile u_int*)0x10009020)
+#define D1_TADR ((volatile u_int*)0x10009030)
+#define D2_TADR ((volatile u_int*)0x1000A030)
+#define VIF1_STAT ((volatile u_int*)0x10003C00)
+#define GIF_STAT ((volatile u_int*)0x10003020)
+extern char D_00492998[];
+extern char D_004929C8[];
+extern char D_004929D8[];
+extern char D_004929E8[];
+extern char D_004929F8[];
+extern char D_00492A08[];
+extern char D_00492A18[];
+extern char D_00492A28[];
+extern char D_00492A38[];
+extern char D_00492A48[];
+extern char D_00492A60[];
+extern char D_00492A78[];
+extern char D_00492AA8[];
+extern char D_00492AD8[];
+extern char D_00492B00[];
+
+#define GS_SYNCPATH_DUMP()                                                                         \
+    scePrintf_v(D_004929C8, *D1_CHCR);                                                          \
+    scePrintf_v(D_004929D8, *D1_TADR);                                                             \
+    scePrintf_v(D_004929E8, *D1_MADR);                                                             \
+    scePrintf_v(D_004929F8, *D1_QWC);                                                           \
+    scePrintf_v(D_00492A08, *D2_CHCR);                                                          \
+    scePrintf_v(D_00492A18, *D2_TADR);                                                             \
+    scePrintf_v(D_00492A28, *D2_MADR);                                                             \
+    scePrintf_v(D_00492A38, *D2_QWC);                                                           \
+    scePrintf_v(D_00492A48, *VIF1_STAT);                                                      \
+    scePrintf_v(D_00492A60, *GIF_STAT);                                                       \
+    return -1
+
+int sceGsSyncPath(int mode, unsigned short timeout)
+{
+    unsigned int i = 0;
+    int r;
+    int v;
+
+    if (mode == 0) {
+        while (*D1_CHCR & 0x100) {
+            if (i++ > 0x1000000) {
+                scePrintf_v(D_00492998);
+                GS_SYNCPATH_DUMP();
+            }
+        }
+        while (*D2_CHCR & 0x100) {
+            if (i++ > 0x1000000) {
+                scePrintf_v(D_00492A78);
+                GS_SYNCPATH_DUMP();
+            }
+        }
+        while (*VIF1_STAT & 0x1F000003) {
+            if (i++ > 0x1000000) {
+                scePrintf_v(D_00492AA8);
+                GS_SYNCPATH_DUMP();
+            }
+        }
+        __asm__ __volatile__(".set noreorder
+	cfc2.ni %0, $vi29
+	.set reorder" : "=r"(v));
+        while (v & 0x100) {
+            if (i++ > 0x1000000) {
+                scePrintf_v(D_00492AD8);
+                GS_SYNCPATH_DUMP();
+            }
+            __asm__ __volatile__(".set noreorder
+	cfc2.ni %0, $vi29
+	.set reorder" : "=r"(v));
+        }
+        while (*GIF_STAT & 0xC00) {
+            if (i++ > 0x1000000) {
+                scePrintf_v(D_00492B00);
+                GS_SYNCPATH_DUMP();
+            }
+        }
+        return 0;
+    }
+    r = 0;
+    if (*D1_CHCR & 0x100) {
+        r |= 1;
+    }
+    if (*D2_CHCR & 0x100) {
+        r |= 2;
+    }
+    if (*VIF1_STAT & 0x1F000003) {
+        r |= 4;
+    }
+    __asm__ __volatile__(".set noreorder
+	cfc2.ni %0, $vi29
+	.set reorder" : "=r"(v));
+    if (v & 0x100) {
+        r |= 8;
+    }
+    if (*GIF_STAT & 0xC00) {
+        r |= 0x10;
+    }
+    return r;
+}
 
 extern char D_00492B30[];
 extern char D_00492C50[];
