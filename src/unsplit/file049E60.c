@@ -4954,7 +4954,57 @@ void func_0015C128(u8* a, u8* b, f32* out) {
     *(s32*)&out[1] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015C1F8);
+void func_0015C1F8(u8* a, u8* b, f32* out) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR e;
+    f32 r;
+    f32 t;
+    f32 h;
+
+    sceVu0SubVector(d, (f32*)(a + 0x10), (f32*)(b + 0x10));
+    d[1] = fabsf(d[1]);
+    if (d[1] > *(f32*)(b + 8)) {
+        r = (d[1] - *(f32*)(b + 8)) / *(f32*)(a + 8);
+        r = _sqrtf(1.0f - r * r) * *(f32*)(a + 4);
+    } else {
+        r = *(f32*)(a + 4);
+    }
+    e[0] = fabsf(d[0]);
+    e[2] = fabsf(d[2]);
+    if (e[0] > e[2]) {
+        h = *(f32*)(b + 4);
+        if (e[2] > h) {
+            t = (e[2] - h) / r;
+            t = _sqrtf(1.0f - t * t) * r + h;
+        } else {
+            t = r + h;
+        }
+        t += 5.0f;
+        if (d[0] > 0.0f) {
+            out[0] = d[0] - t;
+        } else {
+            out[0] = d[0] + t;
+        }
+        out[2] = 0.0f;
+    } else {
+        h = *(f32*)(b + 4);
+        if (e[0] > h) {
+            t = (e[0] - h) / r;
+            t = _sqrtf(1.0f - t * t) * r + h;
+        } else {
+            t = r + h;
+        }
+        t += 5.0f;
+        if (d[2] > 0.0f) {
+            out[2] = d[2] - t;
+        } else {
+            out[2] = d[2] + t;
+        }
+        out[0] = 0.0f;
+    }
+    out[1] = 0.0f;
+    out[3] = 1.0f;
+}
 
 void func_0015C3A0(u8* a, u8* b, f32* out) {
     sceVu0FVECTOR d;
@@ -9331,6 +9381,7 @@ extern f32 D_005758C4_f __asm__("D_005758C4");
 /* unused: rule F1, func_00176F08 (26 Nov, after func_0015DAC0: 0-3 and 5-10 work, 4 and 7 do not) */
 extern s32 D_176F08_pad1;
 extern s32 D_176F08_pad2;
+extern s32 D_176F08b_pad1;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
