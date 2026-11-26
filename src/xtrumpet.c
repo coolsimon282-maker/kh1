@@ -29,7 +29,7 @@ typedef struct XTrumpet {
 } XTrumpet;
 
 extern s32 D_002B8364;
-extern s32 D_002B8678;
+extern s32 curWorldNo;
 
 XTrumpet* D_002B90B0;
 
@@ -49,7 +49,7 @@ extern s32 D_004D2998;
 extern s32 D_004D29AC;
 extern s32 D_004D29C4;
 
-extern s32 D_002B8680;
+extern s32 curRoomNo;
 extern s32 D_002B8684;
 extern s32 D_002B92F8;
 
@@ -153,15 +153,15 @@ XTrumpetUnk4C* func_0017F1C8(void);
 void func_00111298(void) {
     XTrumpet* t = D_002B90B0;
 
-    t->unk_40 = D_002B8678;
-    t->unk_44 = D_002B8680;
+    t->unk_40 = curWorldNo;
+    t->unk_44 = curRoomNo;
     t->unk_48 = D_002B92F8;
     *(XTrumpetUnk4C*)&t->unk_4C = *func_0017F1C8();
 }
 
 typedef struct {
-    /* 0x0 */ s8 unk_0; // compared with D_002B8678
-    /* 0x1 */ s8 unk_1; // compared with D_002B8680
+    /* 0x0 */ s8 unk_0; // compared with curWorldNo
+    /* 0x1 */ s8 unk_1; // compared with curRoomNo
     /* 0x2 */ s8 index; // for func_00111210
     /* 0x3 */ s8 pad;
 } XTrumpetSel;
@@ -175,7 +175,7 @@ void func_00111328(void) {
     func_00111298();
     for (i = 0; i < 39; i++) {
         p = &D_002BCB80[i];
-        if (D_002B8678 == p->unk_0 && D_002B8680 == p->unk_1) {
+        if (curWorldNo == p->unk_0 && curRoomNo == p->unk_1) {
             func_00111210(p->index);
             return;
         }
@@ -242,7 +242,7 @@ void func_001114B8(s32 group, s32 row) {
 }
 
 void func_00111580(s32 param1) {
-    func_001114B8(D_002B8678, param1);
+    func_001114B8(curWorldNo, param1);
 }
 
 void* func_001115A0(void) {
@@ -273,9 +273,9 @@ void func_00111638(void) {
     s32 value;
 
     D_002B8364 = 1;
-    D_002B8678 = D_002B90B0->unk_40;
-    D_002B8680 = D_002B90B0->unk_44;
-    value = func_00111468(D_002B8678, D_002B8680);
+    curWorldNo = D_002B90B0->unk_40;
+    curRoomNo = D_002B90B0->unk_44;
+    value = func_00111468(curWorldNo, curRoomNo);
     D_002B8684 = value;
     D_002B92F8 = D_002B90B0->unk_48;
 }
@@ -322,7 +322,7 @@ void GameState_RefreshAvailableFlags(void) {
 }
 
 void GameState_ApplyAvailableSelection(void) {
-  switch (D_002B8678) {
+  switch (curWorldNo) {
   case 5:
     if (D_002B90B0->unk_158 & 8) {
       Party_AddCharacter(3);

@@ -143,8 +143,8 @@ D_002B91E4                   = 0x002BCC94; // size:0x4
 D_002B91E8                   = 0x002BCC98; // size:0x4
 D_002B91EC                   = 0x002BCC9C; // size:0x4
 
-D_002B8678                   = 0x002BC128; // size:0x4
-D_002B8680                   = 0x002BC130; // size:0x4
+curWorldNo                   = 0x002BC128; // size:0x4
+curRoomNo                    = 0x002BC130; // size:0x4
 
 worldDataFile                = 0x002BCCA0; // size:0x40
 worldBinImgFile              = 0x002BCCE0; // size:0x40

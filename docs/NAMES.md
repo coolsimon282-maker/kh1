@@ -107,3 +107,5 @@ other functions (rule F1).
 | pppCalcAllPart | 0x00181738 | ppp/pppMngr.c | Per-frame update of every running effect (sound, render data, program calls, end handling). |
 | pppDrawAllPart | 0x00181B30 | ppp/pppMngr.c | Draws every running effect in depth order (VRAM cache, texture upload, DMA of the packets). |
 | ppvMngTbl | 0x00364130 | ppp/pppMngr.c | the 0x100 effect managers (ppvmng, 0xC0 bytes each): every loop over managers in pppMngr.c walks it; was D_00364130 |
+| curWorldNo | 0x002BC128 | worldfile.c (data) | world index: worldfile_getNames/getBinImgName pass it to worldfile_getAbbr to build the file names (al, tw, ...); was D_002B8678 |
+| curRoomNo | 0x002BC130 | worldfile.c (data) | room index: worldfile_getNames prints it + 1 as the file number (al01.ard); was D_002B8680 |

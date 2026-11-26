@@ -37,8 +37,8 @@ extern s32 D_002B8354;
 extern s32 D_002B8364;
 extern sceVu0FMATRIX D_002B84F0;
 extern u32 D_002B85F8;
-extern s32 D_002B8678;
-extern s32 D_002B8680;
+extern s32 curWorldNo;
+extern s32 curRoomNo;
 typedef struct {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -143,7 +143,7 @@ void* func_001EE280(s32);
 void func_001ED878();
 
 void func_00112168(void) {
-    D_002B91E8 = D_002BCDAC[D_002B8680].unk_04;
+    D_002B91E8 = D_002BCDAC[curRoomNo].unk_04;
 }
 
 void func_00112190(void) {
@@ -193,7 +193,7 @@ void *func_001EE228(void *);
 u8 *func_001EAFF8(void);
 void worldfile_getNames_v(void) __asm__("worldfile_getNames");
 
-#define EA (XWorldEntryF *)(D_002B8680 * 64 + (s32)D_002BCDAC)
+#define EA (XWorldEntryF *)(curRoomNo * 64 + (s32)D_002BCDAC)
 void func_001121C8(void) {
     u8 *h;
     u8 *w;
@@ -213,17 +213,17 @@ void func_001121C8(void) {
     D_002BCDA0 = (XWorldEntry *)(w + *(s32 *)(w + 8));
     D_002BCDA4 = *(u32 *)(w + 0xC) >> 6;
     if (D_002B9328 != 0) {
-        D_002B8680 = D_002BCDA0[D_002B92F8].unk_00;
-        D_002B8684 = func_00111468(D_002B8678, D_002B8680);
+        curRoomNo = D_002BCDA0[D_002B92F8].unk_00;
+        D_002B8684 = func_00111468(curWorldNo, curRoomNo);
         worldfile_getNames_v();
         if (D_002B932C == 0) {
             GameState_ApplyAvailableSelection();
         }
     }
-    D_002BC12C = D_002BCDAC[D_002B8680].unk_00;
+    D_002BC12C = D_002BCDAC[curRoomNo].unk_00;
     func_00103280(1.0f, 1.0f, 1.0f, 1.0f);
     func_00110C40(1.0f, 1.0f, 1.0f, 1.0f);
-    D_002B8C84 = (((XWorldEntryF *)D_002BCDAC)[D_002B8680].unk_10 >> 1) & 1;
+    D_002B8C84 = (((XWorldEntryF *)D_002BCDAC)[curRoomNo].unk_10 >> 1) & 1;
     if (D_002B8C84 != 0) {
         func_00110C40(1.0f, 0.9f, 1.0f, (13421772.0f / 268435456.0f));
     }
@@ -243,7 +243,7 @@ void func_001121C8(void) {
     e3 = EA;
     D_002C1378.unk_00 = e3->unk_08;
     D_002C1378.unk_04 = e3->unk_0C;
-    if (D_002B8678 == 3 && *func_001EAFF8() >= 0x2B) {
+    if (curWorldNo == 3 && *func_001EAFF8() >= 0x2B) {
         e4 = EA;
         D_002C1378.unk_00 = e4->unk_28;
         D_002C1378.unk_04 = e4->unk_2C;
@@ -306,7 +306,7 @@ s32 func_00112690(void) {
     func_00177688();
     func_001776C8();
 
-    if (D_002B8688 == D_002B8678) {
+    if (D_002B8688 == curWorldNo) {
         D_002B9304 = 1;
     }
     
@@ -338,8 +338,8 @@ void* func_001127E0(void) {
 
 void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_002B92F8 = arg3;
-    D_002B8678 = arg0;
-    D_002B8680 = arg1;
+    curWorldNo = arg0;
+    curRoomNo = arg1;
     D_002B8684 = arg2;
     func_00111408(arg0, arg1, arg2);
     func_001127E0();
@@ -347,8 +347,8 @@ void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     D_002B92F8 = arg3;
-    D_002B8678 = arg0;
-    D_002B8680 = arg1;
+    curWorldNo = arg0;
+    curRoomNo = arg1;
     D_002B8684 = arg2;
     return func_001127E0();
 }
@@ -358,8 +358,8 @@ void func_00112880(s32 arg0) {
 
     D_002B92F8 = arg0;
     val = D_002BCDA0[arg0].unk_00;
-    D_002B8680 = val;
-    D_002B8684 = func_00111468(D_002B8678, val);
+    curRoomNo = val;
+    D_002B8684 = func_00111468(curWorldNo, val);
     func_001127E0();
 }
 
@@ -445,8 +445,8 @@ void func_00112A50(void) {
     func_001129F8();
     func_001C38C0();
     func_0011ED30(190000, func_001129C8);
-    D_002B8698[0] = D_002B8678;
-    D_002B8698[1] = D_002B8680;
+    D_002B8698[0] = curWorldNo;
+    D_002B8698[1] = curRoomNo;
     func_001093A8(4);
 }
 
@@ -456,8 +456,8 @@ void func_00112AD8(void) {
     func_001C38C0();
     func_00112CF0();
     func_0011ED30(190000, func_001129C8);
-    D_002B9318[0] = D_002B8678;
-    D_002B9318[1] = D_002B8680;
+    D_002B9318[0] = curWorldNo;
+    D_002B9318[1] = curRoomNo;
     D_002B9318[2] = D_002B92F8;
     func_001093A8(6);
 }
@@ -554,7 +554,7 @@ s32 func_00112D88(void) {
     s32 i;
 
     for (i = 0; i < D_002BCDA4; i++) {
-        if (D_002B8680 == D_002BCDA0[i].unk_00) {
+        if (curRoomNo == D_002BCDA0[i].unk_00) {
             return i;
         }
     }
@@ -695,7 +695,7 @@ s32 func_00113170(void) {
     D_002B933C = 1;
 
     if (D_0029B410 != 0 && D_0029B414 != 0) {
-        func_00175F58(D_0029B410, D_0029B414, D_002B8680 + 1, 100000);
+        func_00175F58(D_0029B410, D_0029B414, curRoomNo + 1, 100000);
     }
 
     func_001009A8();

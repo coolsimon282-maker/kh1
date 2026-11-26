@@ -8,10 +8,10 @@
 #include "stdio.h"
 #include "string.h"
 
-// Loaded world/room index?
-extern s32 D_002B8678;
+// Current world (index into worldAbbrs) and room (file number - 1): worldfile_getNames builds "<abbr><room+1>" from them
+extern s32 curWorldNo;
 
-extern s32 D_002B8680;
+extern s32 curRoomNo;
 
 /**
  * World abbreviations used for file names
@@ -72,8 +72,8 @@ char* worldfile_getNames(void) {
     char filenum[0x10];
     char abbr[0x40];
 
-    worldfile_getAbbr(D_002B8678, abbr);
-    sprintf(filenum, "%2d", D_002B8680 + 1);
+    worldfile_getAbbr(curWorldNo, abbr);
+    sprintf(filenum, "%2d", curRoomNo + 1);
     if (filenum[0] == ' ') {
         filenum[0] = '0';
     }
@@ -90,7 +90,7 @@ char* worldfile_getBinImgName(s32 arg0) {
     char filenum[0x10];
     char abbr[0x40];
 
-    worldfile_getAbbr(D_002B8678, abbr);
+    worldfile_getAbbr(curWorldNo, abbr);
     sprintf(filenum, "%2d", arg0 + 1);
     if (filenum[0] == ' ') {
         filenum[0] = '0';

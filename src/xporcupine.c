@@ -90,7 +90,7 @@ s32 func_001016E8(void) {
     extern s32 D_002BC12C;
     extern s32 D_002B9304;
     extern s32 D_002B9308;
-    extern s32 D_002B8678;
+    extern s32 curWorldNo;
     extern s32 D_002B9328;
     extern s32 D_002A0508;
     extern s32 func_00113380();
@@ -104,13 +104,13 @@ s32 func_001016E8(void) {
     }
     func_0011D310(0x1E0);
     func_00101628(0x3C0);
-    if (D_002B8678 == 8 && D_002BC12C == 8) {
+    if (curWorldNo == 8 && D_002BC12C == 8) {
         func_0011C6C8(1);
     }
     if (D_002B8688 == 8 && D_002B868C == 8) {
         func_0011C6C8(0);
     }
-    D_002B8688 = D_002B8678;
+    D_002B8688 = curWorldNo;
     if (D_002B9308 == 1) {
         if (D_002B9328 != 0) {
             func_001014A8();

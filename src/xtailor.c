@@ -30,8 +30,8 @@ extern sceVu0FMATRIX D_002B8530;
 extern sceVu0FMATRIX D_002B8570;
 extern s32 D_002B85C0[4];
 extern s32 D_002B8210;
-extern s32 D_002B8678;
-extern s32 D_002B8680;
+extern s32 curWorldNo;
+extern s32 curRoomNo;
 
 extern s32 D_002B9030;
 extern s32 D_002B9084;
@@ -362,7 +362,7 @@ void* func_0010FB38(s32 arg0, s32 arg1) {
 }
 
 void* func_0010FB68(void) {
-    return func_0010FB38(D_002B8678, D_002B8680);
+    return func_0010FB38(curWorldNo, curRoomNo);
 }
 
 #ifdef VERSION_FM

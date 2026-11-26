@@ -673,8 +673,8 @@ void func_00153D88(XToaster*);
 void func_00241C60(XToaster*, s32);
 s32* func_00157818(XToaster*, s32);
 extern XToaster148 D_004F71D0[];
-extern s32 D_002B8678;
-extern s32 D_002B8680;
+extern s32 curWorldNo;
+extern s32 curRoomNo;
 extern s32 D_002B8684;
 
 void func_00124108(XToaster* p) {
@@ -703,8 +703,8 @@ void func_00124108(XToaster* p) {
         *(u16*)((u8*)D_003010F8 + 0x83E) |= 1 << p->unk_130->unk_4C;
         func_001358B8(p, 0xC);
         func_00241C60(p, n);
-        if ((D_002B8678 == 0x10 && D_002B8680 == 0x25 && D_002B8684 == 0xD && p->unk_130->unk_4C == 2) ||
-            (D_002B8678 == 0x10 && D_002B8680 == 0x26 && D_002B8684 == 0xD && p->unk_130->unk_4C == 1)) {
+        if ((curWorldNo == 0x10 && curRoomNo == 0x25 && D_002B8684 == 0xD && p->unk_130->unk_4C == 2) ||
+            (curWorldNo == 0x10 && curRoomNo == 0x26 && D_002B8684 == 0xD && p->unk_130->unk_4C == 1)) {
             func_00157818(p, 0)[4] = 0x3000;
         }
     }
