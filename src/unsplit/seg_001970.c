@@ -226,7 +226,57 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102D20);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00102DA8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_001970", func_00103058);
+s32 func_00103058(void) {
+    extern s32 D_002A2748;
+    extern s32 D_002A2744;
+    extern struct {
+        u8 pad[0x28];
+        struct {
+            u64 a;
+            u64 p0;
+            u64 b;
+            u64 p1[3];
+        } e[9];
+    } D_002A5430;
+    extern struct {
+        u8 pad[0x20];
+        u64 a;
+        u64 b;
+    } D_002A52B0;
+    extern u8 D_002A5620[];
+    extern u8 D_002A5AC0[];
+    extern u8 D_002A5A90[];
+    u64 h = (u64)D_002A2748 << 32;
+
+    D_002A5430.e[0].a = h | 0x73E06FE0U;
+    D_002A5430.e[0].b = h | 0x8BE08FE0U;
+    D_002A5430.e[1].a = h | 0x73C06FC0U;
+    D_002A5430.e[1].b = h | 0x8BC08FC0U;
+    D_002A5430.e[2].a = h | 0x74007000U;
+    D_002A5430.e[2].b = h | 0x8C009000U;
+    D_002A5430.e[3].a = h | 0x74006FC0U;
+    D_002A5430.e[3].b = h | 0x8C008FC0U;
+    D_002A5430.e[4].a = h | 0x73C07000U;
+    D_002A5430.e[4].b = h | 0x8BC09000U;
+    D_002A5430.e[5].a = h | 0x73C06FE0U;
+    D_002A5430.e[5].b = h | 0x8BC08FE0U;
+    D_002A5430.e[6].a = h | 0x73E06FC0U;
+    D_002A5430.e[6].b = h | 0x8BE08FC0U;
+    D_002A5430.e[7].a = h | 0x74006FE0U;
+    D_002A5430.e[7].b = h | 0x8C008FE0U;
+    D_002A5430.e[8].a = h | 0x73E07000U;
+    D_002A5430.e[8].b = h | 0x8BE09000U;
+    if (D_002A2744 != 0) {
+        D_002A52B0.a = h | 0x74007000U;
+        D_002A52B0.b = h | 0x8C009000U;
+        func_00106948(D_002A5620);
+        func_00106948(D_002A5AC0);
+    } else {
+        func_00106948(D_002A5A90);
+        func_00106948(D_002A5AC0);
+    }
+    return 4;
+}
 
 void func_00103130(void) {
     func_0011ED30(0x280A2, func_00103058);

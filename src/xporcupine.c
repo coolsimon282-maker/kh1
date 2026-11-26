@@ -86,4 +86,43 @@ void func_001016B8(void) {
 //     func_00101580();
 // }
 
-INCLUDE_ASM("asm/nonmatchings/xporcupine", func_001016E8);
+s32 func_001016E8(void) {
+    extern s32 D_002BC12C;
+    extern s32 D_002B9304;
+    extern s32 D_002B9308;
+    extern s32 D_002B8678;
+    extern s32 D_002B9328;
+    extern s32 D_002A0508;
+    extern s32 func_00113380();
+    extern s32 func_001011E0();
+    s32 pad[4];
+    char buf[64];
+
+    ((void (*)(s32))worldfile_getBinImgName)(D_002BC12C);
+    if (D_002B9304 == 1 && D_002B868C == D_002BC12C) {
+        D_002B9308 = D_002B9304;
+    }
+    func_0011D310(0x1E0);
+    func_00101628(0x3C0);
+    if (D_002B8678 == 8 && D_002BC12C == 8) {
+        func_0011C6C8(1);
+    }
+    if (D_002B8688 == 8 && D_002B868C == 8) {
+        func_0011C6C8(0);
+    }
+    D_002B8688 = D_002B8678;
+    if (D_002B9308 == 1) {
+        if (D_002B9328 != 0) {
+            func_001014A8();
+        } else {
+            func_0011ED30(0xC350, func_00113380);
+        }
+    } else {
+        strcpy(buf, worldBinImgFile);
+        strcat(buf, ".bin");
+        D_002A0508 = func_001133E0(D_002A0508, 0x80);
+        func_00120590(buf, D_002A0508, func_001011E0, 0);
+    }
+    D_002B868C = D_002BC12C;
+    return 4;
+}

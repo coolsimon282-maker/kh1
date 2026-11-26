@@ -257,7 +257,76 @@ s32 func_0024CF90(void) {
     return D_00669A7C;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024CFA0);
+void func_0024CFA0(s32 a0) {
+    extern s32 D_0046A558;
+    extern s32 D_0046A55C;
+    extern s32 D_0046A560;
+    extern s32 D_00669A64;
+    extern void func_0024C460(s32);
+    extern void func_0024BE88(s32);
+    extern void func_0024C950(s32);
+    extern void func_001F8F30(void);
+    extern void func_0011D598(s32);
+    extern s32 func_001F3840(s32);
+    extern s32 func_001BE010(s32);
+    extern void func_001BE3C0(s32);
+    s32 i;
+
+    func_0024C460(a0);
+    func_0024BE88(a0);
+    func_0024C950(a0);
+    func_001F8F30();
+    if (D_0046A558 != 0 && (func_0024BE58() & 0x2000) && D_0046A55C == 0) {
+        D_0046A55C = 1;
+        func_0011D598(2);
+        func_001F3840(a0);
+        D_0046A5D8 = 0;
+        return;
+    }
+    if (!(func_0024BE58() & 0x2000)) {
+        return;
+    }
+    if (D_0046A55C != 0) {
+        return;
+    }
+    if (D_0046A560 == 0) {
+        return;
+    }
+    i = 0;
+    if (D_00669A40[0] == -1) {
+        goto next;
+    }
+    if (D_00669A40[0] == 0) {
+    next:
+        i++;
+    loop:
+        if (i < 8) {
+            if (D_00669A40[i] == -1) {
+                goto next;
+            }
+            if (D_00669A40[i] == 0) {
+                goto next;
+            }
+        }
+    }
+    if (i == 8) {
+        func_0011D598(4);
+        return;
+    }
+    D_0046A5D8 = 1;
+    D_0046A55C = 1;
+    func_0011D598(2);
+    func_001F3840(a0);
+    if (D_00669A60 < 0) {
+        return;
+    }
+    func_0024CF00();
+    if (D_00669A64 != 0) {
+        D_00669A7C = func_001BE010(D_00669A60);
+        return;
+    }
+    func_001BE3C0(D_00669A60);
+}
 
 s32 func_001F40C8(void);
 void func_001F82B0(void);
@@ -373,14 +442,62 @@ s32 func_0024D608(void) {
     return D_0046A618;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_14B9A8", func_0024D618);
+void func_0024D618(void *arg) {
+    s32 sema = (s32)arg;
+    extern s32 sceDevctl_q(u8 *, s32, s32, s32, void *, s32) __asm__("sceDevctl");
+    extern s32 WaitSema(s32);
+    extern s32 sceCdPowerOff(int *);
+    extern s32 sceSifSearchModuleByName(const char *);
+    extern char D_00491978[];
+    extern u8 D_00491980[];
+    extern u8 D_00491988[];
+    extern u8 D_00491990[];
+    int stat;
+
+    for (;;) {
+        WaitSema(sema);
+        D_002C1EB8.u8 = D_002C1EB8.u8 & ~0x18 | 0x10;
+        if (sceSifSearchModuleByName(D_00491978) >= 0) {
+            if (sceDevctl_q(D_00491980, 0x4807, 0, 0, 0, 0) != 3) {
+                sceDevctl_q(D_00491990, 0x5003, 0, 0, 0, 0);
+                goto b;
+            }
+            while (sceDevctl_q(D_00491988, 0x4402, 0, 0, 0, 0) < 0) {
+                    func_0024D5D0(100000);
+                }
+            goto done;
+        b:
+            while (sceDevctl_q(D_00491980, 0x4806, 0, 0, 0, 0) < 0) {
+                    func_0024D5D0(100000);
+                }
+        } else {
+            while (sceDevctl_q(D_00491988, 0x4402, 0, 0, 0, 0) < 0) {
+                func_0024D5D0(100000);
+            }
+        }
+    done:
+        while (sceCdPowerOff(&stat) == 0) {
+            func_0024D5D0(100000);
+        }
+        D_002C1EB8.u8 |= 0x18;
+        D_0046A610++;
+    }
+}
+
+void D_0024D7B0(void *arg) {
+    extern s32 iSignalSema(s32);
+
+    D_002C1EB8.u8 = D_002C1EB8.u8 & ~0x18 | 0x8;
+    if (func_0024D4A0() != 0) {
+        iSignalSema((s32)arg);
+    }
+}
 
 #include "eekernel.h"
 int *sceCdPOffCallback(void (*func)(void *), void *addr);
 void func_0024D618(void *);
 extern u8 D_00669A80[];
 extern u8 D_00494050[];
-extern u8 D_0024D7B0[];
 
 void func_0024D808(void) {
     struct ThreadParam tp;

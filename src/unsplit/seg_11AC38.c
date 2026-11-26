@@ -261,14 +261,33 @@ void func_00231958(void);
 s32 sceDmaGetChan(s32);
 s32 sceDmaSend(s32, u8 *);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AC38);
-
-/* unused: rule F1 (with fewer, func_0022FCB8 or func_00231EA0 change) */
+extern u8 D_003F4BF0[];
 extern s32 D_lay21AD08_0;
 extern s32 D_lay21AD08_1;
 extern s32 D_lay21AD08_2;
 extern s32 D_lay21AD08_3;
-extern s32 D_lay21AD08_4;
+extern u8 D_003F4C90[];
+void func_001F3E90(u8 *, u8 *);
+void func_001F3DC0(u8 *);
+void func_001F3E20(u8 *, u8 *);
+void func_0021AC38(s32 a0) {
+    u8 *e[2];
+    if (func_001F42B8(a0)) {
+        if ((e[0] = func_001F3A20(D_003F4C90, 6)) != NULL) {
+            func_001F3E90((u8 *)a0, e[0]);
+            func_001F3E20(e[0], (u8 *)a0);
+            *(s16 *)(e[0] + 0xD2) = *(u16 *)&D_00642D24 * 16;
+            if ((e[1] = func_001F3A20(D_003F4BF0, 6)) != NULL) {
+                func_001F3E90(e[0], e[1]);
+                func_001F3E20(e[1], e[0]);
+                func_001F3DC0(e[0]);
+            }
+        }
+    }
+    func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x6F);
+}
+
+/* unused: rule F1 (with fewer, func_0022FCB8 or func_00231EA0 change; 5 on fm-q1, 4 since fm was merged into it on 26 Nov: 0-3 and 5-8 all move fm functions below) */
 extern u8 D_003F4C90[];
 extern u8 D_003F4BF0[];
 extern s32 D_00642D20;
@@ -312,7 +331,51 @@ s32 func_0021ADE8(s32 a0) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AE28);
+/* unused: layout only (F1): fewer or more break func_0022FA58 / func_00225330 / func_00228760 / func_00229EC0; only 10 of 1-13 OK. */
+extern s32 D_21AE28_pad1;
+extern s32 D_21AE28_pad2;
+extern s32 D_21AE28_pad3;
+extern s32 D_21AE28_pad4;
+extern s32 D_21AE28_pad5;
+extern s32 D_21AE28_pad6;
+extern s32 D_21AE28_pad7;
+extern s32 D_21AE28_pad8;
+extern s32 D_21AE28_pad9;
+extern s32 D_21AE28_pad10;
+typedef struct {
+    u8 pad0[0x140];
+    f32 f[20];
+} Cam21AE28;
+extern u8 D_00425D80[];
+extern Cam21AE28 *D_00425F70;
+void sceVu0ViewScreenMatrix(f32 (*)[4], f32, f32, f32, f32, f32, f32, f32, f32, f32);
+void func_0021AE28(void) {
+    f32 one = 1.0f;
+    Cam21AE28 *p;
+    D_00425F70 = (Cam21AE28 *)D_00425D80;
+    sceVu0ViewScreenMatrix((f32 (*)[4])(D_00425D80 + 0x40), 512.0f, 0x1.999998p-1f, 0x1.AE1476p-1f, 2048.0f, 2048.0f, 65792.0f, 16777000.0f, one, 5000.0f);
+    p = D_00425F70;
+    p->f[3] = one;
+    p->f[7] = one;
+    p->f[10] = one;
+    p->f[11] = one;
+    p->f[13] = one;
+    p->f[15] = one;
+    p->f[19] = one;
+    p->f[1] = -170.0f;
+    p->f[2] = -400.0f;
+    p->f[5] = -150.0f;
+    p->f[4] = 0.0f;
+    p->f[6] = 0.0f;
+    p->f[8] = 0.0f;
+    p->f[9] = 0.0f;
+    p->f[12] = 0.0f;
+    p->f[14] = 0.0f;
+    p->f[16] = 0.0f;
+    p->f[17] = 0.0f;
+    p->f[18] = 0.0f;
+    p->f[0] = 0.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AF38);
 
@@ -354,7 +417,54 @@ void func_0021B4A0(void) {
     D_006430EC = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021B4C8);
+/* unused: layout only (F1): without them func_00225330 / func_00229EC0 / func_0022FCB8 change; 3-7 OK, 5 used. */
+extern s32 D_21B4C8_pad1;
+extern s32 D_21B4C8_pad2;
+extern s32 D_21B4C8_pad3;
+extern s32 D_21B4C8_pad4;
+extern s32 D_21B4C8_pad5;
+extern s32 D_003F59A4;
+extern f32 D_003F59B0;
+extern s32 D_003F59B4;
+extern s32 D_003F59B8;
+extern s32 D_006430F4;
+extern s32 D_006430FC;
+extern s32 D_00643104;
+extern s32 D_00643108;
+extern s32 D_0064310C;
+extern u16 D_003F56A0[];
+extern u16 D_003F5810[];
+extern f32 D_003F53C0[];
+extern s32 D_003F50E0[];
+static inline void func_0021B4C8_in(s32 id, s32 a0, s32 a1, s32 a2, s32 a3, f32 f) {
+    s32 *st = &D_006430F0;
+    s32 s = *st;
+
+    D_006430FC = a0;
+    D_003F59B0 = f;
+    D_003F59A4 = 0;
+    D_00643108 = a2;
+    D_0064310C = a3;
+    D_003F59B4 = a2 - 0x100;
+    D_003F59B8 = a3 - 0xC0;
+    D_00643104 = a1;
+    if (s == 0) {
+        *st = 1;
+        D_006430F8 = -1;
+        D_00643100 = 0;
+        *(s32 *)D_003F3504 = 0;
+    } else if (s == 4) {
+        if (D_006430F8 != a0) {
+            *st = 1;
+            D_00643100 = 0;
+            *(s32 *)D_003F3504 = 0;
+        }
+    }
+}
+void func_0021B4C8(s32 a0) {
+    D_006430F4 = a0;
+    func_0021B4C8_in(a0, D_003F50E0[a0], D_003F5810[a0], 0x100, D_003F56A0[a0], D_003F53C0[a0]);
+}
 
 extern s32 D_003F59A4;
 extern f32 D_003F59B0;
@@ -482,7 +592,15 @@ void func_0021CBA8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_0021CBC8(a0, a1, a2, a3, a4, 0x40461E00);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021CBC8);
+void func_0021CBC8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
+    s32 w;
+    func_0021B860(a0, a1 - 0x19, a2 - 6, 0, 0, 0x22);
+    w = a3 - 0x28;
+    func_0021B860(a0, a1, a2, 0, 0, 0x23);
+    func_0021B860(a0, a1 + 0x14, a2, w, 0, 0x25);
+    func_0021B860(a0, a1 + w + 0x14, a2, 0, 0, 0x24);
+    func_001F94F0(a0, 0, a1 + 8, a2 + 2, func_0021B800_x(a4), 0xF, a5);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021CCD0);
 
@@ -563,12 +681,6 @@ void func_0021D860(u8 *a0) {
 }
 
 extern u8 D_003F5B58[];
-
-/* layout only (notes/f1.md F1): this discarded body (section .nothrow_dup) keeps func_00229EC0 folding
- * `lw D_006450C0(reg)` after the fm merge; removing any one of func_0021D948 / func_002204F0 / func_00225C30
- * did the same. Externs placed right above func_00229EC0 change nothing. */
-void layout_fn_229EC0(u8 *a0) __attribute__((weak, section(".nothrow_dup")));
-void layout_fn_229EC0(u8 *a0) { func_00205B30(a0, D_003F5B58); }
 
 void func_0021D948(u8 *a0) {
     func_00205B30(a0, D_003F5B58);
@@ -1096,7 +1208,37 @@ void func_00221440(s32 arg0) {
     func_0021AF38(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002214A8);
+s32 func_001EF530(s32);
+s32 func_001EF5C8(s32);
+s32 func_001EF668(s32);
+void func_002214A8(s32 a0) {
+    s32 i;
+    s32 y;
+    s32 t;
+    s32 c;
+
+    func_0021B820();
+    func_0021C9A0(a0, 0x10, 0x48);
+    func_0021CB00(a0, 0x20, 0x6C, 9, 0x1E);
+    func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
+    func_00206130(a0, 0x11F, 0x5E, 0x14, 2, 0x80202020);
+    func_00206130(a0, 0x1C5, 0x5E, 0x14, 2, 0x80202020);
+    func_001F94F0(a0, 2, 0x17C, 0x56, func_00221390_x(0), 0xF, 0x80461E00);
+    y = 0x90;
+    for (i = 0; i < 5; i++) {
+        t = func_001EB5F0(0, i);
+        c = 0x3A;
+        D_003E8E08[0] = i + 1;
+        if (t != -1) {
+            D_003E8E08[1] = func_001EF530(t);
+            D_003E8E08[2] = func_001EF5C8(t);
+            D_003E8E08[3] = func_001EF668(t);
+            c = 0x39;
+        }
+        func_001F94F0(a0, 0, 0x11F, y, func_0021B800_x(c), 0xF, 0x80461E00);
+        y += 0x1E;
+    }
+}
 
 void func_00221648(void) {
     func_00207210(0);
@@ -1257,13 +1399,67 @@ void func_00222078(void) {
     func_00207210(5);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00222090);
+void func_00222090(s32 a0) {
+    s32 i;
+    s32 y;
+    s32 t;
+    s32 c;
+
+    func_0021B820();
+    func_0021C9A0(a0, 0x10, 0x48);
+    func_0021CB00(a0, 0x20, 0x6C, 9, 0x1E);
+    func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
+    func_00206130(a0, 0x11F, 0x5E, 0x14, 2, 0x80202020);
+    func_00206130(a0, 0x1C5, 0x5E, 0x14, 2, 0x80202020);
+    func_001F94F0(a0, 2, 0x17C, 0x56, func_00221390_x(6), 0xF, 0x80461E00);
+    y = 0x90;
+    for (i = 0; i < 5; i++) {
+        t = func_001EB5F0(0xD, i);
+        c = 0x3A;
+        D_003E8E08[0] = i + 1;
+        if (t != -1) {
+            D_003E8E08[1] = func_001EF530(t);
+            D_003E8E08[2] = func_001EF5C8(t);
+            D_003E8E08[3] = func_001EF668(t);
+            c = 0x39;
+        }
+        func_001F94F0(a0, 0, 0x11F, y, func_0021B800_x(c), 0xF, 0x80461E00);
+        y += 0x1E;
+    }
+}
 
 void func_00222230(void) {
     func_00207210(6);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00222248);
+void func_00222248(s32 a0) {
+    s32 i;
+    s32 y;
+    s32 t;
+    s32 c;
+
+    func_0021B820();
+    func_0021C9A0(a0, 0x10, 0x48);
+    func_0021CB00(a0, 0x20, 0x6C, 9, 0x1E);
+    func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
+    func_00206130(a0, 0x11F, 0x5E, 0x14, 2, 0x80202020);
+    func_00206130(a0, 0x1C5, 0x5E, 0x14, 2, 0x80202020);
+    func_001F94F0(a0, 2, 0x17C, 0x56, func_00221390_x(7), 0xF, 0x80461E00);
+    y = 0x90;
+    for (i = 0; i < 5; i++) {
+        t = func_001EB5F0(0xE, i);
+        c = 0x3A;
+        D_003E8E08[0] = i + 1;
+        if (t != -1) {
+            D_003E8E08[1] = func_001EF530(t);
+            D_003E8E08[2] = func_001EF5C8(t);
+            D_003E8E08[3] = func_001EF668(t);
+            c = 0x39;
+        }
+        func_001F94F0(a0, 0, 0x11F, y, func_0021B800_x(c), 0xF, 0x80461E00);
+        y += 0x1E;
+    }
+}
 
 void func_002223E8(void) {
     func_00207210(7);
@@ -1834,7 +2030,26 @@ void func_00225150(u8 *a0) {
     *(s16 *)(a0 + 0xC0) += n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002251B0);
+extern s32 D_00643750;
+void func_002251B0(s32 a0) {
+    if (func_001F42B8(a0)) {
+        if (func_00233F40(D_006436D4, 0)) {
+            func_00233FF8(D_006436D4, 0);
+            func_002246F8(a0);
+        } else if (*(s32 *)(D_00425BC8 + 8) & 0x4000) {
+            func_001F36B8(a0);
+            func_0011D598(3);
+        } else {
+            func_0020BD18(a0, 8);
+            if (func_001FE570(a0)) {
+                func_001F36B8(a0);
+            }
+        }
+    }
+    D_003E8E08[1] = 0x84;
+    D_003E8E08[0] = D_00643750;
+    func_00207BB0(a0, 0x18E);
+}
 
 void func_00225288(u8 *a0) {
     s32 n = func_001EFD98(0x18E) * 0x170;
@@ -2382,7 +2597,46 @@ void func_00229490(u8 *a0) {
     func_0020BDA8(0x10);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002295A0);
+/* unused: layout only (F1): without them func_0022FCB8 loses two `lw D(reg)` folds; 2-8 OK, 4 used. */
+extern s32 D_2295A0_pad1;
+extern s32 D_2295A0_pad2;
+extern s32 D_2295A0_pad3;
+extern s32 D_2295A0_pad4;
+extern s32 D_003F34A8;
+extern s32 D_003F34C4;
+extern s32 D_003F6E24;
+extern s32 D_003F6E2C;
+extern s32 D_00643730_w __asm__("D_00643730");
+void func_0020D530(void);
+s32 func_0020D030_r(void) __asm__("func_0020D030");
+s32 func_0020D2F8(void);
+void func_00229490(u8 *a0);
+
+void func_002295A0(s32 a0, s32 a1) {
+    s32 e;
+    func_001F3110(a0);
+    D_003F34A8 = 1;
+    func_0020D530();
+    D_003F6E24 = 1;
+    D_003F6E2C = a1;
+    if (a1 != 1) {
+        D_00643720[1] = 1;
+        D_00643720[2] = 2;
+        D_00643720[0] = 0;
+        D_00643720[3] = 3;
+        D_00643730_w = 4;
+    } else {
+        D_00643730_w = 3;
+        D_00643720[1] = a1;
+        D_00643720[2] = 3;
+        D_00643720[0] = 0;
+    }
+    func_0011D598(6);
+    e = func_0020D030_r();
+    D_003F34C4 = e;
+    if (e != 0) func_00229490((u8 *)e);
+    *(s16 *)((u8 *)func_0011ED30(0x270FF, func_0020D2F8) + 2) = a0;
+}
 
 void func_00229690(u8 *a0) {
     u8 *e[3];
@@ -2790,7 +3044,39 @@ void func_0022B630(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022B648);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022B8A0);
+/* unused: layout only (F1): with 0 or 3-7 func_0022FA58 / func_0022FCB8 change; 1, 2, 8 OK, 2 used. */
+extern s32 D_22B8A0_pad1;
+extern s32 D_22B8A0_pad2;
+extern u8 D_003F7000[];
+extern u8 D_003F7030[];
+extern u8 D_003F7060[];
+void func_00109278(void);
+void func_001F4040(u8 *, s32);
+void func_001F40A0(u8 *, s32);
+void func_0022B8A0(s32 a0) {
+    u8 *e[3];
+    if (func_001F42B8(a0)) {
+        func_00109278();
+        func_00233EF8(0);
+        D_006469A4 = 0;
+        D_006437E4 = 0;
+        D_00425C28[0].unk0 = 3;
+        D_00425C28[1].unk0 = 3;
+        if ((e[0] = func_001F3A20(D_003F7060, 6)) != NULL) {
+            func_001F4690(e[0], (u8 *)a0);
+            func_001F4040(e[0], 4);
+            func_001F40A0(e[0], 0x5A000000);
+            if ((e[1] = func_001F3A20(D_003F7030, 6)) != NULL) {
+                func_001F4690(e[1], e[0]);
+                *(s16 *)(e[1] + 0xD2) = *(u16 *)&D_006437C4 * 16;
+                if ((e[2] = func_001F3A20(D_003F7000, 6)) != NULL) {
+                    func_001F4690(e[2], e[1]);
+                    func_001F3DC0(e[1]);
+                }
+            }
+        }
+    }
+}
 
 void func_0022B9A8(s32 a0) {
     func_00207830(a0, 4, 2, 0, 0, 0x7A, 0x192);
@@ -3237,7 +3523,29 @@ s32 func_0022DE98(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022DEE0);
+void func_0022DEE0(s32 a0) {
+    u8 *e[3];
+    u8 *r;
+
+    func_001F3110(a0);
+    D_003F76B8 = 0;
+    if ((e[0] = func_001F3A20(D_003F7600, 1)) != NULL && (e[1] = func_001F3A20(D_003F75D0, 1)) != NULL) {
+        func_001F4690(e[1], e[0]);
+        e[2] = r = func_001F3A20(D_003F75A0, 1);
+        if (r != NULL) {
+            func_001F4690(e[2], e[1]);
+            r = e[2];
+            *(f32 *)(r + 0xA0) = 16.0f;
+        }
+    } else {
+        r = e[2];
+    }
+    D_003F34A4 = 1;
+    func_0020BBC0(r);
+    func_0020BD18((s32)e[2], 8);
+    func_0020BDA8(0x10);
+    *(s16 *)((u8 *)func_0011ED30(0x2BFE9, func_0022DE98) + 2) = a0;
+}
 
 void func_0022DFD0(void) {
 }
@@ -3263,7 +3571,29 @@ s32 func_0022E320(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022E368);
+void func_0022E368(s32 a0) {
+    u8 *e[3];
+    u8 *r;
+
+    func_001F3110(a0);
+    D_003F76BC = 0;
+    if ((e[0] = func_001F3A20(D_003F7690, 1)) != NULL && (e[1] = func_001F3A20(D_003F7660, 1)) != NULL) {
+        func_001F4690(e[1], e[0]);
+        e[2] = r = func_001F3A20(D_003F7630, 1);
+        if (r != NULL) {
+            func_001F4690(e[2], e[1]);
+            r = e[2];
+            *(f32 *)(r + 0xA0) = 16.0f;
+        }
+    } else {
+        r = e[2];
+    }
+    D_003F34A4 = 1;
+    func_0020BBC0(r);
+    func_0020BD18((s32)e[2], 8);
+    func_0020BDA8(0x10);
+    *(s16 *)((u8 *)func_0011ED30(0x2BFE9, func_0022E320) + 2) = a0;
+}
 
 void func_0022E458(void) {
 }
@@ -3288,7 +3618,37 @@ s32 func_0022EAB8(void) {
     return 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022BA18);
+extern u8 D_003F7720[];
+extern u8 D_003F7750[];
+extern s32 D_006469D0;
+extern s32 D_006469D4;
+extern s32 D_006469DC;
+extern s32 D_006469E4;
+extern s32 D_006469EC;
+extern s32 D_006469F4;
+s32 func_0022EAB8(void);
+void func_0022BA18(s32 a0) {
+    u8 *e[2];
+    func_001F3110(a0);
+    if ((e[0] = func_001F3A20(D_003F7750, 0x2C)) != NULL) {
+        if ((e[1] = func_001F3A20(D_003F7720, 0x2D)) != NULL) {
+            func_001F3E90(e[0], e[1]);
+            func_001F3E20(e[1], e[0]);
+            *(s32 *)(e[1] + 0xA0) = 0;
+        }
+    }
+    D_006469DC = 0;
+    D_006469E4 = 0;
+    D_006469EC = 0;
+    D_006469F4 = 0;
+    D_003F7774 = 1;
+    D_006469D0 = 0;
+    D_006469D4 = 0;
+    func_0020B968();
+    func_0020BB90(0x153, 0xA4);
+    func_0020BDA8(0x28);
+    *(s16 *)((u8 *)func_0011ED30(0x2BFE9, func_0022EAB8) + 2) = a0;
+}
 
 void func_0022EBE8(void) {
 }
@@ -3524,7 +3884,37 @@ void func_0022EEF8(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022F818);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0022FA58);
+extern s32 D_00646A1C;
+extern s32 D_00646A30[];
+extern s32 D_00646E30[];
+extern s32 D_00647230[];
+void func_0022FA58(s32 a0) {
+    s32 v;
+    s32 x;
+    s32 *p;
+    if (D_00647630 != 0) {
+        x = D_00646A28;
+        p = &D_00646A1C;
+        v = D_00646A30[a0];
+        *p = v;
+        if (x == 1) {
+            if (v != 0) goto chk;
+            goto end;
+        }
+        if ((u32)D_00646A24 < D_003E3D6C || D_00646E30[a0] < x) {
+            *p = -3;
+            goto end;
+        }
+chk:
+        if (func_001F0A80() > 0x1869E) {
+            *p = -1;
+        }
+    } else {
+        D_00646A1C = -2;
+    }
+end:
+    D_00647638 = D_00647230[a0];
+}
 
 s32 func_0022FB50(s32 a0) {
     if (D_00647630 == 0) return -2;
@@ -3701,7 +4091,24 @@ void func_0022FCB8(u8 *a0) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_002305B0);
+u32 func_001EFDD0(s32);
+s32 func_001BC590(s32);
+s32 func_001BA458(s32);
+void func_002305B0(s32 a0) {
+    s32 t = D_00646A0C[a0];
+    D_0064763C = func_001EFDD0(t) * D_00646A28;
+    if (func_001F0A80() >= (u32)D_0064763C) {
+        if (func_001BC590(t) == func_001BA458(t)) {
+            D_00646A18 = -2;
+        } else if (func_001BC590(t) + D_00646A28 > func_001BA458(t)) {
+            D_00646A18 = -4;
+        } else {
+            D_00646A18 = t;
+        }
+    } else {
+        D_00646A18 = -1;
+    }
+}
 
 u32 func_001EFDD0(s32);
 s32 func_001BC590(s32);
@@ -3720,6 +4127,7 @@ s32 func_00230698(s32 a0) {
     }
     return -4;
 }
+
 
 extern s32 D_00646A18;
 extern s32 D_0064763C;
@@ -4112,21 +4520,54 @@ s32 func_00231B38(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231B98);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231CD0);
+extern s32 D_231EA0_layout0;
+extern s32 D_231EA0_layout1;
+extern s32 D_231EA0_layout2;
+extern s32 D_231EA0_layout3;
+extern s32 D_231EA0_layout4;
+extern s32 D_231EA0_layout5;
+extern s32 D_231EA0_layout6;
+extern s32 D_231EA0_layout7;
+extern s32 D_231EA0_layout8;
+extern s32 D_231EA0_layout9;
+extern s32 D_231EA0_layout10;
+extern s32 D_231EA0_layout11;
+extern u16 D_003F7C48[];
+extern s32 D_0064765C;
+extern s32 D_00647660;
+extern s32 D_00647670[];
+extern u16 D_003F7A70[];
+typedef struct { u8 pad[9]; u8 a[1]; } V231CD0;
+void func_00231CD0(s32 a0) {
+    u8 *c = (u8 *)&D_003F7C48[D_0064765C * 3];
+    u16 *t;
+    s32 n;
+
+    if (c[4] == 1 && D_00647670[D_0064765C] != 0) {
+        D_00647660 = -3;
+        return;
+    }
+    t = &D_003F7A70[c[2] * 2];
+    n = c[3];
+    D_00647660 = a0;
+    for (; n > 0; n--, t += 2) {
+        if (((V231CD0 *)D_003010F8)->a[t[0] + 0x490] < t[1]) {
+            D_00647660 = -1;
+            return;
+        }
+    }
+    if (((V231CD0 *)D_003010F8)->a[D_00647660 + 0x490] >= 99) D_00647660 = -2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00231DD0);
 
 /* func_00231EA0 is layout-sensitive (notes/f1.md F1/F24): ee-gcc 2.96 makes several tie decisions in it
  * (combine folding `lhu D_003F7C48(reg)`, two saved-register ties) that depend on how many declarations precede
- * it in the file. The C below is right; these unused externs are only there to restore the layout that
+ * it in the file. The C below is right; these eight unused externs are only there to restore the layout that
  * gives the original code. If an edit above this point makes the function differ again, change their number
  * (9 and 11 both matched on 25 Nov; fable-work/n/231EA0_e*.c has the scan. After merging fm-a1, fm-a2 and fm-f1
  * into fm on 25 Nov, only 13 gave identical code among 0-17; after
- * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used. After q1's func_00225C30 (25 Nov): 48, 51, 52 among 0-70 (quick check), 51 used; after func_0021D948: only 16; after func_002204F0: 90. Check the code, not just the size: work/layoutn2.sh-style scan; after the fm merge into fm-q1 (with layout_fn_229EC0 above) the first match among 0-120 was 1: 1 used; after func_002293F0 (26 Nov, qc2 scan): 0 used; after func_00229A10: 5 (1-4 not): 5 used; after func_0021AD08 + func_0021F858: 4 used). */
-extern s32 D_231EA0_layout0;
-extern s32 D_231EA0_layout1;
-extern s32 D_231EA0_layout2;
-extern s32 D_231EA0_layout3;
+ * fm-a2 added func_00222BA8 (and its pad) above, 1, 8, 17 and 19 among 0-24; 8 used; after a4 matched func_00229150 above, 10 and 12 among 8-12 (real builds); 10 used; after func_0021C4F8, 9 and 11-13 among 8-13: 12 used; after func_0022EE08, 10 (11, 13-16 not): 10 used; after func_0021D860 none (0) are needed and 0 are used (an a4 scan tool bug made the 0-7 / 15-20 results all mean 0); after func_00229088 only 20 among 0-31 (real builds, 3 builds OK): 20 used; after func_00222090 + func_00222248 only 32, 36 and 38-40 among 0-40 (real builds): 39 used; after func_002214A8 31-37 and 40-45 among 30-45: 34 used; after func_002295A0 (with its 4 pads) 25, 27, 29 among 20-34: 27 used; after func_0021B4C8 (with its 5 pads) only 9 among 0-45: 9 used; after func_0021CBC8 0, 2, 15 among 0-16: 2 used; after func_0022BA18 only 44 among 0-50: 44 used; after func_0021AE28 (with its 10 pads) 3, 5, 7, 12 among 0-17: 5 used; after func_0022DEE0 + func_0022E368 only 17 among 0-33: 17 used; after func_0022B8A0 (with its 2 pads) only 39 among 0-52: 39 used (these externs now sit above func_00231CD0, which they also steer). After a4 added q1's func_0021D948, func_002204F0, func_00225C30, func_00230728 (26 Nov): 1-5, 7-19, 21, 23, 25 OK among 0-45 (real builds); 12 used. Check the code, not just the size: work/layoutn2.sh-style scan; meanwhile on fm-q1 (before fm was merged into it on 26 Nov; q1 had its own D_231EA0_layout0-3 just above D_003F7C48 below): after the fm merge into fm-q1 (with layout_fn_229EC0 above) the first match among 0-120 was 1: 1 used; after func_002293F0 (26 Nov, qc2 scan): 0 used; after func_00229A10: 5 (1-4 not): 5 used; after func_0021AD08 + func_0021F858: 4 used; after merging fm into fm-q1 (26 Nov; q1's four dropped, these 12 kept and func_0021AD08's D_lay21AD08 pads cut from 5 to 4): 12 still used). */
 extern u16 D_003F7C48[];
 extern s32 D_003F7E98;
 extern s32 D_0064765C;
