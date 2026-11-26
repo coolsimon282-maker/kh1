@@ -278,7 +278,7 @@ extern s32 D_002C1380;
 extern s32 D_002C1360;
 extern s32 D_002C1384;
 extern XBladePair D_002C1378;
-extern s32 D_002DED04;
+extern s32 cameraRoll;
 s32 func_00111468(s32, s32);
 void GameState_ApplyAvailableSelection(void);
 void func_00103280(f32, f32, f32, f32);
@@ -342,7 +342,7 @@ void World_ApplyWorldData(void) {
         D_002C1378.unk_00 = e4->unk_28;
         D_002C1378.unk_04 = e4->unk_2C;
     }
-    D_002DED04 = 0;
+    cameraRoll = 0;
 }
 
 // Adds task func_001016E8 (priority 50000).

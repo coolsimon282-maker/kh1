@@ -1,3 +1,8 @@
+/**
+ * Sound front end (JP/EU; Final Mix: src/unsplit/xturtle.c): thin wrappers around the sound RPC calls in xquack,
+ * the sound slot tables (0x28 slots in static memory, or 0x80 in work buffers 0x10/0x11), music and sound effect file
+ * names (amusic/music%3d.dat, amusic/se%3d.dat, amusic/se000.dat), and the sound tasks.
+ */
 #include "common.h"
 #include "common_funcs.h"
 #include "xquack.h"

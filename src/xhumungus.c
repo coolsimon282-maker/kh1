@@ -1,3 +1,9 @@
+/**
+ * The largest game file (FM 0x1C6D08-0x1DDC78), about 650 functions not yet sorted into subsystems. Known so far:
+ * script operator evaluation (ScriptOp_ApplyOperator) and the native command call (ScriptOp_CallCommand) used by the
+ * script opcode handlers in xkinetic.c. Fragile (rule F1): identifiers here keep their old names; new names go through
+ * config/fm/symbol_addrs.txt and the aliases in config/fm/undefined_syms.txt.
+ */
 #include "common.h"
 
 #include "xcursed.h"

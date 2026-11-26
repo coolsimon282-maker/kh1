@@ -1,3 +1,8 @@
+/**
+ * Still assembly (JP/EU; Final Mix: src/unsplit/xpillow.c, 0x1252F8-0x1274C8). Its code works on the party
+ * slots (D_002E26A0), D_002DED20 (which the summon code reads too) and calls func_0013C968 many times; probably party /
+ * summon state, not worked out yet.
+ */
 #include "common.h"
 
 INCLUDE_ASM("asm/nonmatchings/xpillow", func_001256B0);

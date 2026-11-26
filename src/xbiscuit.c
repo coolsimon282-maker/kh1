@@ -1,3 +1,8 @@
+/**
+ * System font text, probably (JP/EU; Final Mix builds its own copy, not in its own file yet): loads menu/sysfont.bin into
+ * GS memory (glyphs and CLUT), keeps the current text position / colour / size state, and wraps the string measuring and
+ * drawing routines with the two font sizes 14 and 18. The draw functions return the width drawn (D_00639A8C).
+ */
 #include "common.h"
 #include "libdma.h"
 

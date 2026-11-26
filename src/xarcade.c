@@ -240,8 +240,8 @@ void func_001093D8(void) {
     func_001C20B8();
     func_00236F18();
     SaTask_Init();
-    D_002BC140 = D_002DEC60;
-    D_002BC144 = D_002DECA0;
+    D_002BC140 = viewMatrix;
+    D_002BC144 = screenMatrix;
     D_002BBDE0 = 3;
     D_00495160 = 0;
 }
@@ -253,8 +253,8 @@ void func_001093D8(void) {
     func_001C20B8();
     func_00233968();
     SaTask_Init();
-    D_002B8690 = D_002DEC60;
-    D_002B8694 = D_002DECA0;
+    D_002B8690 = viewMatrix;
+    D_002B8694 = screenMatrix;
 }
 #endif
 

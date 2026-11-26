@@ -126,7 +126,7 @@ s32 D_002B8C88 = 0;
 s32 D_002BC73C = 0;
 s32 D_002B8C90 = 0;
 s32 D_002B8C94 = 0;
-// GS register addresses (D_002BC750/D_002BC7C0) and values (D_002BC830) that func_0010FEC0 copies into D_004D8EF0
+// GS register addresses (D_002BC750/D_002BC7C0) and values (D_002BC830) that Gs_SetDefaultDrawEnv copies into D_004D8EF0
 u64 D_002BC750[13] __attribute__((aligned(16))) = {
     0x4C, 0x4E,
     0x18, 0x40,
@@ -923,12 +923,12 @@ void func_00110848(f32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110848);
 #endif
 
-// Saves D_002B84F0 and multiplies three camera matrices by D_002DEC60.
+// Saves D_002B84F0 and multiplies three camera matrices by viewMatrix.
 void func_001109A8(void) {
     sceVu0CopyMatrix(D_004D2950, D_002B84F0);
-    sceVu0MulMatrix(D_002B84F0, D_002B83B0, D_002DEC60);
-    sceVu0MulMatrix(D_002B8530, D_002B8430, D_002DEC60);
-    sceVu0MulMatrix(D_002B8570, D_002B8470, D_002DEC60);
+    sceVu0MulMatrix(D_002B84F0, D_002B83B0, viewMatrix);
+    sceVu0MulMatrix(D_002B8530, D_002B8430, viewMatrix);
+    sceVu0MulMatrix(D_002B8570, D_002B8470, viewMatrix);
 }
 
 // Restores the six camera matrices saved by func_00110848.
@@ -939,7 +939,7 @@ void func_00110A30(void) {
     sceVu0CopyMatrix(D_002B8430, D_004D28D0);
     sceVu0CopyMatrix(D_002B8470, D_004D2910);
     sceVu0CopyMatrix(D_002B84B0, D_004D25D0);
-    sceVu0MulMatrix(D_002B84F0, D_002B83B0, D_002DEC60);
+    sceVu0MulMatrix(D_002B84F0, D_002B83B0, viewMatrix);
 }
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110AE0);

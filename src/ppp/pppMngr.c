@@ -1096,7 +1096,7 @@ extern sceVu0FMATRIX D_00615F30;
 extern sceVu0FVECTOR D_00615F90;
 extern sceVu0FVECTOR D_00615FA0;
 extern f32 D_00615FB0;
-extern f32 D_002DED00;
+extern f32 cameraFov;
 extern sceVu0FMATRIX D_00616180;
 
 // Sets the world/screen matrices and the eye/at vectors for this frame (the old ones are kept).
@@ -1116,7 +1116,7 @@ void pppSetPartMatrix(sceVu0FMATRIX world, sceVu0FMATRIX screen, sceVu0FVECTOR e
     *(u_long128*)D_00615FA0 = *(u_long128*)ppvAt;
     *(u_long128*)ppvEye = *(u_long128*)eye;
     *(u_long128*)ppvAt = *(u_long128*)at;
-    D_00615FB0 = D_002DED00;
+    D_00615FB0 = cameraFov;
     sceVu0InversMatrix(D_00615F30, D_00615EB0);
     sceVu0MulMatrix(D_00616180, ppvScreenMatrix, D_00615EB0);
 }

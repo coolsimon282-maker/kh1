@@ -1,5 +1,5 @@
 /**
- * Game state kept in work buffer 3 (gameState, XTrumpet): where the player is (world, room, curEntranceNo, three party
+ * Game state kept in work buffer 3 (gameState, GameState in include/gamestate.h): where the player is (world, room, curEntranceNo, three party
  * member positions with their angle) and more; other functions here work with the party (Party_AddCharacter, ...).
  * The location part is probably what a save records.
  */
@@ -7,31 +7,7 @@
 
 #include "xcursed.h"
 #include "xhumungus.h"
-
-typedef struct XTrumpet {
-    /* 0x000 */ u8 unk_00[16];
-    /* 0x010 */ s32 unk_10;
-    /* 0x014 */ s32 unk_14;
-    /* 0x018 */ s32 unk_18;
-    /* 0x01C */ s32 unk_1C;
-    /* 0x020 */ s32 unk_20;
-    /* 0x024 */ s32 unk_24;
-    /* 0x028 */ s32 unk_28;
-    /* 0x02C */ s32 unk_2C;
-    /* 0x030 */ s32 unk_30;
-    /* 0x034 */ s32 unk_34;
-    /* 0x038 */ s32 unk_38;
-    /* 0x03C */ s32 unk_3C;
-    /* 0x040 */ s32 unk_40;
-    /* 0x044 */ s32 unk_44;
-    /* 0x048 */ s32 unk_48;
-    /* 0x04C */ s32 unk_4C;
-    /* 0x050 */ u8 unk_50[28];
-    /* 0x06C */ u8 unk_6C[234];
-    /* 0x156 */ // u16 unk_156; possibly unused space, unnecessary for match
-    /* 0x158 */ s32 unk_158;
-    /* 0x15C */ void* unk_15C;
-} XTrumpet;
+#include "gamestate.h"
 
 extern s32 D_002B8364;
 extern s32 curWorldNo;
@@ -45,8 +21,8 @@ typedef struct {
 
 #ifdef VERSION_FM
 // .data (0x002BCB60-0x002BCC28)
-XTrumpet* gameState = NULL;
-// sizes (per group?) of XTrumpet.unk_6C
+GameState* gameState = NULL;
+// sizes (per group?) of GameState.unk_6C
 s8 D_002BCB68[17] = {7, 12, 9, 26, 10, 20, 11, 1, 21, 17, 13, 7, 11, 12, 1, 17, 39};
 XTrumpetSel presetPosRooms[39] = {
     {0, 4, 11, 0},
@@ -93,18 +69,14 @@ s32 D_002B916C = 0;
 s32 D_002B9170 = 0;
 s32 D_002B9174 = 0;
 #else
-XTrumpet* gameState;
-extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of XTrumpet.unk_6C
+GameState* gameState;
+extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of GameState.unk_6C
 extern XTrumpetSel presetPosRooms[39];
 extern s32 D_002B916C;
 extern s32 D_002B9170;
 extern s32 D_002B9174;
 #endif
 
-// XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
-typedef struct {
-    f32 x, y, z, w;
-} XTrumpetVec;
 
 
 extern s32 D_004D29D0;
@@ -137,23 +109,25 @@ void GameState_Reset(void) {
     for (i = 0; i < ARRAY_COUNT(gameState->unk_6C); i++) {
         gameState->unk_6C[i] = 0;
     }
-    gameState->unk_40 = 0;
-    gameState->unk_44 = 0;
-    gameState->unk_10 = 0;
-    gameState->unk_14 = 0;
-    gameState->unk_18 = 0;
-    gameState->unk_1C = 0;
-    gameState->unk_20 = 0;
-    gameState->unk_24 = 0;
-    gameState->unk_28 = 0;
-    gameState->unk_2C = 0;
-    gameState->unk_30 = 0;
-    gameState->unk_34 = 0;
-    gameState->unk_38 = 0;
-    gameState->unk_3C = 0;
-    gameState->unk_158 = 0;
+    gameState->worldNo = 0;
+    gameState->roomNo = 0;
+    gameState->memberPos[0].x = 0;
+    gameState->memberPos[0].y = 0;
+    gameState->memberPos[0].z = 0;
+    gameState->memberPos[0].w = 0;
+    gameState->memberPos[1].x = 0;
+    gameState->memberPos[1].y = 0;
+    gameState->memberPos[1].z = 0;
+    gameState->memberPos[1].w = 0;
+    gameState->memberPos[2].x = 0;
+    gameState->memberPos[2].y = 0;
+    gameState->memberPos[2].z = 0;
+    gameState->memberPos[2].w = 0;
+    gameState->charFlags = 0;
 }
 
+// memberPos seen as f[i][0..3] after a 0x10-byte pad: the view is load-bearing; with gameState->memberPos[i] GCC adds the
+// 0x10 to the index first and the function is 8 bytes longer.
 typedef struct { u8 pad[0x10]; f32 f[4][4]; } XTF;
 // Stores party member i's position (+0x10) and angle (+0x3C) in gameState vector i.
 void GameState_SaveMemberPos(void* a_, s32 i) {
@@ -183,18 +157,12 @@ void GameState_SavePositions(void) {
     }
 }
 
-// 64-byte entries (four vectors); entry vectors 2 and 3 go to XTrumpet vectors 1 and 2
+// 64-byte entries (four vectors); entry vectors 2 and 3 go to GameState memberPos 1 and 2
 typedef struct {
-    /* 0x00 */ XTrumpetVec v[4];
+    /* 0x00 */ GameStatePos v[4];
 } XTrumpetVecSet;
 
 extern XTrumpetVecSet* entranceTable;
-
-// XTrumpet seen with its four vectors as an array
-typedef struct {
-    /* 0x00 */ u8 unk_00[0x10];
-    /* 0x10 */ XTrumpetVec vec[4];
-} XTrumpetVecs;
 
 // Saves member 0's position, and members 1 and 2 from preset entry index (entranceTable) instead.
 void GameState_SetPresetPositions(s32 index) {
@@ -204,14 +172,14 @@ void GameState_SetPresetPositions(s32 index) {
         GameState_SaveMemberPos(D_002E26A0[0], 0);
     }
     for (i = 0; i < 2; i++) {
-        ((XTrumpetVecs*)gameState)->vec[i + 1].x = entranceTable[index].v[i + 2].x;
-        ((XTrumpetVecs*)gameState)->vec[i + 1].y = entranceTable[index].v[i + 2].y;
-        ((XTrumpetVecs*)gameState)->vec[i + 1].z = entranceTable[index].v[i + 2].z;
-        ((XTrumpetVecs*)gameState)->vec[i + 1].w = entranceTable[index].v[i + 2].w;
+        gameState->memberPos[i + 1].x = entranceTable[index].v[i + 2].x;
+        gameState->memberPos[i + 1].y = entranceTable[index].v[i + 2].y;
+        gameState->memberPos[i + 1].z = entranceTable[index].v[i + 2].z;
+        gameState->memberPos[i + 1].w = entranceTable[index].v[i + 2].w;
     }
 }
 
-// XTrumpet's unk_4C..unk_6B, copied from what func_0017F1C8 returns
+// GameState's unk_4C..unk_6B, copied from what func_0017F1C8 returns
 typedef struct {
     /* 0x00 */ s32 w[8];
 } XTrumpetUnk4C;
@@ -220,11 +188,11 @@ XTrumpetUnk4C* func_0017F1C8(void);
 
 // Saves curWorldNo, curRoomNo, curEntranceNo and the eight words func_0017F1C8 returns.
 void GameState_SaveLocation(void) {
-    XTrumpet* t = gameState;
+    GameState* t = gameState;
 
-    t->unk_40 = curWorldNo;
-    t->unk_44 = curRoomNo;
-    t->unk_48 = curEntranceNo;
+    t->worldNo = curWorldNo;
+    t->roomNo = curRoomNo;
+    t->entranceNo = curEntranceNo;
     *(XTrumpetUnk4C*)&t->unk_4C = *func_0017F1C8();
 }
 
@@ -247,10 +215,10 @@ void GameState_SaveRoomPositions(void) {
 
 // Copies gameState vector index to out.
 void GameState_GetPosition(s32 index, f32* out) {
-    out[0] = ((XTrumpetVec*)&gameState->unk_10 + index)->x;
-    out[1] = ((XTrumpetVec*)&gameState->unk_10 + index)->y;
-    out[2] = ((XTrumpetVec*)&gameState->unk_10 + index)->z;
-    out[3] = ((XTrumpetVec*)&gameState->unk_10 + index)->w;
+    out[0] = (gameState->memberPos + index)->x;
+    out[1] = (gameState->memberPos + index)->y;
+    out[2] = (gameState->memberPos + index)->z;
+    out[3] = (gameState->memberPos + index)->w;
 }
 
 void func_001113E8(void) {
@@ -337,11 +305,11 @@ void func_00111638(void) {
     s32 value;
 
     D_002B8364 = 1;
-    curWorldNo = gameState->unk_40;
-    curRoomNo = gameState->unk_44;
+    curWorldNo = gameState->worldNo;
+    curRoomNo = gameState->roomNo;
     value = func_00111468(curWorldNo, curRoomNo);
     D_002B8684 = value;
-    curEntranceNo = gameState->unk_48;
+    curEntranceNo = gameState->entranceNo;
 }
 
 void func_001116A8(void) {
@@ -361,59 +329,59 @@ void func_001116C8(void) {
 void GameState_RefreshAvailableFlags(void) {
     s32 iVar1 = Party_FindCharacterSlot(3);
     if (iVar1 != -1) {
-        gameState->unk_158 |= 8;
+        gameState->charFlags |= 8;
     }
     iVar1 = Party_FindCharacterSlot(5);
     if (iVar1 != -1) {
-        gameState->unk_158 |= 0x20;
+        gameState->charFlags |= 0x20;
     }
     iVar1 = Party_FindCharacterSlot(6);
     if (iVar1 != -1) {
-        gameState->unk_158 |= 0x40;
+        gameState->charFlags |= 0x40;
     }
     iVar1 = Party_FindCharacterSlot(7);
     if (iVar1 != -1) {
-        gameState->unk_158 |= 0x80;
+        gameState->charFlags |= 0x80;
     }
     iVar1 = Party_FindCharacterSlot(8);
     if (iVar1 != -1) {
-        gameState->unk_158 |= 0x100;
+        gameState->charFlags |= 0x100;
     }
     iVar1 = Party_FindCharacterSlot(9);
     if (iVar1 != -1) {
-        gameState->unk_158 |= 0x200;
+        gameState->charFlags |= 0x200;
     }
 }
 
 void GameState_ApplyAvailableSelection(void) {
   switch (curWorldNo) {
   case 5:
-    if (gameState->unk_158 & 8) {
+    if (gameState->charFlags & 8) {
       Party_AddCharacter(3);
     }
     break;
   case 8:
-    if (gameState->unk_158 & 0x20) {
+    if (gameState->charFlags & 0x20) {
       Party_AddCharacter(5);
     }
     break;
   case 9:
-    if (gameState->unk_158 & 0x40) {
+    if (gameState->charFlags & 0x40) {
       Party_AddCharacter(6);
     }
     break;
   case 10:
-    if (gameState->unk_158 & 0x80) {
+    if (gameState->charFlags & 0x80) {
       Party_AddCharacter(7);
     }
     break;
   case 0xd:
-    if (gameState->unk_158 & 0x100) {
+    if (gameState->charFlags & 0x100) {
       Party_AddCharacter(8);
     }
     break;
   case 0xf:
-    if (gameState->unk_158 & 0x200) {
+    if (gameState->charFlags & 0x200) {
       Party_AddCharacter(9);
     }
   }

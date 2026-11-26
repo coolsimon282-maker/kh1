@@ -1,3 +1,9 @@
+/**
+ * Event data files (JP/EU only; Final Mix: src/unsplit/xjockey.c): the names opn.dat / end.dat / end2.dat /
+ * demo.dat (probably the opening, ending and demo data), the last CD read status and error (sceCdGetError), and lookups
+ * of named entries in a loaded data block (func_002485C8; the callers stop with a break instruction when an entry is
+ * missing). Most of the file is still assembly.
+ */
 #include "common.h"
 
 s32 D_0046421C;
