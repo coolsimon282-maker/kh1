@@ -279,11 +279,11 @@ s32 func_00100328(void) {
     return 0;
 }
 
-// Initialises the graphics, then runs func_00109580 forever.
+// Initialises the graphics, then runs Game_MainLoop forever.
 int main(void) {
     Graphics_Initialize();
     do {
-        func_00109580();
+        Game_MainLoop();
     } while (TRUE);
 }
 

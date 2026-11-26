@@ -31,7 +31,7 @@ s32 func_0011C440(void) {
     if (D_003F34A4 == 0) {
         if (D_003F720C == 1) {
             func_0011C5E8();
-            func_001093A8(15);
+            GameMode_Request(15);
             fm_func_001C07A8();
         } else {
             func_0011C540();
@@ -44,7 +44,7 @@ s32 func_0011C440(void) {
 s32 func_0011C440(void) {
     if (D_003ED704 == 0) {
         if (D_003F117C == 1) {
-            func_001093A8(2);
+            GameMode_Request(2);
             func_00111638();
             D_002B29D0 = 1;
         } else {
@@ -66,7 +66,7 @@ s32 func_0011C4B0(void) {
     if (D_003F7774 == 0) {
         switch (D_003F7778) {
             case FALSE:
-                func_001093A8(10);
+                GameMode_Request(10);
                 return 4;
             case TRUE:
                 func_0022BCB8(0xffff);
@@ -81,7 +81,7 @@ s32 func_0011C4B0(void) {
     if (D_003F1514 == 0) {
         switch (D_003F1518) {
             case FALSE:
-                func_001093A8(10);
+                GameMode_Request(10);
                 func_0022F848();
                 func_00158C00(15);
                 func_00111638();

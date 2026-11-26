@@ -502,3 +502,25 @@ other functions (rule F1).
 | SaTask_FreeGroup5 | 0x0024B688 | xpackage.c | SaTask_FreeGroup for group 5. |
 | SaTask_FreeGroup6 | 0x0024B6A0 | xpackage.c | SaTask_FreeGroup for group 6. |
 | SaTask_FreeGroup7 | 0x0024B6B8 | xpackage.c | SaTask_FreeGroup for group 7. |
+| FadeTaskList_Task | 0x00109360 | xarcade.c | Task: updates the fade task list (fadeTaskList). |
+| Game_InitSystems | 0x00109388 | xarcade.c | Initialises the game systems (task system, game state and data, allset / allarea tables, ...) before the main loop. |
+| Fade_InitSystem | 0x001094F0 | xarcade.c | Resets the fades, sets up fadeTaskList and adds FadeTaskList_Task. |
+| GameMode_Request | 0x00109558 | xarcade.c | Requests game mode arg0 (D_00495164, state D_00495160 = 2) and starts capturing the screen. |
+| Overlay_Run | 0x00109630 | xarcade.c | Invalidates the instruction cache and calls the overlay at 0xF20000 (command 0). |
+| SoftReset_Check | 0x00109658 | xarcade.c | When the pad combination (all shoulder buttons with start and select, probably) is held and nothing is loading, stops sound, any movie and the game and returns D_002BBE08 (cleared: reset). |
+| Game_MainLoop | 0x00109770 | xarcade.c | The main loop, probably: initialises, plays the opening movies, then each frame runs the pause, system message and task system updates. |
+| Screen_RestoreFromOverlayArea | 0x00109CD0 | xarcade.c | Uploads the two halves of a screen image stored at 0xF20000 back to VRAM (0xE00, 0x1400). |
+| Screen_CaptureToOverlayAreaTask | 0x00109D98 | xarcade.c | Task: stores the frame buffer at 0x1A00 (512 x 384) to 0xF20000. |
+| Screen_CaptureToOverlayArea | 0x00109DF8 | xarcade.c | Adds Screen_CaptureToOverlayAreaTask. |
+| Screen_CrossFadeTask | 0x00109E20 | xarcade.c | Task: draws the captured screen fading out over the time D_00495184 (FM). |
+| Screen_StartCrossFade | 0x00109F48 | xarcade.c | Starts Screen_CrossFadeTask (+0x04 of D_0048EC00 = arg0 * 2). |
+| Screen_RestoreCapture | 0x00109F88 | xarcade.c | Uploads the screen captured by Screen_CaptureTask (D_002B2CCC) back to VRAM. |
+| Screen_CaptureTask | 0x0010A058 | xarcade.c | Task: stores the frame buffer at 0x1A00 to a new buffer D_002B2CCC. |
+| Screen_Capture | 0x0010A0D8 | xarcade.c | Marks the capture (D_002B2CC4), starts a fade when the screen is not at full colour, adds Screen_CaptureTask. |
+| Screen_FadeCaptureTask | 0x0010A120 | xarcade.c | Task: draws the captured screen darkening over 64 frames, then clears the screen colour (FM). |
+| Screen_ShowCaptureTask | 0x0010A248 | xarcade.c | Task: starts an overlay fade in and draws the captured screen for 64 frames (FM). |
+| Screen_StartCaptureFade | 0x0010A320 | xarcade.c | Adds Screen_ShowCaptureTask when D_002B2CC0 is set, else Screen_FadeCaptureTask. |
+| Screen_DrawCaptureTask | 0x0010A378 | xarcade.c | Task: draws the captured screen every frame. |
+| Screen_DrawCapture | 0x0010A3C0 | xarcade.c | Adds Screen_DrawCaptureTask. |
+| Screen_SaveRegion | 0x0010A3E8 | xarcade.c | Stores the 256 x 192 VRAM area at 0x3600 in a new buffer D_002B2CC8. |
+| Screen_LoadRegion | 0x0010A470 | xarcade.c | Uploads the area saved by Screen_SaveRegion back to 0x3600. |

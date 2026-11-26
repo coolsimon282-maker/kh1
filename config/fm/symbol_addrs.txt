@@ -609,6 +609,33 @@ SaTask_FreeGroup6                    = 0x0024B6A0; // type:func
 SaTask_FreeGroup7                    = 0x0024B6B8; // type:func
 
 
+//=========================================================
+// xarcade.c
+//=========================================================
+FadeTaskList_Task                    = 0x00109360; // type:func
+Game_InitSystems                     = 0x00109388; // type:func
+Fade_InitSystem                      = 0x001094F0; // type:func
+GameMode_Request                     = 0x00109558; // type:func
+Overlay_Run                          = 0x00109630; // type:func
+SoftReset_Check                      = 0x00109658; // type:func
+Game_MainLoop                        = 0x00109770; // type:func
+Screen_RestoreFromOverlayArea        = 0x00109CD0; // type:func
+Screen_CaptureToOverlayAreaTask      = 0x00109D98; // type:func
+Screen_CaptureToOverlayArea          = 0x00109DF8; // type:func
+Screen_CrossFadeTask                 = 0x00109E20; // type:func
+Screen_StartCrossFade                = 0x00109F48; // type:func
+Screen_RestoreCapture                = 0x00109F88; // type:func
+Screen_CaptureTask                   = 0x0010A058; // type:func
+Screen_Capture                       = 0x0010A0D8; // type:func
+Screen_FadeCaptureTask               = 0x0010A120; // type:func
+Screen_ShowCaptureTask               = 0x0010A248; // type:func
+Screen_StartCaptureFade              = 0x0010A320; // type:func
+Screen_DrawCaptureTask               = 0x0010A378; // type:func
+Screen_DrawCapture                   = 0x0010A3C0; // type:func
+Screen_SaveRegion                    = 0x0010A3E8; // type:func
+Screen_LoadRegion                    = 0x0010A470; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

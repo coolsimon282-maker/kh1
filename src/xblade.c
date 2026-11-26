@@ -461,7 +461,7 @@ void func_001129F8(void) {
     func_00101628(360);
 }
 
-// Leaves the room for mode 4 (func_001093A8(4)), keeping world and room in D_002B8698.
+// Leaves the room for mode 4 (GameMode_Request(4)), keeping world and room in D_002B8698.
 void func_00112A50(void) {
     func_0012C990(2, 0);
     func_0012C990(6, 0);
@@ -471,7 +471,7 @@ void func_00112A50(void) {
     TaskSystem_AddTask(190000, func_001129C8);
     D_002B8698[0] = curWorldNo;
     D_002B8698[1] = curRoomNo;
-    func_001093A8(4);
+    GameMode_Request(4);
 }
 
 // Leaves the room for mode 6, saving party positions and world, room, entrance in D_002B9318.
@@ -484,7 +484,7 @@ void func_00112AD8(void) {
     D_002B9318[0] = curWorldNo;
     D_002B9318[1] = curRoomNo;
     D_002B9318[2] = curEntranceNo;
-    func_001093A8(6);
+    GameMode_Request(6);
 }
 
 // Empty.
@@ -517,10 +517,10 @@ void func_00112B68(void) {
     func_001EE1E0(3, -10);
 }
 
-// func_00114420, then mode 9 (func_001093A8).
+// func_00114420, then mode 9 (GameMode_Request).
 void* func_00112C70(void) {
     func_00114420();
-    return func_001093A8(9);
+    return GameMode_Request(9);
 }
 
 #ifdef VERSION_FM
@@ -542,12 +542,12 @@ void fm_func_00112FD0(s32 arg0) {
 void* func_00112C90(void) {
     func_00114420();
     fm_func_00112FD0(1);
-    return func_001093A8(8);
+    return GameMode_Request(8);
 }
 #else
 void* func_00112C90(void) {
     func_00114420();
-    return func_001093A8(8);
+    return GameMode_Request(8);
 }
 #endif
 
@@ -1093,11 +1093,11 @@ s32 func_00113B30(void) {
     return 4;
 }
 
-// Task: adds func_00113B30 (priority 190019), func_0010A108.
+// Task: adds func_00113B30 (priority 190019), Screen_SaveRegion.
 s32 func_00113B78(void) {
     XPointy* p0 = TaskSystem_AddTask(190019, func_00113B30);
     p0->unk_02 = 1;
-    func_0010A108();
+    Screen_SaveRegion();
     func_00102970(0x80, 0x10);
     return 4;
 }
@@ -1286,7 +1286,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                             D_002B9664 = 1;
 //                             func_001224B8();
 //                             func_0010FB90();
-//                             if (func_00109468() == 0) {
+//                             if (SoftReset_Check() == 0) {
 //                                 break; 
 //                             } 
 //                             if (SysMessage_WaitWhileActive() != 0) {
