@@ -2734,7 +2734,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A758);
 void func_0020A8E8(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A8F0);
+extern s32 D_a3pad_0020A8F0_1;
+extern s32 D_a3pad_0020A8F0_2;
+extern s32 D_a3pad_0020A8F0_3;
+extern s32 D_a3pad_0020A8F0_4;
+extern s32 D_a3pad_0020A8F0_5;
+typedef struct { u64 d[14]; } A3GsStoreImage;
+int sceGsSetDefStoreImage(A3GsStoreImage *sp, short sbp, short sbw, short spsm, short x, short y, short w, short h);
+int sceGsExecStoreImage(A3GsStoreImage *sp, u_long128 *dstaddr);
+void FlushCache(int);
+extern u32 D_003F34B0[];
+void func_0020A8F0(void) {
+    A3GsStoreImage si0;
+    A3GsStoreImage si1;
+    u_long128 b0[16];
+    u_long128 b1[16];
+
+    sceGsSetDefStoreImage(&si0, 0, 8, 0, 0x100, 4, 0x10, 1);
+    sceGsSetDefStoreImage(&si1, 0, 8, 0, 0x100, 0x1BB, 0x10, 1);
+    FlushCache(0);
+    sceGsExecStoreImage(&si0, b0);
+    sceGsExecStoreImage(&si1, b1);
+    sceGsSyncPath(0, 0);
+    D_003F34B0[0] = *(u32 *)b0 & 0xFFFFFF;
+    D_003F34B0[1] = *(u32 *)b1 & 0xFFFFFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020A9B0);
 
