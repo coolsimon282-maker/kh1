@@ -1075,7 +1075,76 @@ void func_001E2A40(s32 x) {
     func_0022EEE0(x);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001E2A88);
+extern s32 D_a3pad_2a88_1;
+extern s32 D_a3pad_2a88_2;
+void MsgWin_FreeBuffer(void *);
+void *TaskSystem_AddTask(s32, s32 (*)(void));
+s32 func_0022EE08_r(void) __asm__("func_0022EE08");
+extern s32 D_003DC488;
+extern u8 D_003DBA68[];
+extern u8 D_003DC370[];
+extern u8 D_003DC2E0[];
+extern u8 D_003DC318[];
+extern u8 D_0062F790[];
+extern u8 D_003DC2A8[];
+extern u8 D_003DC368[];
+extern s32 D_003DC490;
+void func_0010BB10_w(void *, void *) __asm__("func_0010BB10");
+void func_001E3F00();
+
+void func_001E2A88(void) {
+    s32 r;
+
+    D_003DC478 = 1;
+    D_003DC47C = 0x3C;
+    TaskSystem_AddTask(50000, func_001E2920);
+    D_003DC490 = 0;
+    func_0010BB10_w(D_0062F790, func_001E3F00);
+    if (D_003DC488 == D_003DC484) {
+        MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+        func_0010EDA0(D_0062F6E0, D_003DBA68, (s32)func_001E2810);
+        return;
+    }
+    if (D_003DC488 - 1 == D_003DC484) {
+        func_001E2A40(3);
+    } else {
+        func_001E2A40(D_003DC484 - 1);
+    }
+    r = func_0022EE08_r();
+    if (r == -1) {
+        func_0011D598(4);
+        MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+        func_0010EDA0(D_0062F6E0, D_003DC2A8, (s32)func_001E2810);
+        return;
+    }
+    if (r == -2) {
+        func_0011D598(4);
+        MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+        func_0010EDA0(D_0062F6E0, D_003DC370, (s32)func_001E2810);
+        return;
+    }
+    if (r == -3) {
+        func_0011D598(4);
+        MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+        func_0010EDA0(D_0062F6E0, D_003DC370, (s32)func_001E2810);
+        return;
+    }
+    if (r == -4) {
+        if (D_003DC488 - 1 == D_003DC484) {
+            func_0011D598(4);
+            MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+            func_0010EDA0(D_0062F6E0, D_003DC2E0, (s32)func_001E2810);
+        } else {
+            func_0011D598(4);
+            MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+            func_0010EDA0(D_0062F6E0, D_003DC318, (s32)func_001E2810);
+        }
+        return;
+    }
+    MsgWin_FreeBuffer(D_0062F6E0 + 0x80);
+    func_0010EDA0(D_0062F6E0, D_003DC368, (s32)func_001E2810);
+    return;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0DDF98", func_001E2D08);
 
