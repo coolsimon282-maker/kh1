@@ -1537,7 +1537,37 @@ f32 func_0013FE80(f32 x) {
     return x;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013FF00);
+f32 Line_IntersectXZ(f32*, f32*, f32*, f32*, f32*);
+s32 func_0013FF00(u8* p, f32* e, f32* n, f32* out) {
+    f32 d[4];
+    f32 s[4];
+    f32 o[4];
+    f32 t;
+
+    if (__builtin_fabsf(e[1] - e[5]) > 5.0f) {
+        e += 4;
+    }
+    sceVu0SubVector(d, e + 4, e);
+    func_001223B0(d, d);
+    t = Line_IntersectXZ(o, e, d, (f32*)(p + 0x10), n);
+    if (t < 0.0f) {
+        if (t < -20.0f) {
+            return 0;
+        }
+        t = 0.0f;
+    } else if (d[3] < t) {
+        if (d[3] + 20.0f < t) {
+            return 0;
+        }
+        t = d[3];
+    }
+    sceVu0ScaleVector(s, n, *(f32*)(p + 0x2C0) - 1.0f);
+    out[0] = e[0] + d[0] * t + s[0];
+    out[1] = *(f32*)(p + 0x14);
+    out[2] = e[2] + d[2] * t + s[2];
+    out[3] = 1.0f;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00140070);
 
