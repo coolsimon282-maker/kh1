@@ -276,6 +276,11 @@ GameState_SetPresetPositions         = 0x001113F8; // type:func
 GameState_SaveLocation               = 0x00111480; // type:func
 GameState_SaveRoomPositions          = 0x00111510; // type:func
 GameState_GetPosition                = 0x00111590; // type:func
+Time_FromFrames                      = 0x00111B08; // type:func
+Time_CalcHours                       = 0x00111B10; // type:func
+Time_CalcMinutesPart                 = 0x00111B48; // type:func
+Time_CalcSecondsPart                 = 0x00111B90; // type:func
+Time_CalcHundredthsPart              = 0x00111BE8; // type:func
 
 
 //=========================================================
@@ -334,6 +339,10 @@ Munny_Get                            = 0x001EF7A0; // type:func
 Munny_Add                            = 0x001EF7B0; // type:func
 Munny_Sub                            = 0x001EF7F0; // type:func
 Party_RefreshStats                   = 0x001EF830; // type:func
+Time_GetHours                        = 0x001EE428; // type:func
+Time_GetMinutesPart                  = 0x001EE440; // type:func
+Time_GetSecondsPart                  = 0x001EE458; // type:func
+Time_GetHundredthsPart               = 0x001EE470; // type:func
 
 
 //=========================================================
@@ -368,6 +377,14 @@ Config_SetOption6                    = 0x00219418; // type:func
 ConfigMenu_UpdateOption0             = 0x00219A88; // type:func
 ConfigMenu_UpdateOption1             = 0x00219C18; // type:func
 ConfigMenu_UpdateOption2             = 0x00219DA8; // type:func
+PresetMenu_Open                      = 0x00217F58; // type:func
+PresetMenu_ClampMemberSlot           = 0x00217FB0; // type:func
+PresetMenu_ClearSelection            = 0x00217FE8; // type:func
+PresetMenu_ApplyChoice               = 0x00216EA8; // type:func
+PartyMenu_Update                     = 0x00218DD0; // type:func
+PartyMenu_ClampSlot                  = 0x002190E8; // type:func
+PartyMenu_ClearSlot                  = 0x00219118; // type:func
+PartyMenu_DrawHelp                   = 0x00218D60; // type:func
 
 
 //=========================================================
@@ -457,6 +474,18 @@ Movie_Start                          = 0x00111060; // type:func
 Movie_IsRunning                      = 0x00111090; // type:func
 Movie_SetSysMessage                  = 0x00111170; // type:func
 Movie_Finish                         = 0x001111B0; // type:func
+Fade_ResetAll                        = 0x001103A0; // type:func
+ScreenWobble_Set                     = 0x00110E38; // type:func
+ScreenWobble_Apply                   = 0x00110E68; // type:func
+CameraMats_SaveAndRebuild            = 0x00110A48; // type:func
+CameraMats_Restore                   = 0x00110C30; // type:func
+Pad_UpdateWithReplay                 = 0x0010FD40; // type:func
+PadReplay_Stop                       = 0x0010FE80; // type:func
+PadReplay_Start                      = 0x0010FE90; // type:func
+Lib_ForceLinkCdIpu                   = 0x00111238; // type:func
+CameraMats_ApplyView                 = 0x00110BA8; // type:func
+Gs_ClearScreenGrey                   = 0x0010FF60; // type:func
+CameraMats_Build                     = 0x00110618; // type:func
 
 
 //=========================================================
@@ -492,6 +521,8 @@ Actor_Remove                         = 0x001247E8; // type:func
 Actor_RemoveById                     = 0x001248E8; // type:func
 Actor_RemoveAll                      = 0x001249D8; // type:func
 Actor_InitSystem                     = 0x00124B90; // type:func
+Actor_StartLogic                     = 0x00123F28; // type:func
+Actor_StopAll                        = 0x00124A28; // type:func
 
 
 //=========================================================
@@ -510,6 +541,15 @@ MsgWin_SetupChoices                  = 0x0010F258; // type:func
 MsgWin_UpdateChoice                  = 0x0010F368; // type:func
 MsgWin_FreeChoices                   = 0x0010F520; // type:func
 MsgWin_InitChoice                    = 0x0010F558; // type:func
+MsgWin_RunChoice                     = 0x0010CD40; // type:func
+MsgWin_FreeBuffer                    = 0x0010E3F0; // type:func
+MsgWin_OnFinished                    = 0x0010E430; // type:func
+MsgWin_RegisterImages                = 0x0010E8D0; // type:func
+Text_GetLineCount                    = 0x0010F098; // type:func
+MsgWin_GetShownLineCount             = 0x0010D0C0; // type:func
+Pad_IsConfirmPressed                 = 0x0010CF20; // type:func
+Text_Measure                         = 0x0010EF90; // type:func
+Text_DrawTwoColumns                  = 0x0010EDB0; // type:func
 
 
 //=========================================================

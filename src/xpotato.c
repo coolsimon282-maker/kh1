@@ -121,6 +121,10 @@ s32 func_00215C48(s32 arg0) {
     return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00215C48(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215C48);
+#else
 s32 func_00215C48(s32 arg0) {
     s32 val;
 
@@ -133,14 +137,20 @@ s32 func_00215C48(s32 arg0) {
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
 #endif
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215CE8);
 
 // Draws help text D_003F4488[D_0063CF40] at (174, 12).
+#ifdef VERSION_EU
+s32 func_00215EE8(void* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215EE8);
+#else
 s32 func_00215EE8(void* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F4488[D_0063CF40], 17, 0x80C87850);
 }
+#endif
 
 struct XPotMenu;
 s32 func_001F42B8(struct XPotMenu*);
@@ -168,6 +178,10 @@ extern s32 D_003F2C40[][5];
 extern s32 D_003F44C8[];
 
 // Menu page with three rows (func_0013C288 / func_00132F88 names, message 0xD4 when empty); confirming opens two child pages.
+#ifdef VERSION_EU
+void func_00215F48(struct XPotMenu* m);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215F48);
+#else
 void func_00215F48(struct XPotMenu* m) {
     u8* p[2];
     void* t;
@@ -225,6 +239,7 @@ void func_00215F48(struct XPotMenu* m) {
         func_001F94F0(m, 0, 0x60, yy, r, 0xF, D_003F2C40[c][4]);
     }
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
@@ -236,10 +251,15 @@ s32 func_00216758(XWhiskey* arg0) {
     return func_001F9438(arg0, 0, 174, 12, *(s32*)((u8*)arg0 + 0x24), 17, 0x80C87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00216758(XWhiskey* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216758);
+#else
 s32 func_00216758(XWhiskey* arg0) {
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, arg0->munny, 17, 0x80c87850);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -250,7 +270,7 @@ typedef struct {
 extern XPotatoTbl D_003F40F8[];
 
 // Stores the chosen preset D_0063CF48 for the selected party member and applies it to the entries listed in D_003F40F8 (preset 5: nothing).
-void func_002167A0(void) {
+void PresetMenu_ApplyChoice(void) {
     u8 idx = D_003010F8->unk_48E[D_0063CF3C];
     s32* list = D_003F40F8[idx].list;
     s32 count = D_003F40F8[idx].count;
@@ -278,7 +298,7 @@ void func_002167A0(void) {
     }
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002167A0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", PresetMenu_ApplyChoice);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002168F8);
@@ -298,6 +318,10 @@ s32 func_00217038(s32 arg0) {
     return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00217038(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217038);
+#else
 s32 func_00217038(s32 arg0) {
     s32 val = 213;
     if (D_0063CF3C != 0) {
@@ -307,6 +331,7 @@ s32 func_00217038(s32 arg0) {
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002170B0);
@@ -320,13 +345,19 @@ s32 func_00217810(s32 arg0) {
     return func_00207830(arg0, 4, 2, 0, 0, 122, 108);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00217810(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217810);
+#else
 s32 func_00217810(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 117);
 }
 #endif
+#endif
 
-// Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0.
-void func_00217840(void* arg0) {
+// Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0 (probably the
+// preset page: its other state D_0063CF3C..D_0063CF50 is what PresetMenu_ApplyChoice uses).
+void PresetMenu_Open(void* arg0) {
     void* p0 = func_001F3A20(&D_003EE8B0, 0);
 
     if (p0 != NULL) {
@@ -337,7 +368,7 @@ void func_00217840(void* arg0) {
 }
 
 // Clamps the selected party slot D_0063CF3C to the party size, then func_00215B88.
-void func_00217898(void) {
+void PresetMenu_ClampMemberSlot(void) {
     if (D_0063CF3C > D_003DE6A0 - 1) {
         D_0063CF3C = D_003DE6A0 - 1;
     }
@@ -345,7 +376,7 @@ void func_00217898(void) {
 }
 
 // Clears the page selections D_0063CF3C..D_0063CF50.
-void func_002178D0(void) {
+void PresetMenu_ClearSelection(void) {
     D_0063CF3C = 0;
     D_0063CF40 = 0;
     D_0063CF44 = 0;
@@ -415,9 +446,9 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217908);
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
 #ifdef VERSION_FM
-s32 func_00218648(s32 arg0);
+s32 PartyMenu_DrawHelp(s32 arg0);
 // Draws help text 0x110, or 0x111 with party member D_0063CF88's name (FM).
-s32 func_00218648(s32 arg0) {
+s32 PartyMenu_DrawHelp(s32 arg0) {
     s32 v = 0x110;
 
     func_001F9010(23);
@@ -428,7 +459,11 @@ s32 func_00218648(s32 arg0) {
     return func_001F9438((void*)arg0, 0, 174, 12, v, 17, 0x80C87850);
 }
 #else
-s32 func_00218648(s32 arg0) {
+#ifdef VERSION_EU
+s32 PartyMenu_DrawHelp(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", PartyMenu_DrawHelp);
+#else
+s32 PartyMenu_DrawHelp(s32 arg0) {
     s32 val = 277;
 
     func_001F9B50(23);
@@ -438,6 +473,7 @@ s32 func_00218648(s32 arg0) {
     }
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -471,7 +507,7 @@ s32 Char_GetName(s32);
 void func_00207870(XPotMenu*, s32, s32, s32, s32, s32, s32);
 
 // Party member list page: one row per member (Char_GetName); moving fills the child page through func_00217908.
-void func_002186B8(XPotMenu* m) {
+void PartyMenu_Update(XPotMenu* m) {
     XPotMenu* p;
     u32 v;
     s32 b;
@@ -510,7 +546,7 @@ void func_002186B8(XPotMenu* m) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002186B8);
+INCLUDE_ASM("asm/nonmatchings/xpotato", PartyMenu_Update);
 #endif
 
 #ifdef VERSION_FM
@@ -520,22 +556,27 @@ s32 func_00218840(s32 arg0) {
     return func_00207830(arg0, 4, 2, 0, 0, 122, 109);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00218840(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218840);
+#else
 s32 func_00218840(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 118);
 }
+#endif
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218870);
 
 // Clamps the selected party slot D_0063CF88 to the party size.
-void func_002189D0(void) {
+void PartyMenu_ClampSlot(void) {
     if (D_0063CF88 > D_003DE6A0 - 1) {
         D_0063CF88 = D_003DE6A0 - 1;
     }
 }
 
 // Clears the selected party slot D_0063CF88.
-void func_00218A00(void) {
+void PartyMenu_ClearSlot(void) {
     D_0063CF88 = 0;
 }
 
@@ -567,6 +608,10 @@ void Config_Reset(void) {
 #endif
 
 // Returns config option arg0 (0..6: GameData +0x00, 0x04, 0x08, 0x10, 0x14, 0x18, 0x2C).
+#ifdef VERSION_EU
+u32 Config_Get(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", Config_Get);
+#else
 u32 Config_Get(s32 arg0) {
     switch (arg0) {
         case 0:
@@ -586,8 +631,13 @@ u32 Config_Get(s32 arg0) {
             return *(u32*)((u8*)D_003ED718 + 0x2C);
     }
 }
+#endif
 
 // Sets config option arg0 (same order as Config_Get).
+#ifdef VERSION_EU
+void Config_Set(s32 arg0, u32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xpotato", Config_Set);
+#else
 void Config_Set(s32 arg0, u32 arg1) {
     switch (arg0) {
         case 0:
@@ -614,6 +664,7 @@ void Config_Set(s32 arg0, u32 arg1) {
             break;
     }
 }
+#endif
 
 // Config option 0 (GameData +0x00).
 u32 Config_GetOption0(void) {
@@ -762,10 +813,15 @@ void fm_func_00219458(s32 arg0) {
 #endif
 
 // Draws help text D_003F47B8[menu word +0x24] at (174, 12).
+#ifdef VERSION_EU
+s32 func_00218CB0(XWhiskey* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218CB0);
+#else
 s32 func_00218CB0(XWhiskey* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F47B8[*(s32*)((u8*)arg0 + 0x24)], 17, 0x80C87850);
 }
+#endif
 
 // D_003ED72C++, D_003ED728--.
 void func_00218D08(void) {
@@ -782,6 +838,32 @@ void func_00218D38(void) {
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218DD0);
 
 NOTHROW(void, func_00218DD0);
+#ifndef VERSION_FM
+// JP/EU: what the FM-only block above declares for the shared code below
+typedef struct XPotMenu {
+    /* 0x00 */ char unk_00[0x10];
+    /* 0x10 */ struct XPotMenu* unk_10;
+    /* 0x14 */ char unk_14[0x10];
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ char unk_28[0xB0];
+    /* 0xD8 */ u16 unk_D8;
+} XPotMenu;
+
+extern s32* D_00425BC8;
+extern s32 D_00642D28;
+extern s32 D_003F4798[];
+extern s32 D_003F47A0[];
+s32 func_001F42B8(XPotMenu*);
+void func_001F3758(XPotMenu*);
+void func_001FDFD0(XPotMenu*);
+void func_0020BD18(XPotMenu*, s32);
+s32 func_001FD538(XPotMenu*);
+void func_001FD858(XPotMenu*);
+s32 func_001FD518(XPotMenu*);
+s32 func_001FE570(XPotMenu*);
+void func_00206690(XPotMenu*, s32, s32, s32);
+void func_002078F0(XPotMenu*, s32, s32, s32, s32, s32, s32, s32, s32);
+#endif
 extern s32 D_003F4878[];
 extern s32 D_003F4818[];
 extern s32 D_003F4848[];
@@ -794,6 +876,10 @@ void func_00206130(void*, s32, s32, s32, s32, u32);
 void func_001FC308(void*, s32, s32, s32, s32, s32, s32, u32, u32);
 
 // Draws twelve labels (D_003F4878..D_003F48A8) and their line sets, highlighting entry D_00642D28.
+#ifdef VERSION_EU
+void func_002190C0(void* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_002190C0);
+#else
 void func_002190C0(void* arg0) {
     s32 i;
     s32 n;
@@ -823,6 +909,7 @@ void func_002190C0(void* arg0) {
     func_001FC308(arg0, q[0], q[1], 0, 0, 0xA, 0, 0x33F35054, 0x33F35054);
     func_001FC308(arg0, q[0], q[1] + 0xF, 0, 0, 0xB, 0, 0x33F35054, 0x33F35054);
 }
+#endif
 
 #ifdef VERSION_FM
 extern s32* D_00425BC8;
@@ -925,6 +1012,10 @@ void ConfigMenu_UpdateOption1(XPotMenu* m) {
 }
 
 #else
+#ifdef VERSION_EU
+void ConfigMenu_UpdateOption1(XPotMenu* m);
+INCLUDE_ASM("asm/nonmatchings/xpotato", ConfigMenu_UpdateOption1);
+#else
 void ConfigMenu_UpdateOption1(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
@@ -962,6 +1053,7 @@ void ConfigMenu_UpdateOption1(XPotMenu* m) {
         func_002078F0(m, i == sel, 2, 2, y, 0, 106, y + 53, D_003F4798[i]);
     }
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -1007,6 +1099,10 @@ void ConfigMenu_UpdateOption2(XPotMenu* m) {
 }
 
 #else
+#ifdef VERSION_EU
+void ConfigMenu_UpdateOption2(XPotMenu* m);
+INCLUDE_ASM("asm/nonmatchings/xpotato", ConfigMenu_UpdateOption2);
+#else
 void ConfigMenu_UpdateOption2(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
@@ -1049,9 +1145,15 @@ void ConfigMenu_UpdateOption2(XPotMenu* m) {
     } while (i < 2);
 }
 #endif
+#endif
 
 // Draws help text D_003F4BD0[D_00642D24] at (174, 12).
+#ifdef VERSION_EU
+s32 func_00219788(void* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00219788);
+#else
 s32 func_00219788(void* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F4BD0[D_00642D24], 17, 0x80C87850);
 }
+#endif

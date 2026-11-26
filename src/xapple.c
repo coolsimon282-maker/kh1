@@ -264,6 +264,10 @@ s32 Summon_CameraTask(u16* arg0) {
     return 0;
 }
 #else
+#ifdef VERSION_EU
+s32 Summon_CameraTask(u16* arg0);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_CameraTask);
+#else
 s32 Summon_CameraTask(u16* arg0) {
     sceVu0FVECTOR sp0;
     sceVu0FVECTOR sp10;
@@ -340,6 +344,7 @@ s32 Summon_CameraTask(u16* arg0) {
     sceVu0ApplyMatrix(cameraTarget, D_005325E8->unk_D0, sp10);
     return 0;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -837,9 +842,14 @@ void Summon_OnDataLoaded();
 // }
 
 // Summon time: (the summoner's +0x6C->+0x48 + bits 10..12 of D_002DED20) * 3000; probably.
+#ifdef VERSION_EU
+f32 Summon_GetDuration(void);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_GetDuration);
+#else
 f32 Summon_GetDuration(void) {
     return (D_002DEC00->unk_6C->unk_48 + ((s32)(D_002DED20 >> 0xA) & 7)) * 3000;
 }
+#endif
 
 // Starts summon arg1 (D_00301010: dumbo, bambi, genie, tink, mushu, simba) for actor arg0: sets the flags, takes a cost from the actor (func_00141668, probably MP), loads xs_<name>.dat, adds Summon_MainTask.
 void* Summon_Start(s32 arg0, s32 arg1) {

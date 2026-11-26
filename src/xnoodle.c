@@ -488,6 +488,10 @@ void func_0010AFA0(sceVu0FMATRIX arg0, XNoodle* arg1) {
 }
 
 // arg0 = screen * D_0048EC10 * Z rotation by the sprite's angle +0x1C (degrees, turned by 180) translated by arg2.
+#ifdef VERSION_EU
+void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2);
+INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B000);
+#else
 void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0FMATRIX m;
 
@@ -503,6 +507,7 @@ void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0MulMatrix(m, D_0048EC10, m);
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B0D0);
 
@@ -515,7 +520,7 @@ void func_0010BB10(XNoodle* arg0, s32 arg1) {
     if (arg0->unk_18 != 0) {
         arg0->unk_14 = arg1;
         arg0->unk_18 = 3;
-        func_0010E230(&arg0->unk_80);
+        MsgWin_FreeBuffer(&arg0->unk_80);
     }
 }
 
@@ -573,6 +578,10 @@ XNoodleNode* TaskList_Add(s32* list, s32 id, void (*func)());
 void func_0010B810();
 
 // Adds sprite obj to the task list (func_0010B810) and sets up its text window from its position and tables D_002B6780..D_002B67C8.
+#ifdef VERSION_EU
+void func_0010BB50(XNoodleObj* obj, s32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010BB50);
+#else
 void func_0010BB50(XNoodleObj* obj, s32 arg1) {
     XNoodleNode* node;
     XNoodleSpr* spr;
@@ -622,6 +631,7 @@ void func_0010BB50(XNoodleObj* obj, s32 arg1) {
             break;
     }
 }
+#endif
 
 // Task: updates the sprite task list and resets its counter.
 s32 func_0010BDA8(void) {

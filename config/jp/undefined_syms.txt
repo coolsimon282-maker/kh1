@@ -4,6 +4,20 @@ D_00555ED0 = 0x00555ED0;
 /* Old (JP-address) names still used by C for functions renamed in symbol_addrs.txt / jp_names.txt (FM cleanup):
    xhumungus.c keeps the old identifiers (renaming inside it moved other functions, rule F1). Same list as
    config/fm/undefined_syms.txt; made with the names-tools aliases check (C compiled for this version). */
+/* FM-address names that shared C uses, at their JP addresses: each name's EU address (config/eu/undefined_syms.txt)
+   plus the JP-EU shift of the JP names on both sides of it (0x1B90 here; ppvMngTbl: the 0xC000 table ends where
+   D_0036C600 starts; D_002BBDF0/4 sit just before D_002B8340 in FM and EU). There is no JP program here to check
+   against; lightTbl is probably right (only the name below it is near: same shift assumed). */
+presetPosRooms = 0x002B90D0;
+entranceTable = 0x002B92F0;
+entranceCount = 0x002B92F4;
+roomTable = 0x002B92FC;
+roomCount = 0x002B9300;
+lightTbl = 0x002C21D0;
+ppvMngTbl = 0x00360600;
+D_002BBDF0 = 0x002B8338;
+D_002BBDF4 = 0x002B833C;
+
 func_00106380 = Fade_StartIrisClose;
 func_00106428 = Fade_StartIrisOpen;
 func_001064E8 = Fade_ResetIntensity;
@@ -15,13 +29,23 @@ func_001093A8 = GameMode_Request;
 func_00109B00 = Screen_CaptureToOverlayArea;
 func_00109C50 = Screen_StartCrossFade;
 func_0010A108 = Screen_SaveRegion;
+func_0010EEC8 = Text_GetLineCount;
 func_0010F3B8 = MsgWin_InitChoice;
-func_00110230 = PlayTime_SetFrames;
-func_001102A0 = VSync_InstallCallback;
+AllSet_Load = func_0010FA88;
+AreaNames_Load = func_0010FAE8;
+PadReplay_Stop = func_0010FCD0;
+Gs_ClearScreenGrey = func_0010FDB8;
+Fade_ClearScreenColor = func_00110170;
+func_00110190 = Fade_ResetAll;
+PlayTime_SetFrames = func_00110230;
+Frame_ResetCounters = func_00110240;
+VSync_InstallCallback = func_001102A0;
 func_001102C0 = Frame_UpdateTimeStep;
-func_00110E38 = Movie_Load;
-func_00110E78 = Movie_Start;
-func_00110EA8 = Movie_IsRunning;
+ScreenWobble_Set = func_00110C40;
+Movie_ClearState = func_00110E18;
+Movie_Load = func_00110E38;
+Movie_Start = func_00110E78;
+Movie_IsRunning = func_00110EA8;
 func_00110FC8 = Movie_Finish;
 func_00111198 = GameState_SavePositions;
 func_001116F8 = GameState_RefreshAvailableFlags;
@@ -34,7 +58,7 @@ func_0011C5B8 = PartyMenu_RequestOpen;
 TaskSystem_AddTask = func_0011ED30;
 TaskList_Init = func_0011EDD0;
 func_0011EF58 = TaskList_UpdateMatching;
-func_00120590 = cdvd_QueueFileLoad;
+cdvd_QueueFileLoad = func_00120590;
 func_00122AF8 = Light_Add;
 func_00122B70 = Interpolation_ClearValue;
 func_001234A0 = Actor_Next;

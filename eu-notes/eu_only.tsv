@@ -1,7 +1,7 @@
-xarcade	func_001093A8	eu_func_001094D0
-xtrumpet	func_001117D8	eu_func_00111AA8
-xtrumpet	func_001117D8	eu_func_00111AC8
-xtrumpet	func_001117D8	eu_func_00111B00
+xarcade	GameMode_Request	eu_func_001094D0
+xtrumpet	GameState_ApplyAvailableSelection	eu_func_00111AA8
+xtrumpet	GameState_ApplyAvailableSelection	eu_func_00111AC8
+xtrumpet	GameState_ApplyAvailableSelection	eu_func_00111B00
 xtrumpet	func_00111920	eu_func_00111C60
 xtrumpet	func_00111920	eu_func_00111C70
 xtoaster	func_00124CD8	eu_func_00124678
@@ -21,7 +21,7 @@ xhumungus	func_001DDA18	eu_func_001DA558
 xhumungus	func_001DDB58	eu_func_001DA798
 xhumungus	func_001DDC08	eu_func_001DAA38
 xhumungus	func_001DDC08	eu_func_001DAA78
-xtango	func_001EF488	eu_func_001EC508
+xtango	PlayTime_GetHundredthsPart	eu_func_001EC508
 xtango	func_001EFBB0	eu_func_001EC9D0
 xmeowp	func_001F4858	eu_func_001F2048
 xmeowp	func_001F4858	eu_func_001F2050

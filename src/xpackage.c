@@ -12,6 +12,10 @@ XWhiskey* D_00663A28[8];
 // FM's code reads this table at 0x669A18 (FM's linker puts the definition above somewhere else).
 extern XWhiskey* D_00669A18[8];
 #define XPACKAGE_TABLE D_00669A18
+#elif defined(VERSION_EU)
+// EU's code reads it at 0x661FD8 (config/eu/undefined_syms.txt; the EU layout does not place C .bss yet).
+extern XWhiskey* D_00661FD8[8];
+#define XPACKAGE_TABLE D_00661FD8
 #else
 #define XPACKAGE_TABLE D_00663A28
 #endif

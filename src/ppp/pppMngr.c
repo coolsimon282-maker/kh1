@@ -1065,6 +1065,10 @@ extern pppVsfSt D_00363D30[];
 void pppInitHeap(pppMemMng* m, pppEMCB* start, s32 size);
 
 // Initialises the effect system: graphics, heap (0x80000 bytes), render tables, managers, matrices.
+#ifdef VERSION_EU
+void pppInitPartRender(void);
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppInitPartRender);
+#else
 void pppInitPartRender(void) {
     s32 i;
 
@@ -1085,6 +1089,7 @@ void pppInitPartRender(void) {
     D_00616200[3] = 1.0f;
     pppSetPrimPacket(NULL, -1);
 }
+#endif
 
 typedef struct {
     u_long128 q[4];

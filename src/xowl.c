@@ -34,6 +34,10 @@ s32 interpTaskList;
 s32 D_004FA680;
 
 // Interpolation task: moves the vector towards the target; at the end calls the callback and returns 4 (remove).
+#ifdef VERSION_EU
+s32 VectorInterpolationTask_Update(XHoot* arg0);
+INCLUDE_ASM("asm/nonmatchings/xowl", VectorInterpolationTask_Update);
+#else
 s32 VectorInterpolationTask_Update(XHoot* arg0) {
     s32 uVar1;
     f32 fVar2;
@@ -54,6 +58,7 @@ s32 VectorInterpolationTask_Update(XHoot* arg0) {
     sceVu0InterVector(arg0->unk_10[3], &arg0->unk_20, &arg0->unk_30, r);
     return uVar1;
 }
+#endif
 
 // Moves vec[3] to target over time (at once if time <= 0), calling done when it gets there.
 void Interpolation_StartVector(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
@@ -256,7 +261,7 @@ void Light_GetColorMatrix(u8* obj, sceVu0FMATRIX m) {
 extern u32 D_002B85F8;
 extern sceVu0FVECTOR D_002C6450;
 void func_00107E10(XOwlEnt*);
-void func_00110C70(sceVu0FVECTOR);
+void ScreenWobble_Apply(sceVu0FVECTOR);
 void TaskList_UpdateMatching(s32*, s32);
 
 // Per-frame task: runs the interpolation tasks, recomputes the global ambient colour and handles type 3 lights.
@@ -284,7 +289,7 @@ s32 LightTask_Update(void) {
         }
     }
     D_002C6450[3] = 1.0f;
-    func_00110C70(D_002C6450);
+    ScreenWobble_Apply(D_002C6450);
     return 0;
 }
 

@@ -46,6 +46,10 @@ s32 GameOver_ContinueTask(void) {
     return 0;
 }
 #else
+#ifdef VERSION_EU
+s32 GameOver_ContinueTask(void);
+INCLUDE_ASM("asm/nonmatchings/xpaste", GameOver_ContinueTask);
+#else
 s32 GameOver_ContinueTask(void) {
     if (D_003ED704 == 0) {
         if (D_003F117C == 1) {
@@ -59,6 +63,7 @@ s32 GameOver_ContinueTask(void) {
     }
     return 0;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -83,6 +88,10 @@ s32 GameOver_ChoiceTask(void) {
     return 0;
 }
 #else
+#ifdef VERSION_EU
+s32 GameOver_ChoiceTask(void);
+INCLUDE_ASM("asm/nonmatchings/xpaste", GameOver_ChoiceTask);
+#else
 s32 GameOver_ChoiceTask(void) {
     if (D_003F1514 == 0) {
         switch (D_003F1518) {
@@ -100,6 +109,7 @@ s32 GameOver_ChoiceTask(void) {
     }
     return 0;
 }
+#endif
 #endif
 
 // Starts the game over sequence, probably: sets D_002BD854, stops the game (func_00114420, func_00180CE0), fades the music and adds GameOver_ChoiceTask.

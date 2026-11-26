@@ -193,6 +193,9 @@ s32 D_002B9084 = 0;
 sceVu0FVECTOR D_002B9090 = {0};
 s32 D_002B90A0[3] = {0};
 #else
+extern volatile s32 D_002BBDF0;
+extern volatile u32 D_002BBDF4;
+extern volatile s32 D_002B8340;
 extern s32 D_002BC980;
 extern s32 D_002B8170;
 extern s32 D_002B8240;
@@ -272,12 +275,17 @@ void func_0010F420(void) {
 #define DISPWIDTH 640
 
 // Sets the display registers for the system message screen (PMODE, DISPFB1 at 0xD8000, DISPLAY1 640 x 128).
+#ifdef VERSION_EU
+void func_0010F448(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F448);
+#else
 void func_0010F448(void) {
     sceGsSyncPath(0, 0);
     DPUT_GS_PMODE(SCE_GS_SET_PMODE(1, 1, 0, 0, 0, 0, 0xFF));
     DPUT_GS_DISPFB1(SCE_GS_SET_DISPFB1(0xD8000 / 2048, 512 / 64, SCE_GS_PSMCT32, 0, 0));
     DPUT_GS_DISPLAY1(SCE_GS_SET_DISPLAY1(0, 160, 4, 0, (DISPWIDTH * 4) - 1, 128 - 1));
 }
+#endif
 
 #ifdef VERSION_FM
 extern s32 D_004D5B0C;
@@ -338,6 +346,10 @@ void SysMessage_Draw(u32 arg0) {
     }
 }
 #else
+#ifdef VERSION_EU
+void SysMessage_Draw(u32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtailor", SysMessage_Draw);
+#else
 void SysMessage_Draw(u32 arg0) {
     if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
         if (arg0 == 0) {
@@ -390,6 +402,7 @@ void SysMessage_Draw(u32 arg0) {
         }
     }
 }
+#endif
 #endif
 
 // Saves D_002C1EB8 in D_004CF580 (state for the first two message bits).
@@ -498,7 +511,7 @@ s32 SysMessage_WaitWhileActive(void) {
         }
         if (mask != 0) {
             D_002B9664 = 1;
-            func_0010FB90();
+            Pad_UpdateWithReplay();
             func_001220D0();
             func_0010F708();
             if (Movie_IsRunning() != 0) {
@@ -574,7 +587,7 @@ void Pad_Update(void);
 void func_001BA4A8(void);
 
 // Updates the pads; while D_004D2990 is set the pad data is replaced by D_002BCA00 and func_001BA4A8 runs (probably demo playback) (FM).
-void func_0010FB90(void) {
+void Pad_UpdateWithReplay(void) {
     s32 i;
 
     func_0010F6F0();
@@ -593,16 +606,16 @@ void func_0010FB90(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Pad_UpdateWithReplay);
 #endif
 
-// D_004D2990 = 0.
-void func_0010FCD0(void) {
+// Stops the pad replay: D_004D2990 = 0 (probably demo playback, see Pad_UpdateWithReplay).
+void PadReplay_Stop(void) {
     D_004D2990 = 0;
 }
 
-// D_004D2990 = 1.
-void func_0010FCE0(void) {
+// Starts the pad replay: D_004D2990 = 1 (probably demo playback, see Pad_UpdateWithReplay).
+void PadReplay_Start(void) {
     D_004D2990 = 1;
 }
 
@@ -619,6 +632,10 @@ void PlayTime_SetLimit(void) {
 }
 
 // Sets the display environment D_004D2610 to w x h and puts it.
+#ifdef VERSION_EU
+void Gs_SetDisplaySize(s16 w, s16 h);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Gs_SetDisplaySize);
+#else
 void Gs_SetDisplaySize(s16 w, s16 h) {
     D_004D284C = 0;
     sceGsSetDefDispEnv(&D_004D2610, 1, w, h, 0, 0);
@@ -627,9 +644,10 @@ void Gs_SetDisplaySize(s16 w, s16 h) {
     sceGsSyncPath(0, 0);
     sceGsPutDispEnv(&D_004D2610);
 }
+#endif
 
-// Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display.
-void func_0010FDB8(s32 arg0) {
+// Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display (probably clears the screen to grey).
+void Gs_ClearScreenGrey(s32 arg0) {
     D_002BC918 = SCE_GS_SET_RGBAQ(arg0, arg0, arg0, 0x80, 1);
     func_00106948(&D_002BC980);
     Gs_SetDisplaySize(0x200, 0x1BF);
@@ -642,11 +660,16 @@ void Gs_GetDisplayOffset(u32* x, u32* y) {
 }
 
 // Resets the GS (sceGsResetGraph) and puts the display environment again.
+#ifdef VERSION_EU
+void Gs_ResetGraph(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Gs_ResetGraph);
+#else
 void Gs_ResetGraph(void) {
     sceGsResetGraph(1, 1, 2, 0);
     DPUT_GS_EXTWRITE(0);
     sceGsPutDispEnv(&D_004D2610);
 }
+#endif
 
 // Sets the display offset (DX, DY) of D_004D2610 and marks it changed (D_004D284C).
 void Gs_SetDisplayOffset(s32 x, s32 y) {
@@ -802,7 +825,7 @@ extern s32 D_002BC080[4];
 extern s32 D_002BC0B0[4];
 
 // Resets the fade and overlay state and colours (FM).
-void func_00110190(void) {
+void Fade_ResetAll(void) {
     D_002B834C = 0;
     D_002BBE14 = 0;
     D_002BBE18 = 0;
@@ -827,7 +850,7 @@ void func_00110190(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110190);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Fade_ResetAll);
 #endif
 
 // Sets the play time counter D_002BBDF4.
@@ -898,16 +921,18 @@ void Frame_UpdateTimeStep(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", Frame_UpdateTimeStep);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110410);
+// Builds the six camera matrices from the field of view arg0 and the screen constants (aspect, centre 2048, near / far
+// clip) that CameraMats_SaveAndRebuild passes; probably the view-screen and clip matrices.
+INCLUDE_ASM("asm/nonmatchings/xtailor", CameraMats_Build);
 
 #ifdef VERSION_FM
 extern f32 D_004D90F8;
 void func_00110AE0(void);
-void func_00110410(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
+void CameraMats_Build(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
                    f32, f32, f32, f32, f32, f32, f32, f32);
 
-// Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with func_00110410 (FM).
-void func_00110848(f32 arg0) {
+// Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with CameraMats_Build (FM).
+void CameraMats_SaveAndRebuild(f32 arg0) {
     func_00110AE0();
     sceVu0CopyMatrix(D_004D2590, D_002B8370);
     sceVu0CopyMatrix(D_004D2850, D_002B83B0);
@@ -915,24 +940,24 @@ void func_00110848(f32 arg0) {
     sceVu0CopyMatrix(D_004D28D0, D_002B8430);
     sceVu0CopyMatrix(D_004D2910, D_002B8470);
     sceVu0CopyMatrix(D_004D25D0, D_002B84B0);
-    func_00110410(D_002B8370, D_002B83B0, D_002B83F0, D_002B8430, D_002B8470, D_002B84B0, arg0, 0.79999996f,
+    CameraMats_Build(D_002B8370, D_002B83B0, D_002B83F0, D_002B8430, D_002B8470, D_002B84B0, arg0, 0.79999996f,
                   0.8399998546f, 2048.0f, 2048.0f, 1.0f, 16777000.0f, 1.0f, 400000000.0f, D_004D90F8);
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110848);
+INCLUDE_ASM("asm/nonmatchings/xtailor", CameraMats_SaveAndRebuild);
 #endif
 
 // Saves D_002B84F0 and multiplies three camera matrices by viewMatrix.
-void func_001109A8(void) {
+void CameraMats_ApplyView(void) {
     sceVu0CopyMatrix(D_004D2950, D_002B84F0);
     sceVu0MulMatrix(D_002B84F0, D_002B83B0, viewMatrix);
     sceVu0MulMatrix(D_002B8530, D_002B8430, viewMatrix);
     sceVu0MulMatrix(D_002B8570, D_002B8470, viewMatrix);
 }
 
-// Restores the six camera matrices saved by func_00110848.
-void func_00110A30(void) {
+// Restores the six camera matrices saved by CameraMats_SaveAndRebuild.
+void CameraMats_Restore(void) {
     sceVu0CopyMatrix(D_002B8370, D_004D2590);
     sceVu0CopyMatrix(D_002B83B0, D_004D2850);
     sceVu0CopyMatrix(D_002B83F0, D_004D2890);
@@ -945,7 +970,7 @@ void func_00110A30(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110AE0);
 
 // Sets the screen wobble factors D_002B9090 and clears their phases D_002B90A0.
-void func_00110C40(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void ScreenWobble_Set(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     D_002B9090[0] = arg0;
     D_002B9090[1] = arg1;
     D_002B9090[2] = arg2;
@@ -961,7 +986,7 @@ void func_00176110(f32*);
 void func_00176150(f32*);
 
 // Applies the wobble (cosine of advancing phases) to vector arg0 and passes it to func_00176110 / func_00176150 (FM).
-void func_00110C70(sceVu0FVECTOR arg0) {
+void ScreenWobble_Apply(sceVu0FVECTOR arg0) {
     register s32 i asm("$18");
     f32* ang;
     f32* v = D_002BC190;
@@ -987,7 +1012,7 @@ void func_00110C70(sceVu0FVECTOR arg0) {
     func_00176150(arg0);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110C70);
+INCLUDE_ASM("asm/nonmatchings/xtailor", ScreenWobble_Apply);
 #endif
 
 // Load callback of dkmovie.x: marks the player loaded and starts it (func_F20000(0, movie)).
@@ -1027,7 +1052,9 @@ s32 Movie_IsRunning(void) {
 }
 
 #ifndef VERSION_FM
+#ifndef VERSION_EU
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);
+#endif
 #endif
 
 // Movie player command 3.
@@ -1095,7 +1122,7 @@ INCLUDE_ASM("asm/nonmatchings/xtailor", Movie_Finish);
 #endif
 
 // Calls sceCd / sceIpu functions with dummy arguments (probably only so that they are linked).
-void func_00111050(void) {
+void Lib_ForceLinkCdIpu(void) {
     sceCdRead(0, 0, NULL, NULL);
     Decode_Chunk();
     sceCdStatus();

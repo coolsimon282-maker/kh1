@@ -1272,9 +1272,14 @@ void func_0011E5F0(void) {
     func_00101528();
 }
 #else
+#ifdef VERSION_EU
+void func_0011E418(void);
+INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E418);
+#else
 void func_0011E418(void) {
     func_00101528();
 }
+#endif
 #endif
 
 #ifdef VERSION_FM

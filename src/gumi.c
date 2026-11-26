@@ -588,9 +588,9 @@ void func_001BC898(s32 arg0) {
         D_0061BA48[0][1] = 0;
         D_0061BA48[1][0] = 0;
         D_0061BA48[1][1] = 0;
-        func_0010FCE0();
+        PadReplay_Start();
     } else {
-        func_0010FCD0();
+        PadReplay_Stop();
     }
 }
 #endif

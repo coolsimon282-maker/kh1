@@ -656,9 +656,14 @@ void func_001F00D0(s32 a0) {
     func_001F0118(a0, 0x12);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F1278(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F1278);
+#else
 s32 func_001F1278(s32 arg0) {
     return func_001F12C0(arg0, 18);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -666,9 +671,14 @@ void func_001F00E8(s32 a0) {
     func_001F0148(a0, 0x12);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F1290(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F1290);
+#else
 s32 func_001F1290(s32 arg0) {
     return func_001F12F0(arg0, 18);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -676,9 +686,14 @@ void func_001F0100(s32 a0) {
     func_001F0340(a0, 0x12);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F12A8(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F12A8);
+#else
 s32 func_001F12A8(s32 arg0) {
     return func_001F14F0(arg0, 18);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -732,9 +747,14 @@ void func_001F0638(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_001F0868(a0, a1, 0, a2, a3, a4, a5, 0xE);
 }
 #else
+#ifdef VERSION_EU
+void* func_001F17C0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F17C0);
+#else
 void* func_001F17C0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return func_001F19F0(arg0, arg1, 0, arg2, arg3, arg4, arg5, 14);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -742,9 +762,14 @@ void func_001F0670(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_001F07D8(a0, a1, 0, a2, a3, a4, a5, 0x12);
 }
 #else
+#ifdef VERSION_EU
+void* func_001F17F8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F17F8);
+#else
 void* func_001F17F8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return func_001F1960(arg0, arg1, 0, arg2, arg3, arg4, arg5, 18);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -752,9 +777,14 @@ void func_001F06A8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_001F0868(a0, a1, 0, a2, a3, a4, a5, 0x12);
 }
 #else
+#ifdef VERSION_EU
+void* func_001F1830(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F1830);
+#else
 void* func_001F1830(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return func_001F19F0(arg0, arg1, 0, arg2, arg3, arg4, arg5, 18);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -762,9 +792,14 @@ void func_001F06E0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_001F0EA8(a0, a1, 0, a2, a3, a4, a5, 0x12);
 }
 #else
+#ifdef VERSION_EU
+void* func_001F1868(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F1868);
+#else
 void* func_001F1868(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     return func_001F1FA8(arg0, arg1, 0, arg2, arg3, arg4, arg5, 18);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -858,10 +893,15 @@ void func_001F1DF0(s32 a0, s32 a1, s32 a2, s32 a3) {
     func_001F1F58(0, a0, a1, a2, a3, 0xE);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F2DD8(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2DD8);
+#else
 s32 func_001F2DD8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001F2F88(0, arg0, arg1, arg2, arg3, 14);
     return D_00639A8C;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -869,10 +909,15 @@ void func_001F1E28(s32 a0, s32 a1, s32 a2, s32 a3) {
     func_001F1FC8(0, a0, a1, a2, a3, 0xE);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F2E20(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2E20);
+#else
 s32 func_001F2E20(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001F30A0(0, arg0, arg1, arg2, arg3, 14);
     return D_00639A8C;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -880,10 +925,15 @@ void func_001F1E60(s32 a0, s32 a1, s32 a2, s32 a3) {
     func_001F2630(0, a0, a1, a2, a3, 0xE);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F2E68(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2E68);
+#else
 s32 func_001F2E68(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     func_001F31B8(0, arg0, arg1, arg2, arg3, 14);
     return D_00639A8C;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -891,10 +941,15 @@ void func_001F1E98(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_001F1F58(0, a0, a1, a2, a3, a4);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F2EB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2EB0);
+#else
 s32 func_001F2EB0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_001F2F88(0, arg0, arg1, arg2, arg3, arg4);
     return D_00639A8C;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -902,10 +957,15 @@ void func_001F1ED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_001F1FC8(0, a0, a1, a2, a3, a4);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F2EF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2EF8);
+#else
 s32 func_001F2EF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_001F30A0(0, arg0, arg1, arg2, arg3, arg4);
     return D_00639A8C;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -913,10 +973,15 @@ void func_001F1F18(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
     func_001F2630(0, a0, a1, a2, a3, a4);
 }
 #else
+#ifdef VERSION_EU
+s32 func_001F2F40(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+INCLUDE_ASM("asm/nonmatchings/xbiscuit", func_001F2F40);
+#else
 s32 func_001F2F40(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     func_001F31B8(0, arg0, arg1, arg2, arg3, arg4);
     return D_00639A8C;
 }
+#endif
 #endif
 
 #ifdef VERSION_FM

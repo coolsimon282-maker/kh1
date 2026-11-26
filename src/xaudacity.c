@@ -204,6 +204,14 @@ void func_00128FA8(f32* arg0) {
     D_002B8348 = *arg0;
 }
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00128750);
+#endif
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00128778);
+#endif
+
 #ifdef VERSION_FM
 extern u32 D_002BBDE4;
 
@@ -1015,6 +1023,10 @@ void func_0012A360(XAudArg* arg0) {
     obj->unk_370.raw |= 0x10000000000000;
 }
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00129BA8);
+#endif
+
 #ifdef VERSION_FM
 void func_F20000(s32, s32);
 
@@ -1037,6 +1049,10 @@ void func_0012A3D0(XAudArg* arg0) {
     }
     arg0[0].s = r;
 }
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_00129C40);
+#endif
 
 #ifdef VERSION_FM
 void func_00135848(s32);
@@ -1064,9 +1080,14 @@ void fm_func_0012A4C8(XAudArg* arg0) {
 s32 func_00147C98(s32, s32, s32);
 
 // Native command 15 (3 args, returns a value): a0 = func_00147C98(a0, a1, a2).
+#ifdef VERSION_EU
+void func_0012A418(XAudArg* arg0);
+INCLUDE_ASM("asm/nonmatchings/xaudacity", func_0012A418);
+#else
 void func_0012A418(XAudArg* arg0) {
     arg0[0].s = func_00147C98(arg0[0].s, arg0[1].s, arg0[2].s);
 }
+#endif
 
 void sceVu0CopyVector(f32*, f32*);
 
@@ -1552,6 +1573,10 @@ void func_0012B088(XAudArg* arg0) {
 void func_0012B0A8(s32* arg0) {
     *arg0 = func_0012CBC0(*arg0);
 }
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xaudacity", eu_func_0012A920);
+#endif
 
 #ifdef VERSION_FM
 extern s32 D_002E31A8[];

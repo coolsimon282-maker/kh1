@@ -739,6 +739,10 @@ extern s32 curRoomNo;
 extern s32 D_002B8684;
 
 // When the actor is a party member (Party_FindCharacterSlot < 3, kind 3), puts it in party slot D_002E26A0[k] and sets up its party data.
+#ifdef VERSION_EU
+void Actor_SetupPartyMember(XToaster* p);
+INCLUDE_ASM("asm/nonmatchings/xtoaster", Actor_SetupPartyMember);
+#else
 void Actor_SetupPartyMember(XToaster* p) {
     s32 n;
     s32 k;
@@ -771,6 +775,7 @@ void Actor_SetupPartyMember(XToaster* p) {
         }
     }
 }
+#endif
 
 s32 func_0012B888(s32);
 void func_0012BA30(s32, void*, s32);
@@ -778,7 +783,7 @@ s32 func_00132008(XToaster*);
 void func_00170400(XToaster*);
 
 // Starts the actor's per-kind logic (kind 1, 6) or its script from the definition (+0x0C, flags bit 48).
-void func_001242E8(XToaster* p) {
+void Actor_StartLogic(XToaster* p) {
     XToast* t = p->unk_130;
     s8 k = t->unk_54;
 
@@ -939,6 +944,10 @@ void func_00124CD8(void) {
     }
 }
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtoaster", eu_func_00124678);
+#endif
+
 #ifdef VERSION_FM
 // Updates the party flags, then removes every active actor (FM only).
 void Actor_RemoveAll(void) {
@@ -960,7 +969,7 @@ extern char D_002C6490[];
 #endif
 
 // For each active actor: kind 3 is reset in place (or removed when its script ended), kind 7 removed; stops actor scripts.
-void func_00124DD0(void) {
+void Actor_StopAll(void) {
     sceVu0FVECTOR v;
     XToaster* p = NULL;
 

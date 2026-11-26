@@ -164,6 +164,10 @@ void Graphics_Initialize(void) {
     Pad_Reset();
 }
 #else
+#ifdef VERSION_EU
+void Graphics_Initialize(void);
+INCLUDE_ASM("asm/nonmatchings/xarcade", Graphics_Initialize);
+#else
 void Graphics_Initialize(void) {
     KingdomFile* file;
 
@@ -187,6 +191,7 @@ void Graphics_Initialize(void) {
     Pad_Reset();
 }
 #endif
+#endif
 
 // Task: updates the fade task list (fadeTaskList).
 s32 FadeTaskList_Task(void) {
@@ -200,7 +205,7 @@ void Game_InitSystems();
 
 // Resets the fades, sets up fadeTaskList and adds FadeTaskList_Task.
 void* Fade_InitSystem(void) {
-    func_00110190();
+    Fade_ResetAll();
     func_00176E30();
     func_00176E98();
     D_00358BE0 = 1;
@@ -214,6 +219,10 @@ void* GameMode_Request(s32 arg0) {
     D_00495160 = 2;
     return Screen_Capture();
 }
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xarcade", eu_func_001094D0);
+#endif
 
 #ifdef VERSION_FM
 // Clears the pending entrance flag, func_00101560, returns func_00155ED8(0, 0x40) (FM only).
@@ -246,6 +255,10 @@ void func_001093D8(void) {
     D_00495160 = 0;
 }
 #else
+#ifdef VERSION_EU
+void func_001093D8(void);
+INCLUDE_ASM("asm/nonmatchings/xarcade", func_001093D8);
+#else
 void func_001093D8(void) {
     func_00122518();
     func_001600B8();
@@ -256,6 +269,7 @@ void func_001093D8(void) {
     D_002B8690 = viewMatrix;
     D_002B8694 = screenMatrix;
 }
+#endif
 #endif
 
 // Invalidates the instruction cache and calls the overlay at 0xF20000 (command 0).
@@ -274,7 +288,7 @@ s32 func_001EE090(void);
 void func_00239488(void);
 void func_00178140(s32);
 void func_001220D0(void);
-s32 func_0010FB90_s(void) __asm__("func_0010FB90");
+s32 func_0010FB90_s(void) __asm__("Pad_UpdateWithReplay");
 
 // When the pad combination (all shoulder buttons with start and select, probably) is held and nothing is loading, stops sound, any movie and the game and returns D_002BBE08 (cleared: reset).
 s32 SoftReset_Check(void) {
@@ -297,7 +311,7 @@ s32 SoftReset_Check(void) {
             Movie_Finish();
         }
         Frame_UpdateTimeStep();
-        func_0010FDB8(0);
+        Gs_ClearScreenGrey(0);
     }
     return *(volatile s32 *)&D_002BBE08;
 }
@@ -373,11 +387,16 @@ INCLUDE_ASM("asm/nonmatchings/xarcade", Screen_CrossFadeTask);
 s32 Screen_CrossFadeTask();
 
 // Starts Screen_CrossFadeTask (+0x04 of D_0048EC00 = arg0 * 2).
+#ifdef VERSION_EU
+void* Screen_StartCrossFade(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xarcade", Screen_StartCrossFade);
+#else
 void* Screen_StartCrossFade(s32 arg0) {
     D_0048EC00.unk_04 = arg0 << 1;
     D_0048EC08 = 0;
     return TaskSystem_AddTask(190000, Screen_CrossFadeTask);
 }
+#endif
 
 // Uploads the screen captured by Screen_CaptureTask (D_002B2CCC) back to VRAM.
 void Screen_RestoreCapture(void) {

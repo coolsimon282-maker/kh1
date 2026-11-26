@@ -265,6 +265,10 @@ s32 TaskList_UpdateMatching(TaskList* arg0, s32 arg1) {
     return sVar5;
 }
 #else
+#ifdef VERSION_EU
+s32 TaskList_UpdateMatching(TaskList* arg0, s32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xgoblin", TaskList_UpdateMatching);
+#else
 s32 TaskList_UpdateMatching(TaskList* arg0, s32 arg1) {
     u32 uVar3;
 
@@ -304,6 +308,7 @@ s32 TaskList_UpdateMatching(TaskList* arg0, s32 arg1) {
     arg0->lastAdded = NULL;
     return sVar5;
 }
+#endif
 #endif
 
 // Unlinks every task for which the callback (or the task's own flags) has bit 4 set.
