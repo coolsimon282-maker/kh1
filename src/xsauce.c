@@ -1,3 +1,7 @@
+/**
+ * Text windows: glyph key lists (x +0x04, line +0x06, width +0x08, alpha +0x0A), fade, centring, text in the game font
+ * encoding, window set-up and drawing, and (FM) the choice cursor of message windows. The window struct is XSauce.
+ */
 #include "common.h"
 #include "xnoodle.h"
 #include <stdarg.h>
@@ -49,6 +53,7 @@ extern u_long128* func_00121C98(s32 arg0, u_long128** arg1);
 u64* func_00106CA8(s32 qwc);
 void func_00106CD0(u64* p, s32 qwc);
 
+// Allocates a GIF packet for n entries (func_00106CA8, tag 0x6400...8000 | n, regs 0x535316) and returns its data in *out.
 void func_0010C2D8(s32 n, u_long128** out) {
     s32 qwc = n * 3 + 1;
     u64* p = func_00106CA8(qwc);
@@ -74,6 +79,7 @@ typedef struct {
     /* 0x1810 */ f32 unk_1810[1];
 } XSauceTbl;
 
+// True when only the last line's progress (+0x1810) is non-zero and +0x08 reached +0x04 (text finished, probably).
 s32 func_0010CA30(XSauceTbl* p) {
     s32 i;
     if (p->unk_0002 >= 2) {
@@ -89,6 +95,7 @@ s32 func_0010CA30(XSauceTbl* p) {
     return 0;
 }
 
+// Runs the window's choice (+0x28): waits for the text to finish, sets up the choices, then updates them until one is picked.
 void func_0010CAE0(XSauceTbl* t, XSauce* p) {
     if (p->unk_28 != 0) {
         switch (t->unk_000C) {
@@ -98,10 +105,10 @@ void func_0010CAE0(XSauceTbl* t, XSauce* p) {
                 break;
             }
         case 1:
-            func_0010F0A0(p->unk_28, p->unk_24);
+            MsgWin_SetupChoices(p->unk_28, p->unk_24);
             t->unk_000C = 2;
         case 2:
-            if (func_0010F1C8(p->unk_28, p->unk_24)) {
+            if (MsgWin_UpdateChoice(p->unk_28, p->unk_24)) {
                 t->unk_000C = 0;
                 p->unk_28 = 0;
             }
@@ -110,6 +117,7 @@ void func_0010CAE0(XSauceTbl* t, XSauce* p) {
     }
 }
 
+// True when all line progress values (+0x1810) are zero.
 s32 func_0010CBA0(XSauceTbl* p) {
     s32 i;
     for (i = 0; i < p->unk_0002; i++) {
@@ -143,7 +151,8 @@ typedef struct {
     /* 0x20 */ XSauceKey* unk_20;
 } XSauceAnim;
 
-void func_0010CBF8(XSauceAnim* p, s32 n) {
+// Raises the alpha (+0x0A, up to 0x80) of the n glyph keys by the step +0x18; probably the text fade in.
+void Text_FadeInGlyphs(XSauceAnim* p, s32 n) {
     XSauceKey* k;
     if (n > 0) {
         k = &p->unk_20[1];
@@ -158,7 +167,8 @@ void func_0010CBF8(XSauceAnim* p, s32 n) {
     }
 }
 
-void func_0010CC80(XSauceAnim* p, s32 n) {
+// Lowers the alpha of the n glyph keys by +0x1C (down to 0) and clears the fade-in step.
+void Text_FadeOutGlyphs(XSauceAnim* p, s32 n) {
     XSauceKey* k;
     s32 v;
     f32 d;
@@ -178,6 +188,7 @@ void func_0010CC80(XSauceAnim* p, s32 n) {
     }
 }
 
+// True when bit 0 of D_002C2108 is set (probably the confirm button press).
 s32 func_0010CCD8(void) {
     if (D_002C2108 & 1) {
         return 1;
@@ -203,6 +214,7 @@ typedef struct {
 
 void func_0010CCF0(XSauceSteps* p);
 
+// Number of lines shown so far: from the elapsed +0x08 and the per-line durations (+0x0C of each step).
 s32 func_0010CE98(XSauceSteps* p) {
     s32 i;
     f32 sum;
@@ -220,7 +232,8 @@ s32 func_0010CE98(XSauceSteps* p) {
     return 1;
 }
 
-void func_0010CF18(XSauce* p, XSauceKeys* k) {
+// Shifts the x (+0x04) of every glyph key line (lines split where +0x06 changes) so that the line is centred on the window.
+void Text_CenterLines(XSauce* p, XSauceKeys* k) {
     s32 lines[32];
     s32 i;
     s32 n;
@@ -247,6 +260,7 @@ void func_0010CF18(XSauce* p, XSauceKeys* k) {
     }
 }
 
+// Shifts the last two lines of the glyph keys (aligned to the window's right part, probably).
 void func_0010D010(XSauce* p, XSauceKeys* k) {
     s32 lines[32];
     s32 i;
@@ -276,7 +290,8 @@ void func_0010D010(XSauce* p, XSauceKeys* k) {
 }
 
 
-s32 func_0010D130(char* s) {
+// Length of a 0-terminated string.
+s32 Text_StrLen(char* s) {
     s32 n = 0;
     while (*s != 0) {
         s++;
@@ -287,7 +302,8 @@ s32 func_0010D130(char* s) {
 
 int vsprintf(char* buf, const char* fmt, va_list ap);
 
-s32 func_0010D168(char* buf, const char* fmt, ...) {
+// vsprintf into buf, then converts it to the game's font codes (space -> 1, other bytes - 0x0F); returns the length.
+s32 Text_Sprintf(char* buf, const char* fmt, ...) {
     va_list ap;
     s32 n;
     char* p;
@@ -308,7 +324,8 @@ s32 func_0010D168(char* buf, const char* fmt, ...) {
     return n;
 }
 
-s16 func_0010D218(s32* pos, u8* buf) {
+// Reads the little-endian 16-bit value after buf[*pos], advancing *pos by 2.
+s16 Text_ReadU16(s32* pos, u8* buf) {
     s32 i = *pos;
     s32 lo = buf[++i];
     s32 hi = buf[++i];
@@ -318,6 +335,7 @@ s16 func_0010D218(s32* pos, u8* buf) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010D250);
 
+// Clears the window's drawing flag and frees its buffer (+0x20).
 void func_0010E230(XSauce* arg0) {
     arg0->unk_12 = 0;
     if (arg0->unk_20 != 0) {
@@ -326,6 +344,7 @@ void func_0010E230(XSauce* arg0) {
     }
 }
 
+// Window finished: mode 1 calls the callback (+0x00) once more with the next count, mode 0 frees the buffer and calls it.
 void func_0010E270(XSauce* p) {
     switch (p->unk_11) {
     case 1:
@@ -355,6 +374,7 @@ INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E330);
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E450);
 
+// Allocates eight 0x40-byte image buffers, fills them (func_0010E450) and uploads them as images 16364..16371.
 void func_0010E580(void) {
     u_long128* imageAddrs[8];
 
@@ -393,6 +413,7 @@ void func_0010E580(void) {
     func_00121D50(imageAddrs[7]);
 }
 
+// Adds task func_0010C248 and registers the sixteen window images 16348..16363 (D_002B7B70..D_002B7F30).
 void func_0010E700(void) {
     *(u16*)(TaskSystem_AddTask(180150, func_0010C248) + 2) = -1;
 
@@ -414,12 +435,14 @@ void func_0010E700(void) {
     func_0010C1D0(16363, &D_002B7F30);
 }
 
+// Sends packet D_002B7FF0, sets mode 1 and redraws the window (func_0010E330).
 void func_0010E830(XSauce* arg0) {
     func_00106948(&D_002B7FF0);
     arg0->unk_11 = 1;
     func_0010E330(arg0);
 }
 
+// Sends packet D_002B7FF0, clears the callback argument and mode, redraws the window.
 void func_0010E868(XSauce* arg0) {
     func_00106948(&D_002B7FF0);
     arg0->unk_24 = 0;
@@ -429,6 +452,7 @@ void func_0010E868(XSauce* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010E8A0);
 
+// Counts the control codes 15 followed by 1 in a text up to code 0 or 4 (codes below 0x20 other than 1..8 take an argument byte).
 s32 func_0010E9A8(u8* s) {
     s32 n = 0;
     s32 go = 1;
@@ -455,7 +479,8 @@ s32 func_0010E9A8(u8* s) {
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EA38);
 
 /* statement order found by brute force (scheduling) */
-void func_0010EB50(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
+// Sets up text window p at (arg0, arg1) with text arg3 and scale arg2, and starts drawing it.
+void MsgWin_Init(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
     p->unk_10 = 1;
     p->unk_12 = 0;
     p->unk_00 = 0;
@@ -478,6 +503,7 @@ void func_0010EB50(s32 arg0, s32 arg1, s32 arg2, s32 arg3, XSauce* p) {
 
 void func_0010EA38(s32, u_long128 *, s32);
 
+// Draws texts a3 and a3 + 1 side by side (second at x + a2) through temporary windows.
 void func_0010EBE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     u_long128 *b[2];
 
@@ -488,23 +514,24 @@ void func_0010EBE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     ((XSauce *)b[0])->unk_13 = 0;
     ((XSauce *)b[0])->unk_13 |= 4;
     ((XSauce *)b[0])->unk_13 |= 8;
-    func_0010EB50(a0, a1, a4, (s32)b[1], (XSauce *)b[0]);
+    MsgWin_Init(a0, a1, a4, (s32)b[1], (XSauce *)b[0]);
     func_0010EA38(a5, b[1], a3 + 1);
     ((XSauce *)b[0])->unk_13 = 0;
     ((XSauce *)b[0])->unk_13 |= 4;
     ((XSauce *)b[0])->unk_13 |= 8;
-    func_0010EB50(a0 + a2, a1, a4, (s32)b[1], (XSauce *)b[0]);
+    MsgWin_Init(a0 + a2, a1, a4, (s32)b[1], (XSauce *)b[0]);
     func_00121D50((s32)b[1]);
     func_00121D50((s32)b[0]);
 }
 
-void func_0010ED10(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+// Draws text arg3 at (arg0, arg1) through a temporary text window.
+void MsgWin_DrawTemp(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     XSauce* s;
     s = (XSauce*)func_00121C98(0x2C, (u_long128**)&s);
     func_0010C248();
     s->unk_13 = 0;
     s->unk_13 |= 4;
-    func_0010EB50(arg0, arg1, arg2, arg3, s);
+    MsgWin_Init(arg0, arg1, arg2, arg3, s);
     func_00121D50(s);
 }
 
@@ -517,6 +544,7 @@ typedef struct {
     /* 0x93 */ u8 unk_93;
 } XSauceUnk;
 
+// Sets +0x80 / +0x84 of a window and clears its +0x92 / bit 0 of +0x93.
 void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
     arg0->unk_80 = arg2;
     arg0->unk_84 = arg1;
@@ -526,6 +554,7 @@ void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EDC0);
 
+// Number of 24-pixel lines of the text (func_0010EDC0 height / 24 + 1).
 s32 func_0010EEC8(s32 arg0) {
     s32 stack[4];
 
@@ -550,7 +579,8 @@ extern u8 D_002BBB90[];
 f32 cosf(f32);
 
 
-void func_0010EF00(s32 x, s32 y, XSauceScroll* c) {
+// Draws the pulsing choice cursor at (x, y) relative to the window (FM).
+void MsgWin_DrawCursor(s32 x, s32 y, XSauceScroll* c) {
     s32 r;
 
     D_004D5AFC_f += D_002B8344 * 0.19999999f;
@@ -568,13 +598,14 @@ void func_0010EF00(s32 x, s32 y, XSauceScroll* c) {
     func_00106948(D_002BBB90);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010EF00);
+INCLUDE_ASM("asm/nonmatchings/xsauce", MsgWin_DrawCursor);
 #endif
 
 typedef struct { s32 unk_00; s32 unk_04; } XSauceLimits;
 typedef struct { char unk_00[0x88]; u16 unk_88; char unk_8A[0x16]; XSauceKeys* unk_A0; } XSauceWin;
 typedef struct { s32 unk_00; s32 unk_04; } XSaucePos2;
-void func_0010F0A0(XSauceLimits* m, XSauceWin* w) {
+// Builds the choice position list D_004CF574 (one entry per text line) and lowers both limits of arg0 by one.
+void MsgWin_SetupChoices(XSauceLimits* m, XSauceWin* w) {
     s32 lines[32]; s32 i; s32 n; XSauceKeys* k; u16 id; XSaucePos2* out;
     n = 0;
     k = w->unk_A0;
@@ -619,7 +650,8 @@ extern s32 D_004D5AF8;
 void func_00121D50(s32);
 void func_0011D598(s32);
 
-s32 func_0010F1C8(XSauceMenu* m, void* c) {
+// Moves the choice with up / down (wrapping on a fresh press), cancel jumps to the last one, confirm calls the menu's callback with the choice (1-based) and frees the list (FM).
+s32 MsgWin_UpdateChoice(XSauceMenu* m, void* c) {
     s32 lim;
     XSaucePad* pad;
     XSaucePad* pad2;
@@ -662,7 +694,7 @@ s32 func_0010F1C8(XSauceMenu* m, void* c) {
         }
     }
     pos = (XSaucePos*)(D_004D5AF8 * 8 + D_004CF574);
-    func_0010EF00(pos->unk_00, pos->unk_04, c);
+    MsgWin_DrawCursor(pos->unk_00, pos->unk_04, c);
     if (D_002C2108 & 1) {
         func_0011D598(2);
         m->unk_08(D_004D5AF8 + 1);
@@ -673,10 +705,11 @@ s32 func_0010F1C8(XSauceMenu* m, void* c) {
     return 0;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xsauce", func_0010F1C8);
+INCLUDE_ASM("asm/nonmatchings/xsauce", MsgWin_UpdateChoice);
 #endif
 
-void func_0010F380(void) {
+// Frees the choice position list.
+void MsgWin_FreeChoices(void) {
     if (D_004CF574 != 0) {
         func_00121D50(D_004CF574);
     }
@@ -686,14 +719,15 @@ void func_0010F380(void) {
 extern s32 D_004D5AF8;
 extern s32 D_004D5AFC;
 
-void func_0010F3B8(s32 arg0, s32 arg1, s32 arg2) {
+// Sets the first choice (arg2 - 1, FM) and the window's +0xA8, clears the choice list.
+void MsgWin_InitChoice(s32 arg0, s32 arg1, s32 arg2) {
     D_004D5AF8 = arg2 - 1;
     D_004CF574 = 0;
     D_004D5AFC = 0;
     *(s32*)(arg1 + 0xA8) = arg0;
 }
 #else
-void func_0010F3B8(s32 arg0, s32 arg1) {
+void MsgWin_InitChoice(s32 arg0, s32 arg1) {
     *(s32*)(arg1 + 0xA8) = arg0; // todo: figure out what struct this is
     D_004CF574 = 0;
     D_004CF57C = 0;

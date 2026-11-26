@@ -405,3 +405,16 @@ other functions (rule F1).
 | Actor_RemoveById | 0x001248E8 | xtoaster.c | Actor_Remove for actor id arg0. |
 | Actor_RemoveAll | 0x001249D8 | xtoaster.c | Updates the party flags, then removes every active actor (FM only). |
 | Actor_InitSystem | 0x00124B90 | xtoaster.c | Clears the actor array and party slots, resets related systems and adds Actor_FreeRemovedTask once. |
+| Text_FadeInGlyphs | 0x0010CE50 | xsauce.c | Raises the alpha (+0x0A, up to 0x80) of the n glyph keys by the step +0x18; probably the text fade in. |
+| Text_FadeOutGlyphs | 0x0010CED0 | xsauce.c | Lowers the alpha of the n glyph keys by +0x1C (down to 0) and clears the fade-in step. |
+| Text_CenterLines | 0x0010D138 | xsauce.c | Shifts the x (+0x04) of every glyph key line (lines split where +0x06 changes) so that the line is centred on the window. |
+| Text_StrLen | 0x0010D350 | xsauce.c | Length of a 0-terminated string. |
+| Text_Sprintf | 0x0010D388 | xsauce.c | vsprintf into buf, then converts it to the game's font codes (space -> 1, other bytes - 0x0F); returns the length. |
+| Text_ReadU16 | 0x0010D438 | xsauce.c | Reads the little-endian 16-bit value after buf[*pos], advancing *pos by 2. |
+| MsgWin_Init | 0x0010ED20 | xsauce.c | Sets up text window p at (arg0, arg1) with text arg3 and scale arg2, and starts drawing it. |
+| MsgWin_DrawTemp | 0x0010EEE0 | xsauce.c | Draws text arg3 at (arg0, arg1) through a temporary text window. |
+| MsgWin_DrawCursor | 0x0010F0D0 | xsauce.c | Draws the pulsing choice cursor at (x, y) relative to the window (FM). |
+| MsgWin_SetupChoices | 0x0010F258 | xsauce.c | Builds the choice position list D_004CF574 (one entry per text line) and lowers both limits of arg0 by one. |
+| MsgWin_UpdateChoice | 0x0010F368 | xsauce.c | Moves the choice with up / down (wrapping on a fresh press), cancel jumps to the last one, confirm calls the menu's callback with the choice (1-based) and frees the list (FM). |
+| MsgWin_FreeChoices | 0x0010F520 | xsauce.c | Frees the choice position list. |
+| MsgWin_InitChoice | 0x0010F558 | xsauce.c | Sets the first choice (arg2 - 1, FM) and the window's +0xA8, clears the choice list. |

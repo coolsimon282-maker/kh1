@@ -494,6 +494,24 @@ Actor_RemoveAll                      = 0x001249D8; // type:func
 Actor_InitSystem                     = 0x00124B90; // type:func
 
 
+//=========================================================
+// xsauce.c
+//=========================================================
+Text_FadeInGlyphs                    = 0x0010CE50; // type:func
+Text_FadeOutGlyphs                   = 0x0010CED0; // type:func
+Text_CenterLines                     = 0x0010D138; // type:func
+Text_StrLen                          = 0x0010D350; // type:func
+Text_Sprintf                         = 0x0010D388; // type:func
+Text_ReadU16                         = 0x0010D438; // type:func
+MsgWin_Init                          = 0x0010ED20; // type:func
+MsgWin_DrawTemp                      = 0x0010EEE0; // type:func
+MsgWin_DrawCursor                    = 0x0010F0D0; // type:func
+MsgWin_SetupChoices                  = 0x0010F258; // type:func
+MsgWin_UpdateChoice                  = 0x0010F368; // type:func
+MsgWin_FreeChoices                   = 0x0010F520; // type:func
+MsgWin_InitChoice                    = 0x0010F558; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
