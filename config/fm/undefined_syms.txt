@@ -183,3 +183,8 @@ func_00121970 = Timer_CountDown;
 func_001C1680 = CoThread_RunAll;
 func_0011C540 = GameOver_Start;
 func_00121878 = Vec_ToAngles;
+
+/* Words in (still assembly) .data that only look like addresses; splat writes them as these symbols. */
+D_00370000 = 0x00370000;
+D_00370038 = 0x00370038;
+D_00489668 = 0x0048F9A8;

@@ -39,11 +39,6 @@ s16 D_0036C5C6[];
 void pppRyjMegaBirthCalc();
 void pppRyjMegaBirthModelCalc();
 
-// Words in other (still assembly) data that only look like addresses in this file's data/rodata; splat wrote them
-// as these symbols. Defined here as plain values so they keep linking (belong in undefined_syms.txt).
-__asm__(".globl D_00370000\nD_00370000 = 0x00370000\n.globl D_00370038\nD_00370038 = 0x00370038\n"
-        ".globl D_00489668\nD_00489668 = 0x0048F9A8");
-
 // .data (0x00362730-0x00372708); the program table D_00370200 is at the end of the file
 pppModelSt D_00362730[128] = {0};
 pppShapeSt D_00363930[128] = {0};
