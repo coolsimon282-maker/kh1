@@ -2023,7 +2023,31 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001519C0);
 void func_00151B90(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151B98);
+void func_00151B98(u8* p, f32* v) {
+    u8* q = *(u8**)(p + 0x144);
+    u8* e;
+    u8* w;
+
+    if (*(s32*)(p + 0x70) == 0 && ((v[0] != 0.0f && v[2] != 0.0f) ||
+        ((e = *(u8**)(p + 0x98)) != NULL && 10.0f <= __builtin_fabsf(*(f32*)(p + 0x14) + v[1] - *(f32*)(e + 0x14))))) {
+        sceVu0CopyVector(v, D_002C58A0);
+    }
+    if (v[0] != 0.0f || v[2] != 0.0f) {
+        if (*(u8**)(p + 0x98) == NULL) {
+            return;
+        }
+        if (*(s32*)(q + 0x10) == 0) {
+            *(s32*)(q + 0x10) = (s32)func_00147138(p, 0);
+        }
+        sceVu0AddVector((f32*)(*(u8**)(p + 0x98) + 0x120), (f32*)(*(u8**)(p + 0x98) + 0x120), v);
+        return;
+    }
+    w = *(u8**)(q + 0x10);
+    if (w != NULL) {
+        func_00147278(*(u16*)(w + 8), *(s32*)(w + 4), 0x3C);
+        *(s32*)(q + 0x10) = 0;
+    }
+}
 
 void func_00151CD0(u8* p) {
     sceVu0FVECTOR v;
