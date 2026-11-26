@@ -2415,7 +2415,56 @@ void func_00242C08(Seg132TexOwner *a0, s32 a1, s32 *a2, f32 f) {
     func_001220B8(buf);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00242EF8);
+void func_00242EF8(Seg132TexOwner *a0, s32 a1, s32 a2, s32 *a3, s32 *col) {
+    Seg132Tex *t = a0->tex;
+    u32 buf;
+    u_long128 *p;
+    Seg132QW *v;
+    s32 d;
+
+    if (t == NULL) {
+        return;
+    }
+    v = (Seg132QW *)func_00122048(0, 0x10);
+    buf = (u32)v;
+    p = func_0011F9E8(0x3C00, 0, 0, 0, 0, 0x10, 0x10, 0x40, (s32)t->clut, (u_long128 *)buf);
+    v = (Seg132QW *)func_0011F9E8(0x3A00, 4, 0x13, 0, 0, t->w, t->h, t->w * t->h / 16, (s32)t->img, p);
+    p = (u_long128 *)v;
+    v++;
+    ((u64 *)v)[0] = 0x80AB400000008001;
+    ((u64 *)v)[1] = 0x53531EEE;
+    v++;
+    v = (Seg132QW *)func_0011F970(0x3F, 0, (u64 *)v);
+    v = (Seg132QW *)func_0011F970(6, 0x20078005A1313A00, (u64 *)v);
+    v = (Seg132QW *)func_0011F970(0x14, 0, (u64 *)v);
+    v->x = col[0];
+    d = a1 / 2 * 16;
+    v->y = col[1];
+    v->z = col[2];
+    v->w = col[3];
+    v++;
+    v->x = 0;
+    v->y = 0;
+    v++;
+    v->x = a3[0] - d;
+    v->y = a3[1] - d;
+    v->z = 0;
+    v->w = 0x8000;
+    v++;
+    v->x = t->h * 16;
+    v->y = t->h * 16;
+    v++;
+    v->x = a3[0] + d;
+    v->y = a3[1] + d;
+    v->z = 0;
+    v->w = 0;
+    v++;
+    func_0011F9B0(p, 7, (u_long128 *)v);
+    FlushCache(0);
+    sceDmaSend(sceDmaGetChan(2), (void *)((buf & 0x0FFFFFFF) | 0x80000000));
+    sceGsSyncPath(0, 0);
+    func_001220B8(buf);
+}
 
 void func_00243168(void *arg0, s32 arg1, s32 arg2) {
     memset(arg0, 0, 0x10);
