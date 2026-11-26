@@ -150,6 +150,12 @@ XToaster* D_002E26A0_slots[3] __asm__("D_002E26A0") = {NULL, NULL, NULL}; // XT_
 XToaster* D_002E26AC = NULL;
 #endif
 
+#ifdef VERSION_FM
+// func_001231E0's format strings (the start of its .rodata after the D_002C6460 names)
+#define D_00487018 "%s_%s"
+#define D_00487020 "%s_%d"
+#define D_00487028 "%d_%d"
+#else
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487018);
 
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487020);
@@ -171,13 +177,16 @@ INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487058);
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487060);
 
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487068);
+#endif
 
 int sprintf(char*, const char*, ...);
 int strlen(const char*);
 XToast* func_001320A8(s32);
+#ifndef VERSION_FM
 extern char D_00487018[];
 extern char D_00487020[];
 extern char D_00487028[];
+#endif
 extern char* D_002C6460[];
 extern s32 D_002C648C;
 extern char D_004F7150[4][32];
@@ -215,6 +224,10 @@ char* func_001231E0(s32 id, char* buf) {
     }
     return buf;
 }
+
+#ifdef VERSION_FM
+INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487030);
+#endif
 
 void func_00123318(XToaster* arg0, s32* arg1) {
     arg1[0] = arg0->unk_154;

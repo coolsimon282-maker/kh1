@@ -549,6 +549,7 @@ segments:
   - [ 0x38d090, rodata ]
   - [ 0x38d2b0, .rodata, xowl ] # func_00122988's jump table (jtbl_0048D2B0)
   - [ 0x38d2c8, .rodata, xtoaster ]
+  - [ 0x38d340, .rodata, xpeanut ] # jump table of xpeanut's first function
   - [ 0x38d388, rodata ]
   - [ 0x38dc48, .rodata, xapple ]
   - [ 0x38dcc0, rodata ]
