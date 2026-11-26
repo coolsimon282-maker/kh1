@@ -881,7 +881,187 @@ void Actor_Reset(XToaster* p, s32 arg1) {
 }
 
 // Creates an actor from its definition (func_001320A8), allocates it, sets it up (party, parent, start position) and resets it; probably.
-INCLUDE_ASM("asm/nonmatchings/xtoaster", Actor_Spawn);
+s32 func_00131F78(s32);
+s32 func_0015AAC0(XToast*);
+void func_001323A0(XToaster*, s32);
+u8* func_00141A40(void);
+void func_0012BA98(s32);
+void func_00131438(XToaster*);
+void func_001371F0(XToaster*);
+void func_00138400(XToaster*);
+void Actor_StartLogic(XToaster* p);
+void Actor_Reset(XToaster* p, s32 arg1);
+extern s32 D_00350D7C;
+extern s32 D_00350D80[];
+void func_00130340(XToaster*, f32, s32);
+extern u8 D_00304C70[];
+extern u8 D_FE0000[];
+// fields this function sets that the structs above do not name yet
+#define XS(p, o, T) (*(T*)((u8*)(p) + (o)))
+
+XToaster* Actor_Spawn(u32 id) {
+    XToast* t;
+    XToaster* p;
+    u8* q;
+    f32 pos[4];
+
+    if (((id >> 16) & 0xFF) == 0xB) {
+        id = func_00131F78(id & 0xFFFF);
+        if (id == -1) {
+            return NULL;
+        }
+    }
+    t = func_001320A8(id);
+    if (D_00350D7C > 0 && D_00350D7C < D_00350D80[0] + t->unk_59) {
+        return NULL;
+    }
+    if (t->unk_54 == 0x10 && func_0015AAC0(t) != 0) {
+        return NULL;
+    }
+    D_00350D80[0] += t->unk_59;
+    p = Actor_Alloc();
+    XS(p, 0x4, s32) = id;
+    p->unk_130 = t;
+    p->unk_000 |= 0x8000;
+    if (!(t->unk_04 & 0x100)) {
+        p->unk_000 |= 3;
+    }
+    if (t->unk_4C < 10 && (*(u16*)((u8*)D_003010F8 + t->unk_4C * 0x74 + 0x3A) & 1)) {
+        p->unk_000 |= 0x4000;
+    }
+    XT_FLAGS(p) = (XT_FLAGS(p) & ~0x30000000000) | ((u64)(((u32)t->unk_04 >> 3) & 3) << 40);
+    if (p->unk_130->unk_04 & 0x80) {
+        XT_FLAGS(p) |= 0x800000000000;
+    }
+    p->unk_06C = D_00304C70;
+    p->unk_144 = 0;
+    XS(p, 0x140, s32) = 0;
+    XS(p, 0x13C, s32) = 0;
+    XS(p, 0x4A8, s32) = 0;
+    XS(p, 0x488, s32) = 0;
+    XS(p, 0xB0, s32) = 0;
+    XS(p, 0x440, s32) = 0;
+    XS(p, 0x448, s32) = 0;
+    p->unk_148 = NULL;
+    p->unk_14C = 0;
+    XS(p, 0x398, s32) = 0;
+    XS(p, 0x8C, s32) = 0;
+    p->unk_098 = 0;
+    XS(p, 0x4A0, s32) = 0;
+    p->unk_378 = 0;
+    XS(p, 0x70, s32) = 0;
+    XS(p, 0x160, s32) = 0;
+    XS(p, 0x1D8, s32) = 0;
+    p->unk_1CC = 0;
+    Actor_SetParent(p, NULL, 0);
+    XS(p, 0x7C, s32) = 0;
+    XS(p, 0x370, u8) = XS(p, 0x371, u8) = XS(p, 0x372, u8) = XS(p, 0x373, u8) = 0x80;
+    XS(p, 0x3EA, s16) = 0x52;
+    p->unk_080 = 0;
+    XS(p, 0x8, s32) = 0;
+    XS(p, 0xC, s32) = 0;
+    XS(p, 0x3EC, s32) = 0;
+    XS(p, 0x3E0, s32) = 0;
+    XS(p, 0x3E8, s16) = 0;
+    XS(p, 0x400, s32) = 0;
+    XS(p, 0x408, s32) = 0;
+    XS(p, 0x3E4, s32) = 0;
+    XS(p, 0x404, s32) = 0;
+    p->unk_134 = NULL;
+    XS(p, 0x60, f32) = 1.0f;
+    XS(p, 0x64, s32) = 0;
+    XS(p, 0xA0, f32) = XS(p, 0xA4, f32) = XS(p, 0xA8, f32) = XS(p, 0xAC, f32) = 1.0f;
+    XS(p, 0x4A4, s32) = 0;
+    XS(p, 0x38C, s32) = 0;
+    XS(p, 0x390, s32) = 0;
+    XS(p, 0x39C, u8) = 0;
+    XS(p, 0x39D, u8) = 0;
+    p->unk_39E = 0;
+    p->unk_3A0 = 0;
+    XT_FLAGS(p) &= ~0x6000000000;
+    switch (p->unk_006) {
+    case 3:
+        XT_FLAGS(p) |= 0x40000000000;
+        XT_FLAGS(p) = (XT_FLAGS(p) & ~0x6000000000) | 0x4000000000;
+        p->unk_06C = func_00141A40();
+        break;
+    case 5:
+    case 10:
+        if (p->unk_130->unk_04 & 0x400) {
+            XS(p, 0x39D, u8) |= 1;
+        }
+        if (p->unk_130->unk_04 & 0x800) {
+            XS(p, 0x39D, u8) |= 2;
+        }
+        break;
+    case 7:
+        p->unk_06C = func_00141A40();
+        p->unk_06C[0xBD] = 2;
+        break;
+    }
+    if (XS(t, 0x8, s32) == 0) {
+        XS(t, 0x8, s32) = (s32)(D_FE0000 + (XS(t, 0x55, s8) << 18));
+    }
+    func_001323A0(p, XS(t, 0x8, s32));
+    Actor_SetupPartyMember(p);
+    if (p->unk_006 == 2) {
+        func_001358B8(p, 0xC);
+    }
+    Actor_StartLogic(p);
+    if (p->unk_14C != 0) {
+        XS(p->unk_14C, 0xF, s8) = -1;
+        XS(p->unk_14C, 0x1C, s32) = 0;
+        XS(p->unk_14C, 0x24, s32) = -1;
+    }
+    if (p->unk_148 != NULL) {
+        p->unk_148->unk_0E0 = 0.0f;
+    }
+    q = p->unk_134;
+    if (q == NULL || XS(q, 0xC, f32) == 0.0f) {
+        func_00123C80(p, XS(t, 0x14, f32), XS(t, 0x10, f32));
+        q = p->unk_134;
+        if (t->unk_04 & 0x20) {
+            XT_FLAGS(p) |= 0x2000000000000;
+            XT_FLAGS(p) |= 0x30000000000;
+        }
+    }
+    XS(p, 0x3A4, s32) = 0;
+    p->unk_3A8 = 0;
+    XS(p, 0x3AC, s32) = 0;
+    if (q != NULL && q[6] != 0) {
+        XT_FLAGS(p) &= ~0x800000000000;
+        if (((XT_FLAGS(p) >> 37) & 3) == 0) {
+            XT_FLAGS(p) |= 0x6000000000;
+        }
+    }
+    if (q != NULL && q[4] != 0) {
+        XS(p, 0x2C4, f32) = XS(XS(q, 0x10, u8*), 0x8, f32);
+        XS(p, 0x2C0, f32) = XS(XS(q, 0x10, u8*), 0xC, f32);
+    } else {
+        XS(p, 0x2C0, f32) = p->unk_410;
+        XS(p, 0x2C4, f32) = p->unk_414 * 0.5f;
+    }
+    XS(p, 0x9C, s32) = 0;
+    XS(p, 0x40, f32) = XS(p, 0x44, f32) = XS(p, 0x48, f32) = XS(p, 0x4C, f32) = 1.0f;
+    Actor_GetStartPosition(p, pos);
+    p->unk_350[0] = 0x80;
+    p->unk_350[1] = 0x80;
+    p->unk_350[2] = 0x80;
+    p->unk_350[3] = 0x80;
+    Actor_Reset(p, (s32)pos);
+    if (p->unk_1D0 != 0) {
+        func_00131438(p);
+        XS(p, 0x164, s32) = XS(t, 0x57, s8);
+        func_00130340(p, 0.0f, XS(t, 0x57, s8));
+    }
+    func_001371F0(p);
+    func_00138400(p);
+    if ((s32)(XT_FLAGS(p) >> 48) & 1) {
+        func_0012BA98(p->unk_144);
+    }
+    p->unk_000 &= ~0x400;
+    return p;
+}
 
 s32 func_0014F658(void*, s32);
 void func_001574B0(s32);
