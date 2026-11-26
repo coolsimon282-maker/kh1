@@ -36,11 +36,6 @@ int D_0046C578[2] = {0};
 #else
 extern DmaChan* dch[10];
 #endif
-extern char D_00492E60[];            /* the sync timeout message */
-extern int D_00492E78[10];           /* resetChan */
-extern unsigned char D_00492EA0[16]; /* mfdCode */
-extern unsigned char D_00492EB0[16]; /* stsCode */
-extern unsigned char D_00492EC0[16]; /* stdCode */
 extern DmaEnv D_0066FAD8;            /* sceDmaCurrentEnv */
 
 int scePrintf(const char* fmt, ...);
@@ -55,7 +50,7 @@ void func_00266AB0(DmaChan* ch) {
 
     while (ch->chcr & 0x100) {
         if (--n < 0) {
-            scePrintf(D_00492E60);
+            scePrintf("libdma: sync timeout\n");
             func_00267248(ch);
         }
     }
@@ -67,11 +62,17 @@ void func_00266B20(DmaChan* ch, unsigned int addr, int n) {
     }
     while (*(volatile unsigned int*)&ch->madr < addr) {
         if (--n < 0) {
-            scePrintf(D_00492E60);
+            scePrintf("libdma: sync timeout\n");
             func_00267248(ch);
         }
     }
 }
+
+/* .rodata (0x00492E60-0x00492ED0): the sync timeout message (the literal above), then these */
+static const int resetChan[10] = {1, 1, 1, 1, 1, 0, 0, 0, 1, 1}; /* channels sceDmaReset clears */
+static const unsigned char mfdCode[16] = {0, 0, 0, 3, 0, 1, 0, 0, 2};
+static const unsigned char stsCode[16] = {0, 1, 2, 0, 0, 0, 3};
+static const unsigned char stdCode[16] = {0, 2, 3};
 
 unsigned int func_00266BA8(unsigned int addr) {
     if ((addr >> 28) == 7) {
@@ -103,7 +104,7 @@ int sceDmaReset(int mode) {
 
     old = *(volatile int*)0x1000E000 & 1;
     for (i = 0; i < 10; i++) {
-        if (D_00492E78[i] != 0) {
+        if (resetChan[i] != 0) {
             int* ch = (int*)dch[i];
             ch[0x00 / 4] = 0;
             ch[0x30 / 4] = 0;
@@ -142,9 +143,9 @@ int sceDmaPutEnv(DmaEnv* env) {
     if (env->rcyc >= 7) {
         return -4;
     }
-    ctrl = (ctrl & 0xFFFFFFCF) | (D_00492EA0[env->mfd] << 4);
-    ctrl = (ctrl & 0xFFFFFF3F) | (D_00492EB0[env->sts] << 6);
-    ctrl = (ctrl & 0xFFFFFFF3) | (D_00492EC0[env->std] << 2);
+    ctrl = (ctrl & 0xFFFFFFCF) | (mfdCode[env->mfd] << 4);
+    ctrl = (ctrl & 0xFFFFFF3F) | (stsCode[env->sts] << 6);
+    ctrl = (ctrl & 0xFFFFFFF3) | (stdCode[env->std] << 2);
     if (env->rcyc != 0) {
         ctrl |= 2;
         ctrl = (ctrl & 0xFFFFFCFF) | ((env->rcyc - 1) << 8);
