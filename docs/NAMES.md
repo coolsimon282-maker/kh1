@@ -8,6 +8,10 @@ Names still spelled the old way in some C (src/unsplit/, xhumungus.c, and header
 linked to the new ones by aliases at the end of `config/fm/undefined_syms.txt`: renaming inside those files moves
 other functions (rule F1).
 
+JP and EU carry the same names at their own addresses: `config/jp/symbol_addrs.txt` (section "names from the FM
+cleanup") and `config/eu/jp_names.txt` (the old JP name's line renamed in place), with the old-name aliases in their
+`undefined_syms.txt`. Names on FM-only functions (fm_func_*) and on FM-address data names have no JP/EU entry.
+
 | name | address | file | why |
 |---|---|---|---|
 | cdvd_QueueFileLoad | 0x00120748 | unsplit/seg_01FD30.c | jhaton/kh1 fork (docs/external/jhaton/names_for_fm.tsv, JP 0x00120590); was func_00120590 |
