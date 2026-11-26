@@ -296,3 +296,24 @@ other functions (rule F1).
 | ConfigMenu_UpdateOption0 | 0x00219A88 | xpotato.c | Config menu page for option 0: two choices (D_003F4790), the selection written to GameData +0x00; pad bit 0x4000 closes it. |
 | ConfigMenu_UpdateOption1 | 0x00219C18 | xpotato.c | Config menu page for option 1 (choices D_003F4798, GameData +0x04). |
 | ConfigMenu_UpdateOption2 | 0x00219DA8 | xpotato.c | Config menu page for option 2 (choices D_003F47A0, GameData +0x08). |
+| NativeCmd_SinDeg | 0x00128DE0 | xaudacity.c | Native command 2 (1 arg, returns a value): sine of the angle a0 in degrees (wrapped by func_00120AC8). |
+| NativeCmd_CosDeg | 0x00128E38 | xaudacity.c | Native command 3 (1 arg, returns a value): cosine of the angle a0 in degrees. |
+| NativeCmd_DegToRad | 0x00128F10 | xaudacity.c | Native command 149 (1 arg, returns a value): a0 degrees to radians (wrapped by func_00120AC8). |
+| NativeCmd_AddVector | 0x00128FF8 | xaudacity.c | Native command 7 (2 args): vector a0 += a1. |
+| NativeCmd_SubVector | 0x00129020 | xaudacity.c | Native command 8 (2 args): vector a0 -= a1. |
+| NativeCmd_RotateVectorY | 0x00129068 | xaudacity.c | Native command 10 (2 args): rotates vector a0 about Y by a1 degrees. |
+| NativeCmd_RotateVectorZ | 0x001290D8 | xaudacity.c | Native command 31 (2 args): rotates vector a0 about Z by a1 degrees. |
+| NativeCmd_RotateVectorXYZ | 0x00129270 | xaudacity.c | Native command 144 (2 args): rotates vector a0 by the X/Y/Z angles in degrees of vector a1. |
+| NativeCmd_AddScaledVector | 0x00129148 | xaudacity.c | Native command 18 (3 args): vector a0 += a1 * a2 * D_002B8344[0] (D_002B8344[0] is probably the frame time step). |
+| NativeCmd_ScaleVector | 0x001291E8 | xaudacity.c | Native command 93 (2 args): scales vector a0 (XYZ) by a1. |
+| NativeCmd_FaceVector | 0x00129388 | xaudacity.c | Native command 11 (2 args): object a0's angle unk_150 = atan2 of vector a1 (x, z), applied with func_00137688. |
+| NativeCmd_SetAngleFromVector | 0x00129530 | xaudacity.c | Native command 36 (2 args): object a0's angle unk_150 = atan2 of vector a1 (x, z), without applying it. |
+| NativeCmd_SetFlags1CC | 0x00129AE0 | xaudacity.c | Native command 111 (2 args): object a0's flags unk_1CC |= a1. |
+| NativeCmd_ClearFlags1CC | 0x00129AF8 | xaudacity.c | Native command 112 (2 args): object a0's flags unk_1CC &= ~a1. |
+| NativeCmd_SetFlags3A4 | 0x00129BB8 | xaudacity.c | Native command 116 (4 args): ors a1, a2, a3 into object a0's flag words unk_3A4, unk_3A8, unk_3AC. |
+| NativeCmd_ClearFlags3A4 | 0x00129BF0 | xaudacity.c | Native command 117 (4 args): clears a1, a2, a3 from object a0's flag words unk_3A4, unk_3A8, unk_3AC. |
+| NativeCmd_AddLight | 0x0012AD78 | xaudacity.c | Native command 52 (3 args, returns a value): a0 = Light_Add(a0, a1 | 8, a2). |
+| NativeCmd_ClearInterpolation | 0x0012ADB0 | xaudacity.c | Native command 53 (1 arg): Interpolation_ClearValue(a0). |
+| NativeCmd_StartInterpolation | 0x0012ADC8 | xaudacity.c | Native command 201 (3 args): Interpolation_StartVector(a0, a1, a2, NULL). |
+| NativeCmd_SetAngles16 | 0x0012A628 | xaudacity.c | Native command 55 (2 args): stores the radian angles of vector a1 as 16-bit angles (0x10000 a turn) in the three words at a0->unk_04. |
+| NativeCmd_LineCheck | 0x0012AF88 | xaudacity.c | Native command 140 (4 args, returns a value): steps from a0 along a1 (length in its w) in pieces of at most a2 through func_001166E8, stores the end point in a3; a0 = hit bit (probably a collision line check). |

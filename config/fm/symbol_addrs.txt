@@ -370,6 +370,32 @@ ConfigMenu_UpdateOption1             = 0x00219C18; // type:func
 ConfigMenu_UpdateOption2             = 0x00219DA8; // type:func
 
 
+//=========================================================
+// xaudacity.c
+//=========================================================
+NativeCmd_SinDeg                     = 0x00128DE0; // type:func
+NativeCmd_CosDeg                     = 0x00128E38; // type:func
+NativeCmd_DegToRad                   = 0x00128F10; // type:func
+NativeCmd_AddVector                  = 0x00128FF8; // type:func
+NativeCmd_SubVector                  = 0x00129020; // type:func
+NativeCmd_RotateVectorY              = 0x00129068; // type:func
+NativeCmd_RotateVectorZ              = 0x001290D8; // type:func
+NativeCmd_RotateVectorXYZ            = 0x00129270; // type:func
+NativeCmd_AddScaledVector            = 0x00129148; // type:func
+NativeCmd_ScaleVector                = 0x001291E8; // type:func
+NativeCmd_FaceVector                 = 0x00129388; // type:func
+NativeCmd_SetAngleFromVector         = 0x00129530; // type:func
+NativeCmd_SetFlags1CC                = 0x00129AE0; // type:func
+NativeCmd_ClearFlags1CC              = 0x00129AF8; // type:func
+NativeCmd_SetFlags3A4                = 0x00129BB8; // type:func
+NativeCmd_ClearFlags3A4              = 0x00129BF0; // type:func
+NativeCmd_AddLight                   = 0x0012AD78; // type:func
+NativeCmd_ClearInterpolation         = 0x0012ADB0; // type:func
+NativeCmd_StartInterpolation         = 0x0012ADC8; // type:func
+NativeCmd_SetAngles16                = 0x0012A628; // type:func
+NativeCmd_LineCheck                  = 0x0012AF88; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
