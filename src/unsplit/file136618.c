@@ -1236,7 +1236,60 @@ void func_0023D698(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023D700);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023D7E8);
+#include "sdk/ee/eestruct.h"
+typedef struct {
+    u64 tag0;
+    u64 reg0;
+    u64 tag1;
+    u64 reg1;
+    struct { s32 u; s32 v; s32 pad[2]; } uv[4];
+    s32 col[4][4];
+    struct { s32 x; s32 y; s32 z; s32 w; } xyz[4];
+} Pkt3D7E8;
+
+s32 func_0023D7E8(s32 a0, s32 (*xy)[4], s32 (*uv)[4], s32 (*col)[4], u64 *tex, s32 a5) {
+    Pkt3D7E8 o;
+    s32 i;
+    s32 j;
+
+    o.tag0 = tex[3];
+    ((sceGsTex0 *)&o.tag0)->CSA = 0;
+    ((sceGsTex0 *)&o.tag0)->CLD = 1;
+    ((sceGsTex0 *)&o.tag0)->PSM = 0x13;
+    o.reg0 = 6;
+    o.tag1 = tex[3];
+    o.reg1 = 6;
+    o.xyz[0].x = (xy[0][0] << 4) + 0x7000;
+    o.xyz[0].y = (xy[0][1] << 4) + 0x7400;
+    o.xyz[0].z = -0x100;
+    o.xyz[0].w = 0;
+    o.xyz[1].x = (xy[1][0] << 4) + 0x7000;
+    o.xyz[1].y = (xy[1][1] << 4) + 0x7400;
+    o.xyz[1].z = -0x100;
+    o.xyz[1].w = 0;
+    o.xyz[2].x = (xy[2][0] << 4) + 0x7000;
+    o.xyz[2].y = (xy[2][1] << 4) + 0x7400;
+    o.xyz[2].z = -0x100;
+    o.xyz[2].w = 0;
+    o.xyz[3].x = (xy[3][0] << 4) + 0x7000;
+    o.xyz[3].y = (xy[3][1] << 4) + 0x7400;
+    o.xyz[3].z = -0x100;
+    o.xyz[3].w = 0;
+    o.uv[0].u = (uv[0][0] << 4) + 8;
+    o.uv[0].v = (uv[0][1] << 4) + 8;
+    o.uv[1].u = (uv[1][0] << 4) + 8;
+    o.uv[1].v = (uv[1][1] << 4) + 0x18;
+    o.uv[2].u = (uv[2][0] << 4) + 0x18;
+    o.uv[2].v = (uv[2][1] << 4) + 8;
+    o.uv[3].u = (uv[3][0] << 4) + 0x18;
+    o.uv[3].v = (uv[3][1] << 4) + 0x18;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 4; j++) {
+            o.col[i][j] = col[i][j];
+        }
+    }
+    return func_002388B8((u8 *)&o, 1, a5);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023DA08);
 
