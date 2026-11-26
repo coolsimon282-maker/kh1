@@ -50,7 +50,43 @@ void func_0024F070(void) {
     func_00149E38(*(u16 *)(*(u8 **)&D_0066AA84 + 0x4C), func_0024F008);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file14EF88", func_0024F098);
+u8 *func_0013DA88(s32);
+void func_00141218(u8 *);
+void Actor_FreeModel(u8 *);
+void Actor_Remove(u8 *);
+u8 *func_00132040(u8 *);
+s32 func_001571A8(s32, s32);
+s32 func_001560F8_s(s32, void*) __asm__("func_001560F8");
+void func_0024F070(void);
+
+void func_0024F098(u8 *a0, void (*cb)(void)) {
+    u8 *p;
+    u8 *q;
+    s8 c;
+
+    if (a0[3] != ((u8 *)D_003010F8)[0x491]) {
+        p = func_0013DA88(((u8 *)D_003010F8)[0x491]);
+        sceVu0CopyVector((f32 *)D_0066AA90, (f32 *)(p + 0x10));
+        *(f32 *)(D_0066AA90 + 0xC) = *(f32 *)(p + 0x3C);
+        c = *(s8 *)(*(u8 **)(p + 0x130) + 0x55);
+        func_00141218(p);
+        Actor_FreeModel(p);
+        Actor_Remove(p);
+        *(u8 **)&D_0066AA84 = NULL;
+        while ((q = *(u8 **)&D_0066AA84 = func_00132040(*(u8 **)&D_0066AA84)) != NULL) {
+            if (*(u16 *)(q + 0x4C) == a0[3] && *(s8 *)(q + 0x54) == 1) {
+                break;
+            }
+        }
+        q[0x55] = c;
+        func_001571A8(*(u16 *)(*(u8 **)&D_0066AA84 + 0x4C), 0);
+        func_001560F8_s(**(s32 **)&D_0066AA84, func_0024F070);
+        D_0066AA80 = cb;
+    } else {
+        func_0024EF88();
+        cb();
+    }
+}
 
 extern s32 D_0066AAA0;
 extern void (*D_0066AA80)(void);
