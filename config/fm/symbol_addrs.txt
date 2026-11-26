@@ -696,6 +696,27 @@ Timer_CountDown                      = 0x00121B08; // type:func
 Vec_CosAngleXZ                       = 0x00121B38; // type:func
 
 
+//=========================================================
+// xbuffalo.c
+//=========================================================
+CoThread_RunAll                      = 0x001BFAC8; // type:func
+CoThread_GetCount                    = 0x001BFC80; // type:func
+CoThread_GetCurrentData              = 0x001BFCB0; // type:func
+CoThread_InitTable                   = 0x001BFCD8; // type:func
+CoThread_SetupMemory                 = 0x001BFE50; // type:func
+CoThread_GetMemorySize               = 0x001BFEC8; // type:func
+CoThread_FindFree                    = 0x001BFED8; // type:func
+CoThread_IsUsed                      = 0x001BFF70; // type:func
+CoThread_Free                        = 0x001BFFA0; // type:func
+CoThread_FreeAll                     = 0x001C0010; // type:func
+CoThread_RequestEnd                  = 0x001C0078; // type:func
+CoThread_CreateBig                   = 0x001C01B0; // type:func
+CoThread_Create                      = 0x001C0310; // type:func
+CoThread_SortRunList                 = 0x001C0460; // type:func
+CoThread_RunSteps                    = 0x001C0688; // type:func
+CoThread_SetEndCallback              = 0x001C06C0; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

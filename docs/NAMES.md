@@ -569,3 +569,19 @@ other functions (rule F1).
 | Mat_ToEuler | 0x00121A78 | xball.c | Euler angles of the normalised rotation matrix arg0 into arg1. |
 | Timer_CountDown | 0x00121B08 | xball.c | A positive timer minus D_002B8340[1], not below 0. |
 | Vec_CosAngleXZ | 0x00121B38 | xball.c | Vec_CosAngle of the two vectors flattened to Y = 0 (the result is not returned). |
+| CoThread_RunAll | 0x001BFAC8 | xbuffalo.c | Runs every thread in the run list D_0037A170 once (through a register-switching call) and frees the ones that ended; probably. |
+| CoThread_GetCount | 0x001BFC80 | xbuffalo.c | Number of used threads counted by CoThread_SortRunList (D_003759DC). |
+| CoThread_GetCurrentData | 0x001BFCB0 | xbuffalo.c | Address of the current thread's (D_0037A168) +0x10 quadword. |
+| CoThread_InitTable | 0x001BFCD8 | xbuffalo.c | Sets up the thread table D_0037A16C: thread 0, 15 big (0x81C0-byte context and stack) and 384 small (0x9C0) threads in the memory D_006257D4. |
+| CoThread_SetupMemory | 0x001BFE50 | xbuffalo.c | Places the thread table, run list and thread memory in the block at arg0, sets up the table and returns the end of the block. |
+| CoThread_GetMemorySize | 0x001BFEC8 | xbuffalo.c | Size of the memory CoThread_SetupMemory needs (0x171388 in FM). |
+| CoThread_FindFree | 0x001BFED8 | xbuffalo.c | Index of a free big (arg0 == 0, 1..15) or small (16..399) thread, or -1. |
+| CoThread_IsUsed | 0x001BFF70 | xbuffalo.c | Used flag of thread arg0 (0 for a negative index). |
+| CoThread_Free | 0x001BFFA0 | xbuffalo.c | Calls the thread's end callback (+0x20) and frees it. |
+| CoThread_FreeAll | 0x001C0010 | xbuffalo.c | Frees every used thread except thread 0 and sets the table up again. |
+| CoThread_RequestEnd | 0x001C0078 | xbuffalo.c | Marks thread arg0 (or the current one for a negative arg0) to be freed (+0x04 bit 0) (FM only). |
+| CoThread_CreateBig | 0x001C01B0 | xbuffalo.c | Starts a big thread: priority arg0 (0xFFFF when negative), entry arg1 and eight arguments written into its context; prints a message when none is free. |
+| CoThread_Create | 0x001C0310 | xbuffalo.c | Starts a small thread like CoThread_CreateBig; returns its index or -1. |
+| CoThread_SortRunList | 0x001C0460 | xbuffalo.c | Frees the threads marked to end and lists the used ones in D_0037A170 by priority (+0x02), ended by -1. |
+| CoThread_RunSteps | 0x001C0688 | xbuffalo.c | Calls CoThread_RunAll arg0 times. |
+| CoThread_SetEndCallback | 0x001C06C0 | xbuffalo.c | Sets the end callback (+0x20) of thread arg0 (or the current one) (FM only). |

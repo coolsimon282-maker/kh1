@@ -180,3 +180,4 @@ func_001217C0 = Mat_ScaleRows;
 func_00121830 = Vec_Div3;
 func_001218E0 = Mat_ToEuler;
 func_00121970 = Timer_CountDown;
+func_001C1680 = CoThread_RunAll;
