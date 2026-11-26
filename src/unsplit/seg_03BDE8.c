@@ -2269,7 +2269,37 @@ s32 func_00144410(u8* p, f32* q) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144510);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144650);
+extern s32 curWorldNo;
+extern s32 curRoomNo;
+u8* func_0012BD98(u8*, s32, u32, f32*);
+void func_00146C98(u8*, s32);
+void func_00144650(u8* p) {
+    sceVu0FVECTOR v;
+    u8* q;
+
+    if (curWorldNo == 0xD && curRoomNo == 8) {
+        return;
+    }
+    func_001315C0((s32)p, 0x8003, v, 0.0f);
+    if (v[1] > *(f32*)(p + 0x2D4)) {
+        func_0014F658((s32)p, 0x11);
+        sceVu0CopyVector((f32*)(*(u8**)(p + 0x148) + 0xA0), (f32*)(p + 0x3C0));
+        *(f32*)(*(u8**)(p + 0x148) + 0xA4) = 0.0f;
+        func_001223B0((f32*)(*(u8**)(p + 0x148) + 0xA0), (f32*)(*(u8**)(p + 0x148) + 0xA0));
+        q = *(u8**)(p + 0x148);
+        *(f32*)(q + 0xB8) = *(f32*)(q + 0xAC) * 0.7f;
+        *(f32*)(*(u8**)(p + 0x148) + 0xB0) = 40.0f;
+        *(f32*)(*(u8**)(p + 0x148) + 0xB4) = 30.0f;
+        if (*(s32*)(p + 0x88) & 0x20) {
+            func_00153E80(p);
+        } else {
+            func_00130398((s32)p, 0x2D, 16.0f);
+            *(s32*)p &= ~4;
+        }
+        func_0012BD98(p, p[0x39E], 0x80000008, v);
+        func_00146C98(p, 10);
+    }
+}
 
 void func_001447A0(u8* p) {
     func_0014CC88(p, 0.0f);
