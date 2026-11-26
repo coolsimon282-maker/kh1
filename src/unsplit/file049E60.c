@@ -1844,7 +1844,43 @@ void func_00150678(u8* p, u8* q) {
     D_0054F738 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001507D0);
+extern s32 D_1507D0_pad1;
+extern s32 D_1507D0_pad2;
+extern s32 D_1507D0_pad3;
+extern s32 D_1507D0_pad4;
+u8* Actor_Next(u8*);
+s32 func_00123730(u8*);
+s32 func_0015B998(f32*, f32*);
+s32 func_001507D0(u8* p, f32* a1) {
+    f32 box[8];
+    f32 b[8];
+    u8* e = NULL;
+    u8* c;
+    u8* t;
+    s32 i;
+    s32 n;
+
+    func_0015BAD0(p, *(u8**)(*(u8**)(p + 0x134) + 0x10), box);
+    while ((e = Actor_Next(e)) != NULL) {
+        if (*(s8*)(*(u8**)(e + 0x130) + 0x54) != 0xB) continue;
+        if (!func_00123730(e)) continue;
+        if (*(u32*)(e + 0x164) >= 2) continue;
+        if (*(u8**)(e + 0x144) != NULL && *(f32*)(*(u8**)(e + 0x144) + 0xC) > 0.0f) continue;
+        t = *(u8**)(e + 0x134);
+        n = t[7];
+        c = *(u8**)(t + 0x1C);
+        for (i = 0; i < n; i++, c += 0x14) {
+            if ((*c & 0xF) != 3) continue;
+            func_0015BAD0(e, c, b);
+            if (func_0015B998(box, b)) {
+                *(s32*)(*(u8**)(p + 0x148) + 0x140) = i;
+                func_00150678(p, e);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00150930);
 
