@@ -528,7 +528,7 @@ segments:
   - [ 0x36be88, .data, lib/libkernl/thread ]
   - [ 0x36be90, data, lib/libkernl/tlbfunc ]
   - [ 0x36c4f0, .data, lib/libgraph ]
-  - [ 0x36c540, data, lib/libdma ]
+  - [ 0x36c540, .data, lib/libdma ]
   - [ 0x36c580, .data, lib/libvu0 ]
   - [ 0x36c5b0, .data, lib/libdbc ]
   - [ 0x36c5c0, data, lib/libdpad2 ]

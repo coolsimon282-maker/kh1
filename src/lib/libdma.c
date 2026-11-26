@@ -1,5 +1,5 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
+// Its .data is defined at dch below.
 #include "common.h"
 
 typedef struct DmaChan {
@@ -25,7 +25,17 @@ typedef struct {
     int rbsize;          /* 0x10 */
 } DmaEnv;
 
+#ifdef VERSION_FM
+// .data (0x0046C540-0x0046C580)
+char D_0046C540[16] = "PsIIlibdma  2500"; // library version (no NUL)
+DmaChan* dch[10] = { // the DMA channel registers
+    (DmaChan*)0x10008000, (DmaChan*)0x10009000, (DmaChan*)0x1000A000, (DmaChan*)0x1000B000, (DmaChan*)0x1000B400,
+    (DmaChan*)0x1000C000, (DmaChan*)0x1000C400, (DmaChan*)0x1000C800, (DmaChan*)0x1000D000, (DmaChan*)0x1000D400,
+};
+int D_0046C578[2] = {0};
+#else
 extern DmaChan* dch[10];
+#endif
 extern char D_00492E60[];            /* the sync timeout message */
 extern int D_00492E78[10];           /* resetChan */
 extern unsigned char D_00492EA0[16]; /* mfdCode */
