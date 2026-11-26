@@ -346,11 +346,11 @@ void func_00129320(void) {
 }
 #endif
 
-s32 func_00123880(s32);
+s32 Actor_FindById(s32);
 
-// Native command 4 (1 arg, returns a value): a0 = func_00123880(a0).
+// Native command 4 (1 arg, returns a value): a0 = Actor_FindById(a0).
 void func_00129328(XAudArg* arg0) {
-    arg0[0].s = func_00123880(arg0[0].s);
+    arg0[0].s = Actor_FindById(arg0[0].s);
 }
 
 void func_00137688(XAudObj*, f32);
@@ -399,11 +399,11 @@ void func_00129458(XAudArg* arg0) {
     arg0[0].f = func_00142CF0(arg0[0].s, arg0[1].s, arg0[2].f, arg0[3].f);
 }
 
-s32 func_001234A0(s32);
+s32 Actor_Next(s32);
 
-// Native command 30 (1 arg, returns a value): a0 = func_001234A0(a0).
+// Native command 30 (1 arg, returns a value): a0 = Actor_Next(a0).
 void func_00129490(XAudArg* arg0) {
-    arg0[0].s = func_001234A0(arg0[0].s);
+    arg0[0].s = Actor_Next(arg0[0].s);
 }
 
 void func_0012EC88(void*, s32);
@@ -432,11 +432,11 @@ void NativeCmd_SetAngleFromVector(XAudArg* arg0) {
     obj->unk_150 = atan2f(v[0], v[2]);
 }
 
-s32 func_001245F0(s32);
+s32 Actor_Spawn(s32);
 
-// Native command 37 (1 arg, returns a value): a0 = func_001245F0(a0).
+// Native command 37 (1 arg, returns a value): a0 = Actor_Spawn(a0).
 void func_00129540(XAudArg* arg0) {
-    arg0[0].s = func_001245F0(arg0[0].s);
+    arg0[0].s = Actor_Spawn(arg0[0].s);
 }
 
 f32 func_00142E30(s32, s32, s32);
@@ -475,11 +475,11 @@ void func_00129638(XAudArg* arg0) {
     func_00138A20(arg0[0].s, arg0[1].f, arg0[2].s);
 }
 
-s32 func_001233F8(s32);
+s32 Actor_IsActive(s32);
 
 // Native command 51 (1 arg, returns a value).
 void func_00129660(XAudArg* arg0) {
-    if (func_001233F8(arg0[0].s) != 0) {
+    if (Actor_IsActive(arg0[0].s) != 0) {
         arg0[0].s = arg0[0].obj->unk_164;
     } else {
         arg0[0].s = 0xFFF;
@@ -497,11 +497,11 @@ void func_001296B0(XAudArg* arg0) {
     func_00131C28(arg0[0].p, arg0[1].f);
 }
 
-s32 func_00123558(s32, s32);
+s32 Actor_FindNextOpponent(s32, s32);
 
-// Native command 65 (2 args, returns a value): a0 = func_00123558(a0, a1).
+// Native command 65 (2 args, returns a value): a0 = Actor_FindNextOpponent(a0, a1).
 void func_001296D0(XAudArg* arg0) {
-    arg0[0].s = func_00123558(arg0[0].s, arg0[1].s);
+    arg0[0].s = Actor_FindNextOpponent(arg0[0].s, arg0[1].s);
 }
 
 // Native command 69 (1 arg, returns a value): a0 = obj->unk_14C->unk_18->unk_24.
@@ -549,11 +549,11 @@ void func_001297F0(XAudArg* arg0) {
     arg0[0].s = func_0014EE88(arg0[0].s);
 }
 
-void func_00123E48(void*, s32);
+void Actor_SetPositionById(void*, s32);
 
-// Native command 86 (2 args): func_00123E48(a0->unk_04, a1).
+// Native command 86 (2 args): Actor_SetPositionById(a0->unk_04, a1).
 void func_00129820(XAudArg* arg0) {
-    func_00123E48(arg0[0].ptrs->unk_04, arg0[1].s);
+    Actor_SetPositionById(arg0[0].ptrs->unk_04, arg0[1].s);
 }
 
 // Native command 87 (2 args): empty.
@@ -714,11 +714,11 @@ void func_00129C30(XAudArg* arg0) {
     func_0012EC60(arg0[0].s, arg0[1].s, arg0[2].s);
 }
 
-s32 func_001233F8(s32);
+s32 Actor_IsActive(s32);
 
-// Native command 120 (1 arg, returns a value): a0 = func_001233F8(a0).
+// Native command 120 (1 arg, returns a value): a0 = Actor_IsActive(a0).
 void func_00129C58(XAudArg* arg0) {
-    arg0[0].s = func_001233F8(arg0[0].s);
+    arg0[0].s = Actor_IsActive(arg0[0].s);
 }
 
 void func_0014F948(void*, s32);
@@ -1300,11 +1300,11 @@ void func_0012AA28(XAudArg* arg0) {
     arg0[0].s = func_0013A440(arg0[0].s, arg0[1].s, arg0[2].f, arg0[3].s);
 }
 
-void func_00123430(s32, s32, s32);
+void Actor_SetParent(s32, s32, s32);
 
-// Native command 49 (2 args): func_00123430(a0, a1, 0).
+// Native command 49 (2 args): Actor_SetParent(a0, a1, 0).
 void func_0012AA60(XAudArg* arg0) {
-    func_00123430(arg0[0].s, arg0[1].s, 0);
+    Actor_SetParent(arg0[0].s, arg0[1].s, 0);
 }
 
 void func_00139408(s32, s32);
@@ -1339,11 +1339,11 @@ void func_0012AB10(XAudArg* arg0) {
     func_00139170(arg0[0].s, arg0[1].p);
 }
 
-s32 func_001235B8(s32, s32);
+s32 Actor_FindNextAlly(s32, s32);
 
-// Native command 80 (2 args, returns a value): a0 = func_001235B8(a0, a1).
+// Native command 80 (2 args, returns a value): a0 = Actor_FindNextAlly(a0, a1).
 void func_0012AB60(XAudArg* arg0) {
-    arg0[0].s = func_001235B8(arg0[0].s, arg0[1].s);
+    arg0[0].s = Actor_FindNextAlly(arg0[0].s, arg0[1].s);
 }
 
 s32 func_00137230(s32, s32, s32);

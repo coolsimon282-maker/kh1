@@ -375,3 +375,33 @@ other functions (rule F1).
 | Movie_IsRunning | 0x00111090 | xtailor.c | Player command 2 while the player is loaded, else 0. |
 | Movie_SetSysMessage | 0x00111170 | xtailor.c | Player command 6 with the system message bits. |
 | Movie_Finish | 0x001111B0 | xtailor.c | Ends the movie: command 4, clears the movie flags, resumes sound (FM). |
+| Actor_GetDebugName | 0x00122DC8 | xtoaster.c | Text for actor id arg0 (its definition's name at +0x68, or the id type and number) in arg1 or one of four static buffers, upper-cased. |
+| Actor_IsActive | 0x00122FF8 | xtoaster.c | True for a non-NULL actor whose flags (+0x370) have the "used" bit 32 set and the "removed" bit 33 clear. |
+| Actor_SetParent | 0x00123030 | xtoaster.c | Sets actor arg0's parent (+0x74) and +0x78, then recounts every active actor's children (+0x80). |
+| Actor_Next | 0x001230A0 | xtoaster.c | Next active actor after p in the 96-actor array D_002C64A0 (from the first for NULL), or NULL. |
+| Actor_IsOpponent | 0x00123118 | xtoaster.c | True when arg1 has a team (flags bits 37..38) different from arg0's and is not flagged 0x200. |
+| Actor_FindNextOpponent | 0x00123158 | xtoaster.c | Next active actor after p that is an opponent of arg0. |
+| Actor_FindNextAlly | 0x001231B8 | xtoaster.c | Next active actor after p (other than arg0) of arg0's team. |
+| Actor_CountTeam2 | 0x00123298 | xtoaster.c | Number of active actors of team 2. |
+| Actor_PushState | 0x00123438 | xtoaster.c | Pushes the actor's state word (+0x000) on its small stack (+0x37C) and sets it to arg1. |
+| Actor_PopState | 0x00123460 | xtoaster.c | Restores the actor's state word from its stack. |
+| Actor_FindById | 0x00123488 | xtoaster.c | Actor for id arg0 by its type byte (bits 16..23): 0 party slot 0..2, 1 character number (definition +0x4C), 11 definition +0x4E, else the actor's own id (+0x04). |
+| Actor_GetCharNo | 0x00123618 | xtoaster.c | Character number (definition +0x4C) of actor id arg0, or 0xFF. |
+| Actor_SetStateBit | 0x00123648 | xtoaster.c | Sets bit arg1 of actor id arg0's state word. |
+| Actor_ClearStateBit | 0x00123680 | xtoaster.c | Clears bit arg1 of actor id arg0's state word. |
+| Actor_TestStateBit | 0x001236C0 | xtoaster.c | Tests bit arg1 of actor id arg0's state word. |
+| Actor_FreeModel | 0x001236F8 | xtoaster.c | Releases the actor's model (+0x154, func_00162110) and its +0x14C data unless flags bit 39 is set. |
+| Actor_Free | 0x00123760 | xtoaster.c | Actor_FreeModel, then clears the state word and +0x374. |
+| Actor_FreeRemovedTask | 0x00123790 | xtoaster.c | Task: frees every actor flagged removed (bit 33, without bit 55). |
+| Actor_Alloc | 0x00123810 | xtoaster.c | Takes the next unused actor slot (round robin from D_002E26AC), clears it and marks it used; NULL when all 96 are used. |
+| Actor_SetPosition | 0x001238D0 | xtoaster.c | Places the actor at vector arg1 (w = angle), resets its motion fields and ground position. |
+| Actor_SetPositionById | 0x00123A88 | xtoaster.c | Actor_SetPosition for actor id arg0. |
+| Actor_SetDirectionById | 0x00123AB8 | xtoaster.c | Sets actor id arg0's direction vector (+0x30) and marks it fixed (flags bit 44). |
+| Actor_GetStartPosition | 0x00123B40 | xtoaster.c | Start position of the actor: the spawn point for the party (kind 0 / 1), else from its definition, placed near the player for some placement modes. |
+| Actor_SetupPartyMember | 0x00123D48 | xtoaster.c | When the actor is a party member (Party_FindCharacterSlot < 3, kind 3), puts it in party slot D_002E26A0[k] and sets up its party data. |
+| Actor_Reset | 0x00124060 | xtoaster.c | Resets the actor's state, motion and timers and places it at arg1. |
+| Actor_Spawn | 0x00124218 | xtoaster.c | Creates an actor from its definition (func_001320A8), allocates it, sets it up (party, parent, start position) and resets it; probably. |
+| Actor_Remove | 0x001247E8 | xtoaster.c | Takes an active actor out of the party slots and marks it removed (freed later by Actor_FreeRemovedTask). |
+| Actor_RemoveById | 0x001248E8 | xtoaster.c | Actor_Remove for actor id arg0. |
+| Actor_RemoveAll | 0x001249D8 | xtoaster.c | Updates the party flags, then removes every active actor (FM only). |
+| Actor_InitSystem | 0x00124B90 | xtoaster.c | Clears the actor array and party slots, resets related systems and adds Actor_FreeRemovedTask once. |

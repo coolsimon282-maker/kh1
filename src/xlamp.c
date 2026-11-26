@@ -93,7 +93,7 @@ void func_00122518(void) {
     D_002C1EA8 = 0;
     func_0013CE18();
     func_001255F8();
-    func_00124F38();
+    Actor_InitSystem();
     func_00128B68();
     func_001334A8();
     func_00149078();

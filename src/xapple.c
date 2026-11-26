@@ -82,10 +82,10 @@ s32 TaskList_UpdateMatching(s32*, s32);
 f32 func_00120A38(sceVu0FVECTOR);
 f32 func_00120A58(f32*);
 f32 func_00120AC8(f32);
-XAppleBlemish* func_001234A0(XAppleBlemish*);
-void func_00123830(XAppleBlemish*, s32);
-void func_00123E48(s32, sceVu0FVECTOR);
-void func_00124BC8(XAppleBlemish*);
+XAppleBlemish* Actor_Next(XAppleBlemish*);
+void Actor_PushState(XAppleBlemish*, s32);
+void Actor_SetPositionById(s32, sceVu0FVECTOR);
+void Actor_Remove(XAppleBlemish*);
 void func_00130248(XAppleBlemish*, f32, UNK_PTR);
 void func_001313A8(XAppleBlemish*, UNK_PTR);
 void func_00131410(XAppleBlemish*);
@@ -410,7 +410,7 @@ s32 func_0013B1D0(void) {
     s32 var_16;
 
     var_17 = NULL;
-    while ((var_17 = func_001234A0(var_17)) != NULL) {
+    while ((var_17 = Actor_Next(var_17)) != NULL) {
         var_16 = var_17->unk_00;
         if (var_17 == D_005325E8) {
             var_16 |= 0x30;
@@ -422,11 +422,11 @@ s32 func_0013B1D0(void) {
             func_00137448(var_17);
             sceVu0CopyVector(var_17->unk_120, D_002C58B0);
         }
-        func_00123830(var_17, var_16);
+        Actor_PushState(var_17, var_16);
     }
     sceVu0CopyVector(D_0052AE40, &D_005325E8->unk_10);
     D_0052AE40[3] = D_005325E8->unk_3C;
-    func_00123E48(D_005325E8->unk_04.s32, D_002C58B0);
+    Actor_SetPositionById(D_005325E8->unk_04.s32, D_002C58B0);
     func_00176310(D_0052AE60);
     func_001763A0(0);
     func_001778A0(1);
@@ -450,7 +450,7 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B1D0);
 
 //     var_17 = NULL;
 //     do {
-//         var_17 = func_001234A0(var_17);
+//         var_17 = Actor_Next(var_17);
 //         if (var_17 == NULL) {
 //             break;
 //         }
@@ -465,13 +465,13 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B1D0);
 //             func_00137348(var_17);
 //             sceVu0CopyVector(var_17->unk_120, D_002C1E00 + 0x1E00);
 //         }
-//         func_00123830(var_17, var_16);
+//         Actor_PushState(var_17, var_16);
 
 //     } while (TRUE);
 
 //     sceVu0CopyVector(D_005325F0, &D_005325E8->unk_10);
 //     D_005325F0[3] = D_005325E8->unk_3C;
-//     func_00123E48(D_005325E8->unk_04.s32, D_002C1E00);
+//     Actor_SetPositionById(D_005325E8->unk_04.s32, D_002C1E00);
 //     func_00177828(D_00532610);
 //     func_001778B8(0);
 //     func_001778A0(1);
@@ -544,7 +544,7 @@ extern sceVu0FVECTOR D_0052AE40;
 s32 func_0014F658(XAppleBlemish*, s32);
 void func_00131500(XAppleBlemish*);
 void func_00130340(XAppleBlemish*, f32, UNK_PTR);
-s32 func_00123858(void*);
+s32 Actor_PopState(void*);
 void func_001250B0(void);
 void func_00133588(void);
 void func_001452E0(s32, s32);
@@ -556,18 +556,18 @@ void func_0013B578(void) {
     func_00133588();
     func_001250B0();
     func_0023E0B0(0, 1);
-    var_16 = func_001234A0(NULL);
+    var_16 = Actor_Next(NULL);
     if (var_16 != NULL) {
         do {
             if (!((var_16->unk_370 >> 0x21) & 1) && (var_16 != (XAppleBlemish*)D_002E26A0.unk_00[1]) &&
                 (var_16 != (XAppleBlemish*)D_002E26A0.unk_00[2])) {
-                func_00123858(var_16);
+                Actor_PopState(var_16);
             }
-            var_16 = func_001234A0(var_16);
+            var_16 = Actor_Next(var_16);
         } while (var_16 != NULL);
     }
     func_0014F658(D_005325E8, 0);
-    func_00123E48(D_005325E8->unk_04.s32, D_0052AE40);
+    Actor_SetPositionById(D_005325E8->unk_04.s32, D_0052AE40);
     func_00131500(D_005325E8);
     func_00130340(D_005325E8, 0.0f, (UNK_PTR)0x40000000);
     APL_E8->unk_370 &= ~0x10000000000000;
@@ -583,7 +583,7 @@ void func_0013B578(void) {
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 #endif
 // int TaskList_Add(int*, int, int*);
-// int func_00123858(void*);
+// int Actor_PopState(void*);
 // void func_001250B0(void);
 // void func_00133588(void);
 // void func_001452E0(int, int);
@@ -598,18 +598,18 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 //     func_00133588();
 //     func_001250B0();
 //     func_0023E0B0(0, 1);
-//     var_16 = func_001234A0(NULL);
+//     var_16 = Actor_Next(NULL);
 //     if (var_16 != NULL) {
 //         do {
 //             if (!((var_16->unk_370 >> 0x21) & 1) && (var_16 != D_002DEC00->unk_00[1]) && (var_16 !=
 //             D_002DEC00->unk_00[2])) {
-//                 func_00123858(var_16);
+//                 Actor_PopState(var_16);
 //             }
-//             var_16 = func_001234A0(var_16);
+//             var_16 = Actor_Next(var_16);
 //         } while (var_16 != NULL);
 //     }
 //     func_0014F8B0(D_005325E8, 0);
-//     func_00123E48(D_005325E8->unk_04.s32, D_005325F0);
+//     Actor_SetPositionById(D_005325E8->unk_04.s32, D_005325F0);
 //     func_00131410(D_005325E8);
 //     func_00130248(D_005325E8, 0.0f, 0x40000000);
 //     D_005325E8->unk_370 &= ~0x10000000000000;
@@ -636,7 +636,7 @@ s32 func_0013B6E0(void) {
     var_4 = NULL;
 
     do {
-        var_4 = func_001234A0(var_4);
+        var_4 = Actor_Next(var_4);
         if (var_4 == NULL) {
             break;
         }
@@ -661,7 +661,7 @@ s32 func_0013B6E0(void) {
         }
         func_F20000(0, ((D_0053260C[4] - D_0053260C[3]) <= 0) ? NULL : ((s32)D_0053260C + D_0053260C[3]));
     } else {
-        func_00124BC8(D_0052AE3C);
+        Actor_Remove(D_0052AE3C);
         func_00131500(D_005325E8);
         func_00130340(D_005325E8, 0.0f, (UNK_PTR)0x40000000);
     }
@@ -684,7 +684,7 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B6E0);
 //     var_4 = NULL;
 
 //     do {
-//         var_4 = func_001234A0(var_4);
+//         var_4 = Actor_Next(var_4);
 //         if (var_4 == NULL) {
 //             break;
 //         }
@@ -709,7 +709,7 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B6E0);
 //         }
 //         func_F20000(0, ((D_0053260C[4] - D_0053260C[3]) <= 0) ? NULL : ((s32)D_0053260C + D_0053260C[3]));
 //     } else {
-//         func_00124BC8(D_005325EC);
+//         Actor_Remove(D_005325EC);
 //         func_00131410(D_005325E8);
 //         func_00130248(D_005325E8, 0.0f, 0x40000000);
 //     }

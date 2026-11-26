@@ -459,6 +459,41 @@ Movie_SetSysMessage                  = 0x00111170; // type:func
 Movie_Finish                         = 0x001111B0; // type:func
 
 
+//=========================================================
+// xtoaster.c
+//=========================================================
+Actor_GetDebugName                   = 0x00122DC8; // type:func
+Actor_IsActive                       = 0x00122FF8; // type:func
+Actor_SetParent                      = 0x00123030; // type:func
+Actor_Next                           = 0x001230A0; // type:func
+Actor_IsOpponent                     = 0x00123118; // type:func
+Actor_FindNextOpponent               = 0x00123158; // type:func
+Actor_FindNextAlly                   = 0x001231B8; // type:func
+Actor_CountTeam2                     = 0x00123298; // type:func
+Actor_PushState                      = 0x00123438; // type:func
+Actor_PopState                       = 0x00123460; // type:func
+Actor_FindById                       = 0x00123488; // type:func
+Actor_GetCharNo                      = 0x00123618; // type:func
+Actor_SetStateBit                    = 0x00123648; // type:func
+Actor_ClearStateBit                  = 0x00123680; // type:func
+Actor_TestStateBit                   = 0x001236C0; // type:func
+Actor_FreeModel                      = 0x001236F8; // type:func
+Actor_Free                           = 0x00123760; // type:func
+Actor_FreeRemovedTask                = 0x00123790; // type:func
+Actor_Alloc                          = 0x00123810; // type:func
+Actor_SetPosition                    = 0x001238D0; // type:func
+Actor_SetPositionById                = 0x00123A88; // type:func
+Actor_SetDirectionById               = 0x00123AB8; // type:func
+Actor_GetStartPosition               = 0x00123B40; // type:func
+Actor_SetupPartyMember               = 0x00123D48; // type:func
+Actor_Reset                          = 0x00124060; // type:func
+Actor_Spawn                          = 0x00124218; // type:func
+Actor_Remove                         = 0x001247E8; // type:func
+Actor_RemoveById                     = 0x001248E8; // type:func
+Actor_RemoveAll                      = 0x001249D8; // type:func
+Actor_InitSystem                     = 0x00124B90; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

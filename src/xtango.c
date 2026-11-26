@@ -1098,10 +1098,10 @@ void Party_RefreshStats(void) {
     }
 }
 
-// func_0013DA88 of party slot arg0s character when non-zero and func_001233F8 accepts it, else 0.
+// func_0013DA88 of party slot arg0s character when non-zero and Actor_IsActive accepts it, else 0.
 s32 func_001F0BD8(s32 arg0) {
     s32 val = func_0013DA88(D_003010F8->unk_48E[arg0]);
-    if (val == 0 || func_001233F8(val) == 0) {
+    if (val == 0 || Actor_IsActive(val) == 0) {
         return 0;
     }
     return val;
