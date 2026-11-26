@@ -1088,7 +1088,27 @@ s32 func_0014D778(u8* p, s32 a) {
     return *(s32*)(p + 0x70);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014D7B8);
+void func_0014D7B8(u8* a0, f32* a1) {
+    u8* p = a0;
+    f32 t = *(f32*)(p + 0x3B0);
+    s32 s;
+
+    if (t >= 4.0f) {
+        if (*(s32*)(p + 0x164) != 4 && *(s32*)(p + 0x164) != 9) {
+            func_0014F658((s32)a0, 0);
+            a1[3] = 0.0f;
+        } else {
+            s = *(s32*)(p + 0x3D0);
+            func_0014CCE0(p, *(f32*)(*(u8**)(p + 0x6C) + 0x10));
+            *(s32*)(p + 0x3D0) = s;
+        }
+        *(s32*)p |= 0x60000;
+    } else {
+        *(f32*)(p + 0x3B0) = t + D_002B8344;
+        a1[3] = 0.0f;
+    }
+    sceVu0CopyVector((f32*)(p + 0x20), a1);
+}
 
 s32 func_0014D878(u8* p, s32 a) {
     if (a != 0) {
