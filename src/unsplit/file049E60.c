@@ -4177,7 +4177,24 @@ u8* func_0015DA70(u8* p) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015DAC0);
+extern s32 D_15DAC0_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+f32 Angle_Wrap(f32);
+s32 func_00137688_r(s32, f32) __asm__("func_00137688");
+s32 sceVu0ScaleVector_r(f32*, f32*, f32) __asm__("sceVu0ScaleVector");
+s32 func_0015DAC0(u8* a0) {
+    u8* p = a0;
+
+    if (*(u16*)(p + 0x30E) != 0xFFFF) {
+        func_0015D5E8(a0);
+        return func_00137688_r((s32)p, *(f32*)(p + 0x150));
+    }
+    func_0014CCE0(a0, 0.0f);
+    *(s32*)p &= ~0x400;
+    *(f32*)(p + 0x150) = Angle_Wrap(*(f32*)(p + 0x150) + 3.1415928f);
+    func_00130398((s32)p, 6, 0.0f);
+    func_00137688((s32)p, *(f32*)(p + 0x150));
+    return sceVu0ScaleVector_r((f32*)(p + 0x3C0), (f32*)(p + 0x30), 4.0f);
+}
 
 void func_0015DB80(u32* p) {
     *p &= 0xFFDFFFEF;
@@ -7373,14 +7390,9 @@ s32 func_00176EE0(void) {
 extern sceVu0FVECTOR D_005758A0;
 extern sceVu0FVECTOR D_005758B0;
 extern f32 D_005758C4_f __asm__("D_005758C4");
-/* unused: rule F1, func_00176F08 needs 1 or 7-8 of these (26 Nov, after the func_001744B8 family) */
+/* unused: rule F1, func_00176F08 (26 Nov, after func_0015DAC0: 0-3 and 5-10 work, 4 and 7 do not) */
 extern s32 D_176F08_pad1;
 extern s32 D_176F08_pad2;
-extern s32 D_176F08_pad3;
-extern s32 D_176F08_pad4;
-extern s32 D_176F08_pad5;
-extern s32 D_176F08_pad6;
-extern s32 D_176F08_pad7;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
