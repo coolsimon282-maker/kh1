@@ -526,6 +526,8 @@ segments:
   - [ 0x273000, .data, ppp/draw/md ]
   - [ 0x273090, .data, ppp/draw/md0 ]
   - [ 0x2732d0, data ]
+  - [ 0x2772d0, .data, unsplit/gumi ]
+  - [ 0x277848, data ]
   - [ 0x2e3c80, .data, xquack ]
   - [ 0x2e3cb8, .data, xtango ]
   - [ 0x2e4658, data ]

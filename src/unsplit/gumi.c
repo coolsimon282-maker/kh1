@@ -2,6 +2,102 @@
 // Split out of the placeholder seg_0B9B78; FM only (JP/EU use src/gumi.c). Built without -g like JP's gumi.c (NO_G_FILES).
 #include "common.h"
 
+// .data (0x003772D0-0x00377848)
+s32 D_003772D0 = 0;
+s32 D_003772D4 = 0;
+s32 D_003772D8 = 0;
+s32 D_003772DC = 0;
+s32 D_003772E0[23] = {0}; // nothing refers to it by name
+// entry points xhumungus calls through (set at run time)
+void (*D_0037733C)() = NULL;
+void (*D_00377340)() = NULL;
+void (*D_00377344)() = NULL;
+void (*D_00377348)() = NULL;
+void (*D_0037734C)() = NULL;
+void (*D_00377350)() = NULL;
+void (*D_00377354)() = NULL;
+void (*D_00377358)() = NULL;
+void (*D_0037735C)() = NULL;
+void (*D_00377360)() = NULL;
+void (*D_00377364)() = NULL;
+void (*D_00377368)() = NULL;
+void (*D_0037736C)() = NULL;
+void (*D_00377370)() = NULL;
+void (*D_00377374)() = NULL;
+void (*D_00377378)() = NULL;
+void (*D_0037737C)() = NULL;
+void (*D_00377380)() = NULL;
+void (*D_00377384)() = NULL;
+void (*D_00377388)() = NULL;
+void (*D_0037738C)() = NULL;
+void (*D_00377390)() = NULL;
+void (*D_00377394)() = NULL;
+void (*D_00377398)() = NULL;
+void (*D_0037739C)() = NULL;
+void (*D_003773A0)() = NULL;
+void (*D_003773A4)() = NULL;
+void (*D_003773A8)() = NULL;
+void (*D_003773AC)() = NULL;
+void (*D_003773B0)() = NULL;
+void (*D_003773B4)() = NULL;
+void (*D_003773B8)() = NULL;
+void (*D_003773BC)() = NULL;
+void (*D_003773C0)() = NULL;
+void (*D_003773C4)() = NULL;
+void (*D_003773C8)() = NULL;
+void (*D_003773CC)() = NULL;
+void (*D_003773D0)() = NULL;
+void (*D_003773D4)() = NULL;
+void (*D_003773D8)() = NULL;
+void* D_003773DC = NULL;
+void* D_003773E0 = NULL;
+void* D_003773E4 = NULL;
+void (*D_003773E8)() = NULL; // xhumungus
+s32 D_003773EC = 0;
+s32 D_003773F0[2] = {0}; // nothing refers to it by name
+// a table D_00377748[0] points to (its size in D_00377648[0])
+u32 D_003773F8[148] = {
+    0x0, 0x60027, 0x60006, 0x0,
+    0x0, 0x0, 0x0, 0x0,
+    0x0, 0x0, 0x0, 0x0,
+    0x0, 0x0, 0x0, 0x0,
+    0x0, 0x0, 0x0, 0x0,
+    0x35402C34, 0x3D36, 0x0, 0x0,
+    0x0, 0x0, 0x0, 0x0,
+    0x14201432, 0x210001, 0x3, 0x14201523,
+    0x210005, 0x3, 0x14201522, 0x210005,
+    0x3, 0x14311213, 0x21003B, 0x3,
+    0x10251332, 0x21000B, 0x3, 0x10251232,
+    0x21000B, 0x3, 0x14201032, 0x21000C,
+    0x3, 0x14121033, 0x21000C, 0x3,
+    0x11241233, 0x21000B, 0x3, 0x11241333,
+    0x21000B, 0x3, 0x11241133, 0x21000B,
+    0x1, 0x10251132, 0x21000B, 0x1,
+    0x13051122, 0x21000B, 0x1, 0x13141123,
+    0x21000B, 0x1, 0x13141223, 0x21000B,
+    0x3, 0x13141323, 0x21000B, 0x3,
+    0x14311023, 0x21000C, 0x3, 0x10341022,
+    0x21000C, 0x3, 0x13051222, 0x21000B,
+    0x3, 0x13051322, 0x21000B, 0x3,
+    0x14201422, 0x21000A, 0x3, 0x14201423,
+    0x21000A, 0x3, 0x14201524, 0x21000A,
+    0x2, 0x14201521, 0x21000A, 0x2,
+    0x12411321, 0x21000D, 0x1, 0x12411324,
+    0x21000D, 0x1, 0x12411424, 0x21000D,
+    0x1, 0x12411421, 0x21000D, 0x1,
+    0x14201420, 0x210022, 0x0, 0x14201425,
+    0x210023, 0x0, 0x12041534, 0x21002A,
+    0x0, 0x12151531, 0x21002B, 0x0,
+    0x11431212, 0x210011, 0x3, 0x10531512,
+    0x210011, 0x3, 0x11431412, 0x21000D,
+    0x3, 0x11431312, 0x21000D, 0x3,
+    0x14201413, 0x21000A, 0x3, 0x10421224,
+    0x210010, 0x3, 0x10421221, 0x210010,
+    0x3, 0x0, 0x0, 0x0,
+};
+u32 D_00377648[64] = {0x250}; // sizes of the D_00377748 tables
+u32* D_00377748[64] = {D_003773F8};
+
 extern s32 D_0037A148;
 extern s32 D_0037A150;
 extern s32 D_0037A154;
