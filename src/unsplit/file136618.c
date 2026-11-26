@@ -3044,7 +3044,25 @@ void func_002461F8(u8 *a0, s32 a1, f32 f) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246320);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_00246438);
+typedef struct { u64 d[0x18]; } A3Ent6438;
+extern A3Ent6438 D_00668060_e __asm__("D_00668060");
+extern u8 D_0045D280[];
+extern s32 D_0045D6D0[];
+void UiFile_Relocate(void *);
+void UiFile_CopyParts(s32 *, A3Ent6438 *, void *);
+s32 TaskSystem_FindTask(s32 (*)(void));
+s32 func_00246320(void);
+void func_00246438(void) {
+    A3Ent6438 e[3];
+
+    memset(&D_00668040, 0, 0x20);
+    UiFile_Relocate(D_0045D280);
+    UiFile_CopyParts(D_0045D6D0, e, D_0045D280);
+    D_00668060_e = e[2];
+    if (TaskSystem_FindTask(func_00246320) == 0) {
+        func_0011ED30(0x28489, func_00246320);
+    }
+}
 
 void func_002464F8(s32 *out) {
     s32 i;
