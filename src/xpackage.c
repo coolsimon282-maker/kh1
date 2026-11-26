@@ -478,7 +478,68 @@ s32 SaTask_GetGroupSize(s32 arg0) {
 }
 
 // Sets up a task group in the given memory in a free slot (asserts "i!=TASK_GRUPE_MAX").
+#ifdef VERSION_FM
+extern char D_00491890[];
+extern char D_004918A8[];
+extern void (*D_00469FD8[8])(s32, s32, s32);
+extern void (*D_00469FF8[8])(void);
+extern void (*D_0046A018[8])(void);
+void func_0024E0A4(void);
+typedef struct {
+    /* 0x00 */ void (*step)(void);
+    /* 0x04 */ void (*free)(void);
+    /* 0x08 */ void (*run)(s32, s32, s32);
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ s32 slot;
+    /* 0x24 */ s32 owned;
+} SaGroup;
+
+SaGroup* SaTask_CreateGroup(s32 n, SaGroup* g, s32 owned) {
+    s32 old40 = D_0046A040;
+    s32 old48 = D_0046A048;
+    s32 size = n * 0x10320;
+    s32 p = (s32)g + 0x28;
+    s32 i;
+
+    if (p & 0xF) {
+        p = p - (p & 0xF) + 0x10;
+    }
+    g->unk_0C = p;
+    for (i = 0; i < 8; i++) {
+        if (XPACKAGE_TABLE[i] == NULL) {
+            break;
+        }
+    }
+    if (i == 8) {
+        ((void (*)(char *, char *, s32))Assert_Stub)(D_00491890, D_004918A8, 0x101);
+    }
+    g->slot = i;
+    g->unk_0C = p;
+    D_0046A03C = p;
+    g->unk_10 = p + size;
+    D_0046A040 = p + size;
+    g->unk_14 = p + size + 0x370;
+    D_0046A044 = p + size + 0x370;
+    g->unk_18 = n;
+    D_0046A048 = n;
+    g->step = D_00469FF8[i];
+    g->run = D_00469FD8[i];
+    g->free = D_0046A018[i];
+    XPACKAGE_TABLE[i] = (XWhiskey*)g;
+    g->owned = owned;
+    g->unk_1C = 0;
+    func_0024E0A4();
+    D_0046A040 = old40;
+    D_0046A048 = old48;
+    return g;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/xpackage", SaTask_CreateGroup);
+#endif
 
 // SaTask_CreateGroup with memory from malloc(SaTask_GetGroupSize(arg0)), owned by the group.
 void SaTask_AllocGroup(s32 arg0) {
