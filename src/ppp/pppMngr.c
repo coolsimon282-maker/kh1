@@ -1005,6 +1005,7 @@ INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppQuickSortF);
 extern sceVu0FMATRIX D_00615EB0;
 void pppQuickSortF(f32* a, s32* b, s32 left, s32 right);
 
+#ifdef VERSION_FM
 s32 pppSortAllPart(ppvmng** list) {
     f32 depth[0x100];
     sceVu0FVECTOR v;
@@ -1039,6 +1040,9 @@ s32 pppSortAllPart(ppvmng** list) {
     }
     return n;
 }
+#else
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppSortAllPart);
+#endif
 
 // Per-frame update of every running effect (sound, render data, program calls, end handling).
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppCalcAllPart);
@@ -1061,6 +1065,7 @@ s32 pppStepMngNoCalc(ppvmng* arg0);
 // pppStepMng is called here with a second argument (1: the effect is drawn this frame) that it does not use
 #define STEP_MNG2(p, d) (((s32 (*)(ppvmng*, s32))pppStepMng)((p), (d)))
 
+#ifdef VERSION_FM
 void pppDrawAllPart(void) {
     _VRAMCACHE_MNG cache;
     s32 saved;
@@ -1168,6 +1173,9 @@ void pppDrawAllPart(void) {
     sceDmaSend(oa_dmagif, D_00370170);
     func_001220B8(saved);
 }
+#else
+INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDrawAllPart);
+#endif
 
 // Clears a manager and sets its default position, scale and colour (usef = 9).
 void init_part_mng(ppvmng* pMng) {
