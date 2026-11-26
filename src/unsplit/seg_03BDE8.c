@@ -2897,7 +2897,30 @@ u8* func_00148570(u8* a, s32 b, s32 c) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00148600);
+/* unused: rule F1 (26 Nov: only 8 among 0-14 keeps func_00152E10 .. func_00176F08) */
+extern s32 D_lay148600_0;
+extern s32 D_lay148600_1;
+extern s32 D_lay148600_2;
+extern s32 D_lay148600_3;
+extern s32 D_lay148600_4;
+extern s32 D_lay148600_5;
+extern s32 D_lay148600_6;
+extern s32 D_lay148600_7;
+u8* func_00148600(u8* a, s32 b, s32 c, f32 f) {
+    f32 m[16];
+    u8* r;
+    func_001318E8(b, c & ~0x10000, m);
+    func_001315C0(b, c, &m[12], f);
+    func_00147E08(a, m);
+    r = func_00148438(a, b);
+    if (r != NULL) {
+        *(s32*)(r + 8) = c;
+        *(u8*)(r + 4) = 3;
+        *(f32*)(r + 0xC) = f;
+        sceVu0CopyMatrix((void*)(r + 0x30), (void*)m);
+    }
+    return r;
+}
 
 s32 func_001486B0(s32 a) {
     func_00148570_1(a);
@@ -10057,6 +10080,7 @@ extern int flip_dummy_9;
 extern int flip_dummy_10;
 extern int flip_dummy_11;
 extern int flip_dummy_12; /* 13-15 dropped with func_00147D50 (26 Nov): 12-14 dummies were stable with it, 15-17 flaky */
+extern int flip_dummy_13;
 void func_00176F08(s32 mode, f32 t) {
     if (D_002DED08 == 0) {
         sceVu0CopyVector(D_005758D0, D_002DECE0);
