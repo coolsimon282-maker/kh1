@@ -504,6 +504,8 @@ segments:
   - [ 0x1bcc28, .data, worldfile ]
   - [ 0x1bcda0, .data, xblade ]
   - [ 0x1bd150, data ]
+  - [ 0x1c1310, .data, unsplit/xturtle ]
+  - [ 0x1c13a0, data ]
   - [ 0x1c58a0, .data, xgoblin ]
   - [ 0x1c5c30, data ]
   - [ 0x1c5c60, .data, xowl ]

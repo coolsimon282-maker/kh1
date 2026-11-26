@@ -1,6 +1,32 @@
 // Final Mix's version of xturtle (JP: src/xturtle.c, 0x11C5D8-0x11EAF8; here 0x11C7A8-0x11ECD8, the whole former
 // placeholder seg_01C7A8). FM only (JP/EU use src/xturtle.c). Built with strict aliasing like JP's xturtle.c.
 #include "common.h"
+
+#define DATA_LABEL(name, base, off) __asm__(".globl " #name "
+" #name " = " #base " + " #off)
+
+// .data (0x002C1310-0x002C13A0)
+s32 D_002C1310[4] = {0xE2D8, 0xE2D9, 0xE2DA, 0xE2DB};
+f32 D_002C1320[4] = {-7500.0f, 0.0f, 1500.0f, 1.0f};
+f32 D_002C1330[4] = {7500.0f, 0.0f, 1500.0f, 1.0f};
+f32 D_002C1340[4] = {-400.0f, 0.0f, 400.0f, 1.0f};
+f32 D_002C1350[4] = {400.0f, 0.0f, 400.0f, 1.0f};
+s32 D_002C1360 = 0;
+s32 D_002C1364 = 0;
+s32 D_002BD8B8[2] = {0}; // at 0x002C1368 (the name is the JP address); [1] is also used as D_002C136C
+DATA_LABEL(D_002C136C, D_002BD8B8, 4);
+s32 D_002C1370[2] = {0};
+s32 D_002C1378 = 0; // a pair with D_002C137C
+s32 D_002C137C = 0;
+s32 D_002C1380 = 0;
+s32 D_002C1384 = 0;
+s32 D_002BD8D8 = 0; // at 0x002C1388
+s32 D_002BD8DC = 0; // at 0x002C138C
+s32 D_002C1390 = 0;
+s32 D_002C1394 = 0;
+// zero fill to 0x002C13A0: the next piece (TIM2 images) starts 16-aligned, which the link script's SUBALIGN(8)
+// does not keep
+s32 D_002C1398[2] = {0};
 extern s32 D_002A3F44;
 typedef struct { s32 a; s32 p4; s32 p8; s32 c; s32 b; s32 p14; } E3458;
 extern E3458 D_004E3458[];
