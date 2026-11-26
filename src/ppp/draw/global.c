@@ -105,7 +105,12 @@ s32 op_spr_check(s32 arg0) {
     return -1;
 }
 
+#ifdef VERSION_FM
+#define MSG_CANT_OPEN "can't open file %s\n"
+#else
 extern char D_00489AD8[];
+#define MSG_CANT_OPEN D_00489AD8
+#endif
 int printf(const char*, ...);
 void exit(int);
 
@@ -116,7 +121,7 @@ s32 op_file_read(char* name, void* dst) {
 
     fd = sceOpen(name, SCE_RDONLY);
     if (fd < 0) {
-        printf(D_00489AD8, name);
+        printf(MSG_CANT_OPEN, name);
         exit(1);
     }
     size = sceLseek(fd, 0, SCE_SEEK_END);
@@ -136,7 +141,7 @@ s32 op_file_size(char* name) {
 
     fd = sceOpen(name, SCE_RDONLY);
     if (fd < 0) {
-        printf(D_00489AD8, name);
+        printf(MSG_CANT_OPEN, name);
         exit(1);
     }
     size = sceLseek(fd, 0, SCE_SEEK_END);
@@ -144,7 +149,13 @@ s32 op_file_size(char* name) {
     return size;
 }
 
+#ifdef VERSION_FM
+// "op_oef2_set error : <data address is not 16-byte aligned>" (Shift-JIS)
+#define MSG_OEF2_ALIGN "op_oef2_set error : \203f\201[\203^\203A\203h\203\214\203X\202\252 16 byte align \202\263\202\352\202\304\202\242\202\334\202\271\202\361\n"
+#else
 extern char D_00489AF0[];
+#define MSG_OEF2_ALIGN D_00489AF0
+#endif
 /* the first five loops store through a named temporary, the last one directly: that is what gives the target's registers */
 void exit(int);
 int printf(const char*, ...);
@@ -157,7 +168,7 @@ void op_oef2_set(void* a0, void* a1) {
     s32 i;
 
     if ((u32)h & 0xF) {
-        printf(D_00489AF0);
+        printf(MSG_OEF2_ALIGN);
         exit(1);
     }
     if (*(u16*)(h + 0x42) != 0) {
@@ -236,6 +247,11 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_random);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/global", op_random_p);
 
+#ifdef VERSION_FM
+// zero fill to 0x0048FE80: the next piece's .rodata starts 16-aligned, which the link script's SUBALIGN(8) does not keep
+const s32 D_0048FE78[2] = {0};
+#else
 INCLUDE_RODATA("asm/nonmatchings/ppp/draw/global", D_00489AD8);
 
 INCLUDE_RODATA("asm/nonmatchings/ppp/draw/global", D_00489AF0);
+#endif
