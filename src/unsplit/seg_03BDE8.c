@@ -2630,7 +2630,48 @@ u8* func_00146FB8(u8* a0, s32 a1, s32 a2) {
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00146FF0);
+extern s32 D_146FF0_pad1; /* unused: rule F1 (keeps func_00147138; 1-3 work) */
+extern s8 D_0030884F[];
+s32 Fade_IsBlack(void);
+void func_00146C98(u8*, s32);
+void func_00146FF0(u8* p, s32 k, s32 a2, s32 bit) {
+    u8* e;
+
+    if ((D_002C1EA8 >> 9) & 1) {
+        return;
+    }
+    if (*(u32*)(p + 0x9C) & (1 << bit)) {
+        return;
+    }
+    if (Fade_IsBlack() != 0) {
+        return;
+    }
+    if (((s32)(*(u64*)(p + 0x370) >> 37) & 3) != 2 && !(*(s32*)p & 1)) {
+        return;
+    }
+    switch (k) {
+    case 0:
+        e = func_001473A8(a2, *(s32*)(p + 4) + 1, (f32*)(p + 0x50));
+        if (e != NULL) {
+            *(u8**)(e + 0xC) = p;
+            *(u64*)e |= 4;
+        }
+        break;
+    case 0x19:
+        func_00146FB8(p, *(s32*)(p + 4) + 1, a2);
+        break;
+    default:
+        a2 = D_0030884F[k];
+        if (a2 < 0) {
+            break;
+        }
+        if (a2 == 10 && (u8)(p[0x39E] - 11) < 2) {
+            break;
+        }
+        func_00146C98(p, a2);
+        break;
+    }
+}
 
 extern u16 D_003085D8[];
 extern u16 D_00307226[];
