@@ -63,24 +63,36 @@ typedef struct {
     /* 0x44 */ f32 scaleY;
     /* 0x48 */ f32 unk_48;
     /* 0x4C */ f32 unk_4C;
-    /* 0x50 */ char unk_50[0x24];
-    /* 0x74 */ pppPObject* unk_74;
-    /* 0x78 */ char unk_78[0x8];
-    /* 0x80 */ s32 unk_80;
-    /* 0x84 */ char unk_84[0x2];
-    /* 0x86 */ s16 usef;
+    /* 0x50 */ char unk_50[0x4];
+    /* 0x54 */ s32 endTime;        // time at which the effect ends (from the program data header)
+    /* 0x58 */ s32 time;           // current time, +0x1000 per frame (pppStepMng)
+    /* 0x5C */ s32 prevTime;       // time before the last step
+    /* 0x60 */ s32 unk_60;         // counted down by pppCalcAllPart
+    /* 0x64 */ s32 progNum;        // number of programs in progTbl
+    /* 0x68 */ s32 pdtNum;         // number of program data (pppPData) blocks
+    /* 0x6C */ char unk_6C[0x4];
+    /* 0x70 */ pppPData* pdtList;  // first program data block
+    /* 0x74 */ pppPObject* unk_74; // the manager's objects, sorted by priority (pppCreatePObject)
+    /* 0x78 */ pppProg** progTbl;  // programs the manager runs (pppProgIni/Sta/End)
+    /* 0x7C */ s32* pdtTbl;
+    /* 0x80 */ s32 unk_80;         // pppPDataVal[pdtNum], allocated from the effect heap (pppSetMngData)
+    /* 0x84 */ u8 loopf;           // 1: the effect loops (never ends by time; see endReq)
+    /* 0x85 */ u8 endReq;          // with loopf: end once every object is gone
+    /* 0x86 */ u16 usef;           // flags, see ppp/pppMngr.c (1 = in use, 2 = ended, 4 = suspended, 0x20 = paused?)
     /* 0x88 */ char* pchDpd;
     /* 0x8C */ pppPEtcData* pEtc;
-    /* 0x90 */ char unk_90;
-    /* 0x91 */ u8 unk_91;
-    /* 0x91 */ u8 unk_92;
-    /* 0x92 */ char unk_93[0x5];
-    /* 0x98 */ s32 unk_98;
-    /* 0x9C */ void* unk_9C;
+    /* 0x90 */ char unk_90;        // result of the view-clip test (pppCalcAllPart)
+    /* 0x91 */ u8 unk_91;          // texture VRAM blocks needed (dpd_set_object_etc)
+    /* 0x92 */ u8 unk_92;          // CLUT VRAM blocks needed (dpd_set_object_etc)
+    /* 0x93 */ u8 unk_93;
+    /* 0x94 */ s32 unk_94;         // owner's handle: its flags at +0x14 get bit 2 when the effect ends (pppEndMng)
+    /* 0x98 */ s32 unk_98;         // compared by pppSuspendOnePart / pppKillOneTempPart (probably a priority)
+    /* 0x9C */ void* unk_9C;       // a float timer in pppCalcAllPart
     /* 0xA0 */ char unk_A0[4];
     /* 0xA4 */ s16 texpStart;
     /* 0xA6 */ s16 clutpStart;
-    /* 0xA8 */ char unk_A8[0x8];
+    /* 0xA8 */ s32 unk_A8;         // passed with seNo when the effect's sound is stopped (func_0011D1F8)
+    /* 0xAC */ f32 waitTime;       // copied from pEtc->wait (pppSetMngData)
     /* 0xB0 */ u8 drawPriority;
     /* 0xB1 */ u8 stop;
     /* 0xB2 */ u8 followCam;

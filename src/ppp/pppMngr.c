@@ -20,29 +20,7 @@ extern s32 D_00370200;
 
 extern void func_0011D1F8(s32, s32, s32);
 
-typedef struct {
-    /* 0x00 */ char unk_00[0x10];
-    /* 0x10 */ void (*func)(void*);
-} PppFuncEnt;
-
-typedef struct {
-    /* 0x00 */ char unk_00[0x64];
-    /* 0x64 */ s32 num;
-    /* 0x68 */ char unk_68[0x10];
-    /* 0x78 */ PppFuncEnt** ents;
-} PppFuncList;
-
-typedef struct {
-    /* 0x00 */ char unk_00[0x86];
-    /* 0x86 */ u16 usef;
-    /* 0x88 */ char unk_88[0x4];
-    /* 0x8C */ pppPEtcData* pEtc;
-    /* 0x90 */ char unk_90[0x4];
-    /* 0x94 */ s32 unk_94;
-    /* 0x98 */ char unk_98[0x28];
-} PppMngU;
-
-extern PppMngU ppvMngTbl[];
+extern ppvmng ppvMngTbl[];
 
 extern sceVu0FMATRIX D_00615E70;
 extern void func_0024EDF0(sceVu0FMATRIX, pppPEtcData*);
@@ -113,9 +91,9 @@ void pppEndAllPart(void) {
         if (ppvMngTbl[i].usef & 1) {
             pppPEtcData* e = ppvMngTbl[i].pEtc;
             if (e != NULL && *(u16*)&e->seNo != 0) {
-                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
+                func_0011D1F8(*(u16*)&e->seNo, ppvMngTbl[i].unk_A8, 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
+            pppAllFreePObject(&ppvMngTbl[i]);
             pppEndMng(&ppvMngTbl[i]);
         }
     }
@@ -171,8 +149,8 @@ void pppResumePart(s32 arg0) {
 void pppEndPart(s32 arg0) {
     s32 i;
     s32 off;
-    PppMngU *base = ppvMngTbl;
-    u8 *p = (u8 *)base + 0x80;
+    ppvmng *base = ppvMngTbl;
+    u8 *p = (u8 *)base + 0x80; // fields through p + offset: the original's loop keeps &tbl[i] + 0x80 in a register
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
         if ((*(u16 *)(p + 6) & 1) && *(s32 *)(p + 0x14) == arg0) {
@@ -196,10 +174,10 @@ void pppKillAllPart(void) {
         if (ppvMngTbl[i].usef & 1) {
             pppPEtcData* e = ppvMngTbl[i].pEtc;
             if (e != NULL && *(u16*)&e->seNo != 0) {
-                func_0011D1F8(*(u16*)&e->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
+                func_0011D1F8(*(u16*)&e->seNo, ppvMngTbl[i].unk_A8, 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
-            pppClearMng((ppvmng*)&ppvMngTbl[i]);
+            pppAllFreePObject(&ppvMngTbl[i]);
+            pppClearMng(&ppvMngTbl[i]);
         }
     }
 }
@@ -208,7 +186,7 @@ void pppKillAllPart(void) {
 void pppKillPart(s32 arg0) {
     s32 i;
     s32 off;
-    PppMngU *base = ppvMngTbl;
+    ppvmng *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -230,7 +208,7 @@ void pppEndPartInArea(s32 arg0, s32 arg1) {
     s32 i;
     s32 off;
     s32 d;
-    PppMngU *base = ppvMngTbl;
+    ppvmng *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -253,7 +231,7 @@ void pppKillPartInArea(s32 arg0, s32 arg1) {
     s32 i;
     s32 off;
     s32 d;
-    PppMngU *base = ppvMngTbl;
+    ppvmng *base = ppvMngTbl;
     u8 *p = (u8 *)base + 0x80;
 
     for (i = 0, off = 0; i < 0x100; i++, p += 0xC0, off += 0xC0) {
@@ -271,28 +249,17 @@ void pppKillPartInArea(s32 arg0, s32 arg1) {
     }
 }
 
-typedef struct {
-    char pad[0x86];
-    u16 usef;
-    char pad2[0x28];
-    u8 drawPriority;
-    u8 stop;
-    u8 pad4[5];
-    u8 b7;
-    u64 pad3;
-} MngV15A0;
-extern MngV15A0 D_00364130_v15A0[] __asm__("ppvMngTbl");
 // Sets (arg0 != 0) or clears the stop bit 0x80 and unk_B7 of every running effect.
 void pppStopAllPart(s32 a0) {
     s32 i;
     for (i = 0; i < 0x100; i++) {
-        if (D_00364130_v15A0[i].usef & 1) {
+        if (ppvMngTbl[i].usef & 1) {
             if (a0) {
-                D_00364130_v15A0[i].b7 = 1;
-                D_00364130_v15A0[i].stop |= 0x80;
+                ppvMngTbl[i].unk_B7 = 1;
+                ppvMngTbl[i].stop |= 0x80;
             } else {
-                D_00364130_v15A0[i].b7 = 0;
-                D_00364130_v15A0[i].stop &= 0x7F;
+                ppvMngTbl[i].unk_B7 = 0;
+                ppvMngTbl[i].stop &= 0x7F;
             }
         }
     }
@@ -903,7 +870,7 @@ void func_00182938(ppvmng* arg0) {
 
 // Adds up the work memory size (pEtc->nWorkMemSize) of every running, not suspended effect.
 s32 pppGetAllWorkMemSize(void) {
-    PppMngU* p = ppvMngTbl;
+    ppvmng* p = ppvMngTbl;
     s32 i;
     s32 sum = 0;
 
@@ -915,17 +882,28 @@ s32 pppGetAllWorkMemSize(void) {
     return sum;
 }
 
+/* pppSuspendOnePart and pppKillOneTempPart read the managers through this second type (and ppvmng for unk_98): with
+   ppvmng for both, GCC strength-reduces the loop differently (24 and 8 bytes longer), so keep the two types. */
+typedef struct {
+    /* 0x00 */ char unk_00[0x86];
+    /* 0x86 */ u16 usef;
+    /* 0x88 */ char unk_88[0x4];
+    /* 0x8C */ pppPEtcData* pEtc;
+    /* 0x90 */ char unk_90[0x30];
+} PppMngU;
+extern PppMngU ppvMngTblU[] __asm__("ppvMngTbl");
+
 // Suspends the first running effect with unk_98 < arg0: stops its sound, frees its objects, sets flag 4.
 s32 pppSuspendOnePart(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if ((ppvMngTbl[i].usef & 1) && !(ppvMngTbl[i].usef & 4) && ((ppvmng*)&ppvMngTbl[i])->unk_98 < arg0) {
-            if (*(u16*)&ppvMngTbl[i].pEtc->seNo != 0) {
-                func_0011D1F8(*(u16*)&ppvMngTbl[i].pEtc->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
+        if ((ppvMngTblU[i].usef & 1) && !(ppvMngTblU[i].usef & 4) && ((ppvmng*)&ppvMngTblU[i])->unk_98 < arg0) {
+            if (*(u16*)&ppvMngTblU[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&ppvMngTblU[i].pEtc->seNo, *(s32*)((u8*)&ppvMngTblU[i] + 0xA8), 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
-            ppvMngTbl[i].usef |= 4;
+            pppAllFreePObject((ppvmng*)&ppvMngTblU[i]);
+            ppvMngTblU[i].usef |= 4;
             return 1;
         }
     }
@@ -938,12 +916,12 @@ s32 pppKillOneTempPart(void) {
     s32 i;
 
     for (i = 0; i < 0x100; i++) {
-        if ((ppvMngTbl[i].usef & 1) && !(ppvMngTbl[i].usef & 4) && ((ppvmng*)&ppvMngTbl[i])->unk_98 < 0) {
-            if (*(u16*)&ppvMngTbl[i].pEtc->seNo != 0) {
-                func_0011D1F8(*(u16*)&ppvMngTbl[i].pEtc->seNo, *(s32*)((u8*)&ppvMngTbl[i] + 0xA8), 0x3C);
+        if ((ppvMngTblU[i].usef & 1) && !(ppvMngTblU[i].usef & 4) && ((ppvmng*)&ppvMngTblU[i])->unk_98 < 0) {
+            if (*(u16*)&ppvMngTblU[i].pEtc->seNo != 0) {
+                func_0011D1F8(*(u16*)&ppvMngTblU[i].pEtc->seNo, *(s32*)((u8*)&ppvMngTblU[i] + 0xA8), 0x3C);
             }
-            pppAllFreePObject((ppvmng*)&ppvMngTbl[i]);
-            pppClearMng((ppvmng*)&ppvMngTbl[i]);
+            pppAllFreePObject((ppvmng*)&ppvMngTblU[i]);
+            pppClearMng((ppvmng*)&ppvMngTblU[i]);
             return 1;
         }
     }
@@ -1031,12 +1009,13 @@ void init_part_mng(ppvmng* pMng) {
 
 // Finds a free manager in ppvMngTbl, initialises it and returns it through *out.
 void pppGetFreeMng(ppvmng **out) {
-    PppMngU *p = ppvMngTbl;
+    ppvmng *p = ppvMngTbl;
     s32 i;
     for (i = 0; i < 0x100; i++) {
+        // usef bits 0-1 (in use / ended) tested with one 64-bit load of 0x80..0x87, as the original does
         if (!(*(u64 *)((u8 *)&p[i] + 0x80) & 0x3000000000000)) {
-            init_part_mng((ppvmng *)&p[i]);
-            *out = (ppvmng *)&p[i];
+            init_part_mng(&p[i]);
+            *out = &p[i];
             break;
         }
     }
@@ -1112,11 +1091,11 @@ void pppSetPartMatrix(sceVu0FMATRIX world, sceVu0FMATRIX screen, sceVu0FVECTOR e
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_001838E8);
 
 // Calls every program's ini function (pppProg.iniFunc) for the manager.
-void pppProgIni(PppFuncList* arg0) {
+void pppProgIni(ppvmng* arg0) {
     s32 i;
 
-    for (i = 0; i < arg0->num; i++) {
-        void (*f)(void*) = arg0->ents[i]->func;
+    for (i = 0; i < arg0->progNum; i++) {
+        void (*f)(void*) = arg0->progTbl[i]->iniFunc;
         if (f != NULL) {
             f(arg0);
         }
@@ -1124,11 +1103,11 @@ void pppProgIni(PppFuncList* arg0) {
 }
 
 // Calls every program's sta function (pppProg.staFunc) for the manager.
-void pppProgSta(PppFuncList* arg0) {
+void pppProgSta(ppvmng* arg0) {
     s32 i;
 
-    for (i = 0; i < arg0->num; i++) {
-        void (*f)(void*) = *(void (**)(void*))((u8*)arg0->ents[i] + 0x14);
+    for (i = 0; i < arg0->progNum; i++) {
+        void (*f)(void*) = arg0->progTbl[i]->staFunc;
         if (f != NULL) {
             f(arg0);
         }
@@ -1136,11 +1115,11 @@ void pppProgSta(PppFuncList* arg0) {
 }
 
 // Calls every program's end function (pppProg.endFunc) for the manager.
-void pppProgEnd(PppFuncList* arg0) {
+void pppProgEnd(ppvmng* arg0) {
     s32 i;
 
-    for (i = 0; i < arg0->num; i++) {
-        void (*f)(void*) = *(void (**)(void*))((u8*)arg0->ents[i] + 0x18);
+    for (i = 0; i < arg0->progNum; i++) {
+        void (*f)(void*) = arg0->progTbl[i]->endFunc;
         if (f != NULL) {
             f(arg0);
         }
@@ -1301,7 +1280,7 @@ void pppAllFreePObject(ppvmng* pMng) {
 // }
 
 // Marks a manager ended (usef bit 1 -> 2) and tells its owner through the handle (flags bit 1 -> 2).
-void pppEndMng(PppMngU* arg0) {
+void pppEndMng(ppvmng* arg0) {
     if (arg0->unk_94 != 0) {
         *(s32*)(arg0->unk_94 + 0x14) &= ~1;
         *(s32*)(arg0->unk_94 + 0x14) |= 2;
@@ -1325,31 +1304,8 @@ void pppClearMng(ppvmng* arg0) {
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", func_00183EF8);
 
 #ifdef VERSION_FM
-typedef struct {
-    /* 0x00 */ char unk_00[0x54];
-    /* 0x54 */ s32 unk_54;
-    /* 0x58 */ s32 unk_58;
-    /* 0x5C */ char unk_5C[0x8];
-    /* 0x64 */ s32 num;
-    /* 0x68 */ s32 npd;
-    /* 0x6C */ char unk_6C[0x4];
-    /* 0x70 */ pppPData* unk_70;
-    /* 0x74 */ void* unk_74;
-    /* 0x78 */ s32* ents;
-    /* 0x7C */ s32* pds;
-    /* 0x80 */ pppPDataVal* pdv;
-    /* 0x84 */ u8 unk_84;
-    /* 0x85 */ u8 unk_85;
-    /* 0x86 */ char unk_86[0x6];
-    /* 0x8C */ pppPEtcData* pEtc;
-    /* 0x90 */ char unk_90[0xC];
-    /* 0x9C */ s32 unk_9C;
-    /* 0xA0 */ char unk_A0[0xC];
-    /* 0xAC */ f32 unk_AC;
-} PppMngS;
-
 // Points a manager at an effect's program data: program table, data values, start frames (calls ini if arg2).
-void pppSetMngData(PppMngS* m, s32* data, s32 arg2) {
+void pppSetMngData(ppvmng* m, s32* data, s32 arg2) {
     s32* d;
     s32 flag;
     s32* p1;
@@ -1358,35 +1314,35 @@ void pppSetMngData(PppMngS* m, s32* data, s32 arg2) {
     pppPDataVal* v;
     u8 i;
 
-    ppvMng = (ppvmng*)m;
+    ppvMng = m;
     d = data;
-    m->unk_54 = *d++;
+    m->endTime = *d++;
     flag = *d++;
     p1 = (s32*)((u8*)data + *d++);
     p2 = (s32*)((u8*)data + *d++);
     if (flag & 1) {
-        m->unk_84 = 1;
+        m->loopf = 1;
     } else {
-        m->unk_84 = 0;
+        m->loopf = 0;
     }
-    m->num = *p1++;
-    m->ents = p1;
-    m->npd = *p2++;
-    m->pds = p2;
-    if (m->npd != 0) {
-        m->pdv = (pppPDataVal*)pppDbgAlloc((s32)ppvEnv, m->npd * 16);
+    m->progNum = *p1++;
+    m->progTbl = (pppProg**)p1;
+    m->pdtNum = *p2++;
+    m->pdtTbl = p2;
+    if (m->pdtNum != 0) {
+        m->unk_80 = pppDbgAlloc((s32)ppvEnv, m->pdtNum * 16);
     } else {
-        m->pdv = NULL;
+        m->unk_80 = 0;
     }
     pd = (pppPData*)d;
     if (pd->next != NULL) {
-        m->unk_70 = NULL;
+        m->pdtList = NULL;
     }
-    m->unk_58 = 0;
-    m->unk_85 = 0;
-    m->unk_70 = (m->npd != 0) ? pd : NULL;
+    m->time = 0;
+    m->endReq = 0;
+    m->pdtList = (m->pdtNum != 0) ? pd : NULL;
     m->unk_74 = NULL;
-    v = m->pdv;
+    v = (pppPDataVal*)m->unk_80;
     i = 0;
     do {
         v->pdt = pd;
@@ -1398,10 +1354,10 @@ void pppSetMngData(PppMngS* m, s32* data, s32 arg2) {
         v++;
     } while (pd != NULL);
     if (arg2 != 0) {
-        pppProgIni((PppFuncList*)m);
+        pppProgIni(m);
     }
     m->unk_9C = 0;
-    m->unk_AC = *(f32*)&m->pEtc->wait;
+    m->waitTime = *(f32*)&m->pEtc->wait;
 }
 
 #else
@@ -1477,9 +1433,9 @@ void pppBirthPObject(ppvmng* m) {
     pppPDataVal* pdv;
     pppPObject* pobj;
 
-    for (i = 0; i < *(s32*)((u8*)m + 0x68); i++) {
+    for (i = 0; i < m->pdtNum; i++) {
         pdv = &((pppPDataVal*)m->unk_80)[i];
-        if (pdv->startFrame <= *(s32*)((u8*)m + 0x58)) {
+        if (pdv->startFrame <= m->time) {
             pdv->startFrame = 0x7FFFFFFF;
             pobj = pppCreatePObject(m, pdv);
             pdv->pobj = pobj;
@@ -1497,21 +1453,8 @@ void pppCalcMng(ppvmng* pMng) {
     func_00184548(pMng);
 }
 
-typedef struct {
-    /* 0x00 */ char unk_00[0x54];
-    /* 0x54 */ s32 unk_54;
-    /* 0x58 */ s32 unk_58;
-    /* 0x5C */ s32 unk_5C;
-    /* 0x60 */ char unk_60[0x14];
-    /* 0x74 */ pppPObject* unk_74;
-    /* 0x78 */ char unk_78[0xC];
-    /* 0x84 */ u8 unk_84;
-    /* 0x85 */ u8 unk_85;
-} PppMngT2;
-
 // Runs the end of a manager's frame and advances its time by one frame; returns 1 when the effect is over.
 s32 pppStepMng(ppvmng* m) {
-    PppMngT2* t = (PppMngT2*)m;
     s32 tm;
 
     ppvMng = m;
@@ -1520,60 +1463,46 @@ s32 pppStepMng(ppvmng* m) {
     if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
         return 0;
     }
-    tm = t->unk_58;
-    t->unk_5C = tm;
-    t->unk_58 = tm + 0x1000;
-    if (t->unk_84 != 0) {
-        if (t->unk_85 != 0) {
-            return t->unk_74 == NULL;
+    tm = m->time;
+    m->prevTime = tm;
+    m->time = tm + 0x1000;
+    if (m->loopf != 0) {
+        if (m->endReq != 0) {
+            return m->unk_74 == NULL;
         }
         if (tm + 0x1000 > 0x6FFFFFFF) {
-            t->unk_58 = 0x70000000;
-            t->unk_5C = 0x6FFFF000;
+            m->time = 0x70000000;
+            m->prevTime = 0x6FFFF000;
         }
         return 0;
     }
-    return tm + 0x1000 >= t->unk_54;
+    return tm + 0x1000 >= m->endTime;
 }
 
 
-typedef struct {
-    /* 0x00 */ char unk_00[0x54];
-    /* 0x54 */ s32 unk_54;
-    /* 0x58 */ s32 unk_58;
-    /* 0x5C */ s32 unk_5C;
-    /* 0x60 */ char unk_60[0x14];
-    /* 0x74 */ void* unk_74;
-    /* 0x78 */ char unk_78[0xC];
-    /* 0x84 */ u8 unk_84;
-    /* 0x85 */ u8 unk_85;
-    /* 0x86 */ char unk_86[0x2A];
-    /* 0xB0 */ u64 unk_B0;
-} PppMngT;
-
 // Advances a manager's time by one frame without running its programs; returns 1 when the effect is over.
 s32 pppStepMngNoCalc(ppvmng* arg0) {
-    PppMngT* m = (PppMngT*)arg0;
     s32 t;
 
     ppvMng = arg0;
-    if (ppvUserStopPartF != 0 || (m->unk_B0 & 0xFF0000FF00)) {
+    // stop (0xB1) and unk_B4 tested with one 64-bit load, as the original does
+    if (ppvUserStopPartF != 0 || (*(u64*)&arg0->drawPriority & 0xFF0000FF00)) {
         return 0;
     }
-    t = m->unk_58;
-    m->unk_5C = t;
-    m->unk_58 = t + 0x1000;
-    if (m->unk_84 != 0) {
-        if (m->unk_85 != 0) {
-            return m->unk_74 == NULL;
+    t = arg0->time;
+    arg0->prevTime = t;
+    arg0->time = t + 0x1000;
+    if (arg0->loopf != 0) {
+        if (arg0->endReq != 0) {
+            return arg0->unk_74 == NULL;
         }
-        if (m->unk_58 > 0x6FFFFFFF) {
-            m->unk_58 = 0x70000000;
-            m->unk_5C = 0x6FFFF000;
+        if (arg0->time > 0x6FFFFFFF) {
+            arg0->time = 0x70000000;
+            arg0->prevTime = 0x6FFFF000;
         }
         return 0;
     }
-    return m->unk_58 >= m->unk_54;
+    return arg0->time >= arg0->endTime;
 }
 
 
