@@ -1459,7 +1459,22 @@ s32 func_0023F920(u8 *a0, s32 a1) {
     return func_0023F7D8((s32 *)a0, func_0023F700(a0, a1));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file136618", func_0023FAD0);
+extern A3V16 D_00491600;
+
+s32 func_0023FAD0(u8 *a0, s32 a1) {
+    A3V16 col;
+    u8 *p = a0 + 0x80;
+
+    col = D_00491600;
+    a1 = func_0023E160(p, *(s32 *)(a0 + 0x90) + 0x40, &col, a1, 0.0f, *(f32 *)(a0 + 0xA00), *(f32 *)(a0 + 0xA1C));
+    if (*(f32 *)(a0 + 0xA0C) != 0.0f) {
+        s32 *c = (s32 *)&col;
+        c[3] = *(f32 *)(a0 + 0xA08);
+        c[0] = c[1] = c[2] = 0x80;
+        return func_0023E160(p, *(s32 *)(a0 + 0x90) + 0x40, &col, a1, *(f32 *)(a0 + 0xA00), *(f32 *)(a0 + 0xA04), *(f32 *)(a0 + 0xA1C));
+    }
+    return a1;
+}
 
 s32 func_0023FB90(u8 *a0, s32 a1) {
     s32 bufA[4];
