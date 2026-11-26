@@ -7385,7 +7385,24 @@ void func_001623F8(u8* p, s32 i, Seg16* out) {
     *out = (*(Seg16**)(p + 8))[i];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00162428);
+extern u8 D_00573AC0[];
+extern u8* D_0055C648;
+void func_0015F8C8(void);
+void func_00162428(void) {
+    __asm__ volatile("sync");
+    D_0055C648 = (u8*)((u32)D_00573AC0 | 0x20000000);
+    func_0015F8C8();
+    D_0055C648[3] = 0x70;
+    *(s32*)(D_0055C648 + 4) = 0;
+    *(s16*)D_0055C648 = 0;
+    __asm__ volatile("sync");
+    *D_0055C644_c = (*D_0055C644_c & ~0xC) | 4;
+    *D_0055C644_c &= ~0x30;
+    *D_0055C644_c &= ~0x40;
+    *D_0055C644_c &= ~0x80;
+    __asm__ volatile("sync");
+    sceDmaSend(D_0055C644_c, D_00573AC0);
+}
 
 void func_001624F8(void) {
 }
