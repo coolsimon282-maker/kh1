@@ -206,3 +206,11 @@ other functions (rule F1).
 | op_ot_insert1 | 0x001AA700 | ppp/draw/draw.c | inserts a packet into ordering table 1 (16 priorities) |
 | op_ot_insert2 | 0x001AA750 | ppp/draw/draw.c | inserts a packet into ordering table 2 (256 priorities) |
 | op_fill_sprite | 0x001AA7A0 | ppp/draw/draw.c | builds an alpha + full-screen sprite packet in one colour and puts it in OT 1 |
+| GameState_SaveMemberPos | 0x00111340 | xtrumpet.c | Stores party member i's position (+0x10) and angle (+0x3C) in gameState vector i. |
+| GameState_SavePositions | 0x00111380 | xtrumpet.c | Saves the location and the position of each of the three party members (D_002E26A0) that exists. |
+| GameState_SetPresetPositions | 0x001113F8 | xtrumpet.c | Saves member 0's position, and members 1 and 2 from preset entry index (D_002BCDA0) instead. |
+| GameState_SaveLocation | 0x00111480 | xtrumpet.c | Saves curWorldNo, curRoomNo, D_002B92F8 and the eight words func_0017F1C8 returns. |
+| GameState_SaveRoomPositions | 0x00111510 | xtrumpet.c | Saves the location; rooms listed in presetPosRooms use the preset positions, the others the actual ones. |
+| GameState_GetPosition | 0x00111590 | xtrumpet.c | Copies gameState vector index to out. |
+| gameState | 0x002BCB60 | xtrumpet.c | pointer to the game state in work buffer 3 (GameState_BindBuffer sets it); was D_002B90B0 |
+| presetPosRooms | 0x002BCB80 | xtrumpet.c | 39 (world, room, preset index) entries: rooms whose saved party positions come from a preset; was D_002BCB80 |

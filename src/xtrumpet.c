@@ -1,3 +1,8 @@
+/**
+ * Game state kept in work buffer 3 (gameState, XTrumpet): where the player is (world, room, D_002B92F8, three party
+ * member positions with their angle) and more; other functions here work with the party (Party_AddCharacter, ...).
+ * The location part is probably what a save records.
+ */
 #include "common.h"
 
 #include "xcursed.h"
@@ -31,7 +36,7 @@ typedef struct XTrumpet {
 extern s32 D_002B8364;
 extern s32 curWorldNo;
 
-XTrumpet* D_002B90B0;
+XTrumpet* gameState;
 
 // XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
 typedef struct {
@@ -55,64 +60,68 @@ extern s32 D_002B92F8;
 
 extern void* D_002E26A0[];
 
-void func_00111158(void*, s32);
-void func_00111198(void);
-void func_00111210(s32);
-void func_00111298(void);
+void GameState_SaveMemberPos(void*, s32);
+void GameState_SavePositions(void);
+void GameState_SetPresetPositions(s32);
+void GameState_SaveLocation(void);
 void func_00111C98(s32, s32);
 
+// Points gameState at work buffer 3.
 void GameState_BindBuffer(void) {
-    D_002B90B0 = WorkBuffers_Get(3);
+    gameState = WorkBuffers_Get(3);
 }
 
+// Binds gameState and clears its location, positions and the unk_6C array.
 void GameState_Reset(void) {
     s32 i;
 
     GameState_BindBuffer();
-    for (i = 0; i < ARRAY_COUNT(D_002B90B0->unk_6C); i++) {
-        D_002B90B0->unk_6C[i] = 0;
+    for (i = 0; i < ARRAY_COUNT(gameState->unk_6C); i++) {
+        gameState->unk_6C[i] = 0;
     }
-    D_002B90B0->unk_40 = 0;
-    D_002B90B0->unk_44 = 0;
-    D_002B90B0->unk_10 = 0;
-    D_002B90B0->unk_14 = 0;
-    D_002B90B0->unk_18 = 0;
-    D_002B90B0->unk_1C = 0;
-    D_002B90B0->unk_20 = 0;
-    D_002B90B0->unk_24 = 0;
-    D_002B90B0->unk_28 = 0;
-    D_002B90B0->unk_2C = 0;
-    D_002B90B0->unk_30 = 0;
-    D_002B90B0->unk_34 = 0;
-    D_002B90B0->unk_38 = 0;
-    D_002B90B0->unk_3C = 0;
-    D_002B90B0->unk_158 = 0;
+    gameState->unk_40 = 0;
+    gameState->unk_44 = 0;
+    gameState->unk_10 = 0;
+    gameState->unk_14 = 0;
+    gameState->unk_18 = 0;
+    gameState->unk_1C = 0;
+    gameState->unk_20 = 0;
+    gameState->unk_24 = 0;
+    gameState->unk_28 = 0;
+    gameState->unk_2C = 0;
+    gameState->unk_30 = 0;
+    gameState->unk_34 = 0;
+    gameState->unk_38 = 0;
+    gameState->unk_3C = 0;
+    gameState->unk_158 = 0;
 }
 
 typedef struct { u8 pad[0x10]; f32 f[4][4]; } XTF;
-void func_00111158(void* a_, s32 i) {
+// Stores party member i's position (+0x10) and angle (+0x3C) in gameState vector i.
+void GameState_SaveMemberPos(void* a_, s32 i) {
     u8* a = a_;
-    ((XTF*)D_002B90B0)->f[i][0] = *(f32*)(a + 0x10);
-    ((XTF*)D_002B90B0)->f[i][1] = *(f32*)(a + 0x14);
-    ((XTF*)D_002B90B0)->f[i][2] = *(f32*)(a + 0x18);
-    ((XTF*)D_002B90B0)->f[i][3] = *(f32*)(a + 0x3C);
+    ((XTF*)gameState)->f[i][0] = *(f32*)(a + 0x10);
+    ((XTF*)gameState)->f[i][1] = *(f32*)(a + 0x14);
+    ((XTF*)gameState)->f[i][2] = *(f32*)(a + 0x18);
+    ((XTF*)gameState)->f[i][3] = *(f32*)(a + 0x3C);
 }
 
-void func_00111198(void) {
+// Saves the location and the position of each of the three party members (D_002E26A0) that exists.
+void GameState_SavePositions(void) {
     void* p;
 
-    func_00111298();
+    GameState_SaveLocation();
     p = D_002E26A0[0];
     if (p != NULL) {
-        func_00111158(p, 0);
+        GameState_SaveMemberPos(p, 0);
     }
     p = D_002E26A0[1];
     if (p != NULL) {
-        func_00111158(p, 1);
+        GameState_SaveMemberPos(p, 1);
     }
     p = D_002E26A0[2];
     if (p != NULL) {
-        func_00111158(p, 2);
+        GameState_SaveMemberPos(p, 2);
     }
 }
 
@@ -129,17 +138,18 @@ typedef struct {
     /* 0x10 */ XTrumpetVec vec[4];
 } XTrumpetVecs;
 
-void func_00111210(s32 index) {
+// Saves member 0's position, and members 1 and 2 from preset entry index (D_002BCDA0) instead.
+void GameState_SetPresetPositions(s32 index) {
     s32 i;
 
     if (D_002E26A0[0] != NULL) {
-        func_00111158(D_002E26A0[0], 0);
+        GameState_SaveMemberPos(D_002E26A0[0], 0);
     }
     for (i = 0; i < 2; i++) {
-        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].x = D_002BCDA0[index].v[i + 2].x;
-        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].y = D_002BCDA0[index].v[i + 2].y;
-        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].z = D_002BCDA0[index].v[i + 2].z;
-        ((XTrumpetVecs*)D_002B90B0)->vec[i + 1].w = D_002BCDA0[index].v[i + 2].w;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].x = D_002BCDA0[index].v[i + 2].x;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].y = D_002BCDA0[index].v[i + 2].y;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].z = D_002BCDA0[index].v[i + 2].z;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].w = D_002BCDA0[index].v[i + 2].w;
     }
 }
 
@@ -150,8 +160,9 @@ typedef struct {
 
 XTrumpetUnk4C* func_0017F1C8(void);
 
-void func_00111298(void) {
-    XTrumpet* t = D_002B90B0;
+// Saves curWorldNo, curRoomNo, D_002B92F8 and the eight words func_0017F1C8 returns.
+void GameState_SaveLocation(void) {
+    XTrumpet* t = gameState;
 
     t->unk_40 = curWorldNo;
     t->unk_44 = curRoomNo;
@@ -162,36 +173,38 @@ void func_00111298(void) {
 typedef struct {
     /* 0x0 */ s8 unk_0; // compared with curWorldNo
     /* 0x1 */ s8 unk_1; // compared with curRoomNo
-    /* 0x2 */ s8 index; // for func_00111210
+    /* 0x2 */ s8 index; // for GameState_SetPresetPositions
     /* 0x3 */ s8 pad;
 } XTrumpetSel;
 
-extern XTrumpetSel D_002BCB80[39];
+extern XTrumpetSel presetPosRooms[39];
 
-void func_00111328(void) {
+// Saves the location; rooms listed in presetPosRooms use the preset positions, the others the actual ones.
+void GameState_SaveRoomPositions(void) {
     s32 i;
     XTrumpetSel* p;
 
-    func_00111298();
+    GameState_SaveLocation();
     for (i = 0; i < 39; i++) {
-        p = &D_002BCB80[i];
+        p = &presetPosRooms[i];
         if (curWorldNo == p->unk_0 && curRoomNo == p->unk_1) {
-            func_00111210(p->index);
+            GameState_SetPresetPositions(p->index);
             return;
         }
     }
-    func_00111198();
+    GameState_SavePositions();
 }
 
-void func_001113A8(s32 index, f32* out) {
-    out[0] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->x;
-    out[1] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->y;
-    out[2] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->z;
-    out[3] = ((XTrumpetVec*)&D_002B90B0->unk_10 + index)->w;
+// Copies gameState vector index to out.
+void GameState_GetPosition(s32 index, f32* out) {
+    out[0] = ((XTrumpetVec*)&gameState->unk_10 + index)->x;
+    out[1] = ((XTrumpetVec*)&gameState->unk_10 + index)->y;
+    out[2] = ((XTrumpetVec*)&gameState->unk_10 + index)->z;
+    out[3] = ((XTrumpetVec*)&gameState->unk_10 + index)->w;
 }
 
 void func_001113E8(void) {
-    func_001809C8(&D_002B90B0->unk_4C);
+    func_001809C8(&gameState->unk_4C);
 }
 
 void func_00111408(s32 arg0, s32 arg1, s32 arg2) {
@@ -205,7 +218,7 @@ void func_00111408(s32 arg0, s32 arg1, s32 arg2) {
     for (i = 0; i < arg0; i++) {
         ofs += D_002BCB68[i];
     }
-    D_002B90B0->unk_6C[ofs + arg1] = arg2;
+    gameState->unk_6C[ofs + arg1] = arg2;
 }
 
 s8 func_00111468(s32 arg0, s32 arg1) {
@@ -215,7 +228,7 @@ s8 func_00111468(s32 arg0, s32 arg1) {
     for (i = 0; i < arg0; i++) {
         ofs += D_002BCB68[i];
     }
-    return D_002B90B0->unk_6C[ofs + arg1];
+    return gameState->unk_6C[ofs + arg1];
 }
 
 extern s32 D_002BBD90[];
@@ -246,18 +259,19 @@ void func_00111580(s32 param1) {
 }
 
 void* func_001115A0(void) {
-    if (D_002B90B0 != 0) {
-        return D_002B90B0->unk_15C;
+    if (gameState != 0) {
+        return gameState->unk_15C;
     }
     return NULL;
 }
 
 void func_001115C0(void) {
-    if (D_002B90B0 != 0) {
-        D_002B90B0->unk_15C++;
+    if (gameState != 0) {
+        gameState->unk_15C++;
     }
 }
 
+// Clears every work buffer and resets the game data, several subsystems and the game state (probably the new-game set-up).
 void GameState_Initialize(void) {
     D_002B8364 = 0;
     WorkBuffers_Clear(-1);
@@ -273,11 +287,11 @@ void func_00111638(void) {
     s32 value;
 
     D_002B8364 = 1;
-    curWorldNo = D_002B90B0->unk_40;
-    curRoomNo = D_002B90B0->unk_44;
+    curWorldNo = gameState->unk_40;
+    curRoomNo = gameState->unk_44;
     value = func_00111468(curWorldNo, curRoomNo);
     D_002B8684 = value;
-    D_002B92F8 = D_002B90B0->unk_48;
+    D_002B92F8 = gameState->unk_48;
 }
 
 void func_001116A8(void) {
@@ -297,59 +311,59 @@ void func_001116C8(void) {
 void GameState_RefreshAvailableFlags(void) {
     s32 iVar1 = Party_FindCharacterSlot(3);
     if (iVar1 != -1) {
-        D_002B90B0->unk_158 |= 8;
+        gameState->unk_158 |= 8;
     }
     iVar1 = Party_FindCharacterSlot(5);
     if (iVar1 != -1) {
-        D_002B90B0->unk_158 |= 0x20;
+        gameState->unk_158 |= 0x20;
     }
     iVar1 = Party_FindCharacterSlot(6);
     if (iVar1 != -1) {
-        D_002B90B0->unk_158 |= 0x40;
+        gameState->unk_158 |= 0x40;
     }
     iVar1 = Party_FindCharacterSlot(7);
     if (iVar1 != -1) {
-        D_002B90B0->unk_158 |= 0x80;
+        gameState->unk_158 |= 0x80;
     }
     iVar1 = Party_FindCharacterSlot(8);
     if (iVar1 != -1) {
-        D_002B90B0->unk_158 |= 0x100;
+        gameState->unk_158 |= 0x100;
     }
     iVar1 = Party_FindCharacterSlot(9);
     if (iVar1 != -1) {
-        D_002B90B0->unk_158 |= 0x200;
+        gameState->unk_158 |= 0x200;
     }
 }
 
 void GameState_ApplyAvailableSelection(void) {
   switch (curWorldNo) {
   case 5:
-    if (D_002B90B0->unk_158 & 8) {
+    if (gameState->unk_158 & 8) {
       Party_AddCharacter(3);
     }
     break;
   case 8:
-    if (D_002B90B0->unk_158 & 0x20) {
+    if (gameState->unk_158 & 0x20) {
       Party_AddCharacter(5);
     }
     break;
   case 9:
-    if (D_002B90B0->unk_158 & 0x40) {
+    if (gameState->unk_158 & 0x40) {
       Party_AddCharacter(6);
     }
     break;
   case 10:
-    if (D_002B90B0->unk_158 & 0x80) {
+    if (gameState->unk_158 & 0x80) {
       Party_AddCharacter(7);
     }
     break;
   case 0xd:
-    if (D_002B90B0->unk_158 & 0x100) {
+    if (gameState->unk_158 & 0x100) {
       Party_AddCharacter(8);
     }
     break;
   case 0xf:
-    if (D_002B90B0->unk_158 & 0x200) {
+    if (gameState->unk_158 & 0x200) {
       Party_AddCharacter(9);
     }
   }

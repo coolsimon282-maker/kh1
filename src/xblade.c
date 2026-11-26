@@ -126,7 +126,7 @@ extern s32 D_9A0000;
 void func_001009A8();
 s32 func_001016E8();
 u16 func_00105660();
-void func_00111198();
+void GameState_SavePositions();
 void func_001116C8();
 void func_00114420();
 void func_00117588();
@@ -561,7 +561,7 @@ s32 func_00112D88(void) {
     return 1000;
 }
 
-void func_001113A8(s32, sceVu0FVECTOR);
+void GameState_GetPosition(s32, sceVu0FVECTOR);
 void func_00104FD0(s32, sceVu0FVECTOR);
 
 void func_00112DE0(sceVu0FVECTOR dst) {
@@ -579,7 +579,7 @@ void func_00112DE0(sceVu0FVECTOR dst) {
             }
         }
         if (D_002B8364 == 1) {
-            func_001113A8(0, dst);
+            GameState_GetPosition(0, dst);
         }
     } else {
         func_00104FD0(0, dst);
@@ -601,7 +601,7 @@ void func_00112EE8(sceVu0FVECTOR dst) {
             }
         }
         if (D_002B8364 == 1) {
-            func_001113A8(1, dst);
+            GameState_GetPosition(1, dst);
         }
     } else {
         func_00104FD0(0, dst);
@@ -623,7 +623,7 @@ void func_00112FE8(sceVu0FVECTOR dst) {
             }
         }
         if (D_002B8364 == 1) {
-            func_001113A8(2, dst);
+            GameState_GetPosition(2, dst);
         }
     } else {
         func_00104FD0(0, dst);
@@ -632,7 +632,7 @@ void func_00112FE8(sceVu0FVECTOR dst) {
 extern s32 D_002B92F4;
 
 // void func_00104DC8(s32, sceVu0FVECTOR);
-// void func_001113A8(s32, sceVu0FVECTOR);
+// void GameState_GetPosition(s32, sceVu0FVECTOR);
 // void func_00112D48(s32, sceVu0FVECTOR);
 // s32 func_00112D88(void);
 
@@ -654,7 +654,7 @@ extern s32 D_002B92F4;
 //             }
 //         }
 //         if (D_002B8364 == 1) {
-//             func_001113A8(2, arg0);
+//             GameState_GetPosition(2, arg0);
 //         }
 //     } else {
 //         func_00104DC8(0, arg0);
@@ -713,7 +713,7 @@ s32 func_00113170(void) {
     }
 
     D_002B8364 = 0;
-    func_00111198();
+    GameState_SavePositions();
     func_001116C8();
     func_001ED878(0);
     D_002B9314 = 0;
@@ -1288,7 +1288,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                         break;
 //                     case 4:
 //                         func_00113E68();
-//                         func_00111328();
+//                         GameState_SaveRoomPositions();
 //                         func_00157B90();
 //                         func_002277D8(1, D_004D2A64);
 //                         break;
