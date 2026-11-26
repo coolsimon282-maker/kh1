@@ -6294,7 +6294,41 @@ void func_001680D8(s32 a) {
     D_00351BC8(0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001681B8);
+static inline s32 func_001681B8_tag(u32 t) {
+    switch (t) {
+    case 0x41584554:
+    case 0x454E4F42:
+    case 0x4A424F4D:
+    case 0x4C535255:
+    case 0x4E544D4D:
+    case 0x564E454D:
+        return 1;
+    }
+    return 0;
+}
+
+static inline u8* func_001681B8_next(u8* p) {
+    if (func_001681B8_tag(*(u32*)p)) {
+        p = p + *(s32*)(p + 4) + 8;
+        if (func_001681B8_tag(*(u32*)p)) {
+            return p;
+        }
+    }
+    return NULL;
+}
+
+u8* func_001681B8_d(u8* p, u32 tag) __asm__("func_001681B8");
+u8* func_001681B8_d(u8* p, u32 tag) {
+    while (p != NULL && *(u32*)p != tag) {
+        p = func_001681B8_next(p);
+    }
+    if (p != NULL) {
+        if (*(s32*)(p + 4) == 0) {
+            return NULL;
+        }
+    }
+    return p;
+}
 
 s32 func_00168318(u32* p) {
     switch (*p) {
