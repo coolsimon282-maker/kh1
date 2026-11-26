@@ -526,7 +526,7 @@ void func_00150B70(u8*);
 s32 func_0014DAB8(void);
 void func_00152370(u8*, f32*);
 s32 func_00152408(void);
-s32 func_00152250(void);
+void func_00152250(u8*, s32, f32*);
 s32 func_0015A258();
 void func_0014F798(u8*, f32*);
 s32 func_0015A348(u8* a0, s32 a1);
@@ -4617,7 +4617,26 @@ s32 func_001520E0(u8* p, s32 b, s32 c) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152140);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00152250);
+void func_00152250(u8* p, s32 a1, f32* v) {
+    f32 z = 0.0f;
+    if (z < v[3] && 0x1.883126p-1f < sceVu0InnerProduct((f32*)(p + 0x30), v) && func_001233F8(*(s32*)(p + 0x98)) != 0) {
+        if (__builtin_fabsf(v[0]) > __builtin_fabsf(v[2])) {
+            v[2] = z;
+        } else {
+            v[0] = z;
+        }
+        sceVu0Normalize(v, v);
+        v[3] = 3.0f;
+        *(f32*)(p + 0x150) = atan2f(v[0], v[2]);
+        return;
+    }
+    func_00130340(p, 0x10000BE, 6.0f);
+    z = 0.0f;
+    func_00130578((s32)p, 0x40000000, z);
+    func_0014F658((s32)p, 0);
+    sceVu0CopyVector(v, (f32*)(p + 0x30));
+    v[3] = z;
+}
 
 void func_00152370(u8* a0, f32* a1) {
     if (*(u8**)(a0 + 0x98) != 0) {
@@ -5236,6 +5255,7 @@ typedef struct { u8 pad[0x44]; s32 unk44; } V550400;
 extern s32 D_00146998_pad1; /* unused: rule F1 (with func_00146998) */
 extern s32 D_00141348_pad3; /* unused: rule F1 (with func_00141348) */
 extern s32 D_00150208_pad1; /* unused: rule F1 (with func_00150208) */
+extern s32 D_00152250_pad1; /* unused: rule F1 (with func_00152250) */
 s32 func_001559A8(s32 a0) {
     return ((V550400*)D_00550400)[(a0 - (s32)D_FE0000) / 0x40000].unk44;
 }
