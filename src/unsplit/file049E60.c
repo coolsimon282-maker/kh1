@@ -4156,7 +4156,45 @@ s32 func_0015BCB8(u8* p, f32* a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BD78);
+/* unused: rule F1 (func_0015EEA0 / func_00176F08: 4 and 6 work, 0-3 and 5 do not) */
+extern s32 D_15BD78_pad1;
+extern s32 D_15BD78_pad2;
+extern s32 D_15BD78_pad3;
+extern s32 D_15BD78_pad4;
+typedef struct { u64 a[4]; } B15BD78;
+s32 func_001237E8(u8*);
+s32 func_0015BD78(f32* box, u8* e, s32 o) {
+    B15BD78* out = (B15BD78*)o;
+    B15BD78* b;
+    u8* c;
+    s32 i;
+
+    if (Actor_IsActive(e) == 0) {
+        goto ret0;
+    }
+    if (func_001237E8(e) == 0) {
+        goto ret0;
+    }
+    b = (B15BD78*)func_00122048(0x20, 0x10);
+    c = *(u8**)(*(u8**)(e + 0x134) + 0x18);
+    for (i = 0; i < (*(u8**)(e + 0x134))[6]; i++, c += 0x14) {
+        if (*(u32*)(e + 0x3A8) & (1 << i)) {
+            continue;
+        }
+        func_0015BAD0(e, c, (f32*)b);
+        if (func_0015B998(box, (f32*)b) != 0) {
+            if (out != NULL) {
+                *out = *b;
+                ((s32*)out)[3] = i;
+            }
+            func_001220B8(b);
+            return 1;
+        }
+    }
+    func_001220B8(b);
+ret0:
+    return 0;
+}
 
 void func_0015BEB0(u8* a, u8* b, f32* out) {
     sceVu0FVECTOR v;
