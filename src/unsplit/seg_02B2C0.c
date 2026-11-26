@@ -2239,7 +2239,64 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132790);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132A78);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_00132C70);
+/* unused: layout only (F1): func_001331D8 / func_001374A8 change otherwise; of 1-10 only 6 and 10 OK, 6 used. */
+extern s32 D_132C70_pad1;
+extern s32 D_132C70_pad2;
+extern s32 D_132C70_pad3;
+extern s32 D_132C70_pad4;
+extern s32 D_132C70_pad5;
+extern s32 D_132C70_pad6;
+typedef struct { u8 pad[0xC]; s32 n; u8 *e; u8 pad14[8]; s32 x1C; } V132C70;
+extern V132C70 D_00525298_c __asm__("D_00525298");
+extern s32 D_002B8684;
+extern s32 D_002DF430[];
+extern s32 D_00525290;
+extern s32 D_00525294;
+extern s32 D_00525358;
+s32 func_001130F0(s32);
+s32 func_0013C6A8(s32);
+s32 func_0013C280(s32);
+void func_00146BC8(s32);
+void func_00132A78_v(s32) __asm__("func_00132A78");
+void func_00132790_v(s32, s32, u8 *) __asm__("func_00132790");
+void func_00132C70(s32 a0, s32 a1) {
+    s32 i;
+    s32 m = -1;
+    u8 *e;
+
+    D_00525294 = 0;
+    func_00132790_v(a0, D_002B8684, (u8 *)&D_00525298_c);
+    func_001130F0(D_00525298_c.x1C);
+    memset(D_002DF430, 0, 0x8C);
+    D_002DF430[0] = D_002B8678;
+    D_002DF430[1] = D_002B8680 + 1;
+    D_002DF430[2] = D_002B8684;
+    e = D_00525298_c.e;
+    for (i = 0; i < D_00525298_c.n; i++, e += 0x78) {
+        switch (*(s8 *)(e + 0x54)) {
+        case 1:
+            if (m < 0) m = *(s8 *)(e + 0x55);
+            if (*(u16 *)(e + 0x4C) == *((u8 *)D_003010F8 + 0x48F) || *(u16 *)(e + 0x4C) == *((u8 *)D_003010F8 + 0x490)) {
+                *(s8 *)(e + 0x55) = m;
+                m += *(s8 *)(e + 0x56);
+            } else {
+                *(s32 *)(e + 4) |= 1;
+            }
+            break;
+        case 8:
+            if (func_0013C6A8(*(s16 *)(e + 0x48))) *(s32 *)(e + 4) |= 2;
+            break;
+        case 0xC:
+            if (func_0013C280(*(s16 *)(e + 0x48))) *(s32 *)(e + 4) |= 2;
+            break;
+        }
+    }
+    D_00525290 = a1;
+    func_00146BC8(-6);
+    D_00525358 = 0;
+    D_00525354 = (s32)D_00525298_c.e;
+    func_00132A78_v(0);
+}
 
 void func_00132E38(void) {
     func_00132790(D_002E31F0, 0, D_005252C8);
