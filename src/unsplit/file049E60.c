@@ -1085,7 +1085,43 @@ void func_0014CD38(u8* p) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014CDC8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014CEE8);
+f32 Vec_LengthXZ(f32*);
+void func_0014CEE8(u8* p, f32* v) {
+    f32 len;
+    f32 lim;
+    f32 w;
+
+    if (*(u32*)p & 0x1000) {
+        *(f32*)(p + 0x3B0) = *(f32*)(p + 0x3B8) = 0.0f;
+        *(f32*)(p + 0x3B4) = *(f32*)(p + 0x14);
+        sceVu0CopyVector(v, D_002C58A0);
+    } else {
+        if (*(f32*)(p + 0x2C) > 0.0f) {
+            len = Vec_LengthXZ((f32*)(p + 0x3C0));
+            sceVu0ScaleVector(v, (f32*)(p + 0x20), *(f32*)(p + 0x2C) * *(f32*)(*(u8**)(p + 0x6C) + 0x14));
+            sceVu0AddVector(v, v, (f32*)(p + 0x3C0));
+            v[1] = 0.0f;
+            func_001223B0(v, v);
+            lim = *(f32*)(*(u8**)(p + 0x6C) + 0x8);
+            if (!(lim < len)) {
+                len = lim;
+            }
+            w = v[3];
+            if (len < w) {
+                v[3] = len;
+                w = len;
+            }
+            sceVu0ScaleVectorXYZ(v, v, w);
+        } else {
+            sceVu0ScaleVector(v, (f32*)(p + 0x3C0), *(f32*)(*(u8**)(p + 0x6C) + 0x18));
+        }
+        sceVu0CopyVector((f32*)(p + 0x3C0), v);
+        sceVu0ScaleVectorXYZ(v, v, D_002B8344);
+        *(f32*)(p + 0x3B0) += D_002B8344;
+        func_0014CDC8(p, v);
+    }
+    *(f32*)(p + 0x3B4) += *(f32*)(p + 0x124);
+}
 
 void func_0014D070(u8* p, f32* v) {
     sceVu0FVECTOR d;
