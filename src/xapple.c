@@ -845,6 +845,18 @@ void* func_0013BB00(s32 arg0, s32 arg1) {
     return func_0011ED30(52000, func_0013B8F8);
 }
 
+#ifdef VERSION_FM
+// The rest of xapple's .data (0x00304B68-0x00304B88). Defined after the function above: its "%s%s" comes before
+// ".dat" in xapple's .rodata.
+char* D_00301078 = ".dat";
+void (*D_00304B6C)(void) = NULL;
+s32 D_00301080 = 0;
+s32 D_00301088 __attribute__((aligned(8))) = 0;
+f32 D_0030108C = 0.0f;
+f32 D_00301090 = 0.0f;
+s32 D_00301094 = 0;
+#endif
+
 void func_0013BCA8(void) {
     if ((D_002C1EA8 >> 13) & 1) {
         func_F20000(2, 0);
