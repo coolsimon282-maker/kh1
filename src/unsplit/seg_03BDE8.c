@@ -2309,7 +2309,31 @@ void func_001447A0(u8* p) {
     sceVu0ScaleVector((f32*)(p + 0x3C0), (f32*)(p + 0x200), D_002C1EC0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144810);
+f32 Vec_CosAngle(f32*, f32*);
+s32 func_00144810(u8* a0, f32* v) {
+    u8* p = a0;
+    sceVu0FVECTOR w;
+    f32 h;
+    s32 id;
+
+    if (v[3] == 0.0f || 0.0f < *(f32*)(*(u8**)(p + 0x148) + 0xB0) || (id = *(u16*)(p + 0x310)) == 0xFFFF) {
+        return 0;
+    }
+    h = func_00144378(a0);
+    if (5.0f < __builtin_fabsf(h)) {
+        return 0;
+    }
+    func_00105A30(-1, id, w);
+    if (-0.7f < Vec_CosAngle(w, v)) {
+        return 0;
+    }
+    *(f32*)(p + 0x14) -= h;
+    *(f32*)(p + 0x150) = atan2f(-w[0], -w[2]);
+    func_00130398((s32)p, 0x1000031, 8.0f);
+    *(void**)(func_00130578((s32)p, 0x40000006, 0.0f) + 0xC) = func_001447A0;
+    func_0014F658((s32)p, 0x10);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144958);
 
@@ -2689,7 +2713,9 @@ u8* func_00146FB8(u8* a0, s32 a1, s32 a2) {
     return r;
 }
 
-extern s32 D_146FF0_pad1; /* unused: rule F1 (keeps func_00147138; 1-3 work) */
+/* unused: rule F1 (func_00146FF0 / func_00147138; after func_00144810: 0, 2, 3 work, 1 and 4 do not) */
+extern s32 D_146FF0_pad1;
+extern s32 D_146FF0_pad2;
 extern s8 D_0030884F[];
 s32 Fade_IsBlack(void);
 void func_00146C98(u8*, s32);
