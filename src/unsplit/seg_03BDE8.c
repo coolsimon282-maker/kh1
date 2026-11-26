@@ -4648,7 +4648,17 @@ void func_001541A8(u8* p, u8* a1, f32* out) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00154258);
+f32 func_001348E0(u8*, u8*);
+void func_00154258(u8* p, u8* b, f32* out) {
+    f32 s = *(f32*)(*(u8**)(p + 0x6C) + 0xC4);
+    f32 m;
+    if (func_001348E0(p, b) * *(f32*)(D_003051EC + 0x30) < *(f32*)(D_003051EC + 0x34)) {
+        m = func_001348E0(p, b) * *(f32*)(D_003051EC + 0x30) * s;
+    } else {
+        m = *(f32*)(D_003051EC + 0x34) * s;
+    }
+    sceVu0ScaleVectorXYZ(out, (f32*)(b + 0x10), m);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001542F8);
 
