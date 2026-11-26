@@ -770,7 +770,35 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014AC50);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014ADE0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014AF60);
+f32 Vec_CosAngle(f32*, f32*);
+s32 func_0014AF60(u8* a, u8* b) {
+    sceVu0FMATRIX m;
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR d;
+    s32 k;
+
+    if ((s32)(*(u64*)b >> 6) & 1) {
+        goto ret1;
+    }
+    k = (s32)(*(u64*)a >> 17) & 7;
+    if (k != 1 && k != 3 && k != 4 && k != 2) {
+        goto ret1;
+    }
+    sceVu0RotMatrixY(m, D_002C1E20, *(f32*)(*(u8**)(a + 0x5C) + 0x60));
+    sceVu0CopyVector(v, (f32*)(*(u8**)(a + 0x34) + 0x30));
+    v[3] = 0.0f;
+    sceVu0ApplyMatrix(v, m, v);
+    if ((s32)(*(u64*)(b + 0x30) >> 10) & 1) {
+        sceVu0SubVector(d, (f32*)(b + 0x70), (f32*)(b + 0x10));
+    } else {
+        sceVu0SubVector(d, (f32*)(*(u8**)(b + 0x34) + 0x50), (f32*)(*(u8**)(a + 0x34) + 0x50));
+    }
+    if (Vec_CosAngle(v, d) < *(f32*)(*(u8**)(a + 0x5C) + 0x64)) {
+        return 0;
+    }
+ret1:
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014B090);
 
