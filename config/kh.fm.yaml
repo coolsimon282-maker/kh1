@@ -338,6 +338,7 @@ segments:
   - [ 0x11ac38, c, unsplit/seg_11AC38 ]
   - [ 0x123980, c, unsplit/file123980 ]
   - [ 0x1298e0, c, unsplit/file1298E0 ]
+  - [ 0x1319d0, c, unsplit/file1319D0 ]
   - [ 0x132ad0, c, xcursed ]
   - [ 0x132d60, c, unsplit/seg_132D60 ]
   - [ 0x133a80, c, unsplit/memcard ]
