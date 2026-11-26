@@ -1,5 +1,5 @@
 /**
- * Game state kept in work buffer 3 (gameState, XTrumpet): where the player is (world, room, D_002B92F8, three party
+ * Game state kept in work buffer 3 (gameState, XTrumpet): where the player is (world, room, curEntranceNo, three party
  * member positions with their angle) and more; other functions here work with the party (Party_AddCharacter, ...).
  * The location part is probably what a save records.
  */
@@ -56,7 +56,7 @@ extern s32 D_004D29C4;
 
 extern s32 curRoomNo;
 extern s32 D_002B8684;
-extern s32 D_002B92F8;
+extern s32 curEntranceNo;
 
 extern void* D_002E26A0[];
 
@@ -130,7 +130,7 @@ typedef struct {
     /* 0x00 */ XTrumpetVec v[4];
 } XTrumpetVecSet;
 
-extern XTrumpetVecSet* D_002BCDA0;
+extern XTrumpetVecSet* entranceTable;
 
 // XTrumpet seen with its four vectors as an array
 typedef struct {
@@ -138,7 +138,7 @@ typedef struct {
     /* 0x10 */ XTrumpetVec vec[4];
 } XTrumpetVecs;
 
-// Saves member 0's position, and members 1 and 2 from preset entry index (D_002BCDA0) instead.
+// Saves member 0's position, and members 1 and 2 from preset entry index (entranceTable) instead.
 void GameState_SetPresetPositions(s32 index) {
     s32 i;
 
@@ -146,10 +146,10 @@ void GameState_SetPresetPositions(s32 index) {
         GameState_SaveMemberPos(D_002E26A0[0], 0);
     }
     for (i = 0; i < 2; i++) {
-        ((XTrumpetVecs*)gameState)->vec[i + 1].x = D_002BCDA0[index].v[i + 2].x;
-        ((XTrumpetVecs*)gameState)->vec[i + 1].y = D_002BCDA0[index].v[i + 2].y;
-        ((XTrumpetVecs*)gameState)->vec[i + 1].z = D_002BCDA0[index].v[i + 2].z;
-        ((XTrumpetVecs*)gameState)->vec[i + 1].w = D_002BCDA0[index].v[i + 2].w;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].x = entranceTable[index].v[i + 2].x;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].y = entranceTable[index].v[i + 2].y;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].z = entranceTable[index].v[i + 2].z;
+        ((XTrumpetVecs*)gameState)->vec[i + 1].w = entranceTable[index].v[i + 2].w;
     }
 }
 
@@ -160,13 +160,13 @@ typedef struct {
 
 XTrumpetUnk4C* func_0017F1C8(void);
 
-// Saves curWorldNo, curRoomNo, D_002B92F8 and the eight words func_0017F1C8 returns.
+// Saves curWorldNo, curRoomNo, curEntranceNo and the eight words func_0017F1C8 returns.
 void GameState_SaveLocation(void) {
     XTrumpet* t = gameState;
 
     t->unk_40 = curWorldNo;
     t->unk_44 = curRoomNo;
-    t->unk_48 = D_002B92F8;
+    t->unk_48 = curEntranceNo;
     *(XTrumpetUnk4C*)&t->unk_4C = *func_0017F1C8();
 }
 
@@ -291,7 +291,7 @@ void func_00111638(void) {
     curRoomNo = gameState->unk_44;
     value = func_00111468(curWorldNo, curRoomNo);
     D_002B8684 = value;
-    D_002B92F8 = gameState->unk_48;
+    curEntranceNo = gameState->unk_48;
 }
 
 void func_001116A8(void) {

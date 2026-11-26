@@ -396,6 +396,35 @@ NativeCmd_SetAngles16                = 0x0012A628; // type:func
 NativeCmd_LineCheck                  = 0x0012AF88; // type:func
 
 
+//=========================================================
+// xblade.c
+//=========================================================
+World_ApplyWorldData                 = 0x001124F8; // type:func
+World_OnWorldDataLoaded              = 0x00112968; // type:func
+World_LoadTask                       = 0x001129C8; // type:func
+World_StartLoadTask                  = 0x00112AD8; // type:func
+World_StartLoad                      = 0x00112B18; // type:func
+World_ChangeRoom                     = 0x00112B48; // type:func
+World_ChangeRoomDirect               = 0x00112B80; // type:func
+World_ChangeToEntrance               = 0x00112BB8; // type:func
+Room_OnBinImgPreloaded               = 0x00112C08; // type:func
+Room_PreloadBinImg                   = 0x00112C20; // type:func
+Party_SaveSpawnPositions             = 0x00113048; // type:func
+Party_GetSavedSpawnPosition          = 0x001130A0; // type:func
+World_FindEntranceForRoom            = 0x001130E0; // type:func
+World_GetSpawnPos0                   = 0x00113138; // type:func
+World_GetSpawnPos1                   = 0x00113270; // type:func
+World_GetSpawnPos2                   = 0x001133A0; // type:func
+Room_LoadArchive                     = 0x00113768; // type:func
+Room_OnArchiveLoaded                 = 0x001136D8; // type:func
+AlignUp                              = 0x001137C8; // type:func
+PauseScreen_Draw                     = 0x001137F8; // type:func
+PauseScreen_ResetColors              = 0x00113A00; // type:func
+PauseScreen_Show                     = 0x00113AB0; // type:func
+PauseScreen_AnimateColors            = 0x00113AF8; // type:func
+Sound_PauseNested                    = 0x00113E28; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
@@ -459,6 +488,16 @@ soundRpcBuf                          = 0x00633640;
 //=========================================================
 gameState                            = 0x002BCB60;
 presetPosRooms                       = 0x002BCB80;
+
+
+//=========================================================
+// xblade.c (data)
+//=========================================================
+roomTable                            = 0x002BCDAC;
+roomCount                            = 0x002BCDB0;
+entranceTable                        = 0x002BCDA0;
+entranceCount                        = 0x002BCDA4;
+curEntranceNo                        = 0x002BCDA8;
 
 
 ///////////////////////////////////////////////////////////

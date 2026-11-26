@@ -2,17 +2,17 @@
 
 void func_00112190();
 void func_001121A8();
-s32 func_00112690();
-void func_00112810();
-void* func_00112848(s32, s32, s32, s32);
-void func_00112880();
-void func_001128F0(s32);
+s32 World_LoadTask();
+void World_ChangeRoom();
+void* World_ChangeRoomDirect(s32, s32, s32, s32);
+void World_ChangeToEntrance();
+void Room_PreloadBinImg(s32);
 void func_00112A50();
 void func_00112AD8();
 void func_00112B60();
-s32 func_00113380();
-s32 func_001133E0();
-void func_00113A40();
+s32 Room_LoadArchive();
+s32 AlignUp();
+void Sound_PauseNested();
 void PauseMenu_SelectMode();
 s32 PauseMenu_Update();
 void func_00114400();

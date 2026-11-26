@@ -35,7 +35,7 @@ s32 Room_LoadBinImg() {
     strcat(stack, D_00486970);
     // strcat(stack, ".img");
     D_002A050C = func_00155ED8(0x34, 8);
-    D_002A050C = func_001133E0(D_002A050C, 0x80);
+    D_002A050C = AlignUp(D_002A050C, 0x80);
     return cdvd_QueueFileLoad(stack, D_002A050C, func_001011B8, 0);
 }
 
@@ -103,7 +103,7 @@ s32 func_001016E8(void) {
     extern s32 curWorldNo;
     extern s32 D_002B9328;
     extern s32 D_002A0508;
-    extern s32 func_00113380();
+    extern s32 Room_LoadArchive();
     extern s32 func_001011E0();
     s32 pad[4];
     char buf[64];
@@ -125,12 +125,12 @@ s32 func_001016E8(void) {
         if (D_002B9328 != 0) {
             Room_LoadBinImg();
         } else {
-            TaskSystem_AddTask(0xC350, func_00113380);
+            TaskSystem_AddTask(0xC350, Room_LoadArchive);
         }
     } else {
         strcpy(buf, worldBinImgFile);
         strcat(buf, ".bin");
-        D_002A0508 = func_001133E0(D_002A0508, 0x80);
+        D_002A0508 = AlignUp(D_002A0508, 0x80);
         cdvd_QueueFileLoad(buf, D_002A0508, func_001011E0, 0);
     }
     D_002B868C = D_002BC12C;

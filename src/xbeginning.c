@@ -48,7 +48,7 @@ extern s32 D_002B8C88;
 extern s32 D_002B8C90;
 extern s32 D_002B8C94;
 extern s32 D_002B9040;
-extern s32 D_002B92F8;
+extern s32 curEntranceNo;
 extern s32 D_002B9310;
 extern s32 D_002B9314;
 extern s32 D_002B9328;
@@ -131,7 +131,7 @@ void func_00100168(void) {
     func_00106728();
     D_002B29C4 = 0;
     D_00375BC0 &= ~1;
-    D_002B92F8 = 0;
+    curEntranceNo = 0;
     D_002A3F44 = 0;
     D_002B8C90 = 0;
 
@@ -160,7 +160,7 @@ void func_00100168(void) {
     func_00106728();
     D_002B29C4 = 0;
     D_00375BC0 &= ~1;
-    D_002B92F8 = 0;
+    curEntranceNo = 0;
     D_002A0514 = 0;
     D_002B8C90 = 0;
 
@@ -201,7 +201,7 @@ void func_00100240(void) {
     D_002B9310 = 0;
     func_0010E700();
     func_0010BE10();
-    TaskSystem_AddTask(50000, &func_00112690);
+    TaskSystem_AddTask(50000, &World_LoadTask);
     func_001004F0();
     func_00114A50();
     TaskSystem_AddTask(120000, &func_00100328);
@@ -232,7 +232,7 @@ void func_00100240(void) {
     D_002B9310 = 0;
     func_0010E700();
     func_0010BE10();
-    TaskSystem_AddTask(50000, &func_00112690);
+    TaskSystem_AddTask(50000, &World_LoadTask);
     func_001004F0();
     func_00114A50();
     TaskSystem_AddTask(120000, &func_00100328);
@@ -604,7 +604,7 @@ extern s32 D_002A3F24;
 s32 func_00108618(void);
 void func_00101E70(void);
 void func_00102978(void);
-s32 func_00113380();
+s32 Room_LoadArchive();
 
 // the original called the image loaders without a prototype (dbp passed as a plain int, no s16 truncation)
 typedef void (*XBegLoadFn)();
@@ -651,7 +651,7 @@ s32 func_00100F48(void) {
     func_00100E70(p);
     func_00101E70();
     func_00102978();
-    TaskSystem_AddTask(50000, func_00113380);
+    TaskSystem_AddTask(50000, Room_LoadArchive);
     return 4;
 }
 

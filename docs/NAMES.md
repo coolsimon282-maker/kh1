@@ -317,3 +317,32 @@ other functions (rule F1).
 | NativeCmd_StartInterpolation | 0x0012ADC8 | xaudacity.c | Native command 201 (3 args): Interpolation_StartVector(a0, a1, a2, NULL). |
 | NativeCmd_SetAngles16 | 0x0012A628 | xaudacity.c | Native command 55 (2 args): stores the radian angles of vector a1 as 16-bit angles (0x10000 a turn) in the three words at a0->unk_04. |
 | NativeCmd_LineCheck | 0x0012AF88 | xaudacity.c | Native command 140 (4 args, returns a value): steps from a0 along a1 (length in its w) in pieces of at most a2 through func_001166E8, stores the end point in a3; a0 = hit bit (probably a collision line check). |
+| World_ApplyWorldData | 0x001124F8 | xblade.c | Reads the world data file at D_004D2A2C (room table, entrance table and other offsets), picks the room for a pending entrance, and applies the current room's settings (flags, colours, D_002C1378 pair; world 3 has an alternative pair late in the game, probably). |
+| World_OnWorldDataLoaded | 0x00112968 | xblade.c | Load callback for the world data file: applies it, sets up D_002A0508 from D_002B9330 (aligned to 0x40) and loads the room file. |
+| World_LoadTask | 0x001129C8 | xblade.c | Task: unless a load is already pending, reloads the world names and loads the world data file (worldDataFile) when the world changed, else goes on with the room. |
+| World_StartLoadTask | 0x00112AD8 | xblade.c | Task: stops the scripts (func_001C38C0) and adds World_LoadTask. |
+| World_StartLoad | 0x00112B18 | xblade.c | Adds World_StartLoadTask (priority 190000). |
+| World_ChangeRoom | 0x00112B48 | xblade.c | Sets the world, room, D_002B8684 and entrance number, records them (func_00111408) and starts loading. |
+| World_ChangeRoomDirect | 0x00112B80 | xblade.c | Same as World_ChangeRoom without func_00111408. |
+| World_ChangeToEntrance | 0x00112BB8 | xblade.c | Goes to entrance arg0 of the current world (its room from the entrance table) and starts loading. |
+| Room_OnBinImgPreloaded | 0x00112C08 | xblade.c | Load callback of Room_PreloadBinImg: keeps the buffer (D_002A0510) and marks it loaded (D_002B9310). |
+| Room_PreloadBinImg | 0x00112C20 | xblade.c | Starts loading <room>.img of the room behind entrance arg0 when it is not the current one (and flag 13 of D_002C1EA8 is clear). |
+| Party_SaveSpawnPositions | 0x00113048 | xblade.c | Stores the position and angle (+0x10, +0x3C) of the three party members (D_002E26A0) in D_004D92F0. |
+| Party_GetSavedSpawnPosition | 0x001130A0 | xblade.c | Party member i's position stored by Party_SaveSpawnPositions. |
+| World_FindEntranceForRoom | 0x001130E0 | xblade.c | Index of the first entrance of the current room in the entrance table, or 1000. |
+| World_GetSpawnPos0 | 0x00113138 | xblade.c | Start position of party member 0: from the current entrance (floats 4..7), the saved one, or GameState_GetPosition(0). |
+| World_GetSpawnPos1 | 0x00113270 | xblade.c | Start position of party member 1 (entrance floats 8..11). |
+| World_GetSpawnPos2 | 0x001133A0 | xblade.c | Start position of party member 2 (entrance floats 12..15). |
+| Room_LoadArchive | 0x00113768 | xblade.c | Task: loads roomArchiveFile into D_002B9340 (aligned to 0x80) with Room_OnArchiveLoaded as callback. |
+| Room_OnArchiveLoaded | 0x001136D8 | xblade.c | Load callback of the room archive: resets the 64 model slots, then goes on (func_001132C0), through func_0011E7C8 when D_002B9338 == 0. |
+| AlignUp | 0x001137C8 | xblade.c | Rounds arg0 up to a multiple of arg1. |
+| PauseScreen_Draw | 0x001137F8 | xblade.c | Draws the pause screen probably: GS register words from the colours D_004D2A8C..D_004D2AA0, messages 5..9, then sets the display (PMODE, DISPFB1, DISPLAY1). |
+| PauseScreen_ResetColors | 0x00113A00 | xblade.c | Sets the pause screen colours D_004D2A8C..D_004D2AA0 to their defaults. |
+| PauseScreen_Show | 0x00113AB0 | xblade.c | 0: restores the normal display (PMODE 0x22); else draws the pause screen with the default colours. |
+| PauseScreen_AnimateColors | 0x00113AF8 | xblade.c | Steps the pause screen colour fade in (D_004D9340 = 1) or out (2) and redraws it (FM). |
+| Sound_PauseNested | 0x00113E28 | xblade.c | arg0 != 0: pauses sound (func_001EE280(2)) and counts up; 0: counts down and resumes at zero. Prints "ERROR:sound pause" on wrap. |
+| roomTable | 0x002BCDAC | xblade.c | 64-byte room entries of the current world (offset at world data + 0x10), indexed by curRoomNo. |
+| roomCount | 0x002BCDB0 | xblade.c | Number of entries in roomTable. |
+| entranceTable | 0x002BCDA0 | xblade.c | 64-byte entrance entries (room number, then three party start positions), indexed by curEntranceNo. |
+| entranceCount | 0x002BCDA4 | xblade.c | Number of entries in entranceTable. |
+| curEntranceNo | 0x002BCDA8 | xblade.c | Entrance used to enter the current room (World_ChangeRoom's arg3, index into entranceTable; -1 = find one). |

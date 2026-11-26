@@ -1,3 +1,8 @@
+/**
+ * World and room changes (world data file, room and entrance tables, start positions, room archive and .img loads, as
+ * a chain of tasks and load callbacks), the pause screen (colours, fade, sound pause), and the 64 model / matrix slots
+ * drawn for the room (func_00114638, func_00114818 packets).
+ */
 #include "common.h"
 
 #include "sdk/ee/libgraph.h"
@@ -54,9 +59,9 @@ typedef struct {
     /* 0x3C */ f32 unk_3C;
 } XBladeObj;
 
-extern XWorldEntry* D_002BCDAC;
-extern XWorldEntry* D_002BCDA0;
-extern s32 D_002BCDA4;
+extern XWorldEntry* roomTable;
+extern XWorldEntry* entranceTable;
+extern s32 entranceCount;
 extern sceVu0FVECTOR D_004D92F0[3];
 extern XBladeObj* D_002E26A0[3];
 extern s32 D_002B91E8;
@@ -84,7 +89,7 @@ extern s32 D_002B8688;
 extern s32 D_002B8698[];
 extern s32 D_002B91E0;
 //extern XBlobule D_002B92F0[];
-extern s32 D_002B92F8;
+extern s32 curEntranceNo;
 extern s32 D_002B9304;
 extern s32 D_002B9308;
 extern s32 D_002B930C;
@@ -142,19 +147,22 @@ void func_001C4FF0();
 void* func_001EE280(s32);
 void func_001ED878();
 
+// D_002B91E8 = the current room entry's word +0x04.
 void func_00112168(void) {
-    D_002B91E8 = D_002BCDAC[curRoomNo].unk_04;
+    D_002B91E8 = roomTable[curRoomNo].unk_04;
 }
 
+// Sets bit 0x20 of D_002B85F8.
 void func_00112190(void) {
     D_002B85F8 |= 0x20;
 }
 
+// Clears bit 0x20 of D_002B85F8.
 void func_001121A8(void) {
     D_002B85F8 &= ~0x20;
 }
 
-void func_001121C8(void);
+void World_ApplyWorldData(void);
 typedef struct {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
@@ -176,7 +184,7 @@ typedef struct {
 } XBladePair;
 extern s32 D_002B91EC;
 extern s32 D_002B91E4;
-extern u32 D_002BCDB0;
+extern u32 roomCount;
 extern s32 D_002BC12C;
 extern s32 D_002B8C84;
 extern s32 D_002BCB30;
@@ -193,8 +201,9 @@ void *func_001EE228(void *);
 u8 *func_001EAFF8(void);
 void worldfile_getNames_v(void) __asm__("worldfile_getNames");
 
-#define EA (XWorldEntryF *)(curRoomNo * 64 + (s32)D_002BCDAC)
-void func_001121C8(void) {
+#define EA (XWorldEntryF *)(curRoomNo * 64 + (s32)roomTable)
+// Reads the world data file at D_004D2A2C (room table, entrance table and other offsets), picks the room for a pending entrance, and applies the current room's settings (flags, colours, D_002C1378 pair; world 3 has an alternative pair late in the game, probably).
+void World_ApplyWorldData(void) {
     u8 *h;
     u8 *w;
     XWorldEntryF *e1;
@@ -208,22 +217,22 @@ void func_001121C8(void) {
     D_002B91EC = (s32)(h + *(s32 *)(h + 0x20));
     D_002B91E4 = (s32)(h + *(s32 *)(h + 0x30));
     D_002B9330 = (u32)(h + *(s32 *)(h + 0x38));
-    D_002BCDAC = (XWorldEntry *)(w + *(s32 *)w);
-    D_002BCDB0 = *(u32 *)(w + 4) >> 6;
-    D_002BCDA0 = (XWorldEntry *)(w + *(s32 *)(w + 8));
-    D_002BCDA4 = *(u32 *)(w + 0xC) >> 6;
+    roomTable = (XWorldEntry *)(w + *(s32 *)w);
+    roomCount = *(u32 *)(w + 4) >> 6;
+    entranceTable = (XWorldEntry *)(w + *(s32 *)(w + 8));
+    entranceCount = *(u32 *)(w + 0xC) >> 6;
     if (D_002B9328 != 0) {
-        curRoomNo = D_002BCDA0[D_002B92F8].unk_00;
+        curRoomNo = entranceTable[curEntranceNo].unk_00;
         D_002B8684 = func_00111468(curWorldNo, curRoomNo);
         worldfile_getNames_v();
         if (D_002B932C == 0) {
             GameState_ApplyAvailableSelection();
         }
     }
-    D_002BC12C = D_002BCDAC[curRoomNo].unk_00;
+    D_002BC12C = roomTable[curRoomNo].unk_00;
     func_00103280(1.0f, 1.0f, 1.0f, 1.0f);
     func_00110C40(1.0f, 1.0f, 1.0f, 1.0f);
-    D_002B8C84 = (((XWorldEntryF *)D_002BCDAC)[curRoomNo].unk_10 >> 1) & 1;
+    D_002B8C84 = (((XWorldEntryF *)roomTable)[curRoomNo].unk_10 >> 1) & 1;
     if (D_002B8C84 != 0) {
         func_00110C40(1.0f, 0.9f, 1.0f, (13421772.0f / 268435456.0f));
     }
@@ -251,10 +260,12 @@ void func_001121C8(void) {
     D_002DED04 = 0;
 }
 
+// Adds task func_001016E8 (priority 50000).
 void* func_001124E8(void) {
     return TaskSystem_AddTask(50000, func_001016E8);
 }
 
+// Load callback of the room file: sets up sound (SoundRpc_Initialize(2), func_001EE1E0 banks), resets func_0014A248 / func_00146BC8 slots, then func_0011CC20 with func_001124E8.
 s32 func_00112508(UNK_TYPE arg0, UNK_TYPE arg1, s32* arg2) {
     SoundRpc_Initialize(2);
     func_001EE1E0(3, -9);
@@ -277,6 +288,7 @@ s32 func_00112508(UNK_TYPE arg0, UNK_TYPE arg1, s32* arg2) {
     return func_0011CC20(-1, arg2, func_001124E8);
 }
 
+// Loads the file named by func_0011C938 into a func_00155ED8(0x34, 4) buffer with func_00112508 as callback.
 s32 func_001125F0(void) {
     char stack[64];
 
@@ -284,16 +296,18 @@ s32 func_001125F0(void) {
     return cdvd_QueueFileLoad(stack, func_00155ED8(0x34, 4), func_00112508, 0);
 }
 
-s32 func_00112630(void) {
-    func_001121C8();
+// Load callback for the world data file: applies it, sets up D_002A0508 from D_002B9330 (aligned to 0x40) and loads the room file.
+s32 World_OnWorldDataLoaded(void) {
+    World_ApplyWorldData();
     func_0010E580();
     func_0010AD58(D_002B9330);
     D_002A0508 = D_002B9330;
-    D_002A0508 = func_001133E0(D_002B9330, 0x40);
+    D_002A0508 = AlignUp(D_002B9330, 0x40);
     return func_001125F0();
 }
 
-s32 func_00112690(void) {
+// Task: unless a load is already pending, reloads the world names and loads the world data file (worldDataFile) when the world changed, else goes on with the room.
+s32 World_LoadTask(void) {
     if (D_002B930C == 1 && D_002B9310 == 0) {
         return 0;
     }
@@ -311,59 +325,65 @@ s32 func_00112690(void) {
     }
     
     if (D_002B9304 == 1) {
-        func_001121C8();
+        World_ApplyWorldData();
         if (D_002B9328 != 0) {
             func_001125F0();
         } else {
             func_001124E8();
         }
     } else {
-        cdvd_QueueFileLoad(worldDataFile, D_004D2A2C, func_00112630, 0);
+        cdvd_QueueFileLoad(worldDataFile, D_004D2A2C, World_OnWorldDataLoaded, 0);
     }
     return 4;
 }
 
-s32 func_001127A0(void) {
+// Task: stops the scripts (func_001C38C0) and adds World_LoadTask.
+s32 World_StartLoadTask(void) {
     func_001C38C0();
     D_002B29C4 = 0;
     func_00122720();
-    TaskSystem_AddTask(189999, func_00112690);
+    TaskSystem_AddTask(189999, World_LoadTask);
     return 4;
 }
 
-void* func_001127E0(void) {
+// Adds World_StartLoadTask (priority 190000).
+void* World_StartLoad(void) {
     func_001009D8();
-    return TaskSystem_AddTask(190000, func_001127A0);
+    return TaskSystem_AddTask(190000, World_StartLoadTask);
 }
 
-void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    D_002B92F8 = arg3;
+// Sets the world, room, D_002B8684 and entrance number, records them (func_00111408) and starts loading.
+void World_ChangeRoom(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    curEntranceNo = arg3;
     curWorldNo = arg0;
     curRoomNo = arg1;
     D_002B8684 = arg2;
     func_00111408(arg0, arg1, arg2);
-    func_001127E0();
+    World_StartLoad();
 }
 
-void* func_00112848(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    D_002B92F8 = arg3;
+// Same as World_ChangeRoom without func_00111408.
+void* World_ChangeRoomDirect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    curEntranceNo = arg3;
     curWorldNo = arg0;
     curRoomNo = arg1;
     D_002B8684 = arg2;
-    return func_001127E0();
+    return World_StartLoad();
 }
 
-void func_00112880(s32 arg0) {
+// Goes to entrance arg0 of the current world (its room from the entrance table) and starts loading.
+void World_ChangeToEntrance(s32 arg0) {
     s32 val;
 
-    D_002B92F8 = arg0;
-    val = D_002BCDA0[arg0].unk_00;
+    curEntranceNo = arg0;
+    val = entranceTable[arg0].unk_00;
     curRoomNo = val;
     D_002B8684 = func_00111468(curWorldNo, val);
-    func_001127E0();
+    World_StartLoad();
 }
 
-void func_001128D8(s32 arg0) {
+// Load callback of Room_PreloadBinImg: keeps the buffer (D_002A0510) and marks it loaded (D_002B9310).
+void Room_OnBinImgPreloaded(s32 arg0) {
     D_002A0510 = arg0;
     D_002B9310 = 1;
 }
@@ -371,21 +391,22 @@ void func_001128D8(s32 arg0) {
 extern s32 D_002A050C;
 extern s32 D_002B868C;
 
-void func_001128F0(s32 arg0) {
+// Starts loading <room>.img of the room behind entrance arg0 when it is not the current one (and flag 13 of D_002C1EA8 is clear).
+void Room_PreloadBinImg(s32 arg0) {
     char str[0x40];
     s32 one = 1;
     s32 id;
 
     if (((D_002C1EA8 >> 13) & 1) != one) {
-        id = D_002BCDAC[D_002BCDA0[arg0].unk_00].unk_00;
+        id = roomTable[entranceTable[arg0].unk_00].unk_00;
         if (D_002B868C != id) {
             D_002B930C = one;
             worldfile_getBinImgName(id);
             strcpy(str, worldBinImgFile);
             strcat(str, ".img");
             D_002A050C = func_00155ED8(0x34, 8);
-            D_002A050C = func_001133E0(D_002A050C, 0x80);
-            cdvd_QueueFileLoad(str, D_002A050C, (s32 (*)(void))func_001128D8, 0);
+            D_002A050C = AlignUp(D_002A050C, 0x80);
+            cdvd_QueueFileLoad(str, D_002A050C, (s32 (*)(void))Room_OnBinImgPreloaded, 0);
         }
     }
 }
@@ -400,7 +421,7 @@ void func_001128F0(s32 arg0) {
 
 // extern s32* D_002B92F0;
 
-// void func_001128F0(s32 arg0) {
+// void Room_PreloadBinImg(s32 arg0) {
 //     char str[0x40];
 //     s32* temp;
 //     s32 temp2;
@@ -415,12 +436,13 @@ void func_001128F0(s32 arg0) {
 //             strcpy(str, worldBinImgFile);
 //             strcat(str, ".img");
 //             D_002A050C = func_00155ED8(0x34, 8);
-//             D_002A050C = func_001133E0(D_002A050C, 0x80);
-//             cdvd_QueueFileLoad(str, D_002A050C, func_001128D8, 0);
+//             D_002A050C = AlignUp(D_002A050C, 0x80);
+//             cdvd_QueueFileLoad(str, D_002A050C, Room_OnBinImgPreloaded, 0);
 //         }
 //     }
 // }
 
+// Task: func_0011C6C8(0), D_002B29C4 = 0, func_00122720.
 s32 func_001129C8(void) {
     func_0011C6C8(0);
     D_002B29C4 = 0;
@@ -428,6 +450,7 @@ s32 func_001129C8(void) {
     return 4;
 }
 
+// Stops sounds and fades them out over 360 frames (func_0011C5F0, func_0011D310, func_00101628).
 void func_001129F8(void) {
     func_00157B90();
     D_002A0520[1] = 0;
@@ -438,6 +461,7 @@ void func_001129F8(void) {
     func_00101628(360);
 }
 
+// Leaves the room for mode 4 (func_001093A8(4)), keeping world and room in D_002B8698.
 void func_00112A50(void) {
     func_0012C990(2, 0);
     func_0012C990(6, 0);
@@ -450,22 +474,25 @@ void func_00112A50(void) {
     func_001093A8(4);
 }
 
+// Leaves the room for mode 6, saving party positions and world, room, entrance in D_002B9318.
 void func_00112AD8(void) {
     D_002C1EA8 |= 0x80000;
     func_001129F8();
     func_001C38C0();
-    func_00112CF0();
+    Party_SaveSpawnPositions();
     TaskSystem_AddTask(190000, func_001129C8);
     D_002B9318[0] = curWorldNo;
     D_002B9318[1] = curRoomNo;
-    D_002B9318[2] = D_002B92F8;
+    D_002B9318[2] = curEntranceNo;
     func_001093A8(6);
 }
 
+// Empty.
 void func_00112B60(void) {
     // empty function
 }
 
+// Sets up sound for a new room (SoundRpc_Initialize(2) and the func_001EE1E0 banks).
 void func_00112B68(void) {
     SoundRpc_Initialize(2);
     func_001EE1E0(3, -9);
@@ -490,24 +517,28 @@ void func_00112B68(void) {
     func_001EE1E0(3, -10);
 }
 
+// func_00114420, then mode 9 (func_001093A8).
 void* func_00112C70(void) {
     func_00114420();
     return func_001093A8(9);
 }
 
 #ifdef VERSION_FM
+// Returns D_004D92E0 (FM only).
 s32 fm_func_00112FC0(void) {
     return D_004D92E0;
 }
 #endif
 
 #ifdef VERSION_FM
+// Sets D_004D92E0 (FM only).
 void fm_func_00112FD0(s32 arg0) {
     D_004D92E0 = arg0;
 }
 #endif
 
 #ifdef VERSION_FM
+// func_00114420, then mode 8 (FM: sets D_004D92E0 = 1 first).
 void* func_00112C90(void) {
     func_00114420();
     fm_func_00112FD0(1);
@@ -520,15 +551,18 @@ void* func_00112C90(void) {
 }
 #endif
 
+// func_00155ED8(61, 3).
 s32 func_00112CB0(void) {
     return func_00155ED8(61, 3);
 }
 
+// func_00155ED8(0, 64).
 s32 func_00112CD0(void) {
     return func_00155ED8(0, 64);
 }
 
-void func_00112CF0(void) {
+// Stores the position and angle (+0x10, +0x3C) of the three party members (D_002E26A0) in D_004D92F0.
+void Party_SaveSpawnPositions(void) {
     s32 i;
     XBladeObj* obj;
 
@@ -543,18 +577,20 @@ void func_00112CF0(void) {
     }
 }
 
-void func_00112D48(s32 i, sceVu0FVECTOR dst) {
+// Party member i's position stored by Party_SaveSpawnPositions.
+void Party_GetSavedSpawnPosition(s32 i, sceVu0FVECTOR dst) {
     dst[0] = D_004D92F0[i][0];
     dst[1] = D_004D92F0[i][1];
     dst[2] = D_004D92F0[i][2];
     dst[3] = D_004D92F0[i][3];
 }
 
-s32 func_00112D88(void) {
+// Index of the first entrance of the current room in the entrance table, or 1000.
+s32 World_FindEntranceForRoom(void) {
     s32 i;
 
-    for (i = 0; i < D_002BCDA4; i++) {
-        if (curRoomNo == D_002BCDA0[i].unk_00) {
+    for (i = 0; i < entranceCount; i++) {
+        if (curRoomNo == entranceTable[i].unk_00) {
             return i;
         }
     }
@@ -564,18 +600,19 @@ s32 func_00112D88(void) {
 void GameState_GetPosition(s32, sceVu0FVECTOR);
 void func_00104FD0(s32, sceVu0FVECTOR);
 
-void func_00112DE0(sceVu0FVECTOR dst) {
-    if (D_002B92F8 == -1) {
-        D_002B92F8 = func_00112D88();
+// Start position of party member 0: from the current entrance (floats 4..7), the saved one, or GameState_GetPosition(0).
+void World_GetSpawnPos0(sceVu0FVECTOR dst) {
+    if (curEntranceNo == -1) {
+        curEntranceNo = World_FindEntranceForRoom();
     }
-    if (D_002B92F8 < D_002BCDA4) {
-        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[4];
-        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[5];
-        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[6];
-        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[7];
+    if (curEntranceNo < entranceCount) {
+        dst[0] = ((f32*)&entranceTable[curEntranceNo])[4];
+        dst[1] = ((f32*)&entranceTable[curEntranceNo])[5];
+        dst[2] = ((f32*)&entranceTable[curEntranceNo])[6];
+        dst[3] = ((f32*)&entranceTable[curEntranceNo])[7];
         if (D_002B9328 != 0) {
             if (D_002B932C == 1) {
-                func_00112D48(0, dst);
+                Party_GetSavedSpawnPosition(0, dst);
             }
         }
         if (D_002B8364 == 1) {
@@ -586,18 +623,19 @@ void func_00112DE0(sceVu0FVECTOR dst) {
     }
 }
 
-void func_00112EE8(sceVu0FVECTOR dst) {
-    if (D_002B92F8 == -1) {
-        D_002B92F8 = func_00112D88();
+// Start position of party member 1 (entrance floats 8..11).
+void World_GetSpawnPos1(sceVu0FVECTOR dst) {
+    if (curEntranceNo == -1) {
+        curEntranceNo = World_FindEntranceForRoom();
     }
-    if (D_002B92F8 < D_002BCDA4) {
-        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[8];
-        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[9];
-        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[10];
-        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[11];
+    if (curEntranceNo < entranceCount) {
+        dst[0] = ((f32*)&entranceTable[curEntranceNo])[8];
+        dst[1] = ((f32*)&entranceTable[curEntranceNo])[9];
+        dst[2] = ((f32*)&entranceTable[curEntranceNo])[10];
+        dst[3] = ((f32*)&entranceTable[curEntranceNo])[11];
         if (D_002B9328 != 0) {
             if (D_002B932C == 1) {
-                func_00112D48(1, dst);
+                Party_GetSavedSpawnPosition(1, dst);
             }
         }
         if (D_002B8364 == 1) {
@@ -608,18 +646,19 @@ void func_00112EE8(sceVu0FVECTOR dst) {
     }
 }
 
-void func_00112FE8(sceVu0FVECTOR dst) {
-    if (D_002B92F8 == -1) {
-        D_002B92F8 = func_00112D88();
+// Start position of party member 2 (entrance floats 12..15).
+void World_GetSpawnPos2(sceVu0FVECTOR dst) {
+    if (curEntranceNo == -1) {
+        curEntranceNo = World_FindEntranceForRoom();
     }
-    if (D_002B92F8 < D_002BCDA4) {
-        dst[0] = ((f32*)&D_002BCDA0[D_002B92F8])[12];
-        dst[1] = ((f32*)&D_002BCDA0[D_002B92F8])[13];
-        dst[2] = ((f32*)&D_002BCDA0[D_002B92F8])[14];
-        dst[3] = ((f32*)&D_002BCDA0[D_002B92F8])[15];
+    if (curEntranceNo < entranceCount) {
+        dst[0] = ((f32*)&entranceTable[curEntranceNo])[12];
+        dst[1] = ((f32*)&entranceTable[curEntranceNo])[13];
+        dst[2] = ((f32*)&entranceTable[curEntranceNo])[14];
+        dst[3] = ((f32*)&entranceTable[curEntranceNo])[15];
         if (D_002B9328 != 0) {
             if (D_002B932C == 1) {
-                func_00112D48(2, dst);
+                Party_GetSavedSpawnPosition(2, dst);
             }
         }
         if (D_002B8364 == 1) {
@@ -633,24 +672,24 @@ extern s32 D_002B92F4;
 
 // void func_00104DC8(s32, sceVu0FVECTOR);
 // void GameState_GetPosition(s32, sceVu0FVECTOR);
-// void func_00112D48(s32, sceVu0FVECTOR);
-// s32 func_00112D88(void);
+// void Party_GetSavedSpawnPosition(s32, sceVu0FVECTOR);
+// s32 World_FindEntranceForRoom(void);
 
-// void func_00112FE8(sceVu0FVECTOR arg0) {
+// void World_GetSpawnPos2(sceVu0FVECTOR arg0) {
 //     sceVu0FMATRIX* mtx;
 
-//     if (D_002B92F8 == -1) {
-//         D_002B92F8 = func_00112D88();
+//     if (curEntranceNo == -1) {
+//         curEntranceNo = World_FindEntranceForRoom();
 //     }
-//     if (D_002B92F8 < D_002B92F4) {
-//         mtx = &D_002B92F0[D_002B92F8];
+//     if (curEntranceNo < D_002B92F4) {
+//         mtx = &D_002B92F0[curEntranceNo];
 //         arg0[0] = (*mtx)[3][0];
 //         arg0[1] = (*mtx)[3][1];
 //         arg0[2] = (*mtx)[3][2];
 //         arg0[3] = (*mtx)[3][3];
 //         if (D_002B9328 != 0) {
 //             if (D_002B932C == 1) {
-//                 func_00112D48(2, arg0);
+//                 Party_GetSavedSpawnPosition(2, arg0);
 //             }
 //         }
 //         if (D_002B8364 == 1) {
@@ -661,6 +700,7 @@ extern s32 D_002B92F4;
 //     }
 // }
 
+// D_002B9334 = arg0: func_001C4740(arg0, 0) when non-zero, else func_00110150.
 s32 func_001130F0(s32 arg0) {
     D_002B9334 = arg0;
     if (arg0 != 0) {
@@ -670,6 +710,7 @@ s32 func_001130F0(s32 arg0) {
     return func_00110150();
 }
 
+// func_0013C008 while a pending entrance exists and D_002B932C == 0.
 void func_00113130(void) {
     if (D_002B9328 != 0 && D_002B932C == 0) {
         func_0013C008();
@@ -684,6 +725,7 @@ void func_001113E8();
 extern s32 D_0029B410;
 extern s32 D_0029B414;
 
+// Task: finishes entering the room (starts its script func_001C4FF0(D_002B91E0), clears load flags, saves positions).
 s32 func_00113170(void) {
     if (D_002B2CC4 != 0) {
         return 0;
@@ -720,16 +762,19 @@ s32 func_00113170(void) {
     return 4;
 }
 
+// Adds task func_00113170 (priority 49900).
 void* func_001132A0(void) {
     return TaskSystem_AddTask(49900, func_00113170);
 }
 
+// func_00113130, then func_00122588(D_002B9340, func_001132A0).
 void func_001132C0(void) {
     func_00113130();
     func_00122588(D_002B9340, func_001132A0);
 }
 
-void func_001132F0(void) {
+// Load callback of the room archive: resets the 64 model slots, then goes on (func_001132C0), through func_0011E7C8 when D_002B9338 == 0.
+void Room_OnArchiveLoaded(void) {
     if (D_002B29C4 == 1) {
         func_0013C668();
     }
@@ -742,15 +787,17 @@ void func_001132F0(void) {
     func_001132C0();
 }
 
-s32 func_00113380(void) {
+// Task: loads roomArchiveFile into D_002B9340 (aligned to 0x80) with Room_OnArchiveLoaded as callback.
+s32 Room_LoadArchive(void) {
     func_00112168();
     func_00101580();
-    D_002B9340 = func_001133E0(D_002B9340, 0x80);
-    cdvd_QueueFileLoad(roomArchiveFile, D_002B9340, func_001132F0, 0);
+    D_002B9340 = AlignUp(D_002B9340, 0x80);
+    cdvd_QueueFileLoad(roomArchiveFile, D_002B9340, Room_OnArchiveLoaded, 0);
     return 4;
 }
 
-s32 func_001133E0(s32 arg0, s32 arg1) {
+// Rounds arg0 up to a multiple of arg1.
+s32 AlignUp(s32 arg0, s32 arg1) {
     if ((arg0 % arg1) != 0) {
         arg0 = ((arg0 / arg1) * arg1) + arg1;
     }
@@ -758,7 +805,8 @@ s32 func_001133E0(s32 arg0, s32 arg1) {
 }
 
 #ifndef NON_MATCHING
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113410);
+// Draws the pause screen probably: GS register words from the colours D_004D2A8C..D_004D2AA0, messages 5..9, then sets the display (PMODE, DISPFB1, DISPLAY1).
+INCLUDE_ASM("asm/nonmatchings/xblade", PauseScreen_Draw);
 #else
 
 typedef struct Big300 {
@@ -770,7 +818,7 @@ extern s32 D_002B9650;
 
 s32 func_001F0EF0(s32);
 
-void func_00113410(void) {
+void PauseScreen_Draw(void) {
     s32 temp_16;
     s32 temp_7;
     u64 temp_3;
@@ -834,7 +882,8 @@ void func_00113410(void) {
 }
 #endif
 
-void func_00113618(void) {
+// Sets the pause screen colours D_004D2A8C..D_004D2AA0 to their defaults.
+void PauseScreen_ResetColors(void) {
     D_004D2A8C = 205;
     D_004D2A90 = 135;
     D_004D2A94 = 50;
@@ -861,6 +910,7 @@ typedef struct {
 extern volatile XBlade5AD0 D_002C5AD0;
 extern volatile XBlade5BB0 D_002C5BB0;
 
+// Clears D_002C5AD0 / D_002C5BB0 counters.
 void func_00113660(void) {
     D_002C5AD0.unk_08 = 0;
     D_002C5AD0.unk_04 = 0;
@@ -884,14 +934,15 @@ void func_00113660(void) {
     D_002C5BB0.unk_30[14] = 0;
 }
 
-void func_001136C8(s32);
-void func_001136C8(s32 arg0) {
+void PauseScreen_Show(s32);
+// 0: restores the normal display (PMODE 0x22); else draws the pause screen with the default colours.
+void PauseScreen_Show(s32 arg0) {
     if (arg0 == 0) {
         func_001102C0();
         DPUT_GS_PMODE(0x22);
     } else {
-        func_00113618();
-        func_00113410();
+        PauseScreen_ResetColors();
+        PauseScreen_Draw();
     }
 }
 
@@ -901,12 +952,13 @@ extern s32 D_004D2A88;
 extern s32 D_004D2AA4;
 
 #ifdef VERSION_FM
-NOTHROW(int, func_00113410);
+NOTHROW(int, PauseScreen_Draw);
 extern s32 D_004D9340;
 extern s32 D_004D9344;
 extern s32 D_004D9348;
 extern s32 D_004D9364;
-void func_00113710(void) {
+// Steps the pause screen colour fade in (D_004D9340 = 1) or out (2) and redraws it (FM).
+void PauseScreen_AnimateColors(void) {
     switch (D_004D9340) {
         default:
         case 0:
@@ -937,7 +989,7 @@ void func_00113710(void) {
                     D_004D9344 = 2;
                 case 2:
                     D_004D9364 = 0;
-                    func_00113618();
+                    PauseScreen_ResetColors();
                     break;
             }
             break;
@@ -966,37 +1018,40 @@ void func_00113710(void) {
                     }
                     D_004D9344 = 2;
                 case 2:
-                    func_001136C8(0);
+                    PauseScreen_Show(0);
 
                     if (D_002B9668 == 2) {
                         func_00113A10(0);
                     } else {
-                        func_00113A40(0);
+                        Sound_PauseNested(0);
                     }
                     D_004D9340 = 0;
                     return;
             }
             break;
     }
-    func_00113410();
+    PauseScreen_Draw();
     D_004D9348++;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xblade", func_00113710);
+INCLUDE_ASM("asm/nonmatchings/xblade", PauseScreen_AnimateColors);
 #endif
 
+// Clears D_004D2A68 (sound pause count) and D_004D2A6C.
 void func_001139F8(void) {
     D_004D2A68 = 0;
     D_004D2A6C = 0;
 }
 
+// func_001EE280(arg0) and remembers arg0 in D_004D2A6C.
 void* func_00113A10(s32 arg0) {
     void* p0 = func_001EE280(arg0);
     D_004D2A6C = arg0;
     return p0;
 }
 
-void func_00113A40(s32 arg0) {
+// arg0 != 0: pauses sound (func_001EE280(2)) and counts up; 0: counts down and resumes at zero. Prints "ERROR:sound pause" on wrap.
+void Sound_PauseNested(s32 arg0) {
     if (arg0 == 0) {
         D_004D2A68--;
         if (D_004D2A68 == 0) {
@@ -1019,6 +1074,7 @@ void func_00113A40(s32 arg0) {
     }
 }
 
+// Task: func_00102970(0x80, 0x20) until D_004D2A70 == 4.
 s32 func_00113AF8(void) {
     func_00102970(0x80, 0x20);
 
@@ -1028,6 +1084,7 @@ s32 func_00113AF8(void) {
     return 4;
 }
 
+// Task: adds func_00113AF8 (priority 10499), D_004D2A70 = 3.
 s32 func_00113B30(void) {
     XPointy* p0 = TaskSystem_AddTask(10499, func_00113AF8);
     p0->unk_02 = 1;
@@ -1036,6 +1093,7 @@ s32 func_00113B30(void) {
     return 4;
 }
 
+// Task: adds func_00113B30 (priority 190019), func_0010A108.
 s32 func_00113B78(void) {
     XPointy* p0 = TaskSystem_AddTask(190019, func_00113B30);
     p0->unk_02 = 1;
@@ -1044,6 +1102,7 @@ s32 func_00113B78(void) {
     return 4;
 }
 
+// Task: ends the pause (D_004D2A70 = D_002B9664 = D_004D2A60 = 0, func_001778A0(0)).
 s32 func_00113BC0(void) {
     func_00102970(0x80, 0);
     if (D_003F0DD8 != 0) {
@@ -1059,6 +1118,7 @@ s32 func_00113BC0(void) {
     return 4;
 }
 
+// Task: adds func_00113BC0 (priority 190019).
 s32 func_00113C40(void) {
     XPointy* p0;
 
@@ -1068,11 +1128,13 @@ s32 func_00113C40(void) {
     return 4;
 }
 
+// Task: func_00102970(0x80, 0x20).
 s32 func_00113C80(void) {
     func_00102970(0x80, 0x20);
     return 4;
 }
 
+// D_002B9668 = 1.
 void func_00113CA8(void) {
     D_002B9668 = 1;
 }
@@ -1091,6 +1153,7 @@ s32 func_001336A0(void);
 // another C name with the real symbol name.
 s32 func_00113CB8_s32(void) __asm__("PauseMenu_SelectMode");
 
+// PauseMenu_SelectMode: picks the pause mode D_002B9668 (0..7) from the game flags when no pause is running.
 s32 func_00113CB8_s32(void) {
     s32 one;
 
@@ -1133,20 +1196,24 @@ s32 func_00113CB8_s32(void) {
     return D_002B9668;
 }
 
+// D_002C1EBC = 1.
 void func_00113E18(void) {
     D_002C1EBC = 1;
 }
 
+// D_002C1EBC = 0.
 void func_00113E28(void) {
     D_002C1EBC = 0;
 }
 
+// Starts the pause: func_001778A0(1), D_004D2A70 = D_004D2A60 = 1.
 void func_00113E38(void) {
     func_001778A0(1);
     D_004D2A70 = 1;
     D_004D2A60 = 1;
 }
 
+// D_002B9664 = 1, D_002B8354 = 0, func_0011D598(6, 1).
 void func_00113E68(void) {
     /* the target loads the 1 once into a1 and stores it from there; CSE turns every plain form into two loads */
     register s32 one asm("$5") = 1;
@@ -1195,7 +1262,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                                         if (D_002B9668 == 2) {
 //                                             func_00113A10(1);
 //                                         } else {
-//                                             func_00113A40(1);
+//                                             Sound_PauseNested(1);
 //                                         }
 //                                         D_004D2A8C = 0x80;
 //                                         D_004D2A90 = 0x80;
@@ -1207,7 +1274,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                                         break;
 //                                     case 1:
 //                                         D_004D2A80 = 2;
-//                                         func_00113618();
+//                                         PauseScreen_ResetColors();
 //                                         break;
 //                                 }
 //                                 D_002B9664 ^= 1;
@@ -1215,7 +1282,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                         }
 
 //                         if (init2 != 0) {
-//                             func_00113710(D_004D2A78);
+//                             PauseScreen_AnimateColors(D_004D2A78);
 //                             D_002B9664 = 1;
 //                             func_001224B8();
 //                             func_0010FB90();
@@ -1223,7 +1290,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                                 break; 
 //                             } 
 //                             if (func_0010F768() != 0) {
-//                                 func_001136C8(D_004D2A78);
+//                                 PauseScreen_Show(D_004D2A78);
 //                             }
 //                             func_001102C0();
 //                         } else {
@@ -1331,22 +1398,27 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //     return ret;
 // }
 
+// D_002B966C = 1.
 void func_00114400(void) {
     D_002B966C = 1;
 }
 
+// D_002B966C = 0.
 void func_00114410(void) {
     D_002B966C = 0;
 }
 
+// D_004D2A74 = 1.
 void func_00114420(void) {
     D_004D2A74 = 1;
 }
 
+// D_004D2A74 = 0.
 void func_00114430(void) {
     D_004D2A74 = 0;
 }
 
+// Clears the pause state and the party menu open request.
 void func_00114440(void) {
     D_004D2A60 = 0;
     D_004D2A70 = 0;
@@ -1360,6 +1432,7 @@ void func_00114440(void) {
 // include/xblade.h declares this `void func_00114480();`; it is built as returning a value (no tail call).
 s32 func_00114480_s32(void) __asm__("func_00114480");
 
+// func_00113660 when D_002BBDE0 == 3 and D_002B9660 != 0.
 s32 func_00114480_s32(void) {
     if (D_002BBDE0 == 3 && D_002B9660 != 0) {
         func_00113660();
@@ -1380,6 +1453,7 @@ extern XBlade90 D_002AD460[2][64];
 extern XBlade90 D_002B1C60[2][64];
 s32 func_00108A60(s32 idx, s32 type, void* arg2, void* arg3, void* arg4);
 
+// Resets the 64 model slots of types 1 and 5 (func_00108A60) and the slot counters.
 void func_001144C8(void) {
     s32 i;
 
@@ -1391,6 +1465,7 @@ void func_001144C8(void) {
     }
 }
 
+// func_001089D0 on the data at +unk_18 when the header version unk_00 >= 2.
 s32 func_001145B0(XBladeHdr* arg0) {
     s32* offset = &arg0->unk_18;
 
@@ -1399,6 +1474,7 @@ s32 func_001145B0(XBladeHdr* arg0) {
     }
 }
 
+// Registers model arg1 (data at +unk_20) in the next type-5 slot (func_00108FD0).
 s32 func_001145E8(s32 arg0, XBladeHdr* arg1, s32 arg2, s32 arg3) {
     func_00108FD0(D_004D2AB0++, arg2, arg0, (u8*)arg1 + arg1->unk_20, arg3);
     return 1;
@@ -1417,6 +1493,7 @@ typedef struct {
 extern void* D_004D9368; // XBladeBox*
 extern u8 D_002BD140[];
 
+// Transforms the model's eight bounding box corners by arg0 and registers it in the next slot (func_00108DF8) when func_0024EDF0 says it is visible.
 s32 func_00114638(sceVu0FVECTOR* m, u8* mdl, s32 id, s32 arg3) {
     XBladeBox* w;
     s32 ret;
@@ -1450,6 +1527,7 @@ s32 func_00114638(sceVu0FVECTOR* m, u8* mdl, s32 id, s32 arg3) {
     return ret;
 }
 
+// Clears the slot counters D_004D2AAC / D_004D2AB0.
 void func_00114800(void) {
     D_004D2AAC = 0;
     D_004D2AB0 = 0;
@@ -1501,6 +1579,7 @@ extern s32 D_00486430[][4];
 extern s32 D_0046BE90[4];
 extern s32 D_00486300[4];
 
+// Fills two packets from templates D_0048C630 / D_0048C690, pointing at matrix slot idx (or the template's for -1).
 void func_00114818(XBladePkt* pkt, s32 idx, s32 n) {
     s32 k;
 
@@ -1546,6 +1625,7 @@ extern s32 D_00351BD0;
 extern s32 D_004DBC28[][64][36];
 extern s32 D_002BC170[4][4];
 
+// Copies matrix arg1 and D_002BC170 into matrix slot idx of buffer D_00351BD0.
 void func_001149B0(s32 idx, s32 src[4][4]) {
     s32 i, j, k = 0;
 
@@ -1558,6 +1638,7 @@ void func_001149B0(s32 idx, s32 src[4][4]) {
     }
 }
 
+// Initialises the 64 matrix slot tags and their packets.
 void func_00114A50(void) {
     s32 i, j;
 
@@ -1573,6 +1654,7 @@ void func_00114A50(void) {
     }
 }
 
+// func_00117588(arg0) for arg1 == -1, else func_0011AED0(arg1, arg0).
 void func_00114B18(f32* arg0, s32 arg1) {
     if (arg1 == -1) {
         func_00117588(arg0);
@@ -1585,6 +1667,7 @@ extern XBlade3044D8 D_003044D8[];
 s32 func_00108D90(XBladeTask*);
 XBladeTask* func_0015ED80(s32 arg0, s32 (*arg1)(XBladeTask*));
 
+// Adds a func_00108D90 task with the packet for slot idx (or the default for -1).
 void func_00114B50(s32 arg0, s32 idx) {
     if (idx == -1) {
         func_0015ED80(arg0, func_00108D90)->unk_10 = &D_004D9380[D_00351BD0];
@@ -1594,6 +1677,7 @@ void func_00114B50(s32 arg0, s32 idx) {
     }
 }
 
+// func_00104AA8 for arg0 == -1, else func_0011A648.
 s32 func_00114C18(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {
         return func_00104AA8(arg1, arg2);
@@ -1601,6 +1685,7 @@ s32 func_00114C18(s32 arg0, s32 arg1, s32 arg2) {
     return func_0011A648(arg0, arg1, arg2);
 }
 
+// func_00104AA8 for arg0 == -1, else func_0011A7F8.
 s32 func_00114C58(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {
         return func_00104AA8(arg1, arg2);
@@ -1608,6 +1693,7 @@ s32 func_00114C58(s32 arg0, s32 arg1, s32 arg2) {
     return func_0011A7F8(arg0, arg1, arg2);
 }
 
+// func_00104CF8 for arg0 == -1, else func_0011A758.
 void func_00114C98(s32 arg0, s32 arg1, s32 arg2) {
     if (arg0 == -1) {
         func_00104CF8(arg1, arg2);

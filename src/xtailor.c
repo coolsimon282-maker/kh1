@@ -225,7 +225,7 @@ extern s32 D_002BBD40;
 extern s32 D_002C1EB8_w __asm__("D_002C1EB8");
 extern s32 D_002B6484;
 extern volatile s32 D_002B9664;
-void func_00113A40(s32);
+void Sound_PauseNested(s32);
 void func_001220D0(void);
 void func_0011DE90(void);
 
@@ -294,10 +294,10 @@ s32 func_0010F768(void) {
         }
         if (started == 0 && mask != 0) {
             started = 1;
-            func_00113A40(mask);
+            Sound_PauseNested(mask);
         }
         if (started == 1 && mask == 0) {
-            func_00113A40(0);
+            Sound_PauseNested(0);
         }
         if (mask != 0) {
             D_002B9664 = 1;
@@ -785,7 +785,7 @@ s32 func_00110E38(s32 arg0) {
 }
 
 void func_00110E78(void) {
-    func_00113A40(2);
+    Sound_PauseNested(2);
     func_001EEC00(0x7B);
     func_F20000(1, 0);
 }
@@ -837,7 +837,7 @@ extern s32 D_002BBE18;
 void func_001016B8(void);
 s32 func_001EEC00(s32);
 void func_00114430(void);
-void func_00113A40(s32);
+void Sound_PauseNested(s32);
 
 void func_00110FC8(void) {
     if (D_002BBDE0 == 3 && D_002A3F44 == 1) {
@@ -851,7 +851,7 @@ void func_00110FC8(void) {
     func_00110F48();
     D_002B9030 = 0;
     D_002B9084 = 1;
-    func_00113A40(0);
+    Sound_PauseNested(0);
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110FC8);

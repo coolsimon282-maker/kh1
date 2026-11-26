@@ -595,9 +595,9 @@ void func_00123ED0(s32 arg0, sceVu0FVECTOR arg1) {
     sceVu0CopyVector(func_00123880(arg0)->unk_040, arg1);
 }
 
-void func_00112DE0(sceVu0FVECTOR);
-void func_00112EE8(sceVu0FVECTOR);
-void func_00112FE8(sceVu0FVECTOR);
+void World_GetSpawnPos0(sceVu0FVECTOR);
+void World_GetSpawnPos1(sceVu0FVECTOR);
+void World_GetSpawnPos2(sceVu0FVECTOR);
 void func_0014EAB0(XToaster*, sceVu0FVECTOR);
 void func_0014EB60(XToaster*, sceVu0FVECTOR);
 void func_0014E668(sceVu0FVECTOR, s32, sceVu0FVECTOR, f32, f32);
@@ -611,13 +611,13 @@ void func_00123F00(XToaster* p, f32* v) {
 
     switch (t->unk_54) {
     case 0:
-        func_00112DE0(v);
+        World_GetSpawnPos0(v);
         break;
     case 1:
         if (XT_SLOTS[1] == p) {
-            func_00112EE8(v);
+            World_GetSpawnPos1(v);
         } else {
-            func_00112FE8(v);
+            World_GetSpawnPos2(v);
         }
         break;
     default:
