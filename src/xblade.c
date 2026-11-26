@@ -700,14 +700,14 @@ extern s32 D_002B92F4;
 //     }
 // }
 
-// D_002B9334 = arg0: func_001C4740(arg0, 0) when non-zero, else func_00110150.
+// D_002B9334 = arg0: func_001C4740(arg0, 0) when non-zero, else Fade_ResetScreenColor.
 s32 func_001130F0(s32 arg0) {
     D_002B9334 = arg0;
     if (arg0 != 0) {
         D_002B933C = 0;
         return func_001C4740(arg0, 0);
     }
-    return func_00110150();
+    return Fade_ResetScreenColor();
 }
 
 // func_0013C008 while a pending entrance exists and D_002B932C == 0.
@@ -865,7 +865,7 @@ void PauseScreen_Draw(void) {
 
     temp_16 = D_004D2A8C | new_var4 | temp_7;
     
-    func_001102C0();
+    Frame_UpdateTimeStep();
     func_0010F3D0();
     func_00106948(&D_002B9650);
     func_001F2EF8(temp_16, 0xB6, 0x36, func_001F0EF0(5), 18);
@@ -938,7 +938,7 @@ void PauseScreen_Show(s32);
 // 0: restores the normal display (PMODE 0x22); else draws the pause screen with the default colours.
 void PauseScreen_Show(s32 arg0) {
     if (arg0 == 0) {
-        func_001102C0();
+        Frame_UpdateTimeStep();
         DPUT_GS_PMODE(0x22);
     } else {
         PauseScreen_ResetColors();
@@ -1058,7 +1058,7 @@ void Sound_PauseNested(s32 arg0) {
             if (D_004D2A6C == 1) {
                 func_00113A10(arg0);
                 func_001EEC58();
-                func_001102C0();
+                Frame_UpdateTimeStep();
                 func_00113A10(1);
             } else {
                 func_00113A10(arg0);
@@ -1289,10 +1289,10 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                             if (func_00109468() == 0) {
 //                                 break; 
 //                             } 
-//                             if (func_0010F768() != 0) {
+//                             if (SysMessage_WaitWhileActive() != 0) {
 //                                 PauseScreen_Show(D_004D2A78);
 //                             }
-//                             func_001102C0();
+//                             Frame_UpdateTimeStep();
 //                         } else {
 //                             D_004D2A7C = 0;
 //                             D_002B9664 = 0;

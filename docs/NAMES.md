@@ -346,3 +346,32 @@ other functions (rule F1).
 | entranceTable | 0x002BCDA0 | xblade.c | 64-byte entrance entries (room number, then three party start positions), indexed by curEntranceNo. |
 | entranceCount | 0x002BCDA4 | xblade.c | Number of entries in entranceTable. |
 | curEntranceNo | 0x002BCDA8 | xblade.c | Entrance used to enter the current room (World_ChangeRoom's arg3, index into entranceTable; -1 = find one). |
+| SysMessage_Draw | 0x0010F658 | xtailor.c | Draws the system message for the bits of arg0 (4: message 3 or 4 with a choice, 2: message 2, 1: message 1) on its own display, or restores the display for 0; probably the controller / disc warnings. |
+| SysMessage_Show | 0x0010F8D0 | xtailor.c | SysMessage_Draw, and passes the bits to the movie player (Movie_SetSysMessage) while a movie runs. |
+| SysMessage_WaitWhileActive | 0x0010F918 | xtailor.c | Loops while one of the watched bits of D_002C1EB8 is set (comparing with the states saved before), showing the message, pausing sound and updating the pads; returns whether a message was shown (FM). |
+| AllSet_SetupTable | 0x0010FBE0 | xtailor.c | Fills the 17 pointer / size pairs D_002BBD48 / D_002BBD90 from the table of offsets at arg0 + 0x10. |
+| AllSet_Load | 0x0010FC38 | xtailor.c | Reads "allset.set" and sets up its table. |
+| AreaNames_Load | 0x0010FC98 | xtailor.c | Reads "allarea.nam" to D_004D0590. |
+| AreaNames_Get | 0x0010FCE8 | xtailor.c | Name data of room arg1 of world arg0 in allarea.nam. |
+| AreaNames_GetCurrent | 0x0010FD18 | xtailor.c | AreaNames_Get for the current world and room. |
+| PlayTime_SetLimit | 0x0010FEA0 | xtailor.c | Play time frame limit D_004D90F0: 0x14996C4 at 60 Hz (D_002BBDEC == 1.0), else 0x112A84E (both about 100 hours). |
+| Gs_SetDisplaySize | 0x0010FEE8 | xtailor.c | Sets the display environment D_004D2610 to w x h and puts it. |
+| Gs_GetDisplayOffset | 0x0010FFB8 | xtailor.c | Returns the display offset (DX, DY) of D_004D2610. |
+| Gs_ResetGraph | 0x0010FFE0 | xtailor.c | Resets the GS (sceGsResetGraph) and puts the display environment again. |
+| Gs_SetDisplayOffset | 0x00110020 | xtailor.c | Sets the display offset (DX, DY) of D_004D2610 and marks it changed (D_004D284C). |
+| Gs_SetDefaultDrawEnv | 0x001100A8 | xtailor.c | Builds and puts the default draw environment D_004D8EF0 from the register tables D_002BC750..D_002BC830 (FM). |
+| Gs_Reset | 0x001101E8 | xtailor.c | Resets the GS, installs the VSync callback and sets the default draw environment (FM only). |
+| VSync_Callback | 0x00110218 | xtailor.c | VSync handler: interlace field, frame counters, the play time counter D_002BBDF4 (held at the limit), vsync count D_004D90F4. |
+| Fade_ResetScreenColor | 0x00110360 | xtailor.c | fadeScreenColor = (128, 128, 128, 128). |
+| Fade_ClearScreenColor | 0x00110380 | xtailor.c | fadeScreenColor = (0, 0, 0, 0). |
+| PlayTime_SetFrames | 0x00110448 | xtailor.c | Sets the play time counter D_002BBDF4. |
+| Frame_ResetCounters | 0x00110458 | xtailor.c | Clears the frame counters and sets the time step D_002B8344 to the frame scale. |
+| VSync_InstallCallback | 0x001104C0 | xtailor.c | sceGsSyncVCallback(VSync_Callback). |
+| Frame_UpdateTimeStep | 0x001104E0 | xtailor.c | Waits for the next frame (func_0010C0E0) and sets the time step D_002B8344 from the vsyncs counted (capped at 5, scaled by D_002B8348) (FM). |
+| Movie_OnPlayerLoaded | 0x00110FC8 | xtailor.c | Load callback of dkmovie.x: marks the player loaded and starts it (func_F20000(0, movie)). |
+| Movie_ClearState | 0x00111000 | xtailor.c | Clears the movie flags (D_002A30D0, D_002B9030, D_002B9084). |
+| Movie_Load | 0x00111020 | xtailor.c | Loads the movie player overlay "dkmovie.x" to 0xF20000 for movie arg0. |
+| Movie_Start | 0x00111060 | xtailor.c | Pauses sound, func_001EEC00(0x7B), player command 1. |
+| Movie_IsRunning | 0x00111090 | xtailor.c | Player command 2 while the player is loaded, else 0. |
+| Movie_SetSysMessage | 0x00111170 | xtailor.c | Player command 6 with the system message bits. |
+| Movie_Finish | 0x001111B0 | xtailor.c | Ends the movie: command 4, clears the movie flags, resumes sound (FM). |

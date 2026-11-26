@@ -425,6 +425,40 @@ PauseScreen_AnimateColors            = 0x00113AF8; // type:func
 Sound_PauseNested                    = 0x00113E28; // type:func
 
 
+//=========================================================
+// xtailor.c
+//=========================================================
+SysMessage_Draw                      = 0x0010F658; // type:func
+SysMessage_Show                      = 0x0010F8D0; // type:func
+SysMessage_WaitWhileActive           = 0x0010F918; // type:func
+AllSet_SetupTable                    = 0x0010FBE0; // type:func
+AllSet_Load                          = 0x0010FC38; // type:func
+AreaNames_Load                       = 0x0010FC98; // type:func
+AreaNames_Get                        = 0x0010FCE8; // type:func
+AreaNames_GetCurrent                 = 0x0010FD18; // type:func
+PlayTime_SetLimit                    = 0x0010FEA0; // type:func
+Gs_SetDisplaySize                    = 0x0010FEE8; // type:func
+Gs_GetDisplayOffset                  = 0x0010FFB8; // type:func
+Gs_ResetGraph                        = 0x0010FFE0; // type:func
+Gs_SetDisplayOffset                  = 0x00110020; // type:func
+Gs_SetDefaultDrawEnv                 = 0x001100A8; // type:func
+Gs_Reset                             = 0x001101E8; // type:func
+VSync_Callback                       = 0x00110218; // type:func
+Fade_ResetScreenColor                = 0x00110360; // type:func
+Fade_ClearScreenColor                = 0x00110380; // type:func
+PlayTime_SetFrames                   = 0x00110448; // type:func
+Frame_ResetCounters                  = 0x00110458; // type:func
+VSync_InstallCallback                = 0x001104C0; // type:func
+Frame_UpdateTimeStep                 = 0x001104E0; // type:func
+Movie_OnPlayerLoaded                 = 0x00110FC8; // type:func
+Movie_ClearState                     = 0x00111000; // type:func
+Movie_Load                           = 0x00111020; // type:func
+Movie_Start                          = 0x00111060; // type:func
+Movie_IsRunning                      = 0x00111090; // type:func
+Movie_SetSysMessage                  = 0x00111170; // type:func
+Movie_Finish                         = 0x001111B0; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

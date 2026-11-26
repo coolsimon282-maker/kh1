@@ -48,7 +48,7 @@ sceCdlFILE* cdvd_GetFileDescriptor(void) {
 
 void func_0011FB78(void) {
     func_001224B8();
-    func_001102C0();
+    Frame_UpdateTimeStep();
 }
 
 void func_0011FB98(u32 lbn, u32 sectors, char* buf) {

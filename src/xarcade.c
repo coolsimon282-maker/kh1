@@ -78,7 +78,7 @@ void Graphics_Initialize(void) {
         D_0046A688.unk_18(0);
     }
     D_002B6478 = D_0046A688.unk_1C();
-    func_00110230(0);
+    PlayTime_SetFrames(0);
     D_002BC73C = 0;
     SoundRpc_Initialize(NULL);
     Pad_Reset();
@@ -87,8 +87,8 @@ void Graphics_Initialize(void) {
 void Graphics_Initialize(void) {
     KingdomFile* file;
 
-    func_0010FEC0();
-    func_001102A0();
+    Gs_SetDefaultDrawEnv();
+    VSync_InstallCallback();
     func_0010C010();
     GameData_BindBuffer();
     WorkBuffers_Clear(-1);
@@ -101,7 +101,7 @@ void Graphics_Initialize(void) {
         disk_Mgr.unk_18(0);
     }
     D_002B29C8 = disk_Mgr.unk_1C();
-    func_00110230(0);
+    PlayTime_SetFrames(0);
     D_002B8C8C = 0;
     SoundRpc_Initialize(NULL);
     Pad_Reset();
@@ -204,11 +204,11 @@ s32 func_00109468(void) {
             do {
                 func_001220D0();
                 func_00110FA8();
-                func_001102C0();
+                Frame_UpdateTimeStep();
             } while (func_00110F68_s() != 1);
-            func_00110FC8();
+            Movie_Finish();
         }
-        func_001102C0();
+        Frame_UpdateTimeStep();
         func_0010FDB8(0);
     }
     return *(volatile s32 *)&D_002BBE08;
@@ -321,7 +321,7 @@ extern f32 D_00495170;
 extern s32 D_00495174;
 extern f32 D_00495178;
 extern f32 D_002B8344;
-void func_00110170(void);
+void Fade_ClearScreenColor(void);
 
 s32 func_00109E30(void) {
     s32 c;
@@ -346,7 +346,7 @@ s32 func_00109E30(void) {
         return 0;
     }
     D_002B2CC4 = 0;
-    func_00110170();
+    Fade_ClearScreenColor();
     return 4;
 }
 #else
