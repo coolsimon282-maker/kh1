@@ -766,7 +766,42 @@ void func_0014AC00(u8* p, s32 b) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014AC50);
+f32 Angle_Wrap(f32);
+float sinf(float);
+float cosf(float);
+typedef struct { u64 pad:6; u32 b:1; } V14AC50a;
+typedef struct { u64 pad:10; u32 b:1; } V14AC50b;
+void func_0014AC50(u8* a, s32 bi, u8* vi) {
+    u8* b = (u8*)bi;
+    f32* v = (f32*)vi;
+    f32 t;
+
+    if (((V14AC50a*)a)->b) {
+        sceVu0SubVector(v, (f32*)(b + 0x10), (f32*)(a + 0x10));
+        v[1] = 0.0f;
+        func_001223B0(v, v);
+        if (v[3] == 0.0f) {
+            sceVu0SubVector(v, D_002C58A0, (f32*)(b + 0x30));
+        }
+    } else if (((V14AC50b*)(a + 0x30))->b || *(u8**)(a + 0x34) == 0) {
+        sceVu0SubVector(v, (f32*)(a + 0x10), (f32*)(a + 0x70));
+        v[1] = 0.0f;
+        sceVu0Normalize(v, v);
+    } else {
+        sceVu0SubVector(v, (f32*)(b + 0x10), (f32*)(*(u8**)(a + 0x34) + 0x10));
+        v[1] = 0.0f;
+        t = Angle_Wrap(atan2f(v[0], v[2]) - *(f32*)(*(u8**)(a + 0x34) + 0x3C));
+        if (t > 0.7853982f) {
+            t = 0.7853982f;
+        } else if (t < -0.7853982f) {
+            t = -0.7853982f;
+        }
+        t = Angle_Wrap(*(f32*)(*(u8**)(a + 0x34) + 0x3C) + t);
+        v[0] = sinf(t);
+        v[2] = cosf(t);
+    }
+    v[3] = 1.0f;
+}
 
 extern s32 D_14ADE0_pad1;
 void func_0014AC50(u8*, s32, u8*);
