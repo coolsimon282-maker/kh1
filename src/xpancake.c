@@ -177,6 +177,10 @@ void Fade_ResetIntensity(void) {
 }
 
 // Fade-in task: raises the screen colour towards 128; ends at the set time.
+#ifdef VERSION_EU
+s32 FadeTask_UpdateScreenIn(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", FadeTask_UpdateScreenIn);
+#else
 s32 FadeTask_UpdateScreenIn(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
@@ -186,8 +190,13 @@ s32 FadeTask_UpdateScreenIn(XFlapjack* arg0) {
     fadeScreenColor[0] = fadeScreenColor[1] = fadeScreenColor[2] = fadeScreenColor[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
 // Starts fading the screen in over arg0 frames.
+#ifdef VERSION_EU
+void Fade_StartScreenIn(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", Fade_StartScreenIn);
+#else
 void Fade_StartScreenIn(s32 arg0) {
     XFlapjack* p0;
     s32 val;
@@ -205,8 +214,13 @@ void Fade_StartScreenIn(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
+#endif
 
 // Fade-out task: lowers the screen colour towards 0.
+#ifdef VERSION_EU
+s32 FadeTask_UpdateScreenOut(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", FadeTask_UpdateScreenOut);
+#else
 s32 FadeTask_UpdateScreenOut(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0) {
@@ -216,8 +230,13 @@ s32 FadeTask_UpdateScreenOut(XFlapjack* arg0) {
     fadeScreenColor[0] = fadeScreenColor[1] = fadeScreenColor[2] = fadeScreenColor[3] = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
 // Starts fading the screen out over arg0 frames.
+#ifdef VERSION_EU
+void Fade_StartScreenOut(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", Fade_StartScreenOut);
+#else
 void Fade_StartScreenOut(s32 arg0) {
     XFlapjack* p0 = TaskList_Add(&fadeTaskList, 0, FadeTask_UpdateScreenOut);
     s32 val = arg0 << 1;
@@ -229,6 +248,7 @@ void Fade_StartScreenOut(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
+#endif
 
 // Clears the flag D_002B29CC (checked by Fade_StartOverlayOut).
 void func_00106718(void) {
@@ -241,6 +261,10 @@ void func_00106728(void) {
 }
 
 // Overlay fade-in task: raises the overlay alpha towards 128.
+#ifdef VERSION_EU
+s32 FadeTask_UpdateOverlayIn(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", FadeTask_UpdateOverlayIn);
+#else
 s32 FadeTask_UpdateOverlayIn(XFlapjack* arg0) {
     arg0->unk_10 += D_002B8340[1];
     if (arg0->unk_18 <= arg0->unk_10) {
@@ -250,8 +274,13 @@ s32 FadeTask_UpdateOverlayIn(XFlapjack* arg0) {
     fadeOverlayAlpha = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
 // Starts fading the overlay in over arg0 frames.
+#ifdef VERSION_EU
+void Fade_StartOverlayIn(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", Fade_StartOverlayIn);
+#else
 void Fade_StartOverlayIn(s32 arg0) {
     XFlapjack* p0;
     s32 val;
@@ -269,8 +298,13 @@ void Fade_StartOverlayIn(s32 arg0) {
         p0->unk_14 = 128.0f / (arg0 << 1);
     }
 }
+#endif
 
 // Overlay fade-out task: lowers the overlay alpha towards 0.
+#ifdef VERSION_EU
+s32 FadeTask_UpdateOverlayOut(XFlapjack* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", FadeTask_UpdateOverlayOut);
+#else
 s32 FadeTask_UpdateOverlayOut(XFlapjack* arg0) {
     arg0->unk_10 -= D_002B8340[1];
     if (arg0->unk_10 <= 0.0f) {
@@ -280,8 +314,13 @@ s32 FadeTask_UpdateOverlayOut(XFlapjack* arg0) {
     fadeOverlayAlpha = arg0->unk_14 * arg0->unk_10;
     return 0;
 }
+#endif
 
 // Starts fading the overlay out over arg0 frames (or fades the screen in instead if D_002B29CC/D_002B29D0 is 1).
+#ifdef VERSION_EU
+void Fade_StartOverlayOut(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpancake", Fade_StartOverlayOut);
+#else
 void Fade_StartOverlayOut(s32 arg0) {
     XFlapjack* p0;
     f32 f0;
@@ -305,3 +344,4 @@ void Fade_StartOverlayOut(s32 arg0) {
         p0->unk_14 = f0 / ((f32)(arg0 << 1));
     }
 }
+#endif

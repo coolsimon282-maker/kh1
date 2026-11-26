@@ -876,9 +876,14 @@ void MsgWin_InitChoice(s32 arg0, s32 arg1, s32 arg2) {
     *(s32*)(arg1 + 0xA8) = arg0;
 }
 #else
+#ifdef VERSION_EU
+void MsgWin_InitChoice(s32 arg0, s32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xsauce", MsgWin_InitChoice);
+#else
 void MsgWin_InitChoice(s32 arg0, s32 arg1) {
     *(s32*)(arg1 + 0xA8) = arg0; // todo: figure out what struct this is
     D_004CF574 = 0;
     D_004CF57C = 0;
 }
+#endif
 #endif

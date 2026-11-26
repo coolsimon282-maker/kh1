@@ -3833,3 +3833,19 @@ eu_D_0063CF50                    = 0x0063CF50;
 eu_D_0063CF88                    = 0x0063CF88;
 eu_D_0063CFA0                    = 0x0063CFA0;
 eu_D_0063D050                    = 0x0063D050;
+// FM-address names that shared C (matched against FM) uses for other EU addresses; the EU function or label that has
+// the FM address as its own address keeps it with eu_ in front (found by work/names-tools/eumap.py ALL, a5 26 Nov)
+func_001389C0                    = 0x00137F78; // type:func
+eu_func_001389C0                 = 0x001389C0; // type:func
+func_00147338                    = 0x00146868; // type:func
+eu_func_00147338                 = 0x00147338; // type:func
+func_0014A398                    = 0x001497E8; // type:func
+eu_func_0014A398                 = 0x0014A398; // type:func
+func_0014EAB0                    = 0x0014DDE8; // type:func
+eu_func_0014EAB0                 = 0x0014EAB0; // type:func
+func_0014F600                    = 0x0014E918; // type:func
+eu_func_0014F600                 = 0x0014F600; // type:func
+func_0015BD78                    = 0x0015B080; // type:func
+eu_func_0015BD78                 = 0x0015BD78; // type:func
+D_0048C630                       = 0x004861F0;
+eu_D_0048C630                    = 0x0048C630;

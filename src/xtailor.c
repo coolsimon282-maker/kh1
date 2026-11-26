@@ -275,12 +275,17 @@ void func_0010F420(void) {
 #define DISPWIDTH 640
 
 // Sets the display registers for the system message screen (PMODE, DISPFB1 at 0xD8000, DISPLAY1 640 x 128).
+#ifdef VERSION_EU
+void func_0010F448(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F448);
+#else
 void func_0010F448(void) {
     sceGsSyncPath(0, 0);
     DPUT_GS_PMODE(SCE_GS_SET_PMODE(1, 1, 0, 0, 0, 0, 0xFF));
     DPUT_GS_DISPFB1(SCE_GS_SET_DISPFB1(0xD8000 / 2048, 512 / 64, SCE_GS_PSMCT32, 0, 0));
     DPUT_GS_DISPLAY1(SCE_GS_SET_DISPLAY1(0, 160, 4, 0, (DISPWIDTH * 4) - 1, 128 - 1));
 }
+#endif
 
 #ifdef VERSION_FM
 extern s32 D_004D5B0C;
@@ -341,6 +346,10 @@ void SysMessage_Draw(u32 arg0) {
     }
 }
 #else
+#ifdef VERSION_EU
+void SysMessage_Draw(u32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtailor", SysMessage_Draw);
+#else
 void SysMessage_Draw(u32 arg0) {
     if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
         if (arg0 == 0) {
@@ -393,6 +402,7 @@ void SysMessage_Draw(u32 arg0) {
         }
     }
 }
+#endif
 #endif
 
 // Saves D_002C1EB8 in D_004CF580 (state for the first two message bits).
@@ -622,6 +632,10 @@ void PlayTime_SetLimit(void) {
 }
 
 // Sets the display environment D_004D2610 to w x h and puts it.
+#ifdef VERSION_EU
+void Gs_SetDisplaySize(s16 w, s16 h);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Gs_SetDisplaySize);
+#else
 void Gs_SetDisplaySize(s16 w, s16 h) {
     D_004D284C = 0;
     sceGsSetDefDispEnv(&D_004D2610, 1, w, h, 0, 0);
@@ -630,6 +644,7 @@ void Gs_SetDisplaySize(s16 w, s16 h) {
     sceGsSyncPath(0, 0);
     sceGsPutDispEnv(&D_004D2610);
 }
+#endif
 
 // Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display.
 void func_0010FDB8(s32 arg0) {
@@ -645,11 +660,16 @@ void Gs_GetDisplayOffset(u32* x, u32* y) {
 }
 
 // Resets the GS (sceGsResetGraph) and puts the display environment again.
+#ifdef VERSION_EU
+void Gs_ResetGraph(void);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Gs_ResetGraph);
+#else
 void Gs_ResetGraph(void) {
     sceGsResetGraph(1, 1, 2, 0);
     DPUT_GS_EXTWRITE(0);
     sceGsPutDispEnv(&D_004D2610);
 }
+#endif
 
 // Sets the display offset (DX, DY) of D_004D2610 and marks it changed (D_004D284C).
 void Gs_SetDisplayOffset(s32 x, s32 y) {
@@ -1030,7 +1050,9 @@ s32 Movie_IsRunning(void) {
 }
 
 #ifndef VERSION_FM
+#ifndef VERSION_EU
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);
+#endif
 #endif
 
 // Movie player command 3.

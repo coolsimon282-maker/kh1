@@ -387,6 +387,18 @@ void GameState_ApplyAvailableSelection(void) {
   }
 }
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", eu_func_00111AA8);
+#endif
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", eu_func_00111AC8);
+#endif
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", eu_func_00111B00);
+#endif
+
 #ifdef VERSION_FM
 u32 fm_func_00111B08(arg0)
 u32 arg0;
@@ -441,9 +453,14 @@ u32 fm_func_00111BE8(void) {
 }
 #endif
 
+#ifdef VERSION_EU
+void func_00111910(void);
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111910);
+#else
 void func_00111910(void) {
     D_002B9174 = 0;
 }
+#endif
 
 extern volatile s32 D_002BBDF0;
 extern s32 D_004D9250;
@@ -451,6 +468,18 @@ extern s32 D_004D9254;
 extern f32 D_002BBDEC;
 
 // timer task: counts D_002B916C up to D_004D9254 from the elapsed time (D_002BBDEC per tick)
+#ifdef VERSION_EU
+s32 func_00111920(void);
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111920);
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", eu_func_00111C60);
+#endif
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", eu_func_00111C70);
+#endif
+#else
 s32 func_00111920(void) {
     switch (D_004D29AC) {
     case 1:
@@ -467,11 +496,16 @@ s32 func_00111920(void) {
     }
     return 0;
 }
+#endif
 
 extern volatile s32 D_002BBDF0;
 extern s32 D_004D9250;
 extern s32 D_004D9254;
 
+#ifdef VERSION_EU
+void func_00111A00(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111A00);
+#else
 void func_00111A00(s32 arg0) {
     D_004D29AC = 0;
     D_004D9250 = D_002BBDF0;
@@ -483,10 +517,15 @@ void func_00111A00(s32 arg0) {
     }
     TaskSystem_AddTask(0x2C04C, func_00111920);
 }
+#endif
 
 extern void (*D_004D9258)(void);
 
 // timer task: counts D_002B916C down from D_004D9254; at zero it calls D_004D9258
+#ifdef VERSION_EU
+s32 func_00111A70(void);
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111A70);
+#else
 s32 func_00111A70(void) {
     switch (D_004D29AC) {
     case 1:
@@ -504,8 +543,13 @@ s32 func_00111A70(void) {
     }
     return 0;
 }
+#endif
 
 // starts the countdown timer task (func_00111A70): sec seconds, then cb
+#ifdef VERSION_EU
+void func_00111B70(s32 sec, void (*cb)(void));
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111B70);
+#else
 void func_00111B70(s32 sec, void (*cb)(void)) {
     D_004D9258 = cb;
     D_004D29AC = 0;
@@ -513,6 +557,7 @@ void func_00111B70(s32 sec, void (*cb)(void)) {
     D_002B916C = D_004D9254 = sec * 60;
     TaskSystem_AddTask(0x2C04C, func_00111A70);
 }
+#endif
 
 void func_00111BD8(void) {
     D_004D29AC = 1;
@@ -529,9 +574,14 @@ s32 func_00111C08(void) {
     return D_002B916C;
 }
 
+#ifdef VERSION_EU
+void func_00111C20(s32 param1);
+INCLUDE_ASM("asm/nonmatchings/xtrumpet", func_00111C20);
+#else
 void func_00111C20(s32 param1) {
     D_002B916C = param1 * 60;
 }
+#endif
 
 void func_00111C38(s32 param1) {
     D_004D29C4 = param1;

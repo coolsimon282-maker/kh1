@@ -1267,7 +1267,11 @@ s32 func_00113CB8_s32(void) {
             D_002B9668 = 5;
         }
         if (D_002BBDE0 == 5) {
+#ifdef VERSION_FM
             D_002B9668 = 7;
+#else
+            D_002B9668 = 2;
+#endif
         }
         if (func_001336A0() != 0) {
             D_002B9668 = 2;

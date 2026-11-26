@@ -209,6 +209,10 @@ void func_00100168(void) {
 }
 
 #else
+#ifdef VERSION_EU
+void func_00100168(void);
+INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100168);
+#else
 void func_00100168(void) {
     s32 new_var;
 
@@ -238,6 +242,7 @@ void func_00100168(void) {
     D_002B8690 = &D_002B9040;
     D_002B8694 = &D_002B9040;
 }
+#endif
 #endif
 
 #ifdef NON_MATCHING

@@ -38,7 +38,7 @@ GAME_GCC_CMD = f"{GAME_CC_DIR}/bin/ee-gcc -c -B {GAME_CC_DIR}/bin/ee- {COMMON_IN
 
 GAME_AS_CMD = f"{GAME_CC_DIR}/ee/bin/as {COMMON_COMPILE_FLAGS} -EL -mabi=eabi"
 # pipefail: without it a C compile error is hidden by the pipe and a half-written .s gets assembled
-# $maspsenv: MASPS2_NO_NOPS=1 for Final Mix, which was assembled without masps2's hazard nops
+# $maspsenv: MASPS2_NO_NOPS=1 for Final Mix and EU, which were assembled without masps2's hazard nops
 GAME_COMPILE_CMD = f"set -o pipefail && {GAME_GCC_CMD} -S -o - | $maspsenv {TOOLS_DIR}/masps2.py > $out.s && {GAME_AS_CMD} $out.s"
 
 PERMUTER_COMPILE_CMD = f"{GAME_GCC_CMD} -S -o - | {TOOLS_DIR}/masps2.py | {GAME_AS_CMD}"
@@ -88,6 +88,15 @@ NO_G_FILES = [
     "pppKeBornRnd5.c",  # a3: func_0018F780 (third atan2 twin; soft-double calls)
     "xtrumpet.c",      # a2: fm_func_00111BE8 (gas fills the b slot with cvt.s.w only without -g; rest of the file identical)
     "xarcade.c",       # a1: func_00109468 (volatile store in the jal slot: gas fills it only without -g)
+]
+
+# EU (SCES_509.67) is built without -g (and, like FM, without masps2's nops) apart from these files: with that, every
+# EU C piece has its EU size and the code matches EU's apart from the functions wrapped for EU (a5, 26 Nov).
+EU_G_FILES = [
+    "xgoblin.c",
+    "xhumungus.c",
+    "pppRyjMatrixNoRot.c",
+    "pppRyjDrawShipoly.c",
 ]
 
 
@@ -212,7 +221,7 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
     ninja.variable("verdef", f"-DVERSION_{paths.version.upper()}")
-    ninja.variable("maspsenv", "MASPS2_NO_NOPS=1" if paths.version == "fm" else "")
+    ninja.variable("maspsenv", "MASPS2_NO_NOPS=1" if paths.version in ("fm", "eu") else "")
 
     # Rules
     ld_args = " ".join(
@@ -318,7 +327,10 @@ def build_stuff(paths: Paths, linker_entries: List[LinkerEntry]):
             ):
                 build(entry.object_path, entry.src_paths, "libcc", implicit=implicit)
             else:
-                g = "" if entry.src_paths[0].name in NO_G_FILES else "-g"
+                if paths.version == "eu":
+                    g = "-g" if entry.src_paths[0].name in EU_G_FILES else ""
+                else:
+                    g = "" if entry.src_paths[0].name in NO_G_FILES else "-g"
                 # Most of the game was built without strict aliasing (values are reloaded after stores of other
                 # types); these files were built with it (matched code changes if the flag is added).
                 cflags = "" if entry.src_paths[0].name in STRICT_ALIASING_FILES else "-fno-strict-aliasing"

@@ -17,9 +17,14 @@ f32 Vec_Length(sceVu0FVECTOR arg0) {
 }
 
 // Length of the vector in the XZ plane.
+#ifdef VERSION_EU
+f32 Vec_LengthXZ(sceVu0FVECTOR arg0);
+INCLUDE_ASM("asm/nonmatchings/xball", Vec_LengthXZ);
+#else
 f32 Vec_LengthXZ(sceVu0FVECTOR arg0) {
     return _sqrtf(arg0[0] * arg0[0] + arg0[2] * arg0[2]);
 }
+#endif
 
 // arg0 = arg1 rotated about Z, X, then Y by the angles in arg2.
 s32 Mat_RotateZXY(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
@@ -146,9 +151,14 @@ void Vec_ScaleXZ(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
 }
 
 // True when arg0[0][2] < 0 or sceVu0ClipScreen rejects it.
+#ifdef VERSION_EU
+s32 Mat_IsClipped(sceVu0FMATRIX arg0);
+INCLUDE_ASM("asm/nonmatchings/xball", Mat_IsClipped);
+#else
 s32 Mat_IsClipped(sceVu0FMATRIX arg0) {
     return (arg0[0][2] < 0.0f || sceVu0ClipScreen(*arg0) != 0) ? TRUE : FALSE;
 }
+#endif
 
 // Interpolates between two lines arg2 and arg3 (around their crossing point) by arg0 into arg1; returns 1.
 s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRIX arg3) {
@@ -229,6 +239,10 @@ f32 Spline_Evaluate(f32 t, f32* a, f32* b) {
 }
 
 // Point where line p + t d meets the line through q along n in the XZ plane; returns t (NaN when parallel).
+#ifdef VERSION_EU
+f32 Line_IntersectXZ(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVECTOR q, sceVu0FVECTOR n);
+INCLUDE_ASM("asm/nonmatchings/xball", Line_IntersectXZ);
+#else
 f32 Line_IntersectXZ(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVECTOR q, sceVu0FVECTOR n) {
     f32 den = d[2] * n[0] - n[2] * d[0];
     f32 t;
@@ -241,6 +255,7 @@ f32 Line_IntersectXZ(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0
     sceVu0AddVector(out, out, p);
     return t;
 }
+#endif
 
 
 // Drop shadow matrix (sceVu0DropShadowMatrix) with its translation scaled by arg3.
@@ -345,12 +360,17 @@ void Vec_Div3(f32* arg0, f32* arg1, f32* arg2) {
 }
 
 // Pitch and yaw of direction arg0 into arg1 (roll 0).
+#ifdef VERSION_EU
+void Vec_ToAngles(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2);
+INCLUDE_ASM("asm/nonmatchings/xball", Vec_ToAngles);
+#else
 void Vec_ToAngles(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = atan2f(-arg0[1], Vec_LengthXZ(arg0));
     arg1[1] = atan2f(arg0[0], arg0[2]);
     arg1[2] = 0.0f;
     arg1[3] = 1.0f;
 }
+#endif
 
 // Euler angles of the normalised rotation matrix arg0 into arg1.
 void Mat_ToEuler(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
@@ -367,6 +387,10 @@ void Mat_ToEuler(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
 
 
 // A positive timer minus D_002B8340[1], not below 0.
+#ifdef VERSION_EU
+f32 Timer_CountDown(f32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xball", Timer_CountDown);
+#else
 f32 Timer_CountDown(f32 arg0) {
     if (arg0 > 0.0f) {
         arg0 -= D_002B8340[1];
@@ -376,6 +400,7 @@ f32 Timer_CountDown(f32 arg0) {
     }
     return arg0;
 }
+#endif
 
 // Vec_CosAngle of the two vectors flattened to Y = 0 (the result is not returned).
 void Vec_CosAngleXZ(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {

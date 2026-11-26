@@ -175,6 +175,10 @@ u32 PlayTime_GetHundredthsPart(void) {
     return (f32)(PlayTime_GetFrames() % 60) * (100.0f / 60.0f);
 }
 
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtango", eu_func_001EC508);
+#endif
+
 #ifdef VERSION_FM
 // Calls fm_func_00111B10 (FM only).
 void fm_func_001EE428(void) {
@@ -339,6 +343,10 @@ u32 Item_GetName(s32 arg0) {
     return func_001F0EF0(151);
 }
 #else
+#ifdef VERSION_EU
+u32 Item_GetName(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Item_GetName);
+#else
 u32 Item_GetName(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
@@ -346,6 +354,7 @@ u32 Item_GetName(s32 arg0) {
     }
     return func_001F0EF0(160);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -358,6 +367,10 @@ u32 Item_GetDescription(s32 arg0) {
     return 0;
 }
 #else
+#ifdef VERSION_EU
+u32 Item_GetDescription(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Item_GetDescription);
+#else
 u32 Item_GetDescription(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
@@ -365,6 +378,7 @@ u32 Item_GetDescription(s32 arg0) {
     }
     return 0;
 }
+#endif
 #endif
 
 // Entry unk_08 of item arg0.
@@ -444,6 +458,10 @@ s8 func_001EFBB0(s32 arg0, s32 arg1) {
     } while (iVar3 != 0);
     return 0;
 }
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtango", eu_func_001EC9D0);
+#endif
 
 #ifdef VERSION_FM
 // Index 1..6 of the lowest set bit 1..6 of func_001495C8(arg0, 0), else -1 (FM only).
@@ -569,12 +587,17 @@ s32 Item_GetNameOrNone(s32 arg0) {
     return func_001F0EF0(167);
 }
 #else
+#ifdef VERSION_EU
+s32 Item_GetNameOrNone(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Item_GetNameOrNone);
+#else
 s32 Item_GetNameOrNone(s32 arg0) {
     if (arg0 != 0) {
         return Item_GetName(arg0);
     }
     return func_001F0EF0(176);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -587,12 +610,17 @@ s32 Item_GetNameOrNone2(s32 arg0) {
     return func_001F0EF0(167);
 }
 #else
+#ifdef VERSION_EU
+s32 Item_GetNameOrNone2(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Item_GetNameOrNone2);
+#else
 s32 Item_GetNameOrNone2(s32 arg0) {
     if (arg0 != 0) {
         return Item_GetName(arg0);
     }
     return func_001F0EF0(176);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -605,12 +633,17 @@ s32 Item_GetDescriptionOrNone(s32 arg0) {
     return func_001F0EF0(168);
 }
 #else
+#ifdef VERSION_EU
+s32 Item_GetDescriptionOrNone(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Item_GetDescriptionOrNone);
+#else
 s32 Item_GetDescriptionOrNone(s32 arg0) {
     if (arg0 != 0) {
         return Item_GetDescription(arg0);
     }
     return func_001F0EF0(177);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -623,12 +656,17 @@ s32 Item_GetDescriptionOrNone2(s32 arg0) {
     return func_001F0EF0(168);
 }
 #else
+#ifdef VERSION_EU
+s32 Item_GetDescriptionOrNone2(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Item_GetDescriptionOrNone2);
+#else
 s32 Item_GetDescriptionOrNone2(s32 arg0) {
     if (arg0 != 0) {
         return Item_GetDescription(arg0);
     }
     return func_001F0EF0(177);
 }
+#endif
 #endif
 
 // Field unk_30 of func_001496C8()s result.
@@ -971,12 +1009,17 @@ u32 Ability_GetName(s32 arg0) {
     return func_001F0EF0(180);
 }
 #else
+#ifdef VERSION_EU
+u32 Ability_GetName(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Ability_GetName);
+#else
 u32 Ability_GetName(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_04;
     }
     return func_001F0EF0(189);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -988,12 +1031,17 @@ u32 Ability_GetDescription(s32 arg0) {
     return func_001F0EF0(180);
 }
 #else
+#ifdef VERSION_EU
+u32 Ability_GetDescription(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xtango", Ability_GetDescription);
+#else
 u32 Ability_GetDescription(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_08;
     }
     return func_001F0EF0(189);
 }
+#endif
 #endif
 
 // Entry unk_00 of ability arg0; summed by Char_GetUsedAP, so the AP cost.

@@ -354,7 +354,7 @@ segments:
 
   ## .rodata section ##
   # Starts like JP's: xbeginning's jump table (0x20), then xporcupine's ".img"/".bin" (0x10). JP: 0x386950.
-  - [ 0x3867d0, rodata ]
+  - [ 0x3867d0, .rodata, xbeginning ]
   - [ 0x3867f0, .rodata, xporcupine ]
   - [ 0x386800, rodata ]
   - [ 0x386860, .rodata, xarcade ]
@@ -367,6 +367,8 @@ segments:
   - [ 0x386c40, rodata ]
   - [ 0x386cc0, .rodata, xturtle ]
   - [ 0x386d70, rodata ]
+  - [ 0x386e50, .rodata, xowl ]
+  - [ 0x386e68, rodata ]
   - [ 0x386ec0, .rodata, xtoaster ]
   - [ 0x386f28, rodata ]
   - [ 0x3877c8, .rodata, xapple ]
@@ -376,6 +378,10 @@ segments:
   - [ 0x389698, .rodata, ppp/keProg/pppKeBornRnd5 ]
   - [ 0x3896a8, .rodata, ppp/keProg/pppKeMvYpEff ]
   - [ 0x3896b8, rodata ]
+  - [ 0x3897d0, .rodata, ppp/ryjProg/pppRyjMegaBirth ]
+  - [ 0x3897f8, rodata ]
+  - [ 0x389890, .rodata, ppp/ryjProg/pppRyjMegaBirthModel ]
+  - [ 0x3898e8, rodata ]
   - [ 0x3898f0, .rodata, ppp/draw/draw ]
   - [ 0x389968, .rodata, ppp/draw/global ]
   - [ 0x3899d0, rodata ]

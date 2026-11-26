@@ -739,6 +739,10 @@ extern s32 curRoomNo;
 extern s32 D_002B8684;
 
 // When the actor is a party member (Party_FindCharacterSlot < 3, kind 3), puts it in party slot D_002E26A0[k] and sets up its party data.
+#ifdef VERSION_EU
+void Actor_SetupPartyMember(XToaster* p);
+INCLUDE_ASM("asm/nonmatchings/xtoaster", Actor_SetupPartyMember);
+#else
 void Actor_SetupPartyMember(XToaster* p) {
     s32 n;
     s32 k;
@@ -771,6 +775,7 @@ void Actor_SetupPartyMember(XToaster* p) {
         }
     }
 }
+#endif
 
 s32 func_0012B888(s32);
 void func_0012BA30(s32, void*, s32);
@@ -938,6 +943,10 @@ void func_00124CD8(void) {
         }
     }
 }
+
+#ifdef VERSION_EU
+INCLUDE_ASM("asm/nonmatchings/xtoaster", eu_func_00124678);
+#endif
 
 #ifdef VERSION_FM
 // Updates the party flags, then removes every active actor (FM only).

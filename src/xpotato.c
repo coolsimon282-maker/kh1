@@ -121,6 +121,10 @@ s32 func_00215C48(s32 arg0) {
     return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00215C48(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215C48);
+#else
 s32 func_00215C48(s32 arg0) {
     s32 val;
 
@@ -133,14 +137,20 @@ s32 func_00215C48(s32 arg0) {
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
 #endif
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215CE8);
 
 // Draws help text D_003F4488[D_0063CF40] at (174, 12).
+#ifdef VERSION_EU
+s32 func_00215EE8(void* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215EE8);
+#else
 s32 func_00215EE8(void* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F4488[D_0063CF40], 17, 0x80C87850);
 }
+#endif
 
 struct XPotMenu;
 s32 func_001F42B8(struct XPotMenu*);
@@ -168,6 +178,10 @@ extern s32 D_003F2C40[][5];
 extern s32 D_003F44C8[];
 
 // Menu page with three rows (func_0013C288 / func_00132F88 names, message 0xD4 when empty); confirming opens two child pages.
+#ifdef VERSION_EU
+void func_00215F48(struct XPotMenu* m);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215F48);
+#else
 void func_00215F48(struct XPotMenu* m) {
     u8* p[2];
     void* t;
@@ -225,6 +239,7 @@ void func_00215F48(struct XPotMenu* m) {
         func_001F94F0(m, 0, 0x60, yy, r, 0xF, D_003F2C40[c][4]);
     }
 }
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
@@ -236,10 +251,15 @@ s32 func_00216758(XWhiskey* arg0) {
     return func_001F9438(arg0, 0, 174, 12, *(s32*)((u8*)arg0 + 0x24), 17, 0x80C87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00216758(XWhiskey* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216758);
+#else
 s32 func_00216758(XWhiskey* arg0) {
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, arg0->munny, 17, 0x80c87850);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -298,6 +318,10 @@ s32 func_00217038(s32 arg0) {
     return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00217038(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217038);
+#else
 s32 func_00217038(s32 arg0) {
     s32 val = 213;
     if (D_0063CF3C != 0) {
@@ -307,6 +331,7 @@ s32 func_00217038(s32 arg0) {
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_002170B0);
@@ -320,9 +345,14 @@ s32 func_00217810(s32 arg0) {
     return func_00207830(arg0, 4, 2, 0, 0, 122, 108);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00217810(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217810);
+#else
 s32 func_00217810(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 117);
 }
+#endif
 #endif
 
 // Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0.
@@ -428,6 +458,10 @@ s32 func_00218648(s32 arg0) {
     return func_001F9438((void*)arg0, 0, 174, 12, v, 17, 0x80C87850);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00218648(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218648);
+#else
 s32 func_00218648(s32 arg0) {
     s32 val = 277;
 
@@ -438,6 +472,7 @@ s32 func_00218648(s32 arg0) {
     }
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -520,9 +555,14 @@ s32 func_00218840(s32 arg0) {
     return func_00207830(arg0, 4, 2, 0, 0, 122, 109);
 }
 #else
+#ifdef VERSION_EU
+s32 func_00218840(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218840);
+#else
 s32 func_00218840(s32 arg0) {
     return func_00207728(arg0, 4, 2, 0, 0, 122, 118);
 }
+#endif
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218870);
@@ -567,6 +607,10 @@ void Config_Reset(void) {
 #endif
 
 // Returns config option arg0 (0..6: GameData +0x00, 0x04, 0x08, 0x10, 0x14, 0x18, 0x2C).
+#ifdef VERSION_EU
+u32 Config_Get(s32 arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", Config_Get);
+#else
 u32 Config_Get(s32 arg0) {
     switch (arg0) {
         case 0:
@@ -586,8 +630,13 @@ u32 Config_Get(s32 arg0) {
             return *(u32*)((u8*)D_003ED718 + 0x2C);
     }
 }
+#endif
 
 // Sets config option arg0 (same order as Config_Get).
+#ifdef VERSION_EU
+void Config_Set(s32 arg0, u32 arg1);
+INCLUDE_ASM("asm/nonmatchings/xpotato", Config_Set);
+#else
 void Config_Set(s32 arg0, u32 arg1) {
     switch (arg0) {
         case 0:
@@ -614,6 +663,7 @@ void Config_Set(s32 arg0, u32 arg1) {
             break;
     }
 }
+#endif
 
 // Config option 0 (GameData +0x00).
 u32 Config_GetOption0(void) {
@@ -762,10 +812,15 @@ void fm_func_00219458(s32 arg0) {
 #endif
 
 // Draws help text D_003F47B8[menu word +0x24] at (174, 12).
+#ifdef VERSION_EU
+s32 func_00218CB0(XWhiskey* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218CB0);
+#else
 s32 func_00218CB0(XWhiskey* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F47B8[*(s32*)((u8*)arg0 + 0x24)], 17, 0x80C87850);
 }
+#endif
 
 // D_003ED72C++, D_003ED728--.
 void func_00218D08(void) {
@@ -820,6 +875,10 @@ void func_00206130(void*, s32, s32, s32, s32, u32);
 void func_001FC308(void*, s32, s32, s32, s32, s32, s32, u32, u32);
 
 // Draws twelve labels (D_003F4878..D_003F48A8) and their line sets, highlighting entry D_00642D28.
+#ifdef VERSION_EU
+void func_002190C0(void* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_002190C0);
+#else
 void func_002190C0(void* arg0) {
     s32 i;
     s32 n;
@@ -849,6 +908,7 @@ void func_002190C0(void* arg0) {
     func_001FC308(arg0, q[0], q[1], 0, 0, 0xA, 0, 0x33F35054, 0x33F35054);
     func_001FC308(arg0, q[0], q[1] + 0xF, 0, 0, 0xB, 0, 0x33F35054, 0x33F35054);
 }
+#endif
 
 #ifdef VERSION_FM
 extern s32* D_00425BC8;
@@ -951,6 +1011,10 @@ void ConfigMenu_UpdateOption1(XPotMenu* m) {
 }
 
 #else
+#ifdef VERSION_EU
+void ConfigMenu_UpdateOption1(XPotMenu* m);
+INCLUDE_ASM("asm/nonmatchings/xpotato", ConfigMenu_UpdateOption1);
+#else
 void ConfigMenu_UpdateOption1(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
@@ -988,6 +1052,7 @@ void ConfigMenu_UpdateOption1(XPotMenu* m) {
         func_002078F0(m, i == sel, 2, 2, y, 0, 106, y + 53, D_003F4798[i]);
     }
 }
+#endif
 #endif
 
 #ifdef VERSION_FM
@@ -1033,6 +1098,10 @@ void ConfigMenu_UpdateOption2(XPotMenu* m) {
 }
 
 #else
+#ifdef VERSION_EU
+void ConfigMenu_UpdateOption2(XPotMenu* m);
+INCLUDE_ASM("asm/nonmatchings/xpotato", ConfigMenu_UpdateOption2);
+#else
 void ConfigMenu_UpdateOption2(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
@@ -1075,9 +1144,15 @@ void ConfigMenu_UpdateOption2(XPotMenu* m) {
     } while (i < 2);
 }
 #endif
+#endif
 
 // Draws help text D_003F4BD0[D_00642D24] at (174, 12).
+#ifdef VERSION_EU
+s32 func_00219788(void* arg0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", func_00219788);
+#else
 s32 func_00219788(void* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F4BD0[D_00642D24], 17, 0x80C87850);
 }
+#endif

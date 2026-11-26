@@ -23,6 +23,28 @@ In the C files:
 * `#ifdef VERSION_EU` / `INCLUDE_ASM(..., eu_func_XXXXXXXX)` / `#endif`: 28 functions only EU has.
 * `#ifndef VERSION_EU` ... `#endif`: 2 functions EU doesn't have.
 
+## EU on the fm branch (26 Nov, a5)
+
+The fm branch had left the EU markers out (5000bb58); after the FM matching and cleanup runs EU builds byte for
+byte again from the same source (`build/eu/SCES_509.67.rom: OK`). What it took:
+
+* **Compiler settings** (configure.py): EU is built without `-g` (call delay slots filled) and, like FM, without
+  masps2's hazard nops; only `EU_G_FILES` (xgoblin, xhumungus, pppRyjMatrixNoRot, pppRyjDrawShipoly) keep `-g`.
+  With that every EU C piece has its EU size.
+* **Markers**: `apply_eu_wrap_fm.py` applies eu_wrap / jp_only / eu_only like apply_eu_wrap.py but only looks at
+  text the EU build compiles (outside `#ifdef VERSION_FM`), with the tsv names mapped to the cleanup names.
+  eu_wrap.tsv grew by 40 functions: FM-matched shared C that differs in EU (50 Hz time constants, FM's extra config
+  option, xbuffalo's 0x20-byte thread slots instead of 0x30, call targets that are FM-only names).
+* **Names**: the names shared C uses that config/eu lacks (FM-address names, library names, JP names added after
+  jp_names.txt was made, 537) are at the end of config/eu/undefined_syms.txt, each read from the EU program at every
+  relocation against it (`eu_symaddrs.py`, with an EU link made with `--unresolved-symbols=ignore-all`; all
+  references agreed). Seven FM-address names that are also EU's own address names are at the end of jp_names.txt
+  (EU's own symbol gets `eu_` in front). `eu_symaddrs.py ALL` on a real link lists symbols whose value disagrees
+  with the EU code.
+* **Read-only data**: the jump tables of four newly matched C functions (xbeginning, xowl, pppRyjMegaBirth,
+  pppRyjMegaBirthModel) are their files' `.rodata` pieces in config/kh.eu.yaml.
+* xpackage's table is read at EU's 0x661FD8 (the EU layout does not place C .bss).
+
 ## Not in the EU build yet
 
 | file | why |

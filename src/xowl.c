@@ -34,6 +34,10 @@ s32 interpTaskList;
 s32 D_004FA680;
 
 // Interpolation task: moves the vector towards the target; at the end calls the callback and returns 4 (remove).
+#ifdef VERSION_EU
+s32 VectorInterpolationTask_Update(XHoot* arg0);
+INCLUDE_ASM("asm/nonmatchings/xowl", VectorInterpolationTask_Update);
+#else
 s32 VectorInterpolationTask_Update(XHoot* arg0) {
     s32 uVar1;
     f32 fVar2;
@@ -54,6 +58,7 @@ s32 VectorInterpolationTask_Update(XHoot* arg0) {
     sceVu0InterVector(arg0->unk_10[3], &arg0->unk_20, &arg0->unk_30, r);
     return uVar1;
 }
+#endif
 
 // Moves vec[3] to target over time (at once if time <= 0), calling done when it gets there.
 void Interpolation_StartVector(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
