@@ -3459,9 +3459,92 @@ s32 func_0020CA30(s32 a0, s32 a1, s32 a2, s32 a3) {
     return func_001FC308(a0, 0xC, 0xB, 0, 0, 3, a1, a2, a3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020CA68);
+void func_0020CA68(s32 a0) {
+    extern u8 D_003F3358[];
+    extern u8 D_003F3330[];
+    extern u8 D_003F3280[];
+    extern u8 D_003F3230[];
+    extern u8 D_003F3200[];
+    extern s32 AreaNames_GetCurrent(void);
+    extern void func_0020B3D8(s32, s32, s32);
+    extern void func_0020CA30_v(s32, s32, s32, s32) __asm__("func_0020CA30");
+    s32 e[4];
+    s32 d;
+    u8 *p;
+    u8 *q;
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020CCB0);
+    if (func_001F4390(a0) && *(s32 *)(a0 + 0x10) == 0) {
+        e[0] = func_001F3A20((s32)D_003F3330, 1);
+        if (e[0] == 0) {
+            goto end;
+        }
+        func_001F3E90((u8 *)a0, e[0]);
+        func_001F3E20((u8 *)e[0], a0);
+        *(u16 *)(e[0] + 0xCC) = *(u16 *)(e[0] + 0xCE) = D_00640E20;
+        func_00207598();
+        *(u16 *)(e[0] + 0xD2) = D_00640E24 << 4;
+        e[1] = func_001F3A20((s32)D_003F3280, 6);
+        if (e[1] == 0) {
+            goto end;
+        }
+        func_001F3E90((u8 *)e[0], e[1]);
+        func_001F3E20((u8 *)e[1], e[0]);
+        func_001F3D58((u8 *)e[1], 4);
+        e[2] = func_001F3A20((s32)D_003F3230, 1);
+        if (e[2] == 0) {
+            goto end;
+        }
+        func_001F3E90((u8 *)e[1], e[2]);
+        func_001F3E20((u8 *)e[2], e[1]);
+        e[3] = func_001F3A20((s32)D_003F3200, 0x36);
+        if (e[3] == 0) {
+            goto end;
+        }
+        func_001F3E90((u8 *)e[2], e[3]);
+        func_001F3E20((u8 *)e[3], e[2]);
+        func_001F3D58((u8 *)e[3], 6);
+        q = (u8 *)e[3];
+        p = (u8 *)e[0];
+        d = (4 - D_003DE6A0) * 0x4F0;
+        *(s32 *)(q + 0xB0) += d;
+        *(u16 *)(q + 0xB8) -= d;
+        *(s32 *)(q + 0x84) = 6;
+        func_001F3DC0(p);
+    }
+end:
+    func_00205E30(a0, D_003F3358);
+    func_00206130(a0, 0, 0x3E, 0x200, 2, 0x80F04646);
+    func_0020CA30_v(a0, 0, 0x808F1F22, 0x80E16063);
+    func_001FC308(a0, 0xA0, 0x23, 0, 0x13, 0x14, 0, 0x80399BFF, 0x80399BFF);
+    func_001F9E48(a0, 0, 0xAD, 0x23, AreaNames_GetCurrent(), 0x13, 0x80399BFF);
+    func_0020B3D8(a0, 0x191, 4);
+}
+
+void func_0020CCB0(s32 a0) {
+    extern s32 D_003F3398[];
+    extern u32 PlayTime_GetHoursPart(void);
+    extern u32 PlayTime_GetMinutesPart(void);
+    extern u32 PlayTime_GetSecondsPart(void);
+    extern s32 Munny_Get(void);
+    s32 s;
+    s32 h;
+    s32 m;
+    s32 sec;
+    s32 x;
+
+    func_001FC308(a0, 0xA, 0x36, 0, 0, 5, 0, 0x40FF8A00, 0x40FF8A00);
+    s = D_003F3398[func_001115A0()];
+    h = PlayTime_GetHoursPart();
+    m = PlayTime_GetMinutesPart();
+    sec = PlayTime_GetSecondsPart();
+    x = func_001FBCB0(a0, 0, 2, 1, 0x33, 0x33, h, s);
+    x = func_001FC308(a0, x - 2, 0x33, 0, 0, 0, s, 0x80808080, 0x80808080);
+    x = func_001FBCB0(a0, 0, 2, 1, x - 3, 0x33, m, s);
+    x = func_001FC308(a0, x - 2, 0x33, 0, 0, 0, s, 0x80808080, 0x80808080);
+    x = func_001FBCB0(a0, 0, 2, 1, x - 3, 0x33, sec, s);
+    func_001FC308(a0, 9, 0x14, 0, 0, 4, 0, 0x402760F5, 0x402760F5);
+    func_001FBCB0(a0, 1, 5, 1, x, 0x12, Munny_Get(), 1);
+}
 
 void func_0020CE78(s32 a0) {
     func_00205E30(a0, D_003F33A8);
@@ -3681,7 +3764,71 @@ void func_0020DA90(u8 *a0, s32 a1) {
     *(s32 *)(a0 + 0x24) = a1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020DB00);
+s32 func_0020DB00(s32 a0, s32 a1, s32 a2, s32 a3) {
+    extern s32 Item_IsPartyWide(s32);
+    extern s32 func_00149600(s32, s32);
+    extern void Party_RefreshStats(void);
+    extern u8 D_003F3880[];
+    extern u8 D_003F38E0[];
+    extern void UiObject_InsertAfter_v(s32, u8 *) __asm__("UiObject_InsertAfter");
+    s32 item;
+    s32 n;
+    s32 first;
+    s32 mask;
+    s32 i;
+    s32 e;
+    u8 *b;
+
+    if (a1 != -1) {
+        struct { u8 pad[0x26]; u8 t[0x4E]; } *ch = (void *)((u8 *)D_003010F8 + D_003010F8->unk_48E[a1] * 0x74);
+        item = ch->t[a2];
+    } else {
+        item = a2;
+    }
+    if (Item_IsPartyWide(item)) {
+        a3 = 0;
+        n = D_003DE6A0;
+    } else {
+        n = 1;
+    }
+    first = a3;
+    mask = 0;
+    do {
+        mask |= func_00149600(item, D_003010F8->unk_48E[a3]);
+        a3++;
+    } while (--n != 0);
+    for (i = 0; i < 7; i++) {
+        if ((mask >> i) & 1) {
+            if (a1 != -1) {
+                b = (u8 *)D_003010F8;
+                b += D_003010F8->unk_48E[a1] * 0x74;
+                ((struct { u8 pad[0x26]; u8 t[0x4E]; } *)b)->t[a2] = 0;
+            } else {
+                ((struct { u8 pad[0x499]; u8 t[0x100]; } *)D_003010F8)->t[a2]--;
+            }
+            Party_RefreshStats();
+            if (i < 4) {
+                func_0011D598(0xE);
+            } else {
+                func_0011D598(7);
+            }
+            e = func_001F3A20((s32)D_003F3880, 6);
+            if (e != 0) {
+                UiObject_InsertAfter_v(e, (u8 *)a0);
+                func_0020D890((u8 *)e, i + 0x99);
+                *(s32 *)(e + 0x28) = first;
+            }
+            return 1;
+        }
+    }
+    func_0011D598(4);
+    e = func_001F3A20((s32)D_003F38E0, 6);
+    if (e != 0) {
+        UiObject_InsertAfter_v(e, (u8 *)a0);
+        func_0020DA90((u8 *)e, 0xA0);
+    }
+    return 0;
+}
 
 extern A2E2C40 D_003F2C40_s[] __asm__("D_003F2C40");
 void func_0020DD38(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
@@ -3726,60 +3873,6 @@ extern s32 D_lay2C40_18;
 extern s32 D_lay2C40_19;
 extern s32 D_lay2C40_20;
 extern s32 D_lay2C40_21;
-extern s32 D_lay2C40_22;
-extern s32 D_lay2C40_23;
-extern s32 D_lay2C40_24;
-extern s32 D_lay2C40_25;
-extern s32 D_lay2C40_26;
-extern s32 D_lay2C40_27;
-extern s32 D_lay2C40_28;
-extern s32 D_lay2C40_29;
-extern s32 D_lay2C40_30;
-extern s32 D_lay2C40_31;
-extern s32 D_lay2C40_32;
-extern s32 D_lay2C40_33;
-extern s32 D_lay2C40_34;
-extern s32 D_lay2C40_35;
-extern s32 D_lay2C40_36;
-extern s32 D_lay2C40_37;
-extern s32 D_lay2C40_38;
-extern s32 D_lay2C40_39;
-extern s32 D_lay2C40_40;
-extern s32 D_lay2C40_41;
-extern s32 D_lay2C40_42;
-extern s32 D_lay2C40_43;
-extern s32 D_lay2C40_44;
-extern s32 D_lay2C40_45;
-extern s32 D_lay2C40_46;
-extern s32 D_lay2C40_47;
-extern s32 D_lay2C40_48;
-extern s32 D_lay2C40_49;
-extern s32 D_lay2C40_50;
-extern s32 D_lay2C40_51;
-extern s32 D_lay2C40_52;
-extern s32 D_lay2C40_53;
-extern s32 D_lay2C40_54;
-extern s32 D_lay2C40_55;
-extern s32 D_lay2C40_56;
-extern s32 D_lay2C40_57;
-extern s32 D_lay2C40_58;
-extern s32 D_lay2C40_59;
-extern s32 D_lay2C40_60;
-extern s32 D_lay2C40_61;
-extern s32 D_lay2C40_62;
-extern s32 D_lay2C40_63;
-extern s32 D_lay2C40_64;
-extern s32 D_lay2C40_65;
-extern s32 D_lay2C40_66;
-extern s32 D_lay2C40_67;
-extern s32 D_lay2C40_68;
-extern s32 D_lay2C40_69;
-extern s32 D_lay2C40_70;
-extern s32 D_lay2C40_71;
-extern s32 D_lay2C40_72;
-extern s32 D_lay2C40_73;
-extern s32 D_lay2C40_74;
-extern s32 D_lay2C40_75;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
 void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
@@ -3822,7 +3915,46 @@ void func_0020E1C0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     func_00208280(a0, a2 + 6, a3 + 4, 0x12, 0x2B, c >> 24);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_0020E280);
+void func_0020E280(s32 a0) {
+    extern s32 D_00641228;
+    extern s32 D_00641230;
+    extern s32 D_00641234;
+    extern u8 D_003F38B0[];
+    extern void UiObject_InsertAfter_v(s32, u8 *) __asm__("UiObject_InsertAfter");
+    extern s32 Item_GetName(s32);
+    extern void func_001FDFD0_a(s32) __asm__("func_001FDFD0");
+    u8 *s;
+    s32 e;
+
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 0x8) & 0x4000) {
+            func_001F3708_x(a0, 0x6);
+            func_0011D598(0x3);
+        } else {
+            func_001FDFD0_a(a0);
+            func_0020BD18(a0, 0x8);
+            if (func_001FE570(a0)) {
+                func_001F3708_x(a0, 0x6);
+                if (func_001FD538((u8 *)a0) == 0) {
+                    if (D_00641228 != -1) {
+                        ((struct { u8 pad[0x26]; u8 t[0x100]; } *)D_003010F8)->t[D_00641230 + D_003010F8->unk_48E[D_00641228] * 0x74] = 0;
+                    } else {
+                        ((struct { u8 pad[0x499]; u8 t[0x100]; } *)D_003010F8)->t[D_00641230]--;
+                    }
+                    D_00641224 = 5;
+                    s = func_001F4468((u8 *)a0);
+                    e = func_001F3A20((s32)D_003F38B0, 6);
+                    if (e != 0) {
+                        UiObject_InsertAfter_v(e, s);
+                        func_0020D990((u8 *)e, 0xA3);
+                    }
+                }
+            }
+        }
+    }
+    D_003E8E08 = Item_GetName(D_00641234);
+    func_00207C28(a0, 0x80);
+}
 
 void func_0020E408(u8 *a0) {
     extern s32 D_00641228;
@@ -4799,7 +4931,38 @@ void func_00214380(u8 *a0) {
     func_001F9438((s32)a0, 0, 0xAE, 0xC, D_003F3E18[D_00642C70], 0x11, 0x80C87850);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_002143E0);
+void func_002143E0(s32 a0) {
+    extern s32 D_00642C24;
+    s32 s;
+
+    if (func_001F42B8(a0)) {
+        if (*(s32 *)(D_00425BC8 + 0x8) & 0x4000) {
+            func_001F3758(a0);
+            func_0011D598(3);
+            D_00642C24 = 2;
+        } else {
+            func_001FD858_a(a0);
+            func_0020BD18(a0, 8);
+            D_00642C70 = func_001FD518((u8 *)a0);
+            if (func_001FE5A0(a0)) {
+                if (D_00642C70 == 1 && D_00642C28 == -1) {
+                    func_0011D598(4);
+                } else {
+                    func_0011D598(0x4A);
+                    func_001F3D58((u8 *)a0, 5);
+                    func_001F3758(a0);
+                    D_00642C48 = D_00642C70;
+                    D_00642C24 = 5;
+                    func_00213FB0();
+                }
+            }
+        }
+    }
+    s = func_001FD518((u8 *)a0);
+    func_00207830(a0, s == 0, 2, 0, 0, 0x7A, 0xC1);
+    func_00207830(a0, D_00642C28 != -1 ? s == 1 : (s == 1 ? 3 : 2), 2, 0, 0x1C, 0x7A, 0xC2);
+    func_00207830(a0, s == 2, 2, 0, 0x38, 0x7A, 0xC3);
+}
 
 void func_00214590(u8 *a0) {
     func_001F9010(0x17);
