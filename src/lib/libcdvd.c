@@ -141,7 +141,27 @@ void _sceCd_cd_callback(void* data) {
     D_0046C654 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libcdvd", _Cdvd_cbLoop);
+/* _Cdvd_cbLoop, cmd_sem_init, cdvd_exit, sceCdRead, sceCdSeek: gas 2.10 (configure.py LIB_GAS210_FILES) moves the
+   volatile access before a call into its delay slot. */
+void _Cdvd_cbLoop(void* arg) {
+    while (1) {
+        WaitSema(D_0046C620);
+        if (D_0046C654 == -1) {
+            _sceCd_c_cb_sem = 0;
+            D_0046C654 = 0;
+            D_0046C614 = 0;
+            D_0067334C = 0;
+            ExitDeleteThread();
+        }
+        if (SCE_CD_debug > 0) {
+            scePrintf(D_004930E0, D_00673340, D_0046C658);
+        }
+        if (D_00673340 != 0 && *(volatile int*)&D_0046C658 != 0) {
+            ((void (*)(int))D_00673340)(*(volatile int*)&D_0046C658);
+        }
+        *(volatile int*)&_sceCd_c_cb_sem = 0;
+    }
+}
 
 int sceCdInitEeCB(int priority, void* stack, int stackSize) {
     int r = 1;
@@ -192,9 +212,37 @@ void func_00269790(void* pkt) {
     _sceCd_cd_callback((void*)&D_0046C654);
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libcdvd", cmd_sem_init);
+void cmd_sem_init(void) {
+    struct SemaParam buf;
 
-INCLUDE_ASM("asm/nonmatchings/lib/libcdvd", cdvd_exit);
+    if (D_0046C628 == -1 || D_0046C62C == -1) {
+        buf.option = 0;
+        buf.initCount = 1;
+        buf.maxCount = 1;
+        *(volatile int*)&D_0046C628 = CreateSema(&buf);
+        D_0046C62C = CreateSema(&buf);
+        buf.initCount = 0;
+        *(volatile int*)&D_0046C620 = CreateSema(&buf);
+        *(volatile int*)&_sceCd_c_cb_sem = 0;
+    }
+}
+
+void cdvd_exit(void) {
+    int s;
+
+    if (D_0046C614 != 0) {
+        D_0046C654 = -1;
+        SignalSema(*(volatile int*)&D_0046C620);
+    }
+    DeleteSema(D_0046C628);
+    DeleteSema(D_0046C62C);
+    DeleteSema(D_0046C620);
+    s = DIntr();
+    sceSifRemoveCmdHandler(0x80000012);
+    if (s) {
+        EIntr();
+    }
+}
 
 int sceCdPOffCallback(void (*func)(void*), void* arg) {
     int ret;
@@ -609,9 +657,103 @@ int sceCdMmode(int media) {
     return v;
 }
 
-INCLUDE_ASM("asm/nonmatchings/lib/libcdvd", sceCdRead);
+typedef struct {
+    int lsn;
+    int sectors;
+    void* buf;
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+    int* intr_data;
+    int* cur_pos;
+} CdReadCmd;
 
-INCLUDE_ASM("asm/nonmatchings/lib/libcdvd", sceCdSeek);
+typedef struct {
+    unsigned char trycount;
+    unsigned char spindlctrl;
+    unsigned char datapattern;
+    unsigned char pad;
+} CdRMode;
+
+
+int sceCdRead(int lsn, int sectors, void* buf, CdRMode* mode) {
+    CdReadCmd* sd = (CdReadCmd*)D_0046C700;
+    int size;
+
+    if ((D_0046C634 & 1) == 0) {
+        if (sceCdNcmdDiskReady() == 6) {
+            return 0;
+        }
+    }
+    if (_sceCd_ncmd_prechk(4) == 0) {
+        return 0;
+    }
+    sd->lsn = lsn;
+    sd->sectors = sectors;
+    sd->buf = buf;
+    sd->trycount = mode->trycount;
+    sd->spindlctrl = mode->spindlctrl;
+    sd->datapattern = mode->datapattern;
+    sd->intr_data = D_0046D700;
+    sd->cur_pos = D_0046D7C0;
+    switch (mode->datapattern) {
+    case 1:
+        size = sectors * 2328;
+        break;
+    case 2:
+        size = sectors * 2340;
+        break;
+    case 0:
+    default:
+        size = sectors * 2048;
+        break;
+    }
+    D_0046D7C0[0] = 0;
+    if ((D_0046C634 & 2) == 0) {
+        sceSifWriteBackDCache(buf, size);
+    }
+    sceSifWriteBackDCache(D_0046D700, 144);
+    sceSifWriteBackDCache(sd, 24);
+    sceSifWriteBackDCache(D_0046D7C0, 4);
+    if (SCE_CD_debug > 0) {
+        scePrintf(D_00493290);
+    }
+    D_0046C654 = 1;
+    *(volatile int*)&_sceCd_c_cb_sem = 1;
+    if (sceSifCallRpc(&_sceCd_cd_ncmd, 1, 1, sd, 24, 0, 0, (sceSifEndFunc)func_00269790, D_0046D700) < 0) {
+        D_0046C654 = 0;
+        *(volatile int*)&_sceCd_c_cb_sem = 0;
+        SignalSema(*(volatile int*)&D_0046C628);
+        return 0;
+    }
+    if (SCE_CD_debug > 0) {
+        scePrintf(D_004932A8);
+    }
+    return 1;
+}
+
+int sceCdSeek(int lsn) {
+    int* sd = D_0046C700;
+
+    if (sceCdNcmdDiskReady() == 6) {
+        return 0;
+    }
+    if (_sceCd_ncmd_prechk(9) == 0) {
+        return 0;
+    }
+    *sd = lsn;
+    sceSifWriteBackDCache(sd, 4);
+    D_0046C654 = 4;
+    *(volatile int*)&_sceCd_c_cb_sem = 1;
+    if (sceSifCallRpc(&_sceCd_cd_ncmd, 5, 1, sd, 4, 0, 0, _sceCd_cd_callback, (void*)&D_0046C654) < 0) {
+        D_0046C654 = 0;
+        *(volatile int*)&_sceCd_c_cb_sem = 0;
+        SignalSema(*(volatile int*)&D_0046C628);
+        return 0;
+    }
+    return 1;
+}
 
 int sceCdGetError(void) {
     int* p;
