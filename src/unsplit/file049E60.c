@@ -4066,7 +4066,28 @@ s32 func_0015BCB8(u8* p, f32* a1) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BD78);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BEB0);
+void func_0015BEB0(u8* a, u8* b, f32* out) {
+    sceVu0FVECTOR v;
+    sceVu0FVECTOR s;
+    sceVu0FVECTOR d;
+    f32 l;
+    f32 t;
+
+    s[0] = s[2] = 1.0f / (*(f32*)(a + 4) + *(f32*)(b + 4));
+    s[1] = 1.0f / (*(f32*)(a + 8) + *(f32*)(b + 8));
+    sceVu0SubVector(d, (f32*)(b + 0x10), (f32*)(a + 0x10));
+    sceVu0MulVector(v, d, s);
+    *(s32*)&d[1] = 0;
+    l = v[0] * v[0] + v[2] * v[2];
+    if (d[1] < l) {
+        t = _sqrtf((1.0f - v[1] * v[1]) / l) - 1.0f;
+        sceVu0ScaleVector(out, v, t * (*(f32*)(a + 4) + *(f32*)(b + 4) + 5.0f));
+    } else {
+        out[0] = *(f32*)(a + 4) + *(f32*)(b + 4) + 5.0f;
+        out[2] = d[1];
+    }
+    *(s32*)&out[1] = 0;
+}
 
 void func_0015BFF8(u8* a, u8* b, f32* out) {
     sceVu0FVECTOR d;
