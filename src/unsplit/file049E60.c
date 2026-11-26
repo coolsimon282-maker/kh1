@@ -4068,7 +4068,44 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015B998);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BAD0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015BB88);
+extern s32 D_15BB88_pad1; /* unused: rule F1 (keeps func_00176F08 / func_0015EEA0) */
+typedef struct { u64 a[4]; } B15BB88;
+s32 Actor_IsActive(u8*);
+s32 func_00123730(u8*);
+void* func_00122048(s32, s32);
+void func_001220B8(void*);
+s32 func_0015B998(f32*, f32*);
+s32 func_0015BB88(f32* box, u8* e, s32 o) {
+    B15BB88* out = (B15BB88*)o;
+    B15BB88* b;
+    u8* c;
+    s32 i;
+
+    if (Actor_IsActive(e) == 0) {
+        goto ret0;
+    }
+    if (func_00123730(e) == 0) {
+        goto ret0;
+    }
+    b = (B15BB88*)func_00122048(0x20, 0x10);
+    c = *(u8**)(*(u8**)(e + 0x134) + 0x14);
+    for (i = 0; i < (*(u8**)(e + 0x134))[5]; i++, c += 0x14) {
+        if (*(u32*)(e + 0x3A4) & (1 << i)) {
+            continue;
+        }
+        func_0015BAD0(e, c, (f32*)b);
+        if (func_0015B998(box, (f32*)b) != 0) {
+            if (out != NULL) {
+                *out = *b;
+            }
+            func_001220B8(b);
+            return 1;
+        }
+    }
+    func_001220B8(b);
+ret0:
+    return 0;
+}
 
 s32 func_001425D0(u8*);
 s32 func_0015BB88(f32*, u8*, s32);
