@@ -8644,7 +8644,42 @@ extern f32 D_0048EAE4;
 s32 func_0017B860(s32, f32*, f32*, s32*);
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017BC90);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0017BFE8);
+void func_0017BFE8(void) {
+    f32 d[4];
+    f32 dt;
+    f32 m;
+    f32 s;
+    f32 len;
+    f32 r;
+    u8* c;
+    u8* c2;
+    u8* c3;
+
+    r = 100.0f;
+    dt = D_002B8344;
+    c = (u8*)&D_00575940_c;
+    m = *(f32*)(D_00362438 + 0x14) * dt;
+    if (c[0x64] != 0) {
+        dt += dt;
+        m += m;
+    }
+    *(f32*)(c + 0x54) += dt;
+    *(f32*)(c + 0x54) = (*(f32*)(c + 0x54) < 0.0f) ? 0.0f : ((m < *(f32*)(c + 0x54)) ? m : *(f32*)(c + 0x54));
+    c2 = (u8*)&D_00575940_c;
+    s = *(f32*)(c2 + 0x54);
+    sceVu0SubVector(d, (f32*)c2, (f32*)(c2 + 0x10));
+    len = Vec_Length(d);
+    if (len < 5.0f) {
+        len = 0.0f;
+    }
+    len = (len < 0.0f) ? 0.0f : ((r < len) ? 100.0f : len);
+    s *= len / r;
+    if (!func_0017B7E8()) {
+        s = 0.0f;
+    }
+    c3 = (u8*)&D_00575940_c;
+    func_0017B4F8((s32*)(c3 + 0x40), (f32*)(c3 + 0x48), s * *(f32*)(c3 + 0x50));
+}
 
 void func_0017C110(s32 a0, f32 f) {
     f32 m[16];
