@@ -93,7 +93,7 @@ void topThread(void *arg)
             SuspendThread(ring->ent[i].id);
             break;
         default:
-            kprintf("## internel error in libkernl.a!\n"); /* the message "## internel error in libkernl.a!" in .rodata */
+            kprintf("## internel error in libkernl.a!\n");
             break;
         }
     }

@@ -15,7 +15,11 @@ extern char D_00464B18[];           /* __ps2_klibinfo__ + 12: the library's vers
 extern char D_0066DB00[];           /* lf_buf[0x200], the RPC buffer */
 extern sceSifClientData D_00667D00; /* lf_cd */
 extern char D_0066DD28[];           /* lf_iopVersion[4] */
-extern char D_00492348[];           /* "all" */
+
+/* .rodata (0x00492340-0x00492350): lf_stamp's "....", then the "all" literal of sceSifLoadElf. In the original
+   "...." was the literal of lf_stamp's initializer, but lf_stamp (D_00465378) has to stay in filestub's .data (it
+   sits on a 4-byte boundary), so the string is a named array here. */
+const char D_00492340[] = "....";
 
 int _lf_bind(void) {
     int i;
@@ -272,7 +276,7 @@ int sceSifLoadElfPart(void* name, int sec, int out) {
 }
 
 int sceSifLoadElf(void* name, int out) {
-    return _sceSifLoadElfPart(name, (int)D_00492348, out, 1);
+    return _sceSifLoadElfPart(name, (int)"all", out, 1);
 }
 
 int sceSifGetIopAddr(int addr, void* data, int type) {

@@ -610,7 +610,7 @@ segments:
   - [ 0x3920f8, .rodata, lib/libkernl/tty ]
   - [ 0x392170, rodata, lib/libkernl/kprintf_ro ]
   - [ 0x3922d0, rodata, lib/libkernl/filestub_ro ]
-  - [ 0x392340, rodata, lib/libkernl/eeloadfile_ro ]
+  - [ 0x392340, .rodata, lib/libkernl/eeloadfile ]
   - [ 0x392350, .rodata, lib/libkernl/iopreset ]
   - [ 0x392380, rodata, lib/libkernl/libosd_ro ]
   - [ 0x392388, .rodata, lib/libkernl/thread ]
