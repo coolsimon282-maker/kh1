@@ -1421,7 +1421,43 @@ s32 func_0012F040(s32 a0_, s32 a1) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_02B2C0", func_0012F0F8);
+typedef struct {
+    f32 p[4];
+    f32 d[4];
+    u8 pad20[0x10];
+    s16 hit;
+    u8 pad32[0xE];
+} A2Ray;
+s32 func_00119688_r(A2Ray *) __asm__("func_00119688");
+s32 func_00119788_r(A2Ray *) __asm__("func_00119788");
+void func_00118648_r(A2Ray *) __asm__("func_00118648");
+
+s32 func_0012F0F8_r(s32, u8 *, s32) __asm__("func_0012F0F8");
+s32 func_0012F0F8_r(s32 a0, u8 *a1, s32 mode) {
+    A2Ray ray __attribute__((aligned(16)));
+    s32 r;
+
+    sceVu0CopyVector(ray.p, (f32 *)a0);
+    sceVu0SubVector(ray.d, (f32 *)a1, (f32 *)a0);
+    r = 0;
+    ray.p[3] = 1.0f;
+    ray.d[3] = 1.0f;
+    switch ((u32)mode) {
+    case 0:
+        r = func_00119788_r(&ray) < 0;
+        break;
+    case 1:
+        r = func_00119688_r(&ray) < 0;
+        break;
+    case 2:
+        func_00118648_r(&ray);
+        if (ray.hit < 0) {
+            if (func_00119688_r(&ray) < 0) r = 1;
+        }
+        break;
+    }
+    return r;
+}
 
 void func_0012F1D0(s32 a0, s32 a1) {
     u8 buf[16];
@@ -2458,8 +2494,11 @@ typedef struct {
     s32 unk_18;
 } A2Ent1C;
 /* unused: layout only (F1): with func_00132550 in C, func_001333E0 changes unless a declaration sits right
- * before this alias (1-8 tested OK; pads above func_00132550 or before func_001333E0 do not help). */
+ * before this alias (1-8 tested OK; pads above func_00132550 or before func_001333E0 do not help).
+ * After func_0012F0F8: 2, 3, 5 of these OK (1, 4 not); 3 used. */
 extern s32 D_1333E0_pad1;
+extern s32 D_1333E0_pad2;
+extern s32 D_1333E0_pad3;
 extern A2Ent1C D_00525368_e[] __asm__("D_00525368");
 void func_001373F8(u8 *, f32);
 
