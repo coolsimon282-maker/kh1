@@ -526,7 +526,7 @@ segments:
   - [ 0x36af18, data, lib/libkernl/libosd ]
   - [ 0x36b6e0, .data, lib/libkernl/alarm ]
   - [ 0x36be88, .data, lib/libkernl/thread ]
-  - [ 0x36be90, data, lib/libkernl/tlbfunc ]
+  - [ 0x36be90, .data, lib/libkernl/tlbfunc ]
   - [ 0x36c4f0, .data, lib/libgraph ]
   - [ 0x36c540, .data, lib/libdma ]
   - [ 0x36c580, .data, lib/libvu0 ]
