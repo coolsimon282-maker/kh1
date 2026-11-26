@@ -1,3 +1,8 @@
+/**
+ * Game data queries: play time, item / weapon / accessory / ability tables, what the ten characters have equipped
+ * (D_003010F8 save data: 0x74-byte character records, party slots unk_48E, item stock unk_499), AP costs and munny
+ * (GameData buffer, work buffer 5). Item types: 0 usable item, 1 accessory, 2..11 weapons.
+ */
 #include "common.h"
 
 #include "memcard.h"
@@ -101,7 +106,7 @@ typedef struct {
 } XTangoParty;
 
 void func_00141B10(s32, s32*);
-s32 func_001F0960(s32);
+s32 Char_GetUsedAP(s32);
 extern s32 D_003E3D20[];
 extern u32 D_003E3D48[];
 extern XTangoUnk30* func_001496C8(void);
@@ -118,24 +123,29 @@ u32 func_00147808(u16);
 extern volatile u32 D_002BBDF4;
 extern f32 D_002BBDEC;
 
-u32 func_001EF210(void) {
+// Play time in frames: the frame counter D_002BBDF4 times the scale D_002BBDEC.
+u32 PlayTime_GetFrames(void) {
     return D_002BBDF4 * D_002BBDEC;
 }
 
-u32 func_001EF298(void) {
-    return func_001EF210() / 216000;
+// Play time in whole hours (frames / 216000, 60 frames a second).
+u32 PlayTime_GetTotalHours(void) {
+    return PlayTime_GetFrames() / 216000;
 }
 
-u32 func_001EF2D0(void) {
-    return func_001EF210() / 3600;
+// Play time in whole minutes (frames / 3600).
+u32 PlayTime_GetTotalMinutes(void) {
+    return PlayTime_GetFrames() / 3600;
 }
 
-u32 func_001EF300(void) {
-    return func_001EF210() / 60;
+// Play time in whole seconds (frames / 60).
+u32 PlayTime_GetTotalSeconds(void) {
+    return PlayTime_GetFrames() / 60;
 }
 
-void func_001EF330(u32* h, u32* m, u32* s, u32* f) {
-    u32 t = func_001EF210();
+// Splits the play time into hours, minutes, seconds and frames.
+void PlayTime_Split(u32* h, u32* m, u32* s, u32* f) {
+    u32 t = PlayTime_GetFrames();
 
     *h = t / 216000;
     t %= 216000;
@@ -145,29 +155,35 @@ void func_001EF330(u32* h, u32* m, u32* s, u32* f) {
     *f = t % 60;
 }
 
-u32 func_001EF3D0(void) {
-    return func_001EF210() / 216000;
+// Hours part of the play time (same as PlayTime_GetTotalHours).
+u32 PlayTime_GetHoursPart(void) {
+    return PlayTime_GetFrames() / 216000;
 }
 
-u32 func_001EF408(void) {
-    return (func_001EF210() / 3600) % 60;
+// Minutes part of the play time (0..59).
+u32 PlayTime_GetMinutesPart(void) {
+    return (PlayTime_GetFrames() / 3600) % 60;
 }
 
-u32 func_001EF448(void) {
-    return (func_001EF210() / 60) % 60;
+// Seconds part of the play time (0..59).
+u32 PlayTime_GetSecondsPart(void) {
+    return (PlayTime_GetFrames() / 60) % 60;
 }
 
-u32 func_001EF488(void) {
-    return (f32)(func_001EF210() % 60) * (100.0f / 60.0f);
+// Frames part of the play time scaled to hundredths of a second.
+u32 PlayTime_GetHundredthsPart(void) {
+    return (f32)(PlayTime_GetFrames() % 60) * (100.0f / 60.0f);
 }
 
 #ifdef VERSION_FM
+// Calls fm_func_00111B10 (FM only).
 void fm_func_001EE428(void) {
     fm_func_00111B10();
 }
 #endif
 
 #ifdef VERSION_FM
+// Calls fm_func_00111B48.
 void func_001EF530(void) {
     fm_func_00111B48();
 }
@@ -178,6 +194,7 @@ void func_001EF530(void) {
 #endif
 
 #ifdef VERSION_FM
+// Calls fm_func_00111B90.
 void func_001EF5C8(void) {
     fm_func_00111B90();
 }
@@ -190,6 +207,7 @@ void func_001EF5C8(void) {
 #endif
 
 #ifdef VERSION_FM
+// Calls fm_func_00111BE8.
 void func_001EF668(void) {
     fm_func_00111BE8();
 }
@@ -199,7 +217,8 @@ void func_001EF668(void) {
 }
 #endif
 
-s32 func_001EF708(u32 arg0) {
+// Converts a BCD number (one decimal digit per nibble) to binary.
+s32 BcdToInt(u32 arg0) {
     s32 ret = 0;
     s32 mul = 1;
 
@@ -211,15 +230,17 @@ s32 func_001EF708(u32 arg0) {
     return ret;
 }
 
+// Points D_003ED718 (GameData) at work buffer 5.
 void GameData_BindBuffer(void) {
     D_003ED718 = WorkBuffers_Get(5);
 }
 
+// Resets several game data subsystems and sets munny to 0.
 void GameData_Reset(void) {
     func_0022F888();
-    func_00218A10();
+    Config_Reset();
     D_003ED718->munny = 0;
-    func_00215A88();
+    GameData_ResetCharPresets();
     func_0021D2B0();
 }
 
@@ -240,6 +261,7 @@ void func_0022EBF0(void);
 void func_002319C0(void);
 void func_00232790(void);
 void func_00232AC8(void);
+// Calls the initialisers of the game data subsystems.
 void GameData_Initialize(void) {
     func_00233610();
     func_00233A80();
@@ -279,6 +301,7 @@ void GameData_Initialize(void) {
 }
 #endif
 
+// Passes a zeroed 16-byte buffer to func_001EDC50, then func_001EDCD8(0.0f).
 void func_001EF900(void) {
     u8 buf[16];
 
@@ -287,14 +310,17 @@ void func_001EF900(void) {
     func_001EDCD8(0.0f);
 }
 
-s32 func_001EF938(s32 arg0) {
+// Name message of character arg0 (message id from D_003DE5F0); probably the name.
+s32 Char_GetName(s32 arg0) {
     return func_001F0EF0(D_003DE5F0[arg0]);
 }
 
-s32 func_001EF960(s32 arg0) {
+// Name message of the character in party slot arg0 (D_003010F8->unk_48E); probably the name.
+s32 Party_GetMemberName(s32 arg0) {
     return func_001F0EF0(D_003DE5F0[D_003010F8->unk_48E[arg0]]);
 }
 
+// Message D_003E3CD0[arg0] (0 when arg0 > 16).
 s32 func_001EF998(s32 arg0) {
     if (arg0 > 16) {
         arg0 = 0;
@@ -302,12 +328,14 @@ s32 func_001EF998(s32 arg0) {
     return func_001F0EF0(D_003E3CD0[arg0]);
 }
 
-XScotch* func_001EF9C8(s32 arg0) {
+// Item table entry of item arg0 (func_00147A88).
+XScotch* Item_GetData(s32 arg0) {
     return (XScotch*)func_00147A88(arg0);
 }
 
 #ifdef VERSION_FM
-u32 func_001EF9E0(s32 arg0) {
+// Name string of item arg0 (from its entry's unk_00), or message 151 for item 0.
+u32 Item_GetName(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
         return func_00147808(obj->unk_00);
@@ -315,7 +343,7 @@ u32 func_001EF9E0(s32 arg0) {
     return func_001F0EF0(151);
 }
 #else
-u32 func_001EF9E0(s32 arg0) {
+u32 Item_GetName(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
         return func_00147A50(obj->unk_00);
@@ -325,7 +353,8 @@ u32 func_001EF9E0(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-u32 func_001EFA18(s32 arg0) {
+// Entry unk_0C of item arg0 (1..255), else 0; probably the description string.
+u32 Item_GetDescription(s32 arg0) {
     if (arg0 > 0 && arg0 < 256) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
         return obj->unk_0C;
@@ -333,7 +362,7 @@ u32 func_001EFA18(s32 arg0) {
     return 0;
 }
 #else
-u32 func_001EFA18(s32 arg0) {
+u32 Item_GetDescription(s32 arg0) {
     if (arg0 != 0) {
         XScotch* obj = (XScotch*)func_00147A88(arg0);
         return obj->unk_0C;
@@ -342,41 +371,49 @@ u32 func_001EFA18(s32 arg0) {
 }
 #endif
 
+// Entry unk_08 of item arg0.
 u16 func_001EFA48(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_08;
 }
 
+// Entry unk_0A of item arg0.
 u16 func_001EFA68(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_0A;
 }
 
+// Entry unk_06 of item arg0.
 s16 func_001EFA88(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_06;
 }
 
-u8 func_001EFAA8(s32 arg0) {
+// Item category (entry unk_02): 0 usable item, 1 accessory, 2..11 weapons (by how Char_CountItemEquipped uses it).
+u8 Item_GetType(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_02;
 }
 
+// Entry unk_03 of item arg0.
 u8 func_001EFAC8(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_03;
 }
 
+// Entry unk_10 of item arg0.
 u16 func_001EFAE8(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_10;
 }
 
-u16 func_001EFB08(s32 arg0) {
+// Bit 0 of entry unk_04; when set func_001EFBB0 checks every party member, so probably "acts on the whole party".
+u16 Item_IsPartyWide(s32 arg0) {
     XScotch* obj = (XScotch*)func_00147A88(arg0);
     return obj->unk_04 & 1;
 }
 
+// True when func_001495C8(arg0, member) is set for any current party member.
 s32 func_001EFB30(s32 arg0) {
     s32 n = D_003DE6A0;
     s32 i = 0;
@@ -390,11 +427,12 @@ s32 func_001EFB30(s32 arg0) {
     return 0;
 }
 
+// func_001495C8 test for party slot arg1, or for every member when Item_IsPartyWide(arg0).
 s8 func_001EFBB0(s32 arg0, s32 arg1) {
     s8 bVar1;
     int iVar3;
 
-    if (func_001EFB08(arg0) != 0) {
+    if (Item_IsPartyWide(arg0) != 0) {
         arg1 = 0;
         iVar3 = D_003DE6A0;
     } else {
@@ -412,6 +450,7 @@ s8 func_001EFBB0(s32 arg0, s32 arg1) {
 }
 
 #ifdef VERSION_FM
+// Index 1..6 of the lowest set bit 1..6 of func_001495C8(arg0, 0), else -1 (FM only).
 s32 fm_func_001EE900(s32 arg0) {
     s32 flags = func_001495C8(arg0, 0);
     s32 i;
@@ -425,6 +464,7 @@ s32 fm_func_001EE900(s32 arg0) {
 }
 #endif
 
+// Index 1..6 of the lowest set bit 1..6 of func_001495C8(arg0, arg1) when its bit 0 is set, else -1.
 s32 func_001EFC40(s32 arg0, s32 arg1) {
     s32 flags = func_001495C8(arg0, arg1);
     s32 i;
@@ -439,19 +479,22 @@ s32 func_001EFC40(s32 arg0, s32 arg1) {
     return -1;
 }
 
+// Item type is not 13.
 s32 func_001EFC98(s32 arg0) {
-    return func_001EFAA8(arg0) != 13;
+    return Item_GetType(arg0) != 13;
 }
 
-s32 func_001EFCC0(s32 arg0) {
-    return func_001EFAA8(arg0) == 0;
+// Item type is 0 (usable item).
+s32 Item_IsUsable(s32 arg0) {
+    return Item_GetType(arg0) == 0;
 }
 
-s32 func_001EFCE0(s32 arg0, s32 arg1) {
+// False when arg0 is a weapon (type 2..11) of another type than character arg1's weapon type (D_003E3D20).
+s32 Item_CanCharEquip(s32 arg0, s32 arg1) {
     s32 type;
 
     if (arg0 != 0) {
-        type = func_001EFAA8(arg0);
+        type = Item_GetType(arg0);
         if (type >= 2 && type <= 11) {
             if (type != D_003E3D20[arg1]) {
                 return FALSE;
@@ -461,6 +504,7 @@ s32 func_001EFCE0(s32 arg0, s32 arg1) {
     return TRUE;
 }
 
+// Item arg0 has one of the three types in D_003E3D48.
 s32 func_001EFD40(s32 arg0) {
     XScotch* obj;
     u32 i;
@@ -476,6 +520,7 @@ s32 func_001EFD40(s32 arg0) {
     return FALSE;
 }
 
+// Item arg0 is non-zero and of type 0 (usable item).
 s32 func_001EFDA0(s32 arg0) {
     XScotch* obj;
 
@@ -488,14 +533,17 @@ s32 func_001EFDA0(s32 arg0) {
     return FALSE;
 }
 
+// Calls func_001BC390.
 s32 func_001EFDD0(s32 arg0) {
     return func_001BC390(arg0);
 }
 
+// Calls func_001BC370.
 s32 func_001EFDE8(s32 arg0) {
     return func_001BC370(arg0);
 }
 
+// Sum of func_001BC590(i) for i below func_001BC578().
 s32 func_001EFE00(void) {
     s32 sVar1 = func_001BC578();
     s32 iVar2 = 0;
@@ -516,78 +564,84 @@ s32 func_001EFE00(void) {
 }
 
 #ifdef VERSION_FM
-s32 func_001EFE68(s32 arg0);
-s32 func_001EFE68(s32 arg0) {
+s32 Item_GetNameOrNone(s32 arg0);
+// Item_GetName, or message 167 for item 0 (FM).
+s32 Item_GetNameOrNone(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EF9E0(arg0);
+        return Item_GetName(arg0);
     }
     return func_001F0EF0(167);
 }
 #else
-s32 func_001EFE68(s32 arg0) {
+s32 Item_GetNameOrNone(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EF9E0(arg0);
+        return Item_GetName(arg0);
     }
     return func_001F0EF0(176);
 }
 #endif
 
 #ifdef VERSION_FM
-s32 func_001EFE90(s32 arg0);
-s32 func_001EFE90(s32 arg0) {
+s32 Item_GetNameOrNone2(s32 arg0);
+// Same as Item_GetNameOrNone (a second copy in the game).
+s32 Item_GetNameOrNone2(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EF9E0(arg0);
+        return Item_GetName(arg0);
     }
     return func_001F0EF0(167);
 }
 #else
-s32 func_001EFE90(s32 arg0) {
+s32 Item_GetNameOrNone2(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EF9E0(arg0);
+        return Item_GetName(arg0);
     }
     return func_001F0EF0(176);
 }
 #endif
 
 #ifdef VERSION_FM
-s32 func_001EFEB8(s32 arg0);
-s32 func_001EFEB8(s32 arg0) {
+s32 Item_GetDescriptionOrNone(s32 arg0);
+// Item_GetDescription, or message 168 for item 0 (FM).
+s32 Item_GetDescriptionOrNone(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EFA18(arg0);
+        return Item_GetDescription(arg0);
     }
     return func_001F0EF0(168);
 }
 #else
-s32 func_001EFEB8(s32 arg0) {
+s32 Item_GetDescriptionOrNone(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EFA18(arg0);
+        return Item_GetDescription(arg0);
     }
     return func_001F0EF0(177);
 }
 #endif
 
 #ifdef VERSION_FM
-s32 func_001EFEE0(s32 arg0);
-s32 func_001EFEE0(s32 arg0) {
+s32 Item_GetDescriptionOrNone2(s32 arg0);
+// Same as Item_GetDescriptionOrNone (a second copy in the game).
+s32 Item_GetDescriptionOrNone2(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EFA18(arg0);
+        return Item_GetDescription(arg0);
     }
     return func_001F0EF0(168);
 }
 #else
-s32 func_001EFEE0(s32 arg0) {
+s32 Item_GetDescriptionOrNone2(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EFA18(arg0);
+        return Item_GetDescription(arg0);
     }
     return func_001F0EF0(177);
 }
 #endif
 
+// Field unk_30 of func_001496C8()s result.
 s32 func_001EFF08(void) {
     return func_001496C8()->unk_30;
 }
 
-s32 func_001EFF28(s32 arg0, u8 arg1) {
+// Character arg0's stat 19 (func_00141B10 stats) with weapon arg1 equipped for the test; probably strength.
+s32 Char_PreviewWeaponStat19(s32 arg0, u8 arg1) {
     s32 buf[60];
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     u8 save = chr->unk_32;
@@ -598,7 +652,8 @@ s32 func_001EFF28(s32 arg0, u8 arg1) {
     return buf[19];
 }
 
-s32 func_001EFF90(s32 arg0, s32 arg1, u8 arg2) {
+// Character arg0's stat 15 with accessory slot arg1 set to arg2 for the test.
+s32 Char_PreviewAccessoryStat15(s32 arg0, s32 arg1, u8 arg2) {
     s32 buf[60];
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     u8 save = chr->unk_19[arg1];
@@ -609,7 +664,8 @@ s32 func_001EFF90(s32 arg0, s32 arg1, u8 arg2) {
     return buf[15];
 }
 
-s32 func_001EFFF8(s32 arg0, s32 arg1, u8 arg2) {
+// Character arg0's stat 17 with accessory slot arg1 set to arg2 for the test.
+s32 Char_PreviewAccessoryStat17(s32 arg0, s32 arg1, u8 arg2) {
     s32 buf[60];
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     u8 save = chr->unk_19[arg1];
@@ -620,7 +676,8 @@ s32 func_001EFFF8(s32 arg0, s32 arg1, u8 arg2) {
     return buf[17];
 }
 
-s32 func_001F0060(s32 arg0, s32 arg1, u8 arg2) {
+// Character arg0's stat 56 (max AP, see Char_GetMaxAP) with accessory slot arg1 set to arg2.
+s32 Char_PreviewAccessoryMaxAP(s32 arg0, s32 arg1, u8 arg2) {
     s32 buf[60];
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     u8 save = chr->unk_19[arg1];
@@ -631,7 +688,8 @@ s32 func_001F0060(s32 arg0, s32 arg1, u8 arg2) {
     return buf[56];
 }
 
-s32 func_001F00C8(s32 arg0, s32 arg1, u8 arg2) {
+// Character arg0's stat 19 with accessory slot arg1 set to arg2 for the test.
+s32 Char_PreviewAccessoryStat19(s32 arg0, s32 arg1, u8 arg2) {
     s32 buf[60];
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     u8 save = chr->unk_19[arg1];
@@ -642,7 +700,8 @@ s32 func_001F00C8(s32 arg0, s32 arg1, u8 arg2) {
     return buf[19];
 }
 
-s32 func_001F0130(s32 arg0, s32 arg1, u8 arg2) {
+// Character arg0's stat 20 with accessory slot arg1 set to arg2 for the test.
+s32 Char_PreviewAccessoryStat20(s32 arg0, s32 arg1, u8 arg2) {
     s32 buf[60];
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     u8 save = chr->unk_19[arg1];
@@ -653,7 +712,8 @@ s32 func_001F0130(s32 arg0, s32 arg1, u8 arg2) {
     return buf[20];
 }
 
-s32 func_001F0198(s32 arg0) {
+// Number of current party members whose weapon (unk_32) is arg0.
+s32 Party_CountWeaponUsers(s32 arg0) {
     s32 count = 0;
     s32 i;
 
@@ -672,7 +732,8 @@ s32 func_001F0198(s32 arg0) {
     return count;
 }
 
-s32 func_001F0218(s32 arg0) {
+// Number of arg0 accessories equipped by current party members.
+s32 Party_CountAccessoryEquipped(s32 arg0) {
     s32 count = 0;
     s32 i;
     s32 j;
@@ -694,7 +755,8 @@ s32 func_001F0218(s32 arg0) {
     return count;
 }
 
-s32 func_001F02B8(s32 arg0, s32 arg1) {
+// Number of arg0 accessories equipped by the ten characters other than arg1.
+s32 Char_CountAccessoryOnOthers(s32 arg0, s32 arg1) {
     s32 count = 0;
     s32 i;
     s32 j;
@@ -715,7 +777,8 @@ s32 func_001F02B8(s32 arg0, s32 arg1) {
     return count;
 }
 
-s32 func_001F0330(s32 arg0) {
+// Number of arg0 equipped (as weapon or accessory) by all ten characters.
+s32 Char_CountEquippedAll(s32 arg0) {
     s32 count = 0;
     s32 i;
     s32 j;
@@ -735,7 +798,8 @@ s32 func_001F0330(s32 arg0) {
     return count;
 }
 
-s32 func_001F03A0(s32 arg0) {
+// Stock of item arg0 (unk_499) minus the copies equipped by the ten characters, at least 0.
+s32 Inventory_GetFreeCount(s32 arg0) {
     s32 count = ((XTangoUnk3010F8*)D_003010F8)->unk_499[arg0];
     s32 i;
     s32 j;
@@ -758,10 +822,11 @@ s32 func_001F03A0(s32 arg0) {
     return count;
 }
 
-s32 func_001F0420(s32 arg0, s32 arg1) {
+// How many arg1 character arg0 holds: in item slots (type 0), accessory slots (type 1) or as weapon.
+s32 Char_CountItemEquipped(s32 arg0, s32 arg1) {
     s32 count = 0;
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
-    s32 type = func_001EFAA8(arg1);
+    s32 type = Item_GetType(arg1);
 
     if (type == 0) {
         s32 n = chr->unk_19[8];
@@ -785,23 +850,26 @@ s32 func_001F0420(s32 arg0, s32 arg1) {
     return count;
 }
 
-s32 func_001F0530(s32 arg0) {
-    return func_001EFAA8(arg0) - 2;
+// Item type - 2 (weapon type index).
+s32 Item_GetWeaponIndex(s32 arg0) {
+    return Item_GetType(arg0) - 2;
 }
 
-s32 func_001F0550(s32 arg0, s32 idx) {
+// Item arg0's type is weapon type D_003DE630[idx].
+s32 Item_IsWeaponType(s32 arg0, s32 idx) {
     if (arg0 != 0) {
-        return func_001EFAA8(arg0) == D_003DE630[idx];
+        return Item_GetType(arg0) == D_003DE630[idx];
     }
     return FALSE;
 }
 
-s32 func_001F05A0(s32 arg0) {
+// Item arg0's type is one of the ten weapon types in D_003DE630.
+s32 Item_IsWeapon(s32 arg0) {
     u32 type;
     u32 i;
 
     if (arg0 != 0) {
-        type = func_001EFAA8(arg0);
+        type = Item_GetType(arg0);
         for (i = 0; i < 10; i++) {
             if (type == D_003DE630[i]) {
                 return TRUE;
@@ -811,6 +879,7 @@ s32 func_001F05A0(s32 arg0) {
     return FALSE;
 }
 
+// True when D_003010F8->unk_036 is none of the four values in D_003DE690.
 s32 func_001F0600(void) {
     s32 i;
 
@@ -822,14 +891,16 @@ s32 func_001F0600(void) {
     return 1;
 }
 
-s32 func_001F0650(s32 arg0) {
+// Item arg0 is non-zero and of type 1 (accessory).
+s32 Item_IsAccessory(s32 arg0) {
     if (arg0 != 0) {
-        return func_001EFAA8(arg0) == 1;
+        return Item_GetType(arg0) == 1;
     }
     return FALSE;
 }
 
-s32 func_001F0680(s32 arg0) {
+// Number of abilities in character arg0's ability list (unk_40, 0-terminated, 48 max).
+s32 Char_GetAbilityCount(s32 arg0) {
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     s32 i;
 
@@ -841,6 +912,7 @@ s32 func_001F0680(s32 arg0) {
     return i;
 }
 
+// Number of entries in the 48-entry list at D_003010F8 + 0x599 (0-terminated, like a character ability list).
 s32 func_001F06E8(void) {
     s32 i;
 
@@ -852,7 +924,8 @@ s32 func_001F06E8(void) {
     return i;
 }
 
-s32 func_001F0730(s32 arg0, s32 arg1) {
+// Number of entries of ability arg1 in character arg0's list (bit 0x80 ignored).
+s32 Char_CountAbility(s32 arg0, s32 arg1) {
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     s32 count = 0;
     s32 i;
@@ -870,6 +943,7 @@ s32 func_001F0730(s32 arg0, s32 arg1) {
     return count;
 }
 
+// Number of entries arg0 in the list at D_003010F8 + 0x599 (bit 0x80 ignored).
 s32 func_001F07A0(s32 arg0) {
     s32 count = 0;
     s32 i;
@@ -887,19 +961,21 @@ s32 func_001F07A0(s32 arg0) {
     return count;
 }
 
-XBravo* func_001F0808(s32 arg0) {
+// Ability table entry (func_00147AE8).
+XBravo* Ability_GetData(s32 arg0) {
     return func_00147AE8(arg0);
 }
 
 #ifdef VERSION_FM
-u32 func_001F0820(s32 arg0) {
+// Entry unk_04 of ability arg0 (bit 0x80 cleared), or message 180 (FM); probably the name.
+u32 Ability_GetName(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_04;
     }
     return func_001F0EF0(180);
 }
 #else
-u32 func_001F0820(s32 arg0) {
+u32 Ability_GetName(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_04;
     }
@@ -908,14 +984,15 @@ u32 func_001F0820(s32 arg0) {
 #endif
 
 #ifdef VERSION_FM
-u32 func_001F0860(s32 arg0) {
+// Entry unk_08 of ability arg0, or message 180 (FM); probably the description.
+u32 Ability_GetDescription(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_08;
     }
     return func_001F0EF0(180);
 }
 #else
-u32 func_001F0860(s32 arg0) {
+u32 Ability_GetDescription(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_08;
     }
@@ -923,13 +1000,15 @@ u32 func_001F0860(s32 arg0) {
 }
 #endif
 
-u8 func_001F08A0(s32 arg0) {
+// Entry unk_00 of ability arg0; summed by Char_GetUsedAP, so the AP cost.
+u8 Ability_GetApCost(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_00;
     }
     return 0;
 }
 
+// Entry unk_02 of ability arg0.
 u16 func_001F08D8(s32 arg0) {
     if (arg0 != 0) {
         return func_00147AE8(arg0 & ~0x80)->unk_02;
@@ -937,15 +1016,18 @@ u16 func_001F08D8(s32 arg0) {
     return 0;
 }
 
+// Message 0xD4 + arg0 * 3 + arg1.
 s32 func_001F0910(s32 arg0, s32 arg1) {
     return func_001F0EF0(arg0 * 3 + arg1 + 0xD4);
 }
 
-s32 func_001F0938(s32 arg0) {
+// Stat 56 of character arg0 (D_003E3E50 = D_003E3D70 + 0xE0, the stats func_00141B10 fills); max AP by Char_GetFreeAP.
+s32 Char_GetMaxAP(s32 arg0) {
     return D_003E3E50[arg0].unk_00;
 }
 
-s32 func_001F0960(s32 arg0) {
+// Sum of the AP cost of character arg0's abilities without bit 0x80 (equipped ones, probably).
+s32 Char_GetUsedAP(s32 arg0) {
     XTangoChar* chr = &((XTangoParty*)D_003010F8)->chars[arg0];
     s32 sum = 0;
     s32 i = 0;
@@ -964,15 +1046,16 @@ loop:
     if (c & 0x80) {
         goto loop;
     }
-    sum += func_001F08A0(c);
+    sum += Ability_GetApCost(c);
     goto loop;
 end:
     return sum;
 }
 
-s32 func_001F0A00(s32 arg0) {
+// Character arg0's stat 56 minus Char_GetUsedAP, at least 0.
+s32 Char_GetFreeAP(s32 arg0) {
     XTangoUnkE4b* entry = &D_003E3D70[arg0];
-    s32 diff = entry->unk_E0 - func_001F0960(arg0);
+    s32 diff = entry->unk_E0 - Char_GetUsedAP(arg0);
 
     if (diff < 0) {
         diff = 0;
@@ -980,15 +1063,18 @@ s32 func_001F0A00(s32 arg0) {
     return diff;
 }
 
-void func_001F0A58(u32 arg0) {
+// Sets munny (at most 99999).
+void Munny_Set(u32 arg0) {
     D_003ED718->munny = arg0 <= 99999 ? arg0 : 99999;
 }
 
-s32 func_001F0A80(void) {
+// Returns munny.
+s32 Munny_Get(void) {
     return D_003ED718->munny;
 }
 
-void func_001F0A90(s32 arg0) {
+// Adds to munny, clamped to 0..99999.
+void Munny_Add(s32 arg0) {
     s32 val = D_003ED718->munny + arg0;
 
     D_003ED718->munny = val;
@@ -1001,7 +1087,8 @@ void func_001F0A90(s32 arg0) {
     }
 }
 
-void func_001F0AD0(s32 arg0) {
+// Subtracts from munny, clamped to 0..99999.
+void Munny_Sub(s32 arg0) {
     s32 val = D_003ED718->munny - arg0;
 
     D_003ED718->munny = val;
@@ -1016,7 +1103,8 @@ void func_001F0AD0(s32 arg0) {
 
 extern s32 D_003E3D6C;
 
-void func_001F0B10(void) {
+// Counts party members (D_003E3D6C, D_003DE6A0 with slot 3) and recomputes the stats (D_003E3D70) of all ten characters.
+void Party_RefreshStats(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -1034,13 +1122,15 @@ void func_001F0B10(void) {
     }
 }
 
+// func_0013DA88 of party slot arg0s character when non-zero and Actor_IsActive accepts it, else 0.
 s32 func_001F0BD8(s32 arg0) {
     s32 val = func_0013DA88(D_003010F8->unk_48E[arg0]);
-    if (val == 0 || func_001233F8(val) == 0) {
+    if (val == 0 || Actor_IsActive(val) == 0) {
         return 0;
     }
     return val;
 }
 
+// Empty.
 void func_001F0C28(void) {
 }

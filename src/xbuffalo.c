@@ -1,3 +1,8 @@
+/**
+ * Cooperative threads, probably: a table of 400 threads (one main, 15 big and 384 small, each with a context and
+ * stack), creation with a priority, entry and eight arguments, a run list sorted by priority, and freeing with an end
+ * callback. Also the script system reset hooks (func_001C20B8, func_001C2110) and a task list.
+ */
 #include "common.h"
 #include <stdarg.h>
 
@@ -8,16 +13,20 @@ s32 D_003759DC;
 s32 D_00623B38;
 s32 D_00623B48;
 
-INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1680);
+// Runs every thread in the run list D_0037A170 once (through a register-switching call) and frees the ones that ended; probably.
+INCLUDE_ASM("asm/nonmatchings/xbuffalo", CoThread_RunAll);
 
-s32 func_001C1838(void) {
+// Number of used threads counted by CoThread_SortRunList (D_003759DC).
+s32 CoThread_GetCount(void) {
     return D_003759DC;
 }
 
+// D_003759C4 = arg0.
 void func_001C1848(s32 arg0) {
     D_003759C4 = arg0;
 }
 
+// D_003759C8 = arg0.
 void func_001C1858(s32 arg0) {
     D_003759C8 = arg0;
 }
@@ -38,7 +47,8 @@ typedef struct {
 extern s32 D_0037A168;
 extern XBuffaloUnk1868* D_0037A16C;
 
-s32* func_001C1868(void) {
+// Address of the current thread's (D_0037A168) +0x10 quadword.
+s32* CoThread_GetCurrentData(void) {
     return &D_0037A16C[D_0037A168].unk_10;
 }
 
@@ -48,7 +58,7 @@ extern s32 D_006257D4;
 void func_001BE820(void*, s32);
 
 // sets up the slot table: slot 0, 15 big buffers (0x81C0) and 384 small ones (0x9C0) in D_006257D4
-void func_001C1888(void) {
+void CoThread_InitTable(void) {
     s32 buf;
     s32 i;
     s32* p;
@@ -94,9 +104,10 @@ void func_001C1888(void) {
     p[3] = -1;
 }
 
-void func_001C1888(void);
+void CoThread_InitTable(void);
 
-s32 func_001C1970(s32 arg0) {
+// Places the thread table, run list and thread memory in the block at arg0, sets up the table and returns the end of the block.
+s32 CoThread_SetupMemory(s32 arg0) {
     s32 p;
 
     p = arg0 + 0x16BC00;
@@ -107,21 +118,23 @@ s32 func_001C1970(s32 arg0) {
     D_003759C8 = 15;
     D_006257D4 = arg0;
     p = arg0 + 0x171388;
-    func_001C1888();
+    CoThread_InitTable();
     return p;
 }
 
 #ifdef VERSION_FM
-s32 func_001C19E8(void) {
+// Size of the memory CoThread_SetupMemory needs (0x171388 in FM).
+s32 CoThread_GetMemorySize(void) {
     return 0x171388;
 }
 #else
-s32 func_001C19E8(void) {
+s32 CoThread_GetMemorySize(void) {
     return 0x16FA88; // possibly some macro value?
 }
 #endif
 
-s32 func_001C19F8(s32 arg0) {
+// Index of a free big (arg0 == 0, 1..15) or small (16..399) thread, or -1.
+s32 CoThread_FindFree(s32 arg0) {
     s32 i;
 
     if (arg0 == 0) {
@@ -140,14 +153,16 @@ s32 func_001C19F8(s32 arg0) {
     return -1;
 }
 
-u16 func_001C1A90(s32 arg0) {
+// Used flag of thread arg0 (0 for a negative index).
+u16 CoThread_IsUsed(s32 arg0) {
     if (arg0 < 0) {
         return 0;
     }
     return D_0037A16C[arg0].unk_00;
 }
 
-void func_001C1AB8(s32 arg0) {
+// Calls the thread's end callback (+0x20) and frees it.
+void CoThread_Free(s32 arg0) {
     if (arg0 >= 0) {
         if (D_0037A16C[arg0].unk_20 != NULL) {
             D_0037A16C[arg0].unk_20();
@@ -159,19 +174,20 @@ void func_001C1AB8(s32 arg0) {
 }
 
 // frees every used slot (except slot 0) and sets the table up again
-void func_001C1AE0(void) {
+void CoThread_FreeAll(void) {
     s32 i;
 
     for (i = 1; i < 400; i++) {
         if (D_0037A16C[i].unk_00 != 0) {
-            func_001C1AB8(i);
+            CoThread_Free(i);
         }
     }
-    func_001C1888();
+    CoThread_InitTable();
 }
 
 #ifdef VERSION_FM
-void fm_func_001C0078(s32 arg0) {
+// Marks thread arg0 (or the current one for a negative arg0) to be freed (+0x04 bit 0) (FM only).
+void CoThread_RequestEnd(s32 arg0) {
     if (arg0 >= 0) {
         if (D_0037A16C[arg0].unk_00 != 0) {
             D_0037A16C[arg0].unk_04 |= 1;
@@ -182,6 +198,7 @@ void fm_func_001C0078(s32 arg0) {
 }
 #endif
 
+// Takes a free big thread (CoThread_FindFree(0)) and sets it up; probably another create variant.
 INCLUDE_ASM("asm/nonmatchings/xbuffalo", func_001C1B40);
 
 typedef union { u_long128 q; s32 w[4]; } XBuffaloQW;
@@ -189,8 +206,8 @@ typedef union { u_long128 q; s32 w[4]; } XBuffaloQW;
 s32 puts(const char*);
 extern char D_00490300[]; // error message for a full table
 
-// like func_001C1D38, with a slot from 1..15
-s32 func_001C1BE8(s32 arg0, s32 arg1, ...) {
+// like CoThread_Create, with a slot from 1..15
+s32 CoThread_CreateBig(s32 arg0, s32 arg1, ...) {
     va_list ap;
     XBuffaloQW t;
     s32 idx;
@@ -199,7 +216,7 @@ s32 func_001C1BE8(s32 arg0, s32 arg1, ...) {
     if (arg0 < 0) {
         arg0 = 0xFFFF;
     }
-    idx = func_001C19F8(0);
+    idx = CoThread_FindFree(0);
     if (idx < 0) {
         puts(D_00490300);
         return -1;
@@ -223,7 +240,7 @@ s32 func_001C1BE8(s32 arg0, s32 arg1, ...) {
 }
 
 // takes a free slot from 16 up; arg0 = id (0xFFFF if < 0), then nine words copied into qwords of unk_08
-s32 func_001C1D38(s32 arg0, s32 arg1, ...) {
+s32 CoThread_Create(s32 arg0, s32 arg1, ...) {
     va_list ap;
     XBuffaloQW t;
     s32 idx;
@@ -232,7 +249,7 @@ s32 func_001C1D38(s32 arg0, s32 arg1, ...) {
     if (arg0 < 0) {
         arg0 = 0xFFFF;
     }
-    idx = func_001C19F8(1);
+    idx = CoThread_FindFree(1);
     if (idx < 0) {
         return -1;
     }
@@ -260,7 +277,7 @@ typedef struct {
 } XBuffaloDraw;
 
 // frees the slots flagged in unk_04 bit 0, then lists the used slots in D_0037A170 sorted by unk_02 (ends with -1)
-void func_001C1E78(void) {
+void CoThread_SortRunList(void) {
     s16 order[0x400];
     s32 i;
     s32 j;
@@ -271,7 +288,7 @@ void func_001C1E78(void) {
     n = 1;
     for (i = 1; i < 400; i++) {
         if (D_0037A16C[i].unk_00 != 0 && (u16)(D_0037A16C[i].unk_04 & 1)) {
-            func_001C1AB8(i);
+            CoThread_Free(i);
         }
         if (D_0037A16C[i].unk_00 != 0) {
             n++;
@@ -308,18 +325,20 @@ void func_001C1E78(void) {
     ((XBuffaloDraw*)D_0037A170)[i + 1].buf = 0;
 }
 
-void func_001C1680(void);
+void CoThread_RunAll(void);
 
-void func_001C2080(s32 arg0) {
+// Calls CoThread_RunAll arg0 times.
+void CoThread_RunSteps(s32 arg0) {
     s32 i;
 
     for (i = 0; i < arg0; i++) {
-        func_001C1680();
+        CoThread_RunAll();
     }
 }
 
 #ifdef VERSION_FM
-void fm_func_001C06C0(s32 arg0, void (*arg1)(void)) {
+// Sets the end callback (+0x20) of thread arg0 (or the current one) (FM only).
+void CoThread_SetEndCallback(s32 arg0, void (*arg1)(void)) {
     if (arg0 < 0) {
         arg0 = D_0037A168;
     }
@@ -338,6 +357,7 @@ extern XBuffaloGM D_003854E0;
 void* func_001C2178(void);
 void func_001DE360(void);
 
+// Resets the script state (D_003854E0 +0x3034 / +0x3038, flag bit 58 of +0x3070), the task list and func_001DE360.
 void func_001C20B8(void) {
     D_003854E0.unk_3034 = 0;
     D_003854E0.unk_3038 = 0;
@@ -355,6 +375,7 @@ void func_001E01B8(void);
 void func_001EA430(void);
 void func_001E4918(void);
 
+// Initialises the script subsystems (func_001C21B8, func_001CEC98, func_001E01B8, func_001EA430, func_001E4918) and clears D_0037A178.
 void func_001C2110(void) {
     func_001C21B8();
     func_001CEC98();
@@ -368,6 +389,7 @@ void func_001C2110(void) {
 }
 
 #ifdef VERSION_FM
+// Clears D_0037A178 (FM only).
 void fm_func_001C07A8(void) {
     D_0037A178[0] = 0;
     D_0037A178[1] = 0;
@@ -376,11 +398,13 @@ void fm_func_001C07A8(void) {
 }
 #endif
 
+// Task: updates the task list D_00623B38.
 s32 func_001C2150(void) {
     TaskList_UpdateMatching(&D_00623B38, 0);
     return 0;
 }
 
+// Sets up the task list D_00623B38 and adds func_001C2150 (priority 50002).
 void* func_001C2178(void) {
     TaskList_Init(&D_00623B38, &D_00623B48, 0x1C, 8);
     return TaskSystem_AddTask(50002, func_001C2150);

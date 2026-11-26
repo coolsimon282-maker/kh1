@@ -1,27 +1,35 @@
+/**
+ * Vector, matrix and angle maths on VU0 types: lengths, angle wrapping and stepping, rotations, projection and screen
+ * tests, cubic splines, line intersection, Euler angles, and a frame-time countdown.
+ */
 #include "common.h"
 #include "fastmath.h"
 
-f32 func_001215A8(sceVu0FVECTOR, sceVu0FVECTOR);
+f32 Vec_CosAngle(sceVu0FVECTOR, sceVu0FVECTOR);
 
 extern f32 D_002B8340[];
 extern f32 D_002B8344[];
 
-f32 func_00120A38(sceVu0FVECTOR arg0) {
+// Length of the vector (sqrt of its inner product).
+f32 Vec_Length(sceVu0FVECTOR arg0) {
     f32 prod = sceVu0InnerProduct(arg0, arg0);
     return _sqrtf(prod);
 }
 
-f32 func_00120A58(sceVu0FVECTOR arg0) {
+// Length of the vector in the XZ plane.
+f32 Vec_LengthXZ(sceVu0FVECTOR arg0) {
     return _sqrtf(arg0[0] * arg0[0] + arg0[2] * arg0[2]);
 }
 
-s32 func_00120A78(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+// arg0 = arg1 rotated about Z, X, then Y by the angles in arg2.
+s32 Mat_RotateZXY(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0RotMatrixZ(arg0, arg1, arg2[2]);
     sceVu0RotMatrixX(arg0, arg0, arg2[0]);
     sceVu0RotMatrixY(arg0, arg0, arg2[1]);
 }
 
-f32 func_00120AC8(f32 x) {
+// Wraps an angle into -PI..PI (at most 0x400 steps of 2 PI).
+f32 Angle_Wrap(f32 x) {
     s32 i;
 
     for (i = 0; i < 0x400; i++) {
@@ -35,9 +43,10 @@ f32 func_00120AC8(f32 x) {
     }
     return x;
 }
-f32 func_00120AC8(f32);
+f32 Angle_Wrap(f32);
 
-void func_00120B40(sceVu0FVECTOR axis, sceVu0FMATRIX m, f32 ang) {
+// Rotation matrix of angle ang about the unit axis (Rodrigues form).
+void Mat_AxisAngle(sceVu0FVECTOR axis, sceVu0FMATRIX m, f32 ang) {
     sceVu0FVECTOR tmp[3];
     sceVu0FVECTOR v;
     f32 c;
@@ -79,7 +88,8 @@ void func_00120B40(sceVu0FVECTOR axis, sceVu0FMATRIX m, f32 ang) {
 }
 
 
-f32 func_00120D38(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
+// arg0 = arg1 * arg2 (w set to 1) divided by its w; returns 1 / w.
+f32 Vec_Project(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     f32 f;
     s32 i;
 
@@ -94,7 +104,8 @@ f32 func_00120D38(sceVu0FVECTOR arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
 }
 
 
-void func_00120DB8(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
+// Normalised normal of the triangle arg0[0..2].
+void Vec_TriangleNormal(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
     sceVu0FVECTOR v[2];
     s32 i;
 
@@ -107,7 +118,8 @@ void func_00120DB8(sceVu0FVECTOR* arg0, sceVu0FVECTOR arg1) {
     func_001223B0(arg1, arg1);
 }
 
-s32 func_00120E48(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
+// True when all eight points, transformed by m, are in front (w >= 1) and inside 0..4095 on screen.
+s32 Mat_IsBoxOnScreen(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
     sceVu0FVECTOR t;
     s32 i;
 
@@ -125,17 +137,20 @@ s32 func_00120E48(sceVu0FMATRIX m, sceVu0FVECTOR* v) {
     return 1;
 }
 
-void func_00120F48(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
+// arg1 = arg2 with X and Z scaled by arg0.
+void Vec_ScaleXZ(f32 arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
     arg1[0] = arg2[0] * arg0;
     arg1[1] = arg2[1];
     arg1[2] = arg2[2] * arg0;
     arg1[3] = arg2[3];
 }
 
-s32 func_00120F78(sceVu0FMATRIX arg0) {
+// True when arg0[0][2] < 0 or sceVu0ClipScreen rejects it.
+s32 Mat_IsClipped(sceVu0FMATRIX arg0) {
     return (arg0[0][2] < 0.0f || sceVu0ClipScreen(*arg0) != 0) ? TRUE : FALSE;
 }
 
+// Interpolates between two lines arg2 and arg3 (around their crossing point) by arg0 into arg1; returns 1.
 s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRIX arg3) {
     sceVu0FVECTOR v0;
     sceVu0FVECTOR v1;
@@ -177,7 +192,8 @@ s32 func_00120FC8(f32 arg0, sceVu0FMATRIX arg1, sceVu0FMATRIX arg2, sceVu0FMATRI
     return 1;
 }
 
-void func_00121200(f32* y, s32 n, f32* out) {
+// Natural cubic spline: the second-derivative terms of the n values y (end values 0).
+void Spline_ComputeCoeffs(f32* y, s32 n, f32* out) {
     f32 h[32];
     f32 t;
     s32 i;
@@ -200,7 +216,8 @@ void func_00121200(f32* y, s32 n, f32* out) {
 }
 
 
-f32 func_00121340(f32 t, f32* a, f32* b) {
+// Cubic spline value at t from values a and coefficients b.
+f32 Spline_Evaluate(f32 t, f32* a, f32* b) {
     s32 i = t;
     f32 f = t - i;
     f32 a0 = a[i];
@@ -211,7 +228,8 @@ f32 func_00121340(f32 t, f32* a, f32* b) {
     return (((b1 - b0) * f + b0 * 3.0f) * f + ((a1 - a0) - (b0 + b0 + b1))) * f + a0;
 }
 
-f32 func_001213B0(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVECTOR q, sceVu0FVECTOR n) {
+// Point where line p + t d meets the line through q along n in the XZ plane; returns t (NaN when parallel).
+f32 Line_IntersectXZ(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVECTOR q, sceVu0FVECTOR n) {
     f32 den = d[2] * n[0] - n[2] * d[0];
     f32 t;
 
@@ -225,12 +243,14 @@ f32 func_001213B0(sceVu0FVECTOR out, sceVu0FVECTOR p, sceVu0FVECTOR d, sceVu0FVE
 }
 
 
-void func_00121480(f32 arg0, f32 arg1, f32 arg2, f32 arg3, sceVu0FMATRIX arg4, sceVu0FVECTOR arg5) {
+// Drop shadow matrix (sceVu0DropShadowMatrix) with its translation scaled by arg3.
+void Mat_DropShadow(f32 arg0, f32 arg1, f32 arg2, f32 arg3, sceVu0FMATRIX arg4, sceVu0FVECTOR arg5) {
     sceVu0DropShadowMatrix(arg4, arg5, arg0, arg1, arg2, 0);
     sceVu0ScaleVectorXYZ(arg4[3], arg4[3], arg3);
 }
 
-void func_001214C8(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1) {
+// arg0 = the transposed 3x3 part of arg1, without translation.
+void Mat_Transpose3x3(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1) {
     arg0[0][0] = arg1[0][0];
     arg0[0][1] = arg1[1][0];
     arg0[0][2] = arg1[2][0];
@@ -249,8 +269,9 @@ void func_001214C8(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1) {
     arg0[3][3] = 1.0f;
 }
 
-f32 func_00121538(f32 a, f32 b, f32 c) {
-    f32 d = func_00120AC8(b - a);
+// Angle a turned towards b by at most c per frame (scaled by the time step D_002B8344).
+f32 Angle_StepTowards(f32 a, f32 b, f32 c) {
+    f32 d = Angle_Wrap(b - a);
 
     c *= D_002B8344[0];
     if (c < d) {
@@ -258,11 +279,12 @@ f32 func_00121538(f32 a, f32 b, f32 c) {
     } else if (d < -c) {
         d = -c;
     }
-    return func_00120AC8(a + d);
+    return Angle_Wrap(a + d);
 }
 
-#define XB_COS(a, b) (sceVu0InnerProduct(a, b) / (func_00120A38(a) * func_00120A38(b)))
-f32 func_001215A8(sceVu0FVECTOR a, sceVu0FVECTOR b) {
+#define XB_COS(a, b) (sceVu0InnerProduct(a, b) / (Vec_Length(a) * Vec_Length(b)))
+// Cosine of the angle between two vectors, clamped to -1..1.
+f32 Vec_CosAngle(sceVu0FVECTOR a, sceVu0FVECTOR b) {
     if (XB_COS(a, b) < -1.0f) {
         return -1.0f;
     }
@@ -272,12 +294,14 @@ f32 func_001215A8(sceVu0FVECTOR a, sceVu0FVECTOR b) {
     return XB_COS(a, b);
 }
 
-f32 func_001216A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
-    return acosf(func_001215A8(arg0, arg1));
+// Angle between two vectors (acos of Vec_CosAngle).
+f32 Vec_Angle(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
+    return acosf(Vec_CosAngle(arg0, arg1));
 }
 
-void func_00120B40(sceVu0FVECTOR, sceVu0FMATRIX, f32);
-void func_001216C8(sceVu0FVECTOR a, sceVu0FVECTOR b, sceVu0FVECTOR out, f32 t) {
+void Mat_AxisAngle(sceVu0FVECTOR, sceVu0FMATRIX, f32);
+// out = direction a turned towards b by at most t per frame.
+void Vec_RotateTowards(sceVu0FVECTOR a, sceVu0FVECTOR b, sceVu0FVECTOR out, f32 t) {
     sceVu0FVECTOR v0;
     sceVu0FVECTOR v1;
     sceVu0FVECTOR axis;
@@ -288,21 +312,22 @@ void func_001216C8(sceVu0FVECTOR a, sceVu0FVECTOR b, sceVu0FVECTOR out, f32 t) {
     sceVu0Normalize(v1, b);
     sceVu0OuterProduct(axis, v0, v1);
     sceVu0Normalize(axis, axis);
-    ang = func_001216A8(v0, v1);
+    ang = Vec_Angle(v0, v1);
     t *= D_002B8344[0];
     if (t < ang) {
         ang = t;
     } else if (ang < -t) {
         ang = -t;
     }
-    func_00120B40(axis, m, ang);
+    Mat_AxisAngle(axis, m, ang);
     sceVu0CopyVector(out, v0);
     out[3] = 0.0f;
     sceVu0ApplyMatrix(out, m, out);
 }
 
 
-void func_001217C0(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, f32* arg2) {
+// arg0 rows 0..2 = arg1 rows scaled by arg2[0..2].
+void Mat_ScaleRows(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, f32* arg2) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -310,7 +335,8 @@ void func_001217C0(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, f32* arg2) {
     }
 }
 
-void func_00121830(f32* arg0, f32* arg1, f32* arg2) {
+// arg0[i] = arg1[i] / arg2[i] for X, Y, Z.
+void Vec_Div3(f32* arg0, f32* arg1, f32* arg2) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
@@ -318,14 +344,16 @@ void func_00121830(f32* arg0, f32* arg1, f32* arg2) {
     }
 }
 
-void func_00121878(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
-    arg1[0] = atan2f(-arg0[1], func_00120A58(arg0));
+// Pitch and yaw of direction arg0 into arg1 (roll 0).
+void Vec_ToAngles(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1, sceVu0FVECTOR arg2) {
+    arg1[0] = atan2f(-arg0[1], Vec_LengthXZ(arg0));
     arg1[1] = atan2f(arg0[0], arg0[2]);
     arg1[2] = 0.0f;
     arg1[3] = 1.0f;
 }
 
-void func_001218E0(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
+// Euler angles of the normalised rotation matrix arg0 into arg1.
+void Mat_ToEuler(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
     sceVu0FMATRIX m;
     s32 i;
 
@@ -338,7 +366,8 @@ void func_001218E0(sceVu0FMATRIX arg0, sceVu0FVECTOR arg1) {
 }
 
 
-f32 func_00121970(f32 arg0) {
+// A positive timer minus D_002B8340[1], not below 0.
+f32 Timer_CountDown(f32 arg0) {
     if (arg0 > 0.0f) {
         arg0 -= D_002B8340[1];
         if (arg0 < 0.0f) {
@@ -348,7 +377,8 @@ f32 func_00121970(f32 arg0) {
     return arg0;
 }
 
-void func_001219A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
+// Vec_CosAngle of the two vectors flattened to Y = 0 (the result is not returned).
+void Vec_CosAngleXZ(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     sceVu0FVECTOR stack0;
     sceVu0FVECTOR stack1;
 
@@ -356,5 +386,5 @@ void func_001219A8(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     sceVu0CopyVector(stack1, arg1);
     stack0[1] = 0.0f;
     stack1[1] = 0.0f;
-    func_001215A8(stack0, stack1);
+    Vec_CosAngle(stack0, stack1);
 }

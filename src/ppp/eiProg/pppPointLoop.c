@@ -10,7 +10,8 @@ typedef struct {
     /* 0xC */ void* m_pp;
 } VPointLoop;
 
-void func_0018C410(PPointLoop* p, VPointLoop* ac) {
+// Sets up the PointLoop work: parameter pointer, offset 0.
+void PointLoop_InitWork(PPointLoop* p, VPointLoop* ac) {
     ac->m_pp = p;
     ac->m_scl.x = ac->m_scl.y = ac->m_scl.z = 0.0f;
 }
@@ -37,7 +38,7 @@ void pppPointLoopCalc(pppPObject* pobj, PPointLoop* p, pppCtrlTable* ctbl) {
     }
 
     if (ac->m_pp == NULL) {
-        func_0018C410(p, ac);
+        PointLoop_InitWork(p, ac);
     }
 
     if (p->cdt.time == pobj->time) {

@@ -49,7 +49,7 @@ typedef struct {
 
 extern sceVu0FMATRIX D_00615E70;
 extern sceVu0FVECTOR D_003701D0;
-s32 func_0019D840(VRyjMegaBirth* v, PRyjMegaBirth* p);
+s32 RyjShipolyBone_HasData(VRyjMegaBirth* v, PRyjMegaBirth* p);
 void func_0019E8B0(VRyjMegaBirth* v, PRyjMegaBirth* p, void* w);
 
 void pppRyjMegaBirthCalc(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl) {
@@ -80,7 +80,7 @@ void pppRyjMegaBirthCalc(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl)
         v->vecForce[3] = 0.0f;
         sceVu0Normalize(v->vecForce, v->vecForce);
     }
-    if (!func_0019D840(v, p)) {
+    if (!RyjShipolyBone_HasData(v, p)) {
         return;
     }
     switch (p->unk_26) {
@@ -105,7 +105,8 @@ void pppRyjMegaBirthCalc(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl)
 
 extern sceVu0FMATRIX D_00615EB0;
 
-void func_0019ECE8(sceVu0FMATRIX out, PRyjMegaBirth* p, sceVu0FMATRIX m) {
+// The particle matrix: m times the parent's matrix (times D_00615EB0) unless unk_CC is set.
+void RyjMegaBirth_GetMatrix(sceVu0FMATRIX out, PRyjMegaBirth* p, sceVu0FMATRIX m) {
     if (p->unk_CC == 0) {
         sceVu0MulMatrix(out, m, ppvPObj.next->cmat);
         sceVu0MulMatrix(out, D_00615EB0, out);
@@ -381,9 +382,9 @@ typedef struct {
 } MBDrawSt;
 
 extern s32 D_00616224;
-s32 func_001BA340(void* shape, MBDrawSt* st, s32 size);
-s32 func_0019D840(VRyjMegaBirth* v, PRyjMegaBirth* p);
-void func_0019ECE8(sceVu0FMATRIX out, PRyjMegaBirth* p, sceVu0FMATRIX m);
+s32 op_shape_draw(void* shape, MBDrawSt* st, s32 size);
+s32 RyjShipolyBone_HasData(VRyjMegaBirth* v, PRyjMegaBirth* p);
+void RyjMegaBirth_GetMatrix(sceVu0FMATRIX out, PRyjMegaBirth* p, sceVu0FMATRIX m);
 
 void pppRyjMegaBirthDraw(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl) {
     VRyjMegaBirth* v = (VRyjMegaBirth*)&pobj->val[ctbl->useVal[2]];
@@ -404,13 +405,13 @@ void pppRyjMegaBirthDraw(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl)
     u8* data;
     s32 i;
 
-    if (!func_0019D840(v, p)) {
+    if (!RyjShipolyBone_HasData(v, p)) {
         return;
     }
     if (p->shpIdx == 0xFFFF) {
         return;
     }
-    func_0019ECE8(m0, p, v->matPar);
+    RyjMegaBirth_GetMatrix(m0, p, v->matPar);
     st = &ppvEnv->lpShape[p->shpIdx];
     if (p->unk_0F == 0) {
         ds.flags = 0x80;
@@ -487,7 +488,7 @@ void pppRyjMegaBirthDraw(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl)
             ds.col[2] = b;
             ds.col[3] = a;
             ds.unk_14 = D_00616224;
-            D_00616224 = func_001BA340(data, &ds, st->nPacketSize);
+            D_00616224 = op_shape_draw(data, &ds, st->nPacketSize);
         }
         if (wmat != NULL) {
             wmat++;

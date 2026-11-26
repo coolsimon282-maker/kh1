@@ -93,8 +93,8 @@ void func_00122518(void) {
     D_002C1EA8 = 0;
     func_0013CE18();
     func_001255F8();
-    func_00124F38();
-    func_00128B68();
+    Actor_InitSystem();
+    GraphicsDma_Init();
     func_001334A8();
     func_00149078();
     func_00142260();
@@ -110,7 +110,7 @@ INCLUDE_ASM("asm/nonmatchings/xlamp", func_00122588);
 void func_00122720(void) {
     func_00235EE0();
     func_00178140(0);
-    func_0013BCA8(); // in xapple
+    Summon_End(); // in xapple
     func_0014C498();
     func_00124CD8();
     func_0012FB18();
@@ -128,7 +128,7 @@ void func_00122720(void) {
 
 void func_001227B0(void) {
     func_00178140(0);
-    func_0013BCA8(); // in xapple
+    Summon_End(); // in xapple
     func_0015A5D0();
     func_00124DD0();
     func_001333A0();

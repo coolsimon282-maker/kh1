@@ -7,7 +7,7 @@ typedef struct {
     u8 twice;
 } PRandUpCV;
 
-s8 func_0018A0F8(s8 a, f32 b);
+s8 RandCV_Scale(s8 a, f32 b);
 
 static inline f32 vu0Rand(void) {
     f32 r;
@@ -49,12 +49,13 @@ void pppRandUpCVCalc(pppPObject* pobj, PRandUpCV* p, pppCtrlTable* ctbl) {
     rv = (f32*)&pobj->val[ctbl->useVal[0]];
     *rv = r;
     tgt = p->index != -1 ? (u8*)&pobj->val[p->index] : (u8*)&ppvDbgTemp;
-    tgt[0] += func_0018A0F8(p->scale[0], *rv);
-    tgt[1] += func_0018A0F8(p->scale[1], *rv);
-    tgt[2] += func_0018A0F8(p->scale[2], *rv);
-    tgt[3] += func_0018A0F8(p->scale[3], *rv);
+    tgt[0] += RandCV_Scale(p->scale[0], *rv);
+    tgt[1] += RandCV_Scale(p->scale[1], *rv);
+    tgt[2] += RandCV_Scale(p->scale[2], *rv);
+    tgt[3] += RandCV_Scale(p->scale[3], *rv);
 }
 
-s8 func_0018A2D0(s8 arg0, f32 arg1) {
+// a * b.
+s8 RandUpCV_Scale(s8 arg0, f32 arg1) {
     return arg0 * arg1;
 }

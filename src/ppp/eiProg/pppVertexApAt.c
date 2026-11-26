@@ -15,7 +15,8 @@ typedef struct {
 
 pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 
-void func_00186640(pppPObject* parent, PVertexApAt* p, u16 arg2) {
+// Creates a child particle at vertex index arg2 of the shape.
+void VertexApAt_BornAtIndex(pppPObject* parent, PVertexApAt* p, u16 arg2) {
     pppPObject* pobj;
     pppPDataVal* pdv;
 
@@ -92,12 +93,12 @@ void pppVertexApAtCalc(pppPObject* pobj, PVertexApAtC* p, pppCtrlTable* ctbl) {
                 if (v[0] >= vsf->indexN) {
                     v[0] = 0;
                 }
-                func_00186640(pobj, (PVertexApAt*)p, v[0]++);
+                VertexApAt_BornAtIndex(pobj, (PVertexApAt*)p, v[0]++);
             }
             break;
         case 1:
             while (n-- != 0) {
-                func_00186640(pobj, (PVertexApAt*)p, (s32)(vu0Rand() * vsf->indexN));
+                VertexApAt_BornAtIndex(pobj, (PVertexApAt*)p, (s32)(vu0Rand() * vsf->indexN));
             }
             break;
         }

@@ -39,7 +39,8 @@ f32 D_00372740[4] = {3.0f, 2.0f, 0.0f, 0.0f};
 extern f32 D_00372740[4];
 #endif
 
-void func_0019C618(f32* out, u8* a, u8* b, f32 t) {
+// Interpolates the 16-byte keys i and i + 1 of a and b at the fraction of t (VU0).
+void RyjShipoly_LerpKey(f32* out, u8* a, u8* b, f32 t) {
     s32 i = t;
     f32* v = D_00372740;
     v[2] = t - (f32)i;
@@ -74,7 +75,8 @@ typedef struct {
     /* 0x23 */ u8 x;
 } PRyjShipolyTex;
 
-void func_0019C698(PRyjShipolyTex* p, s32* x0, s32* x1, s32* y0, s32* y1) {
+// Texture rectangle (x0, x1, y0, y1 in 1/4096) from the parameter's width / height selection.
+void RyjShipoly_GetTexRect(PRyjShipolyTex* p, s32* x0, s32* x1, s32* y0, s32* y1) {
     s32 x = 0;
     s32 w = 0x1000;
     s32 h = 0x1000;

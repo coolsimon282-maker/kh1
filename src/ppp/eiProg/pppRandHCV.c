@@ -7,7 +7,7 @@ typedef struct {
     u8 twice;
 } PRandHCV;
 
-s16 func_0018A4A8(s16 a, f32 b);
+s16 RandDownCV_Scale(s16 a, f32 b);
 
 static inline f32 vu0Rand(void) {
     f32 r;
@@ -51,12 +51,13 @@ void pppRandHCVCalc(pppPObject* pobj, PRandHCV* p, pppCtrlTable* ctbl) {
     rv = (f32*)&pobj->val[ctbl->useVal[0]];
     *rv = r;
     tgt = p->index != -1 ? (u16*)&pobj->val[p->index] : (u16*)&ppvDbgTemp;
-    tgt[0] += func_0018A4A8(p->scale[0], *rv);
-    tgt[1] += func_0018A4A8(p->scale[1], *rv);
-    tgt[2] += func_0018A4A8(p->scale[2], *rv);
-    tgt[3] += func_0018A4A8(p->scale[3], *rv);
+    tgt[0] += RandDownCV_Scale(p->scale[0], *rv);
+    tgt[1] += RandDownCV_Scale(p->scale[1], *rv);
+    tgt[2] += RandDownCV_Scale(p->scale[2], *rv);
+    tgt[3] += RandDownCV_Scale(p->scale[3], *rv);
 }
 
-s16 func_0018A680(s16 a, f32 b) {
+// a * b.
+s16 RandHCV_Scale(s16 a, f32 b) {
     return a * b;
 }

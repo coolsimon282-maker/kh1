@@ -25,7 +25,7 @@ typedef union {
 } PObjPtr;
 
 pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
-void func_001AB0F0(void* dst, void* src);
+void op_vec_copy_xyz(void* dst, void* src);
 
 void pppKeThHitBornCalc(pppPObject* pobj, PKeThHitBorn* p, pppCtrlTable* ctbl) {
     u8* v = (u8*)&pobj->val[ctbl->useVal[1]];
@@ -57,7 +57,7 @@ void pppKeThHitBornCalc(pppPObject* pobj, PKeThHitBorn* p, pppCtrlTable* ctbl) {
                     born = pppCreatePObject(ppvMng, pdt);
                     ((PObjPtr*)&born->ppobj)->p = pobj;
                 }
-                func_001AB0F0(&born->val[p->bornPt.valoff], n->data[n->idx]);
+                op_vec_copy_xyz(&born->val[p->bornPt.valoff], n->data[n->idx]);
             }
         }
     } else {
@@ -69,7 +69,7 @@ void pppKeThHitBornCalc(pppPObject* pobj, PKeThHitBorn* p, pppCtrlTable* ctbl) {
                     born = pppCreatePObject(ppvMng, pdt);
                     ((PObjPtr*)&born->ppobj)->p = pobj;
                 }
-                func_001AB0F0(&born->val[p->bornPt.valoff], n->data[n->idx]);
+                op_vec_copy_xyz(&born->val[p->bornPt.valoff], n->data[n->idx]);
             }
         }
     }

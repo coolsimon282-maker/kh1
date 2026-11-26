@@ -16,7 +16,7 @@ typedef struct {
 } PKeLnsLpT;
 
 void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLpT* p, pppCtrlTable* ctbl);
-void func_00194350(KeLnsLpT* lp, s32 arg1, s32 frame);
+void KeLnsFlsLp_Draw(KeLnsLpT* lp, s32 arg1, s32 frame);
 
 void pppKeLnsLpTDraw(pppPObject* pobj, PKeLnsLpT* p, pppCtrlTable* ctbl) {
     KeLnsLpT* lp;
@@ -35,7 +35,7 @@ void pppKeLnsLpTDraw(pppPObject* pobj, PKeLnsLpT* p, pppCtrlTable* ctbl) {
     t[3] = 1.0f;
     sceVu0ApplyMatrix(t, ppvPObj.next->dmat, t);
     sceVu0ScaleVector((f32*)lp->unk_B0, t, 1.0f / t[3]);
-    func_00194350(lp, 0, 0);
+    KeLnsFlsLp_Draw(lp, 0, 0);
 }
 
 #ifdef VERSION_FM
@@ -85,7 +85,8 @@ typedef struct {
 
 void KeLnsShp_Draw(KeLnsLpTArg* arg, s32 arg1);
 
-void func_00194980(KeLnsLpTUnk* arg0) {
+// Builds the draw argument (screen matrix) and draws.
+void KeLnsLpT_Draw(KeLnsLpTUnk* arg0) {
     KeLnsLpTArg arg;
 
     arg.unk_00 = arg0;

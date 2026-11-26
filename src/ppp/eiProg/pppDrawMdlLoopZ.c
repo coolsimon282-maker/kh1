@@ -31,7 +31,8 @@ typedef struct {
     /* 0x1C */ f32 m_uv;
 } VDrawMdlLoopZ;
 
-void func_0018CC58(PDrawMdlLoopZ* p, VDrawMdlLoopZ* v) {
+// Sets up the DrawMdlLoopZ work: parameter pointer, texture scroll start (tu, tv), speeds 0.
+void DrawMdlLoopZ_InitWork(PDrawMdlLoopZ* p, VDrawMdlLoopZ* v) {
     v->m_tu = p->m_tu;
     v->m_tv = p->m_tv;
     v->m_dtu = v->m_ddtu = v->m_dtv = v->m_ddtv = 0.0f;
@@ -56,7 +57,7 @@ void pppDrawMdlLoopZCalc(pppPObject* pobj, PDrawMdlLoopZ* p, pppCtrlTable* ctbl)
     PDrawMdlLoopZ* pmdl = (PDrawMdlLoopZ*)&pobj->val[ctbl->useVal[2]];
 
     if (vmdl->m_pp == NULL) {
-        func_0018CC58(p, vmdl);
+        DrawMdlLoopZ_InitWork(p, vmdl);
     }
 
     if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {

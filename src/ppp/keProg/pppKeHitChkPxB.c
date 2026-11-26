@@ -31,8 +31,8 @@ typedef struct {
     /* 0x24 */ f32 t;
 } KeRaySphere;
 
-s32 func_001AAFC0(KeRaySphere* r);
-void func_001AB150(f32* a, f32* b, f32* c);
+s32 op_ray_sphere(KeRaySphere* r);
+void op_vec_sub_xyz(f32* a, f32* b, f32* c);
 
 void pppKeHitChkPxBCalc(pppPObject* pobj, PKeHitChkPxB* p, pppCtrlTable* ctbl) {
     VKeHitChkPxBCalc* v = (VKeHitChkPxBCalc*)&pobj->val[ctbl->useVal[2]];
@@ -73,7 +73,7 @@ void pppKeHitChkPxBCalc(pppPObject* pobj, PKeHitChkPxB* p, pppCtrlTable* ctbl) {
     rs.radius = ball->r;
     sceVu0SubVector(rs.org, pos, ball->pos);
     sceVu0CopyVector(rs.dir, vel);
-    if (!func_001AAFC0(&rs)) {
+    if (!op_ray_sphere(&rs)) {
         return;
     }
     if (rs.t < 0.0f) {
@@ -87,7 +87,7 @@ void pppKeHitChkPxBCalc(pppPObject* pobj, PKeHitChkPxB* p, pppCtrlTable* ctbl) {
     sceVu0AddVector(d, d, rs.org);
     sceVu0AddVector(v->pos, v->ball->pos, d);
     if (v->flag & 2) {
-        func_001AB150(vel, v->pos, pos);
+        op_vec_sub_xyz(vel, v->pos, pos);
         pobj->time = 0xFFFF0000;
     }
 }

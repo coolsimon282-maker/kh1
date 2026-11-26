@@ -1,3 +1,9 @@
+/**
+ * Frame and display basics: system messages (probably controller / disc warnings) drawn on their own display while
+ * the game waits, allset.set / allarea.nam tables, display environment (D_004D2610), the VSync callback with the play
+ * time counter and the per-frame time step, camera matrix copies, and the movie player overlay (dkmovie.x at 0xF20000,
+ * driven by command numbers).
+ */
 #include "common.h"
 #include "xtailor.h"
 #include "xblade.h"
@@ -243,18 +249,21 @@ extern s32 D_004D2990;
 extern s32 D_004D2994;
 
 extern s32 func_F20000();
-void func_00110F88(s32);
+void Movie_SetSysMessage(s32);
 
+// Sends GS packet D_002B8170 and waits for the GS.
 void func_0010F3D0(void) {
     func_00106948(&D_002B8170);
     sceGsSyncPath(0, 0);
 }
 
+// Sends GS packet D_002B8240 and waits for the GS.
 void func_0010F3F8(void) {
     func_00106948(&D_002B8240);
     sceGsSyncPath(0, 0);
 }
 
+// Sends GS packet D_002B8280 and waits for the GS.
 void func_0010F420(void) {
     func_00106948(&D_002B8280);
     sceGsSyncPath(0, 0);
@@ -262,6 +271,7 @@ void func_0010F420(void) {
 
 #define DISPWIDTH 640
 
+// Sets the display registers for the system message screen (PMODE, DISPFB1 at 0xD8000, DISPLAY1 640 x 128).
 void func_0010F448(void) {
     sceGsSyncPath(0, 0);
     DPUT_GS_PMODE(SCE_GS_SET_PMODE(1, 1, 0, 0, 0, 0, 0xFF));
@@ -274,15 +284,16 @@ extern s32 D_004D5B0C;
 void func_001FD100(s32, s32);
 void func_001F1ED8(s32, s32, s32, s32, s32);
 void func_00207748(s32, s32, s32, s32);
-void func_0010F4A8(u32 arg0) {
+// Draws the system message for the bits of arg0 (4: message 3 or 4 with a choice, 2: message 2, 1: message 1) on its own display, or restores the display for 0; probably the controller / disc warnings.
+void SysMessage_Draw(u32 arg0) {
     if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
         if (arg0 == 0) {
             sceGsSyncPath(0, 0);
-            func_001102C0();
+            Frame_UpdateTimeStep();
             DPUT_GS_PMODE(0x22);
         } else {
             sceGsSyncPath(0, 0);
-            func_001102C0();
+            Frame_UpdateTimeStep();
             if (arg0 & 4) {
                 func_0010F3D0();
                 func_00106948(&D_002BBCC0);
@@ -327,15 +338,15 @@ void func_0010F4A8(u32 arg0) {
     }
 }
 #else
-void func_0010F4A8(u32 arg0) {
+void SysMessage_Draw(u32 arg0) {
     if ((D_002C1EB8.u8 >> 3 & 3) == 0) {
         if (arg0 == 0) {
             sceGsSyncPath(0, 0);
-            func_001102C0();
+            Frame_UpdateTimeStep();
             DPUT_GS_PMODE(0x22);
         } else {
             sceGsSyncPath(0, 0);
-            func_001102C0();
+            Frame_UpdateTimeStep();
             if (arg0 & 4) {
                 func_0010F3D0();
                 func_00106948(&D_002B8210);
@@ -381,18 +392,21 @@ void func_0010F4A8(u32 arg0) {
 }
 #endif
 
+// Saves D_002C1EB8 in D_004CF580 (state for the first two message bits).
 s32 func_0010F6F0(void) {
     D_004CF580 = D_002C1EB8.s32;
 }
 
+// Saves D_002C1EB8 in D_004CF588 (state for message bit 2).
 void func_0010F708(void) {
     D_004CF588 = D_002C1EB8.s32;
 }
 
-void func_0010F720(u32 arg0) {
-    func_0010F4A8(arg0);
-    if (func_00110EA8() != 0) {
-        func_00110F88(arg0);
+// SysMessage_Draw, and passes the bits to the movie player (Movie_SetSysMessage) while a movie runs.
+void SysMessage_Show(u32 arg0) {
+    SysMessage_Draw(arg0);
+    if (Movie_IsRunning() != 0) {
+        Movie_SetSysMessage(arg0);
     }
 }
 
@@ -407,7 +421,7 @@ extern s32 D_002BBD40;
 extern s32 D_002C1EB8_w __asm__("D_002C1EB8");
 extern s32 D_002B6484;
 extern volatile s32 D_002B9664;
-void func_00113A40(s32);
+void Sound_PauseNested(s32);
 void func_001220D0(void);
 void func_0011DE90(void);
 
@@ -415,7 +429,8 @@ static inline u32 xt_bit(u32 x, s32 n) {
     return (x >> n) & 1;
 }
 
-s32 func_0010F768(void) {
+// Loops while one of the watched bits of D_002C1EB8 is set (comparing with the states saved before), showing the message, pausing sound and updating the pads; returns whether a message was shown (FM).
+s32 SysMessage_WaitWhileActive(void) {
     volatile s32 loop;
     s32 saved;
     u32 mask;
@@ -450,52 +465,52 @@ s32 func_0010F768(void) {
         if (xt_bit(on1, 0) == 1) {
             mask |= 1;
             res = 1;
-            func_0010F720(mask);
+            SysMessage_Show(mask);
         }
         if (xt_bit(off1, 0) == 1) {
             mask &= ~1;
-            func_0010F720(mask);
+            SysMessage_Show(mask);
         }
         if (xt_bit(on1, 1) == 1) {
             mask |= 2;
             res = 1;
-            func_0010F720(mask);
+            SysMessage_Show(mask);
         }
         if (xt_bit(off1, 1) == 1) {
             mask &= ~2;
-            func_0010F720(mask);
+            SysMessage_Show(mask);
         }
         if (xt_bit(on2, 2) == 1) {
             mask |= 4;
             res = 1;
-            func_0010F720(mask);
+            SysMessage_Show(mask);
         }
         if (xt_bit(off2, 2) == 1) {
             mask &= ~4;
-            func_0010F720(mask);
+            SysMessage_Show(mask);
         }
         if (started == 0 && mask != 0) {
             started = 1;
-            func_00113A40(mask);
+            Sound_PauseNested(mask);
         }
         if (started == 1 && mask == 0) {
-            func_00113A40(0);
+            Sound_PauseNested(0);
         }
         if (mask != 0) {
             D_002B9664 = 1;
             func_0010FB90();
             func_001220D0();
             func_0010F708();
-            if (func_00110EA8() != 0) {
+            if (Movie_IsRunning() != 0) {
                 func_00110FA8();
             }
             func_0011DE90();
-            func_001102C0();
+            Frame_UpdateTimeStep();
             if ((mask & 4) && (D_002C5AD0_t.unk_08 & 0x2000)) {
                 func_0011D598(2);
                 if (D_004D5B0C == 0) {
                     D_004D5B0C = 1;
-                    func_0010F720(mask);
+                    SysMessage_Show(mask);
                 } else {
                     D_002C1EB8.u8 &= 0xFB;
                 }
@@ -509,10 +524,11 @@ s32 func_0010F768(void) {
     return res;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010F768);
+INCLUDE_ASM("asm/nonmatchings/xtailor", SysMessage_WaitWhileActive);
 #endif
 
-void func_0010FA30(s32* arg0) {
+// Fills the 17 pointer / size pairs D_002BBD48 / D_002BBD90 from the table of offsets at arg0 + 0x10.
+void AllSet_SetupTable(s32* arg0) {
     s32* p = arg0 + 4;
     s32 i;
 
@@ -523,28 +539,32 @@ void func_0010FA30(s32* arg0) {
     }
 }
 
-void func_0010FA88(void) {
+// Reads "allset.set" and sets up its table.
+void AllSet_Load(void) {
     void* src = func_00155ED8(0x34, 0xC);
     s32 size = func_00120438("allset.set", src);
     memcpy(&D_004CF590, src, size);
-    func_0010FA30(&D_004CF590);
+    AllSet_SetupTable(&D_004CF590);
 }
 
-void func_0010FAE8(void) {
+// Reads "allarea.nam" to D_004D0590.
+void AreaNames_Load(void) {
     void* src = func_00155ED8(0x34, 0xC);
     s32 size = func_00120438("allarea.nam", src);
     memcpy(&D_004D0590, src, size);
 }
 
-void* func_0010FB38(s32 arg0, s32 arg1) {
+// Name data of room arg1 of world arg0 in allarea.nam.
+void* AreaNames_Get(s32 arg0, s32 arg1) {
     u8* p = (u8*)&D_004D0590 + D_004D6B20[arg0 * 2];
     s32* q = (s32*)(p + 0x10);
 
     return p + q[arg1 * 2];
 }
 
-void* func_0010FB68(void) {
-    return func_0010FB38(curWorldNo, curRoomNo);
+// AreaNames_Get for the current world and room.
+void* AreaNames_GetCurrent(void) {
+    return AreaNames_Get(curWorldNo, curRoomNo);
 }
 
 #ifdef VERSION_FM
@@ -553,6 +573,7 @@ extern XTailorSave D_002C5AD0[2];
 void Pad_Update(void);
 void func_001BA4A8(void);
 
+// Updates the pads; while D_004D2990 is set the pad data is replaced by D_002BCA00 and func_001BA4A8 runs (probably demo playback) (FM).
 void func_0010FB90(void) {
     s32 i;
 
@@ -575,10 +596,12 @@ void func_0010FB90(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FB90);
 #endif
 
+// D_004D2990 = 0.
 void func_0010FCD0(void) {
     D_004D2990 = 0;
 }
 
+// D_004D2990 = 1.
 void func_0010FCE0(void) {
     D_004D2990 = 1;
 }
@@ -586,7 +609,8 @@ void func_0010FCE0(void) {
 extern f32 D_002BBDEC;
 extern volatile u32 D_004D90F0;
 
-void func_0010FCF0(void) {
+// Play time frame limit D_004D90F0: 0x14996C4 at 60 Hz (D_002BBDEC == 1.0), else 0x112A84E (both about 100 hours).
+void PlayTime_SetLimit(void) {
     if (D_002BBDEC == 1.0f) {
         D_004D90F0 = 0x14996C4;
     } else {
@@ -594,7 +618,8 @@ void func_0010FCF0(void) {
     }
 }
 
-void func_0010FD40(s16 w, s16 h) {
+// Sets the display environment D_004D2610 to w x h and puts it.
+void Gs_SetDisplaySize(s16 w, s16 h) {
     D_004D284C = 0;
     sceGsSetDefDispEnv(&D_004D2610, 1, w, h, 0, 0);
     D_004D2610.dispfb.FBP &= 0xFFFFFE00;
@@ -603,24 +628,28 @@ void func_0010FD40(s16 w, s16 h) {
     sceGsPutDispEnv(&D_004D2610);
 }
 
+// Sets D_002BC918 to grey arg0, sends packet D_002BC980 and sets a 512 x 447 display.
 void func_0010FDB8(s32 arg0) {
     D_002BC918 = SCE_GS_SET_RGBAQ(arg0, arg0, arg0, 0x80, 1);
     func_00106948(&D_002BC980);
-    func_0010FD40(0x200, 0x1BF);
+    Gs_SetDisplaySize(0x200, 0x1BF);
 }
 
-void func_0010FE10(u32* x, u32* y) {
+// Returns the display offset (DX, DY) of D_004D2610.
+void Gs_GetDisplayOffset(u32* x, u32* y) {
     *x = D_004D2610.display.DX;
     *y = D_004D2610.display.DY;
 }
 
-void func_0010FE38(void) {
+// Resets the GS (sceGsResetGraph) and puts the display environment again.
+void Gs_ResetGraph(void) {
     sceGsResetGraph(1, 1, 2, 0);
     DPUT_GS_EXTWRITE(0);
     sceGsPutDispEnv(&D_004D2610);
 }
 
-void func_0010FE78(s32 x, s32 y) {
+// Sets the display offset (DX, DY) of D_004D2610 and marks it changed (D_004D284C).
+void Gs_SetDisplayOffset(s32 x, s32 y) {
     D_004D2610.display.DX = x;
     D_004D2610.display.DY = y;
     D_004D284C = 1;
@@ -629,14 +658,15 @@ void func_0010FE78(s32 x, s32 y) {
 #ifdef VERSION_FM
 extern f32 D_002BBDEC;
 int sceDmaReset(int mode);
-void func_0010FCF0(void);
+void PlayTime_SetLimit(void);
 
+// Resets the GS path, DMA channel 1 and VU0, frame scale 1.0, play time limit (FM only).
 void fm_func_00110068(void) {
     sceGsResetPath();
     sceDmaReset(1);
     sceVpu0Reset();
     D_002BBDEC = 1.0f;
-    func_0010FCF0();
+    PlayTime_SetLimit();
 }
 #endif
 
@@ -652,7 +682,8 @@ extern u64 D_002BC750[13];
 extern u64 D_002BC7C0[13];
 extern u64 D_002BC830[13];
 
-void func_0010FEC0(void) {
+// Builds and puts the default draw environment D_004D8EF0 from the register tables D_002BC750..D_002BC830 (FM).
+void Gs_SetDefaultDrawEnv(void) {
     s32 i;
 
     for (i = 0; i < 13; i++) {
@@ -682,14 +713,15 @@ void func_0010FEC0(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_0010FEC0);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Gs_SetDefaultDrawEnv);
 #endif
 
 #ifdef VERSION_FM
-void fm_func_001101E8(void) {
+// Resets the GS, installs the VSync callback and sets the default draw environment (FM only).
+void Gs_Reset(void) {
     sceGsResetGraph(0, 1, 2, 0);
-    func_001102A0();
-    func_0010FEC0();
+    VSync_InstallCallback();
+    Gs_SetDefaultDrawEnv();
 }
 #endif
 
@@ -704,9 +736,10 @@ extern volatile s32 D_002B8340;
 extern volatile s32 D_004D90F4;
 s32 func_001115A0(void);
 void func_001115C0(void);
-void func_0010C110(void);
+void VSync_SignalFrame(void);
 
-s32 func_00110038(s32 arg0) {
+// VSync handler: interlace field, frame counters, the play time counter D_002BBDF4 (held at the limit), vsync count D_004D90F4.
+s32 VSync_Callback(s32 arg0) {
     if (DGET_GS_CSR() & 0x2000) {
         D_002BBDE8 = 1;
     } else {
@@ -730,23 +763,25 @@ s32 func_00110038(s32 arg0) {
     D_002B8340++;
     /* volatile read, plain store (the store sits in the jal delay slot) */
     *(s32*)&D_004D90F4 = D_004D90F4 + 1;
-    func_0010C110();
+    VSync_SignalFrame();
     return 0;
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110038);
-s32 func_00110038(s32);
+INCLUDE_ASM("asm/nonmatchings/xtailor", VSync_Callback);
+s32 VSync_Callback(s32);
 #endif
 
-void func_00110150(void) {
+// fadeScreenColor = (128, 128, 128, 128).
+void Fade_ResetScreenColor(void) {
     fadeScreenColor[3] = 128;
     fadeScreenColor[2] = 128;
     fadeScreenColor[1] = 128;
     fadeScreenColor[0] = 128;
 }
 
-void func_00110170(void) {
+// fadeScreenColor = (0, 0, 0, 0).
+void Fade_ClearScreenColor(void) {
     fadeScreenColor[3] = 0;
     fadeScreenColor[2] = 0;
     fadeScreenColor[1] = 0;
@@ -766,6 +801,7 @@ extern s32 D_002BC060[4];
 extern s32 D_002BC080[4];
 extern s32 D_002BC0B0[4];
 
+// Resets the fade and overlay state and colours (FM).
 void func_00110190(void) {
     D_002B834C = 0;
     D_002BBE14 = 0;
@@ -787,14 +823,15 @@ void func_00110190(void) {
     D_002BC0B0[1] = 0xFF;
     D_002BC0B0[0] = 0xFF;
     D_002BC0B0[3] = 0;
-    func_00110150();
+    Fade_ResetScreenColor();
 }
 
 #else
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110190);
 #endif
 
-void func_00110230(s32 a0) {
+// Sets the play time counter D_002BBDF4.
+void PlayTime_SetFrames(s32 a0) {
     D_002BBDF4 = a0;
 }
 
@@ -805,7 +842,8 @@ extern sceVu0FMATRIX D_002B9040;
 extern s32 D_002B2CC4;
 extern s32 D_002B9660;
 
-void func_00110240(void) {
+// Clears the frame counters and sets the time step D_002B8344 to the frame scale.
+void Frame_ResetCounters(void) {
     D_002BBDF0 = 0;
     D_002B8340 = 0;
     D_002BBE10 = 0;
@@ -816,8 +854,9 @@ void func_00110240(void) {
     D_002B9660 = 0;
 }
 
-void func_001102A0(void) {
-    sceGsSyncVCallback(func_00110038);
+// sceGsSyncVCallback(VSync_Callback).
+void VSync_InstallCallback(void) {
+    sceGsSyncVCallback(VSync_Callback);
 }
 
 #ifdef VERSION_FM
@@ -827,16 +866,17 @@ extern f32 D_002B8348;
 extern s32 D_002B8354;
 extern s32 D_002BBE10;
 extern s32 D_002B8C90;
-void func_0010C0E0(void);
+void Frame_WaitVSync(void);
 
-void func_001102C0(void) {
+// Waits for the next frame (Frame_WaitVSync) and sets the time step D_002B8344 from the vsyncs counted (capped at 5, scaled by D_002B8348) (FM).
+void Frame_UpdateTimeStep(void) {
     s32 i;
 
-    func_0010C0E0();
+    Frame_WaitVSync();
     D_002B8344 = D_004D90F4 * D_002BBDEC;
     if (D_004D90F4 < D_002B8354 + 1) {
         for (i = 0; i < D_002B8354; i++) {
-            func_0010C0E0();
+            Frame_WaitVSync();
             D_002B8344 = D_004D90F4 * D_002BBDEC;
         }
     }
@@ -855,7 +895,7 @@ void func_001102C0(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_001102C0);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Frame_UpdateTimeStep);
 #endif
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110410);
@@ -866,6 +906,7 @@ void func_00110AE0(void);
 void func_00110410(sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, sceVu0FMATRIX, f32, f32,
                    f32, f32, f32, f32, f32, f32, f32, f32);
 
+// Saves the six camera matrices (D_002B8370..D_002B84B0) and recomputes them with func_00110410 (FM).
 void func_00110848(f32 arg0) {
     func_00110AE0();
     sceVu0CopyMatrix(D_004D2590, D_002B8370);
@@ -882,6 +923,7 @@ void func_00110848(f32 arg0) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110848);
 #endif
 
+// Saves D_002B84F0 and multiplies three camera matrices by D_002DEC60.
 void func_001109A8(void) {
     sceVu0CopyMatrix(D_004D2950, D_002B84F0);
     sceVu0MulMatrix(D_002B84F0, D_002B83B0, D_002DEC60);
@@ -889,6 +931,7 @@ void func_001109A8(void) {
     sceVu0MulMatrix(D_002B8570, D_002B8470, D_002DEC60);
 }
 
+// Restores the six camera matrices saved by func_00110848.
 void func_00110A30(void) {
     sceVu0CopyMatrix(D_002B8370, D_004D2590);
     sceVu0CopyMatrix(D_002B83B0, D_004D2850);
@@ -901,6 +944,7 @@ void func_00110A30(void) {
 
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110AE0);
 
+// Sets the screen wobble factors D_002B9090 and clears their phases D_002B90A0.
 void func_00110C40(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     D_002B9090[0] = arg0;
     D_002B9090[1] = arg1;
@@ -916,6 +960,7 @@ extern sceVu0FVECTOR D_002BC190;
 void func_00176110(f32*);
 void func_00176150(f32*);
 
+// Applies the wobble (cosine of advancing phases) to vector arg0 and passes it to func_00176110 / func_00176150 (FM).
 void func_00110C70(sceVu0FVECTOR arg0) {
     register s32 i asm("$18");
     f32* ang;
@@ -945,31 +990,36 @@ void func_00110C70(sceVu0FVECTOR arg0) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110C70);
 #endif
 
-void func_00110DE0() {
+// Load callback of dkmovie.x: marks the player loaded and starts it (func_F20000(0, movie)).
+void Movie_OnPlayerLoaded() {
     D_002B9030 = 1;
     FlushCache(2);
     func_F20000(0, D_004D2994);
 }
 
-void func_00110E18(void) {
+// Clears the movie flags (D_002A30D0, D_002B9030, D_002B9084).
+void Movie_ClearState(void) {
     D_002A30D0 = 0;
     D_002B9030 = 0;
     D_002B9084 = 0;
 }
 
-s32 func_00110E38(s32 arg0) {
+// Loads the movie player overlay "dkmovie.x" to 0xF20000 for movie arg0.
+s32 Movie_Load(s32 arg0) {
     D_002B9030 = 0;
     D_004D2994 = arg0;
-    return cdvd_QueueFileLoad("dkmovie.x", &func_F20000, func_00110DE0, NULL);
+    return cdvd_QueueFileLoad("dkmovie.x", &func_F20000, Movie_OnPlayerLoaded, NULL);
 }
 
-void func_00110E78(void) {
-    func_00113A40(2);
+// Pauses sound, func_001EEC00(0x7B), player command 1.
+void Movie_Start(void) {
+    Sound_PauseNested(2);
     func_001EEC00(0x7B);
     func_F20000(1, 0);
 }
 
-s32 func_00110EA8(void) {
+// Player command 2 while the player is loaded, else 0.
+s32 Movie_IsRunning(void) {
     if (D_002B9030 == 0) {
         return 0;
     }
@@ -980,30 +1030,37 @@ s32 func_00110EA8(void) {
 INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110ED8);
 #endif
 
+// Movie player command 3.
 void func_00110EE8(void) {
     func_F20000(3, 0);
 }
 
+// Movie player command 8.
 void func_00110F08(void) {
     func_F20000(8, 0);
 }
 
+// Movie player command 9.
 void func_00110F28(void) {
     func_F20000(9, 0);
 }
 
+// Movie player command 4.
 void func_00110F48(void) {
     func_F20000(4, 0);
 }
 
+// Movie player command 5.
 void func_00110F68(void) {
     func_F20000(5, 0);
 }
 
-void func_00110F88(s32 arg0) {
+// Player command 6 with the system message bits.
+void Movie_SetSysMessage(s32 arg0) {
     func_F20000(6, arg0);
 }
 
+// Movie player command 7.
 void func_00110FA8(void) {
     func_F20000(7, 0);
 }
@@ -1016,9 +1073,10 @@ extern s32 D_002BBE18;
 void func_001016B8(void);
 s32 func_001EEC00(s32);
 void func_00114430(void);
-void func_00113A40(s32);
+void Sound_PauseNested(s32);
 
-void func_00110FC8(void) {
+// Ends the movie: command 4, clears the movie flags, resumes sound (FM).
+void Movie_Finish(void) {
     if (D_002BBDE0 == 3 && D_002A3F44 == 1) {
         D_002A3F44 = 0;
         func_001016B8();
@@ -1030,15 +1088,16 @@ void func_00110FC8(void) {
     func_00110F48();
     D_002B9030 = 0;
     D_002B9084 = 1;
-    func_00113A40(0);
+    Sound_PauseNested(0);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xtailor", func_00110FC8);
+INCLUDE_ASM("asm/nonmatchings/xtailor", Movie_Finish);
 #endif
 
+// Calls sceCd / sceIpu functions with dummy arguments (probably only so that they are linked).
 void func_00111050(void) {
     sceCdRead(0, 0, NULL, NULL);
-    func_00247CD8();
+    Decode_Chunk();
     sceCdStatus();
     sceCdBreak();
     sceCdGetError();

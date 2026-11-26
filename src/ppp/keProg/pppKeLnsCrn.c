@@ -19,13 +19,13 @@ typedef struct {
     /* 0x14 */ f32* scl;
 } KeLnsCrnDrawInfo;
 
-void func_00193E80(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl);
+void KeLnsClm_Start(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl);
 void KeLnsStr_Draw(KeLnsCrnDrawInfo* info, s32 arg1);
 
 void pppKeLnsCrnDraw(pppPObject* pobj, PKeLnsCrnDraw* p, pppCtrlTable* ctbl) {
     KeLnsCrnDrawInfo info;
 
-    func_00193E80(pobj, p, ctbl);
+    KeLnsClm_Start(pobj, p, ctbl);
     info.col[0] = p->col[0] * ppvMng->colorR;
     info.col[1] = p->col[1] * ppvMng->colorG;
     info.col[2] = p->col[2] * ppvMng->colorB;
@@ -50,7 +50,8 @@ typedef struct {
     /* 0x4 */ s32 shpNo;
 } PKeLnsCrnShp;
 
-void func_001940F0(pppPObject* pobj, PKeLnsCrnShp* p, pppCtrlTable* ctbl) {
+// At the start time: links the work and sets the shape and parameters.
+void KeLnsCrn_Start(pppPObject* pobj, PKeLnsCrnShp* p, pppCtrlTable* ctbl) {
     KeLnsCrn* v = (KeLnsCrn*)&pobj->val[ctbl->useVal[0]];
     pppShapeSt* shp;
 

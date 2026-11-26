@@ -55,21 +55,24 @@ static inline f32 vu0Rand(void) {
     return r;
 }
 
-f32 func_001A3F98(void) {
+// VU0 random number 0..1.
+f32 RyjDttFr_Rand(void) {
     return vu0Rand();
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", func_001A3F98);
+INCLUDE_ASM("asm/nonmatchings/ppp/ryjProg/pppRyjDrawMatrixWorldDttFr", RyjDttFr_Rand);
 #endif
 
-f32 func_001A3F98(void);
-s8 func_001A3FE0(u8 a) {
-    f32 r = func_001A3F98();
+f32 RyjDttFr_Rand(void);
+// Random value in about -a/2 .. 1.5 a (a * 2 * rand - a / 2).
+s8 RyjDttFr_RandSpread(u8 a) {
+    f32 r = RyjDttFr_Rand();
     return (a * 2) * r - (a >> 1);
 }
 
-s32 func_001A4040(s32* arg0, ppvmng* arg1) {
+// True when the particle data is there (and the colour data when the parameters need it).
+s32 RyjDttFr_HasData(s32* arg0, ppvmng* arg1) {
     if (arg0[0] == 0) {
         return 0;
     }
@@ -131,9 +134,9 @@ void func_001A4538(s32 arg0, PRyjDttFr* p, f32* out, void* w) {
     r = p->unk_9C + p->unk_A0;
     d = r + r;
     do {
-        out[0] = d * func_001A3F98() - r;
-        out[1] = d * func_001A3F98() - r;
-        out[2] = d * func_001A3F98() - r;
+        out[0] = d * RyjDttFr_Rand() - r;
+        out[1] = d * RyjDttFr_Rand() - r;
+        out[2] = d * RyjDttFr_Rand() - r;
     } while (vu0Length(out) > r);
     out[3] = 1.0f;
     sceVu0ApplyMatrix(out, D_00615F30, out);

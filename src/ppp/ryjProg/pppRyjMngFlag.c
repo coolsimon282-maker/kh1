@@ -35,7 +35,7 @@ typedef union {
 #define SORT_COUNT (((RyjCount*)&D_0061E710)->v)
 
 // quicksort of D_0061E310[left..right] by pos[3], largest first
-void func_0019F698(s32 left, s32 right) {
+void RyjMngFlag_QuickSort(s32 left, s32 right) {
     s32 i;
     s32 j;
     f32 pivot;
@@ -61,15 +61,16 @@ void func_0019F698(s32 left, s32 right) {
         j--;
     }
     if (left < i - 1) {
-        func_0019F698(left, i - 1);
+        RyjMngFlag_QuickSort(left, i - 1);
     }
     if (j + 1 < right) {
-        func_0019F698(j + 1, right);
+        RyjMngFlag_QuickSort(j + 1, right);
     }
 }
 
 
-void func_0019F810(void) {
+// Collects the 256 entries of D_0035C710 with their view depth and sorts them.
+void RyjMngFlag_SortEntries(void) {
     s32 i;
     RyjSortEnt* e;
     f32 v[4] __attribute__((aligned(16)));
@@ -88,7 +89,7 @@ void func_0019F810(void) {
         }
     }
     if (SORT_COUNT >= 2) {
-        func_0019F698(0, SORT_COUNT - 1);
+        RyjMngFlag_QuickSort(0, SORT_COUNT - 1);
     }
     for (i = 0; i < SORT_COUNT; i++) {
         D_0061E310[i]->pos[3] = 1.0f;

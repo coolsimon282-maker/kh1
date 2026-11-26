@@ -14,13 +14,13 @@ typedef struct {
     /* 0x24 */ u8 col[4];
 } KeLnsArndTWork;
 
-void func_00193978(pppPObject* pobj, PKeLnsArndTDraw* p, pppCtrlTable* ctbl);
-void func_00194980(KeLnsArndTWork* w, s32 arg1, s32 arg2);
+void KeLnsLp_Start(pppPObject* pobj, PKeLnsArndTDraw* p, pppCtrlTable* ctbl);
+void KeLnsLpT_Draw(KeLnsArndTWork* w, s32 arg1, s32 arg2);
 
 void pppKeLnsArndTDraw(pppPObject* pobj, PKeLnsArndTDraw* p, pppCtrlTable* ctbl) {
     KeLnsArndTWork* w = (KeLnsArndTWork*)&pobj->val[ctbl->useVal[0]];
 
-    func_00193978(pobj, p, ctbl);
+    KeLnsLp_Start(pobj, p, ctbl);
     if (p->cdt.time == pobj->time) {
         w->unk_20 = p->unk_0C;
     }
@@ -29,7 +29,7 @@ void pppKeLnsArndTDraw(pppPObject* pobj, PKeLnsArndTDraw* p, pppCtrlTable* ctbl)
     w->col[2] = p->col[2] * ppvMng->colorB;
     w->col[3] = p->col[3] * ppvMng->colorA;
     sceVu0CopyVector(w->scl, ppvParScl);
-    func_00194980(w, 0, 0);
+    KeLnsLpT_Draw(w, 0, 0);
 }
 
 void pppKeLnsArndTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
@@ -65,7 +65,8 @@ typedef struct {
 
 void func_001A7C40(KeLnsArndTArg* arg, s32 arg1);
 
-void func_00194BD0(KeLnsArndTUnk* arg0) {
+// Builds the draw argument (screen matrix, sizes) and draws (func_001A7C40).
+void KeLnsArndT_Draw(KeLnsArndTUnk* arg0) {
     KeLnsArndTArg arg;
 
     arg.unk_00 = arg0;

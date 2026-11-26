@@ -55,12 +55,12 @@ typedef struct {
 extern s32 D_00616224;
 extern s32 ppvCurPrimpLen;
 extern s32 ppvPrimpLen;
-s32 func_001B8AA0(s32 pkt, MdDrawSt* st);
-s32 func_001B59C0(s32 pkt, MdDrawSt* st);
-s32 func_001B0118(s32 pkt, MdDrawSt* st);
+s32 op_md_direct_x300(s32 pkt, MdDrawSt* st);
+s32 op_md_direct(s32 pkt, MdDrawSt* st);
+s32 op_md_ot8_x300(s32 pkt, MdDrawSt* st);
 s32 op_md_ot8(s32 pkt, MdDrawSt* st);
-s32 func_001B3C00(s32 pkt, MdDrawSt* st);
-s32 func_001B1BF8(s32 pkt, MdDrawSt* st);
+s32 op_md_ot_x300(s32 pkt, MdDrawSt* st);
+s32 op_md_ot(s32 pkt, MdDrawSt* st);
 
 s32 op1_md_draw(s32 pkt, MdDrawSt* st, s32 size) {
     u32 flag = st->flag;
@@ -73,9 +73,9 @@ s32 op1_md_draw(s32 pkt, MdDrawSt* st, s32 size) {
             set_invisible();
         }
         if (st->flag & 0x300) {
-            r = func_001B8AA0(pkt, st);
+            r = op_md_direct_x300(pkt, st);
         } else {
-            r = func_001B59C0(pkt, st);
+            r = op_md_direct(pkt, st);
         }
         if (*(u16*)&st->invisible) {
             unset_test();
@@ -86,15 +86,15 @@ s32 op1_md_draw(s32 pkt, MdDrawSt* st, s32 size) {
         }
         if (flag & 0x80) {
             if (flag & 0x300) {
-                r = func_001B0118(pkt, st);
+                r = op_md_ot8_x300(pkt, st);
             } else {
                 r = op_md_ot8(pkt, st);
             }
         } else {
             if (flag & 0x300) {
-                r = func_001B3C00(pkt, st);
+                r = op_md_ot_x300(pkt, st);
             } else {
-                r = func_001B1BF8(pkt, st);
+                r = op_md_ot(pkt, st);
             }
         }
         ppvCurPrimpLen += r - D_00616224;

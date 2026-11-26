@@ -7,8 +7,8 @@ typedef struct {
     u8 twice;
 } PSRandHCV;
 
-NOTHROW_FN(s8 func_0018B5E8(s16 a, f32 b));
-NOTHROW_FN(f32 func_0018B620(u8 twice));
+NOTHROW_FN(s8 SRandDownCV_Scale(s16 a, f32 b));
+NOTHROW_FN(f32 SRandDownCV_Rand(u8 twice));
 
 void pppSRandHCVCalc(pppPObject* pobj, PSRandHCV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -21,22 +21,23 @@ void pppSRandHCVCalc(pppPObject* pobj, PSRandHCV* p, pppCtrlTable* ctbl) {
         return;
     }
     rv = (f32*)&pobj->val[ctbl->useVal[0]];
-    rv[0] = func_0018B620(p->twice);
-    rv[1] = func_0018B620(p->twice);
-    rv[2] = func_0018B620(p->twice);
-    rv[3] = func_0018B620(p->twice);
+    rv[0] = SRandDownCV_Rand(p->twice);
+    rv[1] = SRandDownCV_Rand(p->twice);
+    rv[2] = SRandDownCV_Rand(p->twice);
+    rv[3] = SRandDownCV_Rand(p->twice);
     if (p->index != -1) {
         tgt = (u16*)&pobj->val[p->index];
     } else {
         tgt = (u16*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018B5E8(p->scale[0], rv[0]);
-    tgt[1] += func_0018B5E8(p->scale[1], rv[1]);
-    tgt[2] += func_0018B5E8(p->scale[2], rv[2]);
-    tgt[3] += func_0018B5E8(p->scale[3], rv[3]);
+    tgt[0] += SRandDownCV_Scale(p->scale[0], rv[0]);
+    tgt[1] += SRandDownCV_Scale(p->scale[1], rv[1]);
+    tgt[2] += SRandDownCV_Scale(p->scale[2], rv[2]);
+    tgt[3] += SRandDownCV_Scale(p->scale[3], rv[3]);
 }
 
-s8 func_0018B7F8(s16 a, f32 b) {
+// a * b.
+s8 SRandHCV_Scale(s16 a, f32 b) {
     return a * b;
 }
 
@@ -62,7 +63,8 @@ static inline f32 vu0Rand(void) {
     return r;
 }
 
-f32 func_0018B828(u8 twice) {
+// VU0 random number 0..1, or the average of two (twice).
+f32 SRandHCV_Rand(u8 twice) {
     f32 r = vu0Rand();
 
     if (twice) {

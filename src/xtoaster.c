@@ -1,3 +1,8 @@
+/**
+ * Actors (XToaster, 0x4B0 bytes): the 96-actor array D_002C64A0 with the three party slots D_002E26A0 right after it;
+ * allocation, lookup by id, teams (flags bits 37..38 of the u64 at +0x370), state word stack, placement, party setup,
+ * removal. +0x130 points at the actor definition (XToast: character number +0x4C, kind +0x54, name +0x68).
+ */
 #include "common.h"
 #include "libvu0.h"
 
@@ -124,17 +129,17 @@ typedef struct XToaster {
 extern XToaster D_002C64A0[];
 extern XToaster D_002E26A0[];
 
-void func_00123AB8(XToaster* arg0);
-XToaster* func_00123880(s32 arg0);
-void func_00123C90(XToaster* arg0, s32 arg1);
-void func_00124BC8(XToaster* arg0);
-XToaster* func_001234A0(XToaster* arg0);
+void Actor_FreeModel(XToaster* arg0);
+XToaster* Actor_FindById(s32 arg0);
+void Actor_SetPosition(XToaster* arg0, s32 arg1);
+void Actor_Remove(XToaster* arg0);
+XToaster* Actor_Next(XToaster* arg0);
 s32 func_00123768(XToaster* arg0);
 void func_00124CD8(void);
 void func_00136D38(XToaster* arg0);
 void func_00162110(s32 arg0, void* arg1);
 void func_00149860(XToaster* arg0);
-void func_00123B20(XToaster* arg0);
+void Actor_Free(XToaster* arg0);
 
 #define XT_FLAGS(p) (*(u64*)&(p)->unk_370)
 /* 3 XToaster* slots at 0x2E26A0 (right after the XToaster array) */
@@ -192,8 +197,9 @@ extern s32 D_002C648C;
 extern char D_004F7150[4][32];
 extern char D_0048B549[];
 
-char* func_001231E0(s32 id, char* buf) {
-    XToaster* p = func_00123880(id);
+// Text for actor id arg0 (its definition's name at +0x68, or the id type and number) in arg1 or one of four static buffers, upper-cased.
+char* Actor_GetDebugName(s32 id, char* buf) {
+    XToaster* p = Actor_FindById(id);
     XToast* t;
     s32 len;
     s32 i;
@@ -229,6 +235,7 @@ char* func_001231E0(s32 id, char* buf) {
 INCLUDE_RODATA("asm/nonmatchings/xtoaster", D_00487030);
 #endif
 
+// Fills arg1 with the actor's model (+0x154), the first word of +0x14C (or 0) and +0x1D0.
 void func_00123318(XToaster* arg0, s32* arg1) {
     arg1[0] = arg0->unk_154;
     if (arg0->unk_14C != 0) {
@@ -239,6 +246,7 @@ void func_00123318(XToaster* arg0, s32* arg1) {
     arg1[2] = arg0->unk_1D0;
 }
 
+// Sets the actor definition's +0x44 to arg0.
 void func_00123340(f32 arg0, XToaster* arg1) {
     arg1->unk_130->unk_44 = arg0;
 }
@@ -249,6 +257,7 @@ typedef union {
     f32 f;
 } XToasterAnyF32;
 
+// Sets the actor definition's +0x44 and the bytes +0x5E, +0x5F.
 void func_00123350(XToaster* arg0, f32 arg1, f32 arg2, f32 arg3) {
     ((XToasterAnyF32*)&arg0->unk_130->unk_44)->f = arg1;
     arg0->unk_130->unk_5E = (u32)arg2;
@@ -262,6 +271,7 @@ static inline s32 xtoaster_inl_001233D0(XToaster* arg0) {
     return 1;
 }
 
+// True when definition byte +0x5F is set and state bit 0x2000000 is clear.
 s32 func_001233D0(XToaster* arg0) {
     s32 ret = 0;
     if (arg0->unk_130->unk_5F) {
@@ -270,7 +280,8 @@ s32 func_001233D0(XToaster* arg0) {
     return ret;
 }
 
-s32 func_001233F8(XToaster* arg0) {
+// True for a non-NULL actor whose flags (+0x370) have the "used" bit 32 set and the "removed" bit 33 clear.
+s32 Actor_IsActive(XToaster* arg0) {
     s32 ret = 0;
     if (arg0 != NULL) {
         if ((XT_FLAGS(arg0) & 0x300000000) == 0x100000000) {
@@ -280,21 +291,23 @@ s32 func_001233F8(XToaster* arg0) {
     return ret;
 }
 
-void func_00123430(XToaster* arg0, XToaster* arg1, s32 arg2) {
+// Sets actor arg0's parent (+0x74) and +0x78, then recounts every active actor's children (+0x80).
+void Actor_SetParent(XToaster* arg0, XToaster* arg1, s32 arg2) {
     XToaster* p = NULL;
     arg0->unk_074 = arg1;
     arg0->unk_078 = arg2;
-    while ((p = func_001234A0(p)) != NULL) {
+    while ((p = Actor_Next(p)) != NULL) {
         p->unk_080 = 0;
     }
-    while ((p = func_001234A0(p)) != NULL) {
+    while ((p = Actor_Next(p)) != NULL) {
         if (p->unk_074 != NULL) {
             p->unk_074->unk_080++;
         }
     }
 }
 
-XToaster* func_001234A0(XToaster* p) {
+// Next active actor after p in the 96-actor array D_002C64A0 (from the first for NULL), or NULL.
+XToaster* Actor_Next(XToaster* p) {
     if (p == NULL) {
         p = D_002C64A0;
     } else {
@@ -308,7 +321,8 @@ XToaster* func_001234A0(XToaster* p) {
     return NULL;
 }
 
-s64 func_00123518(XToaster* arg0, XToaster* arg1) {
+// True when arg1 has a team (flags bits 37..38) different from arg0's and is not flagged 0x200.
+s64 Actor_IsOpponent(XToaster* arg0, XToaster* arg1) {
     s64 ret = 0;
     if (!(arg1->unk_000 & 0x200)) {
         u64 t = (XT_FLAGS(arg1) >> 37) & 3;
@@ -319,9 +333,10 @@ s64 func_00123518(XToaster* arg0, XToaster* arg1) {
     return ret;
 }
 
-XToaster* func_00123558(XToaster* arg0, XToaster* p) {
-    while ((p = func_001234A0(p)) != NULL) {
-        if (func_00123518(arg0, p)) {
+// Next active actor after p that is an opponent of arg0.
+XToaster* Actor_FindNextOpponent(XToaster* arg0, XToaster* p) {
+    while ((p = Actor_Next(p)) != NULL) {
+        if (Actor_IsOpponent(arg0, p)) {
             return p;
         }
     }
@@ -332,8 +347,9 @@ static inline u64 xtoaster_inl_team(XToaster* p) {
     return (XT_FLAGS(p) >> 37) & 3;
 }
 
-XToaster* func_001235B8(XToaster* arg0, XToaster* p) {
-    while ((p = func_001234A0(p)) != NULL) {
+// Next active actor after p (other than arg0) of arg0's team.
+XToaster* Actor_FindNextAlly(XToaster* arg0, XToaster* p) {
+    while ((p = Actor_Next(p)) != NULL) {
         if (arg0 != p && xtoaster_inl_team(arg0) == xtoaster_inl_team(p)) {
             return p;
         }
@@ -341,8 +357,9 @@ XToaster* func_001235B8(XToaster* arg0, XToaster* p) {
     return NULL;
 }
 
+// Next active actor of kind 2, 9 or 10 or of team 2.
 XToaster* func_00123620(XToaster* p) {
-    while ((p = func_001234A0(p)) != NULL) {
+    while ((p = Actor_Next(p)) != NULL) {
         if (p->unk_006 == 2 || p->unk_006 == 9 || p->unk_006 == 10 || ((s32)(XT_FLAGS(p) >> 37) & 3) == 2) {
             return p;
         }
@@ -350,10 +367,11 @@ XToaster* func_00123620(XToaster* p) {
     return NULL;
 }
 
-s32 func_00123698(void) {
+// Number of active actors of team 2.
+s32 Actor_CountTeam2(void) {
     s32 n = 0;
     XToaster* p = NULL;
-    while ((p = func_001234A0(p)) != NULL) {
+    while ((p = Actor_Next(p)) != NULL) {
         if (((XT_FLAGS(p) >> 37) & 3) == 2) {
             n++;
         }
@@ -361,6 +379,7 @@ s32 func_00123698(void) {
     return n;
 }
 
+// True when the actor's data (+0x134) has byte 4 set, +0x3A0 == 0 and the u64 at +0 has bit 0x8000 without 0x10.
 s32 func_001236F0(XToaster* arg0) {
     s32 ret = 0;
     if (arg0->unk_134 != NULL && arg0->unk_134[4] != 0 && arg0->unk_3A0 == 0) {
@@ -371,6 +390,7 @@ s32 func_001236F0(XToaster* arg0) {
     return ret;
 }
 
+// True when the actor's data byte 5 is set and the u64 at +0 has bit 0x8000 without 0x20.
 s32 func_00123730(XToaster* arg0) {
     s32 ret = 0;
     if (arg0->unk_134 != NULL && arg0->unk_134[5] != 0) {
@@ -381,6 +401,7 @@ s32 func_00123730(XToaster* arg0) {
     return ret;
 }
 
+// True when one of the actor's data byte 6 slots is free in +0x3A8 (kind not 2, bit 0x8000 without 0x48).
 s32 func_00123768(XToaster* p) {
     s32 i;
     s32 m;
@@ -403,6 +424,7 @@ static inline s32 xtoaster_inl_001237E8(XToaster* arg0) {
     return 1;
 }
 
+// func_00123768 and state bits 0x1000080 clear.
 s32 func_001237E8(XToaster* arg0) {
     s32 ret = 0;
     if (func_00123768(arg0)) {
@@ -411,18 +433,21 @@ s32 func_001237E8(XToaster* arg0) {
     return ret;
 }
 
-void func_00123830(XToaster* arg0, s32 arg1) {
+// Pushes the actor's state word (+0x000) on its small stack (+0x37C) and sets it to arg1.
+void Actor_PushState(XToaster* arg0, s32 arg1) {
     arg0->unk_37C[arg0->unk_388++] = arg0->unk_000;
     arg0->unk_000 = arg1;
 }
 
-void func_00123858(XToaster* arg0) {
+// Restores the actor's state word from its stack.
+void Actor_PopState(XToaster* arg0) {
     if (arg0->unk_388 > 0) {
         arg0->unk_000 = arg0->unk_37C[--arg0->unk_388];
     }
 }
 
-XToaster* func_00123880(s32 id) {
+// Actor for id arg0 by its type byte (bits 16..23): 0 party slot 0..2, 1 character number (definition +0x4C), 11 definition +0x4E, else the actor's own id (+0x04).
+XToaster* Actor_FindById(s32 id) {
     XToaster* p;
     s32 i;
     s32 t = (u32)id >> 16 & 0xFF;
@@ -436,7 +461,7 @@ XToaster* func_00123880(s32 id) {
             }
         }
         p = NULL;
-        while ((p = func_001234A0(p)) != NULL) {
+        while ((p = Actor_Next(p)) != NULL) {
             if (p->unk_130->unk_4C == (id & 0xFFFF)) {
                 return p;
             }
@@ -454,14 +479,14 @@ XToaster* func_00123880(s32 id) {
         break;
     case 11:
         p = NULL;
-        while ((p = func_001234A0(p)) != NULL) {
+        while ((p = Actor_Next(p)) != NULL) {
             if (p->unk_130->unk_4E == (id & 0xFFFF)) {
                 return p;
             }
         }
         break;
     default:
-        for (p = func_001234A0(NULL); p != NULL; p = func_001234A0(p)) {
+        for (p = Actor_Next(NULL); p != NULL; p = Actor_Next(p)) {
             if (*(s32*)p->unk_004 == id) {
                 return p;
             }
@@ -471,27 +496,32 @@ XToaster* func_00123880(s32 id) {
     return NULL;
 }
 
-s32 func_001239D8(s32 arg0) {
-    XToaster* p = func_00123880(arg0);
+// Character number (definition +0x4C) of actor id arg0, or 0xFF.
+s32 Actor_GetCharNo(s32 arg0) {
+    XToaster* p = Actor_FindById(arg0);
     if (p != NULL) {
         return p->unk_130->unk_4C;
     }
     return 0xFF;
 }
 
-void func_00123A08(s32 arg0, s32 arg1) {
-    func_00123880(arg0)->unk_000 |= 1 << arg1;
+// Sets bit arg1 of actor id arg0's state word.
+void Actor_SetStateBit(s32 arg0, s32 arg1) {
+    Actor_FindById(arg0)->unk_000 |= 1 << arg1;
 }
 
-void func_00123A40(s32 arg0, s32 arg1) {
-    func_00123880(arg0)->unk_000 &= ~(1 << arg1);
+// Clears bit arg1 of actor id arg0's state word.
+void Actor_ClearStateBit(s32 arg0, s32 arg1) {
+    Actor_FindById(arg0)->unk_000 &= ~(1 << arg1);
 }
 
-s32 func_00123A80(s32 arg0, s32 arg1) {
-    return func_00123880(arg0)->unk_000 & (1 << arg1);
+// Tests bit arg1 of actor id arg0's state word.
+s32 Actor_TestStateBit(s32 arg0, s32 arg1) {
+    return Actor_FindById(arg0)->unk_000 & (1 << arg1);
 }
 
-void func_00123AB8(XToaster* arg0) {
+// Releases the actor's model (+0x154, func_00162110) and its +0x14C data unless flags bit 39 is set.
+void Actor_FreeModel(XToaster* arg0) {
     if (!((XT_FLAGS(arg0) >> 39) & 1)) {
         if (arg0->unk_154 != 0) {
             func_00162110(arg0->unk_154, &arg0->unk_158[4]);
@@ -504,19 +534,21 @@ void func_00123AB8(XToaster* arg0) {
     }
 }
 
-void func_00123B20(XToaster* arg0) {
-    func_00123AB8(arg0);
+// Actor_FreeModel, then clears the state word and +0x374.
+void Actor_Free(XToaster* arg0) {
+    Actor_FreeModel(arg0);
     arg0->unk_000 = 0;
     arg0->unk_374 = 0;
 }
 
-s32 func_00123B50(void) {
+// Task: frees every actor flagged removed (bit 33, without bit 55).
+s32 Actor_FreeRemovedTask(void) {
     XToaster* p = D_002C64A0;
     s32 i;
 
     for (i = 0; i < 96; i++, p++) {
         if ((XT_FLAGS(p) & 0x80000200000000) == 0x200000000) {
-            func_00123B20(p);
+            Actor_Free(p);
         }
     }
     return 0;
@@ -525,7 +557,8 @@ s32 func_00123B50(void) {
 void* memset(void*, s32, u32);
 extern XToaster* D_002E26AC;
 
-XToaster* func_00123BD0(void) {
+// Takes the next unused actor slot (round robin from D_002E26AC), clears it and marks it used; NULL when all 96 are used.
+XToaster* Actor_Alloc(void) {
     s32 i;
     for (i = 0; i < 96; i++) {
         XToaster* p = D_002E26AC;
@@ -553,14 +586,15 @@ typedef struct {
     /* 0x90 */ XToaster* unk_90;
 } XToasterObj;
 
-f32 func_00120AC8(f32);
+f32 Angle_Wrap(f32);
 f32 sinf(f32);
 f32 cosf(f32);
 void func_00116660(sceVu0FVECTOR);
 XToasterObj* func_0014A398(XToasterObj*);
 extern sceVu0FVECTOR D_002C58A0;
 
-void func_00123C90(XToaster* p, s32 arg1) {
+// Places the actor at vector arg1 (w = angle), resets its motion fields and ground position.
+void Actor_SetPosition(XToaster* p, s32 arg1) {
     f32* v = (f32*)arg1;
     XToasterObj* q;
     f32 a;
@@ -569,7 +603,7 @@ void func_00123C90(XToaster* p, s32 arg1) {
     p->unk_010[3] = 1.0f;
     sceVu0CopyVector(p->unk_050, p->unk_010);
     if (!((XT_FLAGS(p) >> 44) & 1)) {
-        a = func_00120AC8(v[3]);
+        a = Angle_Wrap(v[3]);
         p->unk_030[0] = sinf(a);
         p->unk_030[1] = 0.0f;
         p->unk_030[2] = cosf(a);
@@ -603,30 +637,34 @@ void func_00123C90(XToaster* p, s32 arg1) {
     }
 }
 
-void func_00123E48(s32 arg0, s32 arg1) {
-    func_00123C90(func_00123880(arg0), arg1);
+// Actor_SetPosition for actor id arg0.
+void Actor_SetPositionById(s32 arg0, s32 arg1) {
+    Actor_SetPosition(Actor_FindById(arg0), arg1);
 }
 
-void func_00123E78(s32 arg0, sceVu0FVECTOR arg1) {
-    XToaster* p = func_00123880(arg0);
+// Sets actor id arg0's direction vector (+0x30) and marks it fixed (flags bit 44).
+void Actor_SetDirectionById(s32 arg0, sceVu0FVECTOR arg1) {
+    XToaster* p = Actor_FindById(arg0);
     XT_FLAGS(p) |= 0x100000000000;
     sceVu0CopyVector(p->unk_030, arg1);
     func_00136D38(p);
 }
 
+// Copies arg1 to actor id arg0's vector +0x40.
 void func_00123ED0(s32 arg0, sceVu0FVECTOR arg1) {
-    sceVu0CopyVector(func_00123880(arg0)->unk_040, arg1);
+    sceVu0CopyVector(Actor_FindById(arg0)->unk_040, arg1);
 }
 
-void func_00112DE0(sceVu0FVECTOR);
-void func_00112EE8(sceVu0FVECTOR);
-void func_00112FE8(sceVu0FVECTOR);
+void World_GetSpawnPos0(sceVu0FVECTOR);
+void World_GetSpawnPos1(sceVu0FVECTOR);
+void World_GetSpawnPos2(sceVu0FVECTOR);
 void func_0014EAB0(XToaster*, sceVu0FVECTOR);
 void func_0014EB60(XToaster*, sceVu0FVECTOR);
 void func_0014E668(sceVu0FVECTOR, s32, sceVu0FVECTOR, f32, f32);
 f32 atan2f(f32, f32);
 
-void func_00123F00(XToaster* p, f32* v) {
+// Start position of the actor: the spawn point for the party (kind 0 / 1), else from its definition, placed near the player for some placement modes.
+void Actor_GetStartPosition(XToaster* p, f32* v) {
     XToast* t = p->unk_130;
     sceVu0FVECTOR w;
     sceVu0FVECTOR d;
@@ -634,13 +672,13 @@ void func_00123F00(XToaster* p, f32* v) {
 
     switch (t->unk_54) {
     case 0:
-        func_00112DE0(v);
+        World_GetSpawnPos0(v);
         break;
     case 1:
         if (XT_SLOTS[1] == p) {
-            func_00112EE8(v);
+            World_GetSpawnPos1(v);
         } else {
-            func_00112FE8(v);
+            World_GetSpawnPos2(v);
         }
         break;
     default:
@@ -657,7 +695,7 @@ void func_00123F00(XToaster* p, f32* v) {
             w[0] = t->unk_38[0];
             w[1] = t->unk_38[1];
             w[2] = t->unk_38[2];
-            func_00123E78(*(s32*)p->unk_004, w);
+            Actor_SetDirectionById(*(s32*)p->unk_004, w);
             break;
         default:
             v[0] = t->unk_1C[0];
@@ -700,7 +738,8 @@ extern s32 curWorldNo;
 extern s32 curRoomNo;
 extern s32 D_002B8684;
 
-void func_00124108(XToaster* p) {
+// When the actor is a party member (Party_FindCharacterSlot < 3, kind 3), puts it in party slot D_002E26A0[k] and sets up its party data.
+void Actor_SetupPartyMember(XToaster* p) {
     s32 n;
     s32 k;
     XToaster** slots;
@@ -738,6 +777,7 @@ void func_0012BA30(s32, void*, s32);
 s32 func_00132008(XToaster*);
 void func_00170400(XToaster*);
 
+// Starts the actor's per-kind logic (kind 1, 6) or its script from the definition (+0x0C, flags bit 48).
 void func_001242E8(XToaster* p) {
     XToast* t = p->unk_130;
     s8 k = t->unk_54;
@@ -786,7 +826,8 @@ void func_001350D0(s32);
 void func_00137448(XToaster*);
 extern sceVu0FVECTOR D_002C58B0;
 
-void func_00124420(XToaster* p, s32 arg1) {
+// Resets the actor's state, motion and timers and places it at arg1.
+void Actor_Reset(XToaster* p, s32 arg1) {
     f32 f;
     s32 r;
 
@@ -828,12 +869,13 @@ void func_00124420(XToaster* p, s32 arg1) {
     p->unk_098 = 0;
     func_00137448(p);
     p->unk_4AC = 60.0f;
-    func_00123C90(p, arg1);
+    Actor_SetPosition(p, arg1);
     sceVu0CopyVector(p->unk_3C0, D_002C58B0);
     sceVu0CopyVector(p->unk_120, D_002C58B0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/xtoaster", func_001245F0);
+// Creates an actor from its definition (func_001320A8), allocates it, sets it up (party, parent, start position) and resets it; probably.
+INCLUDE_ASM("asm/nonmatchings/xtoaster", Actor_Spawn);
 
 s32 func_0014F658(void*, s32);
 void func_001574B0(s32);
@@ -841,9 +883,10 @@ void func_00170E48(XToaster*);
 void func_0014ED30(XToaster*);
 extern s32 D_00350D80[];
 
-void func_00124BC8(XToaster* p) {
+// Takes an active actor out of the party slots and marks it removed (freed later by Actor_FreeRemovedTask).
+void Actor_Remove(XToaster* p) {
     s32 i;
-    if (func_001233F8(p)) {
+    if (Actor_IsActive(p)) {
         func_0014F658(p, 0);
         for (i = 0; i < 3; i++) {
             if (((XToaster**)D_002E26A0)[i] == p) {
@@ -863,10 +906,11 @@ void func_00124BC8(XToaster* p) {
     }
 }
 
-void func_00124CA0(s32 arg0) {
-    XToaster* p = func_00123880(arg0);
+// Actor_Remove for actor id arg0.
+void Actor_RemoveById(s32 arg0) {
+    XToaster* p = Actor_FindById(arg0);
     if (p != NULL) {
-        func_00124BC8(p);
+        Actor_Remove(p);
     }
 }
 
@@ -878,6 +922,7 @@ typedef struct {
 
 #define XT_PARTY_CHAR(o) ((XTPartyChar*)(*(s32*)&D_003010F8 + (o)))
 
+// Sets flag 0x10000 in the party character records (D_003010F8 + 0x30, 0x74 each) of the party actors with state bit 0x4000, clearing it for the others.
 void func_00124CD8(void) {
     s32 i;
     s32 o;
@@ -895,11 +940,12 @@ void func_00124CD8(void) {
 }
 
 #ifdef VERSION_FM
-void fm_func_001249D8(void) {
+// Updates the party flags, then removes every active actor (FM only).
+void Actor_RemoveAll(void) {
     XToaster* p = NULL;
     func_00124CD8();
-    while ((p = func_001234A0(p)) != NULL) {
-        func_00124BC8(p);
+    while ((p = Actor_Next(p)) != NULL) {
+        Actor_Remove(p);
     }
 }
 #endif
@@ -913,15 +959,16 @@ s32 func_001236F0(XToaster*);
 extern char D_002C6490[];
 #endif
 
+// For each active actor: kind 3 is reset in place (or removed when its script ended), kind 7 removed; stops actor scripts.
 void func_00124DD0(void) {
     sceVu0FVECTOR v;
     XToaster* p = NULL;
 
-    while ((p = func_001234A0(p)) != NULL) {
+    while ((p = Actor_Next(p)) != NULL) {
         switch (p->unk_006) {
         case 3:
             if (((s32)(XT_FLAGS(p) >> 48) & 1) && !((s32)(p->unk_440 >> 32) & 1)) {
-                func_00124BC8(p);
+                Actor_Remove(p);
             } else {
                 sceVu0CopyVector(v, p->unk_010);
                 if (!func_0014F5C8(p) && func_001236F0(p)) {
@@ -929,13 +976,13 @@ void func_00124DD0(void) {
                     func_00142480(v, D_002C6490, 0, v);
                 }
                 v[3] = p->unk_030[3];
-                func_00124420(p, (s32)v);
+                Actor_Reset(p, (s32)v);
                 func_00131500(p);
                 func_00130340(p, 0.0f, 0);
             }
             break;
         case 7:
-            func_00124BC8(p);
+            Actor_Remove(p);
             break;
         }
         if ((s32)(XT_FLAGS(p) >> 48) & 1) {
@@ -947,12 +994,13 @@ void func_00124DD0(void) {
     }
 }
 
-s32 func_00123B50(void);
+s32 Actor_FreeRemovedTask(void);
 void func_001372A0(void);
 void func_00138738(void);
 s32 TaskSystem_FindTask(s32 (*func)(void));
 
-void func_00124F38(void) {
+// Clears the actor array and party slots, resets related systems and adds Actor_FreeRemovedTask once.
+void Actor_InitSystem(void) {
     s32 i;
     for (i = 0; i < 96; i++) {
         (&D_002C64A0[0].unk_374)[i * (sizeof(XToaster) / 4)] = 0;
@@ -963,7 +1011,7 @@ void func_00124F38(void) {
     }
     func_001372A0();
     func_00138738();
-    if (!TaskSystem_FindTask(func_00123B50)) {
-        TaskSystem_AddTask(163001, func_00123B50);
+    if (!TaskSystem_FindTask(Actor_FreeRemovedTask)) {
+        TaskSystem_AddTask(163001, Actor_FreeRemovedTask);
     }
 }

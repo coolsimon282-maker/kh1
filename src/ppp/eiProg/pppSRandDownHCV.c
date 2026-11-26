@@ -7,8 +7,8 @@ typedef struct {
     u8 twice;
 } PSRandDownHCV;
 
-NOTHROW_FN(s8 func_0018BA08(s16 a, f32 b));
-NOTHROW_FN(f32 func_0018BA38(u8 twice));
+NOTHROW_FN(s8 SRandUpHCV_Scale(s16 a, f32 b));
+NOTHROW_FN(f32 SRandUpHCV_Rand(u8 twice));
 
 void pppSRandDownHCVCalc(pppPObject* pobj, PSRandDownHCV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -21,17 +21,17 @@ void pppSRandDownHCVCalc(pppPObject* pobj, PSRandDownHCV* p, pppCtrlTable* ctbl)
         return;
     }
     rv = (f32*)&pobj->val[ctbl->useVal[0]];
-    rv[0] = func_0018BA38(p->twice);
-    rv[1] = func_0018BA38(p->twice);
-    rv[2] = func_0018BA38(p->twice);
-    rv[3] = func_0018BA38(p->twice);
+    rv[0] = SRandUpHCV_Rand(p->twice);
+    rv[1] = SRandUpHCV_Rand(p->twice);
+    rv[2] = SRandUpHCV_Rand(p->twice);
+    rv[3] = SRandUpHCV_Rand(p->twice);
     if (p->index != -1) {
         tgt = (u16*)&pobj->val[p->index];
     } else {
         tgt = (u16*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018BA08(p->scale[0], rv[0]);
-    tgt[1] += func_0018BA08(p->scale[1], rv[1]);
-    tgt[2] += func_0018BA08(p->scale[2], rv[2]);
-    tgt[3] += func_0018BA08(p->scale[3], rv[3]);
+    tgt[0] += SRandUpHCV_Scale(p->scale[0], rv[0]);
+    tgt[1] += SRandUpHCV_Scale(p->scale[1], rv[1]);
+    tgt[2] += SRandUpHCV_Scale(p->scale[2], rv[2]);
+    tgt[3] += SRandUpHCV_Scale(p->scale[3], rv[3]);
 }

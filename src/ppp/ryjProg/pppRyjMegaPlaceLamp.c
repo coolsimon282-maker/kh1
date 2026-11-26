@@ -25,7 +25,8 @@ void pppRyjMegaPlaceLampCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     v0->unk_08++;
 }
 
-f32 func_001A0E60(void) {
+// VU0 random number 0..1.
+f32 RyjMegaPlaceLamp_Rand(void) {
     f32 r;
     __asm__ volatile(
         "addi $8, $0, -1
@@ -62,9 +63,10 @@ f32 func_001A0E60(void) {
     return r;
 }
 
-s8 func_001A0EA8(u8 arg0) {
-    func_001A0E60();
-    return arg0 * 2 * func_001A0E60() - (arg0 >> 1);
+// a * 2 * rand - a / 2 (after one discarded random number).
+s8 RyjMegaPlaceLamp_RandSpread(u8 arg0) {
+    RyjMegaPlaceLamp_Rand();
+    return arg0 * 2 * RyjMegaPlaceLamp_Rand() - (arg0 >> 1);
 }
 
 typedef struct {
@@ -81,7 +83,8 @@ typedef struct {
     /* 0x106 */ u8 unk_106;
 } RyjLampData;
 
-s32 func_001A0F10(RyjLampTex* tex, RyjLampData* data) {
+// True when the lamp texture data needed by the parameters is there.
+s32 RyjMegaPlaceLamp_HasData(RyjLampTex* tex, RyjLampData* data) {
     if (tex->unk_10 == 0) {
         return 0;
     }

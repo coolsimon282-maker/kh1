@@ -45,9 +45,11 @@ INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A95B8);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9620);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A96D0);
+// Builds the GS packet of one draw node (called by DrawNodeList_Draw); returns whether there is something to send.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", DrawNode_BuildPacket);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001A9C50);
+// Updates one draw node (called by DrawNodeList_Update for each node).
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", DrawNode_Update);
 
 typedef struct DrawNode {
     /* 0x00 */ struct DrawNode* next;
@@ -87,7 +89,7 @@ typedef struct {
 } DrawNodeInit;
 
 // sets up a node taken from the pool: clears it, links it to itself and writes the first entry's GIF tags
-void func_001AA7C0(DrawNodeInit* init) {
+void DrawNode_Init(DrawNodeInit* init) {
     DrawNode* node = init->node;
     s32* e;
 
@@ -130,7 +132,8 @@ typedef struct {
 
 void func_001A8770(DrawNodeEntry*, s32);
 
-void func_001AA868(DrawNode* node) {
+// Releases the node's entries (func_001A8770) and unlinks it from its link chain.
+void DrawNode_Release(DrawNode* node) {
     DrawNodeEntry* e = (DrawNodeEntry*)node->unk_40;
     s32 flags = node->flags & 0x20;
     s32 i;
@@ -150,7 +153,8 @@ void func_001AA868(DrawNode* node) {
     }
 }
 
-DrawNode* func_001AA940(DrawNodeList* list) {
+// Takes the first node of the free list, or NULL.
+DrawNode* DrawNodeList_Take(DrawNodeList* list) {
     DrawNode* node = list->free;
 
     if (node == NULL) {
@@ -185,16 +189,17 @@ void KeThResHd_Init(KeThResHd* hd, u8 count, u8 size) {
     *p = 0;
 }
 
-void func_001AA868(DrawNode*);
+void DrawNode_Release(DrawNode*);
 
-void func_001AA9C8(DrawNodeList* list, DrawNodeList* freeList) {
+// Releases every node of the list and puts it back on the free list.
+void DrawNodeList_FreeAll(DrawNodeList* list, DrawNodeList* freeList) {
     DrawNode* node = (DrawNode*)list->unk_0;
     DrawNode* cur;
 
     while (node != NULL) {
         cur = node;
         node = node->next;
-        func_001AA868(cur);
+        DrawNode_Release(cur);
         cur->next = freeList->free;
         freeList->free = cur;
     }
@@ -206,22 +211,22 @@ typedef struct {
     /* 0x4 */ u8 flags;
 } DrawNodeHead;
 
-void func_001AA7C0(DrawNodeInit*);
-void func_001AB0F0(f32*, f32*);
+void DrawNode_Init(DrawNodeInit*);
+void op_vec_copy_xyz(f32*, f32*);
 
 // pool is a DrawNodeList*; the variable is reused for the flags (that's what gives the register use)
-void func_001AAA30(DrawNodeHead* head, s32 pool, f32* arg2, f32* arg3) {
+void DrawNode_Add(DrawNodeHead* head, s32 pool, f32* arg2, f32* arg3) {
     DrawNodeInit init;
     DrawNode* node;
     u8 bits;
 
-    node = func_001AA940((DrawNodeList*)pool);
+    node = DrawNodeList_Take((DrawNodeList*)pool);
     if (node == NULL) {
         return;
     }
     init.count = ((u8*)pool)[1];
     init.node = node;
-    func_001AA7C0(&init);
+    DrawNode_Init(&init);
     node->unk_5C = 0;
     node->unk_30 = 0;
     bits = head->flags;
@@ -239,8 +244,8 @@ void func_001AAA30(DrawNodeHead* head, s32 pool, f32* arg2, f32* arg3) {
         pool |= 0x1000;
     }
     node->flags |= pool;
-    func_001AB0F0(node->unk_40, arg2);
-    func_001AB0F0(node->unk_60, arg3);
+    op_vec_copy_xyz(node->unk_40, arg2);
+    op_vec_copy_xyz(node->unk_60, arg3);
     if (head->first != NULL) {
         head->first->prev = node;
     }
@@ -266,9 +271,9 @@ typedef struct {
     /* 0x4C */ s32 unk_4C;
 } DrawNodeCtx;
 
-void func_001A9C50(DrawNodeCtx*);
-// updates every node of a list (vectors, flags), draws it with func_001A9C50 and frees the ones flagged 0x10
-void func_001AAB28(DrawNodeUpd* u) {
+void DrawNode_Update(DrawNodeCtx*);
+// updates every node of a list (vectors, flags), draws it with DrawNode_Update and frees the ones flagged 0x10
+void DrawNodeList_Update(DrawNodeUpd* u) {
     DrawNodeCtx ctx;
     DrawNodeHead* head = u->head;
     DrawNode* node;
@@ -286,14 +291,14 @@ void func_001AAB28(DrawNodeUpd* u) {
     node = head->first;
     while (node != NULL) {
         if (node->flags & 0x200) {
-            func_001AB0F0((f32*)((DrawNodeEntry*)node->unk_40 + node->unk_34)->data, u->unk_10);
-            func_001AB0F0((f32*)(((DrawNodeEntry*)node->unk_40 + node->unk_34)->data + 0x20), u->unk_14);
+            op_vec_copy_xyz((f32*)((DrawNodeEntry*)node->unk_40 + node->unk_34)->data, u->unk_10);
+            op_vec_copy_xyz((f32*)(((DrawNodeEntry*)node->unk_40 + node->unk_34)->data + 0x20), u->unk_14);
         }
         if (node->flags & 0x100) {
             node->flags |= bits;
         }
         ctx.node = node;
-        func_001A9C50(&ctx);
+        DrawNode_Update(&ctx);
         if (node->flags & 0x10) {
             cur = node;
             node = cur->next;
@@ -301,7 +306,7 @@ void func_001AAB28(DrawNodeUpd* u) {
                 cur->next->prev = cur->prev;
             }
             cur->prev->next = cur->next;
-            func_001AA868(cur);
+            DrawNode_Release(cur);
             cur->next = u->freeList->free;
             u->freeList->free = cur;
         } else {
@@ -310,7 +315,7 @@ void func_001AAB28(DrawNodeUpd* u) {
     }
 }
 
-// draws every node of a list: func_001A96D0 builds each one's packet after a 16-byte DMA tag, sent on path 2
+// draws every node of a list: DrawNode_BuildPacket builds each one's packet after a 16-byte DMA tag, sent on path 2
 typedef struct {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ DrawNode* node;
@@ -322,9 +327,10 @@ typedef struct {
     /* 0x20 */ u64 unk_20;
 } DrawPktCtx;
 
-s32 func_001A96D0(DrawPktCtx*);
+s32 DrawNode_BuildPacket(DrawPktCtx*);
 
-void func_001AAC80(DrawNode** list, s32 arg1, s32 arg2, s32 arg3, u32* buf, u64 arg5, u64 arg6) {
+// Draws every node of a list: DrawNode_BuildPacket builds each packet after a DMA tag, sent on channel 2.
+void DrawNodeList_Draw(DrawNode** list, s32 arg1, s32 arg2, s32 arg3, u32* buf, u64 arg5, u64 arg6) {
     DrawPktCtx ctx;
     sceDmaChan* ch = sceDmaGetChan(2);
     DrawNode* node = *list;
@@ -339,7 +345,7 @@ void func_001AAC80(DrawNode** list, s32 arg1, s32 arg2, s32 arg3, u32* buf, u64 
     for (; node != NULL; node = node->next) {
         ctx.node = node;
         ctx.pkt = *buf + 0x10;
-        if (func_001A96D0(&ctx)) {
+        if (DrawNode_BuildPacket(&ctx)) {
             p = (u8*)*buf;
             *(u_long128*)p = 0;
             p[3] = 0x70;
@@ -357,7 +363,8 @@ typedef struct {
     /* 0x4 */ u8 unk_4;
 } DrawUnkAADB8;
 
-void func_001AADB8(DrawUnkAADB8* arg0) {
+// Clears a node list head (first node and flags).
+void DrawNodeHead_Clear(DrawUnkAADB8* arg0) {
     arg0->unk_0 = 0;
     arg0->unk_4 = 0;
 }
@@ -366,7 +373,8 @@ double atan(double);
 #define DRAW_PI 3.1415926f
 #define DRAW_HPI 1.5707963f
 
-s32 func_001AADC8(f32* v, f32* out) {
+// atan2 of (v[1], v[0]) with atan and quadrant fixes; returns 0 for the zero vector.
+s32 op_atan2(f32* v, f32* out) {
     f32 x = v[0];
     f32 y = v[1];
     f32 r = x * y;
@@ -394,11 +402,13 @@ s32 func_001AADC8(f32* v, f32* out) {
 
 extern s32 D_00372760;
 
-void func_001AAF58(void) {
+// Steps the 16-bit random seed D_00372760 (x * 0x80D + 7).
+void op_rand_lcg_step(void) {
     D_00372760 = (D_00372760 * 0x80D + 7) & 0xFFFF;
 }
 
-s32 func_001AAF80(void) {
+// VU0 random number times 32768.
+s32 op_rand16(void) {
     f32 r;
     __asm__ volatile("addi $8,$0,-1\n\tqmtc2.ni $8,$vf2\n\tvrxor R,$vf2x\n\tvitof0.x $vf2,$vf2\n\tvrnext.x $vf1,R\n\tvadd.x $vf1,$vf1,$vf2\n\tqmfc2.ni %0,$vf1" : "=r"(r) : : "$8");
     return r * 32768.0f;
@@ -411,10 +421,10 @@ typedef struct {
     /* 0x24 */ f32 t; // out: distance along dir to the first hit
 } DrawRaySphere;
 
-f32 func_001AB380(f32); // square root
+f32 op_sqrt(f32); // square root
 
 // ray/sphere intersection: solves a*t*t + b*t + c = 0, returns 0 if the ray misses
-s32 func_001AAFC0(DrawRaySphere* r) {
+s32 op_ray_sphere(DrawRaySphere* r) {
     f32 a, b, c, d;
 
     a = r->dir[0] * r->dir[0] + r->dir[1] * r->dir[1] + r->dir[2] * r->dir[2];
@@ -432,11 +442,12 @@ s32 func_001AAFC0(DrawRaySphere* r) {
     if (d < 0.0f) {
         return 0;
     }
-    r->t = (c - func_001AB380(d)) / b;
+    r->t = (c - op_sqrt(d)) / b;
     return 1;
 }
 
-f32 func_001AB0B0(f32 a, f32 b) {
+// The larger of a and b (VU0 vmax).
+f32 op_max(f32 a, f32 b) {
     f32 v[4];
     v[0] = a;
     v[1] = b;
@@ -444,33 +455,47 @@ f32 func_001AB0B0(f32 a, f32 b) {
     return v[0];
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0D8);
+// Copies X and Y of b into a (VU0; the store writes vf31, probably a slip in the original).
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_copy_xy);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB0F0);
+// Copies X, Y, Z of b into a, keeping a's W.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_copy_xyz);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB108);
+// dst.xyz = src.xyz * f.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_scale_xyz);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB120);
+// dst.xy = src.xy * f.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_scale_xy);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB138);
+// dst.xy = a.xy + b.xy.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_add_xy);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB150);
+// dst.xyz = a.xyz - b.xyz.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_sub_xyz);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB168);
+// dst.xyz = a.xyz + b.xyz.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_add_xyz);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB180);
+// dst.xy = a.xy - b.xy.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_sub_xy);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB198);
+// Adds the XY of two vectors and converts the result to GS fixed point (12.4) with a range check.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_add_xy_gs);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB208);
+// Converts a vector to GS fixed point (XY 12.4, ZW integer) with a range check.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_to_gs);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB270);
+// Normalises the XY part of a vector.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_normalize_xy);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB2A0);
+// Applies the matrix and divides by W.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_project);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", func_001AB320);
+// Divides by W and converts to GS fixed point (XY 12.4, Z integer, W kept).
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/draw", op_vec_to_gs_persp);
 
-f32 func_001AB348(s32 n, f32 x) {
+// x to the n-th power by repeated multiplication.
+f32 op_pow_int(s32 n, f32 x) {
     f32 r = 1.0f;
     s32 i;
 
@@ -480,7 +505,8 @@ f32 func_001AB348(s32 n, f32 x) {
     return r;
 }
 
-f32 func_001AB380(f32 a) {
+// Square root (VU0 vsqrt).
+f32 op_sqrt(f32 a) {
     f32 v[4];
     f32 r;
     v[1] = a;
@@ -488,13 +514,15 @@ f32 func_001AB380(f32 a) {
     return r;
 }
 
-f32 func_001AB3A8(f32* a) {
+// Sum of the squares of X, Y, Z (VU0), probably.
+f32 op_vec_length_sq(f32* a) {
     f32 v[4];
     __asm__ volatile("lqc2 $vf10,0(%0)\n\tvmul.xyz $vf10,$vf10,$vf10\n\tvmove.xyz $vf9,$vf10\n\tvaddx.y $vf9,$vf9,$vf9x\n\tvaddy.z $vf9,$vf9,$vf9y\n\tvsqrt Q,$vf9z\n\tvwaitq\n\tvaddq.x $vf10,$vf0,Q\n\tsqc2 $vf10,0(%1)" : : "r"(a), "r"(v) : "memory");
     return v[0];
 }
 
-f32 func_001AB3E0(f32* a) {
+// Length of the XY part (VU0 vsqrt).
+f32 op_vec_length_xy(f32* a) {
     f32 r;
     __asm__ volatile("lqc2 $vf10,0(%1)\n\tvmul.xy $vf10,$vf10,$vf10\n\tvaddx.y $vf10,$vf10,$vf10x\n\tvsqrt Q,$vf10y\n\tvwaitq\n\tcfc2.ni $2,$vi22\n\tmtc1 $2,%0" : "=f"(r) : "r"(a) : "$2");
     return r;
@@ -504,7 +532,7 @@ void func_001AB408(sceVu0FVECTOR arg0, sceVu0FVECTOR arg1) {
     sceVu0FVECTOR stack;
 
     sceVu0SubVector(stack, arg0, arg1);
-    func_001AB3A8(stack);
+    op_vec_length_sq(stack);
 }
 
 typedef struct {
@@ -513,7 +541,8 @@ typedef struct {
     /* 0x6 */ u16 head;
 } DrawFreeList;
 
-s32 func_001AB438(DrawFreeList* list) {
+// Takes an index from a u16 free list, or 0xFFFF when empty.
+s32 DrawFreeList_Take(DrawFreeList* list) {
     u16 idx;
 
     if (list->head == 0xFFFF) {
@@ -524,7 +553,8 @@ s32 func_001AB438(DrawFreeList* list) {
     return idx;
 }
 
-void func_001AB470(DrawFreeList* list, u16* next, u16 count) {
+// Sets up a u16 free list of count entries chained in order.
+void DrawFreeList_Init(DrawFreeList* list, u16* next, u16 count) {
     u16 i;
 
     list->next = next;
@@ -568,7 +598,8 @@ extern char D_00616100[];
 extern s32 D_00616224;
 s32 op1_md_draw(OMD_H* omd, DrawMdPrm* prm, s32 size);
 
-void func_001AB828(u32 index, u16* col, s32 a2, s32 a3, s32 a4, u8 flags, s32 a6) {
+// Draws model index from the effect environment with op1_md_draw (mode bits from flags and the model's flags, colour col >> 7).
+void op_draw_model(u32 index, u16* col, s32 a2, s32 a3, s32 a4, u8 flags, s32 a6) {
     pppModelSt* mdl;
     OMD_H* omd;
     sceVu0FMATRIX m;
@@ -748,7 +779,7 @@ void op_otz_init(void) {
 }
 
 // sends the packet at D_0061E8B0 on its own (its first tag replaced by an end tag with 6 qwords)
-void func_001AC0A8(void) {
+void op_send_gs2_packet(void) {
     u_long128 save = D_0061E8B0[0];
 
     D_0061E8B0[0] = 0x70000006;
@@ -849,7 +880,8 @@ typedef struct {
     /* 0x18 */ u8 unk_18;
 } DrawImage;
 
-void func_001AC430(DrawImage* img, s32 wait) {
+// Uploads an image described by a DrawImage (VRAM base, width, format, position, size) and optionally waits.
+void op_load_image(DrawImage* img, s32 wait) {
     sceGsLoadImage li;
 
     sceGsSetDefLoadImage(&li, img->unk_0 & 0x3FFF, img->unk_A >> 2, img->unk_18, img->unk_8 << 4, img->unk_9 << 4,
@@ -951,7 +983,7 @@ extern f32 D_002BC120;
 extern f32 D_002BC124;
 
 // Copies D_002BC120 / D_002BC124 into the first two fog work values (probably fog near / far).
-void func_001AC978(void) {
+void op_fog_set_range(void) {
     D_00372800[0] = D_002BC120;
     D_00372800[1] = D_002BC124;
 }

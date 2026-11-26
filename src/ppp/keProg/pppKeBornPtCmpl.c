@@ -1,6 +1,6 @@
 #include "ppp.h"
 
-NOTHROW_FN(void func_0018FBB0(pppPObject* parent, s32* p, pppCtrlTable* ctbl));
+NOTHROW_FN(void KeBornRnd6_BornLine(pppPObject* parent, s32* p, pppCtrlTable* ctbl));
 s32 pppKeBornPtCmplCalc(pppPObject* pobj, s32* a1, pppCtrlTable* ctbl) {
     s32* p = a1;
 
@@ -8,7 +8,7 @@ s32 pppKeBornPtCmplCalc(pppPObject* pobj, s32* a1, pppCtrlTable* ctbl) {
         return;
     }
     if (p[2] != -1 && p[4] != -1) {
-        func_0018FBB0(pobj, a1, ctbl);
+        KeBornRnd6_BornLine(pobj, a1, ctbl);
     }
 }
 
@@ -21,7 +21,8 @@ void pppKeBornPtCmplCon(pppPObject* pobj, pppCtrlTable* ctbl) {
 }
 
 double atan(double);
-s32 func_0018FE28(f32* v, f32* out) {
+// atan2 of (v[1], v[0]) written out with atan and quadrant fixes.
+s32 KeBornPtCmpl_Atan2(f32* v, f32* out) {
     f32 x = v[0];
     f32 y = v[1];
     f32 r = x * y;

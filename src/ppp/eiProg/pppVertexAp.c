@@ -26,7 +26,7 @@ typedef struct {
 pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
 
 // starts particle data dataNo as a child of pobj and puts it at vtx (moved by the current object's matrix)
-void func_00185F30(pppPObject* pobj, PVertexAp* p, pppSVECTOR* vtx) {
+void VertexAp_BornAtVertex(pppPObject* pobj, PVertexAp* p, pppSVECTOR* vtx) {
     pppPObject* child;
     pppPDataVal* pdv;
     f32* pos;
@@ -105,13 +105,13 @@ void pppVertexApCalc(pppPObject* pobj, PVertexAp* p, pppCtrlTable* ctbl) {
                     v->ict = 0;
                 }
                 pt = vert[(u16)vsf->index[v->ict++]];
-                func_00185F30(pobj, p, &pt);
+                VertexAp_BornAtVertex(pobj, p, &pt);
             }
             break;
         case 1:
             while (n--) {
                 pt = vert[(u16)vsf->index[(s32)(vu0Rand() * (s16)vsf->indexN)]];
-                func_00185F30(pobj, p, &pt);
+                VertexAp_BornAtVertex(pobj, p, &pt);
             }
             break;
         }

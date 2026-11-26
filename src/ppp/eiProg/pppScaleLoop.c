@@ -10,7 +10,8 @@ typedef struct {
     /* 0xC */ void* m_pp;
 } VScaleLoop;
 
-void func_0018C6A0(PScaleLoop* p, VScaleLoop* ac) {
+// Sets up the ScaleLoop work: parameter pointer, scale 0.
+void ScaleLoop_InitWork(PScaleLoop* p, VScaleLoop* ac) {
     ac->m_pp = p;
     ac->m_scl.x = ac->m_scl.y = ac->m_scl.z = 0.0f;
 }
@@ -37,7 +38,7 @@ void pppScaleLoopCalc(pppPObject* pobj, PScaleLoop* p, pppCtrlTable* ctbl) {
     }
 
     if (ac->m_pp == NULL) {
-        func_0018C6A0(p, ac);
+        ScaleLoop_InitWork(p, ac);
     }
 
     if (p->cdt.time == pobj->time) {

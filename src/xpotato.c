@@ -1,3 +1,9 @@
+/**
+ * Pause menu pages, probably: the per-character preset tables (GameData unk_20, applied with func_00170D60), party member
+ * selection lists, and the config options kept in the GameData buffer (D_003ED718, words 0x00..0x18 and 0x2C) with
+ * their get/set helpers and two-choice menu pages. Menu pages are UI objects (func_001F3A20 creates, UiObject_InsertAfter
+ * links); D_00425BC8[2] & 0x4000 is probably the cancel button (it closes the page).
+ */
 #include "xtango.h"
 #include "xpotato.h"
 
@@ -5,7 +11,7 @@ extern s32 D_00642CC8;
 extern s32 D_00642CA8[];
 extern s32 func_00132FE0(s32);
 
-extern s32 func_001EF960(u32);
+extern s32 Party_GetMemberName(u32);
 extern s32 D_003E8E08;
 
 extern s32 D_003F4BD0[];
@@ -49,12 +55,13 @@ extern u32 D_0063D050;
 extern void* func_001F3A20(void*, s32);
 extern void func_001F9B50(s32);
 
-void func_00215A88(void) {
+// Sets the preset (GameData unk_20[i]) of all ten characters to 4 and applies it.
+void GameData_ResetCharPresets(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(D_003ED718->unk_20); i++) {
         D_003ED718->unk_20[i] = 4;
-        func_00215AF0(i, 4);
+        GameData_ApplyCharPreset(i, 4);
     }
 }
 
@@ -63,7 +70,8 @@ extern s32* D_003F41E8[];
 extern s32 D_003F4200[][9];
 extern void func_00170D60(s32, s32, s32);
 
-void func_00215AF0(s32 arg0, s32 arg1) {
+// Applies preset arg1 to character arg0: nine func_00170D60(arg0, i, value) calls from table D_003F41E8[arg1], or the character's own D_003F4200 row for preset 4.
+void GameData_ApplyCharPreset(s32 arg0, s32 arg1) {
     s32* p;
     s32 i;
     if (arg1 != 4) {
@@ -76,12 +84,13 @@ void func_00215AF0(s32 arg0, s32 arg1) {
     }
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215AF0);
+INCLUDE_ASM("asm/nonmatchings/xpotato", GameData_ApplyCharPreset);
 #endif
 
 #ifdef VERSION_FM
 extern s32 func_0013C188(s32, s32);
 
+// Builds the list D_00642CA8 of the indices 0..6 for which func_0013C188(0, i) is set, then 7 (count D_00642CC8).
 void func_00215B88(void) {
     s32 i;
 
@@ -99,6 +108,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215B88);
 
 #ifdef VERSION_FM
 s32 func_00215C48(s32 arg0);
+// Draws the page's help text at (174, 12): message 234, or the D_00642CA8 entry's message for the selected row (FM).
 s32 func_00215C48(s32 arg0) {
     s32 val;
 
@@ -126,6 +136,7 @@ s32 func_00215C48(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00215CE8);
 
+// Draws help text D_003F4488[D_0063CF40] at (174, 12).
 s32 func_00215EE8(void* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F4488[D_0063CF40], 17, 0x80C87850);
@@ -156,6 +167,7 @@ extern s32 D_003F4430;
 extern s32 D_003F2C40[][5];
 extern s32 D_003F44C8[];
 
+// Menu page with three rows (func_0013C288 / func_00132F88 names, message 0xD4 when empty); confirming opens two child pages.
 void func_00215F48(struct XPotMenu* m) {
     u8* p[2];
     void* t;
@@ -218,6 +230,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216198);
 
 #ifdef VERSION_FM
 s32 func_00216758(XWhiskey* arg0);
+// Draws help text (menu word +0x24) at (174, 12).
 s32 func_00216758(XWhiskey* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, *(s32*)((u8*)arg0 + 0x24), 17, 0x80C87850);
@@ -236,6 +249,7 @@ typedef struct {
 } XPotatoTbl;
 extern XPotatoTbl D_003F40F8[];
 
+// Stores the chosen preset D_0063CF48 for the selected party member and applies it to the entries listed in D_003F40F8 (preset 5: nothing).
 void func_002167A0(void) {
     u8 idx = D_003010F8->unk_48E[D_0063CF3C];
     s32* list = D_003F40F8[idx].list;
@@ -273,11 +287,12 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00216D88);
 
 #ifdef VERSION_FM
 s32 func_00217038(s32 arg0);
+// Draws help text 204, or 205 with the selected party member's name (D_003E8E08) (FM).
 s32 func_00217038(s32 arg0) {
     s32 val = 204;
     if (D_0063CF3C != 0) {
         val = 205;
-        D_003E8E08 = func_001EF960(D_0063CF3C);
+        D_003E8E08 = Party_GetMemberName(D_0063CF3C);
     }
     func_001F9010(23);
     return func_001F9438((void*)arg0, 0, 174, 12, val, 17, 0x80c87850);
@@ -287,7 +302,7 @@ s32 func_00217038(s32 arg0) {
     s32 val = 213;
     if (D_0063CF3C != 0) {
         val = 214;
-        D_003E3088 = func_001EF960(D_0063CF3C);
+        D_003E3088 = Party_GetMemberName(D_0063CF3C);
     }
     func_001F9B50(23);
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
@@ -300,6 +315,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217420);
 
 #ifdef VERSION_FM
 s32 func_00217810(s32 arg0);
+// Draws the page frame (func_00207830, message 108 in FM).
 s32 func_00217810(s32 arg0) {
     return func_00207830(arg0, 4, 2, 0, 0, 122, 108);
 }
@@ -309,6 +325,7 @@ s32 func_00217810(s32 arg0) {
 }
 #endif
 
+// Opens the page: creates UI object D_003EE8B0 after arg0, D_0063CF00 = arg0, state D_0063CF04 = 0.
 void func_00217840(void* arg0) {
     void* p0 = func_001F3A20(&D_003EE8B0, 0);
 
@@ -319,6 +336,7 @@ void func_00217840(void* arg0) {
     D_0063CF04 = NULL;
 }
 
+// Clamps the selected party slot D_0063CF3C to the party size, then func_00215B88.
 void func_00217898(void) {
     if (D_0063CF3C > D_003DE6A0 - 1) {
         D_0063CF3C = D_003DE6A0 - 1;
@@ -326,6 +344,7 @@ void func_00217898(void) {
     func_00215B88();
 }
 
+// Clears the page selections D_0063CF3C..D_0063CF50.
 void func_002178D0(void) {
     D_0063CF3C = 0;
     D_0063CF40 = 0;
@@ -346,6 +365,7 @@ typedef struct {
 } XPotChr;
 
 #ifdef VERSION_FM
+// Builds the row list D_00642CF0 for character arg0: rows 0..2, 1..4 more by the length of its 0x30-byte text at +0x44, and row 7 for character 0 when func_0013C360(i) == 1 for some i.
 void func_00217908(s32 arg0) {
     XPotChr* c;
     s32 i;
@@ -396,12 +416,13 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_00217B00);
 
 #ifdef VERSION_FM
 s32 func_00218648(s32 arg0);
+// Draws help text 0x110, or 0x111 with party member D_0063CF88's name (FM).
 s32 func_00218648(s32 arg0) {
     s32 v = 0x110;
 
     func_001F9010(23);
     if (D_0063CF88 != 0) {
-        D_003E8E08 = func_001EF960(D_0063CF88);
+        D_003E8E08 = Party_GetMemberName(D_0063CF88);
         v++;
     }
     return func_001F9438((void*)arg0, 0, 174, 12, v, 17, 0x80C87850);
@@ -412,7 +433,7 @@ s32 func_00218648(s32 arg0) {
 
     func_001F9B50(23);
     if (D_0063CF88 != 0) {
-        D_003E3088 = func_001EF960(D_0063CF88);
+        D_003E3088 = Party_GetMemberName(D_0063CF88);
         val = 278;
     }
     return func_001F9F78(arg0, 0, 174, 12, val, 17, 0x80c87850);
@@ -446,9 +467,10 @@ void func_002078F0(XPotMenu*, s32, s32, s32, s32, s32, s32, s32, s32);
 extern XPotMenu* D_00642CE8;
 
 
-s32 func_001EF938(s32);
+s32 Char_GetName(s32);
 void func_00207870(XPotMenu*, s32, s32, s32, s32, s32, s32);
 
+// Party member list page: one row per member (Char_GetName); moving fills the child page through func_00217908.
 void func_002186B8(XPotMenu* m) {
     XPotMenu* p;
     u32 v;
@@ -483,7 +505,7 @@ void func_002186B8(XPotMenu* m) {
     sel = func_001FD518(m);
     for (y = 0, i = 0; i < D_003DE6A0; i++, y += 28) {
         c = (i == sel) ? 11 : 0;
-        func_00207870(m, c, 2, 0, y, 0x7A, func_001EF938(D_003010F8->unk_48E[i]));
+        func_00207870(m, c, 2, 0, y, 0x7A, Char_GetName(D_003010F8->unk_48E[i]));
     }
 }
 
@@ -493,6 +515,7 @@ INCLUDE_ASM("asm/nonmatchings/xpotato", func_002186B8);
 
 #ifdef VERSION_FM
 s32 func_00218840(s32 arg0);
+// Draws the page frame (func_00207830, message 109 in FM).
 s32 func_00218840(s32 arg0) {
     return func_00207830(arg0, 4, 2, 0, 0, 122, 109);
 }
@@ -504,19 +527,22 @@ s32 func_00218840(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218870);
 
+// Clamps the selected party slot D_0063CF88 to the party size.
 void func_002189D0(void) {
     if (D_0063CF88 > D_003DE6A0 - 1) {
         D_0063CF88 = D_003DE6A0 - 1;
     }
 }
 
+// Clears the selected party slot D_0063CF88.
 void func_00218A00(void) {
     D_0063CF88 = 0;
 }
 
 #ifdef VERSION_FM
-void func_00218A10(void);
-void func_00218A10(void) {
+void Config_Reset(void);
+// Clears the config options (GameData words 0x00..0x18), option 6 (+0x2C) = 1 in FM.
+void Config_Reset(void) {
     XWhiskey* p = D_003ED718;
 
     *(s32*)((u8*)p + 0x2C) = 1;
@@ -529,7 +555,7 @@ void func_00218A10(void) {
     p->unk_00 = 0;
 }
 #else
-void func_00218A10(void) {
+void Config_Reset(void) {
     D_003ED718->unk_00 = 0;
     D_003ED718->unk_08 = 0;
     D_003ED718->unk_04 = 0;
@@ -540,7 +566,8 @@ void func_00218A10(void) {
 }
 #endif
 
-u32 func_00218A38(s32 arg0) {
+// Returns config option arg0 (0..6: GameData +0x00, 0x04, 0x08, 0x10, 0x14, 0x18, 0x2C).
+u32 Config_Get(s32 arg0) {
     switch (arg0) {
         case 0:
             return D_003ED718->unk_00;
@@ -560,7 +587,8 @@ u32 func_00218A38(s32 arg0) {
     }
 }
 
-void func_00218AC0(s32 arg0, u32 arg1) {
+// Sets config option arg0 (same order as Config_Get).
+void Config_Set(s32 arg0, u32 arg1) {
     switch (arg0) {
         case 0:
             D_003ED718->unk_00 = arg1;
@@ -587,135 +615,165 @@ void func_00218AC0(s32 arg0, u32 arg1) {
     }
 }
 
-u32 func_00218B48(void) {
+// Config option 0 (GameData +0x00).
+u32 Config_GetOption0(void) {
     return D_003ED718->unk_00;
 }
 
-u32 func_00218B58(void) {
-    return func_00218B48();
+// Calls Config_GetOption0.
+u32 Config_GetOption0Wrap(void) {
+    return Config_GetOption0();
 }
 
-void func_00218B70(s32 arg0) {
+// Sets config option 0.
+void Config_SetOption0(s32 arg0) {
     D_003ED718->unk_00 = arg0;
 }
 
-u32 func_00218B80(void) {
+// Config option 1 (GameData +0x04).
+u32 Config_GetOption1(void) {
     return D_003ED718->unk_04;
 }
 
-u32 func_00218B90(void) {
-    return func_00218B80();
+// Calls Config_GetOption1.
+u32 Config_GetOption1Wrap(void) {
+    return Config_GetOption1();
 }
 
-u32 func_00218BA8(u32 arg0) {
+// Sets config option 1.
+u32 Config_SetOption1(u32 arg0) {
     D_003ED718->unk_04 = arg0;
 }
 
-s32 func_00218BB8(void) {
+// Config option 2 (GameData +0x08).
+s32 Config_GetOption2(void) {
     return D_003ED718->unk_08;
 }
 
-u32 func_00218BC8(void) {
-    return func_00218BB8();
+// Calls Config_GetOption2.
+u32 Config_GetOption2Wrap(void) {
+    return Config_GetOption2();
 }
 
-void func_00218BE0(s32 arg0) {
+// Sets config option 2.
+void Config_SetOption2(s32 arg0) {
     D_003ED718->unk_08 = arg0;
 }
 
+// Returns 0.
 u32 func_00218BF0(void) {
     return 0;
 }
 
+// Returns 0.
 u32 func_00218BF8(void) {
     return 0;
 }
 
+// Empty.
 void func_00218C00(void) {
 }
 
-u32 func_00218C08(void) {
+// Config option 3 (GameData +0x10).
+u32 Config_GetOption3(void) {
     return D_003ED718->unk_10;
 }
 
-s32 func_00218C18(void) {
-    return func_00218C08();
+// Calls Config_GetOption3.
+s32 Config_GetOption3Wrap(void) {
+    return Config_GetOption3();
 }
 
-void func_00218C30(s32 arg0) {
+// Sets config option 3.
+void Config_SetOption3(s32 arg0) {
     D_003ED718->unk_10 = arg0;
 }
 
-u32 func_00218C40(void) {
+// Config option 4 (GameData +0x14).
+u32 Config_GetOption4(void) {
     return D_003ED718->unk_14;
 }
 
-s32 func_00218C50(void) {
-    return func_00218C40();
+// Calls Config_GetOption4.
+s32 Config_GetOption4Wrap(void) {
+    return Config_GetOption4();
 }
 
-void func_00218C68(s32 arg0) {
+// Sets config option 4.
+void Config_SetOption4(s32 arg0) {
     D_003ED718->unk_14 = arg0;
 }
 
-u32 func_00218C78(void) {
+// Config option 5 (GameData +0x18).
+u32 Config_GetOption5(void) {
     return D_003ED718->unk_18;
 }
 
-s32 func_00218C88(void) {
-    return func_00218C78();
+// Calls Config_GetOption5.
+s32 Config_GetOption5Wrap(void) {
+    return Config_GetOption5();
 }
 
-void func_00218CA0(s32 arg0) {
+// Sets config option 5.
+void Config_SetOption5(s32 arg0) {
     D_003ED718->unk_18 = arg0;
 }
 
 #ifdef VERSION_FM
-s32 fm_func_002193F0(void) {
+// Config option 6 (GameData +0x2C, FM only).
+s32 Config_GetOption6(void) {
     return *(s32*)((u8*)D_003ED718 + 0x2C);
 }
 #endif
 
 #ifdef VERSION_FM
-s32 fm_func_00219400(void) {
-    return fm_func_002193F0();
+// Calls Config_GetOption6.
+s32 Config_GetOption6Wrap(void) {
+    return Config_GetOption6();
 }
 #endif
 
 #ifdef VERSION_FM
-void fm_func_00219418(s32 arg0) {
+// Sets config option 6.
+void Config_SetOption6(s32 arg0) {
     *(s32*)((u8*)D_003ED718 + 0x2C) = arg0;
 }
 #endif
 
 #ifdef VERSION_FM
+// True when D_002B6478 == 2 (FM only).
 s32 fm_func_00219428(void) {
     return D_002B6478 == 2;
 }
 #endif
 
 #ifdef VERSION_FM
+// Message id D_003F47A8[arg0] (FM only).
 s32 fm_func_00219440(s32 arg0) {
     return D_003F47A8[arg0];
 }
 #endif
 
 #ifdef VERSION_FM
+// func_001EFBB8 of fm_func_00219440(arg0) (FM only).
 void fm_func_00219458(s32 arg0) {
     func_001EFBB8(fm_func_00219440(arg0));
 }
 #endif
 
+// Draws help text D_003F47B8[menu word +0x24] at (174, 12).
 s32 func_00218CB0(XWhiskey* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F47B8[*(s32*)((u8*)arg0 + 0x24)], 17, 0x80C87850);
 }
 
+// D_003ED72C++, D_003ED728--.
 void func_00218D08(void) {
     D_003ED72C++;
     D_003ED728--;
 }
 
+// Uploads two images from D_003ED730 to VRAM (GsPacket_LoadImage at 0x3600 and 0x3680).
 void func_00218D38(void) {
     GsPacket_LoadImage(0x3600, 4, 19, 0, 0, 138, 0x58, 759, D_003ED730, &D_0063CFA0);
     GsPacket_LoadImage(0x3680, 1, 0, 0, 0, 16, 16, 64, D_003ED730 + 0x2F70, &D_0063D050);
@@ -735,6 +793,7 @@ void func_001F9270(void*, s32, s32, s32, s32, u32);
 void func_00206130(void*, s32, s32, s32, s32, u32);
 void func_001FC308(void*, s32, s32, s32, s32, s32, s32, u32, u32);
 
+// Draws twelve labels (D_003F4878..D_003F48A8) and their line sets, highlighting entry D_00642D28.
 void func_002190C0(void* arg0) {
     s32 i;
     s32 n;
@@ -780,7 +839,8 @@ s32 func_001FE570(XPotMenu*);
 void func_00206690(XPotMenu*, s32, s32, s32);
 void func_002078F0(XPotMenu*, s32, s32, s32, s32, s32, s32, s32, s32);
 
-void func_002192D8(XPotMenu* m) {
+// Config menu page for option 0: two choices (D_003F4790), the selection written to GameData +0x00; pad bit 0x4000 closes it.
+void ConfigMenu_UpdateOption0(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
     s32 sel;
@@ -819,13 +879,14 @@ void func_002192D8(XPotMenu* m) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xpotato", func_002192D8);
+INCLUDE_ASM("asm/nonmatchings/xpotato", ConfigMenu_UpdateOption0);
 #endif
 
 #ifdef VERSION_FM
 extern s32 D_003F4798[];
 
-void func_00219468(XPotMenu* m) {
+// Config menu page for option 1 (choices D_003F4798, GameData +0x04).
+void ConfigMenu_UpdateOption1(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
     s32 sel;
@@ -864,7 +925,7 @@ void func_00219468(XPotMenu* m) {
 }
 
 #else
-void func_00219468(XPotMenu* m) {
+void ConfigMenu_UpdateOption1(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
     s32 sel;
@@ -906,7 +967,8 @@ void func_00219468(XPotMenu* m) {
 #ifdef VERSION_FM
 extern s32 D_003F47A0[];
 
-void func_002195F8(XPotMenu* m) {
+// Config menu page for option 2 (choices D_003F47A0, GameData +0x08).
+void ConfigMenu_UpdateOption2(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
     s32 sel;
@@ -945,7 +1007,7 @@ void func_002195F8(XPotMenu* m) {
 }
 
 #else
-void func_002195F8(XPotMenu* m) {
+void ConfigMenu_UpdateOption2(XPotMenu* m) {
     XPotMenu* p;
     s32 v;
     s32 sel;
@@ -988,6 +1050,7 @@ void func_002195F8(XPotMenu* m) {
 }
 #endif
 
+// Draws help text D_003F4BD0[D_00642D24] at (174, 12).
 s32 func_00219788(void* arg0) {
     func_001F9010(23);
     return func_001F9438(arg0, 0, 174, 12, D_003F4BD0[D_00642D24], 17, 0x80C87850);

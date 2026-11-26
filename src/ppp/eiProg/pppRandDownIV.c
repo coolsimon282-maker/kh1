@@ -7,7 +7,7 @@ typedef struct {
     u8 twice;
 } PRandDownIV;
 
-s32 func_00189D70(s32 a, f32 b);
+s32 RandUpIV_Scale(s32 a, f32 b);
 
 static inline f32 vu0Rand(void) {
     f32 r;
@@ -54,12 +54,13 @@ void pppRandDownIVCalc(pppPObject* pobj, PRandDownIV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (s32*)&ppvDbgTemp;
     }
-    tgt[0] += func_00189D70(p->scale[0], *rv);
-    tgt[1] += func_00189D70(p->scale[1], *rv);
-    tgt[2] += func_00189D70(p->scale[2], *rv);
+    tgt[0] += RandUpIV_Scale(p->scale[0], *rv);
+    tgt[1] += RandUpIV_Scale(p->scale[1], *rv);
+    tgt[2] += RandUpIV_Scale(p->scale[2], *rv);
 }
 
-s8 func_00189F20(s8 a, f32 b) {
+// a * b - a (in float).
+s8 RandDownIV_Scale(s8 a, f32 b) {
     f32 f = a;
 
     return f * b - f;

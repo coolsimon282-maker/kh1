@@ -44,7 +44,7 @@ typedef struct {
     u8 twice;
 } PRandDownCV;
 
-s8 func_0018A2D0(s8 a, f32 b);
+s8 RandUpCV_Scale(s8 a, f32 b);
 
 void pppRandDownCVCalc(pppPObject* pobj, PRandDownCV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -69,13 +69,14 @@ void pppRandDownCVCalc(pppPObject* pobj, PRandDownCV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (u8*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018A2D0(p->scale[0], *rv);
-    tgt[1] += func_0018A2D0(p->scale[1], *rv);
-    tgt[2] += func_0018A2D0(p->scale[2], *rv);
-    tgt[3] += func_0018A2D0(p->scale[3], *rv);
+    tgt[0] += RandUpCV_Scale(p->scale[0], *rv);
+    tgt[1] += RandUpCV_Scale(p->scale[1], *rv);
+    tgt[2] += RandUpCV_Scale(p->scale[2], *rv);
+    tgt[3] += RandUpCV_Scale(p->scale[3], *rv);
 }
 
 
-s16 func_0018A4A8(s16 a, f32 b) {
+// a * b - a.
+s16 RandDownCV_Scale(s16 a, f32 b) {
     return a * b - a;
 }

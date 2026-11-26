@@ -453,7 +453,7 @@ s32 D_002C5C2C = 0;
 extern f32 D_002C5C20;
 
 extern f32 D_002C5980[4];
-f32 func_00120A38(f32*);
+f32 Vec_Length(f32*);
 
 // Reads both analog sticks with a dead zone (D_002C5C20): direction bits for the d-pad, unit and scaled vectors.
 s32 Pad_ReadSticks(XGoblinPadState* out, u8* data) {
@@ -482,7 +482,7 @@ s32 Pad_ReadSticks(XGoblinPadState* out, u8* data) {
             }
             D_002C5980[j] /= 127.5f - D_002C5C20;
         }
-        f = func_00120A38(D_002C5980);
+        f = Vec_Length(D_002C5980);
         if (f > 1.0f) {
             f = 1.0f;
         }
@@ -575,7 +575,7 @@ extern s32 D_004E44C0;
 extern u8 D_004E44C8[][20];
 extern s16 D_002C597A;
 extern u8 D_002C5A80[];
-s32 func_00218C08(void);
+s32 Config_GetOption3(void);
 void func_0011FEC0(void);
 
 // Reads the controller (scePad2), sets vibration, updates the button state and the game's mapped copy.
@@ -611,7 +611,7 @@ void Pad_Update(void) {
             if ((D_004E44C8[i][2] & 0xF) == 0xF) {
                 btn |= Pad_ReadSticks(e, buf);
             }
-            if (func_00218C08() == 0 && !(D_002C597A & 1)) {
+            if (Config_GetOption3() == 0 && !(D_002C597A & 1)) {
                 hi = e->unk_03 << 1;
                 vib = ((u32)(s8)e->unk_02 >> 31) | hi;
                 sceVibSetActParam(*sock, 1, D_002C5A80, 2, (u8*)&vib);

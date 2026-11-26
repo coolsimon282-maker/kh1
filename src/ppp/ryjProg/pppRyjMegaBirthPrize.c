@@ -53,8 +53,8 @@ extern s32 D_00616224;
 extern sceVu0FMATRIX D_00615EB0;
 extern PrizeObj* D_0061E310[];
 extern s32 D_0061E710;
-void func_0019F810(void);
-s32 func_001BA340(void* shape, PrizeDrawSt* st, s32 size);
+void RyjMngFlag_SortEntries(void);
+s32 op_shape_draw(void* shape, PrizeDrawSt* st, s32 size);
 
 void pppRyjMegaBirthPrizeDraw(pppPObject* pobj, PRyjMegaBirthPrize* p, pppCtrlTable* ctbl) {
     sceVu0FMATRIX mtx[10];
@@ -93,7 +93,7 @@ void pppRyjMegaBirthPrizeDraw(pppPObject* pobj, PRyjMegaBirthPrize* p, pppCtrlTa
         sceVu0ScaleVector(mtx[i][1], mtx[i][1], ent->scale);
         sceVu0ScaleVector(mtx[i][2], mtx[i][2], ent->scale);
     }
-    func_0019F810();
+    RyjMngFlag_SortEntries();
     for (i = 0; i < D_0061E710; i++) {
         e = D_0061E310[i];
         if (e->u.flags & 0x400) {
@@ -125,7 +125,7 @@ void pppRyjMegaBirthPrizeDraw(pppPObject* pobj, PRyjMegaBirthPrize* p, pppCtrlTa
         sceVu0ScaleVector(ppvPObj.next->dmat[2], ppvPObj.next->dmat[2], e->scale);
         sceVu0MulMatrix(ppvPObj.next->dmat, ppvScreenMatrix, ppvPObj.next->dmat);
         ds.unk_14 = D_00616224;
-        D_00616224 = func_001BA340(data, &ds, lp->nPacketSize);
+        D_00616224 = op_shape_draw(data, &ds, lp->nPacketSize);
         if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
             continue;
         }

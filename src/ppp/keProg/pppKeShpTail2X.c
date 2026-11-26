@@ -26,7 +26,7 @@ typedef struct {
 } KeShpSeqX;
 
 extern sceVu0FMATRIX D_00615E70;
-void func_001AB0F0(void* dst, void* src);
+void op_vec_copy_xyz(void* dst, void* src);
 
 // keeps a ring of the last num positions (the tail) and steps the shape animation
 void pppKeShpTail2XCalc(pppPObject* pobj, PKeShpTail2X* p, pppCtrlTable* ctbl) {
@@ -65,7 +65,7 @@ void pppKeShpTail2XCalc(pppPObject* pobj, PKeShpTail2X* p, pppCtrlTable* ctbl) {
         sceVu0ApplyMatrix(v->pos[v->idx], D_00615E70, ppvPObj.next->cmat[3]);
         v->pos[v->idx][3] = 1.0f;
     } else {
-        func_001AB0F0(v->pos[v->idx], ppvPObj.next->cmat[3]);
+        op_vec_copy_xyz(v->pos[v->idx], ppvPObj.next->cmat[3]);
     }
     shp = &ppvEnv->lpShape[p->shpIdx];
     shape = shp->shape;

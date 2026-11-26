@@ -16,8 +16,8 @@ void func_0011FB78(void);
 s32 cdvd_Decompress(u8* data, s32 compressedLength);
 s32 cdvd_Hash(char* str);
 s32 func_001EE068(void);
-s32 func_00218C88(void);
-void func_00218CA0(s32);
+s32 Config_GetOption5Wrap(void);
+void Config_SetOption5(s32);
 
 extern s32 D_002C2094;
 extern s32 D_002C2180;
@@ -48,7 +48,7 @@ sceCdlFILE* cdvd_GetFileDescriptor(void) {
 
 void func_0011FB78(void) {
     func_001224B8();
-    func_001102C0();
+    Frame_UpdateTimeStep();
 }
 
 void func_0011FB98(u32 lbn, u32 sectors, char* buf) {
@@ -190,7 +190,7 @@ void func_00120018(IOReadTask* task) {
         length = task->length;
     }
 
-    func_0010BF50(func_00120018);
+    IoThread_RemoveJob(func_00120018);
     task->bytesRead = length;
 }
 
@@ -233,11 +233,11 @@ void cdvd_ReadImgFile(IOReadTask* task) {
         do {
             func_0010BEE8();
         } while (((D_002C1EB8.s8 & 0xFF) >> 2) & 1);
-        func_00218CA0(0);
+        Config_SetOption5(0);
         task->nSector += D_004EC940;
-        func_0010BF08(&func_00120018, task);
+        IoThread_AddJob(&func_00120018, task);
     }
-    func_0010BF50(cdvd_ReadImgFile);
+    IoThread_RemoveJob(cdvd_ReadImgFile);
 }
 
 void cdvd_TryLoadFile(sceCdlFILE* fp, char* name) {
@@ -262,11 +262,11 @@ IOReadTask* func_001202E8(char* filename, void* dst) {
         task->length = kingdomFile->length;
         task->flags = (task->flags & ~2) | ((kingdomFile->isCompressed & 1) * 2);
         task->nSector = kingdomFile->isoBlock;
-        if (func_00218C88() == 0) {
-            func_0010BF08(func_00120018, task);
+        if (Config_GetOption5Wrap() == 0) {
+            IoThread_AddJob(func_00120018, task);
         } else {
             task->nSector -= D_004EC940;
-            func_0010BF08(cdvd_ReadImgFile, task);
+            IoThread_AddJob(cdvd_ReadImgFile, task);
         }
     }
     return task;

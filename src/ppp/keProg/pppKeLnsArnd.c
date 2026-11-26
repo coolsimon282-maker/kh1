@@ -15,13 +15,13 @@ typedef struct {
     /* 0x10 */ f32* scl;
 } KeLnsArndArg;
 
-void func_00193978(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl);
+void KeLnsLp_Start(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl);
 void KeLnsShp_Draw(KeLnsArndArg* arg, s32 arg1);
 
 void pppKeLnsArndDraw(pppPObject* pobj, PKeLnsArndDraw* p, pppCtrlTable* ctbl) {
     KeLnsArndArg arg;
 
-    func_00193978(pobj, p, ctbl);
+    KeLnsLp_Start(pobj, p, ctbl);
     arg.col[0] = p->col[0] * ppvMng->colorR;
     arg.col[1] = p->col[1] * ppvMng->colorG;
     arg.col[2] = p->col[2] * ppvMng->colorB;
@@ -62,7 +62,8 @@ typedef struct {
 
 void KeLnsClm_SetShape(VKeLnsArnd* p, pppShapeSt* shp, u8 arg2); // ppp/xberry
 
-void func_00193BC8(pppPObject* pobj, PKeLnsArnd* p, pppCtrlTable* ctbl) {
+// At the start time: links the work to its second value block and sets the shape (KeLnsClm_SetShape) and parameters.
+void KeLnsArnd_Start(pppPObject* pobj, PKeLnsArnd* p, pppCtrlTable* ctbl) {
     VKeLnsArnd* arnd = (VKeLnsArnd*)&pobj->val[ctbl->useVal[0]];
     pppShapeSt* shp;
 

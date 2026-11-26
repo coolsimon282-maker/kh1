@@ -148,7 +148,8 @@ void func_0019B2A0(sceVu0FVECTOR* a, s32 n, sceVu0FVECTOR* out) {
 }
 
 extern sceVu0FVECTOR D_00372720;
-void func_0019B458(sceVu0FVECTOR dst, sceVu0FVECTOR* a, sceVu0FVECTOR* b, f32 t) {
+// Interpolates the vector keys i and i + 1 of a and b at the fraction of t (VU0).
+void RyjMatrixNoRot_LerpKey(sceVu0FVECTOR dst, sceVu0FVECTOR* a, sceVu0FVECTOR* b, f32 t) {
     s32 i = t;
     f32* v = D_00372720;
 
@@ -189,7 +190,8 @@ typedef struct {
 
 extern sceVu0FMATRIX D_00615E70;
 
-void func_0019B4D8(RyjMatrixNoRot* p, sceVu0FVECTOR top, sceVu0FVECTOR bottom) {
+// The top and bottom points (half the height up and down) through the matrix.
+void RyjMatrixNoRot_GetEnds(RyjMatrixNoRot* p, sceVu0FVECTOR top, sceVu0FVECTOR bottom) {
     sceVu0FVECTOR v;
     f32 h;
 
@@ -207,7 +209,8 @@ void func_0019B4D8(RyjMatrixNoRot* p, sceVu0FVECTOR top, sceVu0FVECTOR bottom) {
     }
 }
 
-void func_0019B5C0(RyjMatrixNoRot* p, s32* x, s32* w, s32* y, s32* h) {
+// Texture rectangle from the parameter's width / height selection.
+void RyjMatrixNoRot_GetTexRect(RyjMatrixNoRot* p, s32* x, s32* w, s32* y, s32* h) {
     s32 th = 0x1000;
     s32 tx = 0;
     s32 tw = 0x1000;

@@ -13,14 +13,14 @@ typedef struct {
     /* 0x18 */ s32 unk_18;
 } PKeBornRnd2;
 
-s32 func_001AAF80(void);
-void func_0018EB98();
+s32 op_rand16(void);
+void KeBornRnd_Born();
 void KeBornRnd2(pppPObject* pobj, PKeBornRnd2* p, void* func, void* v, s16 a, u8 b, u8 c);
 
 s32 pppKeBornRnd2Calc(pppPObject* pobj, PKeBornRnd2* p, pppCtrlTable* ctbl) {
     if (!ppvEmptyLoop && !(ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) && p->unk_0D != 0xFF &&
-        !((func_001AAF80() >> 8) & p->unk_0D) && p->unk_10 != -1 && p->unk_18 != -1) {
-        KeBornRnd2(pobj, p, func_0018EB98, &pobj->val[ctbl->useVal[0]], p->unk_04, p->unk_0E, p->unk_0C);
+        !((op_rand16() >> 8) & p->unk_0D) && p->unk_10 != -1 && p->unk_18 != -1) {
+        KeBornRnd2(pobj, p, KeBornRnd_Born, &pobj->val[ctbl->useVal[0]], p->unk_04, p->unk_0E, p->unk_0C);
     }
 }
 
@@ -42,9 +42,10 @@ typedef struct {
 } PKeBornRnd2Cb;
 
 pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
-void func_001AB0F0(void* dst, void* src);
+void op_vec_copy_xyz(void* dst, void* src);
 
-void func_0018EDD8(pppPObject* pobj, PKeBornRnd2Cb* p, s16* sv) {
+// KeBornRnd2's particle creation at point sv.
+void KeBornRnd2_Born(pppPObject* pobj, PKeBornRnd2Cb* p, s16* sv) {
     pppPObject* born;
     void* pdt;
     void* pos;
@@ -64,8 +65,8 @@ void func_0018EDD8(pppPObject* pobj, PKeBornRnd2Cb* p, s16* sv) {
     pos = &born->val[p->posOff];
     vel = &born->val[p->velOff];
     sceVu0ApplyMatrix(t, ppvPObj.next->cmat, t);
-    func_001AB0F0(pos, t);
+    op_vec_copy_xyz(pos, t);
     sceVu0SubVector(t, t, ppvPObj.next->cmat[3]);
     sceVu0Normalize(t, t);
-    func_001AB0F0(vel, t);
+    op_vec_copy_xyz(vel, t);
 }

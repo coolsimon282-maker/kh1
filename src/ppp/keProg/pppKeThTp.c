@@ -18,7 +18,7 @@ typedef struct {
     /* 0x1C */ void* unk_1C;
 } VKeThTp;
 
-void func_001AB0F0(void*, f32*); // ppp/draw
+void op_vec_copy_xyz(void*, f32*); // ppp/draw
 
 void pppKeThTpCalc(pppPObject* pobj, PKeThTp* p, pppCtrlTable* ctbl) {
     VKeThTp* v = (VKeThTp*)&pobj->val[ctbl->useVal[0]];
@@ -41,7 +41,7 @@ void pppKeThTpCalc(pppPObject* pobj, PKeThTp* p, pppCtrlTable* ctbl) {
     if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
         return;
     }
-    func_001AB0F0(v, ppvPObj.next->cmat[3]);
+    op_vec_copy_xyz(v, ppvPObj.next->cmat[3]);
 }
 void pppKeThTpCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     VKeThTp* v = (VKeThTp*)&pobj->val[ctbl->useVal[0]];

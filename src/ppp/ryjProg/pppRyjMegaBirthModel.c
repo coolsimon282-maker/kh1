@@ -25,7 +25,7 @@ typedef struct {
     /* 0x106 */ u8 bWmat;
 } PRyjMegaBirthModel;
 
-s32 func_001A0F10(VRyjMegaBirthModel* v, PRyjMegaBirthModel* p);
+s32 RyjMegaPlaceLamp_HasData(VRyjMegaBirthModel* v, PRyjMegaBirthModel* p);
 void func_001A23F0(VRyjMegaBirthModel* v, PRyjMegaBirthModel* p, void* w);
 
 void pppRyjMegaBirthModelCalc(pppPObject* pobj, PRyjMegaBirthModel* p, pppCtrlTable* ctbl) {
@@ -56,12 +56,13 @@ void pppRyjMegaBirthModelCalc(pppPObject* pobj, PRyjMegaBirthModel* p, pppCtrlTa
         *(s32*)v->unk_0C = 0;
         sceVu0Normalize((f32*)&v->vecForce, (f32*)&v->vecForce);
     }
-    if (func_001A0F10(v, p)) {
+    if (RyjMegaPlaceLamp_HasData(v, p)) {
         func_001A23F0(v, p, w);
     }
 }
 
-void func_001A26D0(sceVu0FMATRIX out, PRyjMegaBirthModel* p, VRyjMegaBirthModel* v) {
+// The model particle's matrix by its rotation mode (unk_26).
+void RyjMegaBirthModel_GetMatrix(sceVu0FMATRIX out, PRyjMegaBirthModel* p, VRyjMegaBirthModel* v) {
     void* w = v->pvParticleWmat;
 
     sceVu0UnitMatrix(out);
@@ -211,7 +212,7 @@ typedef struct {
 } PRyjMegaBirthModelUv;
 
 // texture coordinates of the 8 corners: width/height picked by uSel/vSel, the u offset by uOfs
-void func_001A2F20(PRyjMegaBirthModelUv* p, sceVu0FVECTOR* uv) {
+void RyjMegaBirthModel_GetUv(PRyjMegaBirthModelUv* p, sceVu0FVECTOR* uv) {
     f32 w;
     f32 h;
     f32 u;
