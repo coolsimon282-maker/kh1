@@ -4242,7 +4242,46 @@ void func_00159440(u8* p, f32* a1) {
     func_001376E8_2(p, w);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001595A8);
+extern s32 D_1595A8_pad1;
+extern s32 D_1595A8_pad2;
+extern s32 D_1595A8_pad3;
+extern s32 D_1595A8_pad4;
+extern s32 D_1595A8_pad5;
+extern s32 D_1595A8_pad6;
+extern s32 D_1595A8_pad7;
+void func_001595A8(u8* p, f32* v) {
+    f32 w[4];
+    f32 t;
+    f32 c;
+    f32 k;
+
+    if (*(f32*)(p + 0x2C) > 0.0f) {
+        sceVu0ScaleVector(v, (f32*)(p + 0x20), *(f32*)(p + 0x2C) * D_002B8344);
+        sceVu0AddVector(v, v, (f32*)(p + 0x3C0));
+        func_001223B0(v, v);
+    } else {
+        func_001223B0(v, (f32*)(p + 0x3C0));
+        if (Vec_CosAngle(v, (f32*)(*(u8**)(p + 0x148) + 0x160)) > -0.7f) {
+            v[3] -= D_002B8344 * 0.05f;
+        } else {
+            v[3] -= D_002B8344 * 0.3f;
+        }
+    }
+    t = v[3];
+    if (t < 0.0f) {
+        c = 0.0f;
+    } else if (t > 6.0f) {
+        c = 6.0f;
+    } else {
+        c = t;
+    }
+    sceVu0ScaleVector((f32*)(p + 0x3C0), v, c);
+    sceVu0OuterProduct(w, (f32*)(p + 0xC0), v);
+    sceVu0Normalize(w, w);
+    sceVu0OuterProduct(v, w, (f32*)(p + 0xC0));
+    sceVu0Normalize(v, v);
+    sceVu0ScaleVectorXYZ(v, v, c * D_002B8344);
+}
 
 void func_00159148_f(u8*, f32) __asm__("func_00159148");
 u8* func_00159740(u8* p, f32* v) {
