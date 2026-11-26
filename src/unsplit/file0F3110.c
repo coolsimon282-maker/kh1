@@ -5287,7 +5287,143 @@ void func_002149F0(s32 a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00214A68);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00214B20);
+void func_00214B20(u8 *a0) {
+    extern s32 D_00642C34;
+    extern s32 D_00642C38;
+    extern s32 D_00642C3C;
+    extern s32 D_00642C40;
+    extern s32 D_00642C4C;
+    extern s32 D_00642C50;
+    extern s32 D_00642C54;
+    extern s32 D_00642C60;
+    extern u16 D_00642C6C_h __asm__("D_00642C6C");
+    extern u8 D_003F3ED0[];
+    extern u8 D_003F3E90[];
+    extern s32 Char_GetFreeAP(s32);
+    extern s32 Ability_GetDescription(s32);
+    extern s32 Ability_GetApCost(s32);
+    s32 slot;
+    s32 c;
+    s32 n;
+    u8 *ab;
+    s32 mode;
+    s32 rows;
+    s32 ap;
+    u8 *p;
+    s32 b;
+    s32 v;
+    s32 e[2];
+    s32 r;
+    s32 k;
+    s32 y;
+    s32 f;
+    s32 i;
+    s32 sel;
+    u8 b2;
+
+    c = *(s32 *)(a0 + 0x24);
+    n = D_00642C78[c];
+    c = D_003010F8->unk_48E[c];
+    ab = (u8 *)D_003010F8 + c * 0x74 + 4;
+    if (n == 0) {
+        return;
+    }
+    if (D_00642C24 < 3) {
+        mode = 0;
+        rows = 8;
+    } else {
+        mode = 1;
+        rows = 7;
+    }
+    func_001FD5E0(a0, n);
+    func_001FD610(a0, rows);
+    func_001FD688(a0);
+    ap = Char_GetFreeAP(c);
+    if (func_001F42B8((s32)a0)) {
+        if (*(u32 *)(D_00425BC8 + 8) & 0x4000) {
+            func_001F3758((s32)a0);
+            func_0011D598(3);
+            if (mode == 0) {
+                D_00642C24 = 0;
+            } else {
+                D_00642C24 = 2;
+            }
+        } else {
+            func_001FD858_a((s32)a0);
+            func_0020BD18((s32)a0, 8);
+            D_00642C5C = *(s16 *)(a0 + 0xD0) >> 4;
+            D_00642C60 = *(s16 *)(a0 + 0xD2) >> 4;
+            c = func_001FD548(a0);
+            p = *(u8 **)(a0 + 0x10);
+            b = ((struct { u8 pad[0x40]; u8 t[0x40]; } *)ab)->t[c];
+            v = b & 0x7F;
+            if (p != NULL) {
+                *(s32 *)(p + 0x24) = Ability_GetDescription(v);
+            }
+            if (func_001FE5A0_a((s32)a0)) {
+                p = func_001F4468(a0);
+                func_001F3D58(a0, 5);
+                func_001F3758((s32)a0);
+                if (mode == 0) {
+                    func_0011D598(2);
+                    D_00642C34 = c;
+                    D_00642C38 = v;
+                    D_00642C3C = b;
+                    D_00642C40 = 0;
+                    if (ap < Ability_GetApCost(v)) {
+                        D_00642C40 = 1;
+                    }
+                    D_00642C24 = 2;
+                    e[0] = func_001F3A20((s32)D_003F3ED0, 6);
+                    if (e[0] == 0) {
+                        goto tail;
+                    }
+                    func_001F3E90(p, e[0]);
+                    func_001F3E20((u8 *)e[0], (s32)p);
+                    *(u16 *)(e[0] + 0xD2) = D_00642C6C_h << 4;
+                    e[1] = func_001F3A20((s32)D_003F3E90, 6);
+                    if (e[1] == 0) {
+                        goto tail;
+                    }
+                    func_001F3E90((u8 *)e[0], e[1]);
+                    func_001F3E20((u8 *)e[1], e[0]);
+                    func_001F3DC0((u8 *)e[0]);
+                } else {
+                    func_0011D598(0x4A);
+                    D_00642C4C = c;
+                    D_00642C54 = b;
+                    D_00642C50 = v;
+                    D_00642C24 = 5;
+                    ((struct { u8 pad[0x40]; u8 t[0x40]; } *)ab)->t[D_00642C34] = *(u8 *)&D_00642C54;
+                    ((struct { u8 pad[0x40]; u8 t[0x40]; } *)ab)->t[D_00642C4C] = *(u8 *)&D_00642C3C;
+                }
+            }
+        }
+    }
+tail:
+    func_00202FC0((SObj *)a0);
+    r = func_001FD518(a0);
+    k = func_001FD618(a0);
+    y = func_001FD590((SObj *)a0);
+    f = *(s32 *)(a0 + 0x28);
+    rows = *(s16 *)(a0 + 0xCE) + 1;
+    func_001F8EE0(a0);
+    for (i = 0; i < rows && k < n; i++, k++) {
+        b2 = ((struct { u8 pad[0x40]; u8 t[0x40]; } *)ab)->t[k];
+        if (f == 0) {
+            sel = 2;
+        } else if (!(b2 & 0x80)) {
+            sel = i == r;
+        } else if (ap < Ability_GetApCost(b2 & ~0x80)) {
+            sel = (i == r) ? 3 : 2;
+        } else {
+            sel = i == r;
+        }
+        func_00214290((s32)a0, sel, 0, y, 0xA6, b2);
+        y += 0x1C;
+    }
+    func_001F8F30();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00214F50);
 
