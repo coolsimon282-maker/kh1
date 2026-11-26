@@ -2901,7 +2901,56 @@ s32 func_00153668(u8* p, u8* o, s32 msg) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001538D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001539C0);
+extern s32 D_1539C0_pad1;
+extern s32 D_1539C0_pad2;
+extern s32 D_1539C0_pad3;
+void func_00146678(u8*, void*);
+void func_00153418(u8*, u8*);
+s32 func_001538D8(u8*);
+extern void (*D_00351970[])(u8*);
+void func_001539C0(u8* p) {
+    u8* o;
+    u8* k;
+
+    o = *(u8**)(p + 0x144);
+    if (o == NULL) {
+        o = func_00121C98(0x50, p + 0x144);
+        *(s32*)o = 0;
+        k = *(u8**)(p + 0x134);
+        if (k != NULL && *(u8*)(k + 5) != 0 && (u8)(*(u8*)(*(u8**)(k + 0x14) + 1) - 2) < 2) {
+            *(u64*)o |= 1;
+        }
+        *(s32*)(o + 4) = 0;
+        *(s32*)(o + 8) = 0;
+        *(s32*)(o + 0x10) = 0;
+        *(s32*)(o + 0x18) = 0;
+        *(s32*)(o + 0x40) = 0;
+        *(s32*)(o + 0x44) = 0;
+        *(s32*)(o + 0x4C) = 0;
+        switch (*(u16*)(*(u8**)(p + 0x130) + 0x4C)) {
+        case 0xCA:
+            *(s32*)(o + 0xC) = 5;
+            break;
+        case 0xCB:
+            *(s32*)(o + 0xC) = 5;
+            break;
+        case 0xCC:
+            *(s32*)(o + 0xC) = 1;
+            break;
+        }
+        *(void**)(p + 0x4A0) = func_00153668;
+    }
+    *(u32*)p &= ~0x20;
+    if (*(f32*)(o + 0x44) > 0.0f && func_001538D8(p)) {
+        return;
+    }
+    if ((*(u32*)p & 0x400) && *(s32*)(p + 0x70) == 2) {
+        *(s32*)(o + 0x20) = 4;
+        func_001528F0(p);
+    }
+    func_00146678(p, *(u16*)(*(u8**)(p + 0x130) + 0x4C) == 0xCB ? (void*)func_00153500 : (void*)func_00153418);
+    D_00351970[*(s32*)(o + 4)](p);
+}
 
 void func_00153B68(s32 a, s32 b, f32* v) {
     s32 k;
