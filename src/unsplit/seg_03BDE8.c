@@ -894,7 +894,31 @@ s32 func_0013C9E0(a0, a1)
     return 0xFF;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CAE8);
+/* unused: rule F1 (with fewer, func_00176F08, func_0014ED30, func_001560F8 or func_00168530 change) */
+extern s32 D_lay13CAE8_0;
+extern s32 D_lay13CAE8_1;
+extern s32 D_lay13CAE8_2;
+extern s32 D_lay13CAE8_3;
+extern s32 D_lay13CAE8_4;
+extern s32 D_lay13CAE8_5;
+s32 func_0013CAE8(u32 a1, s32 a0) {
+    s32 i;
+
+    if (a1 < 10) {
+        E74y* e = &((D3010F8y*)D_003010F8)->e[a1];
+        for (i = 0; i < e->n; i++) {
+            if (e->slot[i] == a0) {
+                e->slot[i] = 0;
+                return a1;
+            }
+        }
+    }
+    if (((D3010F8y*)D_003010F8)->inv[a0] != 0) {
+        ((D3010F8y*)D_003010F8)->inv[a0]--;
+        return 0xC;
+    }
+    return 0xFF;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013CB18);
 
