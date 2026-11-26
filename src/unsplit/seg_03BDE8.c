@@ -2473,7 +2473,41 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00143EB8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144060);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001441B8);
+extern s32 D_1441B8_pad1;
+void func_00143EB8(u8*, f32*);
+s32 func_00144060(u8*);
+typedef struct { u64 pad:2; u32 b:1; } V1441B8;
+void func_001441B8(u8* p) {
+    sceVu0FVECTOR v;
+    s32 st;
+
+    sceVu0CopyVector((f32*)(p + 0x490), (f32*)(p + 0x10));
+    *(u64*)(p + 0x90) = 0;
+    if (func_001236F0(p) == 0) {
+        sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
+        sceVu0ScaleVector(v, (f32*)(p + 0x20), *(f32*)(p + 0x2C) * D_002B8344);
+        if (((V1441B8*)(p + 0x160))->b) {
+            sceVu0AddVector(v, v, (f32*)(p + 0x200));
+        }
+        sceVu0AddVector(v, v, (f32*)(p + 0x120));
+        func_00143D20(p, v, 0);
+    } else {
+        func_00143EB8(p, v);
+        func_00143D20(p, v, 0);
+        st = func_00144060(p);
+        if (func_0014F658((s32)p, st) && st == 2) {
+            func_0014CC88(p, 0.0f);
+            *(u32*)p &= ~4;
+            sceVu0ScaleVector(v, v, D_002C1EC0);
+            func_001223B0(v, v);
+            if (v[3] > 8.0f) {
+                v[3] = 8.0f;
+            }
+            sceVu0ScaleVector((f32*)(p + 0x3C0), v, v[3]);
+        }
+    }
+    sceVu0CopyVector((f32*)(p + 0x120), D_002C58B0);
+}
 
 void func_00144350(u8* p) {
     *(s32*)(*(u8**)(p + 0x148) + 0xBC) = 0;
