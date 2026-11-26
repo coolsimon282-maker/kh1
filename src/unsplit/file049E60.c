@@ -1544,7 +1544,47 @@ s32 func_0014EE08(f32* a, f32* b, u8* c) {
     return b[0] >= *(f32*)(c + 0x10) && a[0] <= *(f32*)(c + 0x20) && b[1] >= *(f32*)(c + 0x14) && a[1] <= *(f32*)(c + 0x24) && b[2] >= *(f32*)(c + 0x18) && a[2] <= *(f32*)(c + 0x28);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014EE88);
+s32 func_0014EE88(s32 pp) {
+    u8* p = (u8*)pp;
+    f32 a[8];
+    f32 lo[4];
+    f32 hi[4];
+    f32 ext[4];
+    u8* t;
+    Area350D78* e;
+    s32 i;
+    s32 r;
+
+    if (D_00350D78 == NULL) {
+        goto ret0;
+    }
+    if (p == NULL) {
+        return 0;
+    }
+    t = *(u8**)(p + 0x134);
+    if (t == NULL) {
+        return 0;
+    }
+    if (t[5] == 0) {
+    ret0:
+        return 0;
+    }
+    i = 0;
+    r = 0;
+    func_0015BAD0(p, *(u8**)(t + 0x14), a);
+    ext[2] = a[1];
+    ext[0] = a[1];
+    ext[1] = a[2];
+    sceVu0SubVector(lo, a + 4, ext);
+    sceVu0AddVector(hi, a + 4, ext);
+    e = D_00350D78->e;
+    for (; i < D_00350D78->count; i++, e++) {
+        if ((*(u64*)e & 0x200) || func_0014EE08(lo, hi, (u8*)e)) {
+            r |= 1 << (e->id - 1);
+        }
+    }
+    return r & D_0054F44C;
+}
 
 s32 func_0014EFE0(s32 a, s32 b) {
     if (b > 0 && (func_0014EE88(a) >> (b - 1)) & 1) {
