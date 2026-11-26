@@ -127,7 +127,7 @@ typedef struct {
     Seg3BDE8KV e[256];
 } Seg3BDE8KVTab;
 extern Seg3BDE8KVTab* D_0052EB40;
-void func_00142B30(u8*, f32*);
+s32 func_00142B30(u8*, f32*);
 void func_00152770(u8*, s32, void*);
 extern f32 D_002C58B0[];
 void func_0015DCC8(u8*, u8*);
@@ -2056,7 +2056,45 @@ s32 func_001429F8(f32* a, f32* b, f32* out) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142B30);
+s32 func_00105B68(s32, s32);
+s32 func_00142B30(u8* p, f32* d) {
+    R1429F8 q;
+    s32 r = 0;
+    f32 h;
+
+    sceVu0CopyVector(q.p, (f32*)(p + 0x10));
+    q.p[1] -= *(f32*)(p + 0x2C4) * 0.5f;
+    q.d[0] = d[0];
+    q.d[2] = d[2];
+    q.p[3] = 1.0f;
+    *(s32*)&q.d[1] = 0;
+    q.d[3] = 1.0f;
+    func_00118608(&q);
+    if (q.r >= 0) {
+        if (func_00105B68(*(s32*)((u8*)&q + 0x34), q.r) != 0) {
+            r = 3;
+        }
+    }
+    sceVu0AddVector(q.p, (f32*)(p + 0x10), d);
+    q.p[3] = 1.0f;
+    q.d[3] = 1.0f;
+    *(s32*)&q.d[0] = 0;
+    *(s32*)&q.d[2] = 0;
+    q.d[1] = d[3] - d[1];
+    func_00118668(&q);
+    if (q.r < 0) {
+        r = 3;
+        goto end;
+    }
+    h = q.h[1] - *(f32*)(p + 0x14);
+    if (h < -*(f32*)(p + 0x2C4) * 0.5f) {
+        r = 1;
+    } else if (*(f32*)(p + 0x2C4) < h) {
+        r = 2;
+    }
+end:
+    return r;
+}
 
 void func_00142C80(u8* a0, f32* a1) {
     sceVu0FVECTOR v;
