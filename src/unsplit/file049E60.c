@@ -1779,7 +1779,27 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00150EC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151010);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00151148);
+extern s32 D_151148_pad1; /* unused: rule F1 (keeps func_0015EEA0's beqzl) */
+void func_00151148(u8* p) {
+    u8* q = *(u8**)(p + 0x144);
+    f32 t;
+
+    if (*(f32*)(p + 0x24) < 0.0f) {
+        *(f32*)(p + 0x24) += *(f32*)(q + 0x30);
+    } else {
+        *(s32*)p &= ~0x20;
+        t = *(f32*)(q + 0x30) + -0.05f;
+        *(f32*)(q + 0x30) = t;
+        *(f32*)(p + 0x24) += t;
+        if (*(f32*)(p + 0x24) < 0.0f) {
+            sceVu0CopyVector((f32*)(p + 0x20), D_002C58A0);
+            *(s32*)q = 1;
+            return;
+        }
+    }
+    *(f32*)(p + 0x20) *= 0.95f;
+    *(f32*)(p + 0x28) *= 0.95f;
+}
 
 void func_00151208(u8* p) {
     u8* e = (u8*)D_0054F950;
