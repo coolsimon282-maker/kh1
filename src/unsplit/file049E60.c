@@ -3327,7 +3327,32 @@ s32 func_001563E0(u8* p, f32* v) {
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001564E0);
+float powf(float, float);
+void func_001564E0(u8* p, f32* a1) {
+    f32 v[4];
+    f32 n[4];
+
+    sceVu0ScaleVector(v, (f32*)(p + 0x3F0), *(f32*)(p + 0x3FC) * D_002B8344);
+    *(f32*)(p + 0x3FC) *= powf(0.8f, D_002B8344);
+    v[1] = 0.0f;
+    if (*(s32*)(p + 0x70) == 0x11) {
+        func_001223B0(n, v);
+        if (!func_001563E0(p, n)) {
+            sceVu0CopyVector(a1, v);
+        }
+    } else if (func_0014F5C8(p) || func_0014F600((s32)p)) {
+        a1[0] = v[0];
+        a1[2] = v[2];
+    } else {
+        func_001223B0(n, v);
+        if (!func_001562D0(p, n)) {
+            sceVu0CopyVector(a1, v);
+        }
+    }
+    if (*(f32*)(p + 0x3FC) < 1.0f) {
+        *(s32*)(p + 0x88) &= ~0x40;
+    }
+}
 
 u64* func_00156628(s32 a) {
     u8* e = D_00551600;
