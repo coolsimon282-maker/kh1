@@ -71,7 +71,7 @@ void Graphics_Initialize(void) {
 
     D_002BBDE4 = 7;
     fm_func_00110068();
-    func_0010C010();
+    IoThread_Init();
     GameData_BindBuffer();
     WorkBuffers_Clear(-1);
     Iop_LoadModules(D_002B6460, "host:./kingdom.log");
@@ -94,7 +94,7 @@ void Graphics_Initialize(void) {
 
     Gs_SetDefaultDrawEnv();
     VSync_InstallCallback();
-    func_0010C010();
+    IoThread_Init();
     GameData_BindBuffer();
     WorkBuffers_Clear(-1);
     Iop_LoadModules(D_002B29B0, "host:./kingdom.log");
@@ -193,7 +193,7 @@ extern s32 D_002B6484;
 extern u32 D_002BCA00_w[] __asm__("D_002BCA00");
 extern s32 D_002BBE08;
 extern s32 D_002B9030;
-s32 func_0010BF98_s(void) __asm__("func_0010BF98");
+s32 func_0010BF98_s(void) __asm__("IoThread_IsBusy");
 s32 func_00110F68_s(void) __asm__("func_00110F68");
 s32 func_001EE090(void);
 void func_00239488(void);

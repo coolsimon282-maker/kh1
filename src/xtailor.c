@@ -557,7 +557,7 @@ extern volatile s32 D_002B8340;
 extern volatile s32 D_004D90F4;
 s32 func_001115A0(void);
 void func_001115C0(void);
-void func_0010C110(void);
+void VSync_SignalFrame(void);
 
 // VSync handler: interlace field, frame counters, the play time counter D_002BBDF4 (held at the limit), vsync count D_004D90F4.
 s32 VSync_Callback(s32 arg0) {
@@ -584,7 +584,7 @@ s32 VSync_Callback(s32 arg0) {
     D_002B8340++;
     /* volatile read, plain store (the store sits in the jal delay slot) */
     *(s32*)&D_004D90F4 = D_004D90F4 + 1;
-    func_0010C110();
+    VSync_SignalFrame();
     return 0;
 }
 
@@ -687,17 +687,17 @@ extern f32 D_002B8348;
 extern s32 D_002B8354;
 extern s32 D_002BBE10;
 extern s32 D_002B8C90;
-void func_0010C0E0(void);
+void Frame_WaitVSync(void);
 
-// Waits for the next frame (func_0010C0E0) and sets the time step D_002B8344 from the vsyncs counted (capped at 5, scaled by D_002B8348) (FM).
+// Waits for the next frame (Frame_WaitVSync) and sets the time step D_002B8344 from the vsyncs counted (capped at 5, scaled by D_002B8348) (FM).
 void Frame_UpdateTimeStep(void) {
     s32 i;
 
-    func_0010C0E0();
+    Frame_WaitVSync();
     D_002B8344 = D_004D90F4 * D_002BBDEC;
     if (D_004D90F4 < D_002B8354 + 1) {
         for (i = 0; i < D_002B8354; i++) {
-            func_0010C0E0();
+            Frame_WaitVSync();
             D_002B8344 = D_004D90F4 * D_002BBDEC;
         }
     }

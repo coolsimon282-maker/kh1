@@ -392,14 +392,14 @@ void func_0010E580(void) {
     func_0010E450(imageAddrs[4], imageAddrs[5], 2);
     func_0010E450(imageAddrs[6], imageAddrs[7], 3);
 
-    func_0010C1D0(16364, imageAddrs[0]);
-    func_0010C1D0(16365, imageAddrs[1]);
-    func_0010C1D0(16366, imageAddrs[2]);
-    func_0010C1D0(16367, imageAddrs[3]);
-    func_0010C1D0(16368, imageAddrs[4]);
-    func_0010C1D0(16369, imageAddrs[5]);
-    func_0010C1D0(16370, imageAddrs[6]);
-    func_0010C1D0(16371, imageAddrs[7]);
+    Gs_Load8x2Image(16364, imageAddrs[0]);
+    Gs_Load8x2Image(16365, imageAddrs[1]);
+    Gs_Load8x2Image(16366, imageAddrs[2]);
+    Gs_Load8x2Image(16367, imageAddrs[3]);
+    Gs_Load8x2Image(16368, imageAddrs[4]);
+    Gs_Load8x2Image(16369, imageAddrs[5]);
+    Gs_Load8x2Image(16370, imageAddrs[6]);
+    Gs_Load8x2Image(16371, imageAddrs[7]);
 
     sceGsSyncPath(0, 0);
 
@@ -413,26 +413,26 @@ void func_0010E580(void) {
     func_00121D50(imageAddrs[7]);
 }
 
-// Adds task func_0010C248 and registers the sixteen window images 16348..16363 (D_002B7B70..D_002B7F30).
+// Adds task Kanji_UploadTask and registers the sixteen window images 16348..16363 (D_002B7B70..D_002B7F30).
 void func_0010E700(void) {
-    *(u16*)(TaskSystem_AddTask(180150, func_0010C248) + 2) = -1;
+    *(u16*)(TaskSystem_AddTask(180150, Kanji_UploadTask) + 2) = -1;
 
-    func_0010C1D0(16348, &D_002B7B70);
-    func_0010C1D0(16349, &D_002B7BB0);
-    func_0010C1D0(16350, &D_002B7BF0);
-    func_0010C1D0(16351, &D_002B7C30);
-    func_0010C1D0(16352, &D_002B7C70);
-    func_0010C1D0(16353, &D_002B7CB0);
-    func_0010C1D0(16354, &D_002B7CF0);
-    func_0010C1D0(16355, &D_002B7D30);
-    func_0010C1D0(16356, &D_002B7D70);
-    func_0010C1D0(16357, &D_002B7DB0);
-    func_0010C1D0(16358, &D_002B7DF0);
-    func_0010C1D0(16359, &D_002B7E30);
-    func_0010C1D0(16360, &D_002B7E70);
-    func_0010C1D0(16361, &D_002B7EB0);
-    func_0010C1D0(16362, &D_002B7EF0);
-    func_0010C1D0(16363, &D_002B7F30);
+    Gs_Load8x2Image(16348, &D_002B7B70);
+    Gs_Load8x2Image(16349, &D_002B7BB0);
+    Gs_Load8x2Image(16350, &D_002B7BF0);
+    Gs_Load8x2Image(16351, &D_002B7C30);
+    Gs_Load8x2Image(16352, &D_002B7C70);
+    Gs_Load8x2Image(16353, &D_002B7CB0);
+    Gs_Load8x2Image(16354, &D_002B7CF0);
+    Gs_Load8x2Image(16355, &D_002B7D30);
+    Gs_Load8x2Image(16356, &D_002B7D70);
+    Gs_Load8x2Image(16357, &D_002B7DB0);
+    Gs_Load8x2Image(16358, &D_002B7DF0);
+    Gs_Load8x2Image(16359, &D_002B7E30);
+    Gs_Load8x2Image(16360, &D_002B7E70);
+    Gs_Load8x2Image(16361, &D_002B7EB0);
+    Gs_Load8x2Image(16362, &D_002B7EF0);
+    Gs_Load8x2Image(16363, &D_002B7F30);
 }
 
 // Sends packet D_002B7FF0, sets mode 1 and redraws the window (func_0010E330).
@@ -509,7 +509,7 @@ void func_0010EBE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 
     b[0] = func_00121C98(0x2C, &b[0]);
     b[1] = func_00121C98(0x400, &b[1]);
-    func_0010C248();
+    Kanji_UploadTask();
     func_0010EA38(a5, b[1], a3);
     ((XSauce *)b[0])->unk_13 = 0;
     ((XSauce *)b[0])->unk_13 |= 4;
@@ -528,7 +528,7 @@ void func_0010EBE0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
 void MsgWin_DrawTemp(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     XSauce* s;
     s = (XSauce*)func_00121C98(0x2C, (u_long128**)&s);
-    func_0010C248();
+    Kanji_UploadTask();
     s->unk_13 = 0;
     s->unk_13 |= 4;
     MsgWin_Init(arg0, arg1, arg2, arg3, s);

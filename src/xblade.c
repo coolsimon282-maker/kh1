@@ -300,7 +300,7 @@ s32 func_001125F0(void) {
 s32 World_OnWorldDataLoaded(void) {
     World_ApplyWorldData();
     func_0010E580();
-    func_0010AD58(D_002B9330);
+    Gs_LoadFontImage(D_002B9330);
     D_002A0508 = D_002B9330;
     D_002A0508 = AlignUp(D_002B9330, 0x40);
     return func_001125F0();

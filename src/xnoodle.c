@@ -1,3 +1,8 @@
+/**
+ * Screen-space sprites drawn through the hand-written VU0 loop (camera D_0048EC50, screen matrix D_0048EC90) with a
+ * small task list, the job thread run once a frame (two job slots, semaphores shared with the VSync handler), and the
+ * kanji / font images (kanji.knj).
+ */
 #include "common.h"
 #include "common_funcs.h"
 #include "xnoodle.h"
@@ -42,7 +47,7 @@ u_long128* D_0048ED00;
 extern volatile s32 D_00495258;
 
 // Hand-written VU0 loop (the original is assembly inside C).
-void func_0010A1F8(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void* arg5, void* arg6) {
+void Vu0_TransformSpriteVerts(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void* arg5, void* arg6) {
     __asm__ volatile(
         ".set noreorder\n"
         "daddu $11, $9, $0\n"
@@ -80,13 +85,14 @@ void func_0010A1F8(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void
 
 extern u64 D_002B70B0[];
 extern void* D_00495250;
-void func_0010A1F8(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void* arg5, void* arg6);
+void Vu0_TransformSpriteVerts(u64* pkt, void* arg1, void* arg2, void* arg3, s32 count, void* arg5, void* arg6);
 
+// Writes a GIF tag (D_002B70B0[arg5]) and four transformed vertices for a sprite into pkt; returns arg1 + 0xD.
 s32 func_0010A270(u64* pkt, s32 arg1, void* arg2, void* arg3, void* arg4, s32 arg5, void* arg6) {
     pkt[0] = D_002B70B0[arg5];
     pkt[1] = 0;
     pkt += 2;
-    func_0010A1F8(pkt, arg2, arg6, arg4, 4, arg3, D_00495250);
+    Vu0_TransformSpriteVerts(pkt, arg2, arg6, arg4, 4, arg3, D_00495250);
     ((s32*)pkt)[0x1C / 4] = 0x8000;
     ((s32*)pkt)[0x4C / 4] = 0x8000;
     return arg1 + 0xD;
@@ -96,7 +102,8 @@ INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A2F0);
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010A4A0);
 
-void func_0010AD58(u32 arg0) {
+// Uploads a 256 x 128 4-bit image to 0x1800 and its palette to 0x3FF4, then a black copy of the palette to 0x3FF8 (probably the font).
+void Gs_LoadFontImage(u32 arg0) {
     u8* pal = (u8*)(arg0 + 0x8000);
     s32 i;
 
@@ -123,6 +130,7 @@ void func_0010AD58(u32 arg0) {
     sceGsSyncPath(0, 0);
 }
 
+// Resets a sprite's +0x38 / +0x3C / +0x58 / +0x5C (0, 1, 1, 1).
 void func_0010AE98(XNoodle* arg0) {
     arg0->unk_38 = 0.0f;
     arg0->unk_3C = 1.0f;
@@ -130,11 +138,13 @@ void func_0010AE98(XNoodle* arg0) {
     arg0->unk_58 = 1.0f;
 }
 
+// Builds the screen matrix D_0048EC90 centred on the offset in arg0[12], arg0[13].
 void func_0010AEB8(f32* arg0) {
     sceVu0ViewScreenMatrix(D_0048EC90, 512.0f, 1.0f, 1.0f, arg0[12] + 2048.0f, arg0[13] + 2048.0f, 1.0f,
                            16777000.0f, 2.0f, 4000000.0f);
 }
 
+// arg0 = arg1 * scale matrix of vector arg2.
 void func_0010AF38(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0FMATRIX m;
 
@@ -145,6 +155,7 @@ void func_0010AF38(sceVu0FMATRIX arg0, sceVu0FMATRIX arg1, sceVu0FVECTOR arg2) {
     sceVu0MulMatrix(arg0, arg1, m);
 }
 
+// arg0 = screen * D_0048EC10 * X rotation by the sprite's +0x20.
 void func_0010AFA0(sceVu0FMATRIX arg0, XNoodle* arg1) {
     sceVu0FMATRIX m;
 
@@ -153,6 +164,7 @@ void func_0010AFA0(sceVu0FMATRIX arg0, XNoodle* arg1) {
     sceVu0MulMatrix(arg0, D_0048EC90, m);
 }
 
+// arg0 = screen * D_0048EC10 * Z rotation by the sprite's angle +0x1C (degrees, turned by 180) translated by arg2.
 void func_0010B000(sceVu0FMATRIX arg0, XNoodle* arg1, sceVu0FVECTOR arg2) {
     sceVu0FMATRIX m;
 
@@ -175,6 +187,7 @@ INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B428);
 
 INCLUDE_ASM("asm/nonmatchings/xnoodle", func_0010B810);
 
+// Starts closing the sprite (state 3, +0x14 = arg1) and frees its text window buffer.
 void func_0010BB10(XNoodle* arg0, s32 arg1) {
     if (arg0->unk_18 != 0) {
         arg0->unk_14 = arg1;
@@ -236,6 +249,7 @@ extern u16 D_002B6780[];
 XNoodleNode* TaskList_Add(s32* list, s32 id, void (*func)());
 void func_0010B810();
 
+// Adds sprite obj to the task list (func_0010B810) and sets up its text window from its position and tables D_002B6780..D_002B67C8.
 void func_0010BB50(XNoodleObj* obj, s32 arg1) {
     XNoodleNode* node;
     XNoodleSpr* spr;
@@ -286,16 +300,19 @@ void func_0010BB50(XNoodleObj* obj, s32 arg1) {
     }
 }
 
+// Task: updates the sprite task list and resets its counter.
 s32 func_0010BDA8(void) {
     TaskList_UpdateMatching(&D_002B3AE0, 0);
     D_0048ECD4 = 0;
     return 0;
 }
 
+// Sets the camera matrix D_0048EC50 (eye D_002B3A20, looking along D_002B3A30, up D_002B3A40).
 void func_0010BDD8(void) {
     sceVu0CameraMatrix(D_0048EC50, D_002B3A20, D_002B3A30, D_002B3A40);
 }
 
+// Sets up the sprite task list and camera and adds func_0010BDA8 (priority 180200).
 void* func_0010BE10(void) {
     D_0048ECD4 = 0;
     func_0010BDD8();
@@ -303,7 +320,8 @@ void* func_0010BE10(void) {
     return TaskSystem_AddTask(180200, func_0010BDA8);
 }
 
-void func_0010BE60(void) {
+// Thread body: waits for the frame semaphore D_0048ECE0 and runs the (at most two) registered jobs.
+void IoThread_Main(void) {
     s32 i;
 
     while (1) {
@@ -317,11 +335,13 @@ void func_0010BE60(void) {
     }
 }
 
+// Waits for the frame semaphore D_0048ECE0.
 void func_0010BEE8(void) {
     WaitSema(D_0048ECE0);
 }
 
-void func_0010BF08(void (*arg0)(IOReadTask*), IOReadTask* arg1) {
+// Registers a job (function, argument) in a free one of the two slots.
+void IoThread_AddJob(void (*arg0)(IOReadTask*), IOReadTask* arg1) {
     XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
 
@@ -335,7 +355,8 @@ void func_0010BF08(void (*arg0)(IOReadTask*), IOReadTask* arg1) {
     }
 }
 
-void func_0010BF50(void (*arg0)(IOReadTask*)) {
+// Removes the job with function arg0.
+void IoThread_RemoveJob(void (*arg0)(IOReadTask*)) {
     XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
 
@@ -349,9 +370,10 @@ void func_0010BF50(void (*arg0)(IOReadTask*)) {
     }
 }
 
-// include/xnoodle.h declares this `void func_0010BF98();`, but it returns whether an IO slot is in use.
-s32 func_0010BF98_s32(void) __asm__("func_0010BF98");
+// include/xnoodle.h declares this `void IoThread_IsBusy();`, but it returns whether an IO slot is in use.
+s32 func_0010BF98_s32(void) __asm__("IoThread_IsBusy");
 
+// True when a job is registered (C name func_0010BF98_s32, declared void in xnoodle.h).
 s32 func_0010BF98_s32(void) {
     XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
@@ -364,7 +386,8 @@ s32 func_0010BF98_s32(void) {
     return 0;
 }
 
-void func_0010BFD8(void) {
+// Clears both job slots.
+void IoThread_ClearJobs(void) {
     XNoodleSlot* slot = D_002B3AF0.slot;
     s32 i;
 
@@ -377,15 +400,16 @@ void func_0010BFD8(void) {
 
 extern s32 D_00494050;
 extern s32 D_0049525C;
-void func_0010BE60(void);
+void IoThread_Main(void);
 
-void func_0010C010(void) {
+// Creates the two semaphores and the job thread (priority 0x28, stack D_002B3B10) and starts it.
+void IoThread_Init(void) {
     struct ThreadParam tp;
     u8 unused[0x20];
     struct SemaParam sp;
     s32 id;
 
-    func_0010BFD8();
+    IoThread_ClearJobs();
     ChangeThreadPriority(GetThreadId(), 30);
     sp.maxCount = 1;
     sp.currentCount = 0;
@@ -393,7 +417,7 @@ void func_0010C010(void) {
     sp.option = 0;
     D_00495258 = CreateSema(&sp);
     D_0048ECE0 = CreateSema(&sp);
-    tp.entry = (void (*)(void*))func_0010BE60;
+    tp.entry = (void (*)(void*))IoThread_Main;
     tp.stack = D_002B3B10;
     tp.stackSize = 0x4000;
     tp.initPriority = 0x28;
@@ -405,12 +429,14 @@ void func_0010C010(void) {
     }
 }
 
-void func_0010C0E0(void) {
+// Wakes the job thread and waits for the VSync semaphore D_00495258.
+void Frame_WaitVSync(void) {
     SignalSema(D_0048ECE0);
     WaitSema(D_00495258);
 }
 
-void func_0010C110(void) {
+// From the VSync handler: signals D_00495258 when a thread waits on it.
+void VSync_SignalFrame(void) {
     struct SemaParam param;
 
     iReferSemaStatus(D_00495258, &param);
@@ -419,7 +445,8 @@ void func_0010C110(void) {
     }
 }
 
-void func_0010C158(void) {
+// Reads "kanji.knj" to D_0048ED00.
+void Kanji_Load(void) {
     void* p0 = func_00155ED8(0x34, 0xC);
     s32 val = func_00120438("kanji.knj", p0);
     memcpy(&D_0048ED00, p0, val);
@@ -427,6 +454,7 @@ void func_0010C158(void) {
 
 void func_00109230(u8*, u8*);
 
+// func_00109230 on the two parts of the data block at p + 0x10.
 void func_0010C1A8(u8* p) {
     u8* q = p + 0x10;
     u8* data = q + *(u16*)(q + 0xC);
@@ -434,14 +462,16 @@ void func_0010C1A8(u8* p) {
     func_00109230(data, data + *(s32*)(q + 8));
 }
 
-s32 func_0010C1D0(s16 dest, u_long128* src) {
+// Uploads an 8 x 2 32-bit image (a CLUT, probably) to VRAM block dest.
+s32 Gs_Load8x2Image(s16 dest, u_long128* src) {
     sceGsSetDefLoadImage(&D_002B8700, dest, 1, SCE_GS_PSMCT32, 0, 0, 8, 2);
     sceGsSyncPath(0, 0);
     FlushCache(WRITEBACK_DCACHE);
     return sceGsExecLoadImage(&D_002B8700, src);
 }
 
-s32 func_0010C248(void) {
+// Uploads the 256 x 256 kanji image to 0x3600 (not in pause modes 5 and 6).
+s32 Kanji_UploadTask(void) {
     if (D_002B9668 < 7) {
         if (D_002B9668 >= 5) {
             return 0;

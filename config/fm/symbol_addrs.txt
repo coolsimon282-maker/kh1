@@ -636,6 +636,24 @@ Screen_SaveRegion                    = 0x0010A3E8; // type:func
 Screen_LoadRegion                    = 0x0010A470; // type:func
 
 
+//=========================================================
+// xnoodle.c
+//=========================================================
+Vu0_TransformSpriteVerts             = 0x0010A4D8; // type:func
+Gs_LoadFontImage                     = 0x0010B030; // type:func
+IoThread_Main                        = 0x0010C0C8; // type:func
+IoThread_AddJob                      = 0x0010C170; // type:func
+IoThread_RemoveJob                   = 0x0010C1B8; // type:func
+IoThread_IsBusy                      = 0x0010C200; // type:func
+IoThread_ClearJobs                   = 0x0010C240; // type:func
+IoThread_Init                        = 0x0010C278; // type:func
+Frame_WaitVSync                      = 0x0010C348; // type:func
+VSync_SignalFrame                    = 0x0010C378; // type:func
+Kanji_Load                           = 0x0010C3C0; // type:func
+Gs_Load8x2Image                      = 0x0010C438; // type:func
+Kanji_UploadTask                     = 0x0010C4B0; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

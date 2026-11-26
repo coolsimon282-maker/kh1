@@ -165,3 +165,5 @@ func_00109580 = Game_MainLoop;
 func_00109B00 = Screen_CaptureToOverlayArea;
 func_00109C50 = Screen_StartCrossFade;
 func_0010A108 = Screen_SaveRegion;
+func_0010BF08 = IoThread_AddJob;
+func_0010BF50 = IoThread_RemoveJob;

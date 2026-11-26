@@ -524,3 +524,16 @@ other functions (rule F1).
 | Screen_DrawCapture | 0x0010A3C0 | xarcade.c | Adds Screen_DrawCaptureTask. |
 | Screen_SaveRegion | 0x0010A3E8 | xarcade.c | Stores the 256 x 192 VRAM area at 0x3600 in a new buffer D_002B2CC8. |
 | Screen_LoadRegion | 0x0010A470 | xarcade.c | Uploads the area saved by Screen_SaveRegion back to 0x3600. |
+| Vu0_TransformSpriteVerts | 0x0010A4D8 | xnoodle.c | Hand-written VU0 loop: transforms count vertices by matrix arg1 (plus offset arg5), perspective-divides them and writes ST / RGBA / XYZ quadwords to the GS packet. |
+| Gs_LoadFontImage | 0x0010B030 | xnoodle.c | Uploads a 256 x 128 4-bit image to 0x1800 and its palette to 0x3FF4, then a black copy of the palette to 0x3FF8 (probably the font). |
+| IoThread_Main | 0x0010C0C8 | xnoodle.c | Thread body: waits for the frame semaphore D_0048ECE0 and runs the (at most two) registered jobs. |
+| IoThread_AddJob | 0x0010C170 | xnoodle.c | Registers a job (function, argument) in a free one of the two slots. |
+| IoThread_RemoveJob | 0x0010C1B8 | xnoodle.c | Removes the job with function arg0. |
+| IoThread_IsBusy | 0x0010C200 | xnoodle.c | ? |
+| IoThread_ClearJobs | 0x0010C240 | xnoodle.c | Clears both job slots. |
+| IoThread_Init | 0x0010C278 | xnoodle.c | Creates the two semaphores and the job thread (priority 0x28, stack D_002B3B10) and starts it. |
+| Frame_WaitVSync | 0x0010C348 | xnoodle.c | Wakes the job thread and waits for the VSync semaphore D_00495258. |
+| VSync_SignalFrame | 0x0010C378 | xnoodle.c | From the VSync handler: signals D_00495258 when a thread waits on it. |
+| Kanji_Load | 0x0010C3C0 | xnoodle.c | Reads "kanji.knj" to D_0048ED00. |
+| Gs_Load8x2Image | 0x0010C438 | xnoodle.c | Uploads an 8 x 2 32-bit image (a CLUT, probably) to VRAM block dest. |
+| Kanji_UploadTask | 0x0010C4B0 | xnoodle.c | Uploads the 256 x 256 kanji image to 0x3600 (not in pause modes 5 and 6). |
