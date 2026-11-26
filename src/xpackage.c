@@ -485,3 +485,29 @@ void SaTask_AllocGroup(s32 arg0) {
 void SaTask_Init(void) {
     SaTask_ClearGroups();
 }
+
+#ifdef VERSION_FM
+// .data (0x00469FC8-0x0046A04C)
+s32 func_0024E75C(); // file14E098
+s32 func_0024E8D4();
+typedef void (*XPackageChunkFn)(u8* arg0, s32 arg1, s32* arg2);
+// chunk handlers by type byte (Decode_Chunk)
+XPackageChunkFn D_00469FC8[4] = {
+    (XPackageChunkFn)Decode_CopyChunk, (XPackageChunkFn)func_0024E75C, (XPackageChunkFn)func_0024E8D4, NULL,
+};
+void (*D_00469FD8[8])(s32, s32, s32) = {
+    SaTask_RunInGroup0, SaTask_RunInGroup1, SaTask_RunInGroup2, SaTask_RunInGroup3, SaTask_RunInGroup4, SaTask_RunInGroup5, SaTask_RunInGroup6, SaTask_RunInGroup7,
+};
+void (*D_00469FF8[8])(void) = {
+    SaTask_StepGroup0, SaTask_StepGroup1, SaTask_StepGroup2, SaTask_StepGroup3, SaTask_StepGroup4, SaTask_StepGroup5, SaTask_StepGroup6, SaTask_StepGroup7,
+};
+void (*D_0046A018[8])(void) = {
+    SaTask_FreeGroup0, SaTask_FreeGroup1, SaTask_FreeGroup2, SaTask_FreeGroup3, SaTask_FreeGroup4, SaTask_FreeGroup5, SaTask_FreeGroup6, SaTask_FreeGroup7,
+};
+// the current task group's context (SaTask_RunInGroup)
+s32 D_0046A038 = 0;
+s32 D_0046A03C = 0;
+s32 D_0046A040 = 0;
+s32 D_0046A044 = 0;
+s32 D_0046A048 = 0;
+#endif
