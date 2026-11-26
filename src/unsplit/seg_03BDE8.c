@@ -4004,7 +4004,18 @@ void func_0014D4F8(u8* p, f32* a1, f32 a, f32 b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D570);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D6B0);
+void func_0014D6B0(u8* p, f32* v) {
+    f32* d = (f32*)(p + 0x3C0);
+    sceVu0ScaleVectorXYZ(v, d, D_002B8344);
+    d[0] *= *(f32*)(p + 0x3CC);
+    *(f32*)(p + 0x3C4) += *(f32*)(p + 0x3B4) * D_002B8344;
+    *(f32*)(p + 0x3C8) *= *(f32*)(p + 0x3CC);
+    if (20.0f < *(f32*)(p + 0x3C4)) {
+        *(f32*)(p + 0x3C4) = 20.0f;
+    }
+    *(f32*)(p + 0x3B0) += D_002B8344;
+    func_0014CD38(p);
+}
 
 s32 func_0014D760(u8* p, s32 a) {
     if (a == 0) {
