@@ -426,8 +426,6 @@ s32 func_001BA7D0(void) {
 
 extern s32 D_003773EC;
 extern s32 D_003772D4;
-extern char D_0048FFF0[];
-extern char D_00490000[];
 int puts(const char *);
 void func_001BA910(s32);
 
@@ -435,8 +433,8 @@ void func_001BA7E0(void) {
     D_003773EC = 1;
     D_003772DC = 1;
     func_001BA6F8();
-    puts(D_0048FFF0);
-    func_001B9C60(D_00490000);
+    puts("Run Gumi Edit");
+    func_001B9C60("gb.x");
     func_001BA910((s32)func_001BA7B8);
     D_003772D4++;
 }
@@ -457,10 +455,10 @@ extern void *D_003773E0;
 extern void *D_003773E4;
 extern void *D_003773DC;
 extern s32 D_003772D8;
-extern char D_00490008[];
-extern char D_00490018[];
 void func_001C20B8(void);
 void func_00236F18(void);
+
+extern const char D_00490018[]; /* "wm.x": also pointed to from other data, so a named array (defined below) */
 
 void func_001BA870(void) {
     D_003773EC = 1;
@@ -471,10 +469,12 @@ void func_001BA870(void) {
     func_001C20B8();
     func_00236F18();
     func_001BA6F8();
-    puts(D_00490008);
+    puts("Run WorldMap");
     func_001B9C60(D_00490018);
     D_003772D8++;
 }
+
+const char D_00490018[] = "wm.x"; /* after "Run WorldMap" in .rodata */
 
 extern s32 D_00621318;
 
@@ -578,7 +578,8 @@ void func_001BAAF0(u8 *a0) {
     }
 }
 
-extern char D_00490020[];
+// .rodata 0x00490020: an empty name (16 bytes)
+const char D_00490020[16] = "";
 void func_001BE820(void *, s32);
 void func_001BEF98(char *, char *);
 
@@ -587,7 +588,7 @@ void func_001BAB80(s32 n, u8 *p) {
 
     for (i = 0; i < n; i++) {
         func_001BE820(p, 0xF70);
-        func_001BEF98((char *)(p + 0x50), D_00490020);
+        func_001BEF98((char *)(p + 0x50), (char *)D_00490020);
         p += 0xF70;
     }
 }

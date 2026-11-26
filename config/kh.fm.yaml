@@ -592,7 +592,10 @@ segments:
   - [ 0x38fd98, .rodata, ppp/xpear ] # D_0048FD98/9C
   - [ 0x38fda0, .rodata, ppp/draw/draw ]
   - [ 0x38fda8, .rodata, ppp/draw/global ]
-  - [ 0x38fe80, rodata ]
+  - [ 0x38fe80, .rodata, ppp/draw/md0 ]
+  - [ 0x38fff0, .rodata, unsplit/gumi ]
+  - [ 0x390070, rodata ]
+  - [ 0x390300, .rodata, xbuffalo ]
   - [ 0x390320, .rodata, xkinetic ]
   - [ 0x390340, rodata ]
   - [ 0x390b10, .rodata, unsplit/seg_0EF950 ] # jump tables of func_001F4570 / func_001F45E0
