@@ -1256,7 +1256,35 @@ void func_0013F6D0(u8* p, f32* a1) {
     *(u32*)p &= ~0x200000;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0013F770);
+void func_0013F770_d(u8* p, f32* a1) __asm__("func_0013F770");
+
+void func_0013F770_d(u8* p, f32* a1) {
+    f32 v[4];
+    f32 s;
+    s32 flag = 0;
+    f32 z = 0.0f;
+
+    if (a1[1] < z) {
+        func_00130398((s32)p, 5, z);
+        func_00130578((s32)p, 6, z);
+        s = 20.0f;
+    } else if (z < a1[3]) {
+        func_00130398((s32)p, 5, z);
+        func_00130578((s32)p, 6, z);
+        s = 15.0f;
+    } else {
+        func_00130398((s32)p, 6, 12.0f);
+        s = 5.0f;
+        flag = 0x10000;
+    }
+    a1[1] = 0.0f;
+    sceVu0ScaleVector(v, (f32*)(p + 0x30), -1.0f);
+    sceVu0AddVector(a1, a1, v);
+    sceVu0Normalize(a1, a1);
+    a1[3] = 2.0f;
+    func_0014CC88(p, s);
+    *(u32*)p |= flag;
+}
 
 void func_0013F8A8(s32 a, s32 b, f32* p) {
     if (0.0f < p[3]) {
