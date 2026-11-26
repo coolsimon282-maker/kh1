@@ -1985,7 +1985,53 @@ void func_002223E8(void) {
     func_00207210(7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_00222400);
+void func_0011D598_v2400(s32) __asm__("func_0011D598");
+s32 func_001EC6F8(s32, s32);
+s32 Time_GetMinutesPart(s32);
+s32 Time_GetSecondsPart(s32);
+s32 Time_GetHundredthsPart(s32);
+extern s32 D_0064368C;
+extern u8 D_00643680[];
+void func_00222400(s32 a0) {
+    s32 i;
+    s32 y;
+    s32 k;
+    s32 t;
+    s32 r;
+
+    if (func_001F4390(a0)) {
+        if (func_001FE9A8(a0, 0, D_0064368C)) {
+            func_0011D598_v2400(1);
+            *(s16 *)(a0 + 0xDA) = *(u16 *)(a0 + 0x24) << 4;
+        }
+        D_0064369C = *(s32 *)(a0 + 0x24);
+    }
+    func_00203788(a0, 0x174, 0x28, 0x1E6, 0x80C8C8C8);
+    func_0021B820();
+    func_0021C9A0(a0, 0x10, 0x48);
+    func_0021CB00(a0, 0x20, 0x6C, 9, 0x1E);
+    func_0021CB00(a0, 0x118, 0x6C, 9, 0x1E);
+    func_00206130(a0, 0x11F, 0x5E, 0x14, 2, 0x80202020);
+    func_00206130(a0, 0x1C5, 0x5E, 0x14, 2, 0x80202020);
+    func_001F94F0(a0, 2, 0x17C, 0x56, func_00221390_x(8), 0xF, 0x80461E00);
+    func_001F94F0(a0, 0, 0x128, 0x90, func_0021B800_x(D_00643680[D_0064369C] + 0x4C), 0xF, 0x80461E00);
+    t = 0xCC;
+    y = t;
+    k = D_00643680[D_0064369C];
+    for (i = 0; i < 5; i++) {
+        t = func_001EC6F8(k, i);
+        r = 0x3A;
+        D_003E8E08[0] = i + 1;
+        if (t != -1) {
+            D_003E8E08[1] = Time_GetMinutesPart(t);
+            D_003E8E08[2] = Time_GetSecondsPart(t);
+            D_003E8E08[3] = Time_GetHundredthsPart(t);
+            r = 0x39;
+        }
+        func_001F94F0(a0, 0, 0x11F, y, func_0021B800_x(r), 0xF, 0x80461E00);
+        y += 0x1E;
+    }
+}
 
 void func_00222658(void) {
     func_00207210(8);
