@@ -68,7 +68,8 @@ extern unsigned long D_0046ADF8;           /* max_total_mem */
 #define max_total_mem D_0046ADF8
 #define initial_top ((mchunkptr)(bin_at(0)))
 
-/* the state (.data 0x0046A9D0-0x0046AE28; this file is only built for FM, without VERSION_FM), as mallocr.c defines it with DEFINE_MALLOC */
+/* the state (.data 0x0046A9D0-0x0046AE28), as mallocr.c defines it with DEFINE_MALLOC
+   (newlib files are built without VERSION_FM; this one is FM-only) */
 #define IAV(i) bin_at(i), bin_at(i)
 mbinptr D_0046A9D0[128 * 2 + 2] = { /* av_: every bin starts empty (pointing at itself) */
     0, 0,
