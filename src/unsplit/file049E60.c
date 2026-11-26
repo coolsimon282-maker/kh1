@@ -2552,7 +2552,48 @@ void func_001533D0(s32 a, u8* b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00153418);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_00153500);
+typedef struct { u64 lo:38; u32 m:4; } V153500;
+void func_00153500(u8* p, u8* b) {
+    s32 n;
+
+    if (((V153500*)(b + 8))->m == 1) {
+        func_00147138(p, 4);
+    }
+    switch (((V153500*)(b + 8))->m) {
+    case 2:
+        if (*(f32*)(*(u8**)(p + 0x144) + 0x44) > 0.0f) {
+            goto set6;
+        }
+        func_00152598(p);
+        return;
+    case 3:
+        *(s32*)(*(u8**)(p + 0x144) + 8) = 0;
+        func_001525F0(p);
+        return;
+    default:
+        if (func_00153300(p, b)) {
+            func_00152598(p);
+            func_00153360(p, b);
+            return;
+        }
+        n = *(s32*)(b + 8);
+        if (n <= 0) {
+            return;
+        }
+        *(s32*)(*(u8**)(p + 0x144) + 8) += n;
+        if (*(s32*)(*(u8**)(p + 0x144) + 8) >= *(s32*)(*(u8**)(p + 0x144) + 0xC)) {
+            func_00145008(p, 0);
+        set6:
+            *(s32*)(*(u8**)(p + 0x144) + 4) = 6;
+            return;
+        }
+        if (func_001532C8(b)) {
+            func_00152598(p);
+        }
+        func_001533D0((s32)p, b);
+        break;
+    }
+}
 
 typedef struct { u8 b[8]; } V153668;
 void func_00152DC8_v(u8*, s32) __asm__("func_00152DC8");
