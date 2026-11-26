@@ -36,18 +36,76 @@ typedef struct XTrumpet {
 extern s32 D_002B8364;
 extern s32 curWorldNo;
 
+typedef struct {
+    /* 0x0 */ s8 unk_0; // compared with curWorldNo
+    /* 0x1 */ s8 unk_1; // compared with curRoomNo
+    /* 0x2 */ s8 index; // for GameState_SetPresetPositions
+    /* 0x3 */ s8 pad;
+} XTrumpetSel;
+
+#ifdef VERSION_FM
+// .data (0x002BCB60-0x002BCC28)
+XTrumpet* gameState = NULL;
+// sizes (per group?) of XTrumpet.unk_6C
+s8 D_002BCB68[17] = {7, 12, 9, 26, 10, 20, 11, 1, 21, 17, 13, 7, 11, 12, 1, 17, 39};
+XTrumpetSel presetPosRooms[39] = {
+    {0, 4, 11, 0},
+    {1, 1, 23, 0},
+    {1, 6, 24, 0},
+    {3, 0, 0, 0},
+    {3, 10, 68, 0},
+    {3, 19, 69, 0},
+    {4, 0, 0, 0},
+    {4, 3, 36, 0},
+    {5, 14, 45, 0},
+    {5, 8, 46, 0},
+    {5, 3, 47, 0},
+    {6, 10, 19, 0},
+    {8, 7, 63, 0},
+    {8, 11, 65, 0},
+    {8, 18, 64, 0},
+    {8, 13, 66, 0},
+    {8, 0, 68, 0},
+    {9, 1, 51, 0},
+    {9, 10, 52, 0},
+    {9, 13, 54, 0},
+    {9, 15, 53, 0},
+    {10, 11, 22, 0},
+    {10, 9, 24, 0},
+    {11, 1, 13, 0},
+    {12, 0, 42, 0},
+    {12, 1, 43, 0},
+    {12, 8, 44, 0},
+    {13, 7, 37, 0},
+    {13, 10, 38, 0},
+    {13, 11, 40, 0},
+    {13, 9, 39, 0},
+    {15, 0, 0, 0},
+    {15, 5, 58, 0},
+    {15, 8, 59, 0},
+    {15, 11, 60, 0},
+    {16, 0, 70, 0},
+    {16, 24, 71, 0},
+    {16, 29, 72, 0},
+    {16, 14, 80, 0},
+};
+s32 D_002B916C = 0;
+s32 D_002B9170 = 0;
+s32 D_002B9174 = 0;
+#else
 XTrumpet* gameState;
+extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of XTrumpet.unk_6C
+extern XTrumpetSel presetPosRooms[39];
+extern s32 D_002B916C;
+extern s32 D_002B9170;
+extern s32 D_002B9174;
+#endif
 
 // XTrumpet's unk_10..unk_4C seen as four 16-byte float vectors
 typedef struct {
     f32 x, y, z, w;
 } XTrumpetVec;
 
-extern s8 D_002BCB68[]; // FM address name; sizes (per group?) of XTrumpet.unk_6C
-
-extern s32 D_002B916C;
-extern s32 D_002B9170;
-extern s32 D_002B9174;
 
 extern s32 D_004D29D0;
 extern s32 D_004D2998;
@@ -170,14 +228,6 @@ void GameState_SaveLocation(void) {
     *(XTrumpetUnk4C*)&t->unk_4C = *func_0017F1C8();
 }
 
-typedef struct {
-    /* 0x0 */ s8 unk_0; // compared with curWorldNo
-    /* 0x1 */ s8 unk_1; // compared with curRoomNo
-    /* 0x2 */ s8 index; // for GameState_SetPresetPositions
-    /* 0x3 */ s8 pad;
-} XTrumpetSel;
-
-extern XTrumpetSel presetPosRooms[39];
 
 // Saves the location; rooms listed in presetPosRooms use the preset positions, the others the actual ones.
 void GameState_SaveRoomPositions(void) {

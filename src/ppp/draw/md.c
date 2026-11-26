@@ -5,8 +5,27 @@
 extern u64 D_00373060[];
 extern u64 D_0061E800[];
 
+#ifdef VERSION_FM
+// .data (0x00373000-0x00373090): DMA end tag + GIF tag + one A+D register write each
+u64 D_0036F4C0[6] __attribute__((aligned(16))) = {
+    0x70000002, 0x0,
+    0x1000000000008001ULL, 0xE,
+    0x3000D, 0x47,
+};
+u64 D_0036F4F0[6] __attribute__((aligned(16))) = {
+    0x70000002, 0x0,
+    0x1000000000008001ULL, 0xE,
+    0x72001, 0x47,
+};
+u64 D_00373060[6] __attribute__((aligned(16))) = {
+    0x70000002, 0x0,
+    0x1000000000008001ULL, 0xE,
+    0x0, 0x0,
+};
+#else
 s32 D_0036F4C0;
 s32 D_0036F4F0;
+#endif
 
 void set_ztest_off(void) {
     sceGsSyncPath(0, 0);

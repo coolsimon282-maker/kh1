@@ -135,9 +135,18 @@ void func_00127960(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
     func_001621E0(obj->unk_15C, arg1, &prm, obj);
 }
 
-extern struct {
+typedef struct {
     f32 x, y, z, w;
-} D_002E27F0;
+} XCreamVec;
+
+#ifdef VERSION_FM
+// .data (0x002E27E0-0x002E2810)
+s32 D_002E27E0[4] = {128, 196, 256, 0};
+XCreamVec D_002E27F0 = {0.0f, 0.0f, 0.0f, 1.0f};
+sceVu0FVECTOR D_002E2800 = {1.0f, 0.0f, 0.0f, 1.0f};
+#else
+extern XCreamVec D_002E27F0;
+#endif
 extern s32 D_004F82C0;
 extern s32 D_004F82C4;
 s32 func_001145E8(void*, s32, s32, void*);

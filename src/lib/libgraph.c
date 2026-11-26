@@ -1,5 +1,5 @@
 // Library code (Final Mix). One function at a time: replace an INCLUDE_ASM line with matching C.
-// Data this file owns is still in the data segments: declare it extern here, do not define it.
+// Its .data is defined after the declarations below.
 #include "common.h"
 
 /* GS privileged registers */
@@ -33,8 +33,18 @@ int sceRead(int fd, void* addr, int size);
 int sceClose(int fd);
 int func_002729D8(const char*);
 
+#ifdef VERSION_FM
+// .data (0x0046C4F0-0x0046C540)
+char D_0046C4F0[16] = "PsIIlibgraph2500"; // library version (no NUL)
+sceGsGParam D_004661C0 = {1, 2, 1, 3, NULL, 0}; /* gsGParam */
+unsigned int D_0046C510[8] __attribute__((aligned(16))) = { /* sceGsResetPath's VIF1 packet */
+    0x01000404, 0x20000000, 0x00000000, 0x05000000, 0x06000000, 0x03000000, 0x02000000, 0x04000000,
+};
+unsigned int D_0046C530[4] = {0x06000000, 0, 0, 0}; // read by sceGsExecStoreImage
+#else
 extern sceGsGParam D_004661C0;           /* gsGParam */
 extern unsigned int D_0046C510[8];       /* sceGsResetPath's VIF1 packet (16-aligned) */
+#endif
 extern char D_00492920[];                /* the file func_00265558 reads */
 
 void sceGsResetGraph(short mode, short inter, short omode, short ffmd) {

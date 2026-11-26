@@ -32,6 +32,25 @@ extern _sceFsPoffData _sif_FsPoff_Data;
 extern char* _fs_wildcard;
 extern char D_00464B18; /* __ps2_klibinfo__ + 12 */
 
+// .data (0x0046AE58-0x0046AEF8)
+extern char _fswildcard[]; /* "...." (.rodata) */
+extern char D_00492340[];
+vs32 _sceFs_q[MAX_IOB_COUNT] = {
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+};
+s32 _fs_init = 0;
+s32 _fs_semid = -1;
+s32 _fs_iob_semid = -1;
+s32 _fs_fsq_semid = -1;
+char* _fs_wildcard = _fswildcard;
+// the next three probably belong to the following objects (eeloadfile..diei), but sit on 4-byte boundaries
+s32 D_00465374 = -1;
+char* D_00465378 = D_00492340;
+s32 D_0046AEF4 = 0;
+
 void _sceFsIobSemaMK(void);
 _sceFsIob* new_iob(void);
 _sceFsIob* get_iob(s32 fd);

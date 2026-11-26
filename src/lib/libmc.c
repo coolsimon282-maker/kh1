@@ -32,9 +32,16 @@ typedef struct {
     /* 0x413 */ s8 unk_413;
 } McStatus; // size = 0x414
 
-// todo: data split, blocked by lib version string
+#ifdef VERSION_FM
+// .data (0x0046E080-0x0046E0A0)
+char D_0046E080[16] = "PsIIlibmc   2500"; // library version (no NUL)
+s32 mcRunCmdNo = 0;
+s32 semaidRegFunc = -1;
+s32 D_0046E098[2] = {0};
+#else
 s32 semaidRegFunc;
 s32 mcRunCmdNo;
+#endif
 
 sceSifClientData mcClientID;
 SifParams mcSifParams;
