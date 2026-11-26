@@ -233,7 +233,7 @@ extern u16 D_002B67C0[];
 extern u16 D_002B67C8[];
 extern f32 D_002B6798[];
 extern u16 D_002B6780[];
-XNoodleNode* func_0011EEB8(s32* list, s32 id, void (*func)());
+XNoodleNode* TaskList_Add(s32* list, s32 id, void (*func)());
 void func_0010B810();
 
 void func_0010BB50(XNoodleObj* obj, s32 arg1) {
@@ -242,7 +242,7 @@ void func_0010BB50(XNoodleObj* obj, s32 arg1) {
     XNoodleSpr* spr2;
     s16 z;
 
-    node = func_0011EEB8(D_002B3AE0, D_0048ECD4++, func_0010B810);
+    node = TaskList_Add(D_002B3AE0, D_0048ECD4++, func_0010B810);
     if (node == NULL) {
         return;
     }
@@ -299,8 +299,8 @@ void func_0010BDD8(void) {
 void* func_0010BE10(void) {
     D_0048ECD4 = 0;
     func_0010BDD8();
-    func_0011EDD0(D_002B3AE0, D_002B3A50, 0x24, 4);
-    return func_0011ED30(180200, func_0010BDA8);
+    TaskList_Init(D_002B3AE0, D_002B3A50, 0x24, 4);
+    return TaskSystem_AddTask(180200, func_0010BDA8);
 }
 
 void func_0010BE60(void) {

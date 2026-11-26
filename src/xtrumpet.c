@@ -449,7 +449,7 @@ void func_00111A00(s32 arg0) {
     } else {
         D_004D9254 = 0x14996C4;
     }
-    func_0011ED30(0x2C04C, func_00111920);
+    TaskSystem_AddTask(0x2C04C, func_00111920);
 }
 
 extern void (*D_004D9258)(void);
@@ -479,7 +479,7 @@ void func_00111B70(s32 sec, void (*cb)(void)) {
     D_004D29AC = 0;
     D_004D9250 = D_002BBDF0;
     D_002B916C = D_004D9254 = sec * 60;
-    func_0011ED30(0x2C04C, func_00111A70);
+    TaskSystem_AddTask(0x2C04C, func_00111A70);
 }
 
 void func_00111BD8(void) {
@@ -605,7 +605,7 @@ void func_00111E20(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a
     D.u14 = D_004D29C4;
     func_002485B8((s32)&D);
     D_004D29D0 = 0;
-    func_0011ED30(0x280A0, func_00111D98);
+    TaskSystem_AddTask(0x280A0, func_00111D98);
 }
 #undef D
 

@@ -52,7 +52,7 @@ void func_001228C8(f32 arg0, sceVu0FVECTOR* arg1, f32* arg2, void (*arg3)()) {
     if (0.0f >= arg0) {
         sceVu0CopyVector(arg1[3], arg2);
     } else {
-        pvVar1 = func_0011EEB8(&D_004FA670, 0, VectorInterpolationTask_Update);
+        pvVar1 = TaskList_Add(&D_004FA670, 0, VectorInterpolationTask_Update);
         pvVar1->unk_10 = arg1;
         pvVar1->unk_44 = arg0;
         pvVar1->unk_40 = arg0;
@@ -274,7 +274,7 @@ s32 func_00122EC8(void) {
 
 
 void Interpolation_Initialize(void) {
-    func_0011EDD0(&D_004FA670, &D_004FA680, 0x50, 8);
+    TaskList_Init(&D_004FA670, &D_004FA680, 0x50, 8);
 }
 
 void func_00123020(void) {
@@ -325,7 +325,7 @@ typedef union {
 } XOwlU;
 extern XOwlU D_002C6440;
 s32 func_00122EC8(void);
-s32 func_0011ED60(s32 (*)(void));
+s32 TaskSystem_FindTask(s32 (*)(void));
 
 void func_00123108(void) {
     s32 i;
@@ -344,8 +344,8 @@ void func_00123108(void) {
     D_002C6440.p->unk_30[2] = 1.0f;
     D_002C6440.p->unk_30[3] = 1.0f;
     Interpolation_Initialize();
-    if (func_0011ED60(func_00122EC8) == 0) {
-        func_0011ED30(60000, func_00122EC8);
+    if (TaskSystem_FindTask(func_00122EC8) == 0) {
+        TaskSystem_AddTask(60000, func_00122EC8);
     }
 }
 

@@ -27,7 +27,7 @@ typedef struct {
 void func_00106718(void);
 void func_001091F8(u8*, u8*);
 void func_00106728(void);
-XFlapjack* func_0011EEB8(u16*, s32, s32 (*)(XFlapjack*));
+XFlapjack* TaskList_Add(u16*, s32, s32 (*)(XFlapjack*));
 
 s32 func_001061D8(void) {
     if (((D_002B85C0[0] == 0) || (D_002B860C == 128)) & 0xFFFF) {
@@ -108,7 +108,7 @@ void func_00106380(s32 a, s32 b, s32 c, s32 d) {
     D_00494A8C = 1.0f;
     D_0048E508 = 800.0f / (f32)b / (f32)(a - 1);
     D_00494A84 = b;
-    func_0011ED30(0x2E646, func_00106230);
+    TaskSystem_AddTask(0x2E646, func_00106230);
 }
 
 void func_00106428(s32 a, s32 b, s32 c, s32 d) {
@@ -118,7 +118,7 @@ void func_00106428(s32 a, s32 b, s32 c, s32 d) {
     D_0048E508 = -k;
     D_00494A8C = (f32)a * k + 1.0f;
     D_00494A84 = b;
-    func_0011ED30(0x2E646, func_00106230);
+    TaskSystem_AddTask(0x2E646, func_00106230);
 }
 
 void Fade_ResetIntensity(void) {
@@ -141,7 +141,7 @@ void Fade_StartScreenIn(s32 arg0) {
 
     func_00106718();
     func_00106728();
-    p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateScreenIn);
+    p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateScreenIn);
     val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -164,7 +164,7 @@ s32 FadeTask_UpdateScreenOut(XFlapjack* arg0) {
 }
 
 void Fade_StartScreenOut(s32 arg0) {
-    XFlapjack* p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateScreenOut);
+    XFlapjack* p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateScreenOut);
     s32 val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -199,7 +199,7 @@ void Fade_StartOverlayIn(s32 arg0) {
 
     func_00106718();
     func_00106728();
-    p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateOverlayIn);
+    p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateOverlayIn);
     val = arg0 << 1;
     if (arg0 == 0) {
         arg0 = 1;
@@ -233,7 +233,7 @@ void Fade_StartOverlayOut(s32 arg0) {
         return;
     }
 
-    p0 = func_0011EEB8(&D_002B8C70, 0, FadeTask_UpdateOverlayOut);
+    p0 = TaskList_Add(&D_002B8C70, 0, FadeTask_UpdateOverlayOut);
     val = arg0 << 1;
     f0 = 128.0f;
     if (arg0 == 0) {

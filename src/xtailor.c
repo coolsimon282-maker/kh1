@@ -371,7 +371,7 @@ typedef struct {
 } XTailorSave;
 extern XTailorSave D_002BCA00[2];
 extern XTailorSave D_002C5AD0[2];
-void func_0011F4B8(void);
+void Pad_Update(void);
 void func_001BA4A8(void);
 
 void func_0010FB90(void) {
@@ -383,7 +383,7 @@ void func_0010FB90(void) {
             D_002C5AD0[i] = D_002BCA00[i];
         }
     }
-    func_0011F4B8();
+    Pad_Update();
     for (i = 0; i < 2; i++) {
         D_002BCA00[i] = D_002C5AD0[i];
     }

@@ -447,7 +447,7 @@ void* func_0011E9A8(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     D_004DCB70 = arg3;
     func_001EE1E0(1, arg0);
     func_001EE518(arg0, arg1, arg2);
-    return func_0011ED30(10000, func_0011C9D0);
+    return TaskSystem_AddTask(10000, func_0011C9D0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011EA28);

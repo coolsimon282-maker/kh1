@@ -252,7 +252,7 @@ void func_001121C8(void) {
 }
 
 void* func_001124E8(void) {
-    return func_0011ED30(50000, func_001016E8);
+    return TaskSystem_AddTask(50000, func_001016E8);
 }
 
 s32 func_00112508(UNK_TYPE arg0, UNK_TYPE arg1, s32* arg2) {
@@ -327,13 +327,13 @@ s32 func_001127A0(void) {
     func_001C38C0();
     D_002B29C4 = 0;
     func_00122720();
-    func_0011ED30(189999, func_00112690);
+    TaskSystem_AddTask(189999, func_00112690);
     return 4;
 }
 
 void* func_001127E0(void) {
     func_001009D8();
-    return func_0011ED30(190000, func_001127A0);
+    return TaskSystem_AddTask(190000, func_001127A0);
 }
 
 void func_00112810(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -444,7 +444,7 @@ void func_00112A50(void) {
     D_002C1EA8 |= 0x80000;
     func_001129F8();
     func_001C38C0();
-    func_0011ED30(190000, func_001129C8);
+    TaskSystem_AddTask(190000, func_001129C8);
     D_002B8698[0] = curWorldNo;
     D_002B8698[1] = curRoomNo;
     func_001093A8(4);
@@ -455,7 +455,7 @@ void func_00112AD8(void) {
     func_001129F8();
     func_001C38C0();
     func_00112CF0();
-    func_0011ED30(190000, func_001129C8);
+    TaskSystem_AddTask(190000, func_001129C8);
     D_002B9318[0] = curWorldNo;
     D_002B9318[1] = curRoomNo;
     D_002B9318[2] = D_002B92F8;
@@ -721,7 +721,7 @@ s32 func_00113170(void) {
 }
 
 void* func_001132A0(void) {
-    return func_0011ED30(49900, func_00113170);
+    return TaskSystem_AddTask(49900, func_00113170);
 }
 
 void func_001132C0(void) {
@@ -1029,7 +1029,7 @@ s32 func_00113AF8(void) {
 }
 
 s32 func_00113B30(void) {
-    XPointy* p0 = func_0011ED30(10499, func_00113AF8);
+    XPointy* p0 = TaskSystem_AddTask(10499, func_00113AF8);
     p0->unk_02 = 1;
     func_00102970(0x80, 0x10);
     D_004D2A70 = 3;
@@ -1037,7 +1037,7 @@ s32 func_00113B30(void) {
 }
 
 s32 func_00113B78(void) {
-    XPointy* p0 = func_0011ED30(190019, func_00113B30);
+    XPointy* p0 = TaskSystem_AddTask(190019, func_00113B30);
     p0->unk_02 = 1;
     func_0010A108();
     func_00102970(0x80, 0x10);
@@ -1063,7 +1063,7 @@ s32 func_00113C40(void) {
     XPointy* p0;
 
     func_00102970(0x80, 0x10);
-    p0 = func_0011ED30(190019, func_00113BC0);
+    p0 = TaskSystem_AddTask(190019, func_00113BC0);
     p0->unk_02 = -1;
     return 4;
 }
@@ -1264,7 +1264,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                 break;
 //             case 1:
 //                 func_00113E18();
-//                 ((XGoblin*)func_0011ED30(190020, &func_00113B78))->unk_02 = 1;
+//                 ((XGoblin*)TaskSystem_AddTask(190020, &func_00113B78))->unk_02 = 1;
 //                 D_004D2A70 = 2;
 //                 break;
 //             case 2:
@@ -1315,7 +1315,7 @@ INCLUDE_ASM("asm/nonmatchings/xblade", PauseMenu_Update);
 //                 break;
 //             case 5:
 //                 D_002B8354 = 1;
-//                 ((XGoblin*)func_0011ED30(190021, &func_00113C40))->unk_02 = -1;
+//                 ((XGoblin*)TaskSystem_AddTask(190021, &func_00113C40))->unk_02 = -1;
 //                 func_00113E28();
 //                 D_004D2A70 = 6;
 //                 break;

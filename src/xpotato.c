@@ -717,8 +717,8 @@ void func_00218D08(void) {
 }
 
 void func_00218D38(void) {
-    func_0011F9E8(0x3600, 4, 19, 0, 0, 138, 0x58, 759, D_003ED730, &D_0063CFA0);
-    func_0011F9E8(0x3680, 1, 0, 0, 0, 16, 16, 64, D_003ED730 + 0x2F70, &D_0063D050);
+    GsPacket_LoadImage(0x3600, 4, 19, 0, 0, 138, 0x58, 759, D_003ED730, &D_0063CFA0);
+    GsPacket_LoadImage(0x3680, 1, 0, 0, 0, 16, 16, 64, D_003ED730 + 0x2F70, &D_0063D050);
 }
 
 INCLUDE_ASM("asm/nonmatchings/xpotato", func_00218DD0);

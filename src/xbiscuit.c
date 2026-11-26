@@ -33,17 +33,17 @@ void func_001F0C30(void) {
 
     func_00120438(D_0048A590, dst);
 
-    func_0011F9E8(0x3FFC, 1, 0, 0, 0, 0x10, 0x10, 0x40, dst + 0x10000, stack1);
+    GsPacket_LoadImage(0x3FFC, 1, 0, 0, 0, 0x10, 0x10, 0x40, dst + 0x10000, stack1);
     FlushCache(0);
     sceDmaSend(sceDmaGetChan(SCE_DMA_GIF), stack1);
     sceGsSyncPath(0, 0);
 
-    func_0011F9E8(0x1000, 4, 36, 0, 0, 0x100, 0x100, 0x800, dst, stack0);
+    GsPacket_LoadImage(0x1000, 4, 36, 0, 0, 0x100, 0x100, 0x800, dst, stack0);
     FlushCache(0);
     sceDmaSend(sceDmaGetChan(SCE_DMA_GIF), stack0);
     sceGsSyncPath(0, 0);
 
-    func_0011F9E8(0x1000, 4, 44, 0, 0, 0x100, 0x100, 0x800, dst + 0x8000, stack0);
+    GsPacket_LoadImage(0x1000, 4, 44, 0, 0, 0x100, 0x100, 0x800, dst + 0x8000, stack0);
     FlushCache(0);
     sceDmaSend(sceDmaGetChan(SCE_DMA_GIF), stack0);
     sceGsSyncPath(0, 0);

@@ -109,3 +109,22 @@ other functions (rule F1).
 | ppvMngTbl | 0x00364130 | ppp/pppMngr.c | the 0x100 effect managers (ppvmng, 0xC0 bytes each): every loop over managers in pppMngr.c walks it; was D_00364130 |
 | curWorldNo | 0x002BC128 | worldfile.c (data) | world index: worldfile_getNames/getBinImgName pass it to worldfile_getAbbr to build the file names (al, tw, ...); was D_002B8678 |
 | curRoomNo | 0x002BC130 | worldfile.c (data) | room index: worldfile_getNames prints it + 1 as the file number (al01.ard); was D_002B8680 |
+| Iop_LoadModules | 0x0011ECD8 | xgoblin.c | Loads the IOP modules (sio2man.irx, ..., ds2o.irx twice, ..., libssl.irx) and starts the services that use them. |
+| TaskList_Add | 0x0011F090 | xgoblin.c | Takes a free entry, fills it in and links it into the list sorted by priority (unk_04). |
+| TaskList_FindByFunc | 0x0011F2E0 | xgoblin.c | Returns the task in the list whose function is arg1 (0 if none). |
+| TaskList_Unlink | 0x0011F320 | xgoblin.c | Unlinks task arg1 from the list; returns 1 if it was there. |
+| TaskList_FindFree | 0x0011EFE8 | xgoblin.c | Finds a free entry (unk_00 == 0) in the pool, searching on from the last one handed out (unk_0C). |
+| TaskSystem_RemoveTask | 0x0011EF58 | xgoblin.c | Unlinks the main-list task that runs function func, if there is one. |
+| TaskSystem_FindTask | 0x0011EF38 | xgoblin.c | Looks a task up by its function in the main task list (the result is not used). |
+| Pad_ReadSticks | 0x0011F370 | xgoblin.c | Reads both analog sticks with a dead zone (D_002C5C20): direction bits for the d-pad, unit and scaled vectors. |
+| Pad_UpdateButtons | 0x0011F548 | xgoblin.c | Updates held/pressed/released buttons and the key-repeat timers (first delay D_002C5C24, then D_002C5C28). |
+| Pad_MapButtons | 0x0011F628 | xgoblin.c | Maps raw button bits to game buttons through the table D_002C1EE0. |
+| Pad_Update | 0x0011F668 | xgoblin.c | Reads the controller (scePad2), sets vibration, updates the button state and the game's mapped copy. |
+| Pad_Reset | 0x0011F988 | xgoblin.c | Resets the controller state and the dead zone / key-repeat settings. |
+| Pad_Initialize | 0x0011FA88 | xgoblin.c | Initialises the controller library (sceDbcInit, scePad2Init) and opens the pad socket. |
+| GsPacket_AddReg | 0x0011FB38 | xgoblin.c | Writes one A+D pair (value arg1, register arg0) and returns the next position. |
+| GsPacket_SetGifTag | 0x0011FB48 | xgoblin.c | Writes a GIF tag for the A+D data up to arg2 (one register, A+D; arg1 = EOP). |
+| GsPacket_SetDmaTag | 0x0011FB78 | xgoblin.c | Writes a DMA tag (QWC up to arg2, ID arg1; scratchpad address bit for 0x70000000+). |
+| GsPacket_LoadImage | 0x0011FBB0 | xgoblin.c | Builds a DMA chain that uploads an image to GS memory (BITBLTBUF, TRXPOS, TRXREG, TRXDIR, then the data). |
+| TaskSystem_AddTask | 0x0011EF10 | xgoblin.c | Adds a task with priority prio and function func to the main task list. |
+| TaskList_Init | 0x0011EFA8 | xgoblin.c | Sets up a task list over a pool of count entries of size bytes each, all free. |

@@ -348,7 +348,7 @@ s32 func_00148768(s32, s32, XAppleBlemish*, s32, f32);
 void func_001336D8(void);
 void func_0023E0B0(s32, s32);
 void func_001452E0(s32, s32);
-s32 func_0011EEB8(s32*, s32, void*);
+s32 TaskList_Add(s32*, s32, void*);
 s32 func_0013AB30();
 
 s32 func_0013AFE8(void) {
@@ -371,8 +371,8 @@ s32 func_0013AFE8(void) {
             *(s32*)D_002E26A0.unk_00[i] |= 0x1000000;
         }
     }
-    func_0011EEB8(&D_00532518, 0, func_0013AB30);
-    func_0011ED30(100000, func_0013AB68);
+    TaskList_Add(&D_00532518, 0, func_0013AB30);
+    TaskSystem_AddTask(100000, func_0013AB68);
     return 1;
 }
 
@@ -497,7 +497,7 @@ s32 func_0013B368(void) {
     cdvd_QueueFileLoad(something, D_0053260C, NULL, 0);
     sprintf(something, "%s%s", D_00301010[D_00532600], D_00301054);
     cdvd_QueueFileLoad(something, &func_F20000, &func_0013B138, 0);
-    func_0011ED30(47000, &func_0013B1D0);
+    TaskSystem_AddTask(47000, &func_0013B1D0);
     return 1;
 }
 
@@ -576,13 +576,13 @@ void func_0013B578(void) {
     func_001778A0(0);
     D_002C1EA8 &= ~0x4000;
     func_001452E0(0, 4);
-    func_0011EEB8(&D_00532518, 0, &func_0013B480);
+    TaskList_Add(&D_00532518, 0, &func_0013B480);
 }
 
 #else
 INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 #endif
-// int func_0011EEB8(int*, int, int*);
+// int TaskList_Add(int*, int, int*);
 // int func_00123858(void*);
 // void func_001250B0(void);
 // void func_00133588(void);
@@ -618,7 +618,7 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 //     func_001778A0(0);
 //     D_002C1EA8 &= ~0x4000;
 //     func_001452E0(0, 4);
-//     func_0011EEB8(&D_00532518, 0, &func_0013B480);
+//     TaskList_Add(&D_00532518, 0, &func_0013B480);
 // }
 
 #ifdef VERSION_FM
@@ -841,14 +841,14 @@ void* func_0013BB00(s32 arg0, s32 arg1) {
     D_00532608 = func_00155ED8(0x34, 0xC);
     sprintf(something, "%s%s", D_00301010[arg1], D_00301078);
     cdvd_QueueFileLoad(something, D_00532608, func_0013B9B8, 0);
-    func_0011EDD0(&D_00532518, &D_00532528, 0x18, 8);
-    return func_0011ED30(52000, func_0013B8F8);
+    TaskList_Init(&D_00532518, &D_00532528, 0x18, 8);
+    return TaskSystem_AddTask(52000, func_0013B8F8);
 }
 
 void func_0013BCA8(void) {
     if ((D_002C1EA8 >> 13) & 1) {
         func_F20000(2, 0);
-        func_0011ED80(func_0013B8F8);
+        TaskSystem_RemoveTask(func_0013B8F8);
         func_0023E0B0(0, 1);
         func_0023E0B0(1, 2);
         func_0023E0B0(2, 2);

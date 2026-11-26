@@ -382,7 +382,7 @@ s32 func_001C2150(void) {
 }
 
 void* func_001C2178(void) {
-    func_0011EDD0(&D_00623B38, &D_00623B48, 0x1C, 8);
-    return func_0011ED30(50002, func_001C2150);
+    TaskList_Init(&D_00623B38, &D_00623B48, 0x1C, 8);
+    return TaskSystem_AddTask(50002, func_001C2150);
 }
 

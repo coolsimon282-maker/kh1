@@ -107,8 +107,8 @@ s32 func_001000E8(void) {
 }
 
 void func_00100118(void) {
-    *(u16*)(func_0011ED30(159998, func_001000C8) + 2) = -1;
-    *(u16*)(func_0011ED30(184990, func_001000E8) + 2) = -1;
+    *(u16*)(TaskSystem_AddTask(159998, func_001000C8) + 2) = -1;
+    *(u16*)(TaskSystem_AddTask(184990, func_001000E8) + 2) = -1;
 }
 
 #ifdef VERSION_FM
@@ -184,8 +184,8 @@ void func_00100240(void) {
     func_0011C6C8(0);
     func_001116A8();
     D_002B80F0 = 0;
-    func_0011ED30(10499, &func_00119E18);
-    func_0011ED30(164003, &func_00103928);
+    TaskSystem_AddTask(10499, &func_00119E18);
+    TaskSystem_AddTask(164003, &func_00103928);
     func_00100118();
     func_0011E350();
     D_002B9314 = 0;
@@ -194,10 +194,10 @@ void func_00100240(void) {
     D_002B9310 = 0;
     func_0010E700();
     func_0010BE10();
-    func_0011ED30(50000, &func_00112690);
+    TaskSystem_AddTask(50000, &func_00112690);
     func_001004F0();
     func_00114A50();
-    func_0011ED30(120000, &func_00100328);
+    TaskSystem_AddTask(120000, &func_00100328);
     D_002A274C = 0.050000001f;
 }
 #else
@@ -215,8 +215,8 @@ void func_00100240(void) {
     ((s32 (*)(s32))func_0011C6C8)(0);
     func_001116A8();
     D_002BBBA0 = 0;
-    func_0011ED30(10499, &func_0011A068);
-    func_0011ED30(164003, &func_001039F8);
+    TaskSystem_AddTask(10499, &func_0011A068);
+    TaskSystem_AddTask(164003, &func_001039F8);
     func_00100118();
     func_0011E528();
     D_002B9314 = 0;
@@ -225,10 +225,10 @@ void func_00100240(void) {
     D_002B9310 = 0;
     func_0010E700();
     func_0010BE10();
-    func_0011ED30(50000, &func_00112690);
+    TaskSystem_AddTask(50000, &func_00112690);
     func_001004F0();
     func_00114A50();
-    func_0011ED30(120000, &func_00100328);
+    TaskSystem_AddTask(120000, &func_00100328);
     D_002A6200 = 0.049999998f;
 }
 
@@ -635,7 +635,7 @@ s32 func_00100F48(void) {
     func_00100E70(p);
     func_00101E70();
     func_00102978();
-    func_0011ED30(50000, func_00113380);
+    TaskSystem_AddTask(50000, func_00113380);
     return 4;
 }
 
@@ -646,5 +646,5 @@ INCLUDE_ASM("asm/nonmatchings/xbeginning", func_00100F48);
 s32 func_00100F48();
 
 void func_001011B8(void) {
-    func_0011ED30(190000, func_00100F48);
+    TaskSystem_AddTask(190000, func_00100F48);
 }

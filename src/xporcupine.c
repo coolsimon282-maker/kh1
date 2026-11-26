@@ -115,7 +115,7 @@ s32 func_001016E8(void) {
         if (D_002B9328 != 0) {
             func_001014A8();
         } else {
-            func_0011ED30(0xC350, func_00113380);
+            TaskSystem_AddTask(0xC350, func_00113380);
         }
     } else {
         strcpy(buf, worldBinImgFile);

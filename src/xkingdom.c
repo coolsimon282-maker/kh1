@@ -11,7 +11,7 @@
 #include "gcc/stdlib.h"
 #include "gcc/string.h"
 
-XOtherCrown* func_0011EEB8(s32*, s32, s32(*)(XOtherCrown*));
+XOtherCrown* TaskList_Add(s32*, s32, s32(*)(XOtherCrown*));
 void func_0011FB78(void);
 s32 cdvd_Decompress(u8* data, s32 compressedLength);
 s32 cdvd_Hash(char* str);
@@ -302,7 +302,7 @@ INCLUDE_ASM("asm/nonmatchings/xkingdom", func_001204C0);
 s32 func_001204C0(XOtherCrown*);
 
 s32 cdvd_QueueFileLoad(char* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    XOtherCrown* temp_2 = func_0011EEB8(&D_004DE128, 0, func_001204C0);
+    XOtherCrown* temp_2 = TaskList_Add(&D_004DE128, 0, func_001204C0);
     s32* new_var2 = &D_004DDC60; // TODO fake match
     s32* new_var;
     
@@ -341,7 +341,7 @@ void cdvd_Seek(char* filename) {
 }
 
 void func_00120728(void* arg0) {
-    func_0011EEB8(&D_004DE128, 0, arg0);
+    TaskList_Add(&D_004DE128, 0, arg0);
 }
 
 s32 func_00120750(void) {
@@ -392,14 +392,14 @@ s32 cdvd_StartModule(char* file, s32 args, char* argp, s32* result) {
 }
 
 void func_001208B8(void) {
-    *(s16*)(func_0011ED30(185000, func_00120750) + 2) = -1; // todo: relevant struct
+    *(s16*)(TaskSystem_AddTask(185000, func_00120750) + 2) = -1; // todo: relevant struct
 }
 
 void func_001208E8(void) {
     IOReadTask* task;
     s32 i;
 
-    func_0011EDD0(&D_004DE128, &D_004DDC68, 0x4C, 0x10);
+    TaskList_Init(&D_004DE128, &D_004DDC68, 0x4C, 0x10);
     D_004DDC60 = 0;
     task = D_004EC970;
 

@@ -1,3 +1,10 @@
+/**
+ * System start-up and per-frame services: IOP module loading, the task lists, the controllers and GS packet helpers.
+ *
+ * A task list (XGoblin) is a pool of fixed-size entries plus a list sorted by priority; each entry holds a function
+ * that TaskList_UpdateMatching calls every frame (return value bit 4: remove the task, bit 8: stop the walk). The
+ * main list D_004DD188 is set up by TaskSystem_Initialize and run by TaskSystem_Update.
+ */
 #include "common.h"
 
 #include "io.h"
@@ -8,7 +15,7 @@
 #include "libvu0.h"
 
 void PcService_Initialize();
-void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void));
+void* TaskList_Add(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void));
 void func_00121AE8();
 void func_0012FB18();
 void func_00147870();
@@ -40,13 +47,14 @@ extern char D_0048D220[];
 extern char D_0048D230[];
 void func_00120B10(void);
 void func_001209D8(char*);
-void func_0011F8C0(void);
+void Pad_Initialize(void);
 void func_0024D4B0(void);
 void func_00120BA0(void);
 void func_00122410(void);
 void func_001220E8(void);
 
-void func_0011EAF8(void) {
+// Loads the IOP modules (sio2man.irx, ..., ds2o.irx twice, ..., libssl.irx) and starts the services that use them.
+void Iop_LoadModules(void) {
     s32 i;
 
     D_002C5960 = 0;
@@ -58,7 +66,7 @@ void func_0011EAF8(void) {
     for (i = 0; i < 2; i++) {
         func_001209D8(D_0048D1F0);
     }
-    func_0011F8C0();
+    Pad_Initialize();
     func_001209D8(D_0048D200);
     func_001209D8(D_0048D210);
     func_001209D8(D_0048D220);
@@ -70,11 +78,13 @@ void func_0011EAF8(void) {
     D_002C1EC8 = 0;
 }
 
+// Task callback (priority 150000, added by TaskSystem_Initialize): calls func_00122250 every frame.
 s32 func_0011EBC8(void) {
     func_00122250();
     return 0;
 }
 
+// Clears the system matrices and flags, sets up the main task list and starts the per-frame services.
 void TaskSystem_Initialize(void) {
     s32 i, j;
 
@@ -88,7 +98,7 @@ void TaskSystem_Initialize(void) {
     D_002C1EA0 = 0;
     D_002C1EA8 = 0;
     D_002C1EBC = 0;
-    func_0011EDD0(&D_004DD188, D_004DD198, 0x10, 0x80);
+    TaskList_Init(&D_004DD188, D_004DD198, 0x10, 0x80);
     func_00122110();
     func_00121AE8();
     func_00122410();
@@ -96,31 +106,36 @@ void TaskSystem_Initialize(void) {
     func_00147870();
     PcService_Initialize();
     func_0012FB18();
-    ((XGoblin*)func_0011ED30(150000, func_0011EBC8))->unk_02 = -1;
+    ((XGoblin*)TaskSystem_AddTask(150000, func_0011EBC8))->unk_02 = -1;
 }
 
+// Runs one frame of the main task list (tasks whose flags match D_002C1EBC).
 void TaskSystem_Update(void) {
     D_002C1EC0 = 1.0f / D_002B8340[1];
     TaskList_UpdateMatching(&D_004DD188, D_002C1EBC);
     D_002C1EA0 ^= 1;
 }
 
-void* func_0011ED30(s32 arg0, s32 (*func)(void)) {
-    return func_0011EEB8(&D_004DD188, arg0, func);
+// Adds a task with priority prio and function func to the main task list.
+void* TaskSystem_AddTask(s32 arg0, s32 (*func)(void)) {
+    return TaskList_Add(&D_004DD188, arg0, func);
 }
 
-void func_0011ED60(s32 arg0) {
-    func_0011F108(&D_004DD188, arg0);
+// Looks a task up by its function in the main task list (the result is not used).
+void TaskSystem_FindTask(s32 arg0) {
+    TaskList_FindByFunc(&D_004DD188, arg0);
 }
 
-s32 func_0011ED80(s32 arg0) {
-    s32 val = func_0011F108(&D_004DD188, arg0);
+// Unlinks the main-list task that runs function func, if there is one.
+s32 TaskSystem_RemoveTask(s32 arg0) {
+    s32 val = TaskList_FindByFunc(&D_004DD188, arg0);
     if (val != 0) {
-        return func_0011F148(&D_004DD188, val);
+        return TaskList_Unlink(&D_004DD188, val);
     }
 }
 
-void func_0011EDD0(s32* arg0, s32* arg1, s32 arg2, s32 arg3) {
+// Sets up a task list over a pool of count entries of size bytes each, all free.
+void TaskList_Init(s32* arg0, s32* arg1, s32 arg2, s32 arg3) {
     XGoblin* g = (XGoblin*)arg0;
     s32 i;
 
@@ -137,7 +152,7 @@ void func_0011EDD0(s32* arg0, s32* arg1, s32 arg2, s32 arg3) {
 }
 
 // Finds a free entry (unk_00 == 0) in the pool, searching on from the last one handed out (unk_0C).
-XGoblin* func_0011EE10(XGoblin* g) {
+XGoblin* TaskList_FindFree(XGoblin* g) {
     u8* p = (u8*)g->unk_0C;
     u8* base;
     u8* end;
@@ -160,6 +175,7 @@ XGoblin* func_0011EE10(XGoblin* g) {
     return NULL;
 }
 
+// Returns the entry before arg1 in the list (NULL if arg1 is the first).
 XGoblin* TaskList_FindPrevious(XGoblin* arg0, XGoblin* arg1) {
     XGoblin* pXVar;
     XGoblin* pXVar2 = NULL;
@@ -178,9 +194,9 @@ typedef union {
 } XGoblinAny;
 
 // Takes a free entry, fills it in and links it into the list sorted by priority (unk_04).
-void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
+void* TaskList_Add(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
     XGoblin* g = (XGoblin*)arg0;
-    XGoblin* n = func_0011EE10(g);
+    XGoblin* n = TaskList_FindFree(g);
     XGoblin* prev;
     XGoblin* cur;
 
@@ -207,6 +223,7 @@ void* func_0011EEB8(UNK_TYPE* arg0, s32 arg1, s32 (*func)(void)) {
 #ifdef VERSION_FM
 void func_0015F010(void);
 
+// Calls every task whose flags contain arg1; unlinks those that return bit 4, stops at one that returns bit 8.
 s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
     u32 uVar3;
 
@@ -288,6 +305,7 @@ s32 TaskList_UpdateMatching(XGoblin* arg0, s32 arg1) {
 }
 #endif
 
+// Unlinks every task for which the callback (or the task's own flags) has bit 4 set.
 s32 TaskList_RemoveIf(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
     XGoblin* next;
     XGoblin* gob;
@@ -310,11 +328,13 @@ s32 TaskList_RemoveIf(XGoblin* arg0, u16 (*arg1)(XGoblin*)) {
     return iVar1;
 }
 
+// Returns whether a file load request is still in use (bit 0).
 b32 FileLoadTask_IsActive(XOtherCrown* arg0) {
     return arg0->unk_00 & 1;
 }
 
-s32 func_0011F108(XGoblin* arg0, s32 arg1) {
+// Returns the task in the list whose function is arg1 (0 if none).
+s32 TaskList_FindByFunc(XGoblin* arg0, s32 arg1) {
     XGoblin* p;
 
     for (p = arg0->unk_08; p != NULL; p = p->unk_08) {
@@ -325,7 +345,8 @@ s32 func_0011F108(XGoblin* arg0, s32 arg1) {
     return 0;
 }
 
-s32 func_0011F148(XGoblin* arg0, s32 arg1) {
+// Unlinks task arg1 from the list; returns 1 if it was there.
+s32 TaskList_Unlink(XGoblin* arg0, s32 arg1) {
     XGoblin* prev = NULL;
     XGoblin* p;
 
@@ -362,7 +383,8 @@ extern f32 D_002C5C20;
 extern f32 D_002C5980[4];
 f32 func_00120A38(f32*);
 
-s32 func_0011F1A0(XGoblinPadState* out, u8* data) {
+// Reads both analog sticks with a dead zone (D_002C5C20): direction bits for the d-pad, unit and scaled vectors.
+s32 Pad_ReadSticks(XGoblinPadState* out, u8* data) {
     s32 bits = 0;
     s32 i;
     s32 j;
@@ -416,7 +438,8 @@ extern s32 D_002C5C24;
 extern s32 D_002C5C28;
 extern f32 D_002B8344;
 
-void func_0011F388(XGoblinButtons* p, s32 b) {
+// Updates held/pressed/released buttons and the key-repeat timers (first delay D_002C5C24, then D_002C5C28).
+void Pad_UpdateButtons(XGoblinButtons* p, s32 b) {
     s32 old = p->unk_04;
     s32 x;
     s32 trg;
@@ -455,7 +478,8 @@ void func_0011F388(XGoblinButtons* p, s32 b) {
     }
 }
 
-u32 func_0011F478(u32 arg0) {
+// Maps raw button bits to game buttons through the table D_002C1EE0.
+u32 Pad_MapButtons(u32 arg0) {
     u32 i;
     u32 uVar3 = 0;
 
@@ -482,7 +506,8 @@ extern u8 D_002C5A80[];
 s32 func_00218C08(void);
 void func_0011FEC0(void);
 
-void func_0011F4B8(void) {
+// Reads the controller (scePad2), sets vibration, updates the button state and the game's mapped copy.
+void Pad_Update(void) {
     u8 buf[0x100];
     u32 vib;
     u32 hi;
@@ -512,7 +537,7 @@ void func_0011F4B8(void) {
             }
             btn = (buf[0] | buf[1] << 8) ^ 0xFFFF;
             if ((D_004E44C8[i][2] & 0xF) == 0xF) {
-                btn |= func_0011F1A0(e, buf);
+                btn |= Pad_ReadSticks(e, buf);
             }
             if (func_00218C08() == 0 && !(D_002C597A & 1)) {
                 hi = e->unk_03 << 1;
@@ -525,7 +550,7 @@ void func_0011F4B8(void) {
             break;
         }
     next:
-        func_0011F388((XGoblinButtons*)e, btn);
+        Pad_UpdateButtons((XGoblinButtons*)e, btn);
         e->unk_00 = conn;
     }
     if (D_002C5AD0[D_004E4280].unk_00 != 1) {
@@ -544,13 +569,13 @@ void func_0011F4B8(void) {
         sceVu0CopyVector(D_002C5BB0.unk_30[1], D_002C58B0);
         sceVu0CopyVector(D_002C5BB0.unk_50[0], D_002C58B0);
         sceVu0CopyVector(D_002C5BB0.unk_50[1], D_002C58B0);
-        func_0011F388((XGoblinButtons*)&D_002C5BB0, 0);
+        Pad_UpdateButtons((XGoblinButtons*)&D_002C5BB0, 0);
     } else {
         sceVu0CopyVector(D_002C5BB0.unk_30[0], D_002C5AD0[0].unk_30[0]);
         sceVu0CopyVector(D_002C5BB0.unk_30[1], D_002C5AD0[0].unk_30[1]);
         sceVu0CopyVector(D_002C5BB0.unk_50[0], D_002C5AD0[0].unk_50[0]);
         sceVu0CopyVector(D_002C5BB0.unk_50[1], D_002C5AD0[0].unk_50[1]);
-        func_0011F388((XGoblinButtons*)&D_002C5BB0, func_0011F478(D_002C5AD0[0].unk_04));
+        Pad_UpdateButtons((XGoblinButtons*)&D_002C5BB0, Pad_MapButtons(D_002C5AD0[0].unk_04));
         D_002C5BB0.unk_00 = 1;
     }
     func_0011FEC0();
@@ -563,7 +588,8 @@ extern sceVu0FVECTOR D_002C58B0;
 extern s32 D_004E4280;
 extern s32 D_004E44F0;
 
-void func_0011F7C0(void) {
+// Resets the controller state and the dead zone / key-repeat settings.
+void Pad_Reset(void) {
     s32 i;
     s32 j;
     XGoblinPadState* e;
@@ -597,7 +623,8 @@ extern scePad2SocketParam D_002C5A88;
 extern u_long128 D_004E42C0;
 extern s32 D_004E44C0;
 
-void func_0011F8C0(void) {
+// Initialises the controller library (sceDbcInit, scePad2Init) and opens the pad socket.
+void Pad_Initialize(void) {
     s32* socket = &D_004E44C0;
 
     sceDbcInit();
@@ -605,37 +632,42 @@ void func_0011F8C0(void) {
     *socket = scePad2CreateSocket(&D_002C5A88, &D_004E42C0);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xgoblin", func_0011F8C0);
+INCLUDE_ASM("asm/nonmatchings/xgoblin", Pad_Initialize);
 #endif
-// void func_0011F8C0(void) {
+// void Pad_Initialize(void) {
 //     sceDbcInit();
 //     scePad2Init(0);
 //     D_004DDC00 = scePad2CreateSocket(&D_002C1FD8, &D_004DDA00);
 // }
 
+// Starts the performance counters (scePcStart).
 s32 PcService_Start(void) {
     scePcStart(0x8000F8DE, 0, 0); // TODO: libpc bitfield macro combination
     return 0;
 }
 
+// Starts the performance counters and adds a task (priority 10000) that restarts them every frame.
 void PcService_Initialize(void) {
     PcService_Start();
-    ((XGoblin*)func_0011ED30(10000, PcService_Start))->unk_02 = -1;
+    ((XGoblin*)TaskSystem_AddTask(10000, PcService_Start))->unk_02 = -1;
 }
 
-u64* func_0011F970(u64 arg0, u64 arg1, u64* arg2) {
+// Writes one A+D pair (value arg1, register arg0) and returns the next position.
+u64* GsPacket_AddReg(u64 arg0, u64 arg1, u64* arg2) {
     arg2[0] = arg1;
     arg2[1] = arg0;
     return arg2 + 2;
 }
 
-void func_0011F980(u_long128* arg0, s32 arg1, u_long128* arg2) {
+// Writes a GIF tag for the A+D data up to arg2 (one register, A+D; arg1 = EOP).
+void GsPacket_SetGifTag(u_long128* arg0, s32 arg1, u_long128* arg2) {
     ((u64*)arg0)[0] = (u64)(arg2 - arg0 - 1) | ((u64)arg1 << 15) | ((u64)0 << 46) | ((u64)0 << 47) |
                       ((u64)0 << 58) | ((u64)1 << 60);
     ((u64*)arg0)[1] = 0xE;
 }
 
-void func_0011F9B0(u_long128* arg0, s32 arg1, u_long128* arg2) {
+// Writes a DMA tag (QWC up to arg2, ID arg1; scratchpad address bit for 0x70000000+).
+void GsPacket_SetDmaTag(u_long128* arg0, s32 arg1, u_long128* arg2) {
     u64 tag = (u64)(arg2 - arg0 - 1) | ((u64)arg1 << 28);
 
     if ((u32)arg2 >= 0x70000000) {
@@ -644,26 +676,27 @@ void func_0011F9B0(u_long128* arg0, s32 arg1, u_long128* arg2) {
     *(u64*)arg0 = tag;
 }
 
-u_long128* func_0011F9E8(s32 dbp, s32 dbw, s32 dpsm, s32 dsax, s32 dsay, s32 rrw, s32 rrh, s32 qwc, s32 src,
+// Builds a DMA chain that uploads an image to GS memory (BITBLTBUF, TRXPOS, TRXREG, TRXDIR, then the data).
+u_long128* GsPacket_LoadImage(s32 dbp, s32 dbw, s32 dpsm, s32 dsax, s32 dsay, s32 rrw, s32 rrh, s32 qwc, s32 src,
                          u_long128* pkt) {
     u_long128* dma = pkt;
     u_long128* gif = pkt + 1;
     u_long128* p = pkt + 2;
 
-    p = (u_long128*)func_0011F970(0x50, (u64)dbp << 32 | (u64)dbw << 48 | (u64)dpsm << 56, (u64*)p);
-    p = (u_long128*)func_0011F970(0x51, (u64)dsax << 32 | (u64)dsay << 48, (u64*)p);
-    p = (u_long128*)func_0011F970(0x52, (u64)rrw | (u64)rrh << 32, (u64*)p);
-    p = (u_long128*)func_0011F970(0x53, 0, (u64*)p);
-    func_0011F980(gif, 0, p);
+    p = (u_long128*)GsPacket_AddReg(0x50, (u64)dbp << 32 | (u64)dbw << 48 | (u64)dpsm << 56, (u64*)p);
+    p = (u_long128*)GsPacket_AddReg(0x51, (u64)dsax << 32 | (u64)dsay << 48, (u64*)p);
+    p = (u_long128*)GsPacket_AddReg(0x52, (u64)rrw | (u64)rrh << 32, (u64*)p);
+    p = (u_long128*)GsPacket_AddReg(0x53, 0, (u64*)p);
+    GsPacket_SetGifTag(gif, 0, p);
     gif = p++;
     *(u64*)gif = (u64)(u32)qwc | (2ULL << 58);
-    func_0011F9B0(dma, 1, p);
+    GsPacket_SetDmaTag(dma, 1, p);
     dma = p++;
     *(u64*)dma = (u64)(u32)(qwc | 0x30000000) | (u64)src << 32;
     dma = p++;
     gif = p++;
-    p = (u_long128*)func_0011F970(0x3F, 0, (u64*)p);
-    func_0011F980(gif, 1, p);
-    func_0011F9B0(dma, 7, p);
+    p = (u_long128*)GsPacket_AddReg(0x3F, 0, (u64*)p);
+    GsPacket_SetGifTag(gif, 1, p);
+    GsPacket_SetDmaTag(dma, 7, p);
     return dma;
 }

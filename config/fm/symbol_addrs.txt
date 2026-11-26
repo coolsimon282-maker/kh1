@@ -128,6 +128,30 @@ pppCalcAllPart                       = 0x00181738; // type:func
 pppDrawAllPart                       = 0x00181B30; // type:func
 
 
+//=========================================================
+// xgoblin.c
+//=========================================================
+Iop_LoadModules                      = 0x0011ECD8; // type:func
+TaskList_Add                         = 0x0011F090; // type:func
+TaskList_FindByFunc                  = 0x0011F2E0; // type:func
+TaskList_Unlink                      = 0x0011F320; // type:func
+TaskList_FindFree                    = 0x0011EFE8; // type:func
+TaskSystem_RemoveTask                = 0x0011EF58; // type:func
+TaskSystem_FindTask                  = 0x0011EF38; // type:func
+Pad_ReadSticks                       = 0x0011F370; // type:func
+Pad_UpdateButtons                    = 0x0011F548; // type:func
+Pad_MapButtons                       = 0x0011F628; // type:func
+Pad_Update                           = 0x0011F668; // type:func
+Pad_Reset                            = 0x0011F988; // type:func
+Pad_Initialize                       = 0x0011FA88; // type:func
+GsPacket_AddReg                      = 0x0011FB38; // type:func
+GsPacket_SetGifTag                   = 0x0011FB48; // type:func
+GsPacket_SetDmaTag                   = 0x0011FB78; // type:func
+GsPacket_LoadImage                   = 0x0011FBB0; // type:func
+TaskSystem_AddTask                   = 0x0011EF10; // type:func
+TaskList_Init                        = 0x0011EFA8; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

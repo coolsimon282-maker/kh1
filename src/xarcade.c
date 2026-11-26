@@ -69,7 +69,7 @@ void Graphics_Initialize(void) {
     func_0010C010();
     GameData_BindBuffer();
     WorkBuffers_Clear(-1);
-    func_0011EAF8(D_002B6460, "host:./kingdom.log");
+    Iop_LoadModules(D_002B6460, "host:./kingdom.log");
 
     file = func_00120190("kingdom.img");
     if (file != NULL) {
@@ -81,7 +81,7 @@ void Graphics_Initialize(void) {
     func_00110230(0);
     D_002BC73C = 0;
     func_001ED888(NULL);
-    func_0011F7C0();
+    Pad_Reset();
 }
 #else
 void Graphics_Initialize(void) {
@@ -92,7 +92,7 @@ void Graphics_Initialize(void) {
     func_0010C010();
     GameData_BindBuffer();
     WorkBuffers_Clear(-1);
-    func_0011EAF8(D_002B29B0, "host:./kingdom.log");
+    Iop_LoadModules(D_002B29B0, "host:./kingdom.log");
 
     file = cdvd_FindFile("kingdom.img");
     if (file != NULL) {
@@ -104,7 +104,7 @@ void Graphics_Initialize(void) {
     func_00110230(0);
     D_002B8C8C = 0;
     func_001ED888(NULL);
-    func_0011F7C0();
+    Pad_Reset();
 }
 #endif
 
@@ -121,8 +121,8 @@ void* func_00109340(void) {
     func_00176E30();
     func_00176E98();
     D_00358BE0 = 1;
-    func_0011EDD0(&D_002B8C70, &D_002B8870, 0x20, 0x20);
-    return func_0011ED30(190050, func_001091B0);
+    TaskList_Init(&D_002B8C70, &D_002B8870, 0x20, 0x20);
+    return TaskSystem_AddTask(190050, func_001091B0);
 }
 
 void* func_001093A8(s32 arg0) {
@@ -238,7 +238,7 @@ s32 func_00109AA0(void) {
 }
 
 void* func_00109B00(void) {
-    return func_0011ED30(190000, func_00109AA0);
+    return TaskSystem_AddTask(190000, func_00109AA0);
 }
 
 #ifdef VERSION_FM
@@ -283,7 +283,7 @@ s32 func_00109B28();
 void* func_00109C50(s32 arg0) {
     D_0048EC00.unk_04 = arg0 << 1;
     D_0048EC08 = 0;
-    return func_0011ED30(190000, func_00109B28);
+    return TaskSystem_AddTask(190000, func_00109B28);
 }
 
 void func_00109C98(void) {
@@ -313,7 +313,7 @@ void* func_00109DE8(void) {
     if (D_002B85C0[0] != 0x80) {
         func_001037C8(1);
     }
-    return func_0011ED30(190000, func_00109D68);
+    return TaskSystem_AddTask(190000, func_00109D68);
 }
 
 #ifdef VERSION_FM
@@ -388,9 +388,9 @@ s32 func_00109F60();
 void* func_0010A040(void) {
     D_0048EC00.unk_00 = 0;
     if (D_002B2CC0 != 0) {
-        return func_0011ED30(190000, func_00109F60);
+        return TaskSystem_AddTask(190000, func_00109F60);
     }
-    return func_0011ED30(190000, func_00109E30);
+    return TaskSystem_AddTask(190000, func_00109E30);
 }
 
 s32 func_0010A098(void) {
@@ -401,7 +401,7 @@ s32 func_0010A098(void) {
 }
 
 void* func_0010A0E0(void) {
-    return func_0011ED30(190000, func_0010A098);
+    return TaskSystem_AddTask(190000, func_0010A098);
 }
 
 void func_0010A108(void) {

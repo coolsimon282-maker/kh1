@@ -183,10 +183,10 @@ INCLUDE_ASM("asm/nonmatchings/xcream", func_001284E8);
 
 INCLUDE_ASM("asm/nonmatchings/xcream", func_00128780);
 
-void* func_0011ED30(s32, s32 (*func)(void));
-u64* func_0011F970(u64 arg0, u64 arg1, u64* arg2);
-void func_0011F980(u_long128* arg0, s32 arg1, u_long128* arg2);
-void func_0011F9B0(u_long128* arg0, s32 arg1, u_long128* arg2);
+void* TaskSystem_AddTask(s32, s32 (*func)(void));
+u64* GsPacket_AddReg(u64 arg0, u64 arg1, u64* arg2);
+void GsPacket_SetGifTag(u_long128* arg0, s32 arg1, u_long128* arg2);
+void GsPacket_SetDmaTag(u_long128* arg0, s32 arg1, u_long128* arg2);
 
 typedef struct {
     /* 0x000 */ u8 data[0x150];
@@ -216,14 +216,14 @@ void func_00128B68(void) {
     p = (u_long128*)D_004F8270;
     a = p++;
     b = p++;
-    p = (u_long128*)func_0011F970(0x47, 0x50000, (u64*)p);
-    p = (u_long128*)func_0011F970(0x48, 0x50000, (u64*)p);
-    p = (u_long128*)func_0011F970(0x14, 0x60, (u64*)p);
-    func_0011F980(b, 1, p);
-    func_0011F9B0(a, 7, p);
+    p = (u_long128*)GsPacket_AddReg(0x47, 0x50000, (u64*)p);
+    p = (u_long128*)GsPacket_AddReg(0x48, 0x50000, (u64*)p);
+    p = (u_long128*)GsPacket_AddReg(0x14, 0x60, (u64*)p);
+    GsPacket_SetGifTag(b, 1, p);
+    GsPacket_SetDmaTag(a, 7, p);
     D_00351BC8(0);
     sceVu0ViewScreenMatrix(D_004F82D0, 32768.0f, 1.0f, 1.0f, 2048.0f, 2048.0f, 1.0f, 65535.0f, 1.0f, 65535.0f);
-    func_0011ED30(0x1FBCF, func_00128488);
+    TaskSystem_AddTask(0x1FBCF, func_00128488);
 }
 
 typedef struct {

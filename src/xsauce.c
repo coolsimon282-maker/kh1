@@ -394,7 +394,7 @@ void func_0010E580(void) {
 }
 
 void func_0010E700(void) {
-    *(u16*)(func_0011ED30(180150, func_0010C248) + 2) = -1;
+    *(u16*)(TaskSystem_AddTask(180150, func_0010C248) + 2) = -1;
 
     func_0010C1D0(16348, &D_002B7B70);
     func_0010C1D0(16349, &D_002B7BB0);

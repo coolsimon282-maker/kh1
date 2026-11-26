@@ -925,7 +925,7 @@ void func_00124DD0(void) {
 s32 func_00123B50(void);
 void func_001372A0(void);
 void func_00138738(void);
-s32 func_0011ED60(s32 (*func)(void));
+s32 TaskSystem_FindTask(s32 (*func)(void));
 
 void func_00124F38(void) {
     s32 i;
@@ -938,7 +938,7 @@ void func_00124F38(void) {
     }
     func_001372A0();
     func_00138738();
-    if (!func_0011ED60(func_00123B50)) {
-        func_0011ED30(163001, func_00123B50);
+    if (!TaskSystem_FindTask(func_00123B50)) {
+        TaskSystem_AddTask(163001, func_00123B50);
     }
 }

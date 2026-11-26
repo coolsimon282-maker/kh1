@@ -70,7 +70,7 @@ s32 func_0011C4B0(void) {
                 return 4;
             case TRUE:
                 func_0022BCB8(0xffff);
-                func_0011ED30(30000, func_0011C440);
+                TaskSystem_AddTask(30000, func_0011C440);
                 return 4;
         }
     }
@@ -88,7 +88,7 @@ s32 func_0011C4B0(void) {
                 return 4;
             case TRUE:
                 func_00229D60(0xffff);
-                func_0011ED30(30000, func_0011C440);
+                TaskSystem_AddTask(30000, func_0011C440);
                 return 4;
         }
     }
@@ -103,7 +103,7 @@ void func_0011C540(void) {
     func_00180CE0();
     func_0022BA18(-1);
     func_0011E340();
-    func_0011ED30(30000, func_0011C4B0);
+    TaskSystem_AddTask(30000, func_0011C4B0);
     func_0011D4B8(120);
 }
 
