@@ -263,7 +263,32 @@ s32 sceDmaSend(s32, u8 *);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AC38);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021AD08);
+/* unused: rule F1 (with fewer, func_0022FCB8 or func_00231EA0 change) */
+extern s32 D_lay21AD08_0;
+extern s32 D_lay21AD08_1;
+extern s32 D_lay21AD08_2;
+extern s32 D_lay21AD08_3;
+extern s32 D_lay21AD08_4;
+extern u8 D_003F4C90[];
+extern u8 D_003F4BF0[];
+extern s32 D_00642D20;
+void func_001F3E90(u8 *, u8 *);
+void func_001F3E20(u8 *, u8 *);
+void func_001F3DC0(u8 *);
+void func_0021AD08(u8 *a0) {
+    u8 *e[2];
+    if ((e[0] = func_001F3A20(D_003F4C90, 6)) != NULL) {
+        func_001F3E90(a0, e[0]);
+        func_001F3E20(e[0], a0);
+        *(s16 *)(e[0] + 0xD2) = *(u16 *)&D_00642D24 * 16;
+        if ((e[1] = func_001F3A20(D_003F4BF0, 6)) != NULL) {
+            func_001F3E90(e[0], e[1]);
+            func_001F3E20(e[1], e[0]);
+            func_001F3DC0(e[0]);
+        }
+    }
+    D_00642D20 = (s32)a0;
+}
 
 void func_0021ADB0(void) {
     func_00218D38();
