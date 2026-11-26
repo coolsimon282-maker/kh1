@@ -618,7 +618,7 @@ segments:
   - [ 0x391350, rodata ]
   - [ 0x391b20, rodata, lib/libc/impure ]
   - [ 0x391b28, .rodata, lib/libc/puts ]
-  - [ 0x391b30, rodata, lib/libc/vfiprintf_ro ]
+  - [ 0x391b30, .rodata, lib/libc/vfiprintf ]
   - [ 0x391d20, .rodata, lib/libc/vfprintf ]
   - [ 0x391f30, rodata, lib/libc/dtoa_ro ]
   - [ 0x391f88, rodata, lib/libc/locale_ro ]
