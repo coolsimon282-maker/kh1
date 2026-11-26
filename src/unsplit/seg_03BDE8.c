@@ -3809,7 +3809,27 @@ void func_0014E4B8(void) {
     func_0014F830(8, 0x76, (s32)func_0014DC08, (s32)func_0014DC90, (s32)func_0014DF60, (s32)func_0014E160, (s32)func_0014E400, (s32)func_0014DD48, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014E510);
+/* unused: rule F1 (keeps func_0014ED30, func_001559A8, func_001560F8 as they were) */
+extern s32 D_lay14E510_0;
+extern s32 D_lay14E510_1;
+u8* func_00132040(u8*);
+s32 func_0014E510(s32 a0) {
+    u8* q = NULL;
+    s32 n = 0;
+    while ((q = func_00132040(q)) != NULL) {
+        if (q[0x58] == a0) {
+            u8* r = func_00123880(*(s32*)q);
+            if (r == NULL) {
+                if (func_00142240(*(s32*)q) != 1) {
+                    n++;
+                }
+            } else if (!((s32)(*(u64*)(r + 0x370) >> 51) & 1)) {
+                n++;
+            }
+        }
+    }
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014E5B8);
 
