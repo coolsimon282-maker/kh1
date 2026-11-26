@@ -654,6 +654,18 @@ Gs_Load8x2Image                      = 0x0010C438; // type:func
 Kanji_UploadTask                     = 0x0010C4B0; // type:func
 
 
+//=========================================================
+// xcream.c
+//=========================================================
+VifDmaTask_Update                    = 0x00127500; // type:func
+GraphicsDma_AddTasks                 = 0x00128440; // type:func
+GraphicsDma_Init                     = 0x00128B20; // type:func
+ScriptProg_Start                     = 0x00128C60; // type:func
+NativeCmd_StartProg                  = 0x00128CC8; // type:func
+NativeCmd_StopProg                   = 0x00128CF8; // type:func
+NativeCmd_RestartProg                = 0x00128D10; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

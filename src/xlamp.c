@@ -94,7 +94,7 @@ void func_00122518(void) {
     func_0013CE18();
     func_001255F8();
     Actor_InitSystem();
-    func_00128B68();
+    GraphicsDma_Init();
     func_001334A8();
     func_00149078();
     func_00142260();

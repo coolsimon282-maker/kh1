@@ -1,3 +1,7 @@
+/**
+ * Model drawing helpers and packet tasks (GIF and VIF1 DMA), the GraphicsDma packet set-up, and a few native commands
+ * (table D_002E2810, see xaudacity.c) that start and stop programs of the table D_00514F10.
+ */
 #include "common.h"
 #include "libdma.h"
 #include "libvu0.h"
@@ -16,7 +20,8 @@ s32 GraphicsDmaTask_Update(XCream* arg0) {
 
 void func_00121EB0(void*);
 
-s32 func_001274F8(XCream* arg0) {
+// Packet task: sends the task's packet (+0x10) on DMA channel VIF1 (chain mode) and hands it to func_00121EB0.
+s32 VifDmaTask_Update(XCream* arg0) {
     sceDmaChan* d = sceDmaGetChan(SCE_DMA_VIF1);
 
     d->chcr.DIR = 1;
@@ -79,6 +84,7 @@ extern XCreamCam D_002BC0F0;
 f32 func_00135CA0(f32);
 void func_001621E0(s32, sceVu0FVECTOR*, XCreamPrm*, XCreamObj*);
 
+// Fills a draw parameter block (colours from the actor or the fade colour, tags) and draws actor arg0's model with matrix arg1 (func_001621E0).
 void func_00127960(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
     XCreamObj* obj = (XCreamObj*)arg0;
     XCreamPrm prm;
@@ -142,6 +148,7 @@ extern s32 D_004F82C0;
 extern s32 D_004F82C4;
 s32 func_001145E8(void*, s32, s32, void*);
 
+// Draws actor arg0's model with matrix arg1 * its matrix (+0xD0) through func_001145E8, alpha arg2.
 void func_00127B18(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
     sceVu0FMATRIX m;
 
@@ -153,6 +160,7 @@ void func_00127B18(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2) {
 extern sceVu0FVECTOR D_004F82D0[4];
 void func_00127960(u8* arg0, sceVu0FVECTOR* arg1, s32 arg2);
 
+// Draws actor arg0 with matrix D_004F82D0 * arg1, by func_00127B18 when flags bit 39 is set, else func_00127960.
 void func_00127B98(u8* arg0, sceVu0FVECTOR* arg1, f32 arg2) {
     sceVu0FMATRIX m;
 
@@ -172,7 +180,8 @@ extern u8 D_004F8270[];
 
 XCream* func_0015ED80(s32 arg0, s32 (*arg1)(XCream*));
 
-s32 func_00128488(void) {
+// Task: resets the draw counter D_004F82C0 and adds two GraphicsDmaTask_Update packet tasks for D_004F8270.
+s32 GraphicsDma_AddTasks(void) {
     D_004F82C0 = 0;
     func_0015ED80(0xEC53, GraphicsDmaTask_Update)->unk_10 = D_004F8270;
     func_0015ED80(0xB1BB, GraphicsDmaTask_Update)->unk_10 = D_004F8270;
@@ -203,7 +212,7 @@ void func_001284E8(XCreamUnk7820*, s32);
 void func_00128780(XCreamUnk7C10*, s32);
 
 // init: the three 0x150 and three 0x220 objects, the GIF packet at D_004F8270, the view-screen matrix
-void func_00128B68(void) {
+void GraphicsDma_Init(void) {
     s32 i;
     u_long128* p;
     u_long128* a;
@@ -223,7 +232,7 @@ void func_00128B68(void) {
     GsPacket_SetDmaTag(a, 7, p);
     D_00351BC8(0);
     sceVu0ViewScreenMatrix(D_004F82D0, 32768.0f, 1.0f, 1.0f, 2048.0f, 2048.0f, 1.0f, 65535.0f, 1.0f, 65535.0f);
-    TaskSystem_AddTask(0x1FBCF, func_00128488);
+    TaskSystem_AddTask(0x1FBCF, GraphicsDma_AddTasks);
 }
 
 typedef struct {
@@ -236,7 +245,8 @@ extern u8* D_00514F10;
 s32 func_0012B930(u8*, s32);
 void func_0012BA30(s32, XCreamUnk8CA8*, s32);
 
-s32 func_00128CA8(XCreamUnk8CA8* arg0, s32 arg1) {
+// Starts program arg1 of the program table D_00514F10 (func_0012B930) and passes it arg0 when arg0's first word is set; probably a script thread.
+s32 ScriptProg_Start(XCreamUnk8CA8* arg0, s32 arg1) {
     s32 r = func_0012B930(D_00514F10, *(s32*)(D_00514F10 + 4) + arg1 * 2);
 
     if (arg0->unk_0 != 0) {
@@ -245,11 +255,13 @@ s32 func_00128CA8(XCreamUnk8CA8* arg0, s32 arg1) {
     return r;
 }
 
-void func_00128D10(XCreamUnk8CA8* arg0) {
-    arg0->unk_0 = func_00128CA8(arg0, arg0->unk_4);
+// Native command 20 (2 args, returns a value): a0 = ScriptProg_Start(arg0, a1).
+void NativeCmd_StartProg(XCreamUnk8CA8* arg0) {
+    arg0->unk_0 = ScriptProg_Start(arg0, arg0->unk_4);
 }
 
-void func_00128D40(s32* arg0) {
+// Native command 28 (1 arg): func_0012B850(a0) (stops the program started by NativeCmd_StartProg, probably).
+void NativeCmd_StopProg(s32* arg0) {
     func_0012B850(*arg0);
 }
 
@@ -258,13 +270,15 @@ typedef struct {
     /* 0x4 */ XCreamUnk8CA8 unk_4;
 } XCreamUnk8D58;
 
-void func_00128D58(XCreamUnk8D58* arg0) {
+// Native command 34 (3 args, returns a value): stops program a0 when set and starts program a2 again.
+void NativeCmd_RestartProg(XCreamUnk8D58* arg0) {
     if (arg0->unk_0 != 0) {
         func_0012B850(arg0->unk_0);
     }
-    arg0->unk_0 = func_00128CA8(&arg0->unk_4, arg0->unk_4.unk_4);
+    arg0->unk_0 = ScriptProg_Start(&arg0->unk_4, arg0->unk_4.unk_4);
 }
 
+// Native command 178 (0 args): func_0012B850(D_0051C6C4).
 void func_00128DA0(void) {
     func_0012B850(D_0051C6C4);
 }
@@ -276,6 +290,7 @@ typedef struct {
 
 extern u8* D_00514F10;
 
+// Native command 33 (4 args): stores the four arguments as u16 at D_00514F10 + 0x724.
 void func_00128DC0(s32* arg0) {
     s32 i;
     s32 ofs = 0x720;
@@ -286,12 +301,15 @@ void func_00128DC0(s32* arg0) {
     }
 }
 
+// Native command 150 (2 args): stores a1 as u16 at D_00514F10 + 0x724 + a0 * 2.
 void func_00128DF8(XCreamUnk8DF8* arg0) {
     *(u16*)(D_00514F10 + arg0->unk_0 * 2 + 0x724) = arg0->unk_4;
 }
 
+// Native command 0 (1 arg): empty.
 void func_00128E18(void) {
 }
 
+// Native command 1 (1 arg): empty.
 void func_00128E20(void) {
 }

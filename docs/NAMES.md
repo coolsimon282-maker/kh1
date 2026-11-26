@@ -537,3 +537,10 @@ other functions (rule F1).
 | Kanji_Load | 0x0010C3C0 | xnoodle.c | Reads "kanji.knj" to D_0048ED00. |
 | Gs_Load8x2Image | 0x0010C438 | xnoodle.c | Uploads an 8 x 2 32-bit image (a CLUT, probably) to VRAM block dest. |
 | Kanji_UploadTask | 0x0010C4B0 | xnoodle.c | Uploads the 256 x 256 kanji image to 0x3600 (not in pause modes 5 and 6). |
+| VifDmaTask_Update | 0x00127500 | xcream.c | Packet task: sends the task's packet (+0x10) on DMA channel VIF1 (chain mode) and hands it to func_00121EB0. |
+| GraphicsDma_AddTasks | 0x00128440 | xcream.c | Task: resets the draw counter D_004F82C0 and adds two GraphicsDmaTask_Update packet tasks for D_004F8270. |
+| GraphicsDma_Init | 0x00128B20 | xcream.c | Sets up the three 0x150 and three 0x220 objects, the GIF register packet D_004F8270 and the view-screen matrix D_004F82D0, and adds GraphicsDma_AddTasks. |
+| ScriptProg_Start | 0x00128C60 | xcream.c | Starts program arg1 of the program table D_00514F10 (func_0012B930) and passes it arg0 when arg0's first word is set; probably a script thread. |
+| NativeCmd_StartProg | 0x00128CC8 | xcream.c | Native command 20 (2 args, returns a value): a0 = ScriptProg_Start(arg0, a1). |
+| NativeCmd_StopProg | 0x00128CF8 | xcream.c | Native command 28 (1 arg): func_0012B850(a0) (stops the program started by NativeCmd_StartProg, probably). |
+| NativeCmd_RestartProg | 0x00128D10 | xcream.c | Native command 34 (3 args, returns a value): stops program a0 when set and starts program a2 again. |
