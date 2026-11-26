@@ -537,6 +537,7 @@ segments:
   - [ 0x36a050, .data, unsplit/xjockey ]
   - [ 0x36a608, .data, unsplit/disk ]
   - [ 0x36a6b0, data ]
+  - [ 0x36a9d0, .data, lib/libc/malloc_r ]
   - [ 0x36ae28, data, lib/libc/mlock ]
   - [ 0x36ae30, data, lib/libc/locale ]
   - [ 0x36ae58, .data, lib/libkernl/filestub ]
