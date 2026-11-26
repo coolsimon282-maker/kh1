@@ -4397,7 +4397,30 @@ void func_0015EE78(s32 a, s32 b) {
     func_0011EEB8(D_0055BDE0, a, b);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015EEA0);
+typedef struct N15EEA0 {
+    u16 unk_00;
+    u16 unk_02;
+    s32 unk_04;
+    struct N15EEA0* next;
+    s32 (*fn)(struct N15EEA0*);
+} N15EEA0;
+s32 func_0015EEA0(void) {
+    N15EEA0* n = (N15EEA0*)((T122110b*)D_0055BDE0)->h[2];
+
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    while (n != NULL) {
+        if (!(n->fn(n) & 0x20)) {
+            n->unk_00 = 0;
+            n = n->next;
+        }
+        sceGsSyncPath(0, 0);
+    }
+    ((T122110b*)D_0055BDE0)->h[2] = 0;
+    ((T122110b*)D_0055BDE0)->h[3] = 0;
+    D_0055BDE0 = &D_00559DC0[D_00351BD0];
+    return 0;
+}
 
 extern volatile s32 D_002B8340_v __asm__("D_002B8340");
 extern volatile s32 D_00559DB4_v __asm__("D_00559DB4");
