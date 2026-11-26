@@ -2012,7 +2012,49 @@ s32 func_00142730(u8* p, s32* out) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001427D0);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001429F8);
+typedef struct {
+    sceVu0FVECTOR p;
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR h;
+    s16 r;
+    s16 pad[7];
+} R1429F8;
+
+void func_00118648(R1429F8*);
+void func_00118608(R1429F8*);
+s32 func_001429F8(f32* a, f32* b, f32* out) {
+    R1429F8 q;
+
+    q.p[1] = a[1] + b[1];
+    q.p[0] = a[0];
+    q.p[2] = a[2];
+    q.p[3] = 1.0f;
+    sceVu0ScaleVector(q.d, b, 1.5f);
+    q.d[3] = 1.0f;
+    *(s32*)&q.d[1] = 0;
+    if (func_00119688((f32*)&q) >= 0) {
+        return 3;
+    }
+    func_00118648(&q);
+    if (q.r >= 0) {
+        return 3;
+    }
+    q.p[0] += b[0];
+    q.p[2] += b[2];
+    q.d[1] = b[3] - b[1];
+    *(s32*)&q.d[0] = 0;
+    *(s32*)&q.d[2] = 0;
+    func_00118608(&q);
+    if (q.r < 0) {
+        return 3;
+    }
+    sceVu0CopyVector(out, q.h);
+    func_00118648(&q);
+    if (q.r >= 0 && q.h[1] < out[1]) {
+        return 3;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00142B30);
 
