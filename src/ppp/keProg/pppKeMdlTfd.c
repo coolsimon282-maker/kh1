@@ -21,7 +21,7 @@ typedef struct {
 
 extern s32 D_00616224;
 void func_001AB4B8(f32 inp, s32 arg1, s32 arg2, void* pkt);
-void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3);
+void op_ot_insert0(u32* p, s32 qwc, s32 pri, s32 arg3);
 void func_001AB828(u32 index, u16* col, s32 a2, s32 a3, s32 a4, u8 flags, s32 a6);
 
 void pppKeMdlTfdDraw(pppPObject* pobj, PKeMdlTfd* p, pppCtrlTable* ctbl) {
@@ -50,7 +50,7 @@ void pppKeMdlTfdDraw(pppPObject* pobj, PKeMdlTfd* p, pppCtrlTable* ctbl) {
     *(u64*)((u8*)li + 0x50) = 0x0800000000008100;
     pkt = D_00616224;
     func_001AB4B8(v->inp, p->unk_14, p->unk_18, (void*)(pkt + 0x70));
-    func_001AC758((u32*)D_00616224, 0x107, 0, 0);
+    op_ot_insert0((u32*)D_00616224, 0x107, 0, 0);
     D_00616224 = pkt + 0x1070;
     func_001AB828(p->mdlIdx, (u16*)&pobj->val[ctbl->useVal[0]], ofs, 0, 0, 1, 0);
 }

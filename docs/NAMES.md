@@ -199,3 +199,10 @@ other functions (rule F1).
 | KeLnsShp_Draw | 0x001A60E8 | ppp/xberry.c | draws a flare shape at the lens position, alpha scaled by the lens power (cf. KeLnsFls_Draw) |
 | KeLnsStr_Draw | 0x001A62C0 | ppp/xberry.c | draws a flare shape stretched along the lens direction (zMat) |
 | KeLnsCrn_SetShape | 0x001A6518 | ppp/xberry.c | sets a KeLnsCrn's shape and its flare (KeLnsFlr_SetShape) |
+| op_seed_vu0_rand | 0x001AA080 | ppp/draw/draw.c | seeds the VU0 random register from rand() (existing comment) |
+| op_log2_ceil | 0x001AA0A8 | ppp/draw/draw.c | Returns the number of bits needed for n (the smallest b with 1 << b >= n). |
+| op_load_tim2 | 0x001AA0E0 | ppp/draw/draw.c | Uploads a TIM2 picture's image (and CLUT, if it has one) to GS memory. |
+| op_ot_insert0 | 0x001AA6B0 | ppp/draw/draw.c | inserts a packet into ordering table 0 (16 priorities) |
+| op_ot_insert1 | 0x001AA700 | ppp/draw/draw.c | inserts a packet into ordering table 1 (16 priorities) |
+| op_ot_insert2 | 0x001AA750 | ppp/draw/draw.c | inserts a packet into ordering table 2 (256 priorities) |
+| op_fill_sprite | 0x001AA7A0 | ppp/draw/draw.c | builds an alpha + full-screen sprite packet in one colour and puts it in OT 1 |

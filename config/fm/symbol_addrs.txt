@@ -255,6 +255,18 @@ KeLnsStr_Draw                        = 0x001A62C0; // type:func
 KeLnsCrn_SetShape                    = 0x001A6518; // type:func
 
 
+//=========================================================
+// ppp/draw/draw.c
+//=========================================================
+op_seed_vu0_rand                     = 0x001AA080; // type:func
+op_log2_ceil                         = 0x001AA0A8; // type:func
+op_load_tim2                         = 0x001AA0E0; // type:func
+op_ot_insert0                        = 0x001AA6B0; // type:func
+op_ot_insert1                        = 0x001AA700; // type:func
+op_ot_insert2                        = 0x001AA750; // type:func
+op_fill_sprite                       = 0x001AA7A0; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

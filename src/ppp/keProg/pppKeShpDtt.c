@@ -33,8 +33,8 @@ extern s32 D_00616224;
 extern s32 ppvCurPrimpLen;
 void func_001ABA80(KeShpDttDraw*);
 s32 func_001ABCC8(KeShpDttDraw*);
-void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3);
-void func_001AC7F8(u32* p, s32 qwc, s32 pri, s32 arg3);
+void op_ot_insert0(u32* p, s32 qwc, s32 pri, s32 arg3);
+void op_ot_insert2(u32* p, s32 qwc, s32 pri, s32 arg3);
 
 void pppKeShpDttDraw(pppPObject* pobj, PKeShpDtt* p, pppCtrlTable* ctbl) {
     KeShpDttDraw d;
@@ -89,9 +89,9 @@ void pppKeShpDttDraw(pppPObject* pobj, PKeShpDtt* p, pppCtrlTable* ctbl) {
     func_001ABA80(&d);
     if (func_001ABCC8(&d)) {
         if (p->unk_19 & 2) {
-            func_001AC758((u32*)D_00616224, (d.pkt - D_00616224) >> 4, 4, 0);
+            op_ot_insert0((u32*)D_00616224, (d.pkt - D_00616224) >> 4, 4, 0);
         } else {
-            func_001AC7F8((u32*)D_00616224, (d.pkt - D_00616224) >> 4, d.unk_2C / 0x3000, 0);
+            op_ot_insert2((u32*)D_00616224, (d.pkt - D_00616224) >> 4, d.unk_2C / 0x3000, 0);
         }
         ppvCurPrimpLen += d.pkt - D_00616224;
         D_00616224 = d.pkt;

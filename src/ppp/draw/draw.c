@@ -1,3 +1,8 @@
+/**
+ * Low-level drawing for the effects (op_* functions): GS set-up, three ordering tables of GS packets (OT 0 and 1 with
+ * 16 priorities, OT 2 with 256) sent by DMA in op_ot_draw, image (TIM2) upload, fog work, small math helpers and the
+ * node lists the draw code uses.
+ */
 #include "common.h"
 #include "ppp/draw.h"
 #include "libgraph.h"
@@ -688,8 +693,8 @@ extern u_long128 D_0061E800[];
 extern u_long128 D_0061E8B0[];
 extern u8 D_0061EEA0[];
 
-void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3);
-void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3);
+void op_ot_insert0(u32* p, s32 qwc, s32 pri, s32 arg3);
+void op_ot_insert1(u32* p, s32 qwc, s32 pri, s32 arg3);
 
 // the three ordering tables (16 + 256 + 16 entries at D_0061EEA0) chained by "next" tags and closed by an end
 // tag, then the two fixed packets linked in
@@ -708,8 +713,8 @@ void op_otz_init(void) {
     }
     DRAW_SQ(p, tag);
     p->tag = 0x70000000;
-    func_001AC758((u32*)D_0061E800, 7, 0, 0);
-    func_001AC7A8((u32*)D_0061E8B0, 7, 15, 0);
+    op_ot_insert0((u32*)D_0061E800, 7, 0, 0);
+    op_ot_insert1((u32*)D_0061E8B0, 7, 15, 0);
 }
 
 // sends the packet at D_0061E8B0 on its own (its first tag replaced by an end tag with 6 qwords)
@@ -727,13 +732,14 @@ void func_001AC0A8(void) {
 s32 rand(void);
 
 // seeds the VU0 random register from rand()
-void func_001AC120(void) {
+void op_seed_vu0_rand(void) {
     s32 r = rand();
 
     __asm__ volatile("qmtc2.ni %0,$vf31\n\tvrxor R,$vf31x" : : "r"(r) : "$2");
 }
 
-s32 func_001AC148(s32 n) {
+// Returns the number of bits needed for n (the smallest b with 1 << b >= n).
+s32 op_log2_ceil(s32 n) {
     s32 i = 1;
     s32 bits = 0;
 
@@ -770,7 +776,8 @@ typedef struct {
     /* 0x40 */ u8 data[0];
 } DrawTim2;
 extern u8 D_003727F0[];
-void func_001AC180(DrawTim2* tm) {
+// Uploads a TIM2 picture's image (and CLUT, if it has one) to GS memory.
+void op_load_tim2(DrawTim2* tm) {
     sceGsLoadImage li;
     sceGsLoadImage clut;
     DrawTim2Picture* pict = &tm->pict;
@@ -852,27 +859,27 @@ void op_ot_draw(void) {
 }
 
 // ordering table 0 (16 priorities)
-void func_001AC758(u32* p, s32 qwc, s32 pri, s32 arg3) {
+void op_ot_insert0(u32* p, s32 qwc, s32 pri, s32 arg3) {
     DRAW_OT_INSERT((DrawOtEnt*)D_0061EEA0, 15, p, qwc, pri);
 }
 
 extern DrawOtEnt D_0061FFA0[];
 
 // ordering table 1 (16 priorities)
-void func_001AC7A8(u32* p, s32 qwc, s32 pri, s32 arg3) {
+void op_ot_insert1(u32* p, s32 qwc, s32 pri, s32 arg3) {
     DRAW_OT_INSERT(D_0061FFA0, 15, p, qwc, pri);
 }
 
 extern DrawOtEnt D_0061EFA0[];
 
 // ordering table 2 (256 priorities)
-void func_001AC7F8(u32* p, s32 qwc, s32 pri, s32 arg3) {
+void op_ot_insert2(u32* p, s32 qwc, s32 pri, s32 arg3) {
     DRAW_OT_INSERT(D_0061EFA0, 255, p, qwc, pri);
 }
 
 
 // GS packet: alpha register + a 2-vertex sprite in colour rgba, inserted in OT 1 at priority 0
-u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
+u8* op_fill_sprite(u8* p, u32 rgba, u8 alpha, u8 fix) {
     *(u64*)(p + 0x10) = 0x41A3400000008001;
     *(u64*)(p + 0x18) = 0x441E;
     DRAW_SQ_ZERO(p + 0x20);
@@ -883,7 +890,7 @@ u8* func_001AC848(u8* p, u32 rgba, u8 alpha, u8 fix) {
     __asm__ volatile("pextlb %1,$0,%1\n\tpextlh %1,$0,%1\n\tsq %1,%0" : "=m"(*(u_long128*)(p + 0x30)), "+r"(rgba));
     *(u_long128*)(p + 0x40) = (u_long128)0xFFFFFFFE0000780000007000;
     *(u_long128*)(p + 0x50) = (u_long128)0xFFFFFFFE0000880000009000;
-    func_001AC7A8((u32*)p, 6, 0, 0);
+    op_ot_insert1((u32*)p, 6, 0, 0);
     return p + 0x60;
 }
 
@@ -911,6 +918,7 @@ void op_init_fog_work(void) {
 extern f32 D_002BC120;
 extern f32 D_002BC124;
 
+// Copies D_002BC120 / D_002BC124 into the first two fog work values (probably fog near / far).
 void func_001AC978(void) {
     D_00372800[0] = D_002BC120;
     D_00372800[1] = D_002BC124;
