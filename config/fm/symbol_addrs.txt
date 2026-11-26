@@ -512,6 +512,26 @@ MsgWin_FreeChoices                   = 0x0010F520; // type:func
 MsgWin_InitChoice                    = 0x0010F558; // type:func
 
 
+//=========================================================
+// xapple.c
+//=========================================================
+Summon_CameraTask                    = 0x0013ABF8; // type:func
+Summon_PhaseBegin                    = 0x0013B050; // type:func
+Summon_OnOverlayLoaded               = 0x0013B1A0; // type:func
+Summon_EnterSceneTask                = 0x0013B238; // type:func
+Summon_PhaseLoad                     = 0x0013B3D0; // type:func
+Summon_LightFadeTask                 = 0x0013B4E8; // type:func
+Summon_RestoreActors                 = 0x0013B5D8; // type:func
+Summon_PhaseStart                    = 0x0013B740; // type:func
+Summon_PhaseWaitEnd                  = 0x0013B8F0; // type:func
+Summon_MainTask                      = 0x0013B958; // type:func
+Summon_OnSoundLoaded                 = 0x0013BA08; // type:func
+Summon_OnDataLoaded                  = 0x0013BA18; // type:func
+Summon_GetDuration                   = 0x0013BB20; // type:func
+Summon_Start                         = 0x0013BB60; // type:func
+Summon_End                           = 0x0013BD08; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
@@ -585,6 +605,13 @@ roomCount                            = 0x002BCDB0;
 entranceTable                        = 0x002BCDA0;
 entranceCount                        = 0x002BCDA4;
 curEntranceNo                        = 0x002BCDA8;
+
+
+//=========================================================
+// xapple.c (data)
+//=========================================================
+summonFileNames                      = 0x00304B00; // size:0x20
+summonPhaseTable                     = 0x00304B48; // size:0x20
 
 
 ///////////////////////////////////////////////////////////

@@ -143,3 +143,4 @@ func_00124CA0 = Actor_RemoveById;
 func_00124F38 = Actor_InitSystem;
 func_0010F380 = MsgWin_FreeChoices;
 func_0010F3B8 = MsgWin_InitChoice;
+func_0013BCA8 = Summon_End;

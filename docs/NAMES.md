@@ -418,3 +418,20 @@ other functions (rule F1).
 | MsgWin_UpdateChoice | 0x0010F368 | xsauce.c | Moves the choice with up / down (wrapping on a fresh press), cancel jumps to the last one, confirm calls the menu's callback with the choice (1-based) and frees the list (FM). |
 | MsgWin_FreeChoices | 0x0010F520 | xsauce.c | Frees the choice position list. |
 | MsgWin_InitChoice | 0x0010F558 | xsauce.c | Sets the first choice (arg2 - 1, FM) and the window's +0xA8, clears the choice list. |
+| Summon_CameraTask | 0x0013ABF8 | xapple.c | Task: while summoning (D_002C1EA8 bit 20) moves the camera (D_002DECE0 / D_002DECF0) from where it was to the summon view (D_00301030 / D_00301040) over 40 frames with a random turn. |
+| Summon_PhaseBegin | 0x0013B050 | xapple.c | Phase 0: freezes the summoner, starts its effect and camera task, hides the other party members (FM). |
+| Summon_OnOverlayLoaded | 0x0013B1A0 | xapple.c | Load callback of the summon program xs_<name>.x: sets up the parts of the .dbt data and marks it loaded (D_00532604 = 4). |
+| Summon_EnterSceneTask | 0x0013B238 | xapple.c | Task: pushes a state on every actor (the summoner is held, the others stopped), moves the summoner away and starts the summon scene scripts (FM). |
+| Summon_PhaseLoad | 0x0013B3D0 | xapple.c | Phase 1: once the .dat is loaded, loads xs_<name>.dbt and the xs_<name>.x program (to 0xF20000) and adds Summon_EnterSceneTask. |
+| Summon_LightFadeTask | 0x0013B4E8 | xapple.c | Task list entry: fades a light (Light_Add) in over 60 frames, then clears it (FM). |
+| Summon_RestoreActors | 0x0013B5D8 | xapple.c | Pops the actors' states, puts the summoner back at its saved position and restarts the game state (FM). |
+| Summon_PhaseStart | 0x0013B740 | xapple.c | Phase 2: restores the actors, gives the summoned actor (id type 7) and the summoner their motions and starts the summon program (FM). |
+| Summon_PhaseWaitEnd | 0x0013B8F0 | xapple.c | Phase 3: waits for the summon program (command 1) to end, then clears the summon flags. |
+| Summon_MainTask | 0x0013B958 | xapple.c | Task: runs the summon phases (D_00301058: duration, function) and the summon task list. |
+| Summon_OnSoundLoaded | 0x0013BA08 | xapple.c | D_00532604 = 2 (summon sounds loaded). |
+| Summon_OnDataLoaded | 0x0013BA18 | xapple.c | Load callback of xs_<name>.dat: sets up its parts (effects, sounds), then the .dbt buffer D_0053260C (FM). |
+| Summon_GetDuration | 0x0013BB20 | xapple.c | Summon time: (the summoner's +0x6C->+0x48 + bits 10..12 of D_002DED20) * 3000; probably. |
+| Summon_Start | 0x0013BB60 | xapple.c | Starts summon arg1 (D_00301010: dumbo, bambi, genie, tink, mushu, simba) for actor arg0: sets the flags, takes a cost from the actor (func_00141668, probably MP), loads xs_<name>.dat, adds Summon_MainTask. |
+| Summon_End | 0x0013BD08 | xapple.c | Stops a running summon: ends the program and the task, restores the party, clears the summon flags. |
+| summonFileNames | 0x00304B00 | xapple.c | File name bases of the six summons ("xs_dumbo" ... "xs_simba"). |
+| summonPhaseTable | 0x00304B48 | xapple.c | The four summon phases: duration and function (Summon_PhaseBegin .. Summon_PhaseWaitEnd). |

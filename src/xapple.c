@@ -1,3 +1,7 @@
+/**
+ * Summons: loading a summon (xs_<name>.dat, .dbt, and the .x program run at 0xF20000), the camera move, freezing and
+ * restoring the other actors, and the four timed phases run by Summon_MainTask. FM C is in #ifdef VERSION_FM.
+ */
 #include "common.h"
 #include "common_funcs.h"
 
@@ -93,12 +97,12 @@ s32 func_00132160(s32, s32, s32);
 void func_001372F8(f32, XAppleBlemish*);
 void func_00137348(XAppleBlemish*);
 void func_0013A790(void);
-s32 func_0013AFE8(void);
-s32 func_0013B368(void);
-s32 func_0013B6E0(void);
-s32 func_0013B890(void);
-s32 func_0013B1D0(void);
-void func_0013B578(void);
+s32 Summon_PhaseBegin(void);
+s32 Summon_PhaseLoad(void);
+s32 Summon_PhaseStart(void);
+s32 Summon_PhaseWaitEnd(void);
+s32 Summon_EnterSceneTask(void);
+void Summon_RestoreActors(void);
 s32 func_0013BD88(s32*, AppleCore*, s32);
 s32 func_0013BDA0(s32*);
 s32 func_00141668(XAppleBlemish*, s32);
@@ -124,18 +128,18 @@ extern u32 D_002C1EC8;
 extern XAppleStem* D_002DEC00;
 extern u32 D_002DED20;
 
-char* D_00301010[8] = {
+char* summonFileNames[8] = {
     "xs_dumbo", "xs_bambi", "xs_genie", "xs_tink", "xs_mushu", "xs_simba",
 };
 sceVu0FVECTOR D_00301030 = {0.0f, -120.0f, -70.0f, 1.0f};
 sceVu0FVECTOR D_00301040 = {0.0f, -100.0f, -20.0f, 1.0f};
 char* D_00301050 = ".dbt";
 char* D_00301054 = ".x";
-AppleCore D_00301058[4] = {
-    {60.0f, func_0013AFE8},
-    {30.0f, func_0013B368},
-    {60.0f, func_0013B6E0},
-    {0.0f, func_0013B890},
+AppleCore summonPhaseTable[4] = {
+    {60.0f, Summon_PhaseBegin},
+    {30.0f, Summon_PhaseLoad},
+    {60.0f, Summon_PhaseStart},
+    {0.0f, Summon_PhaseWaitEnd},
 };
 char* D_00301078; // = ".dat";
 
@@ -182,7 +186,8 @@ extern f32 D_0052AD50;
 extern f32 D_002B8344;
 void func_001625C8(sceVu0FMATRIX, sceVu0FMATRIX);
 
-s32 func_0013AB68(u16* arg0) {
+// Task: while summoning (D_002C1EA8 bit 20) moves the camera (D_002DECE0 / D_002DECF0) from where it was to the summon view (D_00301030 / D_00301040) over 40 frames with a random turn.
+s32 Summon_CameraTask(u16* arg0) {
     sceVu0FVECTOR sp0;
     sceVu0FVECTOR sp10;
     sceVu0FMATRIX sp20;
@@ -259,7 +264,7 @@ s32 func_0013AB68(u16* arg0) {
     return 0;
 }
 #else
-s32 func_0013AB68(u16* arg0) {
+s32 Summon_CameraTask(u16* arg0) {
     sceVu0FVECTOR sp0;
     sceVu0FVECTOR sp10;
     sceVu0FMATRIX sp20;
@@ -351,7 +356,8 @@ void func_001452E0(s32, s32);
 s32 TaskList_Add(s32*, s32, void*);
 s32 func_0013AB30();
 
-s32 func_0013AFE8(void) {
+// Phase 0: freezes the summoner, starts its effect and camera task, hides the other party members (FM).
+s32 Summon_PhaseBegin(void) {
     register s32* q asm("$16") = &D_0052AE60; /* only way found to get $16/$17 as in the original */
     s32 i;
 
@@ -372,15 +378,16 @@ s32 func_0013AFE8(void) {
         }
     }
     TaskList_Add(&D_00532518, 0, func_0013AB30);
-    TaskSystem_AddTask(100000, func_0013AB68);
+    TaskSystem_AddTask(100000, Summon_CameraTask);
     return 1;
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013AFE8);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_PhaseBegin);
 #endif
 
-void func_0013B138(void) {
+// Load callback of the summon program xs_<name>.x: sets up the parts of the .dbt data and marks it loaded (D_00532604 = 4).
+void Summon_OnOverlayLoaded(void) {
     if (D_0053260C[2] - D_0053260C[1] > 0) {
         func_001560C8((s32)D_0053260C + D_0053260C[1]);
     }
@@ -405,7 +412,8 @@ void func_001763A0(s32);
 void func_00131498(XAppleBlemish*, s32);
 void func_001C4D90(s32, s32, s32);
 
-s32 func_0013B1D0(void) {
+// Task: pushes a state on every actor (the summoner is held, the others stopped), moves the summoner away and starts the summon scene scripts (FM).
+s32 Summon_EnterSceneTask(void) {
     XAppleBlemish* var_17;
     s32 var_16;
 
@@ -441,10 +449,10 @@ s32 func_0013B1D0(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B1D0);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_EnterSceneTask);
 #endif
 
-// s32 func_0013B1D0(void) {
+// s32 Summon_EnterSceneTask(void) {
 //     XAppleBlemish* var_17;
 //     s32 var_16;
 
@@ -485,7 +493,8 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B1D0);
 //     return 4;
 // }
 
-s32 func_0013B368(void) {
+// Phase 1: once the .dat is loaded, loads xs_<name>.dbt and the xs_<name>.x program (to 0xF20000) and adds Summon_EnterSceneTask.
+s32 Summon_PhaseLoad(void) {
     char something[0x20];
 
     if (D_00532604 != 2 || (func_001EE090() != 0)) {
@@ -493,11 +502,11 @@ s32 func_0013B368(void) {
     }
     func_00157B90();
     D_00532604 = 3;
-    sprintf(something, "%s%s", D_00301010[D_00532600], D_00301050);
+    sprintf(something, "%s%s", summonFileNames[D_00532600], D_00301050);
     cdvd_QueueFileLoad(something, D_0053260C, NULL, 0);
-    sprintf(something, "%s%s", D_00301010[D_00532600], D_00301054);
-    cdvd_QueueFileLoad(something, &func_F20000, &func_0013B138, 0);
-    TaskSystem_AddTask(47000, &func_0013B1D0);
+    sprintf(something, "%s%s", summonFileNames[D_00532600], D_00301054);
+    cdvd_QueueFileLoad(something, &func_F20000, &Summon_OnOverlayLoaded, 0);
+    TaskSystem_AddTask(47000, &Summon_EnterSceneTask);
     return 1;
 }
 
@@ -509,7 +518,8 @@ typedef union {
 extern XAppleLU D_0052AD54;
 extern f32 D_002B8344;
 
-s32 func_0013B480(OtherApple* arg0) {
+// Task list entry: fades a light (Light_Add) in over 60 frames, then clears it (FM).
+s32 Summon_LightFadeTask(OtherApple* arg0) {
     f32 temp_f2;
 
     if (arg0->unk_00 & 0x10) {
@@ -530,7 +540,7 @@ s32 func_0013B480(OtherApple* arg0) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B480);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_LightFadeTask);
 #endif
 
 #ifdef VERSION_FM
@@ -550,7 +560,8 @@ void func_00133588(void);
 void func_001452E0(s32, s32);
 void func_0023E0B0(s32, s32);
 
-void func_0013B578(void) {
+// Pops the actors' states, puts the summoner back at its saved position and restarts the game state (FM).
+void Summon_RestoreActors(void) {
     XAppleBlemish* var_16;
 
     func_00133588();
@@ -576,11 +587,11 @@ void func_0013B578(void) {
     func_001778A0(0);
     D_002C1EA8 &= ~0x4000;
     func_001452E0(0, 4);
-    TaskList_Add(&D_00532518, 0, &func_0013B480);
+    TaskList_Add(&D_00532518, 0, &Summon_LightFadeTask);
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_RestoreActors);
 #endif
 // int TaskList_Add(int*, int, int*);
 // int Actor_PopState(void*);
@@ -590,9 +601,9 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 // void func_0014F8B0(XAppleBlemish*, int);
 // void func_0023E0B0(int, int);
 
-// extern int func_0013B480;
+// extern int Summon_LightFadeTask;
 
-// void func_0013B578(void) {
+// void Summon_RestoreActors(void) {
 //     XAppleBlemish* var_16;
 
 //     func_00133588();
@@ -618,20 +629,21 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B578);
 //     func_001778A0(0);
 //     D_002C1EA8 &= ~0x4000;
 //     func_001452E0(0, 4);
-//     TaskList_Add(&D_00532518, 0, &func_0013B480);
+//     TaskList_Add(&D_00532518, 0, &Summon_LightFadeTask);
 // }
 
 #ifdef VERSION_FM
 extern XAppleBlemish* D_0052AE3C;
 
-s32 func_0013B6E0(void) {
+// Phase 2: restores the actors, gives the summoned actor (id type 7) and the summoner their motions and starts the summon program (FM).
+s32 Summon_PhaseStart(void) {
     XAppleBlemish* var_4;
 
     if (((D_00375BC0 >> 2) & 1) != 0 || D_00532604 != 4 || func_001EE090() != 0) {
         return 0;
     }
 
-    func_0013B578();
+    Summon_RestoreActors();
     D_0052AE3C = NULL;
     var_4 = NULL;
 
@@ -669,17 +681,17 @@ s32 func_0013B6E0(void) {
 }
 
 #else
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B6E0);
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_PhaseStart);
 #endif
 
-// s32 func_0013B6E0(void) {
+// s32 Summon_PhaseStart(void) {
 //     XAppleBlemish* var_4;
 
 //     if (((D_00375BC0 >> 2) & 1) != 0 || D_00532604 != 4 || func_001EE090() != 0) {
 //         return 0;
 //     }
 
-//     func_0013B578();
+//     Summon_RestoreActors();
 //     D_005325EC = NULL;
 //     var_4 = NULL;
 
@@ -716,7 +728,8 @@ INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B6E0);
 //     return 1;
 // }
 
-s32 func_0013B890(void) {
+// Phase 3: waits for the summon program (command 1) to end, then clears the summon flags.
+s32 Summon_PhaseWaitEnd(void) {
     if ((((D_002C1EC8 >> 8) % 4) == 1) || (func_F20000(1, 0) == 0)) {
         func_0013A790();
         D_002C1EA8 &= ~0x2000;
@@ -726,14 +739,16 @@ s32 func_0013B890(void) {
     return 0;
 }
 
-s32 func_0013B8F8(u16* arg0) {
+// Task: runs the summon phases (D_00301058: duration, function) and the summon task list.
+s32 Summon_MainTask(u16* arg0) {
     if (*arg0 & 0x10) {
-        func_0013BD88(&D_00532508, D_00301058, 4);
+        func_0013BD88(&D_00532508, summonPhaseTable, 4);
     }
     TaskList_UpdateMatching(&D_00532518, 0);
     return (func_0013BDA0(&D_00532508) != 0) ? 0 : 4;
 }
 
+// func_00132160(arg0) with two parts of the .dat data.
 void func_0013B968(s32 arg0) {
     func_00132160(
         arg0,
@@ -742,7 +757,8 @@ void func_0013B968(s32 arg0) {
     );
 }
 
-void func_0013B9A8(void) {
+// D_00532604 = 2 (summon sounds loaded).
+void Summon_OnSoundLoaded(void) {
     D_00532604 = 2;
 }
 
@@ -753,7 +769,8 @@ void func_00177908(u8*);
 void func_00146BC8(s32);
 void func_00146A68(u8*, s32, void (*)(void), s32);
 
-void func_0013B9B8(s32 arg0, s32 arg1, u8* arg2) {
+// Load callback of xs_<name>.dat: sets up its parts (effects, sounds), then the .dbt buffer D_0053260C (FM).
+void Summon_OnDataLoaded(s32 arg0, s32 arg1, u8* arg2) {
     s32* a = (s32*)arg2;
 
     if (a[2] - a[1] > 0) {
@@ -771,17 +788,17 @@ void func_0013B9B8(s32 arg0, s32 arg1, u8* arg2) {
     D_00532604 = 1;
     if (a[8] - a[7] > 0) {
         func_00146BC8(-7);
-        func_00146A68(arg2 + a[7], -7, func_0013B9A8, 0);
+        func_00146A68(arg2 + a[7], -7, Summon_OnSoundLoaded, 0);
     } else {
         D_00532604 = 2;
     }
     D_0053260C = (s32*)(((u32)(arg2 + arg0) + 0x7F) >> 7 << 7);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/xapple", func_0013B9B8);
-void func_0013B9B8();
+INCLUDE_ASM("asm/nonmatchings/xapple", Summon_OnDataLoaded);
+void Summon_OnDataLoaded();
 #endif
-// s32 func_0013B9B8(s32 arg0, s32 arg1, s32 arg2) {
+// s32 Summon_OnDataLoaded(s32 arg0, s32 arg1, s32 arg2) {
 //     int iVar1;
 //     int iVar2;
 
@@ -814,23 +831,25 @@ void func_0013B9B8();
 //         D_00532604 = 2;
 //     } else {
 //         func_00146BC8(-7);
-//         func_00146D08(arg2 + *(int*)(arg2 + 0x1c), -7, func_0013B9A8, 0);
+//         func_00146D08(arg2 + *(int*)(arg2 + 0x1c), -7, Summon_OnSoundLoaded, 0);
 //     }
 //     D_0053260C = (s32*)(arg2 + arg0 + 0x7fU & 0xffffff80);
 // }
 
-f32 func_0013BAC0(void) {
+// Summon time: (the summoner's +0x6C->+0x48 + bits 10..12 of D_002DED20) * 3000; probably.
+f32 Summon_GetDuration(void) {
     return (D_002DEC00->unk_6C->unk_48 + ((s32)(D_002DED20 >> 0xA) & 7)) * 3000;
 }
 
-void* func_0013BB00(s32 arg0, s32 arg1) {
+// Starts summon arg1 (D_00301010: dumbo, bambi, genie, tink, mushu, simba) for actor arg0: sets the flags, takes a cost from the actor (func_00141668, probably MP), loads xs_<name>.dat, adds Summon_MainTask.
+void* Summon_Start(s32 arg0, s32 arg1) {
     char something[0x20];
 
     D_002C1EA8 |= 0x102000;
     D_00301088 = (D_00301088 & (~7)) | (arg1 & 7) | 8;
     D_00301080 = &D_003051EC->unk_98[arg1].unk_00;
     D_00301094 |= 1 << arg1;
-    D_0030108C = D_00301090 = func_0013BAC0();
+    D_0030108C = D_00301090 = Summon_GetDuration();
     func_00141668(arg0, -*(&D_003051EC->unk_98[arg1].unk_00));
     D_005325E8 = arg0;
     D_00532600 = arg1;
@@ -839,16 +858,17 @@ void* func_0013BB00(s32 arg0, s32 arg1) {
     func_00157AD8(3);
     D_00532604 = 0;
     D_00532608 = func_00155ED8(0x34, 0xC);
-    sprintf(something, "%s%s", D_00301010[arg1], D_00301078);
-    cdvd_QueueFileLoad(something, D_00532608, func_0013B9B8, 0);
+    sprintf(something, "%s%s", summonFileNames[arg1], D_00301078);
+    cdvd_QueueFileLoad(something, D_00532608, Summon_OnDataLoaded, 0);
     TaskList_Init(&D_00532518, &D_00532528, 0x18, 8);
-    return TaskSystem_AddTask(52000, func_0013B8F8);
+    return TaskSystem_AddTask(52000, Summon_MainTask);
 }
 
-void func_0013BCA8(void) {
+// Stops a running summon: ends the program and the task, restores the party, clears the summon flags.
+void Summon_End(void) {
     if ((D_002C1EA8 >> 13) & 1) {
         func_F20000(2, 0);
-        TaskSystem_RemoveTask(func_0013B8F8);
+        TaskSystem_RemoveTask(Summon_MainTask);
         func_0023E0B0(0, 1);
         func_0023E0B0(1, 2);
         func_0023E0B0(2, 2);
