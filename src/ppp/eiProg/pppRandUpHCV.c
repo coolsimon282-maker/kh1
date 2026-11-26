@@ -29,7 +29,7 @@ typedef struct {
     u8 twice;
 } PRandUpHCV;
 
-s16 func_0018A680(s16 a, f32 b);
+s16 RandHCV_Scale(s16 a, f32 b);
 
 void pppRandUpHCVCalc(pppPObject* pobj, PRandUpHCV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -53,14 +53,15 @@ void pppRandUpHCVCalc(pppPObject* pobj, PRandUpHCV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (u16*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018A680(p->scale[0], *rv);
-    tgt[1] += func_0018A680(p->scale[1], *rv);
-    tgt[2] += func_0018A680(p->scale[2], *rv);
-    tgt[3] += func_0018A680(p->scale[3], *rv);
+    tgt[0] += RandHCV_Scale(p->scale[0], *rv);
+    tgt[1] += RandHCV_Scale(p->scale[1], *rv);
+    tgt[2] += RandHCV_Scale(p->scale[2], *rv);
+    tgt[3] += RandHCV_Scale(p->scale[3], *rv);
 }
 
 
 
-s16 func_0018A858(s16 a, f32 b) {
+// a * b.
+s16 RandUpHCV_Scale(s16 a, f32 b) {
     return a * b;
 }

@@ -18,13 +18,13 @@ typedef struct {
     /* 0x2C */ f32 unk_2C;
 } KeLnsCrnTWork;
 
-void func_00193E80(pppPObject* pobj, PKeLnsCrnTDraw* p, pppCtrlTable* ctbl);
-void func_00194E58(KeLnsCrnTWork* w, s32 arg1, s32 arg2);
+void KeLnsClm_Start(pppPObject* pobj, PKeLnsCrnTDraw* p, pppCtrlTable* ctbl);
+void KeLnsClmT_Draw(KeLnsCrnTWork* w, s32 arg1, s32 arg2);
 
 void pppKeLnsCrnTDraw(pppPObject* pobj, PKeLnsCrnTDraw* p, pppCtrlTable* ctbl) {
     KeLnsCrnTWork* w = (KeLnsCrnTWork*)&pobj->val[ctbl->useVal[0]];
 
-    func_00193E80(pobj, p, ctbl);
+    KeLnsClm_Start(pobj, p, ctbl);
     if (p->cdt.time == pobj->time) {
         w->unk_20 = p->unk_0C;
         w->unk_28 = p->unk_10;
@@ -35,7 +35,7 @@ void pppKeLnsCrnTDraw(pppPObject* pobj, PKeLnsCrnTDraw* p, pppCtrlTable* ctbl) {
     w->col[2] = p->col[2] * ppvMng->colorB;
     w->col[3] = p->col[3] * ppvMng->colorA;
     sceVu0CopyVector(w->scl, ppvParScl);
-    func_00194E58(w, 0, 0);
+    KeLnsClmT_Draw(w, 0, 0);
 }
 
 void pppKeLnsCrnTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
@@ -66,7 +66,8 @@ typedef struct {
 } KeLnsFlsPrm;
 void KeLnsFls_Draw(KeLnsFlsPrm*, s32); // ppp/xberry
 
-void func_00195148(KeLnsCrnTObj* a) {
+// Builds the draw parameters from the work and draws it.
+void KeLnsCrnT_Draw(KeLnsCrnTObj* a) {
     KeLnsFlsPrm prm;
 
     prm.unk_04 = a->unk_24;

@@ -58,6 +58,7 @@ void pppRandDownIntCalc(pppPObject* pobj, PRandDownInt* p, pppCtrlTable* ctbl) {
     *tgt += (s32)(p->scale * *rv);
 }
 
-f32 func_00189500(f32 a, f32 b) {
+// a * b - a.
+f32 RandDownInt_Scale(f32 a, f32 b) {
     return a * b - a;
 }

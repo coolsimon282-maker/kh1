@@ -17,13 +17,13 @@ typedef struct {
     /* 0x48 */ u8 col[4];
 } KeLnsClmTWork;
 
-void func_00193BC8(pppPObject* pobj, PKeLnsClmTDraw* p, pppCtrlTable* ctbl);
-void func_00194BD0(KeLnsClmTWork* w, s32 arg1, s32 arg2);
+void KeLnsArnd_Start(pppPObject* pobj, PKeLnsClmTDraw* p, pppCtrlTable* ctbl);
+void KeLnsArndT_Draw(KeLnsClmTWork* w, s32 arg1, s32 arg2);
 
 void pppKeLnsClmTDraw(pppPObject* pobj, PKeLnsClmTDraw* p, pppCtrlTable* ctbl) {
     KeLnsClmTWork* w = (KeLnsClmTWork*)&pobj->val[ctbl->useVal[0]];
 
-    func_00193BC8(pobj, p, ctbl);
+    KeLnsArnd_Start(pobj, p, ctbl);
     if (p->cdt.time == pobj->time) {
         w->unk_44 = p->unk_0C;
         w->unk_40 = p->unk_14;
@@ -33,7 +33,7 @@ void pppKeLnsClmTDraw(pppPObject* pobj, PKeLnsClmTDraw* p, pppCtrlTable* ctbl) {
     w->col[2] = p->col[2] * ppvMng->colorB;
     w->col[3] = p->col[3] * ppvMng->colorA;
     sceVu0CopyVector(w->scl, ppvParScl);
-    func_00194BD0(w, 0, 0);
+    KeLnsArndT_Draw(w, 0, 0);
 }
 
 void pppKeLnsClmTCon(pppPObject* pobj, pppCtrlTable* ctbl) {
@@ -67,7 +67,8 @@ typedef struct {
 
 void KeLnsStr_Draw(KeLnsClmTDrawSt* st, s32 arg1);
 
-void func_00194E58(KeLnsClmTArg* arg) {
+// Builds the draw state from the work and draws it.
+void KeLnsClmT_Draw(KeLnsClmTArg* arg) {
     KeLnsClmTDrawSt st;
 
     st.unk_04 = arg->unk_24;

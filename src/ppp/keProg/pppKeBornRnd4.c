@@ -24,7 +24,8 @@ typedef struct {
 pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 
-void func_0018F548(pppPObject* pobj, PKeBornRnd4Cb* p, s16* sv) {
+// KeBornRnd4's particle creation at point sv.
+void KeBornRnd4_Born(pppPObject* pobj, PKeBornRnd4Cb* p, s16* sv) {
     pppPObject* born;
     void* pdt;
     void* pos;

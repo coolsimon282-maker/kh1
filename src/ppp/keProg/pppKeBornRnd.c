@@ -20,7 +20,8 @@ typedef struct {
 pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 
-void func_0018EB98(pppPObject* pobj, PKeBornRndCb* p, s16* sv) {
+// Creates a particle (data pdtn) at point sv transformed by the current matrix, moving outward from the matrix origin at p->speed.
+void KeBornRnd_Born(pppPObject* pobj, PKeBornRndCb* p, s16* sv) {
     pppPObject* born;
     void* pdt;
     void* pos;

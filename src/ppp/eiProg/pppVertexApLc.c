@@ -32,7 +32,7 @@ typedef union {
 pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*, s32);
 
 // starts particle data dataNo as a child of pobj and puts it at vtx
-void func_001862E0(pppPObject* pobj, PVertexApLc* p, pppSVECTOR* vtx) {
+void VertexApLc_BornAtVertex(pppPObject* pobj, PVertexApLc* p, pppSVECTOR* vtx) {
     pppPObject* child;
     pppPDataVal* pdv;
     VertexApLcWord* pos;
@@ -105,13 +105,13 @@ void pppVertexApLcCalc(pppPObject* pobj, PVertexApLc* p, pppCtrlTable* ctbl) {
                     v->ict = 0;
                 }
                 pt = vert[(u16)vsf->index[v->ict++]];
-                func_001862E0(pobj, p, &pt);
+                VertexApLc_BornAtVertex(pobj, p, &pt);
             }
             break;
         case 1:
             while (n--) {
                 pt = vert[(u16)vsf->index[(s32)(vu0Rand() * (s16)vsf->indexN)]];
-                func_001862E0(pobj, p, &pt);
+                VertexApLc_BornAtVertex(pobj, p, &pt);
             }
             break;
         }

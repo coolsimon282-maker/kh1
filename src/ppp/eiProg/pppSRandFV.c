@@ -7,8 +7,8 @@ typedef struct {
     u8 twice;
 } PSRandFV;
 
-f32 func_0018AA30(f32 a, f32 b);
-f32 func_0018AA40(u8 twice);
+f32 RandDownHCV_Scale(f32 a, f32 b);
+f32 RandDownHCV_Rand(u8 twice);
 
 void pppSRandFVCalc(pppPObject* pobj, PSRandFV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -19,9 +19,9 @@ void pppSRandFVCalc(pppPObject* pobj, PSRandFV* p, pppCtrlTable* ctbl) {
     }
     if (pobj->time == 0) {
         rv = (f32*)&pobj->val[ctbl->useVal[0]];
-        rv[0] = func_0018AA40(p->twice);
-        rv[1] = func_0018AA40(p->twice);
-        rv[2] = func_0018AA40(p->twice);
+        rv[0] = RandDownHCV_Rand(p->twice);
+        rv[1] = RandDownHCV_Rand(p->twice);
+        rv[2] = RandDownHCV_Rand(p->twice);
     } else {
         if (p->cdt.time != pobj->time) {
             return;
@@ -33,12 +33,13 @@ void pppSRandFVCalc(pppPObject* pobj, PSRandFV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (f32*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018AA30(p->scale[0], rv[0]);
-    tgt[1] += func_0018AA30(p->scale[1], rv[1]);
-    tgt[2] += func_0018AA30(p->scale[2], rv[2]);
+    tgt[0] += RandDownHCV_Scale(p->scale[0], rv[0]);
+    tgt[1] += RandDownHCV_Scale(p->scale[1], rv[1]);
+    tgt[2] += RandDownHCV_Scale(p->scale[2], rv[2]);
 }
 
-f32 func_0018AC08(f32 a, f32 b) {
+// a * b.
+f32 SRandFV_Scale(f32 a, f32 b) {
     return a * b;
 }
 
@@ -79,7 +80,8 @@ static inline f32 vu0Rand(void) {
     return r;
 }
 
-f32 func_0018AC10(u8 twice) {
+// VU0 random number 0..1, or the average of two (twice).
+f32 SRandFV_Rand(u8 twice) {
     f32 r = vu0Rand();
     if (twice) {
         r = (r + vu0Rand()) * 0.5f;

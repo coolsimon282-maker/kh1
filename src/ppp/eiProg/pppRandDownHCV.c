@@ -44,7 +44,7 @@ typedef struct {
     u8 twice;
 } PRandDownHCV;
 
-s16 func_0018A858(s16 a, f32 b);
+s16 RandUpHCV_Scale(s16 a, f32 b);
 
 void pppRandDownHCVCalc(pppPObject* pobj, PRandDownHCV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -69,19 +69,21 @@ void pppRandDownHCVCalc(pppPObject* pobj, PRandDownHCV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (u16*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018A858(p->scale[0], *rv);
-    tgt[1] += func_0018A858(p->scale[1], *rv);
-    tgt[2] += func_0018A858(p->scale[2], *rv);
-    tgt[3] += func_0018A858(p->scale[3], *rv);
+    tgt[0] += RandUpHCV_Scale(p->scale[0], *rv);
+    tgt[1] += RandUpHCV_Scale(p->scale[1], *rv);
+    tgt[2] += RandUpHCV_Scale(p->scale[2], *rv);
+    tgt[3] += RandUpHCV_Scale(p->scale[3], *rv);
 }
 
 
 
-f32 func_0018AA30(f32 arg0, f32 arg1) {
+// a * b - a.
+f32 RandDownHCV_Scale(f32 arg0, f32 arg1) {
     return arg0 * arg1 - arg0;
 }
 
-f32 func_0018AA40(u8 twice) {
+// Random value 0..2: a VU0 random number plus a second one (twice) or itself.
+f32 RandDownHCV_Rand(u8 twice) {
     f32 r = vu0Rand();
     if (twice) {
         r += vu0Rand();

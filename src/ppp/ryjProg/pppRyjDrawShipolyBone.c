@@ -61,15 +61,15 @@ static inline f32 vu0Rand(void) {
 }
 
 // VU0 random number in [0, 1)
-f32 func_0019D798(void) {
+f32 RyjShipolyBone_Rand(void) {
     return vu0Rand();
 }
 
-f32 func_0019D798(void); // VU0 random number in [0, 1)
+f32 RyjShipolyBone_Rand(void); // VU0 random number in [0, 1)
 
 // a random value in about [-a / 2, a * 3 / 2)
-s8 func_0019D7E0(u8 a) {
-    return (a * 2) * func_0019D798() - (a / 2);
+s8 RyjShipolyBone_RandSpread(u8 a) {
+    return (a * 2) * RyjShipolyBone_Rand() - (a / 2);
 }
 
 typedef struct {
@@ -86,7 +86,8 @@ typedef struct {
     /* 0xCC */ u8 unk_CC;
 } RyjShipolyUnk2;
 
-s32 func_0019D840(RyjShipolyUnk1* a, RyjShipolyUnk2* b) {
+// True when the part data needed by the parameters is there.
+s32 RyjShipolyBone_HasData(RyjShipolyUnk1* a, RyjShipolyUnk2* b) {
     if (a->unk_50 == 0) {
         return 0;
     }

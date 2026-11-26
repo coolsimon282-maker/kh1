@@ -7,8 +7,8 @@ typedef struct {
     u8 twice;
 } PSRandUpFV;
 
-f32 func_0018AC08(f32 a, f32 b);
-f32 func_0018AC10(u8 twice); // random number in [0, 1) (pppSRandFV.c)
+f32 SRandFV_Scale(f32 a, f32 b);
+f32 SRandFV_Rand(u8 twice); // random number in [0, 1) (pppSRandFV.c)
 
 void pppSRandUpFVCalc(pppPObject* pobj, PSRandUpFV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -19,9 +19,9 @@ void pppSRandUpFVCalc(pppPObject* pobj, PSRandUpFV* p, pppCtrlTable* ctbl) {
     }
     if (pobj->time == 0) {
         rv = (f32*)&pobj->val[ctbl->useVal[0]];
-        rv[0] = func_0018AC10(p->twice);
-        rv[1] = func_0018AC10(p->twice);
-        rv[2] = func_0018AC10(p->twice);
+        rv[0] = SRandFV_Rand(p->twice);
+        rv[1] = SRandFV_Rand(p->twice);
+        rv[2] = SRandFV_Rand(p->twice);
     } else {
         if (p->cdt.time != pobj->time) {
             return;
@@ -33,12 +33,13 @@ void pppSRandUpFVCalc(pppPObject* pobj, PSRandUpFV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (f32*)&ppvDbgTemp;
     }
-    tgt[0] += func_0018AC08(p->scale[0], rv[0]);
-    tgt[1] += func_0018AC08(p->scale[1], rv[1]);
-    tgt[2] += func_0018AC08(p->scale[2], rv[2]);
+    tgt[0] += SRandFV_Scale(p->scale[0], rv[0]);
+    tgt[1] += SRandFV_Scale(p->scale[1], rv[1]);
+    tgt[2] += SRandFV_Scale(p->scale[2], rv[2]);
 }
 
-f32 func_0018ADE0(f32 arg0, f32 arg1) {
+// a * b.
+f32 SRandUpFV_Scale(f32 arg0, f32 arg1) {
     return arg0 * arg1;
 }
 
@@ -65,7 +66,7 @@ static inline f32 vu0Rand(void) {
 }
 
 // random number in (-1, 0]: -r, or the average of -r and -r2 when twice is set
-f32 func_0018ADE8(u8 twice) {
+f32 SRandUpFV_Rand(u8 twice) {
     f32 r = vu0Rand();
 
     r = -r;

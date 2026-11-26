@@ -19,13 +19,13 @@ typedef struct {
     /* 0x14 */ f32* scl;
 } KeLnsFlsDrawInfo;
 
-void func_001940F0(pppPObject* pobj, PKeLnsFls* p, pppCtrlTable* ctbl);
+void KeLnsCrn_Start(pppPObject* pobj, PKeLnsFls* p, pppCtrlTable* ctbl);
 void KeLnsFls_Draw(KeLnsFlsDrawInfo* info, s32 arg1);
 
 void pppKeLnsFlsDraw(pppPObject* pobj, PKeLnsFls* p, pppCtrlTable* ctbl) {
     KeLnsFlsDrawInfo info;
 
-    func_001940F0(pobj, p, ctbl);
+    KeLnsCrn_Start(pobj, p, ctbl);
     info.col[0] = p->col[0] * ppvMng->colorR;
     info.col[1] = p->col[1] * ppvMng->colorG;
     info.col[2] = p->col[2] * ppvMng->colorB;
@@ -45,4 +45,5 @@ void pppKeLnsFlsCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeLnsFls_Init(fls);
 }
 
-INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsFls", func_00194350);
+// Draws the flare effect for KeLnsLpT (builds the draw info for KeLnsFls_Draw, probably).
+INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeLnsFls", KeLnsFlsLp_Draw);

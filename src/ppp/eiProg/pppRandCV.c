@@ -29,7 +29,7 @@ typedef struct {
     u8 twice;
 } PRandCV;
 
-s8 func_00189F20(s8 a, f32 b);
+s8 RandDownIV_Scale(s8 a, f32 b);
 
 void pppRandCVCalc(pppPObject* pobj, PRandCV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -55,12 +55,13 @@ void pppRandCVCalc(pppPObject* pobj, PRandCV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (u8*)&ppvDbgTemp;
     }
-    tgt[0] += func_00189F20(p->scale[0], *rv);
-    tgt[1] += func_00189F20(p->scale[1], *rv);
-    tgt[2] += func_00189F20(p->scale[2], *rv);
-    tgt[3] += func_00189F20(p->scale[3], *rv);
+    tgt[0] += RandDownIV_Scale(p->scale[0], *rv);
+    tgt[1] += RandDownIV_Scale(p->scale[1], *rv);
+    tgt[2] += RandDownIV_Scale(p->scale[2], *rv);
+    tgt[3] += RandDownIV_Scale(p->scale[3], *rv);
 }
 
-s8 func_0018A0F8(s8 a, f32 b) {
+// a * b (the random factor applied to a colour component).
+s8 RandCV_Scale(s8 a, f32 b) {
     return a * b;
 }

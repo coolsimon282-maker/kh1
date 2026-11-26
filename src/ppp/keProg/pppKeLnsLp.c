@@ -65,7 +65,8 @@ typedef struct {
     /* 0x4 */ s32 shpNo;
 } PKeLnsLpShp;
 
-void func_00193978(pppPObject* pobj, PKeLnsLpShp* p, pppCtrlTable* ctbl) {
+// At the start time: links the work and sets the shape and parameters.
+void KeLnsLp_Start(pppPObject* pobj, PKeLnsLpShp* p, pppCtrlTable* ctbl) {
     KeLnsArnd* v = (KeLnsArnd*)&pobj->val[ctbl->useVal[0]];
     pppShapeSt* shp;
 

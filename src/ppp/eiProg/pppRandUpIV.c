@@ -29,7 +29,7 @@ typedef struct {
     u8 twice;
 } PRandUpIV;
 
-s32 func_00189BC0(s32 a, f32 b);
+s32 RandIV_Scale(s32 a, f32 b);
 
 void pppRandUpIVCalc(pppPObject* pobj, PRandUpIV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -53,12 +53,13 @@ void pppRandUpIVCalc(pppPObject* pobj, PRandUpIV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (s32*)&ppvDbgTemp;
     }
-    tgt[0] += func_00189BC0(p->scale[0], *rv);
-    tgt[1] += func_00189BC0(p->scale[1], *rv);
-    tgt[2] += func_00189BC0(p->scale[2], *rv);
+    tgt[0] += RandIV_Scale(p->scale[0], *rv);
+    tgt[1] += RandIV_Scale(p->scale[1], *rv);
+    tgt[2] += RandIV_Scale(p->scale[2], *rv);
 }
 
 
-s32 func_00189D70(s32 a, f32 b) {
+// a * b.
+s32 RandUpIV_Scale(s32 a, f32 b) {
     return a * b;
 }

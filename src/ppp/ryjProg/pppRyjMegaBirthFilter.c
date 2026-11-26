@@ -11,7 +11,7 @@ typedef struct {
 
 sceVu0FVECTOR g_vecCamDir;
 
-f32 func_001A5500(void);
+f32 RyjMegaBirthFilter_Rand(void);
 
 typedef struct {
     /* 0x00 */ char unk_00[0x4];
@@ -32,7 +32,7 @@ typedef struct {
 } PRyjMegaBirthFilterCalc;
 
 extern sceVu0FVECTOR D_003701D0;
-s32 func_001A4040(VRyjMegaBirthFilter* v, PRyjMegaBirthFilterCalc* p);
+s32 RyjDttFr_HasData(VRyjMegaBirthFilter* v, PRyjMegaBirthFilterCalc* p);
 void func_001A4BC8(VRyjMegaBirthFilter* v, PRyjMegaBirthFilterCalc* p, void* w);
 
 // |v.xyz| on VU0 (hand-written macro code)
@@ -79,7 +79,7 @@ void pppRyjMegaBirthFilterCalc(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, ppp
             }
         }
     }
-    if (!func_001A4040(v, p)) {
+    if (!RyjDttFr_HasData(v, p)) {
         return;
     }
     if (p->bDistFade) {
@@ -180,7 +180,7 @@ void pppRyjMegaBirthFilterDraw(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, ppp
     s32 i;
     f32 z;
 
-    if (!func_001A4040(v, p)) {
+    if (!RyjDttFr_HasData(v, p)) {
         return;
     }
     if (!v->bActive) {
@@ -330,16 +330,19 @@ static inline f32 vu0Rand(void) {
     return r;
 }
 
-f32 func_001A5500(void) {
+// VU0 random number 0..1.
+f32 RyjMegaBirthFilter_Rand(void) {
     return vu0Rand();
 }
 
-s8 func_001A5548(u8 a) {
-    f32 r = func_001A5500();
+// a * 2 * rand - a / 2.
+s8 RyjMegaBirthFilter_RandSpread(u8 a) {
+    f32 r = RyjMegaBirthFilter_Rand();
     return (a * 2) * r - (a >> 1);
 }
 
-s32 func_001A55A8(VRyjMegaBirthFilter* v, u8* arg1) {
+// True when the particle data (and colour data when needed) is there.
+s32 RyjMegaBirthFilter_HasData(VRyjMegaBirthFilter* v, u8* arg1) {
     if (v->pvParticleData == NULL) {
         return FALSE;
     }
@@ -381,9 +384,9 @@ void func_001A5EF8(void* v, PRyjMegaBirthFilterB* p, f32* data, u8* color) {
     r = p->rad + p->radAdd;
     d = r + r;
     do {
-        data[0] = d * func_001A5500() - r;
-        data[1] = d * func_001A5500() - r;
-        data[2] = d * func_001A5500() - r;
+        data[0] = d * RyjMegaBirthFilter_Rand() - r;
+        data[1] = d * RyjMegaBirthFilter_Rand() - r;
+        data[2] = d * RyjMegaBirthFilter_Rand() - r;
     } while (r < vu0Length(data));
     data[3] = 1.0f;
     sceVu0ApplyMatrix(data, D_00615F30, data);

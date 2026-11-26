@@ -29,7 +29,7 @@ typedef struct {
 } PRyjMegaBirthModelFilter;
 
 extern sceVu0FVECTOR D_003701D0;
-s32 func_001A55A8(VRyjMegaBirthModelFilter* v, PRyjMegaBirthModelFilter* p);
+s32 RyjMegaBirthFilter_HasData(VRyjMegaBirthModelFilter* v, PRyjMegaBirthModelFilter* p);
 void func_001A66B0(VRyjMegaBirthModelFilter* v, PRyjMegaBirthModelFilter* p, void* w);
 
 // |v.xyz| on VU0 (hand-written macro code)
@@ -76,7 +76,7 @@ void pppRyjMegaBirthModelFilterCalc(pppPObject* pobj, PRyjMegaBirthModelFilter* 
             }
         }
     }
-    if (!func_001A55A8(v, p)) {
+    if (!RyjMegaBirthFilter_HasData(v, p)) {
         return;
     }
     if (p->bDistFade) {
@@ -205,7 +205,7 @@ void pppRyjMegaBirthModelFilterDraw(pppPObject* pobj, PRyjMegaBirthModelFilter* 
     s32 i;
     f32 z;
 
-    if (!func_001A55A8(v, p)) {
+    if (!RyjMegaBirthFilter_HasData(v, p)) {
         return;
     }
     if (!v->bActive) {

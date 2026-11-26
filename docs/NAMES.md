@@ -588,3 +588,80 @@ other functions (rule F1).
 | GameOver_Start | 0x0011C710 | xpaste.c | Starts the game over sequence, probably: sets D_002BD854, stops the game (func_00114420, func_00180CE0), fades the music and adds GameOver_ChoiceTask. |
 | GameOver_ChoiceTask | 0x0011C698 | xpaste.c | Task: when the menu (D_003F7774) closes, choice 0 requests game mode 10, choice 1 starts func_0022BCB8 and adds GameOver_ContinueTask. |
 | GameOver_ContinueTask | 0x0011C630 | xpaste.c | Task: when D_003F34A4 clears, either requests game mode 15 (D_003F720C == 1, FM) or starts the sequence again. |
+| AngleLoop_InitWork | 0x0018AD70 | ppp/eiProg/pppAngleLoop.c | Sets up the AngleLoop work: parameter pointer, angles 0. |
+| DrawMdlLoop_InitWork | 0x0018B030 | ppp/eiProg/pppDrawMdlLoop.c | Sets up the DrawMdlLoop work: parameter pointer, texture scroll start (tu, tv), speeds 0. |
+| DrawMdlLoopZ_InitWork | 0x0018B470 | ppp/eiProg/pppDrawMdlLoopZ.c | Sets up the DrawMdlLoopZ work: parameter pointer, texture scroll start (tu, tv), speeds 0. |
+| PointLoop_InitWork | 0x0018AC28 | ppp/eiProg/pppPointLoop.c | Sets up the PointLoop work: parameter pointer, offset 0. |
+| ScaleLoop_InitWork | 0x0018AEB8 | ppp/eiProg/pppScaleLoop.c | Sets up the ScaleLoop work: parameter pointer, scale 0. |
+| RandCV_Scale | 0x001889B0 | ppp/eiProg/pppRandCV.c | a * b (the random factor applied to a colour component). |
+| RandDownCV_Scale | 0x00188D40 | ppp/eiProg/pppRandDownCV.c | a * b - a. |
+| RandDownFV_Scale | 0x001882F8 | ppp/eiProg/pppRandDownFV.c | a * b - a. |
+| RandDownHCV_Scale | 0x00189298 | ppp/eiProg/pppRandDownHCV.c | a * b - a. |
+| RandDownHCV_Rand | 0x001892A8 | ppp/eiProg/pppRandDownHCV.c | Random value 0..2: a VU0 random number plus a second one (twice) or itself. |
+| RandDownIV_Scale | 0x001887E8 | ppp/eiProg/pppRandDownIV.c | a * b - a (in float). |
+| RandDownInt_Scale | 0x00187DF0 | ppp/eiProg/pppRandDownInt.c | a * b - a. |
+| RandFV_Scale | 0x00187F98 | ppp/eiProg/pppRandFV.c | a * b. |
+| RandHCV_Scale | 0x00188F08 | ppp/eiProg/pppRandHCV.c | a * b. |
+| RandIV_Scale | 0x00188498 | ppp/eiProg/pppRandIV.c | a * b. |
+| RandUpCV_Scale | 0x00188B78 | ppp/eiProg/pppRandUpCV.c | a * b. |
+| RandUpFV_Scale | 0x00188148 | ppp/eiProg/pppRandUpFV.c | a * b. |
+| RandUpHCV_Scale | 0x001890D0 | ppp/eiProg/pppRandUpHCV.c | a * b. |
+| RandUpIV_Scale | 0x00188640 | ppp/eiProg/pppRandUpIV.c | a * b. |
+| SRandCV_Scale | 0x00189A18 | ppp/eiProg/pppSRandCV.c | a * b. |
+| SRandCV_Rand | 0x00189A40 | ppp/eiProg/pppSRandCV.c | VU0 random number 0..1, or the average of two (twice). |
+| SRandDownCV_Scale | 0x00189E28 | ppp/eiProg/pppSRandDownCV.c | a * b - a (in float). |
+| SRandDownCV_Rand | 0x00189E58 | ppp/eiProg/pppSRandDownCV.c | Random value 0..2: a VU0 random number plus a second one (twice) or itself. |
+| SRandDownFV_Scale | 0x00189818 | ppp/eiProg/pppSRandDownFV.c | a * b - a. |
+| SRandDownFV_Rand | 0x00189848 | ppp/eiProg/pppSRandDownFV.c | Random value 0..2: a VU0 random number plus a second one (twice) or itself. |
+| SRandFV_Scale | 0x00189468 | ppp/eiProg/pppSRandFV.c | a * b. |
+| SRandFV_Rand | 0x00189470 | ppp/eiProg/pppSRandFV.c | VU0 random number 0..1, or the average of two (twice). |
+| SRandHCV_Scale | 0x0018A028 | ppp/eiProg/pppSRandHCV.c | a * b. |
+| SRandHCV_Rand | 0x0018A050 | ppp/eiProg/pppSRandHCV.c | VU0 random number 0..1, or the average of two (twice). |
+| SRandUpCV_Scale | 0x00189C20 | ppp/eiProg/pppSRandUpCV.c | a * b. |
+| SRandUpCV_Rand | 0x00189C48 | ppp/eiProg/pppSRandUpCV.c | Negated VU0 random number, or the average of two negated ones (twice). |
+| SRandUpFV_Scale | 0x00189640 | ppp/eiProg/pppSRandUpFV.c | a * b. |
+| SRandUpFV_Rand | 0x00189648 | ppp/eiProg/pppSRandUpFV.c | Negated VU0 random number, or the average of two negated ones (twice). |
+| SRandUpHCV_Scale | 0x0018A230 | ppp/eiProg/pppSRandUpHCV.c | a * b. |
+| SRandUpHCV_Rand | 0x0018A258 | ppp/eiProg/pppSRandUpHCV.c | Negated VU0 random number, or the average of two negated ones (twice). |
+| VertexAp_BornAtVertex | 0x00184918 | ppp/eiProg/pppVertexAp.c | Creates a child particle (data dataNo) and puts it at shape vertex vtx transformed by the current matrix. |
+| VertexApAt_BornAtIndex | 0x00185000 | ppp/eiProg/pppVertexApAt.c | Creates a child particle at vertex index arg2 of the shape. |
+| VertexApLc_BornAtVertex | 0x00184CB8 | ppp/eiProg/pppVertexApLc.c | Creates a child particle at shape vertex vtx in local coordinates. |
+| KeBornPtCmpl_Atan2 | 0x0018E5A8 | ppp/keProg/pppKeBornPtCmpl.c | atan2 of (v[1], v[0]) written out with atan and quadrant fixes. |
+| KeBornRnd_Born | 0x0018D390 | ppp/keProg/pppKeBornRnd.c | Creates a particle (data pdtn) at point sv transformed by the current matrix, moving outward from the matrix origin at p->speed. |
+| KeBornRnd2_Born | 0x0018D5C0 | ppp/keProg/pppKeBornRnd2.c | KeBornRnd2's particle creation at point sv. |
+| KeBornRnd3_Born | 0x0018D7D8 | ppp/keProg/pppKeBornRnd3.c | KeBornRnd3's particle creation at point sv (also sets a direction). |
+| KeBornRnd4_Born | 0x0018DD08 | ppp/keProg/pppKeBornRnd4.c | KeBornRnd4's particle creation at point sv. |
+| KeBornRnd5_Atan2 | 0x0018DF30 | ppp/keProg/pppKeBornRnd5.c | atan2 of (v[1], v[0]) written out with atan and quadrant fixes. |
+| KeBornRnd5_Born | 0x0018E0B0 | ppp/keProg/pppKeBornRnd5.c | KeBornRnd5's particle creation at point sv with an angle. |
+| KeBornRnd6_BornLine | 0x0018E348 | ppp/keProg/pppKeBornRnd6.c | Creates the child particles of a KeBornRnd6 line. |
+| KeLnsArnd_Start | 0x00192208 | ppp/keProg/pppKeLnsArnd.c | At the start time: links the work to its second value block and sets the shape (KeLnsClm_SetShape) and parameters. |
+| KeLnsArndT_Draw | 0x001931A8 | ppp/keProg/pppKeLnsArndT.c | Builds the draw argument (screen matrix, sizes) and draws (func_001A7C40). |
+| KeLnsClm_Start | 0x001924A8 | ppp/keProg/pppKeLnsClm.c | At the start time: links the work and sets the shape and parameters. |
+| KeLnsClmT_Draw | 0x00193408 | ppp/keProg/pppKeLnsClmT.c | Builds the draw state from the work and draws it. |
+| KeLnsCrn_Start | 0x00192708 | ppp/keProg/pppKeLnsCrn.c | At the start time: links the work and sets the shape and parameters. |
+| KeLnsCrnT_Draw | 0x001936C0 | ppp/keProg/pppKeLnsCrnT.c | Builds the draw parameters from the work and draws it. |
+| KeLnsFlsLp_Draw | 0x00192958 | ppp/keProg/pppKeLnsFls.c | Draws the flare effect for KeLnsLpT (builds the draw info for KeLnsFls_Draw, probably). |
+| KeLnsLp_Start | 0x00191FC8 | ppp/keProg/pppKeLnsLp.c | At the start time: links the work and sets the shape and parameters. |
+| KeLnsLpT_Draw | 0x00192F78 | ppp/keProg/pppKeLnsLpT.c | Builds the draw argument (screen matrix) and draws. |
+| RyjDttFr_Rand | 0x001A2178 | ppp/ryjProg/pppRyjDrawMatrixWorldDttFr.c | VU0 random number 0..1. |
+| RyjDttFr_RandSpread | 0x001A21C0 | ppp/ryjProg/pppRyjDrawMatrixWorldDttFr.c | Random value in about -a/2 .. 1.5 a (a * 2 * rand - a / 2). |
+| RyjDttFr_HasData | 0x001A2218 | ppp/ryjProg/pppRyjDrawMatrixWorldDttFr.c | True when the particle data is there (and the colour data when the parameters need it). |
+| RyjShipolyBone_Rand | 0x0019BAF8 | ppp/ryjProg/pppRyjDrawShipolyBone.c | VU0 random number 0..1. |
+| RyjShipolyBone_RandSpread | 0x0019BB40 | ppp/ryjProg/pppRyjDrawShipolyBone.c | a * 2 * rand - a / 2. |
+| RyjShipolyBone_HasData | 0x0019BB98 | ppp/ryjProg/pppRyjDrawShipolyBone.c | True when the part data needed by the parameters is there. |
+| RyjMegaBirthFilter_Rand | 0x001A3650 | ppp/ryjProg/pppRyjMegaBirthFilter.c | VU0 random number 0..1. |
+| RyjMegaBirthFilter_RandSpread | 0x001A3698 | ppp/ryjProg/pppRyjMegaBirthFilter.c | a * 2 * rand - a / 2. |
+| RyjMegaBirthFilter_HasData | 0x001A36F0 | ppp/ryjProg/pppRyjMegaBirthFilter.c | True when the particle data (and colour data when needed) is there. |
+| RyjMegaPlaceLamp_Rand | 0x0019F100 | ppp/ryjProg/pppRyjMegaPlaceLamp.c | VU0 random number 0..1. |
+| RyjMegaPlaceLamp_RandSpread | 0x0019F148 | ppp/ryjProg/pppRyjMegaPlaceLamp.c | a * 2 * rand - a / 2 (after one discarded random number). |
+| RyjMegaPlaceLamp_HasData | 0x0019F1A8 | ppp/ryjProg/pppRyjMegaPlaceLamp.c | True when the lamp texture data needed by the parameters is there. |
+| RyjShipoly_LerpKey | 0x0019A9E0 | ppp/ryjProg/pppRyjDrawShipoly.c | Interpolates the 16-byte keys i and i + 1 of a and b at the fraction of t (VU0). |
+| RyjShipoly_GetTexRect | 0x0019AA60 | ppp/ryjProg/pppRyjDrawShipoly.c | Texture rectangle (x0, x1, y0, y1 in 1/4096) from the parameter's width / height selection. |
+| RyjMatrixNoRot_LerpKey | 0x00199888 | ppp/ryjProg/pppRyjMatrixNoRot.c | Interpolates the vector keys i and i + 1 of a and b at the fraction of t (VU0). |
+| RyjMatrixNoRot_GetEnds | 0x00199908 | ppp/ryjProg/pppRyjMatrixNoRot.c | The top and bottom points (half the height up and down) through the matrix. |
+| RyjMatrixNoRot_GetTexRect | 0x001999F0 | ppp/ryjProg/pppRyjMatrixNoRot.c | Texture rectangle from the parameter's width / height selection. |
+| RyjMegaBirth_GetMatrix | 0x0019CFC0 | ppp/ryjProg/pppRyjMegaBirth.c | The particle matrix: m times the parent's matrix (times D_00615EB0) unless unk_CC is set. |
+| RyjMegaBirthModel_GetMatrix | 0x001A0908 | ppp/ryjProg/pppRyjMegaBirthModel.c | The model particle's matrix by its rotation mode (unk_26). |
+| RyjMegaBirthModel_GetUv | 0x001A1158 | ppp/ryjProg/pppRyjMegaBirthModel.c | The four UV corners from the parameter's u / v selection. |
+| RyjMngFlag_QuickSort | 0x0019D968 | ppp/ryjProg/pppRyjMngFlag.c | Quick sort of the entries D_0061E310[left..right] by pos[3]. |
+| RyjMngFlag_SortEntries | 0x0019DAC8 | ppp/ryjProg/pppRyjMngFlag.c | Collects the 256 entries of D_0035C710 with their view depth and sorts them. |

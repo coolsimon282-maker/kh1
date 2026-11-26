@@ -20,7 +20,7 @@ typedef struct {
     /* 0x18 */ s32 unk_18;
 } PKeBornRnd5;
 
-void func_0018F548();
+void KeBornRnd4_Born();
 void KeBornRnd2(pppPObject* pobj, PKeBornRnd5* p, void* func, VKeBornRnd5* v, s16 a, u8 b, u8 c);
 
 void pppKeBornRnd5Calc(pppPObject* pobj, PKeBornRnd5* p, pppCtrlTable* ctbl) {
@@ -44,7 +44,7 @@ void pppKeBornRnd5Calc(pppPObject* pobj, PKeBornRnd5* p, pppCtrlTable* ctbl) {
         if (p->unk_18 == -1) {
             return;
         }
-        KeBornRnd2(pobj, p, func_0018F548, v, p->unk_04, p->unk_0E, p->unk_0C);
+        KeBornRnd2(pobj, p, KeBornRnd4_Born, v, p->unk_04, p->unk_0E, p->unk_0C);
     }
     v->unk2--;
 }
@@ -57,7 +57,8 @@ void pppKeBornRnd5Con(pppPObject* pobj, pppCtrlTable* ctbl) {
 }
 
 double atan(double);
-s32 func_0018F780(f32* v, f32* out) {
+// atan2 of (v[1], v[0]) written out with atan and quadrant fixes.
+s32 KeBornRnd5_Atan2(f32* v, f32* out) {
     f32 x = v[0];
     f32 y = v[1];
     f32 r = x * y;
@@ -96,7 +97,8 @@ pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 f32 func_001AB380(f32);
 
-void func_0018F910(pppPObject* pobj, PKeBornRnd5Cb* p, s16* sv) {
+// KeBornRnd5's particle creation at point sv with an angle.
+void KeBornRnd5_Born(pppPObject* pobj, PKeBornRnd5Cb* p, s16* sv) {
     pppPObject* born;
     void* pdt;
     s32* ang;
@@ -121,12 +123,12 @@ void func_0018F910(pppPObject* pobj, PKeBornRnd5Cb* p, s16* sv) {
     ang = (s32*)&born->val[p->angOff];
     t[0] = -y;
     t[1] = x;
-    if (func_0018F780(t, &r)) {
+    if (KeBornRnd5_Atan2(t, &r)) {
         ang[2] = r * 32768.0f / 3.141592654;
     }
     t[0] = func_001AB380(y * y + x * x);
     t[1] = -t[2];
-    if (func_0018F780(t, &r)) {
+    if (KeBornRnd5_Atan2(t, &r)) {
         ang[0] = r * 32768.0f / 3.141592654;
     }
     ang[1] = 0;

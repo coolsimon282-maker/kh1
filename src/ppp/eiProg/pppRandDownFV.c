@@ -29,7 +29,7 @@ typedef struct {
     u8 twice;
 } PRandDownFV;
 
-f32 func_00189860(f32 a, f32 b);
+f32 RandUpFV_Scale(f32 a, f32 b);
 
 void pppRandDownFVCalc(pppPObject* pobj, PRandDownFV* p, pppCtrlTable* ctbl) {
     f32* rv;
@@ -57,11 +57,12 @@ void pppRandDownFVCalc(pppPObject* pobj, PRandDownFV* p, pppCtrlTable* ctbl) {
     } else {
         tgt = (f32*)&ppvDbgTemp;
     }
-    tgt[0] += func_00189860(p->scale[0], *rv);
-    tgt[1] += func_00189860(p->scale[1], *rv);
-    tgt[2] += func_00189860(p->scale[2], *rv);
+    tgt[0] += RandUpFV_Scale(p->scale[0], *rv);
+    tgt[1] += RandUpFV_Scale(p->scale[1], *rv);
+    tgt[2] += RandUpFV_Scale(p->scale[2], *rv);
 }
 
-s32 func_00189A10(s32 a, f32 b) {
+// a * b - a.
+s32 RandDownFV_Scale(s32 a, f32 b) {
     return a * b - a;
 }

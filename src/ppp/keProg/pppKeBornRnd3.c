@@ -13,13 +13,13 @@ typedef struct {
 } PKeBornRnd3;
 
 s32 func_001AAF80(void);
-void func_0018EDD8();
+void KeBornRnd2_Born();
 void KeBornRnd2(pppPObject* pobj, PKeBornRnd3* p, void* func, void* v, s16 a, u8 b, u8 c);
 
 s32 pppKeBornRnd3Calc(pppPObject* pobj, PKeBornRnd3* p, pppCtrlTable* ctbl) {
     if (!ppvEmptyLoop && !(ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) && p->unk_07 != 0xFF &&
         !((func_001AAF80() >> 8) & p->unk_07) && p->unk_0C != -1 && p->unk_14 != -1) {
-        KeBornRnd2(pobj, p, func_0018EDD8, &pobj->val[ctbl->useVal[0]], p->unk_04, p->unk_08, p->unk_06);
+        KeBornRnd2(pobj, p, KeBornRnd2_Born, &pobj->val[ctbl->useVal[0]], p->unk_04, p->unk_08, p->unk_06);
     }
 }
 
@@ -48,7 +48,7 @@ pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
 void func_001AB0F0(void* dst, void* src);
 
 // born callback: places the new object at the transformed point sv, direction away from the matrix origin
-void func_0018F000(pppPObject* pobj, PKeBornRnd3Cb* p, s16* sv) {
+void KeBornRnd3_Born(pppPObject* pobj, PKeBornRnd3Cb* p, s16* sv) {
     pppPObject* born;
     void* pdt;
     void* pos;

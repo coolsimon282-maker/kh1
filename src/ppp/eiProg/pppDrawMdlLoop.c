@@ -36,7 +36,8 @@ typedef union {
     void* p;
 } FI;
 
-void func_0018C818(PDrawMdlLoop* p, VDrawMdlLoop* vmdl) {
+// Sets up the DrawMdlLoop work: parameter pointer, texture scroll start (tu, tv), speeds 0.
+void DrawMdlLoop_InitWork(PDrawMdlLoop* p, VDrawMdlLoop* vmdl) {
     FI* v = (FI*)vmdl;
 
     v[1].f = p->m_tu;
@@ -63,7 +64,7 @@ void pppDrawMdlLoopCalc(pppPObject* pobj, PDrawMdlLoop* p, pppCtrlTable* ctbl) {
     PDrawMdlLoop* pmdl = (PDrawMdlLoop*)&pobj->val[ctbl->useVal[2]];
 
     if (vmdl->m_pp == NULL) {
-        func_0018C818(p, vmdl);
+        DrawMdlLoop_InitWork(p, vmdl);
     }
 
     if (ppvUserStopPartF != 0 || ppvMng->stop || ppvMng->unk_B4 != 0) {
