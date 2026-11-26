@@ -134,7 +134,6 @@ s32 Camera_BuildFrame(void);
 // }
 
 // Copies the previous frame's view, world-to-screen and screen matrices back into the current ones.
-// Copies the previous frame's view, world-to-screen and screen matrices back into the current ones.
 s32 Camera_UsePreviousFrame(void) {
     sceVu0CopyMatrix(viewMatrix, D_004FAE90[D_002C1EA0 ^ 1]);
     sceVu0CopyMatrix(worldScreenMatrix, D_004FAE10[D_002C1EA0 ^ 1]);

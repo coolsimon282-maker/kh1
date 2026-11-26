@@ -715,13 +715,13 @@ other functions (rule F1).
 | Vec_YawBetween | 0x00124D28 | xpeanut.c | atan2 of (a - b) in x and z: the yaw from b to a (declared void, the result is left in $f0 for callers that read it as f32). |
 | Camera_BuildFrame | 0x00125000 | xpeanut.c | Builds this frame's camera: view matrix from cameraEye towards cameraTarget rolled by cameraRoll, screen matrix, their product, and the yaw D_004F77E0. |
 | Camera_UsePreviousFrame | 0x001251A0 | xpeanut.c | Copies the previous frame's view, world-to-screen and screen matrices back into the current ones. |
-| cameraFov | 0x002E27A0 | xpeanut.c | ? |
-| cameraRoll | 0x002E27A4 | xpeanut.c | ? |
-| cameraEye | 0x002E2780 | xpeanut.c | ? |
-| cameraTarget | 0x002E2790 | xpeanut.c | ? |
-| cameraUp | 0x002E26B0 | xpeanut.c | ? |
-| viewMatrix | 0x002E2700 | xpeanut.c | ? |
-| screenMatrix | 0x002E2740 | xpeanut.c | ? |
-| worldScreenMatrix | 0x002E26C0 | xpeanut.c | ? |
-| projDistance | 0x004F7650 | xpeanut.c | ? |
-| savedFov | 0x004F77E4 | xpeanut.c | ? |
+| cameraFov | 0x002E27A0 | xpeanut.c | Field of view in degrees; Camera_SetFov stores it and derives projDistance from it. |
+| cameraRoll | 0x002E27A4 | xpeanut.c | Angle Camera_BuildFrame rolls the up vector by, about the view direction. |
+| cameraEye | 0x002E2780 | xpeanut.c | Camera position: sceVu0CameraMatrix position and the start of the view direction (target - eye). |
+| cameraTarget | 0x002E2790 | xpeanut.c | Point the camera looks at (view direction = target - eye). |
+| cameraUp | 0x002E26B0 | xpeanut.c | {0, 1, 0, 1}: the up vector, rolled by cameraRoll. |
+| viewMatrix | 0x002E2700 | xpeanut.c | Copy of this frame's sceVu0CameraMatrix result. |
+| screenMatrix | 0x002E2740 | xpeanut.c | Copy of the screen matrix D_002B8370 for this frame. |
+| worldScreenMatrix | 0x002E26C0 | xpeanut.c | screenMatrix * viewMatrix, built by Camera_BuildFrame. |
+| projDistance | 0x004F7650 | xpeanut.c | 256 / tan(fov / 2), set by Camera_SetFov and passed to func_00110848. |
+| savedFov | 0x004F77E4 | xpeanut.c | Field of view saved by Camera_PushFov, restored by Camera_PopFov. |
