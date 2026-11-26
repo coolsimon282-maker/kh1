@@ -768,7 +768,59 @@ void func_0014AC00(u8* p, s32 b) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014AC50);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0014ADE0);
+extern s32 D_14ADE0_pad1;
+void func_0014AC50(u8*, s32, u8*);
+void func_00134870(s32, u8*, s32*);
+void func_0012BD00(u8*, s32);
+void func_00146FB8(s32, s32, s32);
+typedef struct { u64 pad:37; u32 b:1; } V14ADE0a;
+typedef struct { u64 pad:4; u32 b:1; } V14ADE0b;
+typedef struct { u64 pad:22; u32 b:1; } V14ADE0c;
+void func_0014ADE0(u8* a, u8* b) {
+    s32 v[4];
+    u8* p;
+    u8* r;
+    u8* o;
+    s32 m;
+    s32 k;
+
+    p = *(u8**)(a + 0xC);
+    r = (u8*)func_001354B8(p, *(s32*)(b + 4));
+    if (r == NULL) {
+        return;
+    }
+    m = 4;
+    if (**(s32**)(b + 4) & 0x1000080) {
+        k = *(s8*)(p + 0xA8);
+    } else {
+        m = 0x40;
+        if (((V14ADE0a*)(r + 8))->b) {
+            k = *(s8*)(p + 0xAA);
+        } else {
+            k = *(s8*)(p + 0xA8);
+            m = 1;
+        }
+    }
+    func_0014AC00(p, m);
+    *(s32*)(r + 0x20) = *(s32*)(b + 8);
+    func_0014AC50(p, *(s32*)(b + 4), r + 0x10);
+    func_0014A238((s32)(a + 0x10), (s32)(b + 0x10), v);
+    func_00134870(*(s32*)(b + 4), r, v);
+    if (((V14ADE0b*)r)->b) {
+        return;
+    }
+    if (*(s32*)(p + 8) == 0) {
+        return;
+    }
+    o = (u8*)func_0014A1B0(p, m, (f32*)v);
+    if (o != NULL) {
+        func_00147D50(o, (s32)(r + 0x10));
+        func_0012BD00(o, *(s32*)(b + 4));
+    }
+    if (((V14ADE0c*)p)->b && k >= 0) {
+        func_00146FB8(*(s32*)(p + 0x34), 0, k);
+    }
+}
 
 f32 Vec_CosAngle(f32*, f32*);
 s32 func_0014AF60(u8* a, u8* b) {
