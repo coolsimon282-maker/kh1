@@ -94,8 +94,8 @@ typedef struct {
 } PKeBornRnd5Cb;
 
 pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
-void func_001AB0F0(void* dst, void* src);
-f32 func_001AB380(f32);
+void op_vec_copy_xyz(void* dst, void* src);
+f32 op_sqrt(f32);
 
 // KeBornRnd5's particle creation at point sv with an angle.
 void KeBornRnd5_Born(pppPObject* pobj, PKeBornRnd5Cb* p, s16* sv) {
@@ -117,7 +117,7 @@ void KeBornRnd5_Born(pppPObject* pobj, PKeBornRnd5Cb* p, s16* sv) {
     t[1] = sv[1];
     t[2] = sv[2];
     t[3] = 1.0f;
-    func_001AB0F0(&born->val[p->posOff], t);
+    op_vec_copy_xyz(&born->val[p->posOff], t);
     y = t[1];
     x = t[0];
     ang = (s32*)&born->val[p->angOff];
@@ -126,7 +126,7 @@ void KeBornRnd5_Born(pppPObject* pobj, PKeBornRnd5Cb* p, s16* sv) {
     if (KeBornRnd5_Atan2(t, &r)) {
         ang[2] = r * 32768.0f / 3.141592654;
     }
-    t[0] = func_001AB380(y * y + x * x);
+    t[0] = op_sqrt(y * y + x * x);
     t[1] = -t[2];
     if (KeBornRnd5_Atan2(t, &r)) {
         ang[0] = r * 32768.0f / 3.141592654;

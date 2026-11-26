@@ -3,7 +3,7 @@
 #include "ppp.h"
 
 s32 KeBornPtCmpl_Atan2(f32* v, f32* out);
-f32 func_001AB380(f32 x); // square root
+f32 op_sqrt(f32 x); // square root
 
 void pppKeMvYpEffCalc(pppPObject* pobj, void* p, pppCtrlTable* ctbl) {
     f32* vel;
@@ -28,7 +28,7 @@ void pppKeMvYpEffCalc(pppPObject* pobj, void* p, pppCtrlTable* ctbl) {
     if (KeBornPtCmpl_Atan2(t, &a)) {
         ang[2] = a * 32768.0f / 3.141592654;
     }
-    t[0] = func_001AB380(y * y + x * x);
+    t[0] = op_sqrt(y * y + x * x);
     t[1] = -vel[2];
     if (KeBornPtCmpl_Atan2(t, &a)) {
         ang[0] = a * 32768.0f / 3.141592654;

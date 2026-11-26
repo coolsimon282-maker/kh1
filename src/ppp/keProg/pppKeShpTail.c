@@ -34,7 +34,7 @@ typedef struct {
 } ShpTailAnm;
 
 extern sceVu0FMATRIX D_00615E70;
-void func_001AB0F0(void* dst, void* src);
+void op_vec_copy_xyz(void* dst, void* src);
 
 void pppKeShpTailCalc(pppPObject* pobj, PKeShpTail* p, pppCtrlTable* ctbl) {
     VKeShpTailC* v;
@@ -72,7 +72,7 @@ void pppKeShpTailCalc(pppPObject* pobj, PKeShpTail* p, pppCtrlTable* ctbl) {
         sceVu0ApplyMatrix(v->pos[v->cur], D_00615E70, ppvPObj.next->cmat[3]);
         v->pos[v->cur][3] = 1.0f;
     } else {
-        func_001AB0F0(v->pos[v->cur], ppvPObj.next->cmat[3]);
+        op_vec_copy_xyz(v->pos[v->cur], ppvPObj.next->cmat[3]);
     }
     lp = ppvEnv->lpShape;
     lp += p->shapeNo;

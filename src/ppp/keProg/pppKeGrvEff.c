@@ -17,8 +17,8 @@ typedef union {
     /* 0x0 */ KeGrvTarget* target;
 } VKeGrvEff;
 
-f32 func_001AB3A8(f32* v);
-void func_001AB168(f32* dst, f32* a, f32* b);
+f32 op_vec_length_sq(f32* v);
+void op_vec_add_xyz(f32* dst, f32* a, f32* b);
 
 void pppKeGrvEffCalc(pppPObject* pobj, PKeGrvEff* p, pppCtrlTable* ctbl) {
     VKeGrvEff* v = (VKeGrvEff*)&pobj->val[ctbl->useVal[2]];
@@ -46,11 +46,11 @@ void pppKeGrvEffCalc(pppPObject* pobj, PKeGrvEff* p, pppCtrlTable* ctbl) {
     }
     vel = (f32*)&pobj->val[ctbl->useVal[1]];
     sceVu0SubVector(d, t->pos, (f32*)&pobj->val[ctbl->useVal[0]]);
-    len = func_001AB3A8(d);
+    len = op_vec_length_sq(d);
     sceVu0Normalize(d, d);
     if (len < t->radius) {
         sceVu0ScaleVector(d, d, (1.0f - len / t->radius) * t->power);
-        func_001AB168(vel, vel, d);
+        op_vec_add_xyz(vel, vel, d);
     }
 }
 

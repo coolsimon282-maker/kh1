@@ -94,7 +94,7 @@ typedef struct {
 } VDrawShapeXCol;
 
 extern s32 D_00616224;
-s32 func_001BA340(void* shape, ShapeXDrawSt* st, s32 size);
+s32 op_shape_draw(void* shape, ShapeXDrawSt* st, s32 size);
 
 void pppDrawShapeXDraw(pppPObject* pobj, PDrawShapeX* p, pppCtrlTable* ctbl) {
     VDrawShapeX* v = (VDrawShapeX*)&pobj->val[ctbl->useVal[0]];
@@ -139,5 +139,5 @@ void pppDrawShapeXDraw(pppPObject* pobj, PDrawShapeX* p, pppCtrlTable* ctbl) {
     e = &shp->seq[v->seq_now];
     data = (u8*)shp + e->unk_00;
     ds.unk_14 = D_00616224;
-    D_00616224 = func_001BA340(data, &ds, st->nPacketSize);
+    D_00616224 = op_shape_draw(data, &ds, st->nPacketSize);
 }

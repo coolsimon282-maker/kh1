@@ -382,7 +382,7 @@ typedef struct {
 } MBDrawSt;
 
 extern s32 D_00616224;
-s32 func_001BA340(void* shape, MBDrawSt* st, s32 size);
+s32 op_shape_draw(void* shape, MBDrawSt* st, s32 size);
 s32 RyjShipolyBone_HasData(VRyjMegaBirth* v, PRyjMegaBirth* p);
 void RyjMegaBirth_GetMatrix(sceVu0FMATRIX out, PRyjMegaBirth* p, sceVu0FMATRIX m);
 
@@ -488,7 +488,7 @@ void pppRyjMegaBirthDraw(pppPObject* pobj, PRyjMegaBirth* p, pppCtrlTable* ctbl)
             ds.col[2] = b;
             ds.col[3] = a;
             ds.unk_14 = D_00616224;
-            D_00616224 = func_001BA340(data, &ds, st->nPacketSize);
+            D_00616224 = op_shape_draw(data, &ds, st->nPacketSize);
         }
         if (wmat != NULL) {
             wmat++;

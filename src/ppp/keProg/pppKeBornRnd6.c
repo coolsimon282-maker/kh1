@@ -68,8 +68,8 @@ typedef struct {
 } VKeBornRnd6Line;
 
 pppPObject* pppCreatePObject(ppvmng*, pppPDataVal*);
-void func_001AB0F0(f32*, f32*);
-void func_001AB168(f32*, f32*, f32*);
+void op_vec_copy_xyz(f32*, f32*);
+void op_vec_add_xyz(f32*, f32*, f32*);
 
 // Creates the child particles of a KeBornRnd6 line.
 void KeBornRnd6_BornLine(pppPObject* parent, PKeBornRnd6Line* p, pppCtrlTable* ctbl) {
@@ -88,7 +88,7 @@ void KeBornRnd6_BornLine(pppPObject* parent, PKeBornRnd6Line* p, pppCtrlTable* c
         }
     }
     pos = (f32*)&child->val[p->valoff];
-    func_001AB0F0(pos, (f32*)&parent->val[ctbl->useVal[1]]);
+    op_vec_copy_xyz(pos, (f32*)&parent->val[ctbl->useVal[1]]);
     v = (VKeBornRnd6Line*)&parent->val[ctbl->useVal[0]];
     if (v->prev == NULL) {
         v->step = 1.0f / (p->count + 1);
@@ -115,7 +115,7 @@ void KeBornRnd6_BornLine(pppPObject* parent, PKeBornRnd6Line* p, pppCtrlTable* c
             q = (f32*)&child->val[p->valoff];
             sceVu0ScaleVector(s, d, step * n);
             n -= 1.0f;
-            func_001AB168(q, a, s);
+            op_vec_add_xyz(q, a, s);
         }
     }
     v->prev = pos;

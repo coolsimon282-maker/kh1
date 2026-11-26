@@ -14,7 +14,7 @@ typedef struct {
     void* wm;
     void* sm;
 } KeLnsLpInfo;
-void func_001AB0F0(void* dst, void* src);
+void op_vec_copy_xyz(void* dst, void* src);
 void func_001A76E8(KeLnsLpInfo* info);
 
 void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLp* p, pppCtrlTable* ctbl) {
@@ -33,7 +33,7 @@ void pppKeLnsLpDraw(pppPObject* pobj, PKeLnsLp* p, pppCtrlTable* ctbl) {
         v[2] = 1.0f;
         v[3] = 1.0f;
         sceVu0ApplyMatrix(v, ppvPObj.next->cmat, v);
-        func_001AB0F0(lp->lVec, v);
+        op_vec_copy_xyz(lp->lVec, v);
     }
     lp->lcPos[0] = ppvPObj.next->cmat[3][0];
     lp->lcPos[1] = ppvPObj.next->cmat[3][1];

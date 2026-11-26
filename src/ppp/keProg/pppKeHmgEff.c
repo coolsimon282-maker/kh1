@@ -11,9 +11,9 @@ typedef struct {
     /* 0x4 */ f32* target;
 } VKeHmgEff;
 
-f32 func_001AB3A8(f32* v);
-void func_001AB0F0(f32* dst, f32* src);
-s32 func_001AAF80(void);
+f32 op_vec_length_sq(f32* v);
+void op_vec_copy_xyz(f32* dst, f32* src);
+s32 op_rand16(void);
 
 void pppKeHmgEffCalc(pppPObject* pobj, PKeHmgEff* p, pppCtrlTable* ctbl) {
     VKeHmgEff* v = (VKeHmgEff*)&pobj->val[ctbl->useVal[2]];
@@ -46,16 +46,16 @@ void pppKeHmgEffCalc(pppPObject* pobj, PKeHmgEff* p, pppCtrlTable* ctbl) {
     sceVu0SubVector(dir, v->target, pos);
     sceVu0Normalize(dir, dir);
     sceVu0CopyVector(vdir, vel);
-    len = func_001AB3A8(vdir);
+    len = op_vec_length_sq(vdir);
     sceVu0Normalize(vdir, vdir);
     sceVu0AddVector(sum, vdir, dir);
     if (*(u64*)&sum[0] == 0 && *(u64*)&sum[2] == 0) {
-        dir[func_001AAF80() % 3] += 0.05f;
+        dir[op_rand16() % 3] += 0.05f;
     }
     sceVu0InterVector(dir, dir, vdir, v->rate);
     sceVu0Normalize(dir, dir);
     sceVu0ScaleVector(dir, dir, len);
-    func_001AB0F0(vel, dir);
+    op_vec_copy_xyz(vel, dir);
 }
 
 void pppKeHmgEffCon(void) {

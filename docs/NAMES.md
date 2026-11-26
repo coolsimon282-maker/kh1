@@ -665,3 +665,47 @@ other functions (rule F1).
 | RyjMegaBirthModel_GetUv | 0x001A1158 | ppp/ryjProg/pppRyjMegaBirthModel.c | The four UV corners from the parameter's u / v selection. |
 | RyjMngFlag_QuickSort | 0x0019D968 | ppp/ryjProg/pppRyjMngFlag.c | Quick sort of the entries D_0061E310[left..right] by pos[3]. |
 | RyjMngFlag_SortEntries | 0x0019DAC8 | ppp/ryjProg/pppRyjMngFlag.c | Collects the 256 entries of D_0035C710 with their view depth and sorts them. |
+| DrawNode_BuildPacket | 0x001A7718 | ppp/draw/draw.c | Builds the GS packet of one draw node (called by DrawNodeList_Draw); returns whether there is something to send. |
+| DrawNode_Update | 0x001A7C50 | ppp/draw/draw.c | Updates one draw node (called by DrawNodeList_Update for each node). |
+| DrawNode_Init | 0x001A8780 | ppp/draw/draw.c | Sets up a node taken from the pool: clears it, links it to itself and writes the first entry's GIF tags. |
+| DrawNode_Release | 0x001A8828 | ppp/draw/draw.c | Releases the node's entries (func_001A8770) and unlinks it from its link chain. |
+| DrawNodeList_Take | 0x001A8900 | ppp/draw/draw.c | Takes the first node of the free list, or NULL. |
+| DrawNodeList_FreeAll | 0x001A8988 | ppp/draw/draw.c | Releases every node of the list and puts it back on the free list. |
+| DrawNode_Add | 0x001A89F0 | ppp/draw/draw.c | Takes a node from the pool, sets it up with the list's flags and two start vectors and puts it first in the list. |
+| DrawNodeList_Update | 0x001A8AE8 | ppp/draw/draw.c | Updates every node of a list (vectors, flags), through DrawNode_Update, and frees the ones flagged 0x10. |
+| DrawNodeList_Draw | 0x001A8C40 | ppp/draw/draw.c | Draws every node of a list: DrawNode_BuildPacket builds each packet after a DMA tag, sent on channel 2. |
+| DrawNodeHead_Clear | 0x001A8D78 | ppp/draw/draw.c | Clears a node list head (first node and flags). |
+| op_atan2 | 0x001A8D88 | ppp/draw/draw.c | atan2 of (v[1], v[0]) with atan and quadrant fixes; returns 0 for the zero vector. |
+| op_rand_lcg_step | 0x001A8F08 | ppp/draw/draw.c | Steps the 16-bit random seed D_00372760 (x * 0x80D + 7). |
+| op_rand16 | 0x001A8F30 | ppp/draw/draw.c | VU0 random number times 32768. |
+| op_ray_sphere | 0x001A8F70 | ppp/draw/draw.c | Ray / sphere intersection (a t^2 + b t + c = 0): stores the near t, returns 0 when the ray misses. |
+| op_max | 0x001A9058 | ppp/draw/draw.c | The larger of a and b (VU0 vmax). |
+| op_vec_copy_xy | 0x001A9080 | ppp/draw/draw.c | Copies X and Y of b into a (VU0; the store writes vf31, probably a slip in the original). |
+| op_vec_copy_xyz | 0x001A9098 | ppp/draw/draw.c | Copies X, Y, Z of b into a, keeping a's W. |
+| op_vec_scale_xyz | 0x001A90B0 | ppp/draw/draw.c | dst.xyz = src.xyz * f. |
+| op_vec_scale_xy | 0x001A90C8 | ppp/draw/draw.c | dst.xy = src.xy * f. |
+| op_vec_add_xy | 0x001A90E0 | ppp/draw/draw.c | dst.xy = a.xy + b.xy. |
+| op_vec_sub_xyz | 0x001A90F8 | ppp/draw/draw.c | dst.xyz = a.xyz - b.xyz. |
+| op_vec_add_xyz | 0x001A9110 | ppp/draw/draw.c | dst.xyz = a.xyz + b.xyz. |
+| op_vec_sub_xy | 0x001A9128 | ppp/draw/draw.c | dst.xy = a.xy - b.xy. |
+| op_vec_add_xy_gs | 0x001A9140 | ppp/draw/draw.c | Adds the XY of two vectors and converts the result to GS fixed point (12.4) with a range check. |
+| op_vec_to_gs | 0x001A91B0 | ppp/draw/draw.c | Converts a vector to GS fixed point (XY 12.4, ZW integer) with a range check. |
+| op_vec_normalize_xy | 0x001A9218 | ppp/draw/draw.c | Normalises the XY part of a vector. |
+| op_vec_project | 0x001A9248 | ppp/draw/draw.c | Applies the matrix and divides by W. |
+| op_vec_to_gs_persp | 0x001A92C8 | ppp/draw/draw.c | Divides by W and converts to GS fixed point (XY 12.4, Z integer, W kept). |
+| op_pow_int | 0x001A92F0 | ppp/draw/draw.c | x to the n-th power by repeated multiplication. |
+| op_sqrt | 0x001A9328 | ppp/draw/draw.c | Square root (VU0 vsqrt). |
+| op_vec_length_sq | 0x001A9350 | ppp/draw/draw.c | Sum of the squares of X, Y, Z (VU0), probably. |
+| op_vec_length_xy | 0x001A9388 | ppp/draw/draw.c | Length of the XY part (VU0 vsqrt). |
+| DrawFreeList_Take | 0x001A93E0 | ppp/draw/draw.c | Takes an index from a u16 free list, or 0xFFFF when empty. |
+| DrawFreeList_Init | 0x001A9418 | ppp/draw/draw.c | Sets up a u16 free list of count entries chained in order. |
+| op_draw_model | 0x001A9790 | ppp/draw/draw.c | Draws model index from the effect environment with op1_md_draw (mode bits from flags and the model's flags, colour col >> 7). |
+| op_send_gs2_packet | 0x001AA008 | ppp/draw/draw.c | Sends the fixed GS register packet D_0061E8B0 on its own (first tag replaced by an end tag). |
+| op_load_image | 0x001AA388 | ppp/draw/draw.c | Uploads an image described by a DrawImage (VRAM base, width, format, position, size) and optionally waits. |
+| op_fog_set_range | 0x001AA8D0 | ppp/draw/draw.c | Copies D_002BC120 / D_002BC124 into the first two fog work values (probably fog near / far). |
+| op_md_ot | 0x001AFAC0 | ppp/draw/md0.c | Model draw into the ordering table (op1_md_draw, flags without 0x80 and 0x300). |
+| op_md_ot_x300 | 0x001B1AB8 | ppp/draw/md0.c | Model draw into the ordering table with flags 0x300. |
+| op_md_ot8_x300 | 0x001AE010 | ppp/draw/md0.c | op_md_ot8 variant for flags 0x80 with 0x300. |
+| op_md_direct | 0x001B3870 | ppp/draw/md0.c | Model draw sent directly (op1_md_draw flag 4, without 0x300). |
+| op_md_direct_x300 | 0x001B6910 | ppp/draw/md0.c | Model draw sent directly with flags 0x300. |
+| op_shape_draw | 0x001B8198 | ppp/draw/md0.c | Shape drawing used by pppDrawShapeDraw and pppKeShpTail(2)Draw, probably. |

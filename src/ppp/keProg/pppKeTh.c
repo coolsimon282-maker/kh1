@@ -32,7 +32,7 @@ typedef union {
     u8 raw[0x30];
 } KeThSubU;
 
-void func_001AADB8(void*);
+void DrawNodeHead_Clear(void*);
 
 typedef struct {
     /* 0x00 */ u8 c0[8];
@@ -100,8 +100,8 @@ typedef struct {
     /* 0x14 */ f32* dir;
 } KeThUpd;
 
-void func_001AAA30(KeThC* head, void* pool, f32* arg2, f32* arg3);
-void func_001AAB28(KeThUpd* u);
+void DrawNode_Add(KeThC* head, void* pool, f32* arg2, f32* arg3);
+void DrawNodeList_Update(KeThUpd* u);
 
 void pppKeThCalc(pppPObject* pobj, PKeTh* p, pppCtrlTable* ctbl) {
     sceVu0FMATRIX m;
@@ -152,7 +152,7 @@ void pppKeThCalc(pppPObject* pobj, PKeTh* p, pppCtrlTable* ctbl) {
             if (p->unk_57) {
                 w->flags |= 0x20;
             }
-            func_001AAA30(w, w->pool, pos, dir);
+            DrawNode_Add(w, w->pool, pos, dir);
         }
         w->col[0] += p->col[0];
         w->col[1] += p->col[1];
@@ -208,7 +208,7 @@ void pppKeThCalc(pppPObject* pobj, PKeTh* p, pppCtrlTable* ctbl) {
     u.sub = &w->sub;
     u.pos = pos;
     u.dir = dir;
-    func_001AAB28(&u);
+    DrawNodeList_Update(&u);
 }
 
 INCLUDE_ASM("asm/nonmatchings/ppp/keProg/pppKeTh", pppKeThDraw);
@@ -217,7 +217,7 @@ void pppKeThCon(pppPObject* pobj, pppCtrlTable* ctbl) {
     KeThU* v = (KeThU*)&pobj->val[ctbl->useVal[0]];
     KeThSubU* sub = (KeThSubU*)&v->v.sub;
 
-    func_001AADB8(v);
+    DrawNodeHead_Clear(v);
     v->v.unk_70 = 0;
     v->v.unk_78 = 0;
     v->v.unk_80 = 0;

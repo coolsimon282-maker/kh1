@@ -160,7 +160,7 @@ typedef struct {
 } MBFDrawSt;
 
 extern s32 D_00616224;
-s32 func_001BA340(void* shape, MBFDrawSt* st, s32 size);
+s32 op_shape_draw(void* shape, MBFDrawSt* st, s32 size);
 
 void pppRyjMegaBirthFilterDraw(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, pppCtrlTable* ctbl) {
     VRyjMegaBirthFilter* v = (VRyjMegaBirthFilter*)&pobj->val[ctbl->useVal[2]];
@@ -251,7 +251,7 @@ void pppRyjMegaBirthFilterDraw(pppPObject* pobj, PRyjMegaBirthFilterCalc* p, ppp
             ds.col[3] = ds.col[3] * pt->alpha * v->fAlphaScale;
             if (ds.col[3] != 0) {
                 ds.unk_14 = D_00616224;
-                D_00616224 = func_001BA340(data, &ds, st->nPacketSize);
+                D_00616224 = op_shape_draw(data, &ds, st->nPacketSize);
             }
         }
         if (col != NULL) {

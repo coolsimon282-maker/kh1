@@ -18,7 +18,7 @@ typedef struct {
 } PKeBornRndCb;
 
 pppPObject* pppCreatePObject(ppvmng* mng, void* pdt);
-void func_001AB0F0(void* dst, void* src);
+void op_vec_copy_xyz(void* dst, void* src);
 
 // Creates a particle (data pdtn) at point sv transformed by the current matrix, moving outward from the matrix origin at p->speed.
 void KeBornRnd_Born(pppPObject* pobj, PKeBornRndCb* p, s16* sv) {
@@ -41,9 +41,9 @@ void KeBornRnd_Born(pppPObject* pobj, PKeBornRndCb* p, s16* sv) {
     pos = &born->val[p->posOff];
     vel = &born->val[p->velOff];
     sceVu0ApplyMatrix(t, ppvPObj.next->cmat, t);
-    func_001AB0F0(pos, t);
+    op_vec_copy_xyz(pos, t);
     sceVu0SubVector(t, t, ppvPObj.next->cmat[3]);
     sceVu0Normalize(t, t);
     sceVu0ScaleVector(t, t, p->speed);
-    func_001AB0F0(vel, t);
+    op_vec_copy_xyz(vel, t);
 }

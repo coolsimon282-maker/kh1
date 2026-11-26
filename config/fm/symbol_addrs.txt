@@ -807,6 +807,55 @@ RyjMngFlag_QuickSort                 = 0x0019D968; // type:func
 RyjMngFlag_SortEntries               = 0x0019DAC8; // type:func
 
 
+//=========================================================
+// ppp_draw
+//=========================================================
+DrawNode_BuildPacket                 = 0x001A7718; // type:func
+DrawNode_Update                      = 0x001A7C50; // type:func
+DrawNode_Init                        = 0x001A8780; // type:func
+DrawNode_Release                     = 0x001A8828; // type:func
+DrawNodeList_Take                    = 0x001A8900; // type:func
+DrawNodeList_FreeAll                 = 0x001A8988; // type:func
+DrawNode_Add                         = 0x001A89F0; // type:func
+DrawNodeList_Update                  = 0x001A8AE8; // type:func
+DrawNodeList_Draw                    = 0x001A8C40; // type:func
+DrawNodeHead_Clear                   = 0x001A8D78; // type:func
+op_atan2                             = 0x001A8D88; // type:func
+op_rand_lcg_step                     = 0x001A8F08; // type:func
+op_rand16                            = 0x001A8F30; // type:func
+op_ray_sphere                        = 0x001A8F70; // type:func
+op_max                               = 0x001A9058; // type:func
+op_vec_copy_xy                       = 0x001A9080; // type:func
+op_vec_copy_xyz                      = 0x001A9098; // type:func
+op_vec_scale_xyz                     = 0x001A90B0; // type:func
+op_vec_scale_xy                      = 0x001A90C8; // type:func
+op_vec_add_xy                        = 0x001A90E0; // type:func
+op_vec_sub_xyz                       = 0x001A90F8; // type:func
+op_vec_add_xyz                       = 0x001A9110; // type:func
+op_vec_sub_xy                        = 0x001A9128; // type:func
+op_vec_add_xy_gs                     = 0x001A9140; // type:func
+op_vec_to_gs                         = 0x001A91B0; // type:func
+op_vec_normalize_xy                  = 0x001A9218; // type:func
+op_vec_project                       = 0x001A9248; // type:func
+op_vec_to_gs_persp                   = 0x001A92C8; // type:func
+op_pow_int                           = 0x001A92F0; // type:func
+op_sqrt                              = 0x001A9328; // type:func
+op_vec_length_sq                     = 0x001A9350; // type:func
+op_vec_length_xy                     = 0x001A9388; // type:func
+DrawFreeList_Take                    = 0x001A93E0; // type:func
+DrawFreeList_Init                    = 0x001A9418; // type:func
+op_draw_model                        = 0x001A9790; // type:func
+op_send_gs2_packet                   = 0x001AA008; // type:func
+op_load_image                        = 0x001AA388; // type:func
+op_fog_set_range                     = 0x001AA8D0; // type:func
+op_md_ot                             = 0x001AFAC0; // type:func
+op_md_ot_x300                        = 0x001B1AB8; // type:func
+op_md_ot8_x300                       = 0x001AE010; // type:func
+op_md_direct                         = 0x001B3870; // type:func
+op_md_direct_x300                    = 0x001B6910; // type:func
+op_shape_draw                        = 0x001B8198; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////

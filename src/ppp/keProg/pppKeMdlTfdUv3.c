@@ -52,7 +52,7 @@ typedef struct {
 extern s32 D_00616224;
 void func_001AB4B8(f32 inp, s32 arg1, s32 arg2, void* pkt);
 void op_ot_insert0(u32* p, s32 qwc, s32 pri, s32 arg3);
-void func_001AB828(u32 index, u16* col, s32 a2, s32 a3, s32 a4, u8 flags, void* a6);
+void op_draw_model(u32 index, u16* col, s32 a2, s32 a3, s32 a4, u8 flags, void* a6);
 
 void pppKeMdlTfdUv3Draw(pppPObject* pobj, PKeMdlTfdUv3* p, pppCtrlTable* ctbl) {
     VKeMdlTfdUv3f* v = (VKeMdlTfdUv3f*)&pobj->val[ctbl->useVal[2]];
@@ -96,7 +96,7 @@ void pppKeMdlTfdUv3Draw(pppPObject* pobj, PKeMdlTfdUv3* p, pppCtrlTable* ctbl) {
     D_00616224 = pkt + 0x1070;
     col = (u16*)&pobj->val[ctbl->useVal[0]];
     a6 = &pobj->val[ctbl->useVal[3]];
-    func_001AB828(p->mdlIdx, col, ofs, v->u, v->v, p->unk_38 | p->unk_39 | p->unk_3C | p->unk_3A | p->unk_3B, a6);
+    op_draw_model(p->mdlIdx, col, ofs, v->u, v->v, p->unk_38 | p->unk_39 | p->unk_3C | p->unk_3A | p->unk_3B, a6);
 }
 
 void pppKeMdlTfdUv3Con(pppPObject* pobj, pppCtrlTable* ctbl) {

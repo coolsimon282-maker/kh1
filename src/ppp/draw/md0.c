@@ -1,18 +1,28 @@
+/**
+ * Model drawing kernels for op1_md_draw (md.c): ordering-table and direct variants by draw flags, and the shape
+ * drawing used by the shape effects. All still assembly.
+ */
 #include "common.h"
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_md_ot8);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001B0118);
+// op_md_ot8 variant for flags 0x80 with 0x300.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_md_ot8_x300);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001B1BF8);
+// Model draw into the ordering table (op1_md_draw, flags without 0x80 and 0x300).
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_md_ot);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001B3C00);
+// Model draw into the ordering table with flags 0x300.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_md_ot_x300);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001B59C0);
+// Model draw sent directly (op1_md_draw flag 4, without 0x300).
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_md_direct);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001B8AA0);
+// Model draw sent directly with flags 0x300.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_md_direct_x300);
 
-INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001BA340);
+// Shape drawing used by pppDrawShapeDraw and pppKeShpTail(2)Draw, probably.
+INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", op_shape_draw);
 
 INCLUDE_ASM("asm/nonmatchings/ppp/draw/md0", func_001BBB60);
 
