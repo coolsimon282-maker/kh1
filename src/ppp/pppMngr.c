@@ -1044,7 +1044,130 @@ s32 pppSortAllPart(ppvmng** list) {
 INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppCalcAllPart);
 
 // Draws every running effect in depth order (VRAM cache, texture upload, DMA of the packets).
-INCLUDE_ASM("asm/nonmatchings/ppp/pppMngr", pppDrawAllPart);
+extern f32 D_002B8344;
+extern f32 D_002BBDEC;
+extern ppvmng* D_00575A10[];
+extern s32 D_00616224;
+void op_send_gs2_packet(void);
+void op_fog_set_range(void);
+s32 func_00122048(s32, s32);
+void func_001220B8(s32);
+void pppSetUp(ppvmng* pMng);
+void pppAllFreePObject(ppvmng* pMng);
+void pppEndMng(ppvmng* arg0);
+void pppClearMng(ppvmng* arg0);
+s32 pppStepMng(ppvmng* m);
+s32 pppStepMngNoCalc(ppvmng* arg0);
+// pppStepMng is called here with a second argument (1: the effect is drawn this frame) that it does not use
+#define STEP_MNG2(p, d) (((s32 (*)(ppvmng*, s32))pppStepMng)((p), (d)))
+
+void pppDrawAllPart(void) {
+    _VRAMCACHE_MNG cache;
+    s32 saved;
+    s32 n;
+    s32 i;
+    ppvmng* p;
+    s32 first;
+    s32 same;
+    s32 drawn;
+    f32 t;
+
+    D_003701B0[0] = 0;
+    D_003701B0[1] = -1;
+    vramcachemng_clear(&cache);
+    op_send_gs2_packet();
+    op_fog_set_range();
+    saved = func_00122048(0x4000, 0x10);
+    drawStart();
+    n = pppSortAllPart(D_00575A10);
+    first = 1;
+    for (i = 0; i < n; i++) {
+        p = D_00575A10[i];
+        if ((p->usef & 1) && !(p->usef & 4)) {
+            t = 0.0f;
+            if (((s32*)p->unk_94)[5] & 0x20) {
+                t -= D_002BBDEC * 2.0f;
+            }
+            if (t < p->waitTime) {
+                if (ppvUserStopPartF == 0 && !(*(u64*)&p->drawPriority & 0xFF0000FF00)) {
+                    p->waitTime -= D_002B8344;
+                }
+                continue;
+            }
+            pppSetUp(p);
+            if ((u8)p->unk_90 != 0 && p->pEtc->viewClipStop != 0) {
+                continue;
+            }
+            if (p->usef & 0x20) {
+                continue;
+            }
+            if (first) {
+                first = 0;
+                dpd_load_all_tim((s32*)D_0036C600);
+                dpd_load_all_clut((s32*)D_0036C600);
+                FlushCache(0);
+                sceGsSyncPath(0, 0);
+                sceDmaSend(oa_dmagif, D_00370140);
+            }
+            if ((u8)p->unk_90 == 0 && p->unk_B7 == 0 && p->unk_91 != 0) {
+                vramcache_texture(&cache, p);
+                vramcache_clut(&cache, p);
+                if (p->texpStart != 0) {
+                    dpd_load_object_tim((s32*)p->pchDpd, p->pEtc->abUseTexture, p->texpStart);
+                }
+                if (p->clutpStart != 0) {
+                    dpd_load_object_clut((s32*)p->pchDpd, p->pEtc->abUseTexture, p->clutpStart);
+                }
+                if (*(u64*)&p->unk_A0 & 0xFFFFFFFF00000000) {
+                    FlushCache(0);
+                    sceGsSyncPath(0, 0);
+                    sceDmaSend(oa_dmagif, D_00370140);
+                }
+            } else {
+                p->texpStart = 0;
+                p->clutpStart = 0;
+            }
+            same = D_003701B0[0] == (u32)p->pchDpd && D_003701B0[1] == p->unk_93;
+            if (!same) {
+                dpd_set_object_data(p);
+            }
+            dpd_set_object_tex(p);
+            drawn = 1;
+            if ((u8)p->unk_90 != 0 || p->unk_B7 != 0) {
+                drawn = 0;
+            }
+            ppvCurPrimpLen = 0;
+            D_00616224 = (s32)ppvPrimp;
+            if (STEP_MNG2(p, drawn)) {
+                if ((u16)p->pEtc->seNo != 0) {
+                    func_0011D1F8((u16)p->pEtc->seNo, p->unk_A8, 0x3C);
+                }
+                pppAllFreePObject(p);
+                pppEndMng(p);
+            }
+            if ((u8)p->unk_90 == 0 && p->unk_B7 == 0) {
+                drawEnd();
+            }
+            D_003701B0[0] = (u32)p->pchDpd;
+            D_003701B0[1] = p->unk_93;
+        } else if (p->usef & 2) {
+            if (p->usef & 0x10) {
+                p->usef &= ~0x10;
+            } else {
+                pppClearMng(p);
+            }
+        } else if (p->usef & 4) {
+            if (pppStepMngNoCalc(p)) {
+                p->usef &= ~4;
+                pppEndMng(p);
+            }
+        }
+    }
+    FlushCache(0);
+    sceGsSyncPath(0, 0);
+    sceDmaSend(oa_dmagif, D_00370170);
+    func_001220B8(saved);
+}
 
 // Clears a manager and sets its default position, scale and colour (usef = 9).
 void init_part_mng(ppvmng* pMng) {
