@@ -2640,7 +2640,8 @@ void func_00123318(u8 *, u8 *);
 void func_0020A248(s32);
 
 /* unused: layout only (notes/f1.md F1). 0-3 of them change func_0020DED8 / func_00214290 / func_00212930 /
- * func_002145D8; 4 keeps the file matching (25 Nov). 8 since func_00207A38 (with one pad above func_00214590). */
+ * func_002145D8; 4 keeps the file matching (25 Nov). 8 since func_00207A38. 26 Nov, with the pads below
+ * func_0020DED8 gone: still needed (without them func_0020DED8 needs 17 D_lay2C40 instead of 12, a one-value window). */
 extern s32 D_209D48_layout1;
 extern s32 D_209D48_layout2;
 extern s32 D_209D48_layout3;
@@ -2780,11 +2781,6 @@ extern f32 D_006411F8;
 extern f32 D_00641210_f __asm__("D_00641210");
 extern f32 D_00641214_f __asm__("D_00641214");
 
-/* unused: layout only (notes/f1.md F1). With 0, 1, 2 or 4 of them func_002145D8 or func_00212930 change; 3 and 5
- * keep the file matching (25 Nov). */
-extern s32 D_20BC48_layout1;
-extern s32 D_20BC48_layout2;
-extern s32 D_20BC48_layout3;
 void func_0020BC48(s32 a0, s32 a1, s32 a2) {
     if (((a1 - (s32)D_00641210_f + 1) >> 1) == 0 && ((a2 - (s32)D_00641214_f + 1) >> 1) == 0) {
         D_00641210_f = a1;
@@ -3117,7 +3113,6 @@ extern s32 D_lay2C40_10;
 extern s32 D_lay2C40_11;
 extern s32 D2C40_v[][5] __asm__("D_003F2C40");
 
-extern s32 D_f1pad_dafb; /* unused: rule F1 */
 void func_0020DED8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6) {
     s32 *e = D2C40_v[a1];
     u32 c = e[4];
@@ -3148,10 +3143,6 @@ void func_0020E090(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     }
 }
 
-/* unused: rule F1 (26 Nov: only 2, 3 and 8 among 0-20 keep func_00211840 .. func_00215420) */
-extern s32 D_lay20E1C0_0;
-extern s32 D_lay20E1C0_1;
-extern s32 D_lay20E1C0_2;
 void func_0020E1C0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     s32 *e = D2C40_v[a1];
     u32 c = e[4];
@@ -3185,7 +3176,6 @@ s32 func_0020F260(s32 a0) {
     return ((t0 << 8) | a0);
 }
 
-extern s32 D_f1pad_gbhbabdc; /* unused: rule F1 */
 void func_0020F290(u32 *a, s32 l, s32 r) {
     s32 i;
     s32 j;
@@ -3221,8 +3211,6 @@ top:
         }
 }
 
-extern s32 D_f1pad_adhc; /* unused: rule F1 */
-extern s32 D_f1pad_fhcda; /* unused: rule F1 */
 void func_0020F3C8(void) {
     extern s32 D_00641388;
     extern s32 D_00641390[];
@@ -3631,7 +3619,6 @@ void func_00212270(void) {
 extern s32 D_00641C10[];
 extern s32 D_00642410;
 extern s32 D_00641C10_l[] __asm__("D_00641C10");
-extern s32 D_f1pad_gef; /* unused: rule F1 */
 void func_002122B8(void) {
     s32 i;
     s32 s = D_00641BD0 + D_00641BD4;
@@ -3733,9 +3720,6 @@ extern s32 D_00642418[];
 extern s32 D_00642818[];
 extern s32 D_00642C18;
 
-extern s32 D_f1pad_dhhdefa; /* unused: rule F1 */
-extern s32 D_f1pad_fghea; /* unused: rule F1 */
-extern s32 D_f1pad_gegbhf; /* unused: rule F1 */
 void func_00212930(s32 a0) {
     u8 *p;
     s32 v;
@@ -3972,8 +3956,6 @@ extern s32 D_00642C78[];
 extern s32 D_00642C48;
 extern s32 D_00642C88;
 
-extern s32 D_f1pad_hhbghcch; /* unused: rule F1 */
-extern s32 D_f1pad_h; /* unused: rule F1 */
 void func_00213FB0(void) {
     if (D_00642C28 >= 0) {
         func_00213E50((void *)((u8 *)D_00642C30 + 0x40), 0,
@@ -4011,7 +3993,6 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_00214130);
 
 void func_00214130(s32, s32, s32, s32, s32, s32);
 
-extern s32 D_f1pad_feadghb; /* unused: rule F1 */
 void func_00214290(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     s32 *e;
     s32 c;
@@ -4033,12 +4014,6 @@ void func_00214380(u8 *a0) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file0F3110", func_002143E0);
 
-/* unused: rule F1 (with func_00207A38 and the 8 D_209D48_layout externs); its NAME matters too */
-extern s32 D_pad_func_00214590_0;
-extern s32 D_f1pad_gbcgabbd; /* unused: rule F1 */
-extern s32 D_f1pad_g; /* unused: rule F1 */
-extern s32 D_f1pad_beabbcd; /* unused: rule F1 */
-extern s32 D_f1pad_aaeed; /* unused: rule F1 */
 void func_00214590(u8 *a0) {
     func_001F9010(0x17);
     func_001F9438((s32)a0, 0, 0xAE, 0xC, *(s32 *)(a0 + 0x24), 0x11, 0x80C87850);
