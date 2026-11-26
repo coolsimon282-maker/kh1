@@ -498,6 +498,8 @@ segments:
   - [ 0x1c6460, .data, xtoaster ]
   - [ 0x1e26b0, .data, xpeanut ]
   - [ 0x1e27b0, data ]
+  - [ 0x1e27e0, .data, xcream ]
+  - [ 0x1e2810, data ]
   - [ 0x204b00, .data, xapple ]
   - [ 0x204b68, data ]
   - [ 0x36ae28, data, lib/libc/mlock ]
