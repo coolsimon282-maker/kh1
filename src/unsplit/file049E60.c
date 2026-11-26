@@ -418,7 +418,7 @@ f32 func_001250D0(f32*, f32*);
 void func_0011D350(s32, s32);
 void func_00157F70();
 s32 func_001581D8(void);
-s32 func_001584C0(void);
+void func_001584C0();
 void func_00158068(u8*, s32, f32*);
 s32 func_00158100();
 void func_001373F8(u8*, f32);
@@ -3877,7 +3877,42 @@ s32 func_00158100(u8* p, f32* v) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001581D8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_001584C0);
+extern f32 D_00351A20[];
+extern f32 D_005516D0[];
+void func_001584C0(u8* p, f32* v) {
+    f32 w[4];
+    f32 u[4];
+    f32* s;
+    f32 t;
+    f32 c;
+
+
+    if (*(f32*)(p + 0x2C) > 0.0f) {
+        sceVu0ScaleVector(v, (f32*)(p + 0x20), *(f32*)(p + 0x2C) * D_002B8344);
+        sceVu0AddVector(v, v, (f32*)(p + 0x3C0));
+        func_001223B0(v, v);
+    } else {
+        func_001223B0(v, (f32*)(p + 0x3C0));
+        v[3] -= D_002B8344 * 0.2f;
+    }
+    t = v[3];
+    if (t < 0.0f) {
+        c = 0.0f;
+    } else if (t > 20.0f) {
+        c = 20.0f;
+    } else {
+        c = t;
+    }
+    sceVu0ScaleVector((f32*)(p + 0x3C0), v, c);
+    sceVu0Normalize(w, (f32*)(*(u8**)(p + 0x148) + 0x160));
+    sceVu0OuterProduct(v, D_00351A20, w);
+    sceVu0Normalize(v, v);
+    sceVu0ScaleVector(v, v, *(f32*)(p + 0x3C0));
+    sceVu0AddVector(u, v, (f32*)(*(u8**)(p + 0x148) + 0x160));
+    func_00137688((s32)p, func_001376E8_2(p, u));
+    sceVu0ScaleVector(v, v, D_002B8344);
+    sceVu0CopyVector(D_005516D0, v);
+}
 
 void func_00158648(void) {
     func_0014F830(0x1D, 0x1E, (s32)func_00157F70, (s32)func_00158050, (s32)func_001581D8, (s32)func_001584C0, (s32)func_0014F828, (s32)func_00158068, (s32)func_00158100);
