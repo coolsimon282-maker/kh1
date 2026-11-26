@@ -2431,13 +2431,83 @@ void func_00143A70(u8* p, f32* v, s32 a2) {
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00143D20);
+extern s32 D_143D20_pad1;
+s32 func_001236F0(u8*);
+s32 func_00123730(u8*);
+void func_00143D20(u8* p, f32* v, s32 a2) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR w;
+    f32 b[8];
+    s32 i;
+    s32 o;
+
+    sceVu0CopyVector(d, v);
+    sceVu0CopyVector(w, (f32*)(p + 0x10));
+    if (func_001236F0(p)) {
+        func_00143A70(p, d, a2);
+        *(u8*)(p + 0x39E) = func_00142618(p);
+        if (*(u8**)(p + 0x398) != NULL && func_00123730(*(u8**)(p + 0x398))) {
+            func_0015BAD0(*(u8**)(p + 0x398), *(u8**)(*(u8**)(*(u8**)(p + 0x398) + 0x134) + 0x14), b);
+            *(f32*)(p + 0x3D4) = b[5] - b[2] - *(f32*)(p + 0x14);
+        } else {
+            *(f32*)(p + 0x3D4) = *(f32*)(p + 0x324) - *(f32*)(p + 0x14);
+        }
+    } else {
+        sceVu0AddVector((f32*)(p + 0x10), (f32*)(p + 0x10), d);
+        *(f32*)(p + 0x3D4) = 0.0f;
+        if ((u32)(*(u8*)(p + 6) - 2) < 2) {
+            sceVu0CopyVector(w, (f32*)(p + 0x50));
+            w[1] -= 100.0f;
+            *(u8*)(p + 0x39E) = func_00142388(w, (s32*)(p + 0x350));
+        } else if (*(u8**)(p + 0x3A0) != NULL && *(u8*)(*(u8**)(p + 0x3A0) + 6) == 3) {
+            for (i = 0; i < 4; i++) {
+                o = i * 4 + 0x350;
+                *(s32*)(p + o) = *(s32*)(*(u8**)(p + 0x3A0) + o);
+            }
+        }
+    }
+    sceVu0SubVector(d, (f32*)(p + 0x10), w);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00143EB8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_00144060);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001441B8);
+extern s32 D_1441B8_pad1;
+void func_00143EB8(u8*, f32*);
+s32 func_00144060(u8*);
+typedef struct { u64 pad:2; u32 b:1; } V1441B8;
+void func_001441B8(u8* p) {
+    sceVu0FVECTOR v;
+    s32 st;
+
+    sceVu0CopyVector((f32*)(p + 0x490), (f32*)(p + 0x10));
+    *(u64*)(p + 0x90) = 0;
+    if (func_001236F0(p) == 0) {
+        sceVu0CopyVector((f32*)(p + 0x3C0), D_002C58B0);
+        sceVu0ScaleVector(v, (f32*)(p + 0x20), *(f32*)(p + 0x2C) * D_002B8344);
+        if (((V1441B8*)(p + 0x160))->b) {
+            sceVu0AddVector(v, v, (f32*)(p + 0x200));
+        }
+        sceVu0AddVector(v, v, (f32*)(p + 0x120));
+        func_00143D20(p, v, 0);
+    } else {
+        func_00143EB8(p, v);
+        func_00143D20(p, v, 0);
+        st = func_00144060(p);
+        if (func_0014F658((s32)p, st) && st == 2) {
+            func_0014CC88(p, 0.0f);
+            *(u32*)p &= ~4;
+            sceVu0ScaleVector(v, v, D_002C1EC0);
+            func_001223B0(v, v);
+            if (v[3] > 8.0f) {
+                v[3] = 8.0f;
+            }
+            sceVu0ScaleVector((f32*)(p + 0x3C0), v, v[3]);
+        }
+    }
+    sceVu0CopyVector((f32*)(p + 0x120), D_002C58B0);
+}
 
 void func_00144350(u8* p) {
     *(s32*)(*(u8**)(p + 0x148) + 0xBC) = 0;
@@ -3134,7 +3204,43 @@ u8* func_001478C8(s32 i) {
     return D_00547BAC + i * 16;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_001478E0);
+extern u8* D_003044A0;
+extern s8 D_0048E398[];
+typedef struct { s32 a; s32 b; s32 c; s32 d; s32 e; } S1478E0a;
+typedef struct { s32 a; s32 b; s32 c; } S1478E0b;
+void func_001478E0(void) {
+    s32* p;
+    u8 **a1, **a2, **a3, **a4, **a5, **a6, **a7;
+    s32 i;
+
+    func_00120438(D_0048E398, D_00533BA0);
+    a1 = &D_003051EC;
+    *a1 = func_00147A10(0x58);
+    a2 = &D_003044A0;
+    *a2 = func_00147A10(0);
+    a3 = &D_00547BA0;
+    *a3 = func_00147A10(0x1A58);
+    a4 = &D_00547BA4;
+    *a4 = func_00147A10(0x2E58);
+    a5 = &D_00547BA8;
+    *a5 = func_00147A10(0x33D8);
+    a6 = &D_00547BAC;
+    *a6 = func_00147A10(0xA58);
+    a7 = &D_00547BB0;
+    *a7 = func_00147A10(0xC6A8);
+    p = (s32*)func_00147A10(0x258);
+    for (i = 0; i < 0x200; i++) {
+        *p = (s32)func_00147A10(*p);
+        p++;
+    }
+    for (i = 0; i < 0xFF; i++) {
+        ((S1478E0a*)D_00547BA0)[i].d = (s32)func_00147A10(((S1478E0a*)D_00547BA0)[i].d);
+    }
+    for (i = 0; i < 0x3F; i++) {
+        ((S1478E0b*)D_00547BA8)[i].b = (s32)func_00147A10(((S1478E0b*)D_00547BA8)[i].b);
+        ((S1478E0b*)D_00547BA8)[i].c = (s32)func_00147A10(((S1478E0b*)D_00547BA8)[i].c);
+    }
+}
 
 extern u8 D_0054C120[];
 s32 func_001623E0(u8* p);
