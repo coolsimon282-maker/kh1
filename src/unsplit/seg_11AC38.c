@@ -544,7 +544,30 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C5E0);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C780);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_11AC38", func_0021C9A0);
+void func_0021C9A0(s32 a0, s32 a1, s32 a2) {
+    s32 i;
+    s32 y;
+    s32 v;
+
+    y = a2 + 0x14;
+    v = y;
+    func_0021B860(a0, a1, a2, 0, 0, 1);
+    for (i = 0; i < 16; i++, y += 0x10) {
+        func_0021B860(a0, a1, y, 0, 0, 5);
+    }
+    func_0021B860(a0, a1, y, 0, 0, 3);
+    y = v;
+    v = a1 + 0xF1;
+    func_0021B860(a0, v, a2, 0, 0, 0);
+    for (i = 0; i < 16; i++, y += 0x10) {
+        func_0021B860(a0, v, y, 0, 0, 4);
+    }
+    func_0021B860(a0, v, y, 0, 0, 2);
+    v = a1 + 0xE1;
+    for (i = 0, y = a2 + 7; i < 18; i++, y += 0x10) {
+        func_0021B860(a0, v, y, 0, 0, 0x1F);
+    }
+}
 
 void func_00206130(s32, s32, s32, s32, s32, s32);
 
