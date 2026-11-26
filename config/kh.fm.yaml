@@ -75,6 +75,7 @@ segments:
   - [ 0x1fd30, c, unsplit/seg_01FD30 ]
   - [ 0x20bf8, c, xball ]
   - [ 0x21b98, c, unsplit/seg_021B98 ]
+  - [ 0x22028, c, unsplit/xlamp ]
   - [ 0x22430, c, xowl ]
   - [ 0x22dc8, c, xtoaster ]
   - [ 0x24c68, c, xpeanut ]
