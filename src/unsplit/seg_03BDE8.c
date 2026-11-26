@@ -3760,7 +3760,39 @@ INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014CDC8);
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014CEE8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/seg_03BDE8", func_0014D070);
+extern s32 D_0014D070_pad1; /* unused: rule F1 (with func_0014D070) */
+void func_0014D070(u8* p, f32* v) {
+    sceVu0FVECTOR d;
+    f32 z;
+    sceVu0SubVector(d, (f32*)(p + 0x2E0), (f32*)(p + 0x2A0));
+    if (!(v[1] < d[1])) {
+        return;
+    }
+    switch (*(s32*)(p + 0x70)) {
+    case 2:
+        *(f32*)(p + 0x3B4) += d[1] - v[1];
+        z = 0.0f;
+        if (!(v[1] < z)) {
+            return;
+        }
+        if (!(*(s32*)(p + 0x2D0) & 8)) {
+            return;
+        }
+        func_0014CC88(p, z);
+        *(f32*)(p + 0x3B4) = *(f32*)(p + 0x2E4);
+        func_00130340(p, *(s32*)(p + 0x3D0) + 5, 6.0f);
+        func_00130578((s32)p, *(s32*)(p + 0x3D0) + 6, z);
+        break;
+    case 3:
+        if (!(v[1] < 0.0f)) {
+            return;
+        }
+        if (*(s32*)(p + 0x2D0) & 8) {
+            *(f32*)(p + 0x3C4) = 0.0f;
+        }
+        break;
+    }
+}
 
 s32 func_0014D180(u8* p) {
     s32 f, b, r;
