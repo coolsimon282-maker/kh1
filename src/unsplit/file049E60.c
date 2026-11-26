@@ -6388,7 +6388,48 @@ void func_0016F548(void) {
     D_00575780_n = NULL;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0016F640);
+s32 TaskSystem_FindTask(void (*)(void));
+s32 func_001383D8(s32, void (*)(void));
+void func_0016EA58(void);
+void func_0016F1F0(void);
+extern s32 D_00575014;
+extern s32 D_00575088;
+extern s32 curWorldNo;
+extern s32 curRoomNo;
+extern s32 D_00574FB8;
+extern s32 D_00574FC0[];
+void func_0016F640(void) {
+    N16F548** fl;
+    s32 i;
+    s32 j;
+
+    D_00575088 = 0;
+    if (TaskSystem_FindTask(func_0016EA58) == 0) {
+        D_00575010[0] = func_001383D8(0x9C4, func_0016EA58);
+    }
+    if (TaskSystem_FindTask(func_0016F1F0) == 0) {
+        D_00575014 = func_001383D8(0xDAB, func_0016F1F0);
+    }
+    for (j = 2; j >= 0; j--) {
+        D_00575310[j].unk_00 = 0;
+    }
+    D_00574FB8 = 0;
+    for (j = 19; j >= 0; j--) {
+        D_00574FC0[j] = 0;
+    }
+    fl = &D_00575784_n;
+    for (i = 0; i < 30; i++) {
+        D_00575528[i].c = 0;
+        *fl = &D_00575528[i];
+        fl = &D_00575528[i].next;
+    }
+    *fl = NULL;
+    D_00575780_n = NULL;
+    D_00574FB4 = 2;
+    if (curWorldNo == 0xA && curRoomNo == 7) {
+        func_00170E30(0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0016F7B8);
 
