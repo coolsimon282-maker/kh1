@@ -4602,7 +4602,47 @@ void func_0015C128(u8* a, u8* b, f32* out) {
 
 INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015C1F8);
 
-INCLUDE_ASM("asm/nonmatchings/unsplit/file049E60", func_0015C3A0);
+void func_0015C3A0(u8* a, u8* b, f32* out) {
+    sceVu0FVECTOR d;
+    sceVu0FVECTOR m;
+    f32 r;
+
+    sceVu0SubVector(d, (f32*)(a + 0x10), (f32*)(b + 0x10));
+    m[0] = __builtin_fabsf(d[0]);
+    m[2] = __builtin_fabsf(d[2]);
+    m[1] = __builtin_fabsf(d[1]);
+    if (m[0] > m[2]) {
+        if (*(f32*)(b + 4) < m[2]) {
+            r = (m[2] - *(f32*)(b + 4)) / *(f32*)(a + 4);
+            r = _sqrtf(1.0f - r * r) * *(f32*)(a + 4) + *(f32*)(b + 4);
+        } else {
+            r = *(f32*)(a + 4) + *(f32*)(b + 4);
+        }
+        r += 5.0f;
+        if (d[0] > 0.0f) {
+            out[0] = d[0] - r;
+        } else {
+            out[0] = d[0] + r;
+        }
+        *(s32*)&out[2] = 0;
+    } else {
+        if (*(f32*)(b + 4) < m[0]) {
+            r = (m[0] - *(f32*)(b + 4)) / *(f32*)(a + 4);
+            r = _sqrtf(1.0f - r * r) * *(f32*)(a + 4) + *(f32*)(b + 4);
+        } else {
+            r = *(f32*)(a + 4) + *(f32*)(b + 4);
+        }
+        r += 5.0f;
+        if (d[2] > 0.0f) {
+            out[2] = d[2] - r;
+        } else {
+            out[2] = d[2] + r;
+        }
+        *(s32*)&out[0] = 0;
+    }
+    *(s32*)&out[1] = 0;
+    out[3] = 1.0f;
+}
 
 void func_0015C508(u8* a, u8* b, f32* out) {
     sceVu0FVECTOR d;
