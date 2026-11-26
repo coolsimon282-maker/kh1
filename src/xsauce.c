@@ -707,6 +707,7 @@ void func_0010EDA0(XSauceUnk* arg0, s32 arg1, s32 arg2) {
 extern s32 D_004D5AF0;
 extern s32 D_004D59F0[];
 void func_0010D250(XSauce*, u_long128*);
+#ifdef VERSION_FM
 s32 Text_Measure(s32 arg0, s32* arg1) {
     XSauce* s;
     XSauce* p1;
@@ -750,6 +751,9 @@ s32 Text_Measure(s32 arg0, s32* arg1) {
     *arg1 = D_004D5AF0;
     return m;
 }
+#else
+INCLUDE_ASM("asm/nonmatchings/xsauce", Text_Measure);
+#endif
 
 // Number of 24-pixel lines of the text (Text_Measure height / 24 + 1).
 s32 Text_GetLineCount(s32 arg0) {

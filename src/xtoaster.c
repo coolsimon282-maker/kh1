@@ -899,6 +899,7 @@ extern u8 D_FE0000[];
 // fields this function sets that the structs above do not name yet
 #define XS(p, o, T) (*(T*)((u8*)(p) + (o)))
 
+#ifdef VERSION_FM
 XToaster* Actor_Spawn(u32 id) {
     XToast* t;
     XToaster* p;
@@ -1062,6 +1063,9 @@ XToaster* Actor_Spawn(u32 id) {
     p->unk_000 &= ~0x400;
     return p;
 }
+#else
+INCLUDE_ASM("asm/nonmatchings/xtoaster", Actor_Spawn);
+#endif
 
 s32 func_0014F658(void*, s32);
 void func_001574B0(s32);

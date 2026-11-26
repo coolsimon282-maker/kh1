@@ -2494,6 +2494,7 @@ s32 func_001D1628(Script* arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D16C0);
 
+#ifdef VERSION_FM
 extern s32 D_a3pad_001D17D0_1;
 s32 func_001D17D0(Script* arg0) {
     ScriptMsg msg;
@@ -2506,6 +2507,9 @@ s32 func_001D17D0(Script* arg0) {
     arg0->unk_174[3] -= 2;
     return 2;
 }
+#else
+INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001D17D0);
+#endif
 
 #ifdef VERSION_FM
 s32 func_001D1878(Script* arg0) {
@@ -7693,6 +7697,7 @@ void func_001DE098(void) {
     D_003854E0.unk_3380++;
 }
 
+#ifdef VERSION_FM
 void func_001D90B0(ScriptMv *);
 
 void func_001DE0B0(ScriptMv *arg0) {
@@ -7721,6 +7726,9 @@ void func_001DE0B0(ScriptMv *arg0) {
         func_001DAB88((ScriptQ *)arg0);
     }
 }
+#else
+INCLUDE_ASM("asm/nonmatchings/xhumungus", func_001DE0B0);
+#endif
 
 void func_001DE1B8(Script* arg0) {
     ScriptMsgG msg;

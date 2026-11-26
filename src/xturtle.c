@@ -1293,27 +1293,7 @@ void func_0011E360(void) {
     }
 }
 #else
-extern s32 D_002B9314;
-extern u32 D_002C1EA8;
-void func_0011E480(void);
-void func_0011E4D0(void);
-void func_0011E360(void) {
-    s32 t;
-
-    if (D_002B9314 == 0) {
-        if (D_002C1390 == 0 && D_002BD8B8[0] != D_002BD8B8[1]) {
-            t = D_002C1EA8 & 1;
-            if (t == 1) {
-                if (D_002BD8DC == 0) {
-                    func_0011E480();
-                }
-            } else if (D_002BD8DC == 1) {
-                func_0011E4D0();
-            }
-        }
-        D_002BD8DC = D_002C1EA8 & 1;
-    }
-}
+INCLUDE_ASM("asm/nonmatchings/xturtle", func_0011E360);
 #endif
 
 #ifdef VERSION_FM
