@@ -148,3 +148,37 @@ other functions (rule F1).
 | Light_Initialize | 0x00122CF0 | xowl.c | Clears every light, adds the default directional light (0, 1, 0, white) and starts LightTask_Update. |
 | lightTbl | 0x002C5C80 | xowl.c | the 31 lights (0x40 bytes: type, flags, range, position, direction, colour) every Light_ function walks; was D_002C5C80 |
 | interpTaskList | 0x004F6EC0 | xowl.c | task list of the vector interpolation tasks (Interpolation_Initialize); was D_004FA670 |
+| ScriptOp_ApplyOperator | 0x001CD208 | xkinetic.c / xhumungus.c | Opcode 1 APPLY_OPERATOR (entry 1 of scriptOpTable; in xhumungus.c) |
+| ScriptOp_JumpIfFalse | 0x001C0910 | xkinetic.c / xhumungus.c | Opcode 3 JUMP_IF_FALSE: pops a value and jumps by the operand if it is 0. |
+| ScriptOp_Reserved04 | 0x001C0960 | xkinetic.c / xhumungus.c | Opcode 4 (unused): does nothing. |
+| ScriptOp_End | 0x001C0B40 | xkinetic.c / xhumungus.c | Opcode 5 END. |
+| ScriptOp_SaveSwitchValue | 0x001C0968 | xkinetic.c / xhumungus.c | Opcode 6 SAVE_SWITCH_VALUE: pops a value into switch slot operand and makes it the current one. |
+| ScriptOp_SwitchEq | 0x001C09A0 | xkinetic.c / xhumungus.c | Opcode 7 SWITCH_EQ: pushes (current switch value == operand). |
+| ScriptOp_PopSwitchValue | 0x001C0B28 | xkinetic.c / xhumungus.c | Opcode 8 POP_SWITCH_VALUE: drops the current switch value. |
+| ScriptOp_LoadLocal | 0x001C0D70 | xkinetic.c / xhumungus.c | Opcode 10 LOAD_LOCAL: pushes local variable operand. |
+| ScriptOp_StoreLocal | 0x001C13B8 | xkinetic.c / xhumungus.c | Opcode 11 STORE_LOCAL: pops a value into local variable operand. |
+| ScriptOp_LoadVar8 | 0x001C0F30 | xkinetic.c / xhumungus.c | Opcode 12 LOAD_VAR8: pushes an 8-bit game variable. |
+| ScriptOp_StoreVar8 | 0x001C13E8 | xkinetic.c / xhumungus.c | Opcode 13 STORE_VAR8. |
+| ScriptOp_LoadVar16 | 0x001C1118 | xkinetic.c / xhumungus.c | Opcode 14 LOAD_VAR16: pushes a 16-bit game variable. |
+| ScriptOp_StoreVar16 | 0x001C1628 | xkinetic.c / xhumungus.c | Opcode 15 STORE_VAR16. |
+| ScriptOp_LoadVar32 | 0x001C11D8 | xkinetic.c / xhumungus.c | Opcode 16 LOAD_VAR32: pushes a 32-bit game variable. |
+| ScriptOp_StoreVar32 | 0x001C1718 | xkinetic.c / xhumungus.c | Opcode 17 STORE_VAR32. |
+| ScriptOp_Reserved18 | 0x001C1318 | xkinetic.c / xhumungus.c | Opcode 18 (unused): does nothing. |
+| ScriptOp_Reserved19 | 0x001C1320 | xkinetic.c / xhumungus.c | Opcode 19 (unused): does nothing. |
+| ScriptOp_Reserved20 | 0x001C1328 | xkinetic.c / xhumungus.c | Opcode 20 (unused): does nothing. |
+| ScriptOp_PushS24Alt | 0x001C1960 | xkinetic.c / xhumungus.c | Opcode 21 PUSH_S24_ALT: pushes the operand without clamping. |
+| ScriptOp_StartThread | 0x001C19F8 | xkinetic.c / xhumungus.c | Opcode 22 START_THREAD: pops a script number and a slot (0-7) and starts entry operand there. |
+| ScriptOp_WaitThread | 0x001C1AA8 | xkinetic.c / xhumungus.c | Opcode 23 WAIT_THREAD. |
+| ScriptOp_CallCommand | 0x001DCAD0 | xkinetic.c / xhumungus.c | Opcode 24 CALL_COMMAND (entry 24 of scriptOpTable; in seg_0DDC78) |
+| ScriptOp_StopThread | 0x001C1B58 | xkinetic.c / xhumungus.c | Opcode 25 STOP_THREAD: pops a script number and a slot and stops that thread (6 if it is this script). |
+| ScriptOp_SwitchLt | 0x001C09E8 | xkinetic.c / xhumungus.c | Opcode 26 SWITCH_LT: pushes (current switch value < operand). |
+| ScriptOp_SwitchLe | 0x001C0A38 | xkinetic.c / xhumungus.c | Opcode 27 SWITCH_LE: pushes (current switch value <= operand). |
+| ScriptOp_SwitchGt | 0x001C0A88 | xkinetic.c / xhumungus.c | Opcode 28 SWITCH_GT: pushes (current switch value > operand). |
+| ScriptOp_SwitchGe | 0x001C0AD8 | xkinetic.c / xhumungus.c | Opcode 29 SWITCH_GE: pushes (current switch value >= operand). |
+| ScriptOp_LoadWorkBit | 0x001C1330 | xkinetic.c / xhumungus.c | Opcode 30 LOAD_WORK_BIT. |
+| ScriptOp_StoreWorkBit | 0x001C1880 | xkinetic.c / xhumungus.c | Opcode 31 STORE_WORK_BIT. |
+| Script_ReadWork | 0x001C0DA0 | xkinetic.c | Reads 1, 2 or 4 bytes at offset arg0 of work buffer 2 into *arg2. |
+| Script_WriteWork | 0x001C0E80 | xkinetic.c | Writes 1, 2 or 4 bytes from *arg2 to offset arg0 of work buffer 2. |
+| Script_GetOpcode | 0x001C1CE8 | xkinetic.c | Returns the opcode (top byte) of instruction arg1 at arg0. |
+| Script_GetOperand | 0x001C1CF8 | xkinetic.c | Returns the signed 24-bit operand of instruction arg1 at arg0. |
+| scriptOpTable | 0x0037A198 | xkinetic.c | the 32 opcode handlers, in the order of jhaton's OPCODE_NAMES (6 checked against the handlers' code); was D_003759E0 |

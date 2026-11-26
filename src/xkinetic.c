@@ -1,3 +1,11 @@
+/**
+ * The event script VM's opcode handlers (the table scriptOpTable, opcode = top byte of each 32-bit instruction).
+ *
+ * A script (Script / ScriptVM) has a value stack (sp at 0x180), 26 locals (0x208), a stack of switch values (0x270, top
+ * 0x2F0) and 8 thread slots. Handlers return 2 to go on with the next instruction, 1 after a forward jump, 4 after a
+ * backward jump (the frame ends), 6 to stop. Opcode names follow jhaton's script_bytecode.py (docs/external/jhaton).
+ * The interpreter loop and most commands (CALL_COMMAND) are in xhumungus.c.
+ */
 #include "common.h"
 #include "xflamingo.h"
 #include "xhumungus.h"
@@ -15,10 +23,12 @@ typedef struct {
 
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C21B8);
 
+// Opcode 0 NOP.
 s32 ScriptOp_Nop(void) {
     return 2;
 }
 
+// Opcode 2 JUMP: adds the operand to the program counter.
 s32 ScriptOp_JumpRelative(Script* arg0, s32 arg1) {
     arg0->unk_174[2] += arg1;
     if (arg1 < 0) {
@@ -27,7 +37,8 @@ s32 ScriptOp_JumpRelative(Script* arg0, s32 arg1) {
     return 1;
 }
 
-s32 func_001C2298(Script* arg0, s32 arg1) {
+// Opcode 3 JUMP_IF_FALSE: pops a value and jumps by the operand if it is 0.
+s32 ScriptOp_JumpIfFalse(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     if (vm->stack[vm->sp--] == 0) {
@@ -40,11 +51,13 @@ s32 func_001C2298(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C22E8(void) {
+// Opcode 4 (unused): does nothing.
+s32 ScriptOp_Reserved04(void) {
     return 2;
 }
 
-s32 func_001C22F0(Script* arg0, s32 arg1) {
+// Opcode 6 SAVE_SWITCH_VALUE: pops a value into switch slot operand and makes it the current one.
+s32 ScriptOp_SaveSwitchValue(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->unk_270[arg1] = vm->stack[vm->sp];
@@ -53,7 +66,8 @@ s32 func_001C22F0(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C2328(Script* arg0, s32 arg1) {
+// Opcode 7 SWITCH_EQ: pushes (current switch value == operand).
+s32 ScriptOp_SwitchEq(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->sp++;
@@ -65,7 +79,8 @@ s32 func_001C2328(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C2370(Script* arg0, s32 arg1) {
+// Opcode 26 SWITCH_LT: pushes (current switch value < operand).
+s32 ScriptOp_SwitchLt(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->sp++;
@@ -77,7 +92,8 @@ s32 func_001C2370(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C23C0(Script* arg0, s32 arg1) {
+// Opcode 27 SWITCH_LE: pushes (current switch value <= operand).
+s32 ScriptOp_SwitchLe(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->sp++;
@@ -89,7 +105,8 @@ s32 func_001C23C0(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C2410(Script* arg0, s32 arg1) {
+// Opcode 28 SWITCH_GT: pushes (current switch value > operand).
+s32 ScriptOp_SwitchGt(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->sp++;
@@ -101,7 +118,8 @@ s32 func_001C2410(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C2460(Script* arg0, s32 arg1) {
+// Opcode 29 SWITCH_GE: pushes (current switch value >= operand).
+s32 ScriptOp_SwitchGe(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->sp++;
@@ -113,13 +131,16 @@ s32 func_001C2460(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C24B0(Script* arg0) {
+// Opcode 8 POP_SWITCH_VALUE: drops the current switch value.
+s32 ScriptOp_PopSwitchValue(Script* arg0) {
     arg0->unk_2F0--;
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C24C8);
+// Opcode 5 END.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_End);
 
+// Clamps a value to a variable type's range (0/1: one bit, 2: s8, 3: s16, ...).
 s64 Script_ClampValue(s64 arg0, s32 arg1) {
     switch (arg1) {
         case 0:
@@ -171,6 +192,7 @@ s64 Script_ClampValue(s64 arg0, s32 arg1) {
     return arg0;
 }
 
+// Opcode 9 PUSH_S24: pushes the (clamped) operand.
 s32 Script_PushS24(Script* arg0, s64 arg1) {
     s32 val = Script_ClampValue(arg1, 4);
 
@@ -179,7 +201,8 @@ s32 Script_PushS24(Script* arg0, s64 arg1) {
     return 2;
 }
 
-s32 func_001C26F8(Script* arg0, s32 arg1) {
+// Opcode 10 LOAD_LOCAL: pushes local variable operand.
+s32 ScriptOp_LoadLocal(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->sp++;
@@ -187,7 +210,8 @@ s32 func_001C26F8(Script* arg0, s32 arg1) {
     return 2;
 }
 
-void func_001C2728(s32 arg0, s32 arg1, void* arg2) {
+// Reads 1, 2 or 4 bytes at offset arg0 of work buffer 2 into *arg2.
+void Script_ReadWork(s32 arg0, s32 arg1, void* arg2) {
     u8* base = WorkBuffers_Get(2);
 
     switch (arg1) {
@@ -203,12 +227,14 @@ void func_001C2728(s32 arg0, s32 arg1, void* arg2) {
     }
 }
 
+// Returns the address of offset arg0 in work buffer 2.
 s32 Script_GetWorkAddress(s32 arg0) {
     void* temp = WorkBuffers_Get(2); // todo: find proper struct for this argument
     return temp + arg0;
 }
 
-void func_001C2808(s32 arg0, s32 arg1, void* arg2) {
+// Writes 1, 2 or 4 bytes from *arg2 to offset arg0 of work buffer 2.
+void Script_WriteWork(s32 arg0, s32 arg1, void* arg2) {
     u8* base = WorkBuffers_Get(2);
 
     switch (arg1) {
@@ -228,7 +254,8 @@ extern s8 D_003C2D30[];
 extern s32 D_0038ACC4[];
 extern s32 D_0038B4C4[];
 
-s32 func_001C28B8(Script* arg0, s32 arg1) {
+// Opcode 12 LOAD_VAR8: pushes an 8-bit game variable.
+s32 ScriptOp_LoadVar8(Script* arg0, s32 arg1) {
     s32 b1 = (s32)WorkBuffers_Get(1);
     s32 b2 = (s32)WorkBuffers_Get(2);
 
@@ -267,7 +294,8 @@ s32 func_001C28B8(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C2AA0(Script* arg0, s32 arg1) {
+// Opcode 14 LOAD_VAR16: pushes a 16-bit game variable.
+s32 ScriptOp_LoadVar16(Script* arg0, s32 arg1) {
     s32 b1 = (s32)WorkBuffers_Get(1);
     s32 b2 = (s32)WorkBuffers_Get(2);
 
@@ -291,7 +319,8 @@ s32 func_001C2AA0(Script* arg0, s32 arg1) {
 extern s32 D_0038ACC4[];
 extern s32 D_0038B4C4[];
 
-s32 func_001C2B60(Script* arg0, s32 arg1) {
+// Opcode 16 LOAD_VAR32: pushes a 32-bit game variable.
+s32 ScriptOp_LoadVar32(Script* arg0, s32 arg1) {
     s32 b1 = (s32)WorkBuffers_Get(1);
     s32 b2 = (s32)WorkBuffers_Get(2);
 
@@ -318,47 +347,59 @@ s32 func_001C2B60(Script* arg0, s32 arg1) {
     return 2;
 }
 
-s32 func_001C2CA0(void) {
+// Opcode 18 (unused): does nothing.
+s32 ScriptOp_Reserved18(void) {
     return 2;
 }
 
-s32 func_001C2CA8(void) {
+// Opcode 19 (unused): does nothing.
+s32 ScriptOp_Reserved19(void) {
     return 2;
 }
 
-s32 func_001C2CB0(void) {
+// Opcode 20 (unused): does nothing.
+s32 ScriptOp_Reserved20(void) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2CB8);
+// Opcode 30 LOAD_WORK_BIT.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_LoadWorkBit);
 
-s32 func_001C2D40(Script* arg0, s32 arg1) {
+// Opcode 11 STORE_LOCAL: pops a value into local variable operand.
+s32 ScriptOp_StoreLocal(Script* arg0, s32 arg1) {
     ScriptVM* vm = (ScriptVM*)arg0;
 
     vm->var[arg1] = vm->stack[vm->sp--];
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2D70);
+// Opcode 13 STORE_VAR8.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar8);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C2FB0);
+// Opcode 15 STORE_VAR16.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar16);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C30A0);
+// Opcode 17 STORE_VAR32.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreVar32);
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3208);
+// Opcode 31 STORE_WORK_BIT.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_StoreWorkBit);
 
-s32 func_001C32E8(Script* arg0, s32 arg1) {
+// Opcode 21 PUSH_S24_ALT: pushes the operand without clamping.
+s32 ScriptOp_PushS24Alt(Script* arg0, s32 arg1) {
     arg0->unk_174[3]++;
     arg0->unk_174[arg0->unk_174[3] + 4] = arg1;
     return 2;
 }
 
+// Probably sets thread slot b of a script to start at entry (used by START_THREAD).
 INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3308);
 
 s32 *func_001E98D0(s32, s32);
 s32 func_001C3308(s32 *, s32, s32);
 
-s32 func_001C3380(Script *arg0, s32 arg1) {
+// Opcode 22 START_THREAD: pops a script number and a slot (0-7) and starts entry operand there.
+s32 ScriptOp_StartThread(Script *arg0, s32 arg1) {
     ScriptVM *vm = (ScriptVM *)arg0;
     s32 a = vm->stack[vm->sp--];
     s32 b = vm->stack[vm->sp--];
@@ -374,7 +415,8 @@ s32 func_001C3380(Script *arg0, s32 arg1) {
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/xkinetic", func_001C3430);
+// Opcode 23 WAIT_THREAD.
+INCLUDE_ASM("asm/nonmatchings/xkinetic", ScriptOp_WaitThread);
 
 typedef struct {
     u64 unk_00 : 8;
@@ -396,7 +438,8 @@ typedef struct {
     /* 0x328 */ u64 unk_328;
 } ScriptK;
 
-s32 func_001C34E0(Script* arg0) {
+// Opcode 25 STOP_THREAD: pops a script number and a slot and stops that thread (6 if it is this script).
+s32 ScriptOp_StopThread(Script* arg0) {
     ScriptVM* vm = (ScriptVM*)arg0;
     ScriptMsgK msg;
     s32 a = vm->stack[vm->sp--];
@@ -440,11 +483,13 @@ s32 func_001C34E0(Script* arg0) {
     return 2;
 }
 
-s32 func_001C3670(s32 arg0, s32 arg1) {
+// Returns the opcode (top byte) of instruction arg1 at arg0.
+s32 Script_GetOpcode(s32 arg0, s32 arg1) {
     return ((s8*)(arg0 + arg1 * 4))[3];
 }
 
-s32 func_001C3680(s32 arg0, s32 arg1) {
+// Returns the signed 24-bit operand of instruction arg1 at arg0.
+s32 Script_GetOperand(s32 arg0, s32 arg1) {
     return ((u8*)(arg0 + arg1 * 4))[0] | (((u8*)(arg0 + arg1 * 4))[1] << 8) |
            (((s8*)(arg0 + arg1 * 4))[2] << 16);
 }

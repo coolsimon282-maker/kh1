@@ -3,11 +3,11 @@
 
 typedef s32 (*XHumungusFunc2)(UNK_PTR, s32);
 
-extern XHumungusFunc2 D_003759E0[];
+extern XHumungusFunc2 scriptOpTable[];
 extern XGiantMountain D_003854E0;
 
-s32 func_001C3670(s32, s32);
-s32 func_001C3680(s32, s32);
+s32 Script_GetOpcode(s32, s32);
+s32 Script_GetOperand(s32, s32);
 
 void Script_ExecuteEntry(Script* arg0, s32 arg1) {
     s32 initialPos = arg0->unk_174[2];
@@ -18,12 +18,12 @@ void Script_ExecuteEntry(Script* arg0, s32 arg1) {
     arg0->unk_174[2] = arg0->unk_7C[arg1];
 
     while (TRUE) {
-        idx = func_001C3670(arg0->unk_70, arg0->unk_174[2]);
-        temp_5 = func_001C3680(arg0->unk_70, arg0->unk_174[2]);
+        idx = Script_GetOpcode(arg0->unk_70, arg0->unk_174[2]);
+        temp_5 = Script_GetOperand(arg0->unk_70, arg0->unk_174[2]);
         if (idx == 5) {
             break;
         }
-        result = D_003759E0[idx](arg0, temp_5);
+        result = scriptOpTable[idx](arg0, temp_5);
         if (result & 2) {
             arg0->unk_174[2]++;
         }

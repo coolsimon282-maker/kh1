@@ -177,6 +177,49 @@ Light_EnableAll                      = 0x00122CB8; // type:func
 Light_Initialize                     = 0x00122CF0; // type:func
 
 
+//=========================================================
+// xkinetic.c (script VM opcodes, scriptOpTable order = jhaton's OPCODE_NAMES)
+//=========================================================
+ScriptOp_ApplyOperator               = 0x001CD208; // type:func
+ScriptOp_JumpIfFalse                 = 0x001C0910; // type:func
+ScriptOp_Reserved04                  = 0x001C0960; // type:func
+ScriptOp_End                         = 0x001C0B40; // type:func
+ScriptOp_SaveSwitchValue             = 0x001C0968; // type:func
+ScriptOp_SwitchEq                    = 0x001C09A0; // type:func
+ScriptOp_PopSwitchValue              = 0x001C0B28; // type:func
+ScriptOp_LoadLocal                   = 0x001C0D70; // type:func
+ScriptOp_StoreLocal                  = 0x001C13B8; // type:func
+ScriptOp_LoadVar8                    = 0x001C0F30; // type:func
+ScriptOp_StoreVar8                   = 0x001C13E8; // type:func
+ScriptOp_LoadVar16                   = 0x001C1118; // type:func
+ScriptOp_StoreVar16                  = 0x001C1628; // type:func
+ScriptOp_LoadVar32                   = 0x001C11D8; // type:func
+ScriptOp_StoreVar32                  = 0x001C1718; // type:func
+ScriptOp_Reserved18                  = 0x001C1318; // type:func
+ScriptOp_Reserved19                  = 0x001C1320; // type:func
+ScriptOp_Reserved20                  = 0x001C1328; // type:func
+ScriptOp_PushS24Alt                  = 0x001C1960; // type:func
+ScriptOp_StartThread                 = 0x001C19F8; // type:func
+ScriptOp_WaitThread                  = 0x001C1AA8; // type:func
+ScriptOp_CallCommand                 = 0x001DCAD0; // type:func
+ScriptOp_StopThread                  = 0x001C1B58; // type:func
+ScriptOp_SwitchLt                    = 0x001C09E8; // type:func
+ScriptOp_SwitchLe                    = 0x001C0A38; // type:func
+ScriptOp_SwitchGt                    = 0x001C0A88; // type:func
+ScriptOp_SwitchGe                    = 0x001C0AD8; // type:func
+ScriptOp_LoadWorkBit                 = 0x001C1330; // type:func
+ScriptOp_StoreWorkBit                = 0x001C1880; // type:func
+
+
+//=========================================================
+// xkinetic.c
+//=========================================================
+Script_ReadWork                      = 0x001C0DA0; // type:func
+Script_WriteWork                     = 0x001C0E80; // type:func
+Script_GetOpcode                     = 0x001C1CE8; // type:func
+Script_GetOperand                    = 0x001C1CF8; // type:func
+
+
 ///////////////////////////////////////////////////////////
 //                     .data section                     //
 ///////////////////////////////////////////////////////////
@@ -220,6 +263,12 @@ fadeTaskList                         = 0x002BC720; //
 //=========================================================
 lightTbl                             = 0x002C5C80; // size:0x7C0
 interpTaskList                       = 0x004F6EC0;
+
+
+//=========================================================
+// xkinetic.c (data)
+//=========================================================
+scriptOpTable                        = 0x0037A198;
 
 
 ///////////////////////////////////////////////////////////
