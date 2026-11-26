@@ -44,11 +44,14 @@ logtime() {
 }
 # Time limit per job for the local agent: `next` notes when it handed a job out (qwen/.job); 6 minutes later any
 # command gives the job up and says so (the agent kept researching one function for 40 minutes instead of giving up).
-if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != configure ] && [ -n "$(find qwen/.job -mmin +6 2>/dev/null)" ]; then
+# (25 Nov: library jobs get 12 minutes: adapting the reference source takes longer, and most library give-ups were
+# the 6-minute limit, while game functions are matched within 4 minutes or not at all)
+lim=6; [ -f qwen/.job ] && case "$(cut -d' ' -f2 qwen/.job)" in lib/*) lim=12 ;; esac
+if [ -f qwen/.job ] && [ "$1" != next ] && [ "$1" != giveup ] && [ "$1" != configure ] && [ -n "$(find qwen/.job -mmin +$lim 2>/dev/null)" ]; then
   read -r jf jfile < qwen/.job; rm -f qwen/.job
   if grep -q "INCLUDE_ASM(\"[^\"]*\", $jf);" "src/$jfile.c" 2>/dev/null || [ -n "$(replaced)" ]; then
-    bash "$0" giveup "$jfile" "$jf" "time limit (6 minutes)" >/dev/null
-    echo "TIME UP: 6 minutes on $jf - it has been given up automatically. Do not look at it again."
+    bash "$0" giveup "$jfile" "$jf" "time limit ($lim minutes)" >/dev/null
+    echo "TIME UP: $lim minutes on $jf - it has been given up automatically. Do not look at it again."
     echo "Run now: wsl -e bash ./agent-tools.sh next"
     exit 0
   fi
@@ -87,6 +90,11 @@ case "$1" in
         bash "$0" giveup "$pf" "$pj" "session ended without a result" >/dev/null && echo "(your last job $pj ended without a result: noted as given up)"
       fi
     fi
+    # no attempt is in place at this point: if the build mirror lost an assembly file (a re-split ran while an
+    # attempt was in a file, 24 Nov: func_0023CF30.s, then every compile of seg_132D60 failed), re-split now
+    if [ -n "$(bash wsl-build.sh python3 tools/missing_asm.py check 2>/dev/null)" ]; then
+      echo "(an assembly file is missing in the build mirror: re-splitting first, a few minutes)"; bash "$0" build > /dev/null 2>&1
+    fi
     # rounds: the unattended launcher asks for a few functions per fresh session; after 6 jobs, end the round
     # (the counter resets when it's older than an hour, i.e. the next round starts again at 1)
     rc=qwen/.round_count; [ -f "$rc" ] && [ -n "$(find "$rc" -mmin +60 2>/dev/null)" ] && rm -f "$rc"
@@ -109,6 +117,8 @@ for jobs in ('qwen/twins.txt', 'qwen/queue.txt'):
             print(m.group(2), m.group(3), m.group(4) or '-', m.group(1)); raise SystemExit
 PY
     job=$(cat /tmp/next_job.$$); rm -f /tmp/next_job.$$
+    # qwen/.queue_empty tells the unattended loop to stop (it no longer stops after a run of rounds without a match)
+    if [ -z "$job" ]; then touch qwen/.queue_empty; else rm -f qwen/.queue_empty; fi
     [ -z "$job" ] && { echo "No jobs left in qwen/twins.txt or qwen/queue.txt. Reply that the job list is finished, then stop."; exit 0; }
     set -- $job
     echo "$1 $2" > qwen/.job
@@ -168,8 +178,12 @@ PY
     # one function for an hour instead of giving up)
     mkdir -p .tries; tf=".tries/$3"
     [ -f qwen/.job_info ] && echo $(( $(cat qwen/.job_tries 2>/dev/null || echo 0) + 1 )) > qwen/.job_tries
+    # the function's code matched but the whole image did not (usually a symbol or data detail): keep that C
+    if [ $q -eq 0 ] && [ "$(echo "$out" | tail -1)" != "build/fm/SLPS_251.98.rom: OK" ] && [ -d qwen ]; then
+      mkdir -p qwen/attempts; cp "$4" "qwen/attempts/$3.quickok.c"; touch ".tries/$3.quickok"
+    fi
     if [ "$(echo "$out" | tail -1)" = "build/fm/SLPS_251.98.rom: OK" ]; then
-      rm -f "$tf" "qwen/attempts/$3.c" "qwen/attempts/$3.score"
+      rm -f "$tf" "qwen/attempts/$3.c" "qwen/attempts/$3.score" "qwen/attempts/$3.quickok.c"
       logtime "$3" matched
       echo "MATCHED. Commit it now (PowerShell, in the checkout folder):"
       echo "  git add src/$2.c; git commit -m \"Match $3 ($2)\""
@@ -177,7 +191,13 @@ PY
       t=$(( $(cat "$tf" 2>/dev/null || echo 0) + 1 )); echo "$t" > "$tf"
       if [ "$t" -ge 2 ]; then
         rm -f "$tf"
-        bash "$0" giveup "$2" "$3" "2 failed tries (automatic)" >/dev/null
+        if [ -f ".tries/$3.quickok" ]; then
+          # not a failure: hand it to an Opus agent (24 Nov: two such near-matches had been thrown away)
+          echo "$3 $2 $(date '+%Y-%m-%d %H:%M') qwen/attempts/$3.quickok.c" >> qwen/near.txt
+          bash "$0" giveup "$2" "$3" "NEAR: quick check matched, full build differs; C in qwen/attempts/$3.quickok.c (for Opus, qwen/near.txt)" >/dev/null
+        else
+          bash "$0" giveup "$2" "$3" "2 failed tries (automatic)" >/dev/null
+        fi
         echo "GAVE UP AUTOMATICALLY after 2 failed tries: src/$2.c is restored and $3 is noted as given up."
         echo "Do NOT research it further. Run 'wsl -e bash ./agent-tools.sh next' now for the next function."
       else
@@ -197,8 +217,10 @@ PY
     exit $qr ;;
   giveup)
     f="$2"; fn="$3"; shift 3
+    # the file must exist: "giveup --check ..." (24 Nov) and a ".c" suffix (earlier) left empty src/*.c.tmp files
+    [ -f "src/$f.c" ] || { echo "giveup: no file src/$f.c. Usage: giveup <file e.g. unsplit/seg_132D60> <func> <reason>"; exit 1; }
     python3 tools/logattempt.py "$f" "$fn" 1 giveup "$@" < /dev/null > /dev/null 2>&1
-    git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { echo "couldn't restore src/$f.c"; exit 1; }
+    git show "HEAD:src/$f.c" > "src/$f.c.tmp" && mv "src/$f.c.tmp" "src/$f.c" || { rm -f "src/$f.c.tmp"; echo "couldn't restore src/$f.c"; exit 1; }
     n="notes/$(basename "$PWD").md"; [ "$(basename "$PWD")" = "kh1-decomp" ] && n="notes/main.md"
     best=""; [ -f "qwen/attempts/$fn.score" ] && best=" [closest try: $(cut -d' ' -f1 "qwen/attempts/$fn.score") of $(cut -d' ' -f2 "qwen/attempts/$fn.score") instructions off, kept in qwen/attempts/$fn.c]"
     echo "- $fn ($f): gave up: $*$best" >> "$n"
